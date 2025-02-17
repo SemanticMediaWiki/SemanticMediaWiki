@@ -10,18 +10,12 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental }}
 
     strategy:
       matrix:
         include:
-          - mediawiki_version: '1.35'
-            php_version: 7.4
-            database_type: mysql
-            database_image: "mysql:5.7"
-            coverage: false
-            experimental: false
           - mediawiki_version: '1.39'
             php_version: 8.1
             database_type: mysql
@@ -30,11 +24,30 @@ jobs:
             experimental: false
           - mediawiki_version: '1.39'
             php_version: 8.1
-            database_type: sqlite
+            database_type: mysql
+            database_image: "mysql:8"
+            coverage: false
+            experimental: false
+          - mediawiki_version: '1.40'
+            php_version: 8.1
+            database_type: mysql
+            database_image: "mariadb:11.2"
             coverage: false
             experimental: false
           - mediawiki_version: '1.41'
             php_version: 8.1
+            database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: true
+            experimental: true
+          - mediawiki_version: '1.42'
+            php_version: 8.2
+            database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: false
+            experimental: true
+          - mediawiki_version: '1.43'
+            php_version: 8.2
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: false
@@ -55,12 +68,8 @@ jobs:
       - name: Update submodules
         run: git submodule update --init --remote
 
-      - name: Run unit tests
-        run: make ci COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
-        if: matrix.coverage == false
-
       - name: Run tests
-        run: make ci COMPOSER_PARAMS="-- --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure"
+        run: make ci
         if: matrix.coverage == false
 
       - name: Run unit tests with coverage

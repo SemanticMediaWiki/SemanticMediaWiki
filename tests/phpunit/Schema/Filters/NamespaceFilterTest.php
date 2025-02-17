@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\NamespaceFilter;
+use SMW\Schema\Rule;
 
 /**
  * @covers \SMW\Schema\Filters\NamespaceFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -41,7 +41,7 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( null );
 		$instance->filter( $compartment );
@@ -54,7 +54,7 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( NS_MAIN );
 		$instance->addOption( NamespaceFilter::FILTER_CONDITION_NOT_REQUIRED, true );
@@ -178,7 +178,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 			],
 			true
 		];
-
 	}
 
 }

@@ -9,7 +9,7 @@ use JobQueueGroup;
  * an instance during tests hence this class provides a reduced interface with
  * mockable methods.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class JobQueue {
 	private $jobQueueGroup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $disableCache = false;
 
@@ -38,7 +38,7 @@ class JobQueue {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $disableCache
+	 * @param bool $disableCache
 	 */
 	public function disableCache( $disableCache = true ) {
 		$this->disableCache = (bool)$disableCache;
@@ -49,7 +49,7 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDelayedJobsEnabled( $type ) {
 		return $this->jobQueueGroup->get( $this->mapLegacyType( $type ) )->delayedJobsEnabled();
@@ -60,7 +60,7 @@ class JobQueue {
 	 *
 	 * @param array $list
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function runFromQueue( array $list ) {
 		$log = [];
@@ -96,7 +96,7 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 *
-	 * @return Job|boolean
+	 * @return Job|bool
 	 */
 	public function pop( $type ) {
 		return $this->jobQueueGroup->get( $this->mapLegacyType( $type ) )->pop();
@@ -143,10 +143,6 @@ class JobQueue {
 	 * @param Job|Job[] $jobs
 	 */
 	public function lazyPush( $jobs ) {
-		if ( !method_exists( $this->jobQueueGroup, 'lazyPush' ) ) {
-			return $this->push( $jobs );
-		}
-
 		$this->jobQueueGroup->lazyPush( $jobs );
 	}
 
@@ -164,7 +160,7 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueueSize( $type ) {
 		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
@@ -182,7 +178,7 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasPendingJob( $type ) {
 		return $this->getQueueSize( $type ) > 0;

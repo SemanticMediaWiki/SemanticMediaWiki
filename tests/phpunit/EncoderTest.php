@@ -8,12 +8,12 @@ use SMW\Encoder;
  * @covers \SMW\Encoder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class EncoderTest extends \PHPUnit_Framework_TestCase {
+class EncoderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

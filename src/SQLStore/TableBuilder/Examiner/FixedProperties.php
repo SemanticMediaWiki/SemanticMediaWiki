@@ -7,7 +7,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\TypesRegistry;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -22,12 +22,12 @@ class FixedProperties {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $fixedProperties = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $properties = [];
 
@@ -88,7 +88,7 @@ class FixedProperties {
 
 		$target_id = (int)$this->fixedProperties[$prop];
 
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 		$this->messageReporter->reportMessage( "   ... reading `$prop` ...\n" );
 
 		$row = $connection->selectRow(

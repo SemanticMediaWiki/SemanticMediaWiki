@@ -9,7 +9,7 @@ use WikiFilePage;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class TitleFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Title|null
 	 */
@@ -60,27 +60,7 @@ class TitleFactory {
 			->getDBLoadBalancer()
 			->getMaintenanceConnectionRef( DB_REPLICA );
 
-		// Since PageStore is only available starting from 1.36
-		if ( version_compare( MW_VERSION, '1.36', '>=' ) ) {
-			$fields = $container->getPageStore()->getSelectFields();
-		} else {
-			$fields = [
-				'page_id',
-				'page_namespace',
-				'page_title',
-				'page_is_redirect',
-				'page_is_new',
-				'page_touched',
-				'page_links_updated',
-				'page_latest',
-				'page_len',
-				'page_content_model'
-			];
-
-			if ( $container->getMainConfig()->get( 'PageLanguageUseDB' ) ) {
-				$fields[] = 'page_lang';
-			}
-		}
+		$fields = $container->getPageStore()->getSelectFields();
 
 		$res = $dbr->select(
 			'page',

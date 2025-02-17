@@ -4,16 +4,16 @@ namespace SMW\SQLStore;
 
 use InvalidArgumentException;
 use SMW\DIProperty;
+use SMW\Enum;
 use SMW\Exception\DataItemException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMW\Enum;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author Markus Krötzsch
@@ -38,7 +38,7 @@ class PropertyTableRowDiffer {
 	private $changeOp;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkRemnantEntities = false;
 
@@ -58,14 +58,14 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param ChangeOp|null $changeOp
 	 */
-	public function setChangeOp( ChangeOp $changeOp = null ) {
+	public function setChangeOp( ?ChangeOp $changeOp = null ) {
 		$this->changeOp = $changeOp;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $checkRemnantEntities
+	 * @param bool $checkRemnantEntities
 	 */
 	public function checkRemnantEntities( $checkRemnantEntities ) {
 		$this->checkRemnantEntities = (bool)$checkRemnantEntities;
@@ -99,7 +99,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @since 2.3
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param SemanticData $semanticData
 	 *
 	 * @return array
@@ -117,7 +117,7 @@ class PropertyTableRowDiffer {
 			$this->setChangeOp( new ChangeOp( $semanticData->getSubject() ) );
 		}
 
-		list( $newData, $textItems, $propertyList, $fixedPropertyList ) = $this->propertyTableRowMapper->mapToRows(
+		[ $newData, $textItems, $propertyList, $fixedPropertyList ] = $this->propertyTableRowMapper->mapToRows(
 			$sid,
 			$semanticData
 		);
@@ -141,7 +141,7 @@ class PropertyTableRowDiffer {
 
 			try {
 				$fixedProperties[] = new DIProperty( $propertyTable->getFixedProperty() );
-			} catch( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				// Do nothing!
 			}
 		}
@@ -194,7 +194,7 @@ class PropertyTableRowDiffer {
 					// Table contains data and should contain the same data after update
 					continue;
 				} else { // Table contains no data or contains data that is different from the new
-					list( $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName] ) = $this->arrayDeleteMatchingValues(
+					[ $tablesInsertRows[$tableName], $tablesDeleteRows[$tableName] ] = $this->arrayDeleteMatchingValues(
 						$this->fetchCurrentContentsForPropertyTable( $sid, $propertyTable ),
 						$newData[$tableName],
 						$propertyTable
@@ -277,8 +277,8 @@ class PropertyTableRowDiffer {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $sid
-	 * @param TableDefinition $tableDeclaration
+	 * @param int $sid
+	 * @param TableDefinition $propertyTable
 	 *
 	 * @return array
 	 */

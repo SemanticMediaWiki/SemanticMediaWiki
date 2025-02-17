@@ -2,22 +2,20 @@
 
 namespace SMW\MediaWiki\Content;
 
-use SMW\Schema\Schema;
-use SMW\Schema\SchemaFactory;
-use SMW\Message;
-use SMW\Store;
+use Onoi\CodeHighlighter\Geshi;
+use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWInfolink as Infolink;
-use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
-use Onoi\CodeHighlighter\Geshi;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\Message;
+use SMW\Schema\Schema;
+use SMW\Store;
 use SMW\Utils\Html\SummaryTable;
-use Html;
+use SMWInfolink as Infolink;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -35,12 +33,12 @@ class SchemaContentFormatter {
 	private $htmlBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isYaml = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $type = [];
 
@@ -62,7 +60,7 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isYaml
+	 * @param bool $isYaml
 	 */
 	public function isYaml( $isYaml ) {
 		$this->isYaml = $isYaml;
@@ -71,7 +69,7 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function setType( $type ) {
 		$this->type = $type;
@@ -80,14 +78,14 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModuleStyles() {
 		return array_merge( [
 			'mediawiki.helplink',
 			'smw.content.schema',
 			'mediawiki.content.json',
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.table.styles',
 		], SummaryTable::getModuleStyles() );
 	}
@@ -95,10 +93,10 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
-		return [ 'smw.content.schemaview', 'smw.factbox' ];
+		return [ 'smw.content.schemaview' ];
 	}
 
 	/**
@@ -133,14 +131,16 @@ class SchemaContentFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Schema $schema
+	 * @param $text
+	 * @param Schema|null $schema
+	 * @param array $errors
 	 *
 	 * @return string
 	 */
-	public function getText( $text, Schema $schema = null, array $errors = [] ) {
+	public function getText( $text, ?Schema $schema = null, array $errors = [] ) {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
-		//	'footer' => [ $schema ]
+		// 'footer' => [ $schema ]
 		];
 
 		$html = '';
@@ -163,7 +163,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return array
 	 */
-	public function getUsage( Schema $schema = null ) {
+	public function getUsage( ?Schema $schema = null ) {
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];
 		}
@@ -174,7 +174,7 @@ class SchemaContentFormatter {
 		$usage_lookup = (array)$this->type['usage_lookup'];
 
 		$subject = new DIWikiPage(
-			str_replace( ' ', '_', $schema->getName() ),
+			str_replace( ' ', '_', $schema->getName() ?? '' ),
 			SMW_NS_SCHEMA
 		);
 
@@ -208,7 +208,7 @@ class SchemaContentFormatter {
 			return '';
 		}
 
-		list( $usage, $usage_count ) = $this->getUsage( $schema );
+		[ $usage, $usage_count ] = $this->getUsage( $schema );
 
 		$params = [
 			'link' => '',
@@ -231,7 +231,7 @@ class SchemaContentFormatter {
 		$type = $schema->get( Schema::SCHEMA_TYPE );
 
 		$schema_link = pathinfo(
-			$schema->info( Schema::SCHEMA_VALIDATION_FILE ), PATHINFO_FILENAME
+			$schema->info( Schema::SCHEMA_VALIDATION_FILE ) ?? '', PATHINFO_FILENAME
 		);
 
 		if ( isset( $this->type['type_description'] ) ) {

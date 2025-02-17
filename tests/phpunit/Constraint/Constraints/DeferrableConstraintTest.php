@@ -3,18 +3,17 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\DeferrableConstraint;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\Constraints\DeferrableConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class DeferrableConstraintTest extends \PHPUnit_Framework_TestCase {
+class DeferrableConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$deferrableConstraint = $this->getMockBuilder( DeferrableConstraint::class )

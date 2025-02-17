@@ -4,15 +4,13 @@ namespace SMW\SQLStore\TableBuilder;
 
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
-use RuntimeException;
-use Hooks;
 
 /**
  * @private
  *
  * Database type agnostic table/schema definition manager
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -35,12 +33,12 @@ class TableSchemaManager {
 	private $tables = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureFlags = false;
 
@@ -99,7 +97,7 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureFlags
+	 * @param int $featureFlags
 	 */
 	public function setFeatureFlags( $featureFlags ) {
 		$this->featureFlags = $featureFlags;
@@ -108,9 +106,9 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $feature
+	 * @param int $feature
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeatureFlag( $feature ) {
 		return ( (int)$this->featureFlags & $feature ) != 0;
@@ -170,7 +168,7 @@ class TableSchemaManager {
 	}
 
 	private function newEntityIdTable() {
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// ID_TABLE
 		$table = new Table( SQLStore::ID_TABLE );
@@ -405,7 +403,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( Table $table = null ) {
+	private function addTable( ?Table $table = null ) {
 		if ( $table === null ) {
 			return;
 		}

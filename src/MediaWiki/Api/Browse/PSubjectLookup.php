@@ -2,17 +2,15 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
+use SMW\DataValueFactory;
 use SMW\DIProperty;
-use Exception;
-use SMW\Store;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use SMW\Store;
 use SMW\StringCondition;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataValueFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +36,7 @@ class PSubjectLookup extends Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getVersion() {
 		return __METHOD__ . self::VERSION;
@@ -87,7 +85,7 @@ class PSubjectLookup extends Lookup {
 			return [];
 		}
 
-		list( $list, $continueOffset ) = $this->findPropertySubjects(
+		[ $list, $continueOffset ] = $this->findPropertySubjects(
 			$property,
 			$value,
 			$limit,

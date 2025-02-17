@@ -13,7 +13,7 @@ use Xml;
  * data retrieval instead of the SQL-based access used by MW.
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   ??
  *
  * @author Markus Krötzsch
@@ -133,9 +133,9 @@ abstract class QueryPage extends \QueryPage {
 		// during doQuery() which is processed before this form is generated
 		$limit = $this->selectOptions['limit'];
 		$offset = $this->selectOptions['offset'];
-		$resultCount = wfMessage( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
+		$resultCount = $this->msg( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
 
-		$msgBuilder =  new MessageBuilder( $this->getLanguage() );
+		$msgBuilder = new MessageBuilder( $this->getLanguage() );
 		$selection = $msgBuilder->prevNextToText(
 			$this->getContext()->getTitle(),
 			$limit,
@@ -246,5 +246,12 @@ abstract class QueryPage extends \QueryPage {
 		}
 
 		return $num;
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function getQueryInfo(): ?array {
+		return null;
 	}
 }

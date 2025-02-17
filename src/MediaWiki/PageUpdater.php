@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki;
 
 use DeferrableUpdate;
-use DeferredpendingUpdates;
 use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
@@ -11,7 +10,7 @@ use SMW\Utils\Timer;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -46,22 +45,22 @@ class PageUpdater implements DeferrableUpdate {
 	private $fingerprint = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isHtmlCacheUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $asPoolPurge = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPending = false;
 
@@ -76,7 +75,7 @@ class PageUpdater implements DeferrableUpdate {
 	 * @param Database|null $connection
 	 * @param TransactionalCallableUpdate|null $transactionalCallableUpdate
 	 */
-	public function __construct( Database $connection = null, TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
+	public function __construct( ?Database $connection = null, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
 		$this->connection = $connection;
 		$this->transactionalCallableUpdate = $transactionalCallableUpdate;
 	}
@@ -102,7 +101,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isHtmlCacheUpdate
+	 * @param bool $isHtmlCacheUpdate
 	 */
 	public function isHtmlCacheUpdate( $isHtmlCacheUpdate ) {
 		$this->isHtmlCacheUpdate = $isHtmlCacheUpdate;
@@ -122,7 +121,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @param Title|null $title
 	 */
-	public function addPage( Title $title = null ) {
+	public function addPage( ?Title $title = null ) {
 		if ( $title === null ) {
 			return;
 		}
@@ -168,7 +167,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @since 2.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUpdate() {
 		return !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
@@ -255,21 +254,6 @@ class PageUpdater implements DeferrableUpdate {
 		// CdnCacheUpdate
 		foreach ( $this->titles as $title ) {
 			$title->touchLinks();
-		}
-	}
-
-	/**
-	 * @since 2.1
-	 */
-	public function doPurgeWebCache() {
-		$method = __METHOD__;
-
-		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeWebCache'] = true;
-		}
-
-		foreach ( $this->titles as $title ) {
-			$title->purgeSquid();
 		}
 	}
 

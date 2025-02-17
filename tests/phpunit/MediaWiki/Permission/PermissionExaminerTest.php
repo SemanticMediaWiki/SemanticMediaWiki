@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Permission\PermissionExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
+class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -44,9 +44,9 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$this->permissionManager->expects( $this->any() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $this->user ),
-				$this->equalTo( 'foo' ) )
-			->will( $this->returnValue( false ) );
+				$this->user,
+				'foo' )
+			->willReturn( false );
 
 		$instance = new PermissionExaminer(
 			$this->permissionManager
@@ -54,8 +54,8 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setUser( $this->user );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPermissionOf( 'foo' )
 		);
 	}

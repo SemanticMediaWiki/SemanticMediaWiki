@@ -2,23 +2,22 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\SemanticData;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ChangePropagationExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -43,7 +42,7 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -83,7 +82,7 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$instance = new ChangePropagationExaminer(
 			$this->declarationExaminer,
@@ -111,15 +110,15 @@ class ChangePropagationExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $this->semanticData );
 
 		$this->jobQueue->expects( $this->any() )
 			->method( 'hasPendingJob' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->any() )
 			->method( 'getQueueSize' )
-			->will( $this->onConsecutiveCalls( 2, 4 ) );
+			->willReturnOnConsecutiveCalls( 2, 4 );
 
 		$instance = new ChangePropagationExaminer(
 			$this->declarationExaminer,

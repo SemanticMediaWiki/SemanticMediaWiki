@@ -9,20 +9,20 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Schema\Filters\FilterTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FilterTraitTest extends \PHPUnit_Framework_TestCase {
+class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testHasMatches() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasMatches()
 		);
 	}
@@ -30,8 +30,8 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	public function testGetMatches() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getMatches()
 		);
 	}
@@ -39,8 +39,8 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 	public function testGetLog() {
 		$instance = $this->newFilterTrait();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getLog()
 		);
 	}
@@ -76,7 +76,6 @@ class FilterTraitTest extends \PHPUnit_Framework_TestCase {
 			}
 
 			protected function match( \SMW\Schema\Compartment $compartment ) {
-
 			}
 		};
 	}

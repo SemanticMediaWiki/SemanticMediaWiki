@@ -3,18 +3,17 @@
 namespace SMW\Tests;
 
 use SMW\InMemoryPoolCache;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\InMemoryPoolCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  2.3
  *
  * @author mwjames
  */
-class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
+class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -66,8 +65,8 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->getStats()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getStats( InMemoryPoolCache::FORMAT_PLAIN )
 		);
 
@@ -76,8 +75,8 @@ class InMemoryPoolCacheTest extends \PHPUnit_Framework_TestCase {
 			$instance->getStats( InMemoryPoolCache::FORMAT_HTML )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getStats( InMemoryPoolCache::FORMAT_JSON )
 		);
 

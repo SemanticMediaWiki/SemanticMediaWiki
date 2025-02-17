@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\EntityExaminerTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
+class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $entityExaminerIndicatorsFactory;
@@ -73,7 +73,7 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerDeferrableCompositeIndicatorProvider' )
-			->will( $this->returnValue( $entityExaminerDeferrableCompositeIndicatorProvider ) );
+			->willReturn( $entityExaminerDeferrableCompositeIndicatorProvider );
 
 		$instance = new EntityExaminerTask(
 			$this->store,
@@ -107,11 +107,11 @@ class EntityExaminerTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerDeferrableCompositeIndicatorProvider' )
-			->will( $this->returnValue( $entityExaminerDeferrableCompositeIndicatorProvider ) );
+			->willReturn( $entityExaminerDeferrableCompositeIndicatorProvider );
 
 		$this->entityExaminerIndicatorsFactory->expects( $this->atLeastOnce() )
 			->method( 'newEntityExaminerCompositeIndicatorProvider' )
-			->will( $this->returnValue( $compositeIndicatorProvider ) );
+			->willReturn( $compositeIndicatorProvider );
 
 		$instance = new EntityExaminerTask(
 			$this->store,

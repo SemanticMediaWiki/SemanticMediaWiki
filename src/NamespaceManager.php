@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\Exception\SiteLanguageChangeException;
 use SMW\Exception\NamespaceIndexChangeException;
+use SMW\Exception\SiteLanguageChangeException;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class NamespaceManager {
 	 *
 	 * @param LocalLanguage|null $LocalLanguage
 	 */
-	public function __construct( LocalLanguage $LocalLanguage = null ) {
+	public function __construct( ?LocalLanguage $LocalLanguage = null ) {
 		$this->localLanguage = $LocalLanguage;
 
 		if ( $this->localLanguage === null ) {
@@ -119,9 +119,7 @@ class NamespaceManager {
 			SMW_NS_CONCEPT       => 'Concept',
 			SMW_NS_CONCEPT_TALK  => 'Concept_talk',
 			SMW_NS_SCHEMA        => 'smw/schema',
-			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk',
-			SMW_NS_RULE          => 'Rule',
-			SMW_NS_RULE_TALK     => 'Rule_talk'
+			SMW_NS_SCHEMA_TALK   => 'smw/schema_talk'
 		];
 
 		return $canonicalNames;
@@ -144,7 +142,7 @@ class NamespaceManager {
 		$namespaceIndex = [
 			'SMW_NS_PROPERTY'      => $offset + 2,
 			'SMW_NS_PROPERTY_TALK' => $offset + 3,
-			//'SF_NS_FORM'           => $offset + 6,
+			// 'SF_NS_FORM'           => $offset + 6,
 			//'SF_NS_FORM_TALK'      => $offset + 7,
 			'SMW_NS_CONCEPT'       => $offset + 8,
 			'SMW_NS_CONCEPT_TALK'  => $offset + 9,
@@ -155,9 +153,6 @@ class NamespaceManager {
 
 			'SMW_NS_SCHEMA'        => $offset + 12,
 			'SMW_NS_SCHEMA_TALK'   => $offset + 13,
-
-			'SMW_NS_RULE'          => $offset + 14,
-			'SMW_NS_RULE_TALK'     => $offset + 15,
 		];
 
 		return $namespaceIndex;
@@ -166,7 +161,7 @@ class NamespaceManager {
 	/**
 	 * @since 1.9
 	 */
-	public static function initCustomNamespace( array $vars, LocalLanguage $localLanguage = null ): array {
+	public static function initCustomNamespace( array $vars, ?LocalLanguage $localLanguage = null ): array {
 		$instance = new self( $localLanguage );
 
 		$vars['smwgNamespaceIndex'] = $instance->getNamespaceIndex( $vars );

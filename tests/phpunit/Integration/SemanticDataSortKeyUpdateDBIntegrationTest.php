@@ -3,10 +3,9 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
-use Title;
 
 /**
  * @group SMW
@@ -14,15 +13,15 @@ use Title;
  *
  * @group semantic-mediawiki-integration
  * @group mediawiki-database
- *
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class SemanticDataSortKeyUpdateDBIntegrationTest extends DatabaseTestCase {
+class SemanticDataSortKeyUpdateDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
 	private $mwHooksHandler;

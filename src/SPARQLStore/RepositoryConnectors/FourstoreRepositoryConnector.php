@@ -10,7 +10,7 @@ use SMWTurtleSerializer as TurtleSerializer;
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -62,9 +62,9 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 
 		foreach ( $result->getComments() as $comment ) {
 			if ( strpos( $comment, 'warning: hit complexity limit' ) === 0 ||
-			     strpos( $comment, 'some results have been dropped' ) === 0 ) {
+				 strpos( $comment, 'some results have been dropped' ) === 0 ) {
 				$result->setErrorCode( RepositoryResult::ERROR_INCOMPLETE );
-			} //else debug_zval_dump($comment);
+			} // else debug_zval_dump($comment);
 		}
 
 		return $result;
@@ -79,7 +79,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $objectName string Turtle name of marking object/value
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", [], $extraNamespaces );
@@ -108,7 +108,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $payload string Turtle serialization of data to send
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doHttpPost( $payload ) {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {

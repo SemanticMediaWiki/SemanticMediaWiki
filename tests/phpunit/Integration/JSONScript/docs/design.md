@@ -238,14 +238,13 @@ Sometimes certain data can cause inconsistencies with an environment hence it is
 <pre>
 {
 	"skip-on": {
-		"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9",
 		"mediawiki": [ ">1.30.x", "MediaWiki changed ..." ],
 		"smw": [ ">2.5.x", "SMW changed ..." ]
 	}
 }
 </pre>
 
-Constraints that include `hhvm-*` will indicate to exclude all HHVM versions while `>1.30.x` defines that any MW version greater than 1.30 should be ignored.
+Constraints that include `>1.30.x`, defines that any MW version greater than 1.30 should be ignored.
 
 It is also possible that an entire test scenario cannot be completed in a particular environment therefore it can be marked and skipped with:
 

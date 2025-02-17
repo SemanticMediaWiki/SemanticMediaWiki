@@ -28,7 +28,7 @@ use WikiPage;
 final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $httpHeader = true;
 
@@ -100,14 +100,13 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @param $mode
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
 		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
 			return \SMWQuery::MODE_INSTANCES;
 		}
 		return \SMWQuery::MODE_NONE;
-
 	}
 
 	/**
@@ -162,7 +161,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * Returns a string that is to be sent to the caller
 	 *
 	 * @param QueryResult $res
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */
@@ -378,11 +377,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	private function newFeedItem( $title, $rowItems ) {
 		$mwServices = MediaWikiServices::getInstance();
-		if ( method_exists( $mwServices, 'getWikiPageFactory' ) ) {
-			$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
-		} else {
-			$wikiPage = WikiPage::newFromID( $title->getArticleID() );
-		}
+		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 
 		if ( $wikiPage !== null && $wikiPage->exists() ) {
 
@@ -415,7 +410,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		return $feedItem;
 	}
 
-	private function parse( Title $title = null, $text ) {
+	private function parse( ?Title $title, $text ) {
 		if ( $title === null ) {
 			return $text;
 		}

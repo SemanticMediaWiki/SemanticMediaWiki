@@ -5,7 +5,7 @@ namespace SMW;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -44,7 +44,7 @@ interface EntityLookup {
 	 *
 	 * @return DataItem[]|[]
 	 */
-	public function getProperties( DIWikiPage $subject, RequestOptions $requestOptions = null );
+	public function getProperties( DIWikiPage $subject, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all property values stored for the given subject and
@@ -61,7 +61,7 @@ interface EntityLookup {
 	 *
 	 * @return DataItem[]|[]|Iterator
 	 */
-	public function getPropertyValues( DIWikiPage $subject = null, DIProperty $property, RequestOptions $requestOptions = null );
+	public function getPropertyValues( ?DIWikiPage $subject, DIProperty $property, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all subjects that have the given value for the given
@@ -70,13 +70,13 @@ interface EntityLookup {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage|null $subject
 	 * @param DIProperty $property
+	 * @param DataItem|null $dataItem
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return DIWikiPage[]|[]|Iterator
 	 */
-	public function getPropertySubjects( DIProperty $property, DataItem $dataItem = null, RequestOptions $requestOptions = null );
+	public function getPropertySubjects( DIProperty $property, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given
@@ -89,7 +89,7 @@ interface EntityLookup {
 	 *
 	 * @return DIWikiPage[]|Iterator
 	 */
-	public function getAllPropertySubjects( DIProperty $property, RequestOptions $requestOptions = null );
+	public function getAllPropertySubjects( DIProperty $property, ?RequestOptions $requestOptions = null );
 
 	/**
 	 * Get an array of all properties for which there is some subject that
@@ -106,6 +106,6 @@ interface EntityLookup {
 	 *
 	 * @return DataItem[]|[]
 	 */
-	public function getInProperties( DataItem $object, RequestOptions $requestOptions = null );
+	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null );
 
 }

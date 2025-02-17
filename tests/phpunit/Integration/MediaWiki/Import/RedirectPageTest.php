@@ -4,28 +4,27 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class RedirectPageTest extends DatabaseTestCase {
+class RedirectPageTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -45,7 +44,7 @@ class RedirectPageTest extends DatabaseTestCase {
 		$this->pageCreator = $this->testEnvironment->getUtilityFactory()->newPageCreator();
 
 		$importRunner = $this->runnerFactory->newXmlImportRunner(
-			__DIR__ . '/'. 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
+			__DIR__ . '/' . 'Fixtures/' . 'RedirectPageTest-Mw-1-19-7.xml'
 		);
 
 		if ( !$importRunner->setVerbose( true )->run() ) {
@@ -139,7 +138,7 @@ class RedirectPageTest extends DatabaseTestCase {
 		$inSemanticData = $inSemanticDataFetcher->getSemanticData( DIWikiPage::newFromTitle( $main ) );
 
 		// When running sqlite, the database select returns an empty result which
-		// is probably due to some DB-prefix issues in MW's DatabaseBaseSqlite
+		// is probably due to some DB-prefix issues in MW's DatabaseSqlite
 		// implementation and for non-sqlite see #212 / bug 62856
 		if ( $inSemanticData->getProperties() === [] ) {
 			$this->markTestSkipped(

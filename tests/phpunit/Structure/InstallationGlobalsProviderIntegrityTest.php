@@ -12,12 +12,12 @@ use SMW\Tests\Utils\GlobalsProvider;
  * @group semantic-mediawiki-system
  * @group mediawiki-databaseless
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class InstallationGlobalsProviderIntegrityTest extends \PHPUnit_Framework_TestCase {
+class InstallationGlobalsProviderIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	private $globalsProvider;
 	private $applicationFactory;

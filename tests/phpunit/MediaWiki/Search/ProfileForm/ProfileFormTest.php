@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Search\ProfileForm\ProfileForm
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ProfileFormTest extends \PHPUnit_Framework_TestCase {
+class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $specialSearch;
@@ -53,15 +53,15 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 		$this->requestContext->expects( $this->any() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->outputPage ) );
+			->willReturn( $this->outputPage );
 
 		$this->requestContext->expects( $this->any() )
 			->method( 'getRequest' )
-			->will( $this->returnValue( $this->webRequest ) );
+			->willReturn( $this->webRequest );
 
 		$this->requestContext->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $this->user ) );
+			->willReturn( $this->user );
 	}
 
 	public function testCanConstruct() {
@@ -97,7 +97,7 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
@@ -105,23 +105,23 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 		$searchEngine->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getSearchEngine' )
-			->will( $this->returnValue( $searchEngine ) );
+			->willReturn( $searchEngine );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getNamespaces' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $this->user ) );
+			->willReturn( $this->user );
 
 		$this->specialSearch->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $this->requestContext ) );
+			->willReturn( $this->requestContext );
 
 		$instance = new ProfileForm(
 			$this->store,
@@ -132,14 +132,17 @@ class ProfileFormTest extends \PHPUnit_Framework_TestCase {
 
 		$expected = [
 			'<fieldset id="smw-searchoptions">',
-			'<input type="hidden" name="ns-list"/>',
+			'<input type="hidden" name="ns-list">',
 			'<div class="smw-search-options">',
 			'<div class="smw-search-sort"><button type="button" id="smw-search-sort" class="smw-selectmenu-button is-disabled" name="sort"',
 		];
 
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $form );
+
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$form
+			$actual
 		);
 	}
 

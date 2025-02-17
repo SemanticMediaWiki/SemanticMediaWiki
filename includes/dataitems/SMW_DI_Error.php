@@ -28,6 +28,8 @@ class SMWDIError extends SMWDataItem {
 	 */
 	private $userValue;
 
+	public int $id;
+
 	public function __construct( $errors, $userValue = '' ) {
 		$this->m_errors = $errors;
 		$this->userValue = $userValue;
@@ -82,7 +84,7 @@ class SMWDIError extends SMWDataItem {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -95,7 +97,7 @@ class SMWDIError extends SMWDataItem {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

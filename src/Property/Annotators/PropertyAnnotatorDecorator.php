@@ -11,7 +11,7 @@ use SMW\SemanticData;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -66,6 +66,6 @@ abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	protected abstract function addPropertyValues();
+	abstract protected function addPropertyValues();
 
 }

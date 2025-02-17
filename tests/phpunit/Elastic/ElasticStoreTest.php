@@ -2,23 +2,23 @@
 
 namespace SMW\Tests\Elastic;
 
-use SMW\Elastic\ElasticStore;
+use SMW\DIWikiPage;
 use SMW\Elastic\Config;
+use SMW\Elastic\ElasticStore;
 use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Elastic\ElasticStore
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
+class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -76,48 +76,48 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$database->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 		$database->expects( $this->any() )
 			->method( 'getServerInfo' )
 			->willReturn( '5.7.21' );
 
 		$database->expects( $this->any() )
 			->method( 'query' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$database->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$database->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function ( $type ) use( $connection, $database, $client ) {
+		$callback = static function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
-			};
+			}
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $database;
 		};
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
 			->disableOriginalConstructor()
@@ -125,15 +125,15 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$installer->expects( $this->once() )
 			->method( 'newSetupFile' )
-			->will( $this->returnValue( $this->setupFile ) );
+			->willReturn( $this->setupFile );
 
 		$installer->expects( $this->once() )
 			->method( 'setup' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newInstaller' )
-			->will( $this->returnValue( $installer ) );
+			->willReturn( $installer );
 
 		$instance = new ElasticStore();
 		$instance->setConnectionManager( $connectionManager );
@@ -163,37 +163,37 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\DatabaseBase' )
+		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$database->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$database->expects( $this->any() )
 			->method( 'listTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function ( $type ) use( $connection, $database, $client ) {
+		$callback = static function ( $type ) use( $connection, $database, $client ) {
 			if ( $type === 'elastic' ) {
 				return $client;
-			};
+			}
 
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $database;
 		};
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
 			->disableOriginalConstructor()
@@ -201,15 +201,15 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$installer->expects( $this->once() )
 			->method( 'drop' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$installer->expects( $this->once() )
 			->method( 'newSetupFile' )
-			->will( $this->returnValue( $this->setupFile ) );
+			->willReturn( $this->setupFile );
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newInstaller' )
-			->will( $this->returnValue( $installer ) );
+			->willReturn( $installer );
 
 		$instance = new ElasticStore();
 		$instance->setConnectionManager( $connectionManager );
@@ -234,7 +234,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
 
 		// Check that the IngestJob is referencing to the same subject instance
-		$checkJobParameterCallback = function ( $job ) use( $subject ) {
+		$checkJobParameterCallback = static function ( $job ) use( $subject ) {
 			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 
@@ -255,19 +255,19 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticData->setOption( 'is_fileupload', true );
 
@@ -277,7 +277,7 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$client->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -285,27 +285,27 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function ( $type ) use( $connection, $client ) {
+		$callback = static function ( $type ) use( $connection, $client ) {
 			if ( $type === 'mw.db' ) {
 				return $connection;
-			};
+			}
 
 			return $client;
 		};
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
 			->disableOriginalConstructor()
@@ -321,15 +321,15 @@ class ElasticStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$documentCreator->expects( $this->once() )
 			->method( 'newFromSemanticData' )
-			->will( $this->returnValue( $document ) );
+			->willReturn( $document );
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newIndexer' )
-			->will( $this->returnValue( $indexer ) );
+			->willReturn( $indexer );
 
 		$this->elasticFactory->expects( $this->any() )
 			->method( 'newDocumentCreator' )
-			->will( $this->returnValue( $documentCreator ) );
+			->willReturn( $documentCreator );
 
 		$instance = new ElasticStore();
 

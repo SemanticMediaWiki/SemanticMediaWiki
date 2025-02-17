@@ -6,14 +6,14 @@ use Exception;
 use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\TitleFactory;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
-use SMW\SQLStore\Rebuilder\Rebuilder;
-use SMW\Utils\CliMsgFormatter;
+use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use Title;
 
 /**
@@ -22,7 +22,7 @@ use Title;
  *
  * @note This is an internal class and should not be used outside of smw-core
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -73,12 +73,12 @@ class DataRebuilder {
 	private $cliMsgFormatter;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rebuildCount = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exceptionCount = 0;
 
@@ -172,7 +172,7 @@ class DataRebuilder {
 	/**
 	 * @since 1.9.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rebuild() {
 		$this->reportMessage(

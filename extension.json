@@ -1,6 +1,6 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.2.0",
+	"version": "5.0.0-beta",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
@@ -14,7 +14,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "semantic",
 	"requires": {
-		"MediaWiki": ">= 1.35"
+		"MediaWiki": ">= 1.39"
 	},
 	"MessagesDirs": {
 		"SemanticMediaWiki": [
@@ -22,7 +22,9 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"SMW\\": "src/"
+		"SMW\\": "src/",
+		"SMW\\Maintenance": "maintenance/",
+		"Onoi\\Tesa\\": "Tesa/src/"
 	},
 	"Hooks": {
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
@@ -46,7 +48,6 @@
 		"ext.smw.tests": {
 			"scripts": [
 				"tests/qunit/smw/ext.smw.test.js",
-				"tests/qunit/smw/util/ext.smw.util.tooltip.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.uri.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.time.test.js",

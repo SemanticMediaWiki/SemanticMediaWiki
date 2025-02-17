@@ -3,19 +3,20 @@
 namespace SMW\MediaWiki\Specials;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Encoder;
-use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
+use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
 use SpecialPage;
+use TemplateParser;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author mwjames
@@ -61,10 +62,6 @@ class SpecialBrowse extends SpecialPage {
 			$articletext = $query;
 		}
 
-		// no GET parameters? Then try the URL
-		if ( $articletext === null ) {
-		}
-
 		$dataValue = DataValueFactory::getInstance()->newTypeIDValue(
 			'_wpg',
 			$articletext ?? false
@@ -77,46 +74,46 @@ class SpecialBrowse extends SpecialPage {
 			'mediawiki.ui',
 			'mediawiki.ui.button',
 			'mediawiki.ui.input',
-			'ext.smw.browse.styles'
+			'ext.smw.factbox.styles',
+			'ext.smw.browse.styles',
+			'mediawiki.codex.messagebox.styles'
 		] );
 
 		$out->addModules( [
 			'ext.smw.browse',
-			'ext.smw.tooltips'
+			'ext.smw.tooltip'
 		] );
 
-		$out->addHTML(
-			$this->buildHTML( $webRequest, $dataValue, $isEmptyRequest )
-		);
+		$templateParser = new TemplateParser( __DIR__ . '/../../../templates' );
+		$data = $this->getTemplateData( $webRequest, $dataValue, $isEmptyRequest );
+		$out->addHTML( $templateParser->processTemplate( 'SpecialBrowse', $data ) );
 
+		/** @todo Move RDF link into factbox like how bottom factboxes are */
 		$this->addExternalHelpLinks( $dataValue );
 	}
 
-	private function buildHTML( $webRequest, $dataValue, $isEmptyRequest ) {
+	private function getTemplateData( $webRequest, $dataValue, $isEmptyRequest ): array {
+		$data = [];
 		if ( $isEmptyRequest && !$this->including() ) {
-			return Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE ) . FieldBuilder::createQueryForm();
+			$data['html-output'] = Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE );
+			$data['data-form'] = FieldBuilder::getQueryFormData();
+			return $data;
 		}
 
 		if ( !$dataValue->isValid() ) {
 			$error = '';
-
-			foreach ( $dataValue->getErrors() as $error ) {
-				$error .= Message::decode( $error, Message::TEXT, Message::USER_LANGUAGE );
+			foreach ( $dataValue->getErrors() as $err ) {
+				$error .= Message::decode( $err, Message::TEXT, Message::USER_LANGUAGE );
 			}
-
-			$html = Html::rawElement(
-				'div',
-				[
-					'class' => 'smw-callout smw-callout-error'
-				],
-				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE )
+			$data['html-output'] = Html::errorBox(
+				Message::get( [ 'smw-browse-invalid-subject', $error ], Message::TEXT, Message::USER_LANGUAGE ),
+				'',
+				'smw-error-browse'
 			);
-
 			if ( !$this->including() ) {
-				$html .= FieldBuilder::createQueryForm( $webRequest->getVal( 'article', '' ) );
+				$data['data-form'] = FieldBuilder::getQueryFormData( $webRequest->getVal( 'article', '' ) );
 			}
-
-			return $html;
+			return $data;
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -128,8 +125,6 @@ class SpecialBrowse extends SpecialPage {
 			$applicationFactory->getStore(),
 			$applicationFactory->getSettings()
 		);
-
-		$options = $htmlBuilder->getOptions();
 
 		if ( $webRequest->getVal( 'format' ) === 'json' ) {
 			$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
@@ -143,11 +138,12 @@ class SpecialBrowse extends SpecialPage {
 		}
 
 		if ( $webRequest->getVal( 'output' ) === 'legacy' || !$htmlBuilder->getOption( 'api' ) ) {
-			return $htmlBuilder->legacy();
+			$data['html-output'] = $htmlBuilder->legacy();
+			return $data;
 		}
 
 		// Ajax/API is doing the data fetch
-		return $htmlBuilder->placeholder();
+		return $htmlBuilder->getPlaceholderData();
 	}
 
 	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
@@ -214,18 +210,13 @@ class SpecialBrowse extends SpecialPage {
 			] );
 		}
 
-		$this->addHelpLink( wfMessage( 'smw-specials-browse-helplink' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-specials-browse-helplink' )->escaped(), true );
 	}
 
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/search';
 	}
 

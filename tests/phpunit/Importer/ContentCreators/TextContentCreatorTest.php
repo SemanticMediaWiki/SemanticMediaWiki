@@ -10,12 +10,12 @@ use WikiPage;
  * @covers \SMW\Importer\ContentCreators\TextContentCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $titleFactory;
 	private $connection;
@@ -61,17 +61,24 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
-			) );
+			->willReturnCallback( static function ( $callback ) {
+				return call_user_func( $callback );
+			}
+			);
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -79,11 +86,11 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getContentModel' )
-			->will( $this->returnValue( CONTENT_MODEL_TEXT ) );
+			->willReturn( CONTENT_MODEL_TEXT );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -91,15 +98,15 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( self::getDoEditContentMethod() )
-			->will( $this->returnValue( $status ) );
+			->willReturn( $status );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
@@ -120,21 +127,28 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_WithError() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
-			) );
+			->willReturnCallback( static function ( $callback ) {
+				return call_user_func( $callback );
+			}
+			);
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$status->expects( $this->any() )
 			->method( 'getErrorsArray' )
-			->will( $this->returnValue( [ 'FooError', 'BarError' ] ) );
+			->willReturn( [ 'FooError', 'BarError' ] );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -142,11 +156,11 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getContentModel' )
-			->will( $this->returnValue( CONTENT_MODEL_TEXT ) );
+			->willReturn( CONTENT_MODEL_TEXT );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -154,15 +168,15 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( self::getDoEditContentMethod() )
-			->will( $this->returnValue( $status ) );
+			->willReturn( $status );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
@@ -195,7 +209,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -206,11 +220,11 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
@@ -232,17 +246,24 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_ReplaceableOnCreator() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
-			) );
+			->willReturnCallback( static function ( $callback ) {
+				return call_user_func( $callback );
+			}
+			);
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -250,7 +271,7 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->any() )
 			->method( 'equals' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -258,15 +279,15 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getContentModel' )
-			->will( $this->returnValue( CONTENT_MODEL_TEXT ) );
+			->willReturn( CONTENT_MODEL_TEXT );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -274,19 +295,19 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( self::getDoEditContentMethod() )
-			->will( $this->returnValue( $status ) );
+			->willReturn( $status );
 
 		$page->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,
@@ -308,17 +329,24 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	public function testCreate_ReplaceableOnCreator_WithNoAvailableUser() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) {
-				return call_user_func( $callback ); }
-			) );
+			->willReturnCallback( static function ( $callback ) {
+				return call_user_func( $callback );
+			}
+			);
 
-		$status = $this->getMockBuilder( '\Status' )
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$status = $this->getMockBuilder( '\Status' )
 			->disableOriginalConstructor()
 			->getMock();
+		} else {
+			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -326,15 +354,15 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getContentModel' )
-			->will( $this->returnValue( CONTENT_MODEL_TEXT ) );
+			->willReturn( CONTENT_MODEL_TEXT );
 
 		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -342,19 +370,19 @@ class TextContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( self::getDoEditContentMethod() )
-			->will( $this->returnValue( $status ) );
+			->willReturn( $status );
 
 		$page->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'newFromText' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'createPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance = new TextContentCreator(
 			$this->titleFactory,

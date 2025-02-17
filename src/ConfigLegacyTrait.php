@@ -2,8 +2,6 @@
 
 namespace SMW;
 
-use SMW\Exception\SettingNotFoundException;
-
 /**
  * @private
  *
@@ -13,7 +11,7 @@ use SMW\Exception\SettingNotFoundException;
  * Information will be used in DeprecationNoticeTaskHandler to detect and output
  * deprecation notices.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

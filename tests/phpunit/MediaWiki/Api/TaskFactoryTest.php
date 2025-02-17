@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\TaskFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\TaskFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
+class TaskFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -46,8 +46,8 @@ class TaskFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetAllowedTypes() {
 		$instance = new TaskFactory();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getAllowedTypes()
 		);
 	}

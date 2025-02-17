@@ -5,22 +5,21 @@ namespace SMW\Tests\Property;
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\Property\LanguageFalldownAndInverse;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDataItem as DataItem;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Property\SpecificationLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  * @author thomas-topway-it
  */
-class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
+class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -124,13 +123,13 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Bar' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( 'Bar' ),
 				$this->anything() );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -149,8 +148,8 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Bar' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( 'Bar' ),
 				$this->anything() );
 
 		$this->entityCache->expects( $this->never() )
@@ -175,17 +174,16 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_LIST' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_LIST' ),
 				$this->anything() )
-			->will(
-				$this->returnValue( [
+			->willReturn( [
 					$this->dataItemFactory->newDIBlob( 'Foo' ),
-					$this->dataItemFactory->newDIBlob( 'abc;123' ) ] ) );
+					$this->dataItemFactory->newDIBlob( 'abc;123' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -204,25 +202,25 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->monolingualTextLookup ) );
+			->willReturn( $this->monolingualTextLookup );
 
 		$this->monolingualTextLookup->expects( $this->once() )
 			->method( 'newDataValue' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PPLB' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PPLB' ),
 				$this->anything() );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->getPreferredPropertyLabelByLanguageCode( $property )
 		);
@@ -234,14 +232,14 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVUC' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PVUC' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBoolean( true ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBoolean( true ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -259,14 +257,14 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PEFU' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PEFU' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIUri( 'http', 'example.org/$1' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -285,15 +283,14 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVAP' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PVAP' ),
 				$this->anything() )
-			->will(
-				$this->returnValue( [ $this->dataItemFactory->newDIBlob( 'IPv4' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( 'IPv4' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -312,15 +309,14 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVALI' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PVALI' ),
 				$this->anything() )
-			->will(
-				$this->returnValue( [ $this->dataItemFactory->newDIBlob( 'Foo' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Foo' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -334,7 +330,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAllowedValues() {
-		$expected =  [
+		$expected = [
 			$this->dataItemFactory->newDIBlob( 'A' ),
 			$this->dataItemFactory->newDIBlob( 'B' )
 		];
@@ -344,14 +340,14 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PVAL' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PVAL' ),
 				$this->anything() )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -370,14 +366,14 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PREC' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PREC' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDINumber( -2.3 ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDINumber( -2.3 ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -396,16 +392,16 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_UNIT' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_UNIT' ),
 				$this->anything() )
-			->will( $this->returnValue( [
+			->willReturn( [
 				$this->dataItemFactory->newDIBlob( 'abc,def' ),
-				$this->dataItemFactory->newDIBlob( '123' ) ] ) );
+				$this->dataItemFactory->newDIBlob( '123' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -423,26 +419,26 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->monolingualTextLookup ) );
+			->willReturn( $this->monolingualTextLookup );
 
 		$this->monolingualTextLookup->expects( $this->once() )
 			->method( 'newDataValue' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_PDESC' ) ),
+				$property->getDiWikiPage(),
+				$this->dataItemFactory->newDIProperty( '_PDESC' ),
 				$this->anything() );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getPropertyDescriptionByLanguageCode( $property )
 		);
 	}
@@ -454,8 +450,8 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 			->method( 'fetchSub' )
 			->with(
 				$this->stringContains( 'smw:entity:propertyspecificationlookup:description:1313b81bb6a61a4661f7b91408659f86' ),
-				$this->equalTo( 'en:0' ) )
-			->will( $this->returnValue( 1001 ) );
+				'en:0' )
+			->willReturn( 1001 );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -479,34 +475,34 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$monolingualTextValue->expects( $this->once() )
 			->method( 'getTextValueByLanguageCode' )
-			->with(	$this->equalTo( 'foo' ) )
-			->will( $this->returnValue( $stringValue ) );
+			->with(	'foo' )
+			->willReturn( $stringValue );
 
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'service' )
-			->will( $this->returnValue( $this->monolingualTextLookup ) );
+			->willReturn( $this->monolingualTextLookup );
 
 		$this->monolingualTextLookup->expects( $this->once() )
 			->method( 'newDataValue' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
+				$property->getDiWikiPage(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $monolingualTextValue ) );
+			->willReturn( $monolingualTextValue );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getPropertyDescriptionByLanguageCode( $property, 'foo' )
 		);
 	}
@@ -521,22 +517,22 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 		$this->store->expects( $this->at( 0 ) )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $property->getDiWikiPage() ),
+				$property->getDiWikiPage(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->store->expects( $this->at( 1 ) )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $ppgr ),
+				$dataItem,
+				$ppgr,
 				$this->anything() )
-			->will( $this->returnValue( [ $bool ] ) );
+			->willReturn( [ $bool ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SpecificationLookup(
 			$this->store,
@@ -554,7 +550,7 @@ class SpecificationLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->entityCache->expects( $this->at( 0 ) )
 			->method( 'invalidate' )
-			->with( $this->equalTo( $subject ) );
+			->with( $subject );
 
 		$this->entityCache->expects( $this->at( 1 ) )
 			->method( 'delete' )

@@ -3,12 +3,12 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
-use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ClassDescription;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

@@ -8,12 +8,12 @@ use SMW\TypesRegistry;
  * @group semantic-mediawiki
  * @group system-test
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit_Framework_TestCase {
+class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	const MSG_KEY_PREFIX = 'smw-property-predefined';
 

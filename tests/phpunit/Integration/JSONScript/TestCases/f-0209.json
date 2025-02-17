@@ -18,30 +18,7 @@
 	"tests": [
 		{
 			"type": "format",
-			"about": "#0 (1.31-) different lang formatting (en for user lang + fr) rules don't interfere with each other",
-			"skip-on": {
-				"mediawiki": [ ">1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
-			"subject": "Example/F0209/Q1.1",
-			"assert-output": {
-				"to-contain": [
-					"<span class=\"smwtext\">5,413.928&#160;K</span><span class=\"smwttcontent\">5,140.778&#160;°C &lt;br /&gt;9,285.4&#160;°F &lt;br /&gt;9,745.07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">5 413,928&#160;K</span><span class=\"smwttcontent\">5 140,778&#160;°C &lt;br /&gt;9 285,4&#160;°F &lt;br /&gt;9 745,07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">44,413.928&#160;K</span><span class=\"smwttcontent\">44,140.778&#160;°C &lt;br /&gt;79,485.4&#160;°F &lt;br /&gt;79,945.07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">44 413,928&#160;K</span><span class=\"smwttcontent\">44 140,778&#160;°C &lt;br /&gt;79 485,4&#160;°F &lt;br /&gt;79 945,07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">3.928&#160;K</span><span class=\"smwttcontent\">-269.222&#160;°C &lt;br /&gt;-452.6&#160;°F &lt;br /&gt;7.07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">3,928&#160;K</span><span class=\"smwttcontent\">-269,222&#160;°C &lt;br /&gt;-452,6&#160;°F &lt;br /&gt;7,07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">113.928&#160;K</span><span class=\"smwttcontent\">-159.222&#160;°C &lt;br /&gt;-254.6&#160;°F &lt;br /&gt;205.07&#160;°R &lt;br /&gt;",
-					"<span class=\"smwtext\">113,928&#160;K</span><span class=\"smwttcontent\">-159,222&#160;°C &lt;br /&gt;-254,6&#160;°F &lt;br /&gt;205,07&#160;°R &lt;br /&gt;"
-				]
-			}
-		},
-		{
-			"type": "format",
-			"about": "#0 (1.31+) different lang formatting (en for user lang + fr) rules don't interfere with each other",
-			"skip-on": {
-				"mediawiki": [ "<1.30.x", "MediaWiki changed the HTML Tidy" ]
-			},
+			"about": "#0 different lang formatting (en for user lang + fr) rules don't interfere with each other",
 			"subject": "Example/F0209/Q1.1",
 			"assert-output": {
 				"to-contain": [

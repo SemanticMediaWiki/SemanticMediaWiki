@@ -12,17 +12,17 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
-use SMWDataItem as DataItem;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -72,7 +72,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof SomeProperty;
@@ -205,6 +205,10 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 				// Can we prevent that? (PERFORMANCE)
 				$query->from = ' INNER JOIN ' .	$connection->tableName( SQLStore::ID_TABLE ) .
 						" AS ids{$query->alias} ON ids{$query->alias}.smw_id={$query->alias}.{$o_id}";
+				$query->fromTables = [ 'ids' . $query->alias => SQLStore::ID_TABLE ];
+				$query->joinConditions = [
+					'ids' . $query->alias => [ 'INNER JOIN', "ids{$query->alias}.smw_id={$query->alias}.{$o_id}" ]
+				];
 				$query->sortfields[$sortkey] = "ids{$query->alias}.smw_sort";
 			}
 		} else { // non-page value description
@@ -281,7 +285,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		// Do not support smw_id joined data for now.
 		$indexField = $diHandler->getIndexField();
 
-		//Hack to get to the field used as index
+		// Hack to get to the field used as index
 		$keys = $diHandler->getWhereConds( $dataItem );
 		$value = $keys[$indexField];
 

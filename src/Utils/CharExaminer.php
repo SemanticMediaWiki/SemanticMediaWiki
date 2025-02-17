@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class CharExaminer {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isCJK( $text ) {
 		if ( self::contains( self::HAN, $text ) ) {
@@ -51,7 +51,7 @@ class CharExaminer {
 	 * @param string $type
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function contains( $type, $text ) {
 		if ( $type === self::CYRILLIC ) {

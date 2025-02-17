@@ -2,25 +2,25 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
-use SMW\Tests\TestEnvironment;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class RebuildElasticMissingDocumentsTest extends DatabaseTestCase {
+class RebuildElasticMissingDocumentsTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
-	protected $destroyDatabaseTablesAfterRun = true;
 	private $runnerFactory;
 	private $spyMessageReporter;
 
@@ -45,7 +45,7 @@ class RebuildElasticMissingDocumentsTest extends DatabaseTestCase {
 
 	public function testRun() {
 		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner(
-			'SMW\Maintenance\RebuildElasticMissingDocuments'
+			'\SMW\Maintenance\rebuildElasticMissingDocuments'
 		);
 
 		$maintenanceRunner->setMessageReporter( $this->spyMessageReporter );

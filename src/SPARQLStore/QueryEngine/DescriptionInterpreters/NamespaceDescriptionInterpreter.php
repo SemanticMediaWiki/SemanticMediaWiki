@@ -13,7 +13,7 @@ use SMWExporter as Exporter;
 use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -36,7 +36,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}

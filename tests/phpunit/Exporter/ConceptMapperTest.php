@@ -11,12 +11,12 @@ use SMW\Query\DescriptionFactory;
  * @covers \SMW\Exporter\ConceptMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
+class ConceptMapperTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionFactory;
 

@@ -2,14 +2,13 @@
 
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
-use SMW\MediaWiki\Database;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\SQLStore;
 use RuntimeException;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -69,7 +68,7 @@ class IdBorder {
 	private function findAndMove( $upperbound, $legacyBound ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 		$row = false;
 		$hasUpperBound = false;
 
@@ -150,7 +149,7 @@ class IdBorder {
 
 		for ( $i = $old; $i < $new; $i++ ) {
 
-			if ( $count > 0 && ( $count % ( CliMsgFormatter::MAX_LEN - 7 ) === 0 ) ) {
+			if ( $count > 0 && ( $count ) % CliMsgFormatter::MAX_LEN - 7 === 0 ) {
 				$this->messageReporter->reportMessage( "\n       " );
 			} elseif ( $count == 0 ) {
 				$this->messageReporter->reportMessage( "       " );

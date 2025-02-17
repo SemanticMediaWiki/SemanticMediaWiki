@@ -8,12 +8,12 @@ use SMW\Maintenance\MaintenanceFactory;
  * @covers \SMW\Maintenance\MaintenanceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -81,7 +81,7 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\RebuildPropertyStatistics',
+			'\SMW\Maintenance\rebuildPropertyStatistics',
 			$instance->newRebuildPropertyStatistics()
 		);
 	}

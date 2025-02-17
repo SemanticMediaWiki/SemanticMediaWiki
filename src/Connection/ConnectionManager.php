@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\SetupCheck;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -14,7 +14,7 @@ use SMW\SetupCheck;
 class ConnectionManager {
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private static $isConnectable;
 

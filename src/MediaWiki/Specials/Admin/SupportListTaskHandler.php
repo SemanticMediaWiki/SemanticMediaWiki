@@ -4,10 +4,9 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -59,13 +58,12 @@ class SupportListTaskHandler extends TaskHandler {
 	private function ennvironmentSection() {
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
-			'mediawiki' => MW_VERSION
-		] + (
-			defined( 'HHVM_VERSION' ) ? [ 'hhvm' => HHVM_VERSION ] : [ 'php' => PHP_VERSION ]
-		);
+			'mediawiki' => MW_VERSION,
+			'php' => PHP_VERSION
+		];
 
 		return Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-environment' )
 		) . Html::rawElement(
@@ -78,7 +76,7 @@ class SupportListTaskHandler extends TaskHandler {
 	private function supportForm() {
 		$this->htmlFormRenderer
 			->setName( 'support' )
-			->addHeader( 'h3', $this->msg( 'smw-admin-support' ) )
+			->addHeader( 'h2', $this->msg( 'smw-admin-support' ) )
 			->addParagraph( $this->msg( 'smw-admin-supportdocu' ) )
 			->addParagraph(
 				Html::rawElement( 'ul', [],
@@ -97,7 +95,7 @@ class SupportListTaskHandler extends TaskHandler {
 			->setName( 'announce' )
 			->setMethod( 'get' )
 			->setActionUrl( 'https://wikiapiary.com/wiki/WikiApiary:Semantic_MediaWiki_Registry' )
-			->addHeader( 'h3', $this->msg( 'smw-admin-announce' ) )
+			->addHeader( 'h2', $this->msg( 'smw-admin-announce' ) )
 			->addParagraph( $this->msg( 'smw-admin-announce-text' ) )
 			->addSubmitButton(
 				$this->msg( 'smw-admin-announce' ),

@@ -53,7 +53,7 @@ class SMWDIBoolean extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		if ( $serialization == 't' ) {
 			return new SMWDIBoolean( true );
-		} elseif  ( $serialization == 'f' ) {
+		} elseif ( $serialization == 'f' ) {
 			return new SMWDIBoolean( false );
 		} else {
 			throw new DataItemException( "Boolean data item unserialised from illegal value '$serialization'" );

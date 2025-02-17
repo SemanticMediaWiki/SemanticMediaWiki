@@ -3,10 +3,9 @@
 namespace SMW;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DataValues\TypeList;
+use RuntimeException;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMWDataItem as DataItem;
-use RuntimeException;
 
 /**
  * DataTypes registry class
@@ -14,7 +13,7 @@ use RuntimeException;
  * Registry class that manages datatypes, and provides various methods to access
  * the information
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -60,7 +59,7 @@ class DataTypeRegistry {
 	/**
 	 * Array of data item classes, indexed by type id.
 	 *
-	 * @var integer[]
+	 * @var int[]
 	 */
 	private $typeDataItemIds;
 
@@ -70,7 +69,7 @@ class DataTypeRegistry {
 	private $subTypes = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $browsableTypes = [];
 
@@ -105,7 +104,7 @@ class DataTypeRegistry {
 	];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $callables = [];
 
@@ -169,7 +168,7 @@ class DataTypeRegistry {
 	 *
 	 * @param $typeId string id string for the given type
 	 *
-	 * @return integer data item ID
+	 * @return int data item ID
 	 */
 	public function getDataItemByType( $typeId ) {
 		if ( isset( $this->typeDataItemIds[$typeId] ) ) {
@@ -184,7 +183,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegistered( $typeId ) {
 		return isset( $this->typeDataItemIds[$typeId] );
@@ -195,7 +194,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRecordType( string $typeId ): bool {
 		return strpos( $typeId, '_rec' ) !== false;
@@ -206,7 +205,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSubDataType( $typeId ) {
 		return isset( $this->subTypes[$typeId] ) && $this->subTypes[$typeId];
@@ -217,7 +216,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBrowsableType( $typeId ) {
 		return isset( $this->browsableTypes[$typeId] ) && $this->browsableTypes[$typeId];
@@ -229,7 +228,7 @@ class DataTypeRegistry {
 	 * @param string $srcType
 	 * @param string $tagType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEqualByType( $srcType, $tagType ) {
 		return $this->getDataItemByType( $srcType ) === $this->getDataItemByType( $tagType );
@@ -243,8 +242,8 @@ class DataTypeRegistry {
 	 * @param $className string name of the according subclass of SMWDataValue
 	 * @param $dataItemId integer ID of the data item class that this data value uses, see DataItem
 	 * @param $label mixed string label or false for types that cannot be accessed by users
-	 * @param boolean $isSubDataType
-	 * @param boolean $isBrowsableType
+	 * @param bool $isSubDataType
+	 * @param bool $isBrowsableType
 	 */
 	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ) {
 		$this->typeClasses[$id] = $className;
@@ -429,7 +428,7 @@ class DataTypeRegistry {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string $diType
+	 * @param string $typeId
 	 *
 	 * @return string|null
 	 */
@@ -465,7 +464,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDataTypeClassById( $typeId ) {
 		if ( !isset( $this->typeClasses[$typeId] ) ) {
@@ -547,7 +546,7 @@ class DataTypeRegistry {
 	 *
 	 * @param string $typeId
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCallablesByTypeId( $typeId ) {
 		if ( !isset( $this->callables[$typeId] ) ) {

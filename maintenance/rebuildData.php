@@ -2,22 +2,24 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\StoreFactory;
-use SMW\Store;
-use SMW\Setup;
-use SMW\Options;
-use SMW\Utils\CliMsgFormatter;
 use InvalidArgumentException;
+use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\Store;
+use SMW\StoreFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Recreates all the semantic data in the database, by cycling through all
@@ -131,7 +133,7 @@ class rebuildData extends \Maintenance {
 
 		if ( $this->hasOption( 'namespace' ) && !defined( $this->getOption( 'namespace' ) ) ) {
 			throw new InvalidArgumentException(
-				"Expected a namespace constant, `". $this->getOption( 'namespace' ) . "` is unkown!"
+				"Expected a namespace constant, `" . $this->getOption( 'namespace' ) . "` is unkown!"
 			);
 		}
 
@@ -286,6 +288,7 @@ class rebuildData extends \Maintenance {
 	}
 
 }
-
-$maintClass = 'SMW\Maintenance\rebuildData';
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+// @codeCoverageIgnoreStart
+$maintClass = rebuildData::class;
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

@@ -8,13 +8,13 @@ use SMW\Tests\Utils\File\DummyFileCreator;
 use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\Fixtures\FixturesFactory;
+use SMW\Tests\Utils\Mock\MockSuperUser;
 use SMW\Tests\Utils\Page\PageEditor;
 use SMW\Tests\Utils\Runners\RunnerFactory;
 use SMW\Tests\Utils\Validators\ValidatorFactory;
-use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -159,7 +159,7 @@ class UtilityFactory {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $file|null
+	 * @param string|null $file
 	 *
 	 * @return JsonFileReader
 	 */
@@ -217,7 +217,7 @@ class UtilityFactory {
 	 * @since 2.5
 	 *
 	 * @param $length
-	 * @param $prefix identify a specific random string during testing
+	 * @param null $prefix identify a specific random string during testing
 	 *
 	 * @return string
 	 */

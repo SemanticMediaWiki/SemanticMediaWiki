@@ -8,7 +8,7 @@ use OutputPage;
 use SMW\Message;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -99,11 +99,7 @@ class OutputFormatter {
 	 * @param string $text
 	 */
 	public function addWikiText( $text ) {
-		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
-			$this->outputPage->addWikiTextAsInterface( $text );
-		} else {
-			$this->outputPage->addWikiText( $text );
-		}
+		$this->outputPage->addWikiTextAsInterface( $text );
 	}
 
 	/**

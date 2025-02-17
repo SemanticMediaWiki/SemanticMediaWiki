@@ -71,9 +71,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mw-1.19.20": "<h1> contains an extra space"
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

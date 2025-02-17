@@ -3,19 +3,18 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\SeekableIteratorTrait;
-use SMW\Iterators\DotSeekableIteratorTrait;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\SeekableIteratorTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
+class SeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

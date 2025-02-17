@@ -2,27 +2,25 @@
 
 namespace SMW\Tests\Integration\Schema;
 
-use SMW\Schema\SchemaDefinition;
+use SMW\DIProperty;
 use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilterFactory;
-use SMW\Schema\Filters\CategoryFilter;
 use SMW\Schema\Filters\CompositeFilter;
+use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaFilter;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
+use SMW\Schema\SchemaFilterFactory;
+use SMW\Schema\SchemaList;
 
 /**
  * @group semantic-mediawiki-integration
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
+class FilteredSchemaListTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaList;
 
@@ -48,7 +46,7 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 	private function newSchemaDefinition( $name ) {
 		return new SchemaDefinition(
 			$name,
-			json_decode( file_get_contents( SMW_PHPUNIT_DIR . "/Fixtures/Schema/$name.json" ), true )
+			json_decode( file_get_contents( \SMW_PHPUNIT_DIR . "/Fixtures/Schema/$name.json" ), true )
 		);
 	}
 
@@ -234,10 +232,10 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 
 		yield "'property-6-a', 'property-6-b' NS_MAIN" => [
 			NS_MAIN,
-			function () {
+			static function () {
 				return [ 'category-6-a' ];
 			},
-			function (){
+			static function (){
 				return [ new DIProperty( 'property-6-a' ), new DIProperty( 'property-6-b' ) ];
 			},
 			[ 'rule_6_2' ]
@@ -291,7 +289,7 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 		 *	"then": {
 		 *		"action": "2_3"
 		 *	}
-		 *},
+		 * },
 		 */
 		yield "category Foo" => [
 			null,
@@ -314,14 +312,13 @@ class FilteredSchemaListTest extends \PHPUnit_Framework_TestCase {
 		 *	"then": {
 		 *		"action": "3_4"
 		 *	}
-		 *},
+		 * },
 		 */
 		yield "category Foo, Bar, Foobar-1" => [
 			NS_TEMPLATE,
 			[ 'Foo', 'Bar', 'Foobar-1' ],
 			[ 3 /* unnamed_rule_schema_3 */ ]
 		];
-
 	}
 
 }

@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\MediaWiki\ManualEntryLogger;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class MaintenanceLogger {
 	private $manualEntryLogger;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxNameChars = 255;
 
@@ -43,7 +43,7 @@ class MaintenanceLogger {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $maxNameChars
+	 * @param int $maxNameChars
 	 */
 	public function setMaxNameChars( $maxNameChars ) {
 		$this->maxNameChars = $maxNameChars;

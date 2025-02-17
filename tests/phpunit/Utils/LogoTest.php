@@ -2,42 +2,37 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\Logo;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\Logo;
 
 /**
  * @covers \SMW\Utils\Logo
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class LogoTest extends \PHPUnit_Framework_TestCase {
+class LogoTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGet_Small() {
 		$this->assertContains(
-			'logo_small.png',
-			Logo::get( '100x90' )
-		);
-
-		$this->assertContains(
-			'logo_small.png',
+			'assets/logo_small.svg',
 			Logo::get( 'small' )
 		);
 	}
 
 	public function testGet_Footer() {
 		$this->assertContains(
-			'logo_footer.png',
+			'assets/logo_footer.svg',
 			Logo::get( 'footer' )
 		);
 	}
 
-	public function testGet_Unkown() {
+	public function testGet_Unknown() {
 		$this->assertNull(
 			Logo::get( 'Foo' )
 		);

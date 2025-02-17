@@ -2,18 +2,17 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\Schema\CompartmentIterator;
-use SMW\DIProperty;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Schema\CompartmentIterator;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 use SMWDataItem as DataItem;
-use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -38,7 +37,7 @@ class CheckboxRangeGroupValueFilter {
 	private $urlArgs;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 
@@ -265,9 +264,9 @@ class CheckboxRangeGroupValueFilter {
 			'filter-items-condition',
 			[
 				'property' => $property,
-				'or-selected' => $condition === 'or' ? 'selected': '',
-				'and-selected' => $condition === 'and' ? 'selected': '',
-				'not-selected' => $condition === 'not' ? 'selected': ''
+				'or-selected' => $condition === 'or' ? 'selected' : '',
+				'and-selected' => $condition === 'and' ? 'selected' : '',
+				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
 

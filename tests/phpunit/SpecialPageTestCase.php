@@ -3,10 +3,9 @@
 namespace SMW\Tests;
 
 use FauxRequest;
-use Language;
+use MediaWiki\MediaWikiServices;
 use OutputPage;
 use RequestContext;
-use MediaWiki\MediaWikiServices;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use SpecialPage;
 use WebRequest;
@@ -18,12 +17,12 @@ use WebResponse;
  * @group SMWExtension
  * @group medium
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.0.2
  *
  * @author mwjames
  */
-abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
+abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
 
 	protected $obLevel;
 	protected $store = null;
@@ -48,7 +47,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return SpecialPage
 	 */
-	protected abstract function getInstance();
+	abstract protected function getInstance();
 
 	protected function setStore( $store ) {
 		$this->store = $store;
@@ -57,10 +56,10 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Borrowed from \Wikibase\Test\SpecialPageTestBase
 	 *
-	 * @param string      $sub The subpage parameter to call the page with
-	 * @param WebRequest $request Web request that may contain URL parameters, etc
+	 * @param string $sub The subpage parameter to call the page with
+	 * @param WebRequest|null $request Web request that may contain URL parameters, etc
 	 */
-	protected function execute( $sub = '', WebRequest $request = null, $user = null ) {
+	protected function execute( $sub = '', ?WebRequest $request = null, $user = null ) {
 		$request  = $request === null ? new FauxRequest() : $request;
 		$response = $request->response();
 
@@ -73,7 +72,7 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 		$page->setContext( $this->makeRequestContext(
 			$request,
 			$user,
-			$this->getTitle( $page )
+			$page->getPageTitle()
 		) );
 
 		$out = $page->getOutput();
@@ -136,14 +135,4 @@ abstract class SpecialPageTestCase extends \PHPUnit_Framework_TestCase {
 
 		return $context;
 	}
-
-	/**
-	 * Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-	 *
-	 * @return Title
-	 */
-	private function getTitle( SpecialPage $page ) {
-		return method_exists( $page, 'getPageTitle' ) ? $page->getPageTitle() : $page->getTitle();
-	}
-
 }

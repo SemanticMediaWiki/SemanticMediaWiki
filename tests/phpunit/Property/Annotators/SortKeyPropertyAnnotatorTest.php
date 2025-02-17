@@ -11,12 +11,12 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\Property\Annotators\SortKeyPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SortKeyPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;

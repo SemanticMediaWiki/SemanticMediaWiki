@@ -2,19 +2,18 @@
 
 namespace SMW\Tests\Integration;
 
-use RuntimeException;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
+class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 
@@ -40,7 +39,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', function ( &$configuration ) {
+		$this->mwHooksHandler->register( 'SMW::Settings::BeforeInitializationComplete', static function ( &$configuration ) {
 			$configuration = [ 'Foo' ];
 		} );
 
@@ -57,7 +56,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', function ( &$vars ) {
+		$this->mwHooksHandler->register( 'SMW::Setup::AfterInitializationComplete', static function ( &$vars ) {
 			$vars = [ 'Foo' ];
 		} );
 
@@ -74,7 +73,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::GroupPermissions::BeforeInitializationComplete', function ( &$permissions ) {
+		$this->mwHooksHandler->register( 'SMW::GroupPermissions::BeforeInitializationComplete', static function ( &$permissions ) {
 			$permissions = [ 'Foo' ];
 		} );
 
@@ -112,7 +111,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->mwHooksHandler->register( 'SMW::Admin::RegisterTaskHandlers', function ( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
+		$this->mwHooksHandler->register( 'SMW::Admin::RegisterTaskHandlers', static function ( $taskHandlerRegistry, $store, $outputFormatter, $user ) use ( $taskHandler ) {
 			$taskHandlerRegistry->registerTaskHandler( $taskHandler );
 		} );
 
@@ -133,8 +132,9 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$propertyChangeListener->expects( $this->once() )
 			->method( 'addListenerCallback' );
 
-		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', function ( $propertyChangeListener ) use ( $property ) {
-			$propertyChangeListener->addListenerCallback( $property, function (){} );
+		$this->mwHooksHandler->register( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', static function ( $propertyChangeListener ) use ( $property ) {
+			$propertyChangeListener->addListenerCallback( $property, static function (){
+			} );
 		} );
 
 		$hookDispatcher->onRegisterPropertyChangeListeners( $propertyChangeListener );
@@ -150,7 +150,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$constraintRegistry->expects( $this->once() )
 			->method( 'registerConstraint' );
 
-		$this->mwHooksHandler->register( 'SMW::Constraint::initConstraints', function ( $constraintRegistry ) {
+		$this->mwHooksHandler->register( 'SMW::Constraint::initConstraints', static function ( $constraintRegistry ) {
 			$constraintRegistry->registerConstraint( 'foo', 'bar' );
 		} );
 
@@ -167,7 +167,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$schemaTypes->expects( $this->once() )
 			->method( 'registerSchemaType' );
 
-		$this->mwHooksHandler->register( 'SMW::Schema::RegisterSchemaTypes', function ( $schemaTypes ) {
+		$this->mwHooksHandler->register( 'SMW::Schema::RegisterSchemaTypes', static function ( $schemaTypes ) {
 			$schemaTypes->registerSchemaType( 'Foo', [] );
 		} );
 
@@ -183,7 +183,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::GetPreferences', function ( $user, &$preferences ) {
+		$this->mwHooksHandler->register( 'SMW::GetPreferences', static function ( $user, &$preferences ) {
 			$preferences = [ 'Foo' ];
 		} );
 
@@ -200,7 +200,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', function ( &$magicWords ) {
+		$this->mwHooksHandler->register( 'SMW::Parser::BeforeMagicWordsFinder', static function ( &$magicWords ) {
 			$magicWords = [ 'Foo' ];
 		} );
 
@@ -221,7 +221,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::AfterLinksProcessingComplete', function ( &$text, $annotationProcessor ) {
+		$this->mwHooksHandler->register( 'SMW::Parser::AfterLinksProcessingComplete', static function ( &$text, $annotationProcessor ) {
 			$text = 'Foo';
 		} );
 
@@ -247,7 +247,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', function ( $propertyAnnotator, $parserOutput ) {
+		$this->mwHooksHandler->register( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', static function ( $propertyAnnotator, $parserOutput ) {
 			$propertyAnnotator->addAnnotation();
 		} );
 
@@ -268,7 +268,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', function ( $store, $messageReporter ) {
+		$this->mwHooksHandler->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', static function ( $store, $messageReporter ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -284,7 +284,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$indicatorProviders = [];
 
-		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', function ( $store, &$indicatorProviders ) {
+		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', static function ( $store, &$indicatorProviders ) {
 			$indicatorProviders[] = 'Foo';
 		} );
 
@@ -305,7 +305,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$indicatorProviders = [];
 
-		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', function ( $store, &$indicatorProviders ) {
+		$this->mwHooksHandler->register( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', static function ( $store, &$indicatorProviders ) {
 			$indicatorProviders[] = 'Foo';
 		} );
 
@@ -324,7 +324,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', function ( $title, $latestRevID ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::IsApprovedRevision', static function ( $title, $latestRevID ) {
 			return $latestRevID == 9999 ? false : true;
 		} );
 
@@ -342,7 +342,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 
 		$latestRevID = 9999;
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevisionID', function ( $title, &$latestRevID ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevisionID', static function ( $title, &$latestRevID ) {
 			$latestRevID = 1001;
 		} );
 
@@ -374,7 +374,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			$file
 		);
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeFile', function ( $title, &$file ) use ( $anotherFile ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeFile', static function ( $title, &$file ) use ( $anotherFile ) {
 			$file = $anotherFile;
 		} );
 
@@ -406,7 +406,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 			$anotherRevision
 		);
 
-		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevision', function ( $title, &$revision ) use ( $anotherRevision ) {
+		$this->mwHooksHandler->register( 'SMW::RevisionGuard::ChangeRevision', static function ( $title, &$revision ) use ( $anotherRevision ) {
 			$revision = $anotherRevision;
 		} );
 
@@ -430,7 +430,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function ( $tables, $messageReporter ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', static function ( $tables, $messageReporter ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -455,7 +455,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', function ( $tableBuilder, $messageReporter, $options ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', static function ( $tableBuilder, $messageReporter, $options ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 
@@ -480,7 +480,7 @@ class HookDispatcherTest extends \PHPUnit_Framework_TestCase {
 		$messageReporter->expects( $this->once() )
 			->method( 'reportMessage' );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', function ( $tableBuilder, $messageReporter, $options ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::Installer::AfterDropTablesComplete', static function ( $tableBuilder, $messageReporter, $options ) {
 			$messageReporter->reportMessage( 'foo' );
 		} );
 

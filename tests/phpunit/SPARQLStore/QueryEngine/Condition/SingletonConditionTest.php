@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class SingletonConditionTest extends \PHPUnit_Framework_TestCase {
+class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -36,18 +36,18 @@ class SingletonConditionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new SingletonCondition( $expElement );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getCondition()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWeakConditionString()
 		);
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSafe()
 		);
 	}

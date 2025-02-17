@@ -2,18 +2,17 @@
 
 namespace SMW\Query;
 
+use RuntimeException;
 use SMW\Query\DescriptionBuilders\DescriptionBuilder;
-use SMW\Query\DescriptionBuilders\DispatchingDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
 use SMWDataValue as DataValue;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames

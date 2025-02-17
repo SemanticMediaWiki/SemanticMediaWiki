@@ -8,12 +8,12 @@ use SMW\Property\AnnotatorFactory;
  * @covers \SMW\Property\AnnotatorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class AnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
+class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

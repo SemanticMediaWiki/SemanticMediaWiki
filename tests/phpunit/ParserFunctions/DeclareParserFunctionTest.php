@@ -3,22 +3,22 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\DeclareParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -63,20 +63,20 @@ class DeclareParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$ppframe->expects( $this->any() )
 			->method( 'isTemplate' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$ppframe->expects( $this->any() )
 			->method( 'expand' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$ppframe->expects( $this->any() )
 			->method( 'getArgument' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new DeclareParserFunction( $parserData );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->parse( $ppframe, $args )
 		);
 

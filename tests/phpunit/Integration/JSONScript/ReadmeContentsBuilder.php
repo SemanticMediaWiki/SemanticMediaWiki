@@ -6,7 +6,7 @@ namespace SMW\Tests\Integration\JSONScript;
  * Build contents from a selected folder and replaces the content of the
  * README.md from where the script was started.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -16,8 +16,8 @@ class ReadmeContentsBuilder {
 	/**
 	 * @var string
 	 */
-	CONST REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
-	CONST REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
+	const REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
+	const REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
 
 	/**
 	 * @var array
@@ -59,10 +59,10 @@ class ReadmeContentsBuilder {
 		foreach ( $this->findFilesFor( $path, 'json' ) as $key => $location ) {
 
 			if ( $previousFirstKey !== $key[0] ) {
-				$list .= "\n" . '### ' . ucfirst( $key[0] ). "\n";
+				$list .= "\n" . '### ' . ucfirst( $key[0] ) . "\n";
 			}
 
-			$list .= '* [' . $key .'](' . $urlLocation . '/' . $key . ')';
+			$list .= '* [' . $key . '](' . $urlLocation . '/' . $key . ')';
 
 			$contents = json_decode( file_get_contents( $location ), true );
 
@@ -85,7 +85,7 @@ class ReadmeContentsBuilder {
 
 		$head = "## $title\n\n";
 		$head .= "- Files: $counter (includes $tests tests)\n";
-		$head .= "- Last update: " .  $dateTimeUtc->format( 'Y-m-d' ) . "\n";
+		$head .= "- Last update: " . $dateTimeUtc->format( 'Y-m-d' ) . "\n";
 
 		return $head . $list;
 	}

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\NamespaceInfo;
 use SMW\Message;
 use SpecialSearch;
 use Xml;
@@ -14,7 +14,7 @@ use Xml;
  * @note Copied from SearchFormWidget::powerSearchBox, #3126 contains the reason
  * why we need to copy the code!
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -34,17 +34,17 @@ class NamespaceForm {
 	private $localizer;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $activeNamespaces = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $hiddenNamespaces = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $searchableNamespaces = [];
 
@@ -81,7 +81,7 @@ class NamespaceForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $hideList
+	 * @param bool $hideList
 	 */
 	public function setHideList( $hideList ) {
 		$this->hideList = (bool)$hideList;

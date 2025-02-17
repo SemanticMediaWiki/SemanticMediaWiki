@@ -8,12 +8,12 @@ use SMW\Utils\Csv;
  * @covers \SMW\Utils\Csv
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CsvTest extends \PHPUnit_Framework_TestCase {
+class CsvTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider rowsProvider

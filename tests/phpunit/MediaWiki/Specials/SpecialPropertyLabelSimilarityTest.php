@@ -10,12 +10,12 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SpecialPropertyLabelSimilarityTest extends \PHPUnit_Framework_TestCase {
+class SpecialPropertyLabelSimilarityTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

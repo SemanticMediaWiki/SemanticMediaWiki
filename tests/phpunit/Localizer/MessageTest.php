@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Localizer\Message
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  2.4
  *
  * @author mwjames
  */
-class MessageTest extends \PHPUnit_Framework_TestCase {
+class MessageTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -41,7 +41,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	public function testRegisteredHandler() {
 		$instance = new Message();
 
-		$instance->registerCallbackHandler( 'Foo', function ( $parameters, $language ) {
+		$instance->registerCallbackHandler( 'Foo', static function ( $parameters, $language ) {
 			if ( $parameters[0] === 'Foo' && $language === Message::CONTENT_LANGUAGE ) {
 				return 'Foobar';
 			}
@@ -73,7 +73,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 
 		$language->expects( $this->once() )
 			->method( 'getCode' )
-			->will( $this->returnValue( 'en' ) );
+			->willReturn( 'en' );
 
 		$instanceSpy = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'hasLanguage' ] )
@@ -86,7 +86,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Message();
 		$instance->clear();
 
-		$instance->registerCallbackHandler( 'Foo', function ( $parameters, $language ) use ( $instanceSpy ){
+		$instance->registerCallbackHandler( 'Foo', static function ( $parameters, $language ) use ( $instanceSpy ){
 			$instanceSpy->hasLanguage( $language );
 			return 'UNKNOWN';
 		} );
@@ -99,7 +99,7 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 		$instance = new Message();
 		$instance->clear();
 
-		$instance->registerCallbackHandler( 'SimpleText', function ( $parameters, $language ) {
+		$instance->registerCallbackHandler( 'SimpleText', static function ( $parameters, $language ) {
 			return 'Foo';
 		} );
 
@@ -160,9 +160,8 @@ class MessageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDecode() {
-		$this->assertEquals(
-			false,
-			Message::decode( 'Foo' )
+		$this->assertFalse(
+						Message::decode( 'Foo' )
 		);
 
 		$this->assertEquals(

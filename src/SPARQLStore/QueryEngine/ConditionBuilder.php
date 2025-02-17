@@ -11,7 +11,6 @@ use SMW\HierarchyLookup;
 use SMW\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\SPARQLStore\HierarchyFinder;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
@@ -26,7 +25,7 @@ use SMWTurtleSerializer as TurtleSerializer;
  * Build an internal representation for a SPARQL condition from individual query
  * descriptions
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -67,7 +66,7 @@ class ConditionBuilder {
 	/**
 	 * Counter used to generate globally fresh variables.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $variableCounter = 0;
 
@@ -106,7 +105,7 @@ class ConditionBuilder {
 	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
 	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, EngineOptions $engineOptions = null ) {
+	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, ?EngineOptions $engineOptions = null ) {
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		$this->engineOptions = $engineOptions;
 
@@ -303,7 +302,7 @@ class ConditionBuilder {
 	 * SingletonCondition objects in the condition, which may
 	 * lead to additional namespaces for serializing its URI.
 	 *
-	 * @param Condition $condition
+	 * @param Condition &$condition
 	 *
 	 * @return string
 	 */
@@ -360,7 +359,7 @@ class ConditionBuilder {
 	 *
 	 * @return string|null
 	 */
-	public function tryToFindRedirectVariableForDataItem( DataItem $dataItem = null ) {
+	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
 		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
@@ -394,7 +393,7 @@ class ConditionBuilder {
 
 		// Reuse an existing variable for the value to allow to be used more than
 		// once when referring to the same property/value redirect
-		list( $redirectByVariable, $namespaces ) = $this->redirectByVariableReplacementMap[$valueName];
+		[ $redirectByVariable, $namespaces ] = $this->redirectByVariableReplacementMap[$valueName];
 
 		return $redirectByVariable;
 	}
@@ -402,9 +401,9 @@ class ConditionBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $featureFlag
+	 * @param int $featureFlag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSetFlag( $featureFlag ) {
 		$canUse = true;
@@ -425,13 +424,13 @@ class ConditionBuilder {
 	 * Extend the given SPARQL condition by a suitable order by variable,
 	 * if an order by property is set.
 	 *
-	 * @param Condition $sparqlCondition condition to modify
+	 * @param Condition &$sparqlCondition condition to modify
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param mixed $orderByProperty DIProperty or null
-	 * @param integer $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
+	 * @param int $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
 	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
-		if ( is_null( $orderByProperty ) ) {
+		if ( $orderByProperty === null ) {
 			return;
 		}
 
@@ -446,9 +445,9 @@ class ConditionBuilder {
 	 * Extend the given SPARQL condition by a suitable order by variable,
 	 * possibly adding conditions if required for the type of data.
 	 *
-	 * @param Condition $sparqlCondition condition to modify
+	 * @param Condition &$condition condition to modify
 	 * @param string $mainVariable the variable that represents the value to be ordered
-	 * @param integer $diType DataItem type id
+	 * @param int $diType DataItem type id
 	 */
 	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
@@ -476,7 +475,7 @@ class ConditionBuilder {
 	 * this operation, every key in sortKeys is assigned to a query
 	 * variable by $sparqlCondition->orderVariables.
 	 *
-	 * @param Condition $condition condition to modify
+	 * @param Condition &$condition condition to modify
 	 */
 	protected function addMissingOrderByConditions( Condition &$condition ) {
 		foreach ( $this->sortKeys as $propertyKey => $order ) {
@@ -597,7 +596,7 @@ class ConditionBuilder {
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 
 		foreach ( $this->redirectByVariableReplacementMap as $valueName => $content ) {
-			list( $redirectByVariable, $ns ) = $content;
+			[ $redirectByVariable, $ns ] = $content;
 			$weakConditions[] = "$redirectByVariable " . "^" . $rediExpElement->getQName() . " $valueName .\n";
 			$namespaces = array_merge( $namespaces, $ns );
 		}

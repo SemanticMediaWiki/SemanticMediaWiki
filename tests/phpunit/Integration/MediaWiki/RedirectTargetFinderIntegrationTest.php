@@ -2,26 +2,27 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
-use SMW\Tests\Utils\UtilityFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
  * @group semantic-mediawiki-integration
  * @group mediawiki-databas
+ * @group Database
  *
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
+class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
@@ -110,7 +111,7 @@ class RedirectTargetFinderIntegrationTest extends DatabaseTestCase {
 			Title::newFromText( __METHOD__ )
 		);
 
-		$target  = DIWikiPage::newFromTitle(
+		$target = DIWikiPage::newFromTitle(
 			Title::newFromText( 'ManualRemovalOfRedirectTarget' )
 		);
 

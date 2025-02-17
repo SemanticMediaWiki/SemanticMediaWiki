@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\TransactionalCallableUpdate
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
+class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -40,7 +40,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function () {
+		$callback = static function () {
 			return null;
 		};
 
@@ -64,7 +64,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -110,7 +110,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -136,7 +136,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -164,7 +164,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -180,7 +180,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOrigin() {
-		$callback = function () {
+		$callback = static function () {
 		};
 
 		$instance = new TransactionalCallableUpdate(
@@ -207,7 +207,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -237,7 +237,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateOnTransactionIdle() {
-		$callback = function ( $callback ) {
+		$callback = static function ( $callback ) {
 			return call_user_func( $callback );
 		};
 
@@ -247,7 +247,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->testEnvironment->clearPendingDeferredUpdates();
 
@@ -259,7 +259,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -294,7 +294,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -330,7 +330,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->once() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 
@@ -366,7 +366,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit_Framework_TestCase {
 		$test->expects( $this->never() )
 			->method( 'doTest' );
 
-		$callback = function () use ( $test ) {
+		$callback = static function () use ( $test ) {
 			$test->doTest();
 		};
 

@@ -20,12 +20,12 @@ use SMWDIBlob as DIBlob;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -162,7 +162,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);

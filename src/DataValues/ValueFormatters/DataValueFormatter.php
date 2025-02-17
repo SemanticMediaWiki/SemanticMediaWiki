@@ -6,7 +6,7 @@ use SMW\Options;
 use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -67,7 +67,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 *
 	 * @param DataValue|null $dataValue
 	 */
-	public function __construct( DataValue $dataValue = null ) {
+	public function __construct( ?DataValue $dataValue = null ) {
 		$this->dataValue = $dataValue;
 	}
 
@@ -76,7 +76,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 *
 	 * @param DataValue $dataValue
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract public function isFormatterFor( DataValue $dataValue );
 

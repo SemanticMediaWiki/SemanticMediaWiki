@@ -2,23 +2,22 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class SetupStoreMaintenanceTest extends DatabaseTestCase {
+class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -48,7 +47,7 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testSetupStore_Delete() {
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\setupStore' );
 
 		$maintenanceRunner->setQuiet();
 
@@ -91,7 +90,7 @@ class SetupStoreMaintenanceTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\SetupStore' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\setupStore' );
 
 		$maintenanceRunner->setMessageReporter(
 			$this->spyMessageReporter

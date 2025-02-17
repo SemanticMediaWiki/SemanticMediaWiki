@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -13,12 +12,12 @@ use Title;
  * @group mediawiki-databaseless
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksIntegrationTest extends \PHPUnit_Framework_TestCase {
+class InternalParseBeforeLinksIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;

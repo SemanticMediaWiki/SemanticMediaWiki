@@ -9,7 +9,7 @@ use SMW\Encoder;
 use SMWNumberValue as NumberValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
@@ -52,17 +52,17 @@ class PageRequestOptions {
 	public $value;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $limit = 20;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $offset = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $nearbySearch = false;
 

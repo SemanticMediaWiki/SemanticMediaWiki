@@ -9,7 +9,7 @@ use DateTimeZone;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -143,7 +143,7 @@ class Timezone {
 	 *
 	 * @param string $identifer
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isValid( $identifer ) {
 		$identifer = str_replace( ' ', '_', $identifer );
@@ -166,7 +166,7 @@ class Timezone {
 	 *
 	 * @param string $abbreviation
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isMilitary( $abbreviation ) {
 		$abbreviation = strtoupper( $abbreviation );
@@ -183,7 +183,7 @@ class Timezone {
 	 *
 	 * @param string $identifer
 	 *
-	 * @return false|integer
+	 * @return false|int
 	 */
 	public static function getIdByAbbreviation( $identifer ) {
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {
@@ -203,7 +203,7 @@ class Timezone {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $identifer
+	 * @param int $identifer
 	 *
 	 * @return false|string
 	 */
@@ -246,7 +246,7 @@ class Timezone {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 			$offset = $dateTimeZone->getOffset( new DateTime() );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			//
 		}
 
@@ -307,7 +307,7 @@ class Timezone {
 	public static function newDateTimeZone( $abbreviation ) {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
-		} catch( \Exception $e ) {
+		} catch ( \Exception $e ) {
 			if ( ( $name = self::getNameByAbbreviation( $abbreviation ) ) !== false ) {
 				return new DateTimeZone( $name );
 			}
@@ -341,7 +341,7 @@ class Timezone {
 	 * @since 2.5
 	 *
 	 * @param DateTime $dateTime
-	 * @param string|integer &$tz
+	 * @param string|int &$tz
 	 *
 	 * @return DateTime
 	 */

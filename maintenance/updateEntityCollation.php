@@ -2,31 +2,29 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use SMW\DIProperty;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Setup;
-use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\MediaWiki\HookDispatcher;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -96,7 +94,7 @@ class updateEntityCollation extends \Maintenance {
 	 */
 	public function execute() {
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -293,5 +291,7 @@ class updateEntityCollation extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = updateEntityCollation::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

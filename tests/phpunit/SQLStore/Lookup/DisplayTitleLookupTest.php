@@ -2,21 +2,19 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\DisplayTitleLookup;
-use SMW\MediaWiki\Connection\Query;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
+use SMW\SQLStore\Lookup\DisplayTitleLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\DisplayTitleLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
+class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -54,7 +52,7 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42, 1001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001 );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
 			->disableOriginalConstructor()
@@ -62,29 +60,29 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'tablename' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'unescape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->at( 0 ) )
 			->method( 'select' )
 			->with(
-				$this->equalTo( 'smw_object_ids' ),
+				'smw_object_ids',
 				$this->equalTo( [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_hash' ] ),
 				$this->equalTo( [ 'smw_hash' => [
 					'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
 					'7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] ) )
-			->will( $this->returnValue( [ (object)[ 'smw_hash' => 'foooo', 'smw_id' => 42 ] ] ) );
+			->willReturn( [ (object)[ 'smw_hash' => 'foooo', 'smw_id' => 42 ] ] );
 
 		$connection->expects( $this->at( 2 ) )
 			->method( 'select' )
 			->with(
-				$this->equalTo( 'foo_table' ),
+				'foo_table',
 				$this->equalTo( [ 's_id', 'o_hash', 'o_blob' ] ),
 				$this->equalTo( [ 's_id' => [ 42, 1001 ] ] ) )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
 			->disableOriginalConstructor()
@@ -92,23 +90,23 @@ class DisplayTitleLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$tableDefinition->expects( $this->any() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'foo_table' ) );
+			->willReturn( 'foo_table' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$instance = new DisplayTitleLookup(
 			$this->store

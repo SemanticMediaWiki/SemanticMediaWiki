@@ -3,15 +3,15 @@
 namespace SMW\Tests\Maintenance;
 
 use PHPUnit\Framework\TestCase;
-use SMW\Maintenance\DisposeOutdatedEntities;
-use SMW\Tests\TestEnvironment;
+use SMW\Maintenance\disposeOutdatedEntities;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\Maintenance\DisposeOutdatedEntities
+ * @covers \SMW\Maintenance\disposeOutdatedEntities
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -37,13 +37,13 @@ class DisposeOutdatedEntitiesTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			DisposeOutdatedEntities::class,
-			new DisposeOutdatedEntities()
+			disposeOutdatedEntities::class,
+			new disposeOutdatedEntities()
 		);
 	}
 
 	public function testExecute() {
-		$instance = new DisposeOutdatedEntities();
+		$instance = new disposeOutdatedEntities();
 
 		$instance->setMessageReporter(
 			$this->spyMessageReporter

@@ -3,25 +3,23 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\TypesValue;
-use SMW\DataValues\ValueParsers\TypesValueParser;
 
 /**
  * @covers \SMW\DataValues\TypesValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TypesValueTest extends \PHPUnit_Framework_TestCase {
+class TypesValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			TypesValue::class,
 			new TypesValue()
 		);
-
 	}
 
 	public function testNewFromTypeId() {
@@ -113,7 +111,6 @@ class TypesValueTest extends \PHPUnit_Framework_TestCase {
 			'Foo',
 			'Foo'
 		];
-
 	}
 
 }

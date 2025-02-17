@@ -3,7 +3,6 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
 use SMW\Message;
 use SMW\Query\PrintRequest;
@@ -17,7 +16,7 @@ use SMWResultArray as ResultArray;
 /**
  * Print query results in tables
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -318,7 +317,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param SMWDataValue[] $dataValues
 	 * @param $outputMode
-	 * @param boolean $isSubject
+	 * @param bool $isSubject
 	 *
 	 * @return string
 	 */
@@ -331,8 +330,8 @@ class TableResultPrinter extends ResultPrinter {
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ||
-				$outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) {
+			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) ) {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
@@ -342,7 +341,6 @@ class TableResultPrinter extends ResultPrinter {
 			} else {
 				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
-
 
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}

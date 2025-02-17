@@ -2,16 +2,14 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\Schema\CompartmentIterator;
+use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
+use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConflictException;
 use SMW\Schema\Compartment;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
-use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
-use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConflictException;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -34,7 +32,7 @@ class Profile {
 	private $profile;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $profileList = [];
 
@@ -124,7 +122,7 @@ class Profile {
 		$compartmentIterator = $schemaList->newCompartmentIteratorByKey( 'profiles' );
 
 		if ( $this->profileName === '' ) {
-			$this->profileName = str_replace( '_profile', '', $schemaList->get( 'default_profile', 'default' ) );
+			$this->profileName = str_replace( '_profile', '', $schemaList->get( 'default_profile', 'default' ) ?? '' );
 		}
 
 		foreach ( $compartmentIterator as $profiles ) {

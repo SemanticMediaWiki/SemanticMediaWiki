@@ -6,17 +6,17 @@ use SMWExpData as ExpData;
 use SMWExpResource as ExpResource;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
  */
-class ExportDataValidator extends \PHPUnit_Framework_Assert {
+class ExportDataValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.0
 	 *
-	 * @param mixed $expected
+	 * @param mixed $expectedProperties
 	 * @param ExpData $exportData
 	 */
 	public function assertThatExportDataContainsProperty( $expectedProperties, ExpData $exportData ) {
@@ -50,7 +50,7 @@ class ExportDataValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.0
 	 *
-	 * @param mixed $expected
+	 * @param mixed $expectedResources
 	 * @param ExpResource $selectedElement
 	 * @param ExpData $exportData
 	 */

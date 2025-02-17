@@ -13,7 +13,7 @@ use SMWOutputs as Outputs;
  * article pages for Concept and Property pages. This is mainly parameter
  * handling and some very basic output control.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Nikolas Iwan
@@ -25,7 +25,7 @@ abstract class Page extends Article {
 	/**
 	 * Limit for results per page.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $limit;
 
@@ -62,7 +62,10 @@ abstract class Page extends Article {
 	 */
 	public function view() {
 		$outputPage = $this->getContext()->getOutput();
-		$outputPage->addModuleStyles( 'ext.smw.page.styles' );
+		$outputPage->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.page.styles'
+		] );
 
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED' ) ) {
 			$outputPage->setPageTitle( $this->getTitle()->getPrefixedText() );
@@ -85,11 +88,6 @@ abstract class Page extends Article {
 		$diffOnly = $request->getBool( 'diffonly', $userOptionsLookup->getOption( $user, 'diffonly' ) );
 
 		if ( !isset( $diff ) || !$diffOnly ) {
-			// MW 1.25+
-			if ( method_exists( $outputPage, 'setIndicators' ) && ( $indicators = $this->getTopIndicators() ) !== '' ) {
-				$outputPage->setIndicators( $indicators );
-			}
-
 			$outputPage->addHTML( $this->initHtml() );
 			$outputPage->addHTML( $this->beforeView() );
 		}
@@ -137,19 +135,10 @@ abstract class Page extends Article {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function getRedirectTargetURL() {
 		return false;
-	}
-
-	/**
-	 * @since 2.4
-	 *
-	 * @return string
-	 */
-	protected function getTopIndicators() {
-		return '';
 	}
 
 	/**
@@ -164,7 +153,7 @@ abstract class Page extends Article {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLockedView() {
 		return false;
@@ -220,7 +209,7 @@ abstract class Page extends Article {
 	 *
 	 * @return string
 	 */
-	protected abstract function getHtml();
+	abstract protected function getHtml();
 
 	/**
 	 * Like Article's getTitle(), but returning a suitable SMWDIWikiPage.

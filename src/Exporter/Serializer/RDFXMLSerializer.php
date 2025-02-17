@@ -2,17 +2,17 @@
 
 namespace SMW\Exporter\Serializer;
 
-use SMWExporter as Exporter;
-use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMWExpData as ExpData;
+use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
  * RDF/XML.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.5
  *
  * @author Markus Krötzsch
@@ -171,7 +171,7 @@ class RDFXMLSerializer extends Serializer {
 		// else: blank node, no "rdf:about"
 		if (
 			$expData->getSubject() instanceof ExpResource &&
-		    !$expData->getSubject()->isBlankNode() ) {
+			!$expData->getSubject()->isBlankNode() ) {
 			$this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		}
 
@@ -282,7 +282,7 @@ class RDFXMLSerializer extends Serializer {
 	 * assuming that an opening property tag is alerady there.
 	 *
 	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expResource array of (ExpResource or ExpData)
+	 * @param $collection array of (ExpResource or ExpData)
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 *

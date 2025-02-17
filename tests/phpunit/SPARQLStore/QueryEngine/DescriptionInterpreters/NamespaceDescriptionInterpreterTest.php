@@ -12,12 +12,12 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -86,7 +86,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new NamespaceDescription( NS_MAIN );
+		$description = new NamespaceDescription( NS_MAIN );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder

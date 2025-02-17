@@ -9,12 +9,12 @@ use SMW\SPARQLStore\ReplicationDataTruncator;
  * @covers \SMW\SPARQLStore\ReplicationDataTruncator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
+class ReplicationDataTruncatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticData;
 
@@ -46,7 +46,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticData->expects( $this->once() )
 			->method( 'removeProperty' )
-			->with( $this->equalTo( $property ) );
+			->with( $property );
 
 		$instance = new ReplicationDataTruncator();
 		$instance->setPropertyExemptionList( [ 'Foo bar' ] );
@@ -59,7 +59,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->semanticData->expects( $this->once() )
 			->method( 'removeProperty' )
-			->with( $this->equalTo( $property ) );
+			->with( $property );
 
 		$instance = new ReplicationDataTruncator();
 		$instance->setPropertyExemptionList( [ 'Has query' ] );

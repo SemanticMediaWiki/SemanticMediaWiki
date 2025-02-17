@@ -7,12 +7,12 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class LanguageContent extends \PHPUnit_Framework_TestCase {
+class LanguageContent extends \PHPUnit\Framework\TestCase {
 
 	protected function tearDown(): void {
 		LocalLanguage::clear();

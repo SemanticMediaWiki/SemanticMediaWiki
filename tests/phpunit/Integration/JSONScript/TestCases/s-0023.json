@@ -19,8 +19,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<div class=\"smw-table-cell smwb-cell smwb-prophead\"><a href=.*>Category</a></div>",
-					"<div class=\"smw-table-cell smwb-cell smwb-propval\"><span class=\"smwb-value\"><a href=.*>S0023</a></span>"
+					"<div class=\"smw-factbox-property-name\"><a href=.*>Category</a></div>",
+					"<div class=\"smw-factbox-property-values\"><span class=\"smw-factbox-value\"><a href=.*>S0023</a></span>"
 				]
 			}
 		}

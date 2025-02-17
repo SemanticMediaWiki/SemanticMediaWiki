@@ -5,12 +5,12 @@ namespace SMW\Tests;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
+class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers ::smwfGetLinker
@@ -73,19 +73,19 @@ class GlobalFunctionsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testSmwfEncodeMessages( $message, $type, $separator, $escape ) {
 		$results = smwfEncodeMessages( $message );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 
 		$results = smwfEncodeMessages( $message, $type );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 
 		$results = smwfEncodeMessages( $message, $type, $separator );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 
 		$results = smwfEncodeMessages( $message, $type, $separator, $escape );
-		$this->assertFalse( is_null( $results ) );
+		$this->assertFalse( $results === null );
 		$this->assertTrue( is_string( $results ) );
 	}
 

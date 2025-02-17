@@ -8,12 +8,12 @@ use SMW\Options;
  * @covers \SMW\Options
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.3
  *
  * @author mwjames
  */
-class OptionsTest extends \PHPUnit_Framework_TestCase {
+class OptionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

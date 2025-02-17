@@ -2,7 +2,6 @@
 
 namespace SMW\Exporter;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -15,12 +14,13 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch
@@ -38,7 +38,7 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @param Exporter|null $exporter
 	 */
-	public function __construct( Exporter $exporter = null ) {
+	public function __construct( ?Exporter $exporter = null ) {
 		$this->exporter = $exporter;
 
 		if ( $this->exporter === null ) {
@@ -51,7 +51,7 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isMapperFor( DataItem $dataItem ) {
 		return $dataItem instanceof DIConcept;
@@ -192,7 +192,7 @@ class ConceptMapper implements DataItemMapper {
 		);
 
 		if ( ( $description->getDescription() instanceof ValueDescription ) &&
-		     ( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
+			 ( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
 			$result->addPropertyObjectValue(
 				$this->exporter->getSpecialNsResource( 'owl', 'hasValue' ),
 				$subdata

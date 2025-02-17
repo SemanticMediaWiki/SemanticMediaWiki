@@ -10,9 +10,10 @@ use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -30,7 +31,7 @@ class ConceptCache {
 	private $conceptQuerySegmentBuilder;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $upperLimit = 50;
 
@@ -38,7 +39,7 @@ class ConceptCache {
 	 * @since 2.2
 	 *
 	 * @param SMWSQLStore3 $store
-	 * @param ConceptQuerySegmentBuilder $conceptQueryResolver
+	 * @param ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder
 	 */
 	public function __construct( SMWSQLStore3 $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
 		$this->store = $store;
@@ -48,7 +49,7 @@ class ConceptCache {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $upperLimit
+	 * @param int $upperLimit
 	 */
 	public function setUpperLimit( $upperLimit ) {
 		$this->upperLimit = (int)$upperLimit;
@@ -89,8 +90,6 @@ class ConceptCache {
 	 * @return string[] array with error messages
 	 */
 	public function refresh( Title $concept ) {
-		global $wgDBtype;
-
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );
@@ -129,7 +128,7 @@ class ConceptCache {
 		// MySQL just uses INSERT IGNORE, no extra conditions
 		$where = $querySegment->where;
 
-		if ( $wgDBtype == 'postgres' ) {
+		if ( $db->getType() == 'postgres' ) {
 			// PostgresQL: no INSERT IGNORE, check for duplicates explicitly
 			// This code doesn't work and has created all sorts of issues therefore use LEFT JOIN instead
 			// http://people.planetpostgresql.org/dfetter/index.php?/archives/48-Adding-Only-New-Rows-INSERT-IGNORE,-Done-Right.html
@@ -140,13 +139,14 @@ class ConceptCache {
 			$querySegment->from = str_replace( 'INNER JOIN', 'LEFT JOIN', $querySegment->from );
 		}
 
-		$db->query( "INSERT " . ( ( $wgDBtype == 'postgres' ) ? '' : 'IGNORE ' ) .
+		$db->query( "INSERT " . ( ( $db->getType() == 'postgres' ) ? '' : 'IGNORE ' ) .
 			"INTO $concCacheTableName" .
 			" SELECT DISTINCT {$querySegment->joinfield} AS s_id, $cid AS o_id FROM " .
 			$db->tableName( $querySegment->joinTable ) . " AS {$querySegment->alias}" .
 			$querySegment->from .
 			( $where ? ' WHERE ' : '' ) . $where . " LIMIT " . $this->upperLimit,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_ROWS
 		);
 
 		$db->update(

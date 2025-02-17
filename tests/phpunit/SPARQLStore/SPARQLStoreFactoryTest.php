@@ -8,12 +8,12 @@ use SMW\SPARQLStore\SPARQLStoreFactory;
  * @covers \SMW\SPARQLStore\SPARQLStoreFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
@@ -30,7 +30,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $repositoryConnection ) );
+			->willReturn( $repositoryConnection );
 	}
 
 	public function testCanConstruct() {

@@ -8,12 +8,12 @@ use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
  * @covers \SMW\MediaWiki\Jobs\ParserCachePurgeJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
+class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( 'Title' )
@@ -29,7 +29,7 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 	public function testRun() {
 		$action = 'Foo';
 
-		$updateParserCacheCallback = function ( $parameters ) use( $action ) {
+		$updateParserCacheCallback = static function ( $parameters ) use( $action ) {
 			return $parameters['causeAction'] === $action;
 		};
 
@@ -47,16 +47,14 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 		$page->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$page->expects( $this->once() )
 			->method( 'doPurge' );
 
-		if ( method_exists( $page, 'updateParserCache' ) ) {
-			$page->expects( $this->once() )
-				->method( 'updateParserCache' )
-				->with( $this->callback( $updateParserCacheCallback ) );
-		}
+		$page->expects( $this->once() )
+			->method( 'updateParserCache' )
+			->with( $this->callback( $updateParserCacheCallback ) );
 
 		$instance = $this->getMockBuilder( ParserCachePurgeJob::class )
 			->setConstructorArgs( [ $title, $parameters ] )
@@ -65,7 +63,7 @@ class ParserCachePurgeJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'newWikiPage' )
-			->will( $this->returnValue( $page ) );
+			->willReturn( $page );
 
 		$instance->run();
 	}

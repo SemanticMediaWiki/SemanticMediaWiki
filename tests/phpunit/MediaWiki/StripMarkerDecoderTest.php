@@ -3,18 +3,17 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\StripMarkerDecoder;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\StripMarkerDecoder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  3.0
  *
  * @author mwjames
  */
-class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
+class StripMarkerDecoderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$stripState = $this->getMockBuilder( '\StripState' )
@@ -67,7 +66,7 @@ class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 
 		$stripState->expects( $this->once() )
 			->method( 'unstripNoWiki' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new StripMarkerDecoder(
 			$stripState
@@ -86,7 +85,7 @@ class StripMarkerDecoderTest extends \PHPUnit_Framework_TestCase {
 
 		$stripState->expects( $this->once() )
 			->method( 'unstripNoWiki' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$stripState->expects( $this->once() )
 			->method( 'unstripGeneral' );

@@ -12,7 +12,7 @@ use SMW\Store;
  * Find all entities related to a change propagation (only expected
  * to be used by `ChangePropagationDispatchJob`).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class ChangePropagationEntityLookup {
 	private $iteratorFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isTypePropagation = false;
 
@@ -48,7 +48,7 @@ class ChangePropagationEntityLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isTypePropagation
+	 * @param bool $isTypePropagation
 	 */
 	public function isTypePropagation( $isTypePropagation ) {
 		$this->isTypePropagation = (bool)$isTypePropagation;

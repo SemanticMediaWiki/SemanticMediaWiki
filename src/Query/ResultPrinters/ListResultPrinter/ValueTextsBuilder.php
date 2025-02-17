@@ -4,14 +4,14 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;
 use SMWResultArray;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 
 /**
  * Class ValueTextsBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -23,7 +23,7 @@ class ValueTextsBuilder {
 	private $linker;
 	private $prefixParameterProcessor;
 
-	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {		
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {
 		$this->prefixParameterProcessor = $prefixParameterProcessor;
 	}
 
@@ -36,8 +36,7 @@ class ValueTextsBuilder {
 	public function getValuesText( SMWResultArray $field, $column = 0 ) {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valuesep' ), $valueTexts );
-
+		return implode( $this->get( 'valuesep' ), $valueTexts );
 	}
 
 	/**
@@ -118,15 +117,9 @@ class ValueTextsBuilder {
 			return $text;
 		}
 
-		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-			return Sanitizer::removeSomeTags(
-				$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
-			);
-		} else {
-			return Sanitizer::removeHTMLtags(
-				$text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ]
-			);
-		}
+		return Sanitizer::removeSomeTags(
+			$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
+		);
 	}
 
 	/**

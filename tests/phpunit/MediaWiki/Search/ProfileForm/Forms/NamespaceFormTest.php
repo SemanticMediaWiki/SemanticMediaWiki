@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -71,7 +71,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
 		$user->expects( $this->any() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
 			->disableOriginalConstructor()
@@ -79,7 +79,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
 		$specialSearch->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new NamespaceForm(
 			$this->namespaceInfo,

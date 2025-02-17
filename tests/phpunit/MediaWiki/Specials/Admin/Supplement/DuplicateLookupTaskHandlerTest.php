@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class DuplicateLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -49,8 +49,8 @@ class DuplicateLookupTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}

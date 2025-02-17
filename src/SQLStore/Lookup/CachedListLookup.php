@@ -5,7 +5,7 @@ namespace SMW\SQLStore\Lookup;
 use Onoi\Cache\Cache;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -30,12 +30,12 @@ class CachedListLookup implements ListLookup {
 	private $cacheOptions;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isFromCache = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $timestamp;
 
@@ -72,7 +72,7 @@ class CachedListLookup implements ListLookup {
 	 * @return array
 	 */
 	public function fetchList() {
-		list( $key, $optionsKey ) = $this->getCacheKey( $this->listLookup->getHash() );
+		[ $key, $optionsKey ] = $this->getCacheKey( $this->listLookup->getHash() );
 
 		if ( $this->cacheOptions->useCache && ( ( $result = $this->tryFetchFromCache( $key, $optionsKey ) ) !== null ) ) {
 			return $result;
@@ -102,7 +102,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return $this->isFromCache;
@@ -111,7 +111,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return $this->timestamp;
@@ -130,7 +130,7 @@ class CachedListLookup implements ListLookup {
 	 * @since 2.3
 	 */
 	public function deleteCache() {
-		list( $id, $optionsKey ) = $this->getCacheKey(
+		[ $id, $optionsKey ] = $this->getCacheKey(
 			$this->listLookup->getHash()
 		);
 
@@ -174,7 +174,7 @@ class CachedListLookup implements ListLookup {
 		$this->isFromCache = false;
 
 		// Collect the options keys
-		$data = unserialize( $this->cache->fetch( $key ) );
+		$data = unserialize( $this->cache->fetch( $key ) ?? '' );
 		$data = $data === false ? [] : $data;
 		$data[$optionsKey] = true;
 		$this->cache->save( $key, serialize( $data ), $ttl );
@@ -190,8 +190,8 @@ class CachedListLookup implements ListLookup {
 	private function getCacheKey( $id ) {
 		$optionsKey = '';
 
-		if ( strpos( $id, '#' ) !== false ) {
-			list( $id, $optionsKey ) = explode( '#', $id, 2 );
+		if ( strpos( $id ?? '', '#' ) !== false ) {
+			[ $id, $optionsKey ] = explode( '#', $id, 2 );
 		}
 
 		return [

@@ -8,7 +8,7 @@ use Title;
  * Isolate instance to count update jobs in connection with a category related
  * update.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

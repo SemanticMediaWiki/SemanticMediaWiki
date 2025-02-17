@@ -3,26 +3,26 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use RequestContext;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use WikiPage;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
+class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 	private $title;
 	private $semanticDataValidator;
@@ -60,8 +60,6 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
-
-		$this->pageDeleter->deletePage( $this->title );
 
 		parent::tearDown();
 	}
@@ -160,13 +158,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends DatabaseTestCase {
 
 		$context = new RequestContext();
 		$context->setTitle( $this->title );
-
-		// Use of OutputPage::addParserOutputNoText was deprecated in MediaWiki 1.24
-		if ( method_exists( $context->getOutput(), 'addParserOutputMetadata' ) ) {
-			$context->getOutput()->addParserOutputMetadata( $parserOutput );
-		} else {
-			$context->getOutput()->addParserOutputNoText( $parserOutput );
-		}
+		$context->getOutput()->addParserOutputMetadata( $parserOutput );
 	}
 
 }

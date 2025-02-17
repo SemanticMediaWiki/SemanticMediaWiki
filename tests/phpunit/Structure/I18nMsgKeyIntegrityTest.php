@@ -8,12 +8,12 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group semantic-mediawiki
  * @group system-test
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class I18nMsgKeyIntegrityTest extends \PHPUnit_Framework_TestCase {
+class I18nMsgKeyIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider mediawikiI18nFileProvider

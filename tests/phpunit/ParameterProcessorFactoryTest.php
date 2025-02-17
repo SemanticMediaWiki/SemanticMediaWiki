@@ -8,12 +8,12 @@ use SMW\ParameterProcessorFactory;
  * @covers \SMW\ParameterProcessorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
+class ParameterProcessorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -2,18 +2,17 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\HashBuilder;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\Message;
 use SMW\MessageFormatter;
+use SMW\Parser\AnnotationProcessor;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
 use SMW\SemanticData;
 use SMW\Subobject;
-use SMW\Parser\AnnotationProcessor;
 
 /**
  * @private This class should not be instantiated directly, please use
@@ -23,7 +22,7 @@ use SMW\Parser\AnnotationProcessor;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -70,17 +69,17 @@ class SubobjectParserFunction {
 	private $stripMarkerDecoder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useFirstElementAsPropertyLabel = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isComparableContent = false;
 
@@ -111,7 +110,7 @@ class SubobjectParserFunction {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCapitalLinks
+	 * @param bool $isCapitalLinks
 	 */
 	public function isCapitalLinks( $isCapitalLinks ) {
 		$this->isCapitalLinks = $isCapitalLinks;
@@ -124,7 +123,7 @@ class SubobjectParserFunction {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $isComparableContent
+	 * @param bool $isComparableContent
 	 */
 	public function isComparableContent( $isComparableContent = true ) {
 		$this->isComparableContent = (bool)$isComparableContent;
@@ -133,7 +132,7 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $useFirstElementAsPropertyLabel
+	 * @param bool $useFirstElementAsPropertyLabel
 	 *
 	 * @return SubobjectParserFunction
 	 */
@@ -154,7 +153,7 @@ class SubobjectParserFunction {
 	/**
 	 * @since 1.9
 	 *
-	 * @param ParserParameterProcessor $params
+	 * @param ParserParameterProcessor $parameters
 	 *
 	 * @return string|null
 	 */
@@ -192,7 +191,7 @@ class SubobjectParserFunction {
 			);
 		}
 
-		list( $parameters, $id ) = $this->getParameters(
+		[ $parameters, $id ] = $this->getParameters(
 			$parserParameterProcessor
 		);
 

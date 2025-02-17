@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\Store;
 use SMW\DIWikiPage;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Store;
 use SMWQuery as Query;
+use SMWQueryProcessor as QueryProcessor;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class CheckQueryTask extends Task {
 		foreach ( $parameters['query'] as $hash => $raw_query ) {
 
 			// @see PostProcHandler::addQuery
-			list( $query_hash, $result_hash ) = explode( '#', $hash );
+			[ $query_hash, $result_hash ] = explode( '#', $hash );
 
 			// Doesn't influence the fingerprint (aka query cache) so just
 			// ignored it

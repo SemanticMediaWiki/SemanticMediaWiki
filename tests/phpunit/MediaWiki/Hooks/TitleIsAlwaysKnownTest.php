@@ -8,12 +8,12 @@ use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
  * @covers \SMW\MediaWiki\Hooks\TitleIsAlwaysKnown
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class TitleIsAlwaysKnownTest extends \PHPUnit_Framework_TestCase {
+class TitleIsAlwaysKnownTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( '\Title' )
@@ -38,11 +38,11 @@ class TitleIsAlwaysKnownTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$title->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( $text ) );
+			->willReturn( $text );
 
 		$result = '';
 

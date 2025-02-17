@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\PropertyChainValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyChainValueTest extends \PHPUnit_Framework_TestCase {
+class PropertyChainValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 

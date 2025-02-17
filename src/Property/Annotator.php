@@ -8,7 +8,7 @@ use SMW\SemanticData;
 /**
  * Interface specifying available methods to interact with the Decorator
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

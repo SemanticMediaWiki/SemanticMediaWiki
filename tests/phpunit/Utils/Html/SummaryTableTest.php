@@ -9,12 +9,12 @@ use SMW\Utils\Html\SummaryTable;
  * @covers \SMW\Utils\Html\SummaryTable
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SummaryTableTest extends \PHPUnit_Framework_TestCase {
+class SummaryTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

@@ -2,20 +2,20 @@
 
 namespace SMW\Exporter\Serializer;
 
-use SMW\InMemoryPoolCache;
-use SMWExporter as Exporter;
-use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpLiteral;
-use SMW\Exporter\Element\ExpResource;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpElement;
 use InvalidArgumentException;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMW\InMemoryPoolCache;
+use SMWExpData as ExpData;
+use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
  * Turtle syntax.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.5
  *
  * @author Markus Krötzsch
@@ -37,7 +37,7 @@ class TurtleSerializer extends Serializer {
 	 * If true, do not serialize namespace declarations and record them in
 	 * $sparql_namespaces instead for later retrieval.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $sparqlmode;
 

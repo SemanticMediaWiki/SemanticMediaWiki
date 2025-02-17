@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
+use Onoi\EventDispatcher\DispatchContext;
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
-use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class InvalidateEntityCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidateEntityCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $entityCache;
 	private $spyLogger;

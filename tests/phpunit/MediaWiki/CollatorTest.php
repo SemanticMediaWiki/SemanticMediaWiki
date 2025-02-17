@@ -8,12 +8,12 @@ use SMW\MediaWiki\Collator;
  * @covers \SMW\MediaWiki\Collator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CollatorTest extends \PHPUnit_Framework_TestCase {
+class CollatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -29,7 +29,7 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 
 		$collation->expects( $this->exactly( 2 ) )
 			->method( 'getSortKey' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Collator(
 			$collation

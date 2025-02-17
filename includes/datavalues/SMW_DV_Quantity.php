@@ -1,8 +1,5 @@
 <?php
 
-use SMW\DataValues\Number\UnitConverter;
-use SMW\Message;
-
 /**
  * @ingroup SMWDataValues
  */
@@ -96,7 +93,7 @@ class SMWQuantityValue extends SMWNumberValue {
 
 		// Check if a known unit is given as outputformat:
 		if ( ( $this->m_outformat ) && ( $this->m_outformat != '-' ) &&
-		     ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
+			 ( $this->m_outformat != '-n' ) && ( $this->m_outformat != '-u' ) ) { // first try given output unit
 			$wantedunit = $this->normalizeUnit( $this->m_outformat );
 			if ( array_key_exists( $wantedunit, $this->m_unitids ) ) {
 				$printunit = $wantedunit;
@@ -140,7 +137,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			$sep = '';
 
 			if ( $this->m_outformat != '-u' ) {
-				$sep =  ( $this->m_outformat != '-' ? '&#160;' : ' ' );
+				$sep = ( $this->m_outformat != '-' ? '&#160;' : ' ' );
 			}
 
 			$this->m_caption = $asPrefix ? $printunit . $sep . $this->m_caption : $this->m_caption . $sep . $printunit;
@@ -191,7 +188,7 @@ class SMWQuantityValue extends SMWNumberValue {
 		$this->initConversionData(); // needed to normalise unit strings
 		$this->m_displayunits = [];
 
-		if ( is_null( $this->m_property ) || is_null( $this->m_property->getDIWikiPage() ) ) {
+		if ( $this->m_property === null || $this->m_property->getDIWikiPage() === null ) {
 			return;
 		}
 

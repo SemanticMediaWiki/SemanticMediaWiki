@@ -8,12 +8,12 @@ use SMW\DataValues\PropertyValue;
  * @covers \SMW\DataValues\PropertyValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class PropertyValueTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

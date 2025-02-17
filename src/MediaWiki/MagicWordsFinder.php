@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki;
 
 use MagicWord;
-use ParserOutput;
 use MagicWordFactory;
+use ParserOutput;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class MagicWordsFinder {
 	 * @param ParserOutput|null $parserOutput
 	 * @param MagicWordFactory|null $magicWordFactory
 	 */
-	public function __construct( ParserOutput $parserOutput = null, MagicWordFactory $magicWordFactory = null ) {
+	public function __construct( ?ParserOutput $parserOutput = null, ?MagicWordFactory $magicWordFactory = null ) {
 		$this->parserOutput = $parserOutput;
 		$this->magicWordFactory = $magicWordFactory;
 	}
