@@ -196,7 +196,8 @@ class SpecialAsk extends SpecialPage {
 			'ext.smw.styles',
 			'ext.smw.ask.styles',
 			'ext.smw.page.styles',
-			'ext.smw.table.styles'
+			'ext.smw.table.styles',
+			'mediawiki.codex.messagebox.styles'
 		] );
 
 		$out->addModuleStyles(

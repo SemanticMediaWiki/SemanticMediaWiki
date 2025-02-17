@@ -38,14 +38,7 @@ class ParserFactory {
 		$parser = \MediaWiki\MediaWikiServices::getInstance()->getParserFactory()->create();
 		$parser->setTitle( $title );
 		$parser->setUser( $user );
-
-		// https://github.com/wikimedia/mediawiki/commit/a2cb76937dfa46dd1cbd5b1fcb4e973e39063906#diff-21a73dc63430cc1b180d53f99c0756ee
-		if ( method_exists( $parser, 'setOptions' ) ) {
-			$parser->setOptions( new ParserOptions( $user ) );
-		} else {
-			$parser->Options( new ParserOptions( $user ) );
-		}
-
+		$parser->setOptions( new ParserOptions( $user ) );
 		$parser->clearState();
 
 		return $parser;

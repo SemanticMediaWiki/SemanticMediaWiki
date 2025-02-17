@@ -535,7 +535,7 @@
 	"prefs-extended-search-options": "Расширенный поиск",
 	"prefs-ask-options": "Семантический поиск",
 	"smw-prefs-intro-text": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] (и связанные с ней расширения) предоставляют возможности индивидуальной настройки группы функций. Список индивидуальных настроек с их описаниями и характеристиками доступен по [https://www.semantic-mediawiki.org/wiki/Help:User_preferences следующей ссылке].",
-	"smw-prefs-ask-options-tooltip-display": "Отображать параметр «текст» в виде всплывающей подсказки\n\nОтображение параметра текста в виде всплывающей подсказки на специальной странице #ask [[Special:Ask|формирования запросов]].",
+	"smw-prefs-ask-options-tooltip-display": "Отображать параметр «текст» в виде всплывающей подсказки на специальной странице #ask [[Special:Ask|формирования запросов]].",
 	"smw-prefs-ask-options-compact-view-basic": "Включить простой сжатый формат",
 	"smw-prefs-help-ask-options-compact-view-basic": "Если включено, показывает сокращённый набор ссылок на Special:Ask в сжатом формате",
 	"smw-prefs-general-options-time-correction": "Включить корректировку времени для служебных страниц при помощи локальной настройки [[Special:Preferences#mw-prefsection-rendering|временного смещения]]",

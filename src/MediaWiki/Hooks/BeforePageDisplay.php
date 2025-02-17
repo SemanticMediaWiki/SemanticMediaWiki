@@ -70,6 +70,7 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		if ( $this->getOption( 'incomplete_tasks', [] ) !== [] ) {
+			$outputPage->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
 			$outputPage->prependHTML( $this->createIncompleteSetupTaskNotification( $title ) );
 		}
 

@@ -377,11 +377,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	private function newFeedItem( $title, $rowItems ) {
 		$mwServices = MediaWikiServices::getInstance();
-		if ( method_exists( $mwServices, 'getWikiPageFactory' ) ) {
-			$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
-		} else {
-			$wikiPage = WikiPage::newFromID( $title->getArticleID() );
-		}
+		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 
 		if ( $wikiPage !== null && $wikiPage->exists() ) {
 
