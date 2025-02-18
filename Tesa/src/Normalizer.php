@@ -63,9 +63,7 @@ class Normalizer {
 	 * @return string
 	 */
 	public static function toLowercase( $text ) {
-		$encoding = mb_detect_encoding( $text ) ?
-			mb_detect_encoding( $text ) :
-			'UTF-8';
+		$encoding = mb_detect_encoding( $text ) ?: 'UTF-8';
 		return mb_strtolower( $text, $encoding );
 	}
 
@@ -82,9 +80,7 @@ class Normalizer {
 			return $text;
 		}
 
-		$encoding = mb_detect_encoding( $text ) ?
-			mb_detect_encoding( $text ) :
-			'UTF-8';
+		$encoding = mb_detect_encoding( $text ) ?: 'UTF-8';
 		$lastWholeWordPosition = $length;
 
 		if ( strpos( $text, ' ' ) !== false ) {
