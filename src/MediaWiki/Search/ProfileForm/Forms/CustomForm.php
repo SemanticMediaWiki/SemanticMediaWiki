@@ -65,10 +65,8 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return array
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -125,7 +123,7 @@ class CustomForm {
 				$vals = $this->request->getArray( $name, [] );
 
 				$i = $this->fieldCounter[$name];
-				$value = $vals[$i] ?? null;
+				$value = $vals[$i] ?? '';
 				$this->parameters[$name] = $value;
 			}
 
