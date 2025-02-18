@@ -1,7 +1,7 @@
 <?php
 namespace SMW\Tests\Query\ResultPrinters;
 
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\ResultPrinters\ListResultPrinter;
 
 /**

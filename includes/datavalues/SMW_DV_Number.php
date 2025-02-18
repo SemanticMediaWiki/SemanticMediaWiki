@@ -2,8 +2,8 @@
 
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 
 /**
  * @ingroup SMWDataValues

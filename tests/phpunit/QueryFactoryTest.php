@@ -110,7 +110,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newQueryResult( $store, $query )
 		);
 	}

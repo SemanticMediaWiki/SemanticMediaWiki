@@ -8,6 +8,7 @@ use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\ElementFactory;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpResourceMapper;
@@ -341,9 +342,9 @@ class SMWExporter {
 			if ( !$wikiPageExpElement->isBlankNode() ) {
 				$ed = new ExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'label' ), $ed );
-				$ed = new SMWExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
+				$ed = new ExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
-				$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
+				$ed = new ExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
 				$ed = new ExpLiteral( strval( $subject->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
@@ -371,7 +372,7 @@ class SMWExporter {
 					if ( $file !== false ) {
 						$expData->addPropertyObjectValue(
 							self::getSpecialNsResource( 'swivt', 'file' ),
-							new SMWExpResource( $file->getFullURL() )
+							new ExpResource( $file->getFullURL() )
 						);
 					}
 				}
@@ -386,11 +387,11 @@ class SMWExporter {
 	 * specified property data itme. This method is called when
 	 * constructing export data structures from SemanticData objects.
 	 *
-	 * @param SMWDIProperty $property
+	 * @param DIProperty $property
 	 * @param array $dataItems of SMWDataItem objects for the given property
 	 * @param SMWExpData &$expData to add the data to
 	 */
-	public static function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
+	public static function addPropertyValues( DIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {
@@ -430,7 +431,7 @@ class SMWExporter {
 	/**
 	 * @see ExpResourceMapper::mapPropertyToResourceElement
 	 */
-	public static function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
+	public static function getResourceElementForProperty( DIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
 		return self::$expResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty, $seekImportVocabulary );
 	}
 

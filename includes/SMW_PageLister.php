@@ -3,6 +3,7 @@
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
+use SMW\RequestOptions;
 use SMW\StoreFactory;
 
 /**
@@ -33,7 +34,7 @@ class SMWPageLister {
 	 * Constructor
 	 *
 	 * @param $diWikiPages array of SMWDIWikiPage
-	 * @param $diProperty mixed SMWDIProperty that the wikipages are values of, or null
+	 * @param $diProperty mixed \SMW\DIProperty that the wikipages are values of, or null
 	 * @param $limit integer maximal amount of items to display
 	 * @param $from string if the results were selected starting from this string
 	 * @param $until string if the results were selected reaching until this string
@@ -106,7 +107,7 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Make SMWRequestOptions suitable for obtaining a list of results for
+	 * Make RequestOptions suitable for obtaining a list of results for
 	 * the given limit, and from or until string. One more result than the
 	 * limit will be created, and the results may have to be reversed in
 	 * order if ascending is set to false in the resulting object.
@@ -114,10 +115,10 @@ class SMWPageLister {
 	 * @param $limit integer
 	 * @param $from string can be empty if no from condition is desired
 	 * @param $until string can be empty if no until condition is desired
-	 * @return SMWRequestOptions
+	 * @return RequestOptions
 	 */
 	public static function getRequestOptions( $limit, $from, $until ) {
-		$options = new SMWRequestOptions();
+		$options = new RequestOptions();
 		$options->limit = $limit + 1;
 		$options->sort = true;
 
@@ -205,7 +206,7 @@ class SMWPageLister {
 	 * @param $start integer
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDIWikiPage
-	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
+	 * @param $diProperty \SMW\DIProperty that the wikipages are values of, or null
 	 *
 	 * @return string
 	 */
@@ -287,7 +288,7 @@ class SMWPageLister {
 	 * @param $start integer
 	 * @param $end integer
 	 * @param $diWikiPages array of SMWDataItem
-	 * @param $diProperty SMWDIProperty that the wikipages are values of, or null
+	 * @param $diProperty \SMW\DIProperty that the wikipages are values of, or null
 	 *
 	 * @return string
 	 */

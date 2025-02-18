@@ -169,7 +169,7 @@ class Installer implements MessageReporter {
 		);
 
 		$this->messageReporter->reportMessage(
-			"\n" . $this->cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+			"\n" . $this->cliMsgFormatter->twoCols( 'Storage engine:', 'SQLStore' )
 		);
 
 		$this->messageReporter->reportMessage(

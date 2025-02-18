@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Schema\SchemaFactory;
 use SMW\Store;

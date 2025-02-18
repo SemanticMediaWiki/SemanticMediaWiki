@@ -7,6 +7,7 @@ use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\TermParser;
 use SMW\Store;
 use SMWQuery as Query;
@@ -72,7 +73,7 @@ class QueryBuilder {
 
 			$description = $query->getDescription();
 
-			if ( $description === null || is_a( $description, 'SMWThingDescription' ) ) {
+			if ( $description === null || is_a( $description, ThingDescription::class ) ) {
 				$query = null;
 			}
 

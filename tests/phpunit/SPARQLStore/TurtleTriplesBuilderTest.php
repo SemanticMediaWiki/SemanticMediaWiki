@@ -3,10 +3,10 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\SemanticData;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMW\Tests\PHPUnitCompat;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
 /**

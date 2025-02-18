@@ -44,7 +44,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->containerBuilder->registerObject( 'WikiImporter', $wikiImporter );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

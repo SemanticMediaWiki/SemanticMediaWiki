@@ -49,7 +49,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryProcessorWithDefaultSource() {
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +75,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryProcessorWithValidSource() {
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,7 +101,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryProcessorWithInvalidSourceSwitchesToDefault() {
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +127,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQuerySourceOnCount() {
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

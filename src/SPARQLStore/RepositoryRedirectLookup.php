@@ -4,11 +4,11 @@ namespace SMW\SPARQLStore;
 
 use RuntimeException;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\InMemoryPoolCache;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWExpResource as ExpResource;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GPL-2.0-or-later

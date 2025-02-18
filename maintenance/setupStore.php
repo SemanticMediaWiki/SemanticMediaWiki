@@ -44,7 +44,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *                   recreated using this script (setup) followed by the use
  *                   of the rebuildhData.php script which may take some time.
  *
- * --backend         The backend to use, e.g. SMWSQLStore3.
+ * --backend         The backend to use, e.g. SMW\SQLStore\SQLStore.
  *
  * --skip-optimize   Skips the table optimization process.
  *

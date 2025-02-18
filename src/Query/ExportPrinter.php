@@ -2,8 +2,6 @@
 
 namespace SMW\Query;
 
-use SMWQueryResult as QueryResult;
-
 /**
  * Interface for SMW export related result printers
  *

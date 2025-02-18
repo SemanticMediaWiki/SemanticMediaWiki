@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\PHPUnitCompat;

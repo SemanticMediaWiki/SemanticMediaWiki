@@ -8,7 +8,7 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 use SMW\Store;
 use SMWDIBoolean as DIBoolean;

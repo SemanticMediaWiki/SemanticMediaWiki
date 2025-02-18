@@ -50,7 +50,7 @@ class NullQueryResultTest extends \PHPUnit\Framework\TestCase {
 		$query->setDescription( $description );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			ApplicationFactory::getInstance()->getStore()->getQueryResult( $query )
 		);
 	}

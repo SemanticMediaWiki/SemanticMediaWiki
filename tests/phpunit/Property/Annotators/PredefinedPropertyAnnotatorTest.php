@@ -4,7 +4,7 @@ namespace SMW\Tests\Property\Annotators;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\PredefinedPropertyAnnotator;
 use SMW\Tests\Utils\Mock\MockTitle;

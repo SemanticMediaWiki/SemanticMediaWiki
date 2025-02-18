@@ -10,12 +10,12 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Iterators\ResultIterator;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
+use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMWSQLStore3 as SQLStore;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**

@@ -14,15 +14,15 @@ use SMW\MediaWiki\PageInfoProvider;
 use SMW\ParserData;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMW\SemanticData;
-use SMW\SQLStore\TableDefinition;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\Store;
 use SMW\Store\CacheableResultCollector;
 use SMWDataItem;
 use SMWDIError;
 use SMWQuery;
-use SMWQueryResult;
-use SMWResultArray;
 
 /**
  * @codeCoverageIgnore
@@ -268,10 +268,10 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
 	public function QueryResult() {
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -457,7 +457,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return TableDefinition
 	 */
 	public function SQLStoreTableDefinition() {
-		$tableDefinition = $this->getMockBuilder( 'SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -561,10 +561,10 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWResultArray
+	 * @return ResultArray
 	 */
 	public function ResultArray() {
-		$resultArray = $this->getMockBuilder( 'SMWResultArray' )
+		$resultArray = $this->getMockBuilder( ResultArray::class )
 			->disableOriginalConstructor()
 			->getMock();
 

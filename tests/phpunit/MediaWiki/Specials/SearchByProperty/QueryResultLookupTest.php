@@ -82,7 +82,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

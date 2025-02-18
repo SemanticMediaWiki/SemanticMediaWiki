@@ -41,7 +41,7 @@ class CachingSemanticDataLookup {
 	private static $data = [];
 
 	/**
-	 * Like SMWSQLStore3::data, but containing flags indicating
+	 * Like \SMW\SQLStore\SQLStore::data, but containing flags indicating
 	 * completeness of the SemanticData objs.
 	 *
 	 * @var array

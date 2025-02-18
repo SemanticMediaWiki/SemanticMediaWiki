@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**

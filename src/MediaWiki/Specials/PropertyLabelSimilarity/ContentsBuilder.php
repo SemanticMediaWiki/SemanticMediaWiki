@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\PropertyLabelSimilarity;
 
 use Html;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Message;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 

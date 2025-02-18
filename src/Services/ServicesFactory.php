@@ -14,16 +14,15 @@ use SMW\ContentParser;
 use SMW\DataItemFactory;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
-use SMW\DeferredTransactionalCallableUpdate;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxText;
 use SMW\HierarchyLookup;
 use SMW\InMemoryPoolCache;
-use SMW\InTextAnnotationParser;
 use SMW\IteratorFactory;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\Maintenance\MaintenanceFactory;
 use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
@@ -35,11 +34,13 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\TitleFactory;
 use SMW\NamespaceExaminer;
+use SMW\Parser\InTextAnnotationParser;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
+use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
-use SMW\PropertySpecificationLookup;
+use SMW\Query\Parser as QueryParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\SemanticData;
@@ -47,7 +48,6 @@ use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
 use SMW\Store;
-use SMWQueryParser as QueryParser;
 use Title;
 
 /**
@@ -490,7 +490,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.4
 	 */
-	public function getPropertySpecificationLookup(): PropertySpecificationLookup {
+	public function getPropertySpecificationLookup(): SpecificationLookup {
 		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
 	}
 
@@ -562,7 +562,7 @@ class ServicesFactory {
 	 *
 	 * @param callable|null $callback
 	 */
-	public function newDeferredTransactionalCallableUpdate( ?callable $callback = null ): DeferredTransactionalCallableUpdate {
+	public function newDeferredTransactionalCallableUpdate( ?callable $callback = null ): TransactionalCallableUpdate {
 		$deferredTransactionalUpdate = $this->containerBuilder->create(
 			'DeferredTransactionalCallableUpdate',
 			$callback,

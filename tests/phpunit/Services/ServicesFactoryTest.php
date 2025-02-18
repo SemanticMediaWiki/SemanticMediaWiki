@@ -193,7 +193,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructPropertySpecificationLookup() {
 		$this->assertInstanceOf(
-			'\SMW\PropertySpecificationLookup',
+			'\SMW\Property\SpecificationLookup',
 			$this->servicesFactory->getPropertySpecificationLookup()
 		);
 	}

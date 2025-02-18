@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Utils\HtmlDivTable;
 
 /**

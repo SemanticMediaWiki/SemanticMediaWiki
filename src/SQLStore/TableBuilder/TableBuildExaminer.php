@@ -5,9 +5,9 @@ namespace SMW\SQLStore\TableBuilder;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\NullMessageReporter;
 use SMW\PropertyRegistry;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder as ITableBuilder;
-use SMWSql3SmwIds;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -72,7 +72,7 @@ class TableBuildExaminer {
 	 * @param array $propertyList
 	 */
 	public function setPredefinedPropertyList( array $propertyList ) {
-		$fixedPropertyList = SMWSql3SmwIds::$special_ids;
+		$fixedPropertyList = EntityIdManager::$special_ids;
 		$predefinedPropertyList = [];
 
 		foreach ( $propertyList as $key => $val ) {

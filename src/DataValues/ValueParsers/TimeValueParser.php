@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueParsers;
 
 use SMW\DataValues\Time\Components;
 use SMW\DataValues\Time\Timezone;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
  * @private

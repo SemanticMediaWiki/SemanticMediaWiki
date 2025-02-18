@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Message;
 
 /**
  * @license GPL-2.0-or-later

@@ -20,7 +20,7 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 	private $cache;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

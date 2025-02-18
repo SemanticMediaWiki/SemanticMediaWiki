@@ -4,7 +4,7 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
-use SMW\ParameterFormatterFactory;
+use SMW\ParameterProcessorFactory;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
@@ -91,7 +91,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertIsArray(
 
-			$instance->parse( ParameterFormatterFactory::newFromArray( $params ) )
+			$instance->parse( ParameterProcessorFactory::newFromArray( $params ) )
 		);
 	}
 
@@ -122,7 +122,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			$templateRenderer
 		);
 
-		$instance->parse( ParameterFormatterFactory::newFromArray( $params ) );
+		$instance->parse( ParameterProcessorFactory::newFromArray( $params ) );
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -162,7 +162,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->parse(
-			ParameterFormatterFactory::newFromArray( $params )
+			ParameterProcessorFactory::newFromArray( $params )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(

@@ -4,9 +4,9 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;
-use SMWResultArray;
 
 /**
  * Class ValueTextsBuilder
@@ -28,24 +28,24 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	public function getValuesText( SMWResultArray $field, $column = 0 ) {
+	public function getValuesText( ResultArray $field, $column = 0 ) {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return implode( $this->get( 'valuesep' ), $valueTexts );
 	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 * @param int $column
 	 *
 	 * @return string[]
 	 */
-	private function getValueTexts( SMWResultArray $field, $column ) {
+	private function getValueTexts( ResultArray $field, $column ) {
 		$valueTexts = [];
 
 		$field->reset();

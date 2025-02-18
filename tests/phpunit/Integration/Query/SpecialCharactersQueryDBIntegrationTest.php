@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
@@ -13,7 +14,6 @@ use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**

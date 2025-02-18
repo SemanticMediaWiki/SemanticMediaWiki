@@ -3,6 +3,7 @@
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -86,7 +87,7 @@ class TemplateRendererFactory {
 	}
 
 	/**
-	 * @return \SMWQueryResult
+	 * @return QueryResult
 	 */
 	private function getQueryResult() {
 		return $this->queryResult;
@@ -105,7 +106,7 @@ class TemplateRendererFactory {
 
 			$countQueryResult = $queryResult->getStore()->getQueryResult( $countQuery );
 
-			$this->numberOfPages = $countQueryResult instanceof \SMWQueryResult ? $countQueryResult->getCountValue() : $countQueryResult;
+			$this->numberOfPages = $countQueryResult instanceof QueryResult ? $countQueryResult->getCountValue() : $countQueryResult;
 		}
 
 		return $this->numberOfPages;

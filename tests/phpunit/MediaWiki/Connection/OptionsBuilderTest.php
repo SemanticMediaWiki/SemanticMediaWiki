@@ -29,7 +29,7 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testMakeSelectOptions( $options ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +43,7 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testToString( $options ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

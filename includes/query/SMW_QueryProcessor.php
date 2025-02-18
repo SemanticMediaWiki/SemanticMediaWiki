@@ -11,6 +11,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\Processor\DefaultParamDefinition;
 use SMW\Query\Processor\ParamListProcessor;
 use SMW\Query\QueryContext;
+use SMW\Query\QueryResult;
 use SMW\Query\ResultFormat;
 use SMW\Query\ResultPrinter;
 use SMW\Query\ResultPrinterDependency;
@@ -334,8 +335,8 @@ class SMWQueryProcessor implements QueryContext {
 		$res = $querySource->getQueryResult( $query );
 		$start = microtime( true );
 
-		if ( $res instanceof SMWQueryResult && $query->getOption( 'calc.result_hash' ) ) {
-			$query->setOption( 'result_hash', $res->getHash( SMWQueryResult::QUICK_HASH ) );
+		if ( $res instanceof QueryResult && $query->getOption( 'calc.result_hash' ) ) {
+			$query->setOption( 'result_hash', $res->getHash( QueryResult::QUICK_HASH ) );
 		}
 
 		if ( ( $query->querymode == SMWQuery::MODE_INSTANCES ) ||
@@ -347,7 +348,7 @@ class SMWQueryProcessor implements QueryContext {
 			return $result;
 		} else { // result for counting or debugging is just a string or number
 
-			if ( $res instanceof SMWQueryResult ) {
+			if ( $res instanceof QueryResult ) {
 				$res = $res->getCountValue();
 			}
 
@@ -361,7 +362,7 @@ class SMWQueryProcessor implements QueryContext {
 					. str_replace( '_', ' ', $params['outro']->getValue() )
 					. smwfEncodeMessages( $query->getErrors() );
 			} else {
-				// When no valid result was obtained, $res will be a SMWQueryResult.
+				// When no valid result was obtained, $res will be a QueryResult.
 				$result = smwfEncodeMessages( $query->getErrors() );
 			}
 

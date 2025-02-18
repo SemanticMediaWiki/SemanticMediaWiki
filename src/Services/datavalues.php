@@ -8,6 +8,7 @@ use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DataValues\ImportValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
@@ -32,7 +33,6 @@ use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Site;
 use SMWNumberValue as NumberValue;
-use SMWPropertyValue as PropertyValue;
 use SMWQuantityValue as QuantityValue;
 use SMWTimeValue as TimeValue;
 

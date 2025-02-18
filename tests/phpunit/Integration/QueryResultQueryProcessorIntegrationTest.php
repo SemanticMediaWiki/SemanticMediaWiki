@@ -10,7 +10,7 @@ use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
- * @covers \SMWQueryResult
+ * @covers \SMW\Query\QueryResult
  *
  * @group SMW
  * @group SMWExtension
@@ -117,7 +117,7 @@ class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 	 */
 	public function testCanConstructor( array $test ) {
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$this->getQueryResultFor( $test['query'] )
 		);
 	}

@@ -2,7 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,10 +25,10 @@ class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param array|null $attachments
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $attachments ) {
+	public function __construct( Annotator $propertyAnnotator, $attachments ) {
 		parent::__construct( $propertyAnnotator );
 		$this->attachments = $attachments;
 	}

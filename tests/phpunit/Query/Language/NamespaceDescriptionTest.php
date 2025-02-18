@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 
@@ -23,12 +23,6 @@ class NamespaceDescriptionTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\NamespaceDescription',
 			new NamespaceDescription( $namespace )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\NamespaceDescription',
-			new \SMWNamespaceDescription( $namespace )
 		);
 	}
 

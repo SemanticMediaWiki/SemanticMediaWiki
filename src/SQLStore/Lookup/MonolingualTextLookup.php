@@ -3,12 +3,12 @@
 namespace SMW\SQLStore\Lookup;
 
 use InvalidArgumentException;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
 
