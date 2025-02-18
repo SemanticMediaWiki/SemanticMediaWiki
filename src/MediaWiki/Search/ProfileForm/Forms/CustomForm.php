@@ -66,7 +66,7 @@ class CustomForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getParameters() {
 		return $this->parameters;
@@ -122,10 +122,10 @@ class CustomForm {
 
 			// Find request related value for the active form
 			if ( $this->isActiveForm ) {
-				$vals = $this->request->getArray( $name );
+				$vals = $this->request->getArray( $name, [] );
 
 				$i = $this->fieldCounter[$name];
-				$value = isset( $vals[$i] ) ? $vals[$i] : $vals;
+				$value = $vals[$i] ?? null;
 				$this->parameters[$name] = $value;
 			}
 
