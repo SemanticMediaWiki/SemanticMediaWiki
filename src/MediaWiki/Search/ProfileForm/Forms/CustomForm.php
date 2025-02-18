@@ -125,7 +125,7 @@ class CustomForm {
 				$vals = $this->request->getArray( $name );
 
 				$i = $this->fieldCounter[$name];
-				$value = isset( $vals[$i] ) ? $vals[$i] : $vals[0];
+				$value = isset( $vals[$i] ) ? $vals[$i] : $vals;
 				$this->parameters[$name] = $value;
 			}
 
