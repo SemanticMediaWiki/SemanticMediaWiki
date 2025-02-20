@@ -295,6 +295,15 @@ class RecursiveTextProcessor {
 
 	private function getParserOutputSafe(): ?ParserOutput {
 		try {
+			/**
+			 * Returns early if the parser has no options, because output
+			 * relies on the options.
+			 *
+			 * @see Parser::resetOutput
+			 */
+			if ( version_compare( MW_VERSION, '1.42', '>=' ) && $this->parser->getOptions() === null ) {
+				return null;
+			}
 			return $this->parser->getOutput();
 		} catch ( Error $e ) {
 			return null;
