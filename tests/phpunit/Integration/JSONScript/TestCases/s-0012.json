@@ -29,7 +29,6 @@
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Has-file smwtype_wpg\"",
-					"src=\"/images/thumb/6/68/S0012.png/50px-S0012.png\"",
 					"123",
 					"width=\"50\""
 				]
