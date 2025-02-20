@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Query;
 
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\Query\PrintRequest;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers SMW\Query\PrintRequest
@@ -18,7 +18,7 @@ use SMWPropertyValue as PropertyValue;
 class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -40,7 +40,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +71,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 

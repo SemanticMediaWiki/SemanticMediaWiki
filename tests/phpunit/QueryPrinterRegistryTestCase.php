@@ -85,10 +85,3 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 		$this->assertInstanceOf( '\SMW\ResultPrinter', $instance );
 	}
 }
-
-/**
- * SMWResultPrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\Tests\QueryPrinterRegistryTestCase', 'SMW\Tests\ResultPrinterTestCase' );

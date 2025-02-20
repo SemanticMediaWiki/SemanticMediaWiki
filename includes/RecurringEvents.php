@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Localizer\Message;
 use SMWDITime;
 
 /**

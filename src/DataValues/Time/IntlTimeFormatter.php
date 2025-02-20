@@ -3,7 +3,7 @@
 namespace SMW\DataValues\Time;
 
 use Language;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDITime as DITime;
 
 /**

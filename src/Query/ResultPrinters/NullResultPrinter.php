@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * @license GPL-2.0-or-later

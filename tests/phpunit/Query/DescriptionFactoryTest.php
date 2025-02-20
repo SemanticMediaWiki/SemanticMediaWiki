@@ -257,7 +257,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDescriptionFromMonolingualTextValue() {
-		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -314,7 +314,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDescriptionFromMonolingualTextValueWithProperty() {
-		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 

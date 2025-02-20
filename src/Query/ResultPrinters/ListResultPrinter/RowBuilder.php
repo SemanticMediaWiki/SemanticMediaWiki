@@ -17,7 +17,7 @@ abstract class RowBuilder {
 	private $valueTextsBuilder;
 
 	/**
-	 * @param \SMWResultArray[] $fields
+	 * @param \SMW\Query\Result\ResultArray[] $fields
 	 *
 	 * @param int $rownum
 	 *

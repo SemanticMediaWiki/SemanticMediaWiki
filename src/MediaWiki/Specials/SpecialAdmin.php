@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Specials;
 
 use PermissionsError;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
 use SpecialPage;

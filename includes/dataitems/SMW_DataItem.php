@@ -2,6 +2,9 @@
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
+use SMW\DIConcept;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\SemanticData;
 
@@ -48,11 +51,11 @@ abstract class SMWDataItem implements JsonUnserializable {
 	const TYPE_GEO = 7;
 	///  Data item ID for SMWDIContainer
 	const TYPE_CONTAINER = 8;
-	///  Data item ID for SMWDIWikiPage
+	///  Data item ID for DIWikiPage
 	const TYPE_WIKIPAGE = 9;
-	///  Data item ID for SMWDIConcept
+	///  Data item ID for DIConcept
 	const TYPE_CONCEPT = 10;
-	///  Data item ID for SMWDIProperty
+	///  Data item ID for DIProperty
 	const TYPE_PROPERTY = 11;
 	///  Data item ID for SMWDIError
 	const TYPE_ERROR = 12;
@@ -197,11 +200,11 @@ abstract class SMWDataItem implements JsonUnserializable {
 			case self::TYPE_CONTAINER:
 				return SMWDIContainer::class;
 			case self::TYPE_WIKIPAGE:
-				return SMWDIWikiPage::class;
+				return DIWikiPage::class;
 			case self::TYPE_CONCEPT:
-				return SMWDIConcept::class;
+				return DIConcept::class;
 			case self::TYPE_PROPERTY:
-				return SMWDIProperty::class;
+				return DIProperty::class;
 			case self::TYPE_ERROR:
 				return SMWDIError::class;
 			case self::TYPE_NOTYPE:

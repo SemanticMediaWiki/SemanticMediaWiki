@@ -5,7 +5,7 @@ namespace SMW\Query\ResultPrinters;
 use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 use Title;
 
 /**

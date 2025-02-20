@@ -378,11 +378,6 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 				$this->stringContains( 'smw-limitreport-Foo' ),
 				$this->stringContains( 'Bar' ) );
 
-		// FIXME 1.22+
-		if ( !method_exists( $parserOutput, 'setLimitReportData' ) ) {
-			$this->markTestSkipped( 'LimitReportData is not available.' );
-		}
-
 		$instance = new ParserData( $title, $parserOutput );
 		$instance->addLimitReport( 'Foo', 'Bar' );
 	}

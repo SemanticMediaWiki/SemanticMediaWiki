@@ -16,6 +16,7 @@ use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\Exception\ClassNotFoundException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later

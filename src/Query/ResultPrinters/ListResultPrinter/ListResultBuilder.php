@@ -3,9 +3,9 @@
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
-use SMWQueryResult;
 
 /**
  * Class ListResultBuilder
@@ -64,7 +64,7 @@ class ListResultBuilder {
 	/** @var Linker|null */
 	private $linker = null;
 
-	/** @var SMWQueryResult */
+	/** @var QueryResult */
 	private $queryResult;
 
 	/** @var ParameterDictionary */
@@ -72,7 +72,7 @@ class ListResultBuilder {
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
-	public function __construct( SMWQueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
+	public function __construct( QueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
 		$this->linker = $linker;
 		$this->queryResult = $queryResult;
 		$this->configuration = new ParameterDictionary();
@@ -199,7 +199,7 @@ class ListResultBuilder {
 	}
 
 	/**
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
 	private function getQueryResult() {
 		return $this->queryResult;

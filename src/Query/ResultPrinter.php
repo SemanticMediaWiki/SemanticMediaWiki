@@ -3,7 +3,6 @@
 namespace SMW\Query;
 
 use ParamProcessor\ParamDefinition;
-use SMWQueryResult as QueryResult;
 
 /**
  * Interface for SMW result printers.

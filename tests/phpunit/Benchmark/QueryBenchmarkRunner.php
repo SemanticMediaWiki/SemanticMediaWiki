@@ -3,10 +3,10 @@
 namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\Query\PrintRequest;
 use SMW\Store;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
 

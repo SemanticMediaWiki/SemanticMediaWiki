@@ -5,7 +5,7 @@ namespace SMW\Query\ResultPrinters;
 use SMW\DIProperty;
 use SMW\Exporter\ExporterFactory;
 use SMW\Query\PrintRequest;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * Printer class for generating RDF output

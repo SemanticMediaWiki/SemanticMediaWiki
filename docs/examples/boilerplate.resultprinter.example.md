@@ -5,7 +5,7 @@ This document contains an example for a `ResultPrinter` both for the PHP and Jav
 <pre>
 namespace SMW\Query\ResultPrinters;
 
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use Html;
@@ -123,7 +123,7 @@ class BoilerplateResultPrinter extends ResultPrinter {
 		// application.
 
 		// Some methods are declared as private to show case which objects are
-		// directly accessible within SMWQueryResult
+		// directly accessible within QueryResult
 
 		// Get all SMWDIWikiPage objects that make up the results
 		// $subjects = $this->getSubjects( $queryResult->getResults() );

@@ -5,7 +5,7 @@ namespace SMW\Factbox;
 use Html;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 use SMW\Store;
 use SMW\Utils\HtmlTable;

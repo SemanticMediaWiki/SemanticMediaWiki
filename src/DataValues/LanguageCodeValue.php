@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDIBlob as DIBlob;
 
 /**

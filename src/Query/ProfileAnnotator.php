@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 
 /**
  * Specifying the ProfileAnnotator interface
@@ -14,7 +14,7 @@ use SMW\PropertyAnnotator;
  *
  * @author mwjames
  */
-interface ProfileAnnotator extends PropertyAnnotator {
+interface ProfileAnnotator extends Annotator {
 
 	/**
 	 * Returns the query meta data property

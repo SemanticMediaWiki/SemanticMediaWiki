@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
 use SMW\SQLStore\SQLStore;

@@ -4,12 +4,12 @@ namespace SMW\Tests\SPARQLStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\SemanticData;
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\Subobject;
 use SMW\Tests\TestEnvironment;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 use Title;
 
 /**
@@ -37,12 +37,6 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			'\SMW\SPARQLStore\SPARQLStore',
 			new SPARQLStore()
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\SPARQLStore',
-			new \SMWSPARQLStore()
-		);
 	}
 
 	public function testGetSemanticDataOnMockBaseStore() {
@@ -52,7 +46,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$baseStore = $this->getMockBuilder( '\SMWStore' )
+		$baseStore = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -79,7 +73,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			$expResource->getNamespaceId() => $expResource->getNamespace()
 		];
 
-		$baseStore = $this->getMockBuilder( '\SMWStore' )
+		$baseStore = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -88,7 +82,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->with( $title )
 			->willReturn( true );
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$sparqlDatabase = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +128,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMWSparqlDatabase' )
+		$sparqlDatabase = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
 			->disableOriginalConstructor()
 			->getMock();
 

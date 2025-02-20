@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 use FormatJson;
 use Html;
 use OutputPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 
 /**
  * @license GPL-2.0-or-later
@@ -99,11 +99,7 @@ class OutputFormatter {
 	 * @param string $text
 	 */
 	public function addWikiText( $text ) {
-		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
-			$this->outputPage->addWikiTextAsInterface( $text );
-		} else {
-			$this->outputPage->addWikiText( $text );
-		}
+		$this->outputPage->addWikiTextAsInterface( $text );
 	}
 
 	/**

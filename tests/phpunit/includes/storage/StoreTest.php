@@ -5,8 +5,8 @@ namespace SMW\Tests;
 use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
 use SMW\StoreFactory;
-use SMWRequestOptions;
 use Title;
 
 /**
@@ -133,7 +133,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		}
 
 		$store = StoreFactory::getStore();
-		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
+		$result = $store->getPropertiesSpecial( new RequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
 		foreach ( $result->fetchList() as $row ) {
@@ -149,7 +149,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 	public function testGetUnusedPropertiesSpecial() {
 		$store = StoreFactory::getStore();
-		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
+		$result = $store->getUnusedPropertiesSpecial( new RequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
 		foreach ( $result->fetchList() as $row ) {
@@ -163,7 +163,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 	public function testGetWantedPropertiesSpecial() {
 		$store = StoreFactory::getStore();
-		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
+		$result = $store->getWantedPropertiesSpecial( new RequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
 		foreach ( $result->fetchList() as $row ) {
@@ -190,7 +190,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store->setConnectionManager( new ConnectionManager() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
+			'\SMW\MediaWiki\Connection\Database',
 			$store->getConnection( 'mw.db' )
 		);
 	}

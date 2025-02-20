@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\OptionsAwareTrait;

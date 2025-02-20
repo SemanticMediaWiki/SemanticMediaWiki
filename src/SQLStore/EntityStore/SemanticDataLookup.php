@@ -290,7 +290,7 @@ class SemanticDataLookup {
 	 * subject; in case (2) they are taken to refer to a property. In any
 	 * case, the retrieval is limited to the specified $proptable. The
 	 * parameters are an internal $id (of a subject or property), and an
-	 * $dataItem (being an DIWikiPage or SMWDIProperty). Moreover, when
+	 * $dataItem (being an DIWikiPage or DIProperty). Moreover, when
 	 * filtering by property, it is assumed that the given $proptable
 	 * belongs to the property: if it is a table with fixed property, it
 	 * will not be checked that this is the same property as the one that

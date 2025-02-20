@@ -8,10 +8,10 @@ use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\SemanticData;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GPL-2.0-or-later
@@ -209,12 +209,12 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Find a normalized representation of the given SMWExpElement that can
+	 * Find a normalized representation of the given SMW\Exporter\Element\ExpElement that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects. The type of the ExpElement might change, especially into
 	 * SMWExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
+	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
@@ -242,7 +242,7 @@ class TurtleTriplesBuilder {
 	 * redirects. The type of the ExpElement might change, especially into
 	 * SMWExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
+	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
@@ -281,7 +281,7 @@ class TurtleTriplesBuilder {
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects.
 	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
+	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6

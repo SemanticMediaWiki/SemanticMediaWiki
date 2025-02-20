@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
@@ -78,7 +79,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$utilityFactory->newLocalFileUpload()
 		);
 
-		if ( $this->getStore() instanceof \SMWSparqlStore ) {
+		if ( $this->getStore() instanceof SPARQLStore ) {
 			if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
 				$connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
 			} else {

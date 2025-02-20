@@ -332,7 +332,7 @@
 	"smw-ask-condition-input-assistance-concept": "This is an informatory message shown in a tooltip.\n\n{{Doc-important|Do not change the prefix <code>con:</code>}}",
 	"smw-ask-format-change-info": "This is an informatory message shown at the top of special page \"Ask\".",
 	"smw-ask-format-export-info": "This is an informatory message shown at the top of special page \"Ask\".",
-	"smw-ask-query-search-info": "An informatory message shown on \"Special:Ask\":\n\nParameters:\n* $1 shows the code of the query, e.g. <code><nowiki>[[Has number::+]]</nowiki></code>\n* $2 shows the name of the database backend that returned the answer, e.g. \"SMWSQLStore3\"\n* $3 indicates whether it is retrieved from cache or not \n* $4 shows the elapsed time needed to return the answer, e.g. 0.00635",
+	"smw-ask-query-search-info": "An informatory message shown on \"Special:Ask\":\n\nParameters:\n* $1 shows the code of the query, e.g. <code><nowiki>[[Has number::+]]</nowiki></code>\n* $2 shows the name of the database backend that returned the answer, e.g. \"SMW\\SQLStore\\SQLStore\"\n* $3 indicates whether it is retrieved from cache or not \n* $4 shows the elapsed time needed to return the answer, e.g. 0.00635",
 	"smw-ask-extra-query-log": "A tab on special page \"Ask\".",
 	"smw-ask-extra-other": "A tab on special page \"Ask\".",
 	"searchbyproperty": "{{doc-special|SearchByProperty}}",

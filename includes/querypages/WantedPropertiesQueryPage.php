@@ -143,7 +143,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @param $skin
-	 * @param array $result First item is SMWDIProperty, second item is int
+	 * @param array $result First item is DIProperty, second item is int
 	 *
 	 * @return string
 	 */
@@ -179,7 +179,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param SMWRequestOptions $requestOptions
-	 * @return array of SMWDIProperty|SMWDIError
+	 * @return array of \SMW\DIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );

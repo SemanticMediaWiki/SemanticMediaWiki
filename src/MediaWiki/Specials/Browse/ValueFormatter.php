@@ -6,7 +6,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;

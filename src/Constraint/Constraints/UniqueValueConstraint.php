@@ -5,7 +5,7 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataValue as DataValue;
@@ -32,7 +32,7 @@ class UniqueValueConstraint implements Constraint {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -53,9 +53,9 @@ class UniqueValueConstraint implements Constraint {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}

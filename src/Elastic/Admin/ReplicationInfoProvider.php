@@ -7,8 +7,8 @@ use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\Message;
 use SMW\Utils\HtmlColumns;
 use WebRequest;
 

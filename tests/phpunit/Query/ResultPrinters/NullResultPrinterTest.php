@@ -23,7 +23,7 @@ class NullResultPrinterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetResult_Empty() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

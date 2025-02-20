@@ -7,11 +7,11 @@ use SMW\DIWikiPage;
 use SMW\GroupPermissions;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
-use SMW\Message;
 use SMW\Store;
 use SMW\Utils\TemplateEngine;
 

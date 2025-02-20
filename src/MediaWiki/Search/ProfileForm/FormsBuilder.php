@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
 use RuntimeException;
-use SMW\Message;
+use SMW\Localizer\Message;
 use WebRequest;
 
 /**

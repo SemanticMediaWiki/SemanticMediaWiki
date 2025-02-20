@@ -42,7 +42,7 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 			(object)[ 's_id' => 1001, 'o_blob' => 'abc_blob', 'o_hash' => 'abc_hash' ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +54,7 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 42, 1001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +84,7 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->equalTo( [ 's_id' => [ 42, 1001 ] ] ) )
 			->willReturn( $rows );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

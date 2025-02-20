@@ -146,7 +146,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 			$expectedSomeProperties,
 			$this->maintenanceRunner->setOptions( [
 				'p' => true,
-				'b' => 'SMWSparqlStore' ] )->run()
+				'b' => '\SMW\SPARQLStore\SPARQLStore:' ] )->run()
 		);
 	}
 
@@ -155,7 +155,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 			$expectedSomeProperties,
 			$this->maintenanceRunner->setOptions( [
 				'query' => '[[Has Url::+]]',
-				'b' => 'SMWSparqlStore' ] )->run()
+				'b' => '\SMW\SPARQLStore\SPARQLStore:' ] )->run()
 		);
 	}
 

@@ -145,7 +145,7 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 /**
  * Returns an instance for the storage back-end
  *
- * @return SMWStore
+ * @return \SMW\Store
  */
 function &smwfGetStore() {
 	$store = \SMW\StoreFactory::getStore();

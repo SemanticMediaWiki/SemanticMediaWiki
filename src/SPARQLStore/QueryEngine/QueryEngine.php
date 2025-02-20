@@ -6,13 +6,13 @@ use RuntimeException;
 use SMW\Exporter\Element;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution

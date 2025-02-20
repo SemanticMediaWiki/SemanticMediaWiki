@@ -27,12 +27,6 @@ class ValueDescriptionTest extends \PHPUnit\Framework\TestCase {
 			'SMW\Query\Language\ValueDescription',
 			new ValueDescription( $dataItem )
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
-			new \SMWValueDescription( $dataItem )
-		);
 	}
 
 	/**
