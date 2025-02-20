@@ -295,11 +295,6 @@ class RecursiveTextProcessor {
 
 	private function getParserOutputSafe(): ?ParserOutput {
 		try {
-			// The getOutput() method is deprecated in MW 1.42 before initializing
-			// So we need to check if the parser was initialized.
-			if ( version_compare( MW_VERSION, '1.42', '>=' ) && $this->parser->getOptions() === null ) {
-				$this->parser->resetOutput();
-			}
 			return $this->parser->getOutput();
 		} catch ( Error $e ) {
 			return null;
