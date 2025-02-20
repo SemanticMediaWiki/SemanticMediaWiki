@@ -56,7 +56,7 @@ class Deferred {
 		$result = Html::rawElement(
 			$element,
 			[
-				'class' => 'smw-deferred-query' . ( isset( $params['class'] ) ? ' ' . $params['class'] : '' ),
+				'class' => 'smw-deferred-query',
 				'data-query' => json_encode(
 					[
 						'query'  => trim( $query->getOption( self::QUERY_PARAMETERS ) ?? '' ),
