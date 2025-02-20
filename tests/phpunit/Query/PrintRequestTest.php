@@ -137,9 +137,9 @@ class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 		# 3
 		$provider[] = [
-			'Bar #123',
+			'Foo=Bar#123',
 			false,
-			'Bar'
+			'Bar#123'
 		];
 
 		# 4
@@ -172,9 +172,9 @@ class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 		# 8, 1464
 		$provider[] = [
-			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&10003;,&10005;)',
+			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,
-			'Label on (&10003;,&10005;)'
+			'Label on (&#10003;,&#10005;)'
 		];
 
 		return $provider;
