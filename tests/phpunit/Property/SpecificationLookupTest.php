@@ -79,8 +79,7 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 					case 'en':
 						return 'en-desc';
 				}
-			)
-		);
+			} );
 
 		$instance = new SpecificationLookup(
 			$this->store,
