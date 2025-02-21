@@ -351,7 +351,7 @@ class ProfileForm {
 		// TODO this information should come from the store and not being
 		// derived from a class! How should such characteristic be represented?
 		$features = [
-			'best' => is_a( $this->store, "SMWElasticStore" )
+			'best' => is_a( $this->store, "SMW\Elastic\ElasticStore" )
 		];
 
 		$form = $sortForm->makeFields( $features );
