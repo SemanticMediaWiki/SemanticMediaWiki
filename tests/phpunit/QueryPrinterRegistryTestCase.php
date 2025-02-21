@@ -5,8 +5,6 @@ namespace SMW\Tests;
 use SMW\Query\ResultPrinters\ResultPrinter;
 
 /**
- * Base class for ResultPrinter tests.
- *
  * @group SMW
  * @group SMWExtension
  *
