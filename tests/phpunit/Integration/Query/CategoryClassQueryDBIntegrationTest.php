@@ -3,15 +3,15 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Query\PrintRequest;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**
@@ -22,14 +22,15 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
+class CategoryClassQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;

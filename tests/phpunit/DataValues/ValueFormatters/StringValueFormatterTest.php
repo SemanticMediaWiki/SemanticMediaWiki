@@ -10,12 +10,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class StringValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

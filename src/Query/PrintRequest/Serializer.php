@@ -2,11 +2,11 @@
 
 namespace SMW\Query\PrintRequest;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -18,7 +18,7 @@ class Serializer {
 	 * @since 2.5
 	 *
 	 * @param PrintRequest $printRequest
-	 * @param boolean $showparams that sets if the serialization should include
+	 * @param bool $showparams that sets if the serialization should include
 	 * the extra print request parameters
 	 *
 	 * @return string

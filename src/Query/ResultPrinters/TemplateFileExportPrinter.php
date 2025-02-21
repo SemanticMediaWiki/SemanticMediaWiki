@@ -2,19 +2,17 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Sanitizer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQueryResult as QueryResult;
 use SMW\MediaWiki\Template\Template;
-use SMW\MediaWiki\Template\TemplateSet;
 use SMW\MediaWiki\Template\TemplateExpander;
+use SMW\MediaWiki\Template\TemplateSet;
+use SMW\Query\QueryResult;
 
 /**
  * Exports data as file in a format that is defined by its invoked templates.
  * Custom specifications and requirements can be specified freely by relying on
  * the available template system.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,7 +20,7 @@ use SMW\MediaWiki\Template\TemplateExpander;
 class TemplateFileExportPrinter extends FileExportPrinter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 

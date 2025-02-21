@@ -2,16 +2,15 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\Localizer\Message;
 use SMW\SemanticData;
-use SMW\Message;
 use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,7 +23,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'mandatory_properties';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
@@ -69,7 +68,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		$dataItem = $dataValue->getDataItem();
 		$properties = array_flip( $properties );
 
-		//PHP 7.0+ $semanticData = $dataValue->getCallable( SemanticData::class )();
+		// PHP 7.0+ $semanticData = $dataValue->getCallable( SemanticData::class )();
 		$semanticData = $dataValue->getCallable( SemanticData::class );
 		$semanticData = $semanticData();
 

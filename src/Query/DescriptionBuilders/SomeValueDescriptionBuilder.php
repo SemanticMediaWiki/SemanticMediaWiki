@@ -9,7 +9,7 @@ use SMWDataValue as DataValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -33,6 +33,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 2.3
 	 *
+	 * @param DataValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description

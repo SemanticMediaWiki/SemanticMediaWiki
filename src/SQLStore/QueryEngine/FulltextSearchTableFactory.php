@@ -15,7 +15,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -38,13 +38,11 @@ class FulltextSearchTableFactory {
 					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
-				break;
 			case 'sqlite':
 				return new SQLiteValueMatchConditionBuilder(
 					$this->newTextSanitizer(),
 					$this->newSearchTable( $store )
 				);
-				break;
 		}
 
 		return new ValueMatchConditionBuilder( $this->newTextSanitizer(), $this->newSearchTable( $store ) );
@@ -148,9 +146,8 @@ class FulltextSearchTableFactory {
 			$settings->get( 'smwgFulltextDeferredUpdate' )
 		);
 
-		// https://www.mediawiki.org/wiki/Manual:$wgCommandLineMode
 		$textChangeUpdater->isCommandLineMode(
-			$GLOBALS['wgCommandLineMode']
+			MW_ENTRY_POINT === 'cli' || defined( 'MEDIAWIKI_JOB_RUNNER' )
 		);
 
 		return $textChangeUpdater;

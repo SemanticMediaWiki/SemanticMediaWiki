@@ -11,12 +11,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
+class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,7 +33,7 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -52,8 +52,8 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 			$this->requestOptions
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTimestamp()
 		);
 
@@ -111,19 +111,19 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_id = 42;
 		$row->usage_count = $expectedCount;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
-		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,8 +135,8 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 
@@ -160,17 +160,17 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 		$row->smw_id = 42;
 		$row->usage_count = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		// TODO: Illegal dynamic property (#5421)
 		$this->requestOptions->limit = 1001;
@@ -183,8 +183,8 @@ class PropertyUsageListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$result = $instance->fetchList();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$result
 		);
 

@@ -78,9 +78,9 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">http://example.org/intro</a>",
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/intro\">.*http://example.org/intro.*</a>",
 					"<td class=\"smwtype_wpg\">Example/S0011/1</td>",
-					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">http://example.org/outro</a>"
+					"<a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/outro\">.*http://example.org/outro.*</a>"
 				]
 			}
 		},

@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Schema\SchemaFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
+class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -121,7 +121,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob() {
-		$checkJobParameterCallback = function ( $job ) {
+		$checkJobParameterCallback = static function ( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
 
@@ -144,7 +144,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob_CastAsArray() {
-		$checkJobParameterCallback = function ( $job ) {
+		$checkJobParameterCallback = static function ( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
 

@@ -10,7 +10,7 @@ use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -35,7 +35,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $groups;
 
 	/**
-	 * @var string|boolean $wiki
+	 * @var string|bool
 	 */
 	private $wiki;
 
@@ -49,7 +49,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @param int $id
 	 * @param string|array $groups
-	 * @param string|boolean $wiki Wiki ID, or false for the current wiki
+	 * @param string|bool $wiki Wiki ID, or false for the current wiki
 	 */
 	public function __construct( $id, $groups = [], $wiki = false ) {
 		$this->id = $id;
@@ -108,9 +108,6 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @since 1.9
 	 */
 	public function releaseConnection() {
-		if ( $this->loadBalancer !== null && $this->connection !== null ) {
-			$this->loadBalancer->reuseConnection( $this->connection );
-		}
 	}
 
 	/**

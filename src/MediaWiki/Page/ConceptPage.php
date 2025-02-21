@@ -3,19 +3,15 @@
 namespace SMW\MediaWiki\Page;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataValueFactory;
 use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\MediaWiki\Collator;
 use SMW\Message;
-use SMWDataItem as DataItem;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
-use SMW\MediaWiki\Page\ListBuilder;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,51 +19,41 @@ use SMW\MediaWiki\Page\ListBuilder;
 class ConceptPage extends Page {
 
 	/**
-	 * @var DIProperty
-	 */
-	private $property;
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DataValue
-	 */
-	private $propertyValue;
-
-	/**
 	 * @see Page::initParameters()
 	 *
 	 * @note We use a smaller limit here; property pages might become large.
 	 */
-	protected function initParameters() {
+	protected function initParameters(): void {
 		$this->limit = $this->getOption( 'pagingLimit' );
 	}
 
 	/**
 	 * Returns the HTML which is added to $wgOut after the article text.
-	 *
-	 * @return string
 	 */
-	protected function getHtml() {
+	protected function getHtml(): string {
 		$context = $this->getContext();
-		$context->getOutput()->addModuleStyles( 'ext.smw.page.styles' );
+		$context->getOutput()->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.page.styles'
+		] );
 
 		$request = $context->getRequest();
 		$store = ApplicationFactory::getInstance()->getStore();
 
+		$limit = (int)$request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
+		$offset = (int)$request->getVal( 'offset', '0' );
+
 		// limit==0: configuration setting to disable this completely
 		if ( $this->limit > 0 ) {
+			$dataItem = $this->getDataItem();
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
-			$description = $descriptionFactory->newConceptDescription( $this->getDataItem() );
+			$description = $descriptionFactory->newConceptDescription( $dataItem );
 			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
-			$query->setLimit( $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) ) );
-			$query->setOffset( $request->getVal( 'offset', '0' ) );
-			$query->setContextPage( $this->getDataItem() );
+			$query->setLimit( $limit );
+			$query->setOffset( $offset );
+			$query->setContextPage( $dataItem );
 			$query->setOption( $query::NO_DEPENDENCY_TRACE, true );
 			$query->setOption( $query::NO_CACHE, true );
 
@@ -86,13 +72,11 @@ class ConceptPage extends Page {
 		}
 
 		// Make navigation point to the result list.
-		$this->getTitle()->setFragment( '#smw-result' );
+		$title = $this->getTitle();
+		$title->setFragment( '#smw-result' );
 		$isRTL = $context->getLanguage()->isRTL();
 
 		$resultCount = count( $diWikiPages );
-
-		$limit = $request->getVal( 'limit', $this->getOption( 'pagingLimit' ) );
-		$offset = $request->getVal( 'offset', '0' );
 
 		$query = [
 			'from' => $request->getVal( 'from', '' ),
@@ -110,7 +94,7 @@ class ConceptPage extends Page {
 				[
 					'class' => 'clearfix'
 				],
-				Pager::pagination( $this->getTitle(), $limit, $offset, $resultCount,
+				Pager::pagination( $title, $limit, $offset, $resultCount,
 					$query + [ '_target'	=> '#smw-result' ] )
 			) . Html::rawElement(
 				'div',
@@ -124,12 +108,11 @@ class ConceptPage extends Page {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setGroup( 'concept' );
 
-
 		$htmlTabs->isRTL(
 			$isRTL
 		);
 
-		if ( $this->getTitle()->exists() ) {
+		if ( $title->exists() ) {
 
 			$listBuilder = new ListBuilder(
 				$store
@@ -184,7 +167,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function getCachedCount( $store ) {
+	private function getCachedCount( Store $store ): string {
 		$concept = $store->getConceptCacheStatus(
 			$this->getDataItem()
 		);
@@ -209,7 +192,7 @@ class ConceptPage extends Page {
 		);
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

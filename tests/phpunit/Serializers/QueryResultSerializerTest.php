@@ -5,24 +5,24 @@ namespace SMW\Tests\Serializers;
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\Serializers\QueryResultSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
+class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -67,8 +67,8 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $setup['queryResult'] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$results
 		);
 
@@ -85,11 +85,11 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -97,11 +97,11 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -177,7 +177,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $queryResult );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 		$this->assertEmpty( $results['printrequests'] );
 		$this->assertEmpty( $results['results'] );
 	}

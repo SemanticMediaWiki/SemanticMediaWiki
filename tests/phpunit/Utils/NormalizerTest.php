@@ -8,12 +8,12 @@ use SMW\Utils\Normalizer;
  * @covers \SMW\Utils\Normalizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class NormalizerTest extends \PHPUnit_Framework_TestCase {
+class NormalizerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testReduceLengthTo() {
 		$this->assertEquals(

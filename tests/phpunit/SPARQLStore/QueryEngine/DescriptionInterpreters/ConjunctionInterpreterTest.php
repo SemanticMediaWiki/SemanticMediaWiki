@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\NamespaceDescription;
@@ -15,17 +16,18 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -162,7 +164,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
@@ -320,8 +322,8 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 
-		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(
@@ -331,8 +333,8 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$category = new DIWikiPage( 'Bar', NS_CATEGORY );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new Conjunction( [

@@ -3,14 +3,14 @@
 namespace SMW\DataValues;
 
 use Linker;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 
 /**
  * To support regular expressions in connection with the `Allows pattern`
  * property.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames

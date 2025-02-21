@@ -7,7 +7,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
 use UploadBase;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -15,7 +15,7 @@ use UploadBase;
 class LocalFileUpload extends UploadBase {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $removeTemporaryFile = true;
 
@@ -83,7 +83,7 @@ class LocalFileUpload extends UploadBase {
 	 * @param string $pageText
 	 * @param string $comment
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUploadCopyFromLocation( $localUploadPath, $desiredDestName, $pageText = '', $comment = '' ) {
 		if ( !$this->dummyFileCreator instanceof DummyFileCreator ) {
@@ -111,7 +111,7 @@ class LocalFileUpload extends UploadBase {
 	 * @param string $pageText
 	 * @param string $comment
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUploadFromLocation( $localUploadPath, $desiredDestName, $pageText = '', $comment = '' ) {
 		$localUploadPath = $this->createReadablePath( $localUploadPath );
@@ -144,7 +144,7 @@ class LocalFileUpload extends UploadBase {
 	 * @param string $pageText
 	 * @param string $comment
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUpload( $pageText = '', $comment = '' ) {
 		return $this->doUploadFromLocation( $this->localUploadPath, $this->desiredDestName, $pageText, $comment );

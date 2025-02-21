@@ -3,31 +3,30 @@
 namespace SMW\Tests;
 
 use SMW\TypesRegistry;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\TypesRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
+class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGetDataTypeList() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			TypesRegistry::getDataTypeList()
 		);
 	}
 
 	public function testGetPropertyList() {
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			TypesRegistry::getPropertyList()
 		);
 	}
@@ -106,7 +105,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 
@@ -119,7 +118,7 @@ class TypesRegistryTest extends \PHPUnit_Framework_TestCase {
 				continue;
 			}
 
-			yield[ $key, $def ];
+			yield [ $key, $def ];
 		}
 	}
 

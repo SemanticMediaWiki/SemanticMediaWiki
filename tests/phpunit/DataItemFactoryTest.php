@@ -10,12 +10,12 @@ use SMWDIUri as DIUri;
  * @covers \SMW\DataItemFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -58,7 +58,7 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new DataItemFactory();
 
@@ -69,7 +69,7 @@ class DataItemFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDIContainer() {
-		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,23 +2,23 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\FormatProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class FormatProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 
@@ -40,7 +40,7 @@ class FormatProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateProfile() {
-		$subject =new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
 		$container = new DIContainer(
 			new ContainerSemanticData( $subject	)

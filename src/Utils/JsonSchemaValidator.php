@@ -7,7 +7,7 @@ use JsonSchema\Validator as SchemaValidator;
 use JsonSerializable;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class JsonSchemaValidator {
 	private $isValid = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $errors = [];
 
@@ -34,7 +34,7 @@ class JsonSchemaValidator {
 	 *
 	 * @param SchemaValidator|null $schemaValidator
 	 */
-	public function __construct( SchemaValidator $schemaValidator = null ) {
+	public function __construct( ?SchemaValidator $schemaValidator = null ) {
 		$this->schemaValidator = $schemaValidator;
 	}
 
@@ -99,7 +99,7 @@ class JsonSchemaValidator {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getErrors() {
 		return $this->errors;

@@ -4,19 +4,19 @@ namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIBlob as DIBlob;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
  */
-class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
+class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,7 +25,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +35,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 	}
 
 	public function testCanConstruct() {
@@ -50,28 +50,28 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFetchFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableIndexes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getIndexField()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getLabelField()
 		);
 	}
@@ -83,13 +83,13 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getWhereConds( $blob )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getInsertValues( $blob )
 		);
 	}
@@ -194,7 +194,7 @@ class DIBlobHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function createRandomString( $length = 10 ) {
-		return substr( str_shuffle( str_repeat( $x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil( $length/strlen( $x ) ) ) ), 1, $length );
+		return substr( str_shuffle( str_repeat( $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil( $length / strlen( $x ) ) ) ), 1, $length );
 	}
 
 	public function fieldTypeProvider() {

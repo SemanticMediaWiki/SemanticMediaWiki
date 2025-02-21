@@ -93,7 +93,7 @@ class ConfigPreloadPrimaryKeyTableMutator {
 /**
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md
  */
-MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', function ( array $tables, MessageReporter $messageReporter ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', static function ( array $tables, MessageReporter $messageReporter ) {
 	$cliMsgFormatter = new CliMsgFormatter();
 	$configPreloadPrimaryKeyTableMutator = new ConfigPreloadPrimaryKeyTableMutator();
 
@@ -141,7 +141,6 @@ MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::
 	$messageReporter->reportMessage(
 		$cliMsgFormatter->oneCol( "... done.", 3 )
 	);
-
 } );
 
 return [

@@ -8,7 +8,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -55,10 +55,10 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array|null $dependencyList
 	 */
-	public function addToUpdateList( $sid, array $dependencyList = null ) {
+	public function addToUpdateList( $sid, ?array $dependencyList = null ) {
 		if ( $sid == 0 || $dependencyList === null || $dependencyList === [] ) {
 			return null;
 		}
@@ -113,7 +113,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $sid
+	 * @param int $sid
 	 * @param array $dependencyList
 	 *
 	 * @return void

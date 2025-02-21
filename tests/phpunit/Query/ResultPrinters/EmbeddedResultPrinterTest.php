@@ -9,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Query\ResultPrinters\EmbeddedResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class EmbeddedResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class EmbeddedResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	private $queryResult;
 	private $resultPrinterReflector;
@@ -24,7 +24,7 @@ class EmbeddedResultPrinterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +36,7 @@ class EmbeddedResultPrinterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ResultPrinter',
+			'\SMW\Query\ResultPrinters\ResultPrinter',
 			new EmbeddedResultPrinter( 'embedded' )
 		);
 	}

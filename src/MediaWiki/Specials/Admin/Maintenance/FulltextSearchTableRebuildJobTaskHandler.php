@@ -3,18 +3,17 @@
 namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use SMW\Message;
-use Title;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -32,7 +31,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 	private $outputFormatter;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isApiTask = true;
 
@@ -93,7 +92,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 
 		if ( $this->hasFeature( SMW_ADM_FULLT ) && !$this->hasPendingJob() ) {
 			$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-fulltext-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-fulltext-title' ) )
 				->addParagraph( $this->msg( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->setMethod( 'post' )
 				->addHiddenField( 'action', 'fulltrebuild' )
@@ -108,7 +107,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 				);
 		} elseif ( $this->hasFeature( SMW_ADM_FULLT ) ) {
 			$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-fulltext-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-fulltext-title' ) )
 				->addParagraph( $this->msg( 'smw-admin-fulltext-intro', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 				->addParagraph(
 					Html::element(

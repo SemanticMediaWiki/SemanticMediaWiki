@@ -2,19 +2,19 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
-use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-use SMW\Utils\HtmlColumns;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Localizer;
+use SMW\Utils\HtmlColumns;
+use SMWDataItem as DataItem;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the
  * standard Category pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author David Loomer
@@ -39,7 +39,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	private $userParam;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numColumns;
 

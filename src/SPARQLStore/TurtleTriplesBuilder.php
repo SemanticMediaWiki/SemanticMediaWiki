@@ -3,19 +3,18 @@
 namespace SMW\SPARQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\SemanticData;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -49,12 +48,12 @@ class TurtleTriplesBuilder {
 	private $prefixes = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasTriplesForUpdate = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $triplesChunkSize = 80;
 
@@ -69,7 +68,7 @@ class TurtleTriplesBuilder {
 	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
 	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, Cache $cache = null ) {
+	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
 		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
 		$this->cache = $cache;
 	}
@@ -77,7 +76,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $chunkSize
+	 * @param int $triplesChunkSize
 	 */
 	public function setTriplesChunkSize( $triplesChunkSize ) {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
@@ -99,7 +98,7 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasTriples() {
 		return $this->hasTriplesForUpdate;
@@ -210,18 +209,18 @@ class TurtleTriplesBuilder {
 	}
 
 	/**
-	 * Find a normalized representation of the given SMWExpElement that can
+	 * Find a normalized representation of the given SMW\Exporter\Element\ExpElement that can
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects. The type of the ExpElement might change, especially into
 	 * SMWExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
+	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
 	 *
 	 * @param Element $expElement object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -243,13 +242,13 @@ class TurtleTriplesBuilder {
 	 * redirects. The type of the ExpElement might change, especially into
 	 * SMWExpData in order to store auxiliary properties.
 	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
+	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
 	 *
 	 * @param ExpResource $expResource object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 *
 	 * @return ExpElement
 	 */
@@ -282,13 +281,13 @@ class TurtleTriplesBuilder {
 	 * be used in an update of the stored data. Normalization uses
 	 * redirects.
 	 * Moreover, the method records any auxiliary data that should be
-	 * written to the store when including this SMWExpElement into updates.
+	 * written to the store when including this SMW\Exporter\Element\ExpElement into updates.
 	 * This auxiliary data is collected in a call-by-ref array.
 	 *
 	 * @since 1.6
 	 *
 	 * @param ExpData $expData object containing the update data
-	 * @param $auxiliaryExpData array of SMWExpData
+	 * @param &$auxiliaryExpData array of SMWExpData
 	 * @param $expandSubject boolean controls if redirects/auxiliary data should also be sought for subject
 	 *
 	 * @return ExpData

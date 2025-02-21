@@ -4,6 +4,7 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
@@ -18,14 +19,15 @@ use SMW\Tests\Utils\UtilityFactory;
  * native PHP.
  *
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
+abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @var FileReader
@@ -48,7 +50,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	private $configValueCallback = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $deletePagesOnTearDown = true;
 
@@ -77,7 +79,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			$utilityFactory->newLocalFileUpload()
 		);
 
-		if ( $this->getStore() instanceof \SMWSparqlStore ) {
+		if ( $this->getStore() instanceof SPARQLStore ) {
 			if ( isset( $GLOBALS['smwgSparqlDatabaseConnector'] ) ) {
 				$connectorId = $GLOBALS['smwgSparqlDatabaseConnector'];
 			} else {
@@ -88,7 +90,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
-			$this->connectorId = strtolower( $this->getDBConnection()->getType() );
+			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
 		}
 	}
 
@@ -128,7 +130,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	protected function getDependencyDefinitions() {
 		return [];
@@ -152,18 +154,23 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
 			\SMW\NamespaceManager::clear();
+
+			// Reset title-related services to prevent stale language objects. See #5951.
+			$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
+			$this->testEnvironment->resetMediaWikiService( '_MediaWikiTitleCodec' );
+
 			$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 			$lang = $languageFactory->getLanguage( $val );
 
 			// https://github.com/wikimedia/mediawiki/commit/49ce67be93dfbb40d036703dad2278ea9843f1ad
-			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', function () use ( $lang ) {
+			$this->testEnvironment->redefineMediaWikiService( 'ContentLanguage', static function () use ( $lang ) {
 				return $lang;
 			} );
 
 			return $lang;
 		} );
 
-		$this->registerConfigValueCallback( 'wgLang', function ( $val ) {
+		$this->registerConfigValueCallback( 'wgLang', static function ( $val ) {
 			\RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			\SMW\NamespaceManager::clear();
@@ -198,7 +205,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 *
 	 * @param string $file
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function canTestCaseFile( $file ) {
 		// Filter specific files on-the-fly
@@ -285,11 +292,11 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->getDBConnection()->getType() ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->connectorId ) ) {
+		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
 	}
@@ -298,7 +305,7 @@ abstract class JSONScriptTestCaseRunner extends DatabaseTestCase {
 	 * @since 2.5
 	 *
 	 * @param array $pages
-	 * @param integer $defaultNamespace
+	 * @param int $defaultNamespace
 	 */
 	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
 		$this->jsonTestCaseContentHandler->skipOn(

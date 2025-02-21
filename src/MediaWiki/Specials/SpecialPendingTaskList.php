@@ -2,17 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\SetupFile;
-use SMW\Message;
-use SpecialPage;
 use Html;
-use SMW\Utils\HtmlTabs;
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
+use SMW\Utils\HtmlTabs;
+use SpecialPage;
 
 /**
  * Displays pending tasks in connection with Semantic MediaWiki.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @since 3.2
  * @author mwjames
@@ -36,7 +34,8 @@ class SpecialPendingTaskList extends SpecialPage {
 		);
 
 		$output = $this->getOutput();
-		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModuleStyles( 'ext.smw.styles' );
+		$output->addModuleStyles( 'ext.smw.special.styles' );
 
 		$this->setHeaders();
 
@@ -49,11 +48,6 @@ class SpecialPendingTaskList extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/maintenance';
 	}
 

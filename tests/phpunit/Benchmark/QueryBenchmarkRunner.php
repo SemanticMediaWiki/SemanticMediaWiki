@@ -3,18 +3,17 @@
 namespace SMW\Tests\Benchmark;
 
 use RuntimeException;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\Store;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 use SMWQueryParser as QueryParser;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

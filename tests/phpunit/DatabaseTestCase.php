@@ -25,12 +25,12 @@ use Title;
  *
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
+abstract class DatabaseTestCase extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var TestEnvironment
@@ -53,17 +53,17 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 	protected $storesToBeExcluded = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $destroyDatabaseTablesBeforeRun = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $destroyDatabaseTablesAfterRun = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isUsableUnitTestDatabase = true;
 
@@ -114,7 +114,7 @@ abstract class DatabaseTestCase extends \PHPUnit_Framework_TestCase {
 				$title->expects( $this->any() )
 					->method( 'getPrefixedDBkey' )
 					->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
-	
+
 				BacklinkCache::get( $title )->clear();
 			}
 		}

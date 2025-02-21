@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\PropertyListByApiRequest
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
+class PropertyListByApiRequestTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -33,10 +33,10 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
- 	}
+	}
 
 	public function testCanConstruct() {
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,17 +99,17 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'isFromCache' )
-			->will( $this->returnValue( $isCached ) );
+			->willReturn( $isCached );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+			->willReturn( $cachedListLookup );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

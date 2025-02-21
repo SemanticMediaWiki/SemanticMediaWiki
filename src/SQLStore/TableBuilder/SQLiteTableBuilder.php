@@ -5,7 +5,7 @@ namespace SMW\SQLStore\TableBuilder;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -72,7 +72,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes = null ) {
+	protected function doCreateTable( $tableName, ?array $attributes = null ) {
 		$mode = '';
 		$option = '';
 
@@ -119,7 +119,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes = null ) {
+	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -258,7 +258,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 

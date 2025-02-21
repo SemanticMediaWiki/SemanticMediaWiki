@@ -5,7 +5,7 @@ namespace SMW;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class DisplayTitleFinder {
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $canUse = true;
 
@@ -41,7 +41,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canUse
+	 * @param bool $canUse
 	 */
 	public function getEntityCache() {
 		return $this->entityCache;
@@ -50,7 +50,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canUse
+	 * @param bool $canUse
 	 */
 	public function setCanUse( $canUse ) {
 		$this->canUse = (bool)$canUse;
@@ -148,7 +148,7 @@ class DisplayTitleFinder {
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
-		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
 			return;
 		}
 

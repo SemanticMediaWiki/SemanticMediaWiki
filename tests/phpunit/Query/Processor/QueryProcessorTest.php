@@ -8,12 +8,12 @@ use SMWQueryProcessor as QueryProcessor;
  * @covers SMWQueryProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class QueryProcessorTest extends \PHPUnit_Framework_TestCase {
+class QueryProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider limitOffsetParamsProvider

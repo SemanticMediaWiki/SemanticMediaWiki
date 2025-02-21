@@ -106,8 +106,7 @@
 			"about": "#2 Has page, asc (different to f-0305, f-0304)",
 			"subject": "Example/F0306/Q.1.3",
 			"skip-on": {
-				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
-				"hhvm-*": "HHVM (or SQLite) shows opposite B1000, B9"
+				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
 			},
 			"assert-output": {
 				"to-contain": [
@@ -228,9 +227,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mw-1.28<": "`numeric` collation only available with 1.28+"
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

@@ -8,18 +8,17 @@ use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\HashBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class HashBuilderTest extends \PHPUnit_Framework_TestCase {
+class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -75,8 +74,8 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 	public function testContentHashId() {
 		$hash = HashBuilder::createFromContent( 'Foo' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 
@@ -96,8 +95,8 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 			DIWikiPage::newFromText( __METHOD__ )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			HashBuilder::createFromSemanticData( $semanticData )
 		);
 	}
@@ -125,8 +124,8 @@ class HashBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$sem = serialize( $semanticData );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			HashBuilder::createFromSemanticData( unserialize( $sem ) )
 		);
 	}

@@ -3,18 +3,17 @@
 namespace SMW\Tests;
 
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWQuery
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -138,8 +137,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$serialized = $instance->toArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$serialized
 		);
 
@@ -177,8 +176,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$hash = $instance->getHash();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\ThingDescription;
 
@@ -11,12 +11,12 @@ use SMW\Query\Language\ThingDescription;
  * @covers \SMW\Query\Language\ConceptDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )
@@ -26,12 +26,6 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ConceptDescription',
 			new ConceptDescription( $concept )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ConceptDescription',
-			new \SMWConceptDescription( $concept )
 		);
 	}
 
@@ -46,11 +40,11 @@ class ConceptDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals( "[[{$ns}:Foo]]", $instance->getQueryString() );
 		$this->assertEquals( " <q>[[{$ns}:Foo]]</q> ", $instance->getQueryString( true ) );
 
-		$this->assertEquals( false, $instance->isSingleton() );
+		$this->assertFalse( $instance->isSingleton() );
 		$this->assertEquals( [], $instance->getPrintRequests() );
 
-		$this->assertEquals( 1, $instance->getSize() );
-		$this->assertEquals( 0, $instance->getDepth() );
+		$this->assertSame( 1, $instance->getSize() );
+		$this->assertSame( 0, $instance->getDepth() );
 		$this->assertEquals( 4, $instance->getQueryFeatures() );
 	}
 

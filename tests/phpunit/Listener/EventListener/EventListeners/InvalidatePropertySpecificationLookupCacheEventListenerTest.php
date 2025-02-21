@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
+use Onoi\EventDispatcher\DispatchContext;
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
-use Onoi\EventDispatcher\DispatchContext;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit_Framework_TestCase {
+class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
 
 	private $specificationLookup;
 	private $spyLogger;

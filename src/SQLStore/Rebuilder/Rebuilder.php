@@ -2,23 +2,21 @@
 
 namespace SMW\SQLStore\Rebuilder;
 
-use Hooks;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\TitleFactory;
 use SMW\PropertyRegistry;
 use SMW\SemanticData;
-use SMW\Utils\Lru;
-use SMW\MediaWiki\TitleFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
-use Title;
+use SMW\Utils\Lru;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author Markus Krötzsch
@@ -74,12 +72,12 @@ class Rebuilder {
 	private $namespaces = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $iterationLimit = 1;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $progress = 1;
 
@@ -153,7 +151,7 @@ class Rebuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $iterationLimit
+	 * @param int $iterationLimit
 	 */
 	public function setDispatchRangeLimit( $iterationLimit ) {
 		$this->iterationLimit = (int)$iterationLimit;
@@ -162,7 +160,7 @@ class Rebuilder {
 	/**
 	 * @since 2.3
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMaxId() {
 		$db = $this->store->getConnection( 'mw.db' );
@@ -190,7 +188,7 @@ class Rebuilder {
 	 *
 	 * @since 2.3
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEstimatedProgress() {
 		return $this->progress;
@@ -211,7 +209,7 @@ class Rebuilder {
 	 *
 	 * @since 2.3
 	 *
-	 * @param integer &$id
+	 * @param int &$id
 	 */
 	public function rebuild( &$id ) {
 		$this->updateJobs = [];
@@ -248,7 +246,7 @@ class Rebuilder {
 		// -1 means that no next position is available
 		$this->next_position( $id, $emptyRange );
 
-		return $this->progress = $id > 0 ? $id / $this->getMaxId() : 1;
+		return $this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
 	}
 
 	private function matchAsTitle( $id ) {

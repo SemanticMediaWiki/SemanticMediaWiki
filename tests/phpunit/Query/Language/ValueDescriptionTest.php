@@ -11,12 +11,12 @@ use SMWDINumber as DINumber;
  * @covers \SMW\Query\Language\ValueDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
@@ -26,12 +26,6 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ValueDescription',
 			new ValueDescription( $dataItem )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
-			new \SMWValueDescription( $dataItem )
 		);
 	}
 
@@ -76,17 +70,17 @@ class ValueDescriptionTest extends \PHPUnit_Framework_TestCase {
 			$instance->getPrintRequests()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getSize()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getDepth()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getQueryFeatures()
 		);

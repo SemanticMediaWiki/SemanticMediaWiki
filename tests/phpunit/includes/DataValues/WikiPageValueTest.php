@@ -10,12 +10,12 @@ use SMWWikiPageValue as WikiPageValue;
  * @covers \SMWWikiPageValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
+class WikiPageValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -28,7 +28,7 @@ class WikiPageValueTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

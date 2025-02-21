@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\DIProperty;
+use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -49,13 +49,13 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$recordValue->expects( $this->any() )
 			->method( 'getValuesFromString' )
 			->with( $this->stringContains( $value ) )
-			->will( $this->returnCallback( function ( $value ) {
+			->willReturnCallback( static function ( $value ) {
 				 return explode( ';', $value );
-			} ) );
+			} );
 
 		$recordValue->expects( $this->any() )
 			->method( 'getPropertyDataItems' )
-			->will( $this->returnValue( $propertyDataItems ) );
+			->willReturn( $propertyDataItems );
 
 		$instance = new RecordValueDescriptionBuilder();
 
@@ -72,11 +72,11 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$recordValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$recordValue->expects( $this->any() )
 			->method( 'getPropertyDataItems' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new RecordValueDescriptionBuilder();
 

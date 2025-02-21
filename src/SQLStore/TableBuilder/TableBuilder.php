@@ -10,7 +10,7 @@ use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -92,7 +92,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 * @param mixed
 	 */
 	public function setConfig( $key, $value ) {
@@ -231,21 +231,21 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 	/**
 	 * @param string $tableName
-	 * @param array $tableOptions
+	 * @param array|null $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, array $tableOptions = null );
+	abstract protected function doCreateTable( $tableName, ?array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
-	 * @param array $tableOptions
+	 * @param array|null $tableOptions
 	 */
-	abstract protected function doUpdateTable( $tableName, array $tableOptions = null );
+	abstract protected function doUpdateTable( $tableName, ?array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
-	 * @param array $indexOptions
+	 * @param array|null $indexOptions
 	 */
-	abstract protected function doCreateIndices( $tableName, array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, ?array $indexOptions = null );
 
 	/**
 	 * @param string $tableName
@@ -263,7 +263,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		foreach ( $haystack as $key => $value ) {
 			$current_key = $key;
 
-			if ( $needle === $value or ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
+			if ( $needle === $value || ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
 				return $current_key;
 			}
 		}

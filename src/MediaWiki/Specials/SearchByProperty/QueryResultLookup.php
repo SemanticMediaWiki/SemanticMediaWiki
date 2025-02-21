@@ -2,21 +2,20 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
+use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
+use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
+use SMWDataItem as DataItem;
 use SMWQuery as Query;
-use SMWRequestOptions as RequestOptions;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author Denny Vrandecic
@@ -117,8 +116,8 @@ class QueryResultLookup {
 	 * one.
 	 *
 	 * @param QueryOptions $pageRequestOptions
-	 * @param integer $count How many entities have the exact same value on the property?
-	 * @param integer $greater Should the values be bigger? Set false for smaller values.
+	 * @param int $count How many entities have the exact same value on the property?
+	 * @param int $greater Should the values be bigger? Set false for smaller values.
 	 *
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the
 	 * first being the entity, and the second the value
@@ -209,7 +208,7 @@ class QueryResultLookup {
 			$requestOptions
 		);
 	}
-	
+
 	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ) {
 		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
@@ -235,7 +234,7 @@ class QueryResultLookup {
 		];
 		$pageRequestOptions = new PageRequestOptions( '', $requestOptions );
 		$pageRequestOptions->initialize();
-		
+
 		return [ $DIPropertyReferenceValue, $pageRequestOptions->value->getDataItem() ];
 	}
 
@@ -248,7 +247,7 @@ class QueryResultLookup {
 		// override $DIProperty for reference datatype
 		// with the first multiValue property
 		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyTypeID() ) ) {
-			list( $DIProperty, $dataItem ) = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
+			[ $DIProperty, $dataItem ] = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
 		}
 
 		return $this->store->getPropertySubjects(

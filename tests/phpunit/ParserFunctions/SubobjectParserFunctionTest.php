@@ -4,26 +4,26 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
-use SMW\ParserParameterFormatter;
+use SMW\ParserParameterProcessor;
 use SMW\Subobject;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
 /**
  * @covers \SMW\ParserFunctions\SubobjectParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -63,10 +63,10 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$result   = $instance->parse( new ParserParameterFormatter( $parameters ) );
+		$result   = $instance->parse( new ParserParameterProcessor( $parameters ) );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 	}
@@ -78,7 +78,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$this->assertContains(
 			$expected['identifier'],
@@ -97,7 +97,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
 		$instance->useFirstElementAsPropertyLabel( $isEnabled );
 
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		// If it is enabled only check for the first character {0} that should
 		// contain '_' as the rest is going to be an unknown hash value
@@ -110,7 +110,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// setting
 		$expected['propertyValues'][] = $title->getText();
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
 				$containerSemanticData
@@ -146,9 +146,9 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
-		// Expected to be stable for PHP and HHVM as well
+		// Expected to be stable for PHP as well
 		$this->assertEquals(
 			'_be96d37a4d7c35be8673cb4229b8fdec',
 			$subobject->getSubobjectId()
@@ -170,7 +170,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->parse(
-			new ParserParameterFormatter( $parameters )
+			new ParserParameterProcessor( $parameters )
 		);
 
 		$this->assertEquals(
@@ -194,7 +194,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->parse(
-			new ParserParameterFormatter( $parameters )
+			new ParserParameterProcessor( $parameters )
 		);
 
 		$this->assertEquals(
@@ -218,10 +218,10 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->parse(
-			new ParserParameterFormatter( $parameters )
+			new ParserParameterProcessor( $parameters )
 		);
 
-		// Expected to be stable for PHP and HHVM as well
+		// Expected to be stable for PHP as well
 		$this->assertEquals(
 			'_ec7323184d89fe1409b5cfaf09950a95',
 			$subobject->getSubobjectId()
@@ -251,13 +251,13 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$instance->isCapitalLinks( true );
 
 		$instance->parse(
-			new ParserParameterFormatter( $parametersOne )
+			new ParserParameterProcessor( $parametersOne )
 		);
 
 		$id = $subobject->getSubobjectId();
 
 		$instance->parse(
-			new ParserParameterFormatter( $parametersTwo )
+			new ParserParameterProcessor( $parametersTwo )
 		);
 
 		$this->assertEquals(
@@ -280,7 +280,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$subobject->getSubobjectId();
@@ -298,7 +298,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$parserOutput
 		);
 
-		$instance->parse( new ParserParameterFormatter( $parameters ) );
+		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
 		$parserData = new ParserData(
 			$title,
@@ -313,7 +313,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			);
 		}
 
-		foreach ( $subSemanticData as $key => $semanticData ){
+		foreach ( $subSemanticData as $key => $semanticData ) {
 
 			if ( strpos( $semanticData->getSubject()->getSubobjectName(), '_ERR' ) !== false ) {
 				continue;
@@ -331,7 +331,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$provider = [];
 
-		#0 Anonymous identifier
+		# 0 Anonymous identifier
 		// {{#subobject:
 		// |Foo=bar
 		// }}
@@ -346,7 +346,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 Anonymous identifier
+		# 1 Anonymous identifier
 		// {{#subobject:-
 		// |Foo=1001 9009
 		// }}
@@ -361,7 +361,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 Named identifier
+		# 2 Named identifier
 		// {{#subobject:FooBar
 		// |FooBar=Bar foo
 		// }}
@@ -376,7 +376,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 Named identifier
+		# 3 Named identifier
 		// {{#subobject:Foo bar
 		// |Foo=Help:Bar
 		// }}
@@ -391,7 +391,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4 Named identifier
+		# 4 Named identifier
 		// {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// }}
@@ -406,7 +406,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5 Named identifier
+		# 5 Named identifier
 		// {{#subobject: Foo bar foo
 		// |状況=超やばい
 		// |Bar=http://www.semantic-mediawiki.org/w/index.php?title=Subobject
@@ -425,7 +425,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6 {{#subobject: Foo bar foo
+		# 6 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |Modification date=foo Bar
 		// }}
@@ -441,7 +441,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7 {{#subobject: Foo bar foo
+		# 7 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |-Foo=foo Bar
 		// }}
@@ -476,7 +476,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// Get the right language for an error object
 		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
 
-		#9 {{#subobject: Foo bar foo
+		# 9 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
 		// |Date=Foo
 		// }}
@@ -708,7 +708,7 @@ class SubobjectParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return SubobjectParserFunction
 	 */
-	private function acquireInstance( Subobject $subobject, ParserOutput $parserOutput = null ) {
+	private function acquireInstance( Subobject $subobject, ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			$parserOutput = new ParserOutput();
 		}

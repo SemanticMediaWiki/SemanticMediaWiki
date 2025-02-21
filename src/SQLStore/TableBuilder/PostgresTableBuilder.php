@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use SMW\SQLStore\SQLStore;
 use SMW\MediaWiki\Connection\Sequence;
+use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -69,7 +69,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes = null ) {
+	protected function doCreateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 
 		$fieldSql = [];
@@ -91,7 +91,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes = null ) {
+	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -133,12 +133,12 @@ SELECT
 		case when a.attnotnull THEN 'NO'::text else 'YES'::text END as "Null", a.attnum
 	FROM pg_catalog.pg_attribute a
 	WHERE a.attrelid = (
-	    SELECT c.oid
-	    FROM pg_catalog.pg_class c
-	    LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-	    WHERE c.relname ~ '^($tableName)$'
-	    AND pg_catalog.pg_table_is_visible(c.oid)
-	    LIMIT 1
+		SELECT c.oid
+		FROM pg_catalog.pg_class c
+		LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+		WHERE c.relname ~ '^($tableName)$'
+		AND pg_catalog.pg_table_is_visible(c.oid)
+		LIMIT 1
 	 ) AND a.attnum > 0 AND NOT a.attisdropped
 	 ORDER BY a.attnum
 EOT;
@@ -292,7 +292,7 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
 		$indices = $indexOptions['indices'];
 		$ix = [];
 

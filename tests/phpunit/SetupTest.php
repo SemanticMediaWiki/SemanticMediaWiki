@@ -2,20 +2,18 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Setup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SetupTest extends \PHPUnit_Framework_TestCase {
+class SetupTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $defaultConfig;
@@ -34,11 +32,11 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getInProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$language = $this->getMockBuilder( '\Language' )
 			->disableOriginalConstructor()
@@ -193,7 +191,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 	public function testRegisterParamDefinitions() {

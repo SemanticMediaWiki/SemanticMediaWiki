@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class MaintenanceAlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceAlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,7 +33,7 @@ class MaintenanceAlertsTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'FOO' ) );
+			->willReturn( 'FOO' );
 
 		$instance = new MaintenanceAlertsTaskHandler(
 			[

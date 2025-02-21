@@ -3,18 +3,17 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\IndicatorRegistry;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\IndicatorRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
+class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	private $indicatorProvider;
 	private $permissionExaminer;
@@ -43,19 +42,19 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'getIndicators' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->indicatorProvider->expects( $this->once() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->indicatorProvider );
@@ -82,11 +81,11 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->newPermissionAwareIndicatorProvider() );
@@ -101,11 +100,11 @@ class IndicatorRegistryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new IndicatorRegistry();
 		$instance->addIndicatorProvider( $this->newPermissionExaminerAwareIndicatorProvider() );

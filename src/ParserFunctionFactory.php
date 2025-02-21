@@ -13,12 +13,13 @@ use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFu
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunc;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -35,7 +36,7 @@ class ParserFunctionFactory {
 	 *
 	 * @param Parser|null $parser
 	 */
-	public function __construct( Parser $parser = null ) {
+	public function __construct( ?Parser $parser = null ) {
 		$this->parser = $parser;
 	}
 
@@ -72,25 +73,25 @@ class ParserFunctionFactory {
 	 * @param Parser $parser
 	 */
 	public function registerFunctionHandlers( Parser $parser ) {
-		list( $name, $definition, $flag ) = $this->getAskParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getAskParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getShowParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getShowParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSubobjectParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSubobjectParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSetRecurringEventParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSetRecurringEventParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSetParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSetParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getConceptParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getConceptParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getDeclareParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getDeclareParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 	}
 

@@ -10,12 +10,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsRebuildJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
@@ -28,13 +28,13 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \Wikimedia\Rdbms\FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new \Wikimedia\Rdbms\FakeResultWrapper( [ $row ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -42,11 +42,11 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}

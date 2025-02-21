@@ -2,7 +2,7 @@
 
 use SMW\DataValues\Time\Components;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDITime as DITime;
 
 /**
@@ -172,7 +172,7 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $this->isYear( $value ) ) {
 			try {
 				$this->m_dataitem = new DITime( $this->getCalendarModel( null, $value, null, null ), $value );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( SMW\Exception\DataItemException $e ) {
 				$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $value, $e->getMessage() ] );
 			}
 		} elseif ( $this->isTimestamp( $value ) ) {
@@ -209,9 +209,9 @@ class SMWTimeValue extends SMWDataValue {
 	 * returned. Otherwise, true is returned.
 	 *
 	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $date array set to result
+	 * @param &$date array set to result
 	 *
-	 * @return boolean stating if successful
+	 * @return bool stating if successful
 	 */
 	protected function interpretDateComponents( $datecomponents, &$date ) {
 		// The following code segment creates a bit vector to encode
@@ -254,7 +254,7 @@ class SMWTimeValue extends SMWDataValue {
 				$msgKey .= '-empty';
 			} elseif ( count( $propercomponents ) > 3 ) {
 				$msgKey .= '-three';
-			} else{
+			} else {
 				$msgKey .= '-common';
 			}
 
@@ -287,7 +287,7 @@ class SMWTimeValue extends SMWDataValue {
 
 	/**
 	 * Initialise data from an anticipated JD value.
-	*/
+	 */
 	private function setDateFromJD( $components ) {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
@@ -301,7 +301,7 @@ class SMWTimeValue extends SMWDataValue {
 					$jd += self::MJD_EPOCH;
 				}
 				$this->m_dataitem = DITime::newFromJD( $jd, DITime::CM_GREGORIAN, DITime::PREC_YMDT, $components->get( 'timezone' ) );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( SMW\Exception\DataItemException $e ) {
 				$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 			}
 		} else {
@@ -315,15 +315,9 @@ class SMWTimeValue extends SMWDataValue {
 	 * If errors occur, error messages are added to the objects list of
 	 * errors, and false is returned. Otherwise, true is returned.
 	 *
-	 * @param $datecomponents array of strings that might belong to the specification of a date
-	 * @param $calendarmodesl string if model was set in input, otherwise false
-	 * @param $era string '+' or '-' if provided, otherwise false
-	 * @param $hours integer value between 0 and 24
-	 * @param $minutes integer value between 0 and 59
-	 * @param $seconds integer value between 0 and 59, or false if not given
-	 * @param $timeoffset double value for time offset (e.g. 3.5), or false if not given
+	 * @param $components
 	 *
-	 * @return boolean stating if successful
+	 * @return bool stating if successful
 	 */
 	protected function setDateFromParsedValues( $components ) {
 		$datecomponents = $components->get( 'datecomponents' );
@@ -354,7 +348,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		// Old Style is a special case of Julian calendar model where the change of the year was 25 March:
 		if ( ( $calendarmodel == 'OS' ) &&
-		     ( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
+			 ( ( $date['m'] < 3 ) || ( ( $date['m'] == 3 ) && ( $date['d'] < 25 ) ) ) ) {
 			$date['y']++;
 		}
 
@@ -362,7 +356,7 @@ class SMWTimeValue extends SMWDataValue {
 
 		try {
 			$this->m_dataitem = new DITime( $calmod, $date['y'], $date['m'], $date['d'], $hours, $minutes, $seconds . '.' . $microseconds, $timezone );
-		} catch ( SMWDataItemException $e ) {
+		} catch ( SMW\Exception\DataItemException $e ) {
 			$this->addErrorMsg( [ 'smw-datavalue-time-invalid', $this->m_wikivalue, $e->getMessage() ] );
 			return false;
 		}
@@ -371,7 +365,7 @@ class SMWTimeValue extends SMWDataValue {
 		// not make sense for prehistoric dates, and our calendar
 		// conversion would not be reliable if JD numbers get too huge:
 		if ( ( $date['y'] <= self::PREHISTORY ) &&
-		     ( ( $this->m_dataitem->getPrecision() > DITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
+			 ( ( $this->m_dataitem->getPrecision() > DITime::PREC_Y ) || ( $calendarmodel !== false ) ) ) {
 			$this->addErrorMsg( [ 'smw-datavalue-time-invalid-prehistoric', $this->m_wikivalue ] );
 			return false;
 		}
@@ -380,7 +374,7 @@ class SMWTimeValue extends SMWDataValue {
 			$newjd = $this->m_dataitem->getJD() - $timeoffset / 24;
 			try {
 				$this->m_dataitem = DITime::newFromJD( $newjd, $calmod, $this->m_dataitem->getPrecision(), $timezone );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( SMW\Exception\DataItemException $e ) {
 				$this->addErrorMsg( [ 'smw-datavalue-time-invalid-jd', $this->m_wikivalue, $e->getMessage() ] );
 				return false;
 			}
@@ -398,9 +392,9 @@ class SMWTimeValue extends SMWDataValue {
 	 * interpretations.
 	 *
 	 * @param $component string
-	 * @param $numvalue integer representing the components value
+	 * @param &$numvalue integer representing the components value
 	 *
-	 * @return integer that encodes a three-digit bit vector
+	 * @return int that encodes a three-digit bit vector
 	 */
 	protected static function checkDateComponent( $component, &$numvalue ) {
 		if ( $component === '' ) { // should not happen
@@ -415,7 +409,7 @@ class SMWTimeValue extends SMWDataValue {
 			} else { // number can just be a year
 				return SMW_YEAR;
 			}
-		} elseif ( $component [0] == 'd' ) { // already marked as day
+		} elseif ( $component[0] == 'd' ) { // already marked as day
 			if ( is_numeric( substr( $component, 1 ) ) ) {
 				$numvalue = intval( substr( $component, 1 ) );
 				return ( ( $numvalue >= 1 ) && ( $numvalue <= 31 ) ) ? SMW_DAY : 0;
@@ -443,7 +437,7 @@ class SMWTimeValue extends SMWDataValue {
 	 * @param $month mixed integer of the month or false
 	 * @param $day mixed integer of the day or false
 	 *
-	 * @return integer either DITime::CM_GREGORIAN or DITime::CM_JULIAN
+	 * @return int either DITime::CM_GREGORIAN or DITime::CM_JULIAN
 	 */
 	protected function getCalendarModel( $presetmodel, $year, $month, $day ) {
 		// Old Style is a notational convention of Julian dates only
@@ -458,8 +452,8 @@ class SMWTimeValue extends SMWDataValue {
 		}
 
 		if ( ( $year > 1582 ) ||
-		     ( ( $year == 1582 ) && ( $month > 10 ) ) ||
-		     ( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
+			 ( ( $year == 1582 ) && ( $month > 10 ) ) ||
+			 ( ( $year == 1582 ) && ( $month == 10 ) && ( $day > 4 ) ) ) {
 			return DITime::CM_GREGORIAN;
 		} elseif ( $year > self::PREHISTORY ) {
 			return DITime::CM_JULIAN;
@@ -664,12 +658,12 @@ class SMWTimeValue extends SMWDataValue {
 		if ( $this->m_dataitem->getYear() <= self::PREHISTORY ) {
 			return ( $this->m_dataitem->getCalendarModel() == $calendarmodel ) ? $this->m_dataitem : null;
 		} elseif ( $calendarmodel == DITime::CM_GREGORIAN ) {
-			if ( is_null( $this->m_dataitem_greg ) ) {
+			if ( $this->m_dataitem_greg === null ) {
 				$this->m_dataitem_greg = $this->m_dataitem->getForCalendarModel( DITime::CM_GREGORIAN );
 			}
 			return $this->m_dataitem_greg;
 		} else {
-			if ( is_null( $this->m_dataitem_jul ) ) {
+			if ( $this->m_dataitem_jul === null ) {
 				$this->m_dataitem_jul = $this->m_dataitem->getForCalendarModel( DITime::CM_JULIAN );
 			}
 			return $this->m_dataitem_jul;

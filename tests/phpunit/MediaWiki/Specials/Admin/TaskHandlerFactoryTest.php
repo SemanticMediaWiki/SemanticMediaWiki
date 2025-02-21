@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
+class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

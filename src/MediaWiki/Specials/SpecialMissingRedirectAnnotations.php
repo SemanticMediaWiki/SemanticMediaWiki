@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Html;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\Localizer\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlColumns;
-use SMW\Message;
-use Html;
 use SpecialPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -31,6 +31,8 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	public function execute( $query ) {
 		$this->setHeaders();
 		$output = $this->getOutput();
+
+		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -83,11 +85,6 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/maintenance';
 	}
 

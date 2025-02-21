@@ -24,9 +24,6 @@
 		{
 			"type": "special",
 			"about": "#0",
-			"skip-on": {
-				"mediawiki": [ "<1.29.x", "mw-selflink, <a> vs. <strong>" ]
-			},
 			"special-page": {
 				"page": "Ask",
 				"request-parameters": {

@@ -3,17 +3,17 @@
 namespace SMW;
 
 use Html;
-use SMW\Utils\Pager;
+use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HtmlTabs;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Collator;
+use SMW\Utils\Pager;
 
 /**
  * Special page that lists available concepts
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -38,7 +38,10 @@ class SpecialConcepts extends \SpecialPage {
 	public function execute( $param ) {
 		$this->setHeaders();
 		$out = $this->getOutput();
-		$out->addModuleStyles( 'ext.smw.page.styles' );
+		$out->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.page.styles'
+		] );
 
 		$limit = $this->getRequest()->getVal( 'limit', 50 );
 		$offset = $this->getRequest()->getVal( 'offset', 0 );
@@ -48,7 +51,7 @@ class SpecialConcepts extends \SpecialPage {
 		$diWikiPages = $this->fetchFromTable( $limit, $offset );
 		$html = $this->getHtml( $diWikiPages, $limit, $offset );
 
-		$this->addHelpLink( wfMessage( 'smw-helplink-concepts' )->escaped(), true );
+		$this->addHelpLink( $this->msg( 'smw-helplink-concepts' )->escaped(), true );
 
 		$out->setPageTitle( $this->msg( 'concepts' )->text() );
 		$out->addHTML( $html );
@@ -57,8 +60,8 @@ class SpecialConcepts extends \SpecialPage {
 	/**
 	 * @since 1.9
 	 *
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int $limit
+	 * @param int $offset
 	 *
 	 * @return DIWikiPage[]
 	 */
@@ -109,8 +112,8 @@ class SpecialConcepts extends \SpecialPage {
 	 * @since 1.9
 	 *
 	 * @param DIWikiPage[] $dataItems
-	 * @param integer $limit
-	 * @param integer $offset
+	 * @param int $limit
+	 * @param int $offset
 	 *
 	 * @return string
 	 */
@@ -172,11 +175,6 @@ class SpecialConcepts extends \SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/properties-concepts-types';
 	}
 

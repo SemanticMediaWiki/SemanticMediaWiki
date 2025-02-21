@@ -36,6 +36,7 @@
 			"Yamagata Yusuke",
 			"Yusuke1109",
 			"Zero 1 k",
+			"沈澄心",
 			"背番号4のエース",
 			"青子守歌",
 			"아라"
@@ -48,7 +49,7 @@
 	"smw-upgrade-progress": "進捗",
 	"smw-upgrade-progress-explain": "更新の完了時期について、データリポジトリのサイズならびに使える機器に左右されるため、予測の算出は難しく、大規模ウィキでは所要時間が長くかかる可能性があります。\n\nローカルの管理者にご連絡の上、プロセスの詳細をご確認ください。",
 	"smw-upgrade-progress-create-tables": "テーブルと索引の作成 (もしくは更新中) です...",
-	"smw-upgrade-progress-post-creation": "作成後のタスクを実行中です ...",
+	"smw-upgrade-progress-post-creation": "作成後のタスクを実行中です...",
 	"smw-upgrade-progress-table-optimization": "テーブルの最適化を実行中です...",
 	"smw-upgrade-progress-supplement-jobs": "補充ジョブを追加中です...",
 	"smw-upgrade-error-title": "エラー » Semantic MediaWiki",

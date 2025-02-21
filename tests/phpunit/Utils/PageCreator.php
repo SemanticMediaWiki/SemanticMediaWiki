@@ -7,16 +7,15 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
 use RequestContext;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Mock\MockSuperUser;
-use Title;
-use UnexpectedValueException;
 use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
+use SMW\Tests\TestEnvironment;
+use Title;
+use UnexpectedValueException;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -64,7 +63,7 @@ class PageCreator {
 		if ( $pageContentLanguage !== '' ) {
 			$services = MediaWikiServices::getInstance();
 			$pageContentLanguage = $services->getLanguageFactory()->getLanguage( $pageContentLanguage );
-			$services->getHookContainer()->register( 'PageContentLanguage', function ( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
+			$services->getHookContainer()->register( 'PageContentLanguage', static function ( $titleByHook, &$pageLang ) use( $title, $pageContentLanguage ) {
 				// Only change the pageContentLanguage for the selected page
 				if ( $title->getPrefixedDBKey() === $titleByHook->getPrefixedDBKey() ) {
 					$pageLang = $pageContentLanguage;
@@ -120,7 +119,7 @@ class PageCreator {
 	 * @since 2.3
 	 *
 	 * @param Title $target
-	 * @param boolean $isRedirect
+	 * @param bool $isRedirect
 	 *
 	 * @return PageCreator
 	 */

@@ -5,7 +5,7 @@ namespace SMW\Utils;
 /**
  * Convenience method to retrieved stringified error codes.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class ErrorCodeFormatter {
 	 * @see http://php.net/manual/en/function.json-decode.php
 	 * @since 2.5
 	 *
-	 * @param integer $errorCode
+	 * @param int $errorCode
 	 *
 	 * @return string
 	 */
@@ -49,7 +49,7 @@ class ErrorCodeFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $errorCode
+	 * @param int $errorCode
 	 *
 	 * @return string
 	 */

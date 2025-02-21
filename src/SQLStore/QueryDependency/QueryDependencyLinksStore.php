@@ -3,19 +3,19 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Query\QueryResult;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\Timer;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -45,12 +45,12 @@ class QueryDependencyLinksStore {
 	private $namespaceExaminer;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEnabled = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
@@ -60,7 +60,7 @@ class QueryDependencyLinksStore {
 	 * previous update to avoid unnecessary DB transactions if it takes place
 	 * within the computed time frame.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $skewFactorForDependencyUpdateInSeconds = 10;
 
@@ -92,7 +92,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -101,7 +101,7 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.3
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isEnabled() {
 		return $this->isEnabled;
@@ -110,7 +110,7 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $isEnabled
+	 * @param bool $isEnabled
 	 */
 	public function setEnabled( $isEnabled ) {
 		$this->isEnabled = (bool)$isEnabled;
@@ -182,7 +182,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, RequestOptions $requestOptions = null ) {
+	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
@@ -216,9 +216,9 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|array $id
+	 * @param int|array $id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countDependencies( $id ) {
 		$count = 0;

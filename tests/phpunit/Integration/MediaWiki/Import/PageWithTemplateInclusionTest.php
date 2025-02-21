@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -13,16 +13,15 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
  */
-class PageWithTemplateInclusionTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class PageWithTemplateInclusionTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;

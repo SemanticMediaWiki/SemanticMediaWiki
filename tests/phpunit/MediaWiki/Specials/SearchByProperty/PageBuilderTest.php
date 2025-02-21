@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
@@ -14,12 +14,12 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\PageBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class PageBuilderTest extends \PHPUnit_Framework_TestCase {
+class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 	private $localizer;
@@ -61,7 +61,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$message->expects( $this->any() )
 			->method( 'numParams' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
@@ -69,7 +69,7 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$messageBuilder->expects( $this->any() )
 			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -77,9 +77,9 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				new DIWikiPage( 'ResultOne', NS_MAIN ),
-				new DIWikiPage( 'ResultTwo', NS_HELP ) ] ) );
+				new DIWikiPage( 'ResultTwo', NS_HELP ) ] );
 
 		$instance =	new PageBuilder(
 			new HtmlFormRenderer( $title, $messageBuilder ),
@@ -111,11 +111,11 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$message->expects( $this->any() )
 			->method( 'numParams' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$message->expects( $this->any() )
 			->method( 'rawParams' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
 			->disableOriginalConstructor()
@@ -123,15 +123,15 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$messageBuilder->expects( $this->any() )
 			->method( 'getMessage' )
-			->will( $this->returnValue( $message ) );
+			->willReturn( $message );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -139,13 +139,13 @@ class PageBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				new DIWikiPage( 'ResultOne', NS_MAIN ),
-				new DIWikiPage( 'ResultTwo', NS_HELP ) ] ) );
+				new DIWikiPage( 'ResultTwo', NS_HELP ) ] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$requestOptions = [
 			'propertyString' => 'Foo',

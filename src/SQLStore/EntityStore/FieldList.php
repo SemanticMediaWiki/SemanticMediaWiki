@@ -2,11 +2,6 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use RuntimeException;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-
 /**
  * @private
  *
@@ -28,7 +23,7 @@ class FieldList {
 	const CATEGORY_LIST = 'list/category';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $countMaps = [];
 

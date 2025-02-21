@@ -2,17 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Store;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
-use SMW\DIWikiPage;
+use SMW\NamespaceExaminer;
 use Title;
 use User;
 
 /**
  * @see https://github.com/wikimedia/mediawiki-extensions-UserMerge/blob/master/includes/MergeUser.php#L654
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -11,12 +11,12 @@ namespace SMW\Utils;
 class Url {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $info = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $flag = [];
 

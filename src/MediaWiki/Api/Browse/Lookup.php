@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -13,7 +13,7 @@ abstract class Lookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	abstract public function getVersion();
 
@@ -24,6 +24,7 @@ abstract class Lookup {
 	 *
 	 * @return array
 	 */
+	// phpcs:ignore Generic.NamingConventions.ConstructorName.OldStyle
 	abstract public function lookup( array $parameters );
 
 }

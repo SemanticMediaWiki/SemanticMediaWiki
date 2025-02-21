@@ -8,12 +8,12 @@ use SMW\Utils\TemplateEngine;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TemplateEngineRoundTripTest extends \PHPUnit_Framework_TestCase {
+class TemplateEngineRoundTripTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRoundTrip() {
 		$contents = '<div>{{abc}}</div><span>{{#ABC}}</span>';

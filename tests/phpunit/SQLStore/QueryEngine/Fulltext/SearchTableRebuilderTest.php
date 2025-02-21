@@ -3,20 +3,20 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
+class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,7 +26,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $iteratorMockBuilder;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +40,7 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->searchTableUpdater->expects( $this->any() )
 			->method( 'getSearchTable' )
-			->will( $this->returnValue( $this->searchTable ) );
+			->willReturn( $this->searchTable );
 
 		$this->iteratorMockBuilder = new IteratorMockBuilder();
 	}
@@ -53,21 +53,21 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuildWithoutUpdate() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$tableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getDiType' )
-			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
+			->willReturn( DataItem::TYPE_BLOB );
 
 		$this->searchTableUpdater->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $tableDefinition ] ) );
+			->willReturn( [ $tableDefinition ] );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,
@@ -78,13 +78,13 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNeverRebuildOnOptimization() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->searchTableUpdater->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTableUpdater->expects( $this->never() )
 			->method( 'getPropertyTables' );
@@ -115,39 +115,39 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$resultWrapper->expects( $this->atLeastOnce() )
 			->method( 'numRows' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$tableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getDiType' )
-			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
+			->willReturn( DataItem::TYPE_BLOB );
 
 		$this->searchTable->expects( $this->any() )
 			->method( 'isValidByType' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTable->expects( $this->any() )
 			->method( 'hasMinTokenLength' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTableUpdater->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $tableDefinition ] ) );
+			->willReturn( [ $tableDefinition ] );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'update' )
-			->with( $this->equalTo( $row->s_id ) );
+			->with( $row->s_id );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,
@@ -165,23 +165,23 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getDiType' )
-			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
+			->willReturn( DataItem::TYPE_BLOB );
 
 		$this->searchTableUpdater->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
+			->willReturn( [ $propertyTableDefinition ] );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,
 			$this->searchTableUpdater
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getQualifiedTableList()
 		);
 	}
@@ -193,15 +193,15 @@ class SearchTableRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$propertyTableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getDiType' )
-			->will( $this->returnValue( DataItem::TYPE_BLOB ) );
+			->willReturn( DataItem::TYPE_BLOB );
 
 		$this->searchTableUpdater->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $propertyTableDefinition ] ) );
+			->willReturn( [ $propertyTableDefinition ] );
 
 		$instance = new SearchTableRebuilder(
 			$this->connection,

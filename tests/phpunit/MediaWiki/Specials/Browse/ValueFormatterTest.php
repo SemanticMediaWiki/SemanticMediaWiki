@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\ValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -49,14 +49,14 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getLongHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getFormattedSubject( $dataValue )
 		);
 	}
@@ -68,33 +68,33 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getLongHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getFormattedValue( $dataValue, $propertyValue )
 		);
 	}
 
 	public function testGetPropertyLabel() {
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyValue->expects( $this->once() )
 			->method( 'isVisible' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyValue->expects( $this->once() )
 			->method( 'getShortHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getPropertyLabel( $propertyValue )
 		);
 	}

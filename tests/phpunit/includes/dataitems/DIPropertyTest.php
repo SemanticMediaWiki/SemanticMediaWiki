@@ -10,14 +10,14 @@ use SMW\PropertyRegistry;
  * @covers \SMW\DIProperty
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIPropertyTest extends \PHPUnit_Framework_TestCase {
+class DIPropertyTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	protected function tearDown(): void {

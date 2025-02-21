@@ -1,6 +1,7 @@
 <?php
 
-use SMW\Localizer;
+use SMW\DIProperty;
+use SMW\Localizer\Localizer;
 
 /**
  * @ingroup SMWDataValues
@@ -18,7 +19,7 @@ use SMW\Localizer;
 class SMWPropertyListValue extends SMWDataValue {
 	/**
 	 * List of properte data items that are stored.
-	 * @var array of SMWDIProperty
+	 * @var array of DIProperty
 	 */
 	protected $m_diProperties;
 
@@ -67,9 +68,9 @@ class SMWPropertyListValue extends SMWDataValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 *
-	 * @param $dataitem SMWDataItem
+	 * @param $dataItem SMWDataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( SMWDataItem $dataItem ) {
 		if ( !$dataItem instanceof SMWDIBlob ) {
@@ -89,7 +90,7 @@ class SMWPropertyListValue extends SMWDataValue {
 				$this->addErrorMsg( [ 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ] );
 			}
 
-			if ( $property instanceof SMWDIProperty ) {
+			if ( $property instanceof DIProperty ) {
 				 // Find a possible redirect
 				$this->m_diProperties[] = $property->getRedirectTarget();
 			}
@@ -101,7 +102,7 @@ class SMWPropertyListValue extends SMWDataValue {
 	}
 
 	public function getShortWikiText( $linked = null ) {
-		return ( $this->m_caption !== false ) ?  $this->m_caption : $this->makeOutputText( 2, $linked );
+		return ( $this->m_caption !== false ) ? $this->m_caption : $this->makeOutputText( 2, $linked );
 	}
 
 	public function getShortHTMLText( $linker = null ) {
@@ -145,15 +146,15 @@ class SMWPropertyListValue extends SMWDataValue {
 	protected function makeValueOutputText( $type, $propertyValue, $linker ) {
 		switch ( $type ) {
 			case 0:
-			return $propertyValue->getShortWikiText( $linker );
+				return $propertyValue->getShortWikiText( $linker );
 			case 1:
-			return $propertyValue->getShortHTMLText( $linker );
+				return $propertyValue->getShortHTMLText( $linker );
 			case 2:
-			return $propertyValue->getLongWikiText( $linker );
+				return $propertyValue->getLongWikiText( $linker );
 			case 3:
-			return $propertyValue->getLongHTMLText( $linker );
+				return $propertyValue->getLongHTMLText( $linker );
 			case 4:
-			return $propertyValue->getWikiValue();
+				return $propertyValue->getWikiValue();
 		}
 	}
 }

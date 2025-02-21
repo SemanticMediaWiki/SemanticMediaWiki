@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
+class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -22,7 +22,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $temporaryTableBuilder;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +43,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableName' )
 			->with(
 				$this->stringContains( 'bar' ) )
-			->will( $this->returnValue( '_bar' ) );
+			->willReturn( '_bar' );
 
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
@@ -73,7 +73,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit_Framework_TestCase {
 			->method( 'tableName' )
 			->with(
 				$this->stringContains( 'bar' ) )
-			->will( $this->returnValue( '_bar' ) );
+			->willReturn( '_bar' );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' );

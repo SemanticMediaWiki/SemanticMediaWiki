@@ -2,7 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use SMW\SemanticData;
 
 /**
@@ -11,12 +11,12 @@ use SMW\SemanticData;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class NullPropertyAnnotator implements PropertyAnnotator {
+class NullPropertyAnnotator implements Annotator {
 
 	/**
 	 * @var SemanticData
@@ -33,7 +33,7 @@ class NullPropertyAnnotator implements PropertyAnnotator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::getSemanticData
+	 * @see Annotator::getSemanticData
 	 *
 	 * @since 1.9
 	 */
@@ -42,7 +42,7 @@ class NullPropertyAnnotator implements PropertyAnnotator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
+	 * @see Annotator::addAnnotation
 	 *
 	 * @since 1.9
 	 */

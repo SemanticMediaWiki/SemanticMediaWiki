@@ -9,17 +9,17 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
+class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +30,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSetIndexedTagNameThrowsException() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,21 +54,21 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider resultDataProvider
 	 */
 	public function testResultFormat( array $parameters, array $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $parameters['result'] ) );
+			->willReturn( $parameters['result'] );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( $parameters['furtherResults'] ) );
+			->willReturn( $parameters['furtherResults'] );
 
 		$instance = new ApiQueryResultFormatter( $queryResult );
 
@@ -92,13 +92,13 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorDataProvider
 	 */
 	public function testErrorFormat( array $parameters, array $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $parameters['errors'] ) );
+			->willReturn( $parameters['errors'] );
 
 		$instance = new ApiQueryResultFormatter( $queryResult );
 
@@ -194,7 +194,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-
 		// #4 Extended subject data + XML
 		$provider[] = [
 			[
@@ -215,7 +214,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 				'furtherResults' => true
 			],
 			[
-				'result' =>  [
+				'result' => [
 					'results' => [
 						[
 							'printouts' => [
@@ -256,7 +255,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 				'furtherResults' => true
 			],
 			[
-				'result' =>  [
+				'result' => [
 					'results' => [
 						[
 							'printouts' => [ '_element' => 'property' ],
@@ -290,7 +289,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 				'furtherResults' => false
 			],
 			[
-				'result' =>  [
+				'result' => [
 					'results' => [],
 					'printrequests' => [ 'Bar', '_element' => 'printrequest' ],
 					'meta' => [
@@ -314,7 +313,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 		// #0
 		$provider[] = [
 			[
-				'rawMode'=> false,
+				'rawMode' => false,
 				'errors' => $errors
 			],
 			[
@@ -325,7 +324,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit_Framework_TestCase {
 		// #1
 		$provider[] = [
 			[
-				'rawMode'=> true,
+				'rawMode' => true,
 				'errors' => $errors
 			],
 			[

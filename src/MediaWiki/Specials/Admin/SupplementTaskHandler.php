@@ -3,12 +3,11 @@
 namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use WebRequest;
-use SMW\Utils\FileFetcher;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -117,7 +116,7 @@ class SupplementTaskHandler extends TaskHandler implements ActionableTask {
 			],
 			$this->msg( 'smw-admin-supplementary-section-intro', Message::PARSE )
 		) . Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-supplementary-section-subtitle' )
 		);

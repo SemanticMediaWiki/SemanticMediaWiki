@@ -8,12 +8,12 @@ use SMW\Connection\CallbackConnectionProvider;
  * @covers \SMW\Connection\CallbackConnectionProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class CallbackConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 
@@ -24,7 +24,8 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-		$callback = function () {};
+		$callback = static function () {
+		};
 
 		$this->assertInstanceOf(
 			CallbackConnectionProvider::class,

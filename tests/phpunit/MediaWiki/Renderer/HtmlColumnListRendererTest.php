@@ -9,12 +9,12 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\MediaWiki\Renderer\HtmlColumnListRenderer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnListRendererTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 

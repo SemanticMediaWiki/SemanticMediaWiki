@@ -2,22 +2,22 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\RefreshJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class RefreshJobTest extends \PHPUnit_Framework_TestCase {
+class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
-	/** @var integer */
+	/** @var int */
 	protected $controlRefreshDataIndex;
 
 	private $applicationFactory;
@@ -49,13 +49,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 			'SMW\MediaWiki\Jobs\RefreshJob',
 			new RefreshJob( $title )
 		);
-
-		// FIXME Delete SMWRefreshJob assertion after all
-		// references to SMWRefreshJob have been removed
-		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\RefreshJob',
-			new \SMWRefreshJob( $title )
-		);
 	}
 
 	/**
@@ -72,7 +65,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$rebuilder->expects( $this->any() )
 			->method( 'rebuild' )
-			->will( $this->returnValue( $parameters['spos'] ) );
+			->willReturn( $parameters['spos'] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->setMethods( [ 'refreshData' ] )
@@ -80,7 +73,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshData' )
-			->will( $this->returnValue( $rebuilder ) );
+			->willReturn( $rebuilder );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -155,7 +148,6 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
-
 	}
 
 	/**
@@ -163,7 +155,7 @@ class RefreshJobTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since  1.9
 	 *
-	 * @param integer $index
+	 * @param int &$index
 	 */
 	public function refreshDataCallback( &$index ) {
 		$this->controlRefreshDataIndex = $index;

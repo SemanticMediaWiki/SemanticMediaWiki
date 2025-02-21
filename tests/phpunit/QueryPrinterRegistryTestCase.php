@@ -10,7 +10,7 @@ namespace SMW\Tests;
  *
  * @codeCoverageIgnore
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
@@ -23,7 +23,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 *
 	 * @return array
 	 */
-	public abstract function getFormats();
+	abstract public function getFormats();
 
 	/**
 	 * @since 1.8
@@ -47,7 +47,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param boolean $isInline
+	 * @param bool $isInline
 	 *
 	 * @return \SMW\ResultPrinter
 	 */
@@ -64,7 +64,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
-			function ( array $args ) use ( $phpFails ) {
+			static function ( array $args ) use ( $phpFails ) {
 				return call_user_func_array( $phpFails, $args );
 			},
 			$this->constructorProvider()
@@ -77,7 +77,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param boolean $isInline
+	 * @param bool $isInline
 	 */
 	public function testConstructor( $format, $isInline ) {
 		$instance = $this->newInstance( $format, $isInline );
@@ -85,10 +85,3 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 		$this->assertInstanceOf( '\SMW\ResultPrinter', $instance );
 	}
 }
-
-/**
- * SMWResultPrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\Tests\QueryPrinterRegistryTestCase', 'SMW\Tests\ResultPrinterTestCase' );

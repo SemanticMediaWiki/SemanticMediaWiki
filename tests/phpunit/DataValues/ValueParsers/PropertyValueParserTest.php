@@ -8,12 +8,12 @@ use SMW\DataValues\ValueParsers\PropertyValueParser;
  * @covers \SMW\DataValues\ValueParsers\PropertyValueParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -31,7 +31,7 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 			$invalidCharacterList
 		);
 
-		list( $propertyName, $capitalizedName, $inverse ) = $instance->parse( $value );
+		[ $propertyName, $capitalizedName, $inverse ] = $instance->parse( $value );
 
 		$this->assertSame(
 			$expectedPropertyName,
@@ -49,7 +49,7 @@ class PropertyValueParserTest extends \PHPUnit_Framework_TestCase {
 		$instance->isCapitalLinks( false );
 		$instance->reqCapitalizedFirstChar( true );
 
-		list( $propertyName, $capitalizedName, $inverse ) = $instance->parse( 'foo' );
+		[ $propertyName, $capitalizedName, $inverse ] = $instance->parse( 'foo' );
 
 		$this->assertSame(
 			'foo',

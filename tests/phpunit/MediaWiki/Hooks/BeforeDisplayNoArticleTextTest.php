@@ -8,12 +8,12 @@ use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
  * @covers \SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
+class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -36,11 +36,11 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( $text ) );
+			->willReturn( $text );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -48,7 +48,7 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new BeforeDisplayNoArticleText( $wikiPage );
 

@@ -3,19 +3,18 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\HtmlForm;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\HtmlForm
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HtmlFormTest extends \PHPUnit_Framework_TestCase {
+class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -45,27 +44,27 @@ class HtmlFormTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->once() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$query->expects( $this->once() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance = new HtmlForm( $title );
 		$instance->isEditMode( true );
 
 		$log = [];
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getForm( $urlArgs, $queryResult, $log )
 		);
 	}

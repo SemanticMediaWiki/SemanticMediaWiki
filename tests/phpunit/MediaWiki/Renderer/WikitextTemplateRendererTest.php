@@ -8,12 +8,12 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
  * @covers \SMW\MediaWiki\Renderer\WikitextTemplateRenderer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class WikitextTemplateRendererTest extends \PHPUnit_Framework_TestCase {
+class WikitextTemplateRendererTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

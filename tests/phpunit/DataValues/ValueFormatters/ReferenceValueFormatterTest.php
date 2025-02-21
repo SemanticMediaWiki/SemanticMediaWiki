@@ -5,19 +5,19 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\ReferenceValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class ReferenceValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -33,7 +33,7 @@ class ReferenceValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

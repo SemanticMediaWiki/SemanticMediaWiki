@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\BrowseByProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\BrowseByProperty
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
+class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $apiFactory;
@@ -74,11 +74,11 @@ class BrowseByPropertyTest extends \PHPUnit_Framework_TestCase {
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+			->willReturn( $cachedListLookup );
 
 		$this->applicationFactory->registerObject( 'Store', $this->store );
 

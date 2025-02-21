@@ -7,7 +7,7 @@ use SMWQueryProcessor as QueryProcessor;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -15,19 +15,19 @@ use WebRequest;
 class ParametersProcessor {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $defaultLimit = 50;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $maxInlineLimit = 500;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public static function setDefaultLimit( $defaultLimit ) {
 		self::$defaultLimit = $defaultLimit;
@@ -36,7 +36,7 @@ class ParametersProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $maxInlineLimit
+	 * @param int $maxInlineLimit
 	 */
 	public static function setMaxInlineLimit( $maxInlineLimit ) {
 		self::$maxInlineLimit = $maxInlineLimit;
@@ -76,7 +76,7 @@ class ParametersProcessor {
 			$printouts
 		);
 
-		list( $queryString, $parameters, $printouts ) =  QueryProcessor::getComponentsFromFunctionParams(
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parameterList,
 			false
 		);
@@ -204,7 +204,7 @@ class ParametersProcessor {
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
 
-			if ( ( $param !== '' ) && ( $param [0] != '?' ) ) {
+			if ( ( $param !== '' ) && ( $param[0] != '?' ) ) {
 				$param = '?' . $param;
 			}
 
@@ -269,7 +269,7 @@ class ParametersProcessor {
 	private static function replace( $source, $target, $value ) {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function ( array $matches ) use ( $source, $target ) {
+			static function ( array $matches ) use ( $source, $target ) {
 				return str_replace( [ $source ], [ $target ], $matches[0] );
 			},
 			$value

@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -15,17 +16,18 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
+class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -106,8 +108,8 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubproperty' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 
@@ -144,7 +146,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new Disjunction()
 		);
@@ -167,7 +169,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 1
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
@@ -213,7 +215,7 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
+		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
@@ -295,8 +297,8 @@ class SomePropertyInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 
-		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(

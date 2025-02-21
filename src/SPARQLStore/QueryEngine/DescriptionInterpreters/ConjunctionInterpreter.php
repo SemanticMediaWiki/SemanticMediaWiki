@@ -2,6 +2,9 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -11,13 +14,10 @@ use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWExpElement as ExpElement;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -40,7 +40,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -168,7 +168,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 				}
 
 				if ( ( $subConditionElements->singletonMatchElement !== null ) &&
-				     ( $singletonMatchElementName !== $matchElementName ) ) {
+					 ( $singletonMatchElementName !== $matchElementName ) ) {
 					return new FalseCondition();
 				}
 

@@ -4,7 +4,6 @@ namespace SMW\Maintenance;
 
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
@@ -13,7 +12,7 @@ use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +37,7 @@ class DuplicateEntitiesDisposer {
 	 * @param Store $store
 	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, Cache $cache = null ) {
+	public function __construct( Store $store, ?Cache $cache = null ) {
 		$this->store = $store;
 		$this->cache = $cache;
 	}

@@ -3,19 +3,19 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\FixedProperties
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
+class FixedPropertiesTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -31,7 +31,7 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -50,17 +50,17 @@ class FixedPropertiesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->will( $this->onConsecutiveCalls(
+			->willReturnOnConsecutiveCalls(
 				(object)[ 'smw_id' => 99999 ],
-				(object)[ 'smw_id' => 11111 ] ) );
+				(object)[ 'smw_id' => 11111 ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new FixedProperties(
 			$this->store

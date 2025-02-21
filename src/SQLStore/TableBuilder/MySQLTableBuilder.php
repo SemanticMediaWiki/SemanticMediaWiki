@@ -6,7 +6,7 @@ use SMW\Utils\CliMsgFormatter;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -66,7 +66,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, array $attributes = null ) {
+	protected function doCreateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
@@ -116,7 +116,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, array $attributes = null ) {
+	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -193,7 +193,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 		if ( !array_key_exists( $fieldName, $currentFields ) ) {
 			$this->doCreateField( $tableName, $fieldName, $position, $fieldType, $default );
-		} elseif ( !$this->areFieldTypesEqual( $fieldType, $currentFields[$fieldName] ) )  {
+		} elseif ( !$this->areFieldTypesEqual( $fieldType, $currentFields[$fieldName] ) ) {
 			$this->doUpdateFieldType( $tableName, $fieldName, $position, $currentFields[$fieldName], $fieldType );
 		} else {
 			$this->reportMessage( "   ... field $fieldName is fine.\n" );
@@ -238,7 +238,7 @@ class MySQLTableBuilder extends TableBuilder {
 		// http://stackoverflow.com/questions/1873085/how-to-convert-from-varbinary-to-char-varchar-in-mysql
 		// http://bugs.mysql.com/bug.php?id=34564
 		if ( strpos( $oldFieldType, 'VARBINARY' ) !== false && strpos( $newFieldType, 'VARCHAR' ) !== false ) {
-		//	$this->connection->query( "SELECT CAST($fieldName AS CHAR) from $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
+		// $this->connection->query( "SELECT CAST($fieldName AS CHAR) from $tableName", __METHOD__, ISQLPlatform::QUERY_CHANGE_NONE );
 		}
 
 		$this->reportMessage( "done.\n" );
@@ -259,7 +259,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
 		$indices = $indexOptions['indices'];
 
 		// First remove possible obsolete indices

@@ -4,12 +4,12 @@ namespace SMW\SQLStore;
 
 use RuntimeException;
 use SMW\DIProperty;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -49,7 +49,7 @@ class PropertyTypeFinder {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function countByType( $type ) {
 		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
@@ -126,7 +126,7 @@ class PropertyTypeFinder {
 		}
 
 		// e.g. http://semantic-mediawiki.org/swivt/1.0#_num
-		list( $url, $fragment ) = explode( "#", $row->o_serialized );
+		[ $url, $fragment ] = explode( "#", $row->o_serialized );
 
 		return $fragment;
 	}

@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Hussein m mmbaga",
+			"Kisare",
 			"Kwisha",
 			"Rance"
 		]
@@ -9,6 +10,7 @@
 	"smw-categories": "Jamii",
 	"browse": "vinjari na wiki",
 	"smw-ui-tooltip-title-legend": "Simulizi",
+	"smw-ui-tooltip-title-reference": "Rejeo",
 	"smw-livepreview-loading": "Inapakizwa...",
 	"smw-filter": "Chuja",
 	"smw-property-tab-usage": "Matumizi",

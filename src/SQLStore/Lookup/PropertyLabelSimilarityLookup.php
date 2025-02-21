@@ -3,16 +3,16 @@
 namespace SMW\SQLStore\Lookup;
 
 use Exception;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class PropertyLabelSimilarityLookup {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -40,7 +40,7 @@ class PropertyLabelSimilarityLookup {
 	private $exemptionProperty;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $lookupCount = 0;
 
@@ -48,9 +48,9 @@ class PropertyLabelSimilarityLookup {
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup|null $propertySpecificationLookup
+	 * @param SpecificationLookup|null $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup = null ) {
+	public function __construct( Store $store, ?SpecificationLookup $propertySpecificationLookup = null ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 
@@ -62,9 +62,9 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $threshold
+	 * @param int $threshold
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function setThreshold( $threshold ) {
 		$this->threshold = $threshold;
@@ -98,7 +98,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLookupCount() {
 		return $this->lookupCount;
@@ -107,7 +107,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPropertyMaxCount() {
 		$statistics = $this->store->getStatistics();
@@ -126,7 +126,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return array
 	 */
-	public function compareAndFindLabels( RequestOptions $requestOptions = null ) {
+	public function compareAndFindLabels( ?RequestOptions $requestOptions = null ) {
 		$withType = false;
 		$propertyList = $this->getPropertyList( $requestOptions );
 
@@ -141,7 +141,7 @@ class PropertyLabelSimilarityLookup {
 		$this->lookupCount = count( $propertyList );
 		$similarities = $this->matchLabels( $propertyList, $withType );
 
-		usort( $similarities, function ( $a, $b ) {
+		usort( $similarities, static function ( $a, $b ) {
 			return $b['similarity'] <=> $a['similarity'];
 		} );
 
@@ -196,7 +196,7 @@ class PropertyLabelSimilarityLookup {
 	 * @param DIProperty $first
 	 * @param DIProperty $second
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isExempted( DIProperty $first, DIProperty $second ) {
 		if ( $this->exemptionProperty === null ) {
@@ -265,7 +265,7 @@ class PropertyLabelSimilarityLookup {
 		];
 	}
 
-	private function getPropertyList( RequestOptions $requestOptions = null ) {
+	private function getPropertyList( ?RequestOptions $requestOptions = null ) {
 		$propertyList = [];
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong

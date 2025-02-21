@@ -2,29 +2,28 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use LinksUpdate;
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use SMW\Services\ServicesFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use Title;
 use UnexpectedValueException;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
  */
-class LinksUpdateSQLStoreDBIntegrationTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesBeforeRun = true;
+class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $title = null;
 	private $mwHooksHandler;

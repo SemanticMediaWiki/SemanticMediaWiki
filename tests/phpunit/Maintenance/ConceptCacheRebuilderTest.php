@@ -9,12 +9,12 @@ use SMW\Maintenance\ConceptCacheRebuilder;
  * @covers \SMW\Maintenance\ConceptCacheRebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
+class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockForAbstractClass( '\SMW\Store' );
@@ -164,29 +164,29 @@ class ConceptCacheRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$row->page_namespace = 0;
 		$row->page_title = 1;
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$database->expects( $expectedToRun )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( 'SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store->expects( $this->once() )
 			->method( 'getConceptCacheStatus' )
-			->will( $this->returnValue( $concept ) );
+			->willReturn( $concept );
 
 		$store->expects( $expectedToRun )
 			->method( 'refreshConceptCache' )
-			->will( $this->returnValue( [ $refreshConceptCacheReturn ] ) );
+			->willReturn( [ $refreshConceptCacheReturn ] );
 
 		$store->expects( $expectedToRun )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$settings = $this->getMockBuilder( '\SMW\Settings' )
 			->disableOriginalConstructor()

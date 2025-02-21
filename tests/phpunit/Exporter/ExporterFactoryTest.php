@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DataItemFactory;
 use SMW\Exporter\ExporterFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exporter\ExporterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
+class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

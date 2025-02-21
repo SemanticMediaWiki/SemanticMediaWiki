@@ -8,12 +8,12 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
  * @covers \SMW\MediaWiki\Api\Browse\ListAugmentor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
+class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -71,8 +71,8 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
@@ -121,8 +121,8 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
@@ -159,13 +159,13 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$row = new \stdClass;
 		$row->usage_count = 1111;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -173,7 +173,7 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ListAugmentor(
 			$store
@@ -182,8 +182,8 @@ class ListAugmentorTest extends \PHPUnit_Framework_TestCase {
 		$instance->augment( $res, $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 

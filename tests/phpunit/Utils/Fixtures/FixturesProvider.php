@@ -20,7 +20,7 @@ use SMW\Tests\Utils\Fixtures\Properties\UrlProperty;
 use SMW\Tests\Utils\Fixtures\Properties\YearProperty;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -66,7 +66,7 @@ class FixturesProvider {
 		return [
 			'area' => new AreaProperty(),
 			'populationdensity' => new PopulationDensityProperty(),
-		//	'capitalof' => new CapitalOfProperty(),
+		// 'capitalof' => new CapitalOfProperty(),
 			'status' => new StatusProperty(),
 			'population' => new PopulationProperty(),
 			'founded' => new FoundedProperty(),
@@ -100,7 +100,7 @@ class FixturesProvider {
 
 		if ( $this->properties === null ) {
 			$this->properties = $this->getListOfPropertyInstances();
-		};
+		}
 
 		if ( isset( $this->properties[$id] ) ) {
 			return $this->properties[$id]->getProperty();
@@ -120,7 +120,7 @@ class FixturesProvider {
 
 		if ( $this->categories === null ) {
 			$this->categories = $this->getListOfCategoryInstances();
-		};
+		}
 
 		if ( isset( $this->categories[$id] ) ) {
 			return $this->categories[$id];
@@ -140,7 +140,7 @@ class FixturesProvider {
 
 		if ( $this->factsheets === null ) {
 			$this->factsheets = $this->getListOfFactsheetInstances();
-		};
+		}
 
 		if ( isset( $this->factsheets[$id] ) ) {
 			return $this->factsheets[$id];

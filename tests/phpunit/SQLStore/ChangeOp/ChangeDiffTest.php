@@ -9,12 +9,12 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
  * @covers \SMW\SQLStore\ChangeOp\ChangeDiff
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
+class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -91,7 +91,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 			->method( 'save' )
 			->with(
 				$this->stringContains( ChangeDiff::CACHE_NAMESPACE ),
-				$this->equalTo( $instance->serialize() ) );
+				$instance->serialize() );
 
 		$instance->save( $cache );
 	}
@@ -116,7 +116,7 @@ class ChangeDiffTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $instance->serialize() ) );
+			->willReturn( $instance->serialize() );
 
 		$this->assertEquals(
 			$instance,

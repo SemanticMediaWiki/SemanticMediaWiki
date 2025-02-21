@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\MediaWikiNsContentReader
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
+class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -28,8 +28,8 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 	public function testReadFromMessageCache() {
 		$instance = new MediaWikiNsContentReader();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->read( 'smw-desc' )
 		);
 	}
@@ -52,8 +52,8 @@ class MediaWikiNsContentReaderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setRevisionGuard( $revisionGuard );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->read( __METHOD__ )
 		);
 	}

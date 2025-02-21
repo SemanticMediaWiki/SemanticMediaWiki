@@ -231,7 +231,7 @@
 		},
 		{
 			"type": "special",
-			"about": "#7 invalid property and avoid a `...must be an instance of SMWDIProperty, instance of SMWDIError given...`",
+			"about": "#7 invalid property and avoid a `...must be an instance of \\SMW\\DIProperty, instance of SMWDIError given...`",
 			"special-page": {
 				"page": "SearchByProperty",
 				"query-parameters": "",

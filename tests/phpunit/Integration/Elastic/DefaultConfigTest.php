@@ -5,12 +5,12 @@ namespace SMW\Tests\Integration\Elastic;
 use SMW\Exception\JSONParseException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DefaultConfigTest extends \PHPUnit_Framework_TestCase {
+class DefaultConfigTest extends \PHPUnit\Framework\TestCase {
 
 	private $contents;
 

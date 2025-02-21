@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Property\DeclarationExaminer\ProtectionExaminer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\ProtectionExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
+class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -35,7 +35,7 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'getMessages' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
 			->disableOriginalConstructor()
@@ -57,15 +57,15 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testCreateProtectionRight() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasCreateProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getCreateProtectionRight' )
-			->will( $this->returnValue( 'abc' ) );
+			->willReturn( 'abc' );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -87,15 +87,15 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testEditProtectionRight() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( 'abc_123' ) );
+			->willReturn( 'abc_123' );
 
 		$dataItemFactory = new DataItemFactory();
 
@@ -117,15 +117,15 @@ class ProtectionExaminerTest extends \PHPUnit_Framework_TestCase {
 	public function testIsEditProtectedProperty() {
 		$this->declarationExaminer->expects( $this->any() )
 			->method( 'isLocked' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'hasEditProtection' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->protectionValidator->expects( $this->any() )
 			->method( 'getEditProtectionRight' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItemFactory = new DataItemFactory();
 

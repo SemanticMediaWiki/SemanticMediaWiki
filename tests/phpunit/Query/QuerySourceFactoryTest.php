@@ -6,20 +6,20 @@ use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QuerySourceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
+class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -86,7 +86,7 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getInfo' )
-			->will( $this->returnValue( [ 'SPARQLStore' ] ) );
+			->willReturn( [ 'SPARQLStore' ] );
 
 		$instance = new QuerySourceFactory(
 			$store,

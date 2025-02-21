@@ -7,11 +7,12 @@ use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use WikiMap;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -19,14 +20,14 @@ use WikiMap;
 class CacheFactory {
 
 	/**
-	 * @var string|integer
+	 * @var string|int
 	 */
 	private $mainCacheType;
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param string|integer|null $mainCacheType
+	 * @param string|int|null $mainCacheType
 	 */
 	public function __construct( $mainCacheType = null ) {
 		$this->mainCacheType = $mainCacheType;
@@ -39,7 +40,7 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @return string|integer
+	 * @return string|int
 	 */
 	public function getMainCacheType() {
 		return $this->mainCacheType;
@@ -58,7 +59,7 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param Title|integer|string $key
+	 * @param Title|int|string $key
 	 *
 	 * @return string
 	 */
@@ -89,7 +90,7 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer $cacheSize
+	 * @param int $cacheSize
 	 *
 	 * @return Cache
 	 */
@@ -109,7 +110,7 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer|string $mediaWikiCacheType
+	 * @param int|string|null $mediaWikiCacheType
 	 *
 	 * @return Cache
 	 */
@@ -125,7 +126,7 @@ class CacheFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|string $mediaWikiCacheType
+	 * @param int|string|null $mediaWikiCacheType
 	 *
 	 * @return Cache
 	 */
@@ -140,7 +141,7 @@ class CacheFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|null $cacheType
+	 * @param int|null $cacheType
 	 *
 	 * @return Cache
 	 */
@@ -156,8 +157,8 @@ class CacheFactory {
 	 * @since 2.4
 	 *
 	 * @param string $namespace
-	 * @param string|integer|null $cacheType
-	 * @param integer $cacheLifetime
+	 * @param string|int|null $cacheType
+	 * @param int $cacheLifetime
 	 *
 	 * @return BlobStore
 	 */

@@ -1,0 +1,215 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @see https://www.w3schools.com/howto/howto_js_vertical_tabs.asp
+ *
+ * @since 3.1
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+@import '../tokens.less';
+
+.tippy-box[data-theme~='light-border'] {
+    padding: 0;
+    color: @color-base;
+    background-color: @background-color-base;
+    border-color: @border-color-muted;
+
+    &.square-border,
+    &.square-border-light,
+    &.square-border-transparent-arrow {
+        border-radius: 0;
+    }
+
+    &[data-placement^=top] {
+        .tippy-arrow {
+            &::before,
+            &::after {
+                border-top-color: @background-color-neutral-subtle;
+            }
+        }
+
+        &.square-border-transparent-arrow,
+        &.square-border-light {
+            .tippy-arrow {
+                &::before,
+                &::after {
+                    border-top-color: @background-color-base;
+                }
+            }
+        }
+    }
+
+    &[data-placement^=bottom] {
+        .tippy-arrow {
+            &::before,
+            &::after {
+                border-bottom-color: @background-color-neutral-subtle;
+            }
+        }
+
+        &.square-border-transparent-arrow,
+        &.square-border-light {
+            .tippy-arrow {
+                &::before,
+                &::after {
+                    border-bottom-color: @background-color-base;
+                }
+            }
+        }
+    }
+}
+
+.tippy-content {
+    /* Padding will be apply at .tippy-header and .tippy-content-container instead */
+    padding: 0;
+}
+
+.tippy-header,
+.tippy-top,
+.tippy-content-container,
+.tippy-bottom {
+    padding-inline: @spacing-75;
+}
+
+.tippy-header {
+    padding-block-start: @spacing-50;
+    padding-block-end: @spacing-25;
+    background-color: @background-color-neutral-subtle;
+    border-bottom: 1px solid @border-color-muted;
+    border-top-left-radius: calc(.3em - 1px);
+    border-top-right-radius: calc(.3em - 1px);
+
+    .square-border-light & {
+        background-color: @background-color-base;
+    }
+
+    &.accordion-popup {
+        font-weight: 600;
+
+        &.plain {
+            background-color: transparent;
+        }
+    }
+}
+
+.tippy-top {
+    padding-block-start: @spacing-50;
+    padding-block-end: @spacing-0;
+    font-size: @font-size-x-small;
+
+    &.accordion-popup {
+        text-align: justify;
+        padding: @spacing-50;
+    }
+}
+
+.tippy-bottom {
+    padding-block: @spacing-50;
+    border-top: 1px solid @border-color-muted;
+    border-bottom-left-radius: calc(.3em - 1px);
+    border-bottom-right-radius: calc(.3em - 1px);
+
+    &.wide-popup {
+        padding-block-end: 1rem;
+    }
+}
+
+.tippy-content-container {
+    padding-block: @spacing-50;
+    word-break: break-word;
+    /* max-width: 260px; */
+    max-height: 250px;
+    overflow-y: auto;
+
+    ul {
+        padding-inline-start: 10px;
+        margin: 0.3em 0.3em 0.3em 0.5em;
+        font-size: @font-size-x-small;
+    }
+
+    code {
+        word-break: break-all;
+    }
+
+    &.wide-popup {
+        max-height: 300px;
+    }
+
+    &.accordion-popup {
+        padding: 0;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        max-height: 300px;
+    }
+}
+
+.tippy-content-overlay {
+    height: 40px;
+    width: 260px;
+    margin-top: 10px;
+}
+
+.tippy-cancel {
+    width: auto;
+    height: auto;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 18px;
+    color: @color-emphasized;
+    opacity: @opacity-icon-base;
+    margin-left: 10px;
+    cursor: pointer;
+
+    &::after {
+        content: '×';
+    }
+
+    &:hover {
+        opacity: @opacity-icon-base--hover;
+    }
+}
+
+.tippy-warning-circle {
+    float: right;
+    height: 10px;
+    width: 10px;
+    background-color: @color-icon-warning;
+    display: inline-block;
+    margin-top: 3.5px;
+    margin-left: 15px;
+    border-radius: 50%;
+}
+
+.tippy-error-circle {
+    float: right;
+    height: 10px;
+    width: 10px;
+    background-color: @color-icon-error;
+    display: inline-block;
+    margin-top: 3.5px;
+    margin-left: 15px;
+    border-radius: 50%;
+}

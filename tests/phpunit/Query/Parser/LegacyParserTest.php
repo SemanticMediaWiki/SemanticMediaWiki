@@ -15,12 +15,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Query\Parser\LegacyParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class LegacyParserTest extends \PHPUnit_Framework_TestCase {
+class LegacyParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $descriptionFactory;
@@ -62,12 +62,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		// Legacy class match
-		$this->assertInstanceOf(
-			'\SMWQueryParser',
-			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
-		);
 
 		$this->assertInstanceOf(
 			'\SMW\Query\Parser',

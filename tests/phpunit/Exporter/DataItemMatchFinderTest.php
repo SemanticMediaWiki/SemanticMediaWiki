@@ -9,12 +9,12 @@ use SMW\Exporter\DataItemMatchFinder;
  * @covers \SMW\Exporter\DataItemMatchFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
+class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -45,7 +45,7 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$expResource->expects( $this->once() )
 			->method( 'getUri' )
-			->will( $this->returnValue( 'http://example.org/id/Foo#Bar' ) );
+			->willReturn( 'http://example.org/id/Foo#Bar' );
 
 		$this->assertEquals(
 			$dataItem,
@@ -71,7 +71,7 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$expResource->expects( $this->once() )
 			->method( 'getUri' )
-			->will( $this->returnValue( 'http://example.org/id/Help:Foo#Bar' ) );
+			->willReturn( 'http://example.org/id/Help:Foo#Bar' );
 
 		$this->assertEquals(
 			$dataItem,
@@ -92,7 +92,7 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$repositoryConnector->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $repositoryResult ) );
+			->willReturn( $repositoryResult );
 
 		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->disableOriginalConstructor()
@@ -100,7 +100,7 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $repositoryConnector ) );
+			->willReturn( $repositoryConnector );
 
 		$instance = new DataItemMatchFinder(
 			$store,
@@ -113,7 +113,7 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$expResource->expects( $this->once() )
 			->method( 'getUri' )
-			->will( $this->returnValue( 'http://foo.org/id/Foo#Bar' ) );
+			->willReturn( 'http://foo.org/id/Foo#Bar' );
 
 		$this->assertEquals(
 			$dataItem,
@@ -137,7 +137,7 @@ class DataItemMatchFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$expResource->expects( $this->once() )
 			->method( 'getUri' )
-			->will( $this->returnValue( '_node1abjt1k9bx17' ) );
+			->willReturn( '_node1abjt1k9bx17' );
 
 		$this->assertNull(
 			$instance->matchExpElement( $expResource )

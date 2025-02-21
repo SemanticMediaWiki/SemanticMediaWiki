@@ -4,8 +4,6 @@ namespace SMW;
 
 use Html;
 use SMW\MediaWiki\MessageBuilder;
-use SMWRequestOptions;
-use SMWStringCondition;
 use Xml;
 
 /**
@@ -13,7 +11,7 @@ use Xml;
  * data retrieval instead of the SQL-based access used by MW.
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   ??
  *
  * @author Markus Krötzsch
@@ -133,9 +131,9 @@ abstract class QueryPage extends \QueryPage {
 		// during doQuery() which is processed before this form is generated
 		$limit = $this->selectOptions['limit'];
 		$offset = $this->selectOptions['offset'];
-		$resultCount = wfMessage( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
+		$resultCount = $this->msg( 'smw-showingresults' )->numParams( $limit, $offset + 1 )->parse();
 
-		$msgBuilder =  new MessageBuilder( $this->getLanguage() );
+		$msgBuilder = new MessageBuilder( $this->getLanguage() );
 		$selection = $msgBuilder->prevNextToText(
 			$this->getContext()->getTitle(),
 			$limit,
@@ -187,13 +185,13 @@ abstract class QueryPage extends \QueryPage {
 		$out  = $this->getOutput();
 		$sk   = $this->getSkin();
 
-		$options = new SMWRequestOptions();
+		$options = new RequestOptions();
 		$options->limit = $limit;
 		$options->offset = $offset;
 		$options->sort = true;
 
 		if ( $property ) {
-			$options->addStringCondition( $property, SMWStringCondition::STRCOND_MID );
+			$options->addStringCondition( $property, StringCondition::STRCOND_MID );
 		}
 
 		if ( ( $filter = $this->getRequest()->getVal( 'filter' ) ) === 'unapprove' ) {
@@ -246,5 +244,12 @@ abstract class QueryPage extends \QueryPage {
 		}
 
 		return $num;
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function getQueryInfo(): ?array {
+		return null;
 	}
 }

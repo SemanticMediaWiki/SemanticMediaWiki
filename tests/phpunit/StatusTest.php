@@ -8,12 +8,12 @@ use SMW\Status;
  * @covers \SMW\Status
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
  */
-class StatusTest extends \PHPUnit_Framework_TestCase {
+class StatusTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 

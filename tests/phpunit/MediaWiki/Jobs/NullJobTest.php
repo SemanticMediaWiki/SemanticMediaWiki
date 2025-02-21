@@ -8,12 +8,12 @@ use SMW\MediaWiki\Jobs\NullJob;
  * @covers \SMW\MediaWiki\Jobs\NullJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class NullJobTest extends \PHPUnit_Framework_TestCase {
+class NullJobTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

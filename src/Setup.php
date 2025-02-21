@@ -2,16 +2,17 @@
 
 namespace SMW;
 
-use SMW\Connection\ConnectionManager;
-use SMW\MediaWiki\Hooks;
-use SMW\Utils\Logo;
-use SMW\GroupPermissions;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\MediaWiki\Hooks;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Utils\Logo;
 
 /**
  * Extension setup and registration
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -42,7 +43,7 @@ final class Setup {
 	 *
 	 * @since 3.1
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
 	public static function registerExtensionCheck( &$vars ) {
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
@@ -67,7 +68,7 @@ final class Setup {
 	/**
 	 * @since 3.2
 	 *
-	 * @param array $vars
+	 * @param array &$vars
 	 */
 	public static function releaseExtensionCheck( &$vars ) {
 		// Restore the exception handler from before Setup::registerExtensionCheck
@@ -167,6 +168,10 @@ final class Setup {
 			define( 'SMW_PHPUNIT_AUTOLOADER_FILE', "$smwDir/tests/autoloader.php" );
 		}
 
+		if ( !defined( 'SMW_PHPUNIT_DIR' ) ) {
+			define( 'SMW_PHPUNIT_DIR', __DIR__ . '/../tests/phpunit' );
+		}
+
 		$vars['wgLogTypes'][] = 'smw';
 		$vars['wgFilterLogTypes']['smw'] = true;
 
@@ -179,20 +184,8 @@ final class Setup {
 
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
-				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include( $file ) );
+				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include $file );
 			}
-		}
-
-		// #3626
-		//
-		// Required due to support of LTS (1.31)
-		// Do replace `mediawiki.api.parse` (Resources.php) with `mediawiki.api`
-		// starting with the next supported LTS (likely MW 1.35)
-		if ( version_compare( MW_VERSION, '1.32', '>=' ) ) {
-			$vars['wgResourceModules']['mediawiki.api.parse'] = [
-				'dependencies' => 'mediawiki.api',
-				'targets' => [ 'desktop', 'mobile' ]
-			];
 		}
 	}
 
@@ -230,7 +223,7 @@ final class Setup {
 	}
 
 	private function initMessageCallbackHandler() {
-		Message::registerCallbackHandler( Message::TEXT, function ( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::TEXT, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -242,7 +235,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->text();
 		} );
 
-		Message::registerCallbackHandler( Message::ESCAPED, function ( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::ESCAPED, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -254,7 +247,7 @@ final class Setup {
 			return call_user_func_array( 'wfMessage', $arguments )->inLanguage( $language )->escaped();
 		} );
 
-		Message::registerCallbackHandler( Message::PARSE, function ( $arguments, $language ) {
+		Message::registerCallbackHandler( Message::PARSE, static function ( $arguments, $language ) {
 			if ( $language === Message::CONTENT_LANGUAGE ) {
 				$language = Localizer::getInstance()->getContentLanguage();
 			}
@@ -348,7 +341,7 @@ final class Setup {
 
 	private function registerParamDefinitions( &$vars ) {
 		$vars['wgParamDefinitions']['smwformat'] = [
-			'definition'=> '\SMW\Query\ResultFormat',
+			'definition' => '\SMW\Query\ResultFormat',
 		];
 	}
 

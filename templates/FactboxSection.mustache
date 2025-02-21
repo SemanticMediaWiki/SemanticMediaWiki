@@ -1,0 +1,18 @@
+{{!
+  Partials for Factbox template
+
+  Required data:
+  - direction: string - The direction of the section (start/end)
+  - group: string - The group that this section belongs to
+  - html-heading: string - HTML of the section heading
+  - array-properties: object[] - Array of properties data (rendered via FactboxProperty partial)
+}}
+<div
+	class="smw-factbox-section"
+	{{#direction}}data-mw-smw-factbox-direction="{{.}}"{{/direction}}
+	{{#group}}data-mw-smw-factbox-group="{{.}}"{{/group}}
+>{{!
+	}}{{#html-heading}}<div class="smw-factbox-section-heading" role="heading" aria-level="3">{{{.}}}</div>{{/html-heading}}{{!
+	}}{{#array-properties}}{{>FactboxProperty}}{{/array-properties}}{{!
+	}}{{{html-section}}}{{!
+}}</div>

@@ -2,16 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
-use SMWDataItem as DataItem;
-use SMW\DIContainer;
-use SMW\RequestOptions;
-use SMW\Options;
-use SMW\MediaWiki\DatabaseHelper;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\RequestOptionsProc;
 use RuntimeException;
+use SMW\Options;
+use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
+use SMW\SQLStore\SQLStore;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2
@@ -68,7 +65,7 @@ class PropertySubjectsLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( $pid, TableDefinition $proptable, DataItem $dataItem = null, RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( $pid, TableDefinition $proptable, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		$this->caller = __METHOD__;
 
 		$res = $this->doFetch( $pid, $proptable, $dataItem, $requestOptions );
@@ -162,7 +159,7 @@ class PropertySubjectsLookup {
 		return $this->prefetch[$hash] = $result;
 	}
 
-	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, RequestOptions $requestOptions = null ) {
+	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$group = false;
 

@@ -4,28 +4,28 @@ namespace SMW\MediaWiki\Page;
 
 use Html;
 use ParserOptions;
-use SMW\ParserData;
-use SMW\SemanticData;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
-use SMW\Localizer;
+use SMW\ParserData;
+use SMW\Property\DeclarationExaminerFactory;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\StringCondition;
+use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 use SMWDataValue;
 use Title;
-use SMW\Utils\HtmlTabs;
-use SMW\Property\DeclarationExaminerFactory;
-use SMW\Utils\JsonView;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -58,12 +58,12 @@ class PropertyPage extends Page {
 	private $itemListBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isLockedView = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $filterCount = 0;
 
@@ -144,7 +144,7 @@ class PropertyPage extends Page {
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLockedView() {
 		return $this->isLockedView;
@@ -155,7 +155,7 @@ class PropertyPage extends Page {
 	 *
 	 * @since 3.0
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function getRedirectTargetURL() {
 		$label = $this->getTitle()->getText();
@@ -194,7 +194,7 @@ class PropertyPage extends Page {
 
 		$matches = [];
 
-		$context->getOutput()->addModuleStyles( [ 'ext.smw.style', 'ext.smw.page.styles' ] );
+		$context->getOutput()->addModuleStyles( [ 'ext.smw.styles', 'ext.smw.page.styles' ] );
 		$context->getOutput()->addModules( [ 'smw.property.page', 'smw.jsonview' ] );
 
 		$context->getOutput()->setPageTitle(

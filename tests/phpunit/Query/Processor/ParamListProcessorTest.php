@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\Processor\ParamListProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
+class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -64,18 +64,18 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			ParamListProcessor::FORMAT_LEGACY
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$a[0]
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$a[1]
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$a[2]
 		);
 	}
@@ -296,7 +296,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-
 		// #3196
 		yield [
 			[ 'Foo=Bar', 'link=none', 'intro=[[File:Foo.png|link=Bar]]' ],
@@ -355,7 +354,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 				'this'       => []
 			]
 		];
-
 	}
 
 	public function legacyParametersProvider() {
@@ -398,7 +396,6 @@ class ParamListProcessorTest extends \PHPUnit_Framework_TestCase {
 				'this'       => []
 			]
 		];
-
 	}
 
 }

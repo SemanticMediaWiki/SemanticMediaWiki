@@ -5,7 +5,7 @@ namespace SMW\Elastic\Connection;
 use Onoi\Cache\Cache;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -77,7 +77,7 @@ class LockManager {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLock( $type ) {
 		$key = smwfCacheKey(

@@ -8,12 +8,12 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundExcepti
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DefaultProfileNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class DefaultProfileNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DefaultProfileNotFoundException();

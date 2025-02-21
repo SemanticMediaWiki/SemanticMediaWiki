@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use MediaWiki\DAO\WikiAwareEntity;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 use Title;
@@ -13,12 +14,12 @@ use Title;
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class UpdateJobTest extends \PHPUnit_Framework_TestCase {
+class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $semanticDataFactory;
@@ -45,11 +46,11 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -60,7 +61,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'RevisionGuard', $revisionGuard );
 
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
-		$this->semanticDataSerializer = \SMW\ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
+		$this->semanticDataSerializer = ApplicationFactory::getInstance()->newSerializerFactory()->newSemanticDataSerializer();
 	}
 
 	protected function tearDown(): void {
@@ -77,13 +78,6 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 			'SMW\MediaWiki\Jobs\UpdateJob',
 			new UpdateJob( $title )
 		);
-
-		// FIXME Delete SMWUpdateJob assertion after all
-		// references to SMWUpdateJob have been removed
-		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\UpdateJob',
-			new \SMWUpdateJob( $title )
-		);
 	}
 
 	public function testJobWithMissingParserOutput() {
@@ -93,7 +87,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new UpdateJob( $title );
 		$instance->isEnabledJobQueue( false );
@@ -108,15 +102,15 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->registerObject( 'ContentParser', null );
 
@@ -133,7 +127,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
 			->disableOriginalConstructor()
@@ -141,7 +135,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$contentParser->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
@@ -158,15 +152,15 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBkey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$title->expects( $this->once() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
 			->disableOriginalConstructor()
@@ -174,7 +168,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$contentParser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( new \ParserOutput ) );
+			->willReturn( new \ParserOutput );
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
@@ -184,11 +178,11 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -197,7 +191,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->once() )
 			->method( 'clearData' );
@@ -217,15 +211,15 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getDBkey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'canExist' )
@@ -243,7 +237,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$contentParser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( new \ParserOutput ) );
+			->willReturn( new \ParserOutput );
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
@@ -258,11 +252,11 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -316,7 +310,7 @@ class UpdateJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ new DIBlob( json_encode( $semanticData ) ) ] ) );
+			->willReturn( [ new DIBlob( json_encode( $semanticData ) ) ] );
 
 		$store->expects( $this->once() )
 			->method( 'updateData' );

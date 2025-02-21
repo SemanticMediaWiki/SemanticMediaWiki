@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Specials\PendingTasks;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\SetupFile;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class IncompleteSetupTasks {
 	 *
 	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( SetupFile $setupFile = null ) {
+	public function __construct( ?SetupFile $setupFile = null ) {
 		$this->setupFile = $setupFile;
 
 		if ( $this->setupFile === null ) {
@@ -56,8 +56,7 @@ class IncompleteSetupTasks {
 			$html = Html::rawElement(
 				'p',
 				[
-					'style' => 'margin-top:10px;color:#888',
-					//'class' => 'smw-callout smw-callout-error'
+					'style' => 'margin-top:10px;color:#888'
 				],
 				Message::get( [ 'smw-pendingtasks-setup-intro', $count ], Message::PARSE, Message::USER_LANGUAGE )
 			) . $this->buildList( $incompleteTasks );

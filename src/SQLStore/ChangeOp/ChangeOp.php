@@ -7,7 +7,7 @@ use IteratorAggregate;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class ChangeOp implements IteratorAggregate {
 	private $propertyList = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $textItemsFlag = false;
 
@@ -66,7 +66,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param DIWikiPage|null $subject
 	 * @param array $diff
 	 */
-	public function __construct( DIWikiPage $subject = null, array $diff = [] ) {
+	public function __construct( ?DIWikiPage $subject = null, array $diff = [] ) {
 		$this->subject = $subject;
 		$this->diff = $diff;
 	}
@@ -74,7 +74,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $textItemsFlag
+	 * @param bool $textItemsFlag
 	 */
 	public function setTextItemsFlag( $textItemsFlag ) {
 		$this->textItemsFlag = (bool)$textItemsFlag;
@@ -110,6 +110,7 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 2.3
 	 *
+	 * @param string $tableName
 	 * @param array $fixedPropertyRecord
 	 */
 	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ) {
@@ -178,8 +179,8 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
-	 * @param array $data
+	 * @param int $id
+	 * @param array $textItems
 	 */
 	public function addTextItems( $id, array $textItems ) {
 		if ( $this->textItemsFlag ) {

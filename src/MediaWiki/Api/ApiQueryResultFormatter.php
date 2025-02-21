@@ -4,14 +4,14 @@ namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
 use SMW\ProcessingErrorMsgHandler;
-use SMWQueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * This class handles the Api related query result formatting
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -19,23 +19,23 @@ use SMWQueryResult;
 class ApiQueryResultFormatter {
 
 	/**
-	 * @var Integer|boolean
+	 * @var int|bool
 	 */
 	protected $continueOffset = false;
 
 	/**
-	 * @var String
+	 * @var string
 	 */
 	protected $type;
 
 	/**
-	 * @var Boolean
+	 * @var bool
 	 */
 	protected $isRawMode = false;
 
 	/**
 	 *
-	 * @var SMWQueryResult
+	 * @var QueryResult
 	 */
 	protected $queryResult = null;
 
@@ -44,9 +44,9 @@ class ApiQueryResultFormatter {
 	/**
 	 * @since 1.9
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 */
-	public function __construct( SMWQueryResult $queryResult ) {
+	public function __construct( QueryResult $queryResult ) {
 		$this->queryResult = $queryResult;
 	}
 
@@ -58,7 +58,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $isRawMode
+	 * @param bool $isRawMode
 	 */
 	public function setIsRawMode( $isRawMode ) {
 		$this->isRawMode = $isRawMode;
@@ -69,7 +69,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getContinueOffset() {
 		return $this->continueOffset;
@@ -201,7 +201,7 @@ class ApiQueryResultFormatter {
 	 * @since 1.9
 	 *
 	 * @param array &$arr
-	 * @param string $tag
+	 * @param string|null $tag
 	 */
 	public function setIndexedTagName( &$arr, $tag = null ) {
 		if ( !$this->isRawMode ) {

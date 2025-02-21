@@ -2,18 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
-use SMW\Schema\SchemaFactory;
-use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\CategoryFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
-use Title;
+use SMW\Schema\SchemaFactory;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -39,7 +36,7 @@ class FilterFactory {
 	 * @since 3.2
 	 *
 	 * @param TemplateEngine $templateEngine
-	 * @param TreeBuilder $treeBuilder,
+	 * @param TreeBuilder $treeBuilder
 	 * @param SchemaFactory $schemaFactory
 	 */
 	public function __construct( TemplateEngine $templateEngine, TreeBuilder $treeBuilder, SchemaFactory $schemaFactory ) {
@@ -73,7 +70,6 @@ class FilterFactory {
 	/**
 	 * @since 3.2
 	 *
-	 * @param UrlArgs $urlArgs
 	 * @param array $params
 	 *
 	 * @return ValueFilter

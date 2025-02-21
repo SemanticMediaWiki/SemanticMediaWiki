@@ -2,18 +2,18 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
-use SMW\PropertySpecificationLookup;
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
 use SMWDIBlob as DIBlob;
+use SMWNumberValue as NumberValue;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -26,12 +26,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	private $allowsListValueParser;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
@@ -44,9 +44,9 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 * @since 2.4
 	 *
 	 * @param AllowsListValueParser $allowsListValueParser
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( AllowsListValueParser $allowsListValueParser, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( AllowsListValueParser $allowsListValueParser, SpecificationLookup $propertySpecificationLookup ) {
 		$this->allowsListValueParser = $allowsListValueParser;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -94,7 +94,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$allowedValues,
 			$allowedValueList
 		);
-
 
 		if ( $isAllowed ) {
 			return;
@@ -256,7 +255,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			return false;
 		}
 
-		list( $lower, $upper ) = explode( '...', $v );
+		[ $lower, $upper ] = explode( '...', $v );
 
 		if ( $value >= intval( $lower ) && $value <= intval( $upper ) ) {
 			return $isAllowed = true;

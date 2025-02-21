@@ -8,12 +8,12 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  * @covers \SMW\DataValues\ValueParsers\MonolingualTextValueParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -27,7 +27,7 @@ class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testFullParsableString( $value, $expectedText, $expectedLanguageCode ) {
 		$instance = new MonolingualTextValueParser();
-		list( $text, $languageCode ) = $instance->parse( $value );
+		[ $text, $languageCode ] = $instance->parse( $value );
 
 		$this->assertEquals(
 			$expectedText,
@@ -42,7 +42,7 @@ class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
 
 	public function testParsableStringWithMissingLanguageCode() {
 		$instance = new MonolingualTextValueParser();
-		list( $text, $languageCode ) = $instance->parse( 'FooBar' );
+		[ $text, $languageCode ] = $instance->parse( 'FooBar' );
 
 		$this->assertEquals(
 			'FooBar',
@@ -64,7 +64,7 @@ class MonolingualTextValueParserTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$provider[] = [
-			[ 'EN' =>'Foo' ],
+			[ 'EN' => 'Foo' ],
 			'Foo',
 			'en'
 		];

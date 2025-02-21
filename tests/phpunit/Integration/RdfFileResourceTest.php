@@ -3,21 +3,21 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
-use SMW\Tests\DatabaseTestCase;
 use SMW\Exporter\ExporterFactory;
-use Title;
+use SMW\Localizer\Localizer;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class RdfFileResourceTest extends DatabaseTestCase {
+class RdfFileResourceTest extends SMWIntegrationTestCase {
 
 	private $fixturesFileProvider;
 	private $stringValidator;

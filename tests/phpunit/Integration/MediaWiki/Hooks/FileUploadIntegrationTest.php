@@ -3,25 +3,25 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
-use SMW\Tests\DatabaseTestCase;
-use Title;
+use SMW\Localizer\Localizer;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group SMW
  * @group SMWExtension
  *
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class FileUploadIntegrationTest extends DatabaseTestCase {
+class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 
 	private $mwHooksHandler;
 	private $fixturesFileProvider;

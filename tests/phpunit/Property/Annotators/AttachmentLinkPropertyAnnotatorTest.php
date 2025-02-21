@@ -3,26 +3,26 @@
 namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\SemanticData;
-use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Localizer\Localizer;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
-use SMW\Localizer;
 
 /**
  * @covers \SMW\Property\Annotators\AttachmentLinkPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;
-	private $nsFileName;
+	private $fileNS;
 
 	protected function setUp(): void {
 		parent::setUp();

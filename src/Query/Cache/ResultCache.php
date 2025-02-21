@@ -6,17 +6,15 @@ use Onoi\BlobStore\BlobStore;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Store;
+use SMW\Query\Excerpts;
+use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Utils\Timer;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
-use SMW\SQLStore\SQLStore;
-use SMW\Query\Cache\CacheStats;
-use SMW\Query\Excerpts;
 
 /**
  * The prefetcher only caches the subject list from a computed a query
@@ -31,7 +29,7 @@ use SMW\Query\Excerpts;
  * Cache eviction is carried out either manually (action=purge) or executed
  * through the QueryDepedencyLinksStore.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -88,12 +86,12 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	private $cacheStats;
 
 	/**
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	private $nonEmbeddedCacheLifetime = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledCache = true;
 
@@ -153,7 +151,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $cacheKeyExtension
+	 * @param string|int $cacheKeyExtension
 	 */
 	public function setCacheKeyExtension( $cacheKeyExtension ) {
 		if ( is_array( $cacheKeyExtension ) ) {
@@ -211,7 +209,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer|boolean $nonEmbeddedCacheLifetime
+	 * @param int|bool $nonEmbeddedCacheLifetime
 	 */
 	public function setNonEmbeddedCacheLifetime( $nonEmbeddedCacheLifetime ) {
 		$this->nonEmbeddedCacheLifetime = $nonEmbeddedCacheLifetime;

@@ -5,13 +5,13 @@ namespace SMW\SQLStore\Lookup;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMWDIError as DIError;
-use SMWRequestOptions as RequestOptions;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -71,7 +71,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return false;
@@ -80,7 +80,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );

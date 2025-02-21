@@ -2,15 +2,14 @@
 
 namespace SMW\Property;
 
-use SMW\Message;
 use SMW\DIProperty;
-use SMW\PropertyRegistry;
 use SMW\DIWikiPage;
-use Title;
+use SMW\Localizer\Message;
+use SMW\PropertyRegistry;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -30,12 +29,12 @@ class RestrictionExaminer {
 	private $user;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $createProtectionRight = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isQueryContext = false;
 
@@ -56,7 +55,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|boolean $createProtectionRight
+	 * @param string|bool $createProtectionRight
 	 */
 	public function setCreateProtectionRight( $createProtectionRight ) {
 		$this->createProtectionRight = $createProtectionRight;
@@ -65,7 +64,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isQueryContext
+	 * @param bool $isQueryContext
 	 */
 	public function isQueryContext( $isQueryContext ) {
 		$this->isQueryContext = (bool)$isQueryContext;
@@ -74,7 +73,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasRestriction() {
 		return $this->error !== [];
@@ -92,7 +91,7 @@ class RestrictionExaminer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $error
+	 * @param string $errorMsg
 	 *
 	 * @return DIProperty|null
 	 */
@@ -112,7 +111,7 @@ class RestrictionExaminer {
 	 * @param DIProperty $property
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function checkRestriction( DIProperty $property, DIWikiPage $contextPage = null ) {
+	public function checkRestriction( DIProperty $property, ?DIWikiPage $contextPage = null ) {
 		$this->error = [];
 
 		if ( $this->isDeclarative( $property, $contextPage ) ) {

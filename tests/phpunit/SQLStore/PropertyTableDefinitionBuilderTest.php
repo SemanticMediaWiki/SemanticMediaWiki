@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
-use SMW\SQLStore\TableDefinition;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMWDataItem as DataItem;
 
@@ -11,12 +11,12 @@ use SMWDataItem as DataItem;
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $propertyTypeFinder;
 	private $mwHooksHandler;
@@ -68,7 +68,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 			DataItem::TYPE_NUMBER, 'smw_di_number'
 		);
 
-		$definition->setTableType( TableDefinition::TYPE_CORE );
+		$definition->setTableType( PropertyTableDefinition::TYPE_CORE );
 
 		$expected = [
 			'smw_di_number' => $definition
@@ -90,7 +90,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyTypeFinder->expects( $this->any() )
 			->method( 'findTypeID' )
-			->will( $this->returnValue( '_num' ) );
+			->willReturn( '_num' );
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder
@@ -105,7 +105,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->createHashedTableNameFrom( $expectedKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $expectedKey );
 
-		$definition->setTableType( TableDefinition::TYPE_CORE );
+		$definition->setTableType( PropertyTableDefinition::TYPE_CORE );
 
 		$expected = [
 			'definition' => [ $tableName => $definition ],
@@ -143,7 +143,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
 
 		$definition = $instance->newTableDefinition( DataItem::TYPE_TIME, $tableName, $propertyKey );
-		$definition->setTableType( TableDefinition::TYPE_CORE );
+		$definition->setTableType( PropertyTableDefinition::TYPE_CORE );
 
 		$expected = [ $tableName => $definition ];
 
@@ -177,7 +177,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableDefinitions = $instance->getTableDefinitions();
 
 		$this->assertTrue(
-			$tableDefinitions[$tableName]->isTableType( TableDefinition::TYPE_CORE )
+			$tableDefinitions[$tableName]->isTableType( PropertyTableDefinition::TYPE_CORE )
 		);
 
 		$this->assertFalse(

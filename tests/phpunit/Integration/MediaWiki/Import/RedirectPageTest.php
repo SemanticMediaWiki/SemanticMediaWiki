@@ -4,28 +4,27 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class RedirectPageTest extends DatabaseTestCase {
+class RedirectPageTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
-
-	protected $destroyDatabaseTablesAfterRun = true;
 
 	private $importedTitles = [];
 	private $runnerFactory;

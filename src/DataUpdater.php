@@ -4,13 +4,14 @@ namespace SMW;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
+use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Property\ChangePropagationNotifier;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use WikiPage;
-use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
-use Psr\Log\LoggerAwareTrait;
-use SMW\Property\ChangePropagationNotifier;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
-use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 
 /**
  * This function takes care of storing the collected semantic data and
@@ -24,7 +25,7 @@ use Onoi\EventDispatcher\EventDispatcherAwareTrait;
  * type, the data type, the allowed values, or the conversion factors have
  * changed.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -51,27 +52,27 @@ class DataUpdater {
 	private $changePropagationNotifier;
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private $canCreateUpdateJob = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $processSemantics = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	private $isChangeProp = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferrableUpdate = false;
 
@@ -99,7 +100,7 @@ class DataUpdater {
 	 *
 	 * @since 3.0
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -108,7 +109,7 @@ class DataUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isChangeProp
+	 * @param bool $isChangeProp
 	 */
 	public function isChangeProp( $isChangeProp ) {
 		$this->isChangeProp = (bool)$isChangeProp;
@@ -117,7 +118,7 @@ class DataUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isChangeProp
+	 * @param bool $isDeferrableUpdate
 	 */
 	public function isDeferrableUpdate( $isDeferrableUpdate ) {
 		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
@@ -144,7 +145,7 @@ class DataUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @param boolean $canCreateUpdateJob
+	 * @param bool $canCreateUpdateJob
 	 */
 	public function canCreateUpdateJob( $canCreateUpdateJob ) {
 		$this->canCreateUpdateJob = (bool)$canCreateUpdateJob;
@@ -163,7 +164,7 @@ class DataUpdater {
 	 * @param Title $title
 	 * @param int|null &$latestRevID
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSkippable( Title $title, ?int &$latestRevID = null ) {
 		return $this->revisionGuard->isSkippableUpdate( $title, $latestRevID );
@@ -172,7 +173,7 @@ class DataUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUpdate() {
 		if ( !$this->canUpdate() ) {

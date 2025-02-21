@@ -9,19 +9,19 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Connection\Sequence
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SequenceTest extends \PHPUnit_Framework_TestCase {
+class SequenceTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -48,34 +48,34 @@ class SequenceTest extends \PHPUnit_Framework_TestCase {
 	public function testNonPostgres() {
 		$this->connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new Sequence(
 			$this->connection
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->restart( 'Foo', 'bar' )
+		$this->assertNull(
+						$instance->restart( 'Foo', 'bar' )
 		);
 	}
 
 	public function testPostgres() {
 		$this->connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'postgres' ) );
+			->willReturn( 'postgres' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->will( $this->returnCallback( function ( $callback ) { return $callback(); } ) );
+			->willReturnCallback( static function ( $callback ) { return $callback();
+			} );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' )
-			->with( $this->equalTo( 'ALTER SEQUENCE Foo_bar_seq RESTART WITH 43' ) );
+			->with( 'ALTER SEQUENCE Foo_bar_seq RESTART WITH 43' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'selectField' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new Sequence(
 			$this->connection

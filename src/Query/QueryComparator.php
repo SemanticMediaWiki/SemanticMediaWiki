@@ -3,7 +3,7 @@
 namespace SMW\Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.3
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class QueryComparator {
 	 * @since 2.3
 	 *
 	 * @param string $comparatorList
-	 * @param boolean $strictComparators
+	 * @param bool $strictComparators
 	 */
 	public function __construct( $comparatorList, $strictComparators ) {
 		$this->comparators = $this->getEnabledComparators( $comparatorList, $strictComparators );
@@ -78,9 +78,9 @@ class QueryComparator {
 	 * @since 1.5.3
 	 *
 	 * @param string $string
-	 * @param integer $defaultComparator Item of the SMW_CMP_ enum
+	 * @param int $defaultComparator Item of the SMW_CMP_ enum
 	 *
-	 * @return integer Item of the SMW_CMP_ enum
+	 * @return int Item of the SMW_CMP_ enum
 	 */
 	public function getComparatorFromString( $string, $defaultComparator = SMW_CMP_EQ ) {
 		if ( $string === '' ) {
@@ -94,9 +94,9 @@ class QueryComparator {
 	 * @since 2.5
 	 *
 	 * @param string $value
-	 * @param integer $comparator
+	 * @param int $comparator
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
 		return $this->extractComparatorFromString( $value ) === $comparator;
@@ -108,9 +108,9 @@ class QueryComparator {
 	 *
 	 * @since 2.4
 	 *
-	 * @param $value
+	 * @param &$value
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function extractComparatorFromString( &$value ) {
 		$comparator = SMW_CMP_EQ;

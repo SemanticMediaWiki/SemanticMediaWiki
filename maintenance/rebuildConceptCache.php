@@ -9,11 +9,13 @@ use SMW\Utils\CliMsgFormatter;
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Manage concept caches
@@ -63,7 +65,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @ingroup Maintenance
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author Markus Krötzsch
@@ -215,5 +217,7 @@ class rebuildConceptCache extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = rebuildConceptCache::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

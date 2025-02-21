@@ -8,12 +8,12 @@ use SMW\DataValues\ValueParsers\AllowsListValueParser;
  * @covers \SMW\DataValues\ValueParsers\AllowsListValueParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
+class AllowsListValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $mediaWikiNsContentReader;
 
@@ -33,7 +33,7 @@ class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
 	public function testParseAndMatchFromResource() {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \n*Foo\n**Foobar|bar\n" ) );
+			->willReturn( " \n*Foo\n**Foobar|bar\n" );
 
 		$instance = new AllowsListValueParser(
 			$this->mediaWikiNsContentReader
@@ -53,7 +53,7 @@ class AllowsListValueParserTest extends \PHPUnit_Framework_TestCase {
 
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new AllowsListValueParser(
 			$this->mediaWikiNsContentReader

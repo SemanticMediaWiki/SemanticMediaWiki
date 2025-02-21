@@ -2,8 +2,8 @@
 
 namespace SMW\Query;
 
-use SMW\Message;
 use SMW\DIProperty;
+use SMW\Localizer\Message;
 use SMWInfolink as Infolink;
 use SMWQuery as Query;
 
