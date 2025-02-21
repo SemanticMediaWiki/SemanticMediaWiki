@@ -65,21 +65,19 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->monolingualTextLookup->expects( $this->any() )
 			->method( 'newDataValue' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( $property ),
+				$subject,
+				$property,
 				$this->anything() )
 
-			->will(
-				$this->returnCallback( static function () {
-					$args = func_get_args();
-					switch ( $args[2] ) {
-						case 'de':
-							return 'de-desc';
-						case 'de-formal':
-							return 'de-formal-desc';
-						case 'en':
-							return 'en-desc';
-					}
+			->willReturnCallback( static function () {
+				$args = func_get_args();
+				switch ( $args[2] ) {
+					case 'de':
+						return 'de-desc';
+					case 'de-formal':
+						return 'de-formal-desc';
+					case 'en':
+						return 'en-desc';
 				}
 			)
 		);
