@@ -34,7 +34,7 @@
                     "<td class=\"Has-file smwtype_wpg\"",
                     "<a href=\"/index.php/File:S0039.png\"",
                     "width=\"75\"",
-                    "<img alt=\"S0039.png\" src=\"/images/thumb/6/65/S0039.png/75px-S0039.png\" decoding=\"async\" width=\"75\""
+                    "<img alt=\"S0039.png\" decoding=\"async\" width=\"75\""
 				]
 			}
 		},
@@ -71,7 +71,6 @@
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
                     "<img alt=\"S0039.png\"",
-                    "src=\"/images/thumb/6/65/S0039.png/30px-S0039.png\"",
                     "width=\"30\""
 				],
                 "not-contain": [

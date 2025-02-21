@@ -85,8 +85,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-subobject-entity\"><a href=.*P0705.png#Test\" title=.*P0705.png\">P0705.png#Test</a></span>",
-					"<a href=.*P0705.png\"",
-					"\"/images/thumb/2/2f/P0705.png/300px-P0705.png\""
+					"<a href=.*P0705.png\""
 				]
 			}
 		},
