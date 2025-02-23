@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeDiff
