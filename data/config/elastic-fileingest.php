@@ -26,7 +26,7 @@ return [
 	/**
 	 * @see $smwgDefaultStore
 	 */
-	'smwgDefaultStore' => 'SMWElasticStore',
+	'smwgDefaultStore' => 'SMW\Elastic\ElasticStore',
 
 	/**
 	 * @see $smwgElasticsearchConfig

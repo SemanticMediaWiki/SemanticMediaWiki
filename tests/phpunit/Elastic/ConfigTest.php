@@ -37,7 +37,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 
 	public function testIsDefaultStore_True() {
 		$instance = new Config(
-			[ Config::DEFAULT_STORE => 'SMWElasticStore' ]
+			[ Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore' ]
 		);
 
 		$this->assertTrue(

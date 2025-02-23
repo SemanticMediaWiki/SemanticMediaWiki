@@ -118,7 +118,7 @@ class TableResultPrinter extends ResultPrinter {
 		// building headers
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
-			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
+			foreach ( $res->getPrintRequests() as $pr ) {
 				$attributes = [];
 				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
