@@ -143,9 +143,11 @@ SMWSearch alias was kept.
 
 ## Upgrading
 
-Be advised that the [SMWSearch](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) feature (and so the [SEARCH_FORM_SCHEMA](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/SEARCH_FORM_SCHEMA) feature) is not working yet. See issue [#5782](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5782). If you use those features, change the MediaWiki [$wgSearchType](https://www.mediawiki.org/wiki/Manual:$wgSearchType) parameter to something other than `SMWSearch`. 
+Be advised that the [SMWSearch](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) feature (and so the [SEARCH_FORM_SCHEMA](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/SEARCH_FORM_SCHEMA) feature) is not working yet. See issue [#5782](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5782). If you use those features, change the MediaWiki [$wgSearchType](https://www.mediawiki.org/wiki/Manual:$wgSearchType) parameter to something other than `SMWSearch`.
 
-There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do so in order to make [table_optimizations](https://www.semantic-mediawiki.org/wiki/Database/Table_optimization) on the database).
+If you use the [ElasticStore](https://www.semantic-mediawiki.org/wiki/Help:ElasticStore) or the [SPARQLStore](https://www.semantic-mediawiki.org/wiki/Help:SPARQLStore) feature, make sure you have the `$smwgDefaultStore` set to `SMW\Elastic\ElasticStore` or `SMW\SPARQLStore\SPARQLStore` (the aliases `SMWElasticStore` and `SMWSparqlStore` were removed).
+
+There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do so in order to make [table optimizations](https://www.semantic-mediawiki.org/wiki/Database/Table_optimization) on the database).
 
 
 ## Contributors
