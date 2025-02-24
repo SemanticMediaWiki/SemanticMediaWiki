@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
+use SMW\Query\ResultPrinters\ResultPrinter;
+
 /**
- * Base class for SMW\ResultPrinter tests.
- *
  * @group SMW
  * @group SMWExtension
  *
@@ -17,7 +17,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the names of the formats supported by the
-	 * \SMW\ResultPrinter being tested.
+	 * ResultPrinter being tested.
 	 *
 	 * @since 1.8
 	 *
@@ -49,7 +49,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @param string $format
 	 * @param bool $isInline
 	 *
-	 * @return \SMW\ResultPrinter
+	 * @return ResultPrinter
 	 */
 	protected function newInstance( $format, $isInline ) {
 		$class = $this->getClass();
@@ -82,6 +82,6 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	public function testConstructor( $format, $isInline ) {
 		$instance = $this->newInstance( $format, $isInline );
 
-		$this->assertInstanceOf( '\SMW\ResultPrinter', $instance );
+		$this->assertInstanceOf( ResultPrinter::class, $instance );
 	}
 }

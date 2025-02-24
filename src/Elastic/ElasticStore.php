@@ -366,7 +366,7 @@ class ElasticStore extends SQLStore {
 			);
 
 			$this->messageReporter->reportMessage(
-				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWElasticStore' )
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMW\Elastic\ElasticStore' )
 			);
 
 			$this->messageReporter->reportMessage( "\nChecking indices ...\n" );
@@ -415,7 +415,7 @@ class ElasticStore extends SQLStore {
 			);
 
 			$this->messageReporter->reportMessage(
-				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWElasticStore' )
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMW\Elastic\ElasticStore' )
 			);
 
 			$this->messageReporter->reportMessage( "\nDropped index ...\n" );

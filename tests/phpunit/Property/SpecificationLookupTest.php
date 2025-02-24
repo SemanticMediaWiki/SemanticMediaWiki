@@ -3,6 +3,7 @@
 namespace SMW\Tests\Property;
 
 use SMW\DataItemFactory;
+use SMW\Property\LanguageFalldownAndInverse;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
@@ -16,6 +17,7 @@ use SMWDataItem as DataItem;
  * @since 2.4
  *
  * @author mwjames
+ * @author thomas-topway-it
  */
 class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 
@@ -52,6 +54,65 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			SpecificationLookup::class,
 			new SpecificationLookup( $this->store, $this->entityCache )
+		);
+	}
+
+	// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
+	public function testTryOutFalldownAndInverse() {
+		$property = $this->dataItemFactory->newDIProperty( '_PDESC' );
+		$subject = $property->getDiWikiPage();
+
+		$this->monolingualTextLookup->expects( $this->any() )
+			->method( 'newDataValue' )
+			->with(
+				$subject,
+				$property,
+				$this->anything() )
+
+			->willReturnCallback( static function () {
+				$args = func_get_args();
+				switch ( $args[2] ) {
+					case 'de':
+						return 'de-desc';
+					case 'de-formal':
+						return 'de-formal-desc';
+					case 'en':
+						return 'en-desc';
+				}
+			} );
+
+		$instance = new SpecificationLookup(
+			$this->store,
+			$this->entityCache
+		);
+
+		$languageCode = 'de-formal';
+		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
+
+		// #1 will return languageFalldown
+		$this->assertEquals(
+			[ 'de-desc', 'de' ],
+			$languageFalldownAndInverse->tryout()
+		);
+
+		$languageCode = 'de';
+		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
+
+		// #2 will return the first existing FallbackInverse
+		// (de-formal from de)
+
+		$this->assertEquals(
+			[ 'de-formal-desc', 'de-formal' ],
+			$languageFalldownAndInverse->tryout()
+		);
+
+		$languageCode = 'en';
+		$languageFalldownAndInverse = new LanguageFalldownAndInverse( $this->monolingualTextLookup, $subject, $property, $languageCode );
+
+		// #3 will return null
+		$this->assertEquals(
+			[ null, $GLOBALS['wgLanguageCode'] ],
+			$languageFalldownAndInverse->tryout()
 		);
 	}
 

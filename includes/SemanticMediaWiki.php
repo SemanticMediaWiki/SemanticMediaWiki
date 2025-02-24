@@ -109,7 +109,7 @@ class SemanticMediaWiki {
 		/** @} */
 
 		/** @{
-		 * SMW\ResultPrinter related constants that define
+		 * SMW\Query\ResultPrinters\ResultPrinter related constants that define
 		 * how/if headers should be displayed
 		 */
 		define( 'SMW_HEADERS_SHOW', 2 );
