@@ -277,9 +277,11 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
 
-		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getOptions' )
-			->willReturn( $this->parserOptions );
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -300,9 +302,11 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
 
-		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getOptions' )
-			->willReturn( $this->parserOptions );
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -328,9 +332,11 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
 
-		$this->parser->expects( $this->atLeastOnce() )
-			->method( 'getOptions' )
-			->willReturn( $this->parserOptions );
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
