@@ -277,6 +277,10 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
 
+		$this->parser->expects( $this->atLeastOnce() )
+			->method( 'getOptions' )
+			->willReturn( $this->parserOptions );
+
 		$instance = new RecursiveTextProcessor(
 			$this->parser
 		);
@@ -295,6 +299,10 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
+
+		$this->parser->expects( $this->atLeastOnce() )
+			->method( 'getOptions' )
+			->willReturn( $this->parserOptions );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -319,6 +327,10 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
+
+		$this->parser->expects( $this->atLeastOnce() )
+			->method( 'getOptions' )
+			->willReturn( $this->parserOptions );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
