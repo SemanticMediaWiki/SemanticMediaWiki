@@ -161,7 +161,7 @@ class DIBlobHandler extends DataItemHandler {
 		}
 
 		if ( $this->isDbType( 'postgres' ) ) {
-			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] || '');
+			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] || '' );
 		}
 
 		// empty blob: use "hash" string
