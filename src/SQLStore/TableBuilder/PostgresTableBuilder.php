@@ -170,7 +170,7 @@ EOT;
 				$type = strtoupper( $row->Type );
 			}
 
-			if ( preg_match( '/^nextval\\(.+\\)/i', $row->Extra || '' ) ) {
+			if ( $row->Extra && preg_match( '/^nextval\\(.+\\)/i', $row->Extra ) ) {
 				$type = 'SERIAL NOT NULL';
 			} elseif ( $row->Null != 'YES' ) {
 				$type .= ' NOT NULL';
