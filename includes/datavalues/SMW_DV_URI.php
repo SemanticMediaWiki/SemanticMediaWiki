@@ -378,7 +378,7 @@ class SMWURIValue extends SMWDataValue {
 
 		if ( $this->m_mode !== SMW_URI_MODE_EMAIL && $linker !== null &&
 			// replace underscore with a space only for wiki links
-			// either internal or external 
+			// either internal or external
 			// in all other cases a solution like the following
 			// https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/
 			// shall instead be used
