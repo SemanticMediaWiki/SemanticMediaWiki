@@ -2,30 +2,30 @@
 
 namespace SMW\Tests\Elastic\Lookup;
 
-use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DIProperty;
+use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 use SMW\RequestOptions;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Lookup\ProximityPropertyValueLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
+class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $logger;
+	private $idTable;
 	private $store;
 	private $elasticClient;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,7 +37,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -46,7 +46,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
@@ -54,11 +54,10 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->elasticClient ) );
+			->willReturn( $this->elasticClient );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ProximityPropertyValueLookup::class,
 			new ProximityPropertyValueLookup( $this->store )
@@ -66,10 +65,8 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_AnyValue() {
-
 		$params = [
 			'index' => null,
-			'type' => 'data',
 			'body' => [
 				'_source' => [ 'P:42.wpgField' ],
 				'from' => 0,
@@ -82,7 +79,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'search' )
-			->with( $this->equalTo( $params ) );
+			->with( $params );
 
 		$instance = new ProximityPropertyValueLookup(
 			$this->store

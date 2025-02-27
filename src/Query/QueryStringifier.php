@@ -5,7 +5,7 @@ namespace SMW\Query;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -27,12 +27,11 @@ class QueryStringifier {
 	 * @since 3.0
 	 *
 	 * @param Query $query
-	 * @param boolean $printParameters
+	 * @param bool $printParameters
 	 *
 	 * @return string
 	 */
 	public static function toArray( Query $query, $printParameters = false ) {
-
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();
 
@@ -46,7 +45,7 @@ class QueryStringifier {
 			$serialized['parameters']['source'] = $query->getQuerySource();
 		}
 
-		list( $serialized['sort'], $serialized['order'] ) = self::sortKeys(
+		[ $serialized['sort'], $serialized['order'] ] = self::sortKeys(
 			$query
 		);
 
@@ -88,7 +87,6 @@ class QueryStringifier {
 	 * @return string
 	 */
 	public static function toString( Query $query, $printParameters = false ) {
-
 		$serialized = self::toArray( $query, $printParameters );
 
 		$string = $serialized['conditions'];
@@ -105,7 +103,6 @@ class QueryStringifier {
 	}
 
 	private static function printouts( $query, $showParams = false ) {
-
 		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
@@ -122,7 +119,6 @@ class QueryStringifier {
 	}
 
 	private static function sortKeys( $query ) {
-
 		$sort = [];
 		$order = [];
 

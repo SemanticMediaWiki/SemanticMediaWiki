@@ -5,8 +5,8 @@ namespace SMW;
 use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMW\MediaWiki\RevisionGuard;
 use Title;
 
 /**
@@ -15,7 +15,7 @@ use Title;
  * Provides access to a semantic data container that is generated
  * either from the ParserOutput or is a newly created container
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -87,7 +87,7 @@ class ParserData {
 	private $errors = [];
 
 	/**
-	 * @var $canCreateUpdateJob
+	 * @var
 	 */
 	private $canCreateUpdateJob = true;
 
@@ -124,7 +124,6 @@ class ParserData {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -139,7 +138,6 @@ class ParserData {
 	 * @param string $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -210,7 +208,7 @@ class ParserData {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBlocked() {
 		return $this->hasAnnotationBlock();
@@ -219,10 +217,9 @@ class ParserData {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnnotationBlock() {
-
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
 			$this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) ) {
@@ -235,7 +232,7 @@ class ParserData {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return !$this->hasAnnotationBlock();
@@ -303,8 +300,7 @@ class ParserData {
 	 *
 	 * @param ParserOutput|null
 	 */
-	public function importFromParserOutput( ParserOutput $parserOutput = null ) {
-
+	public function importFromParserOutput( ?ParserOutput $parserOutput = null ) {
 		if ( $parserOutput === null ) {
 			return;
 		}
@@ -324,7 +320,6 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function copyToParserOutput() {
-
 		// Ensure that errors are reported and recorded
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
 			$this->getSubject()
@@ -352,21 +347,12 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function markParserOutput() {
-
 		$this->parserOutput->setTimestamp( wfTimestampNow() );
 
-		if ( method_exists( $this->parserOutput, 'setPageProperty' ) ) {
-			$this->parserOutput->setPageProperty(
-				'smw-semanticdata-status',
-				$this->semanticData->getProperties() !== []
-			);
-		} else {
-			// MW < 1.38
-			$this->parserOutput->setProperty(
-				'smw-semanticdata-status',
-				$this->semanticData->getProperties() !== []
-			);
-		}
+		$this->parserOutput->setExtensionData(
+			'smw-semanticdata-status',
+			$this->semanticData->getProperties() !== []
+		);
 	}
 
 	/**
@@ -381,17 +367,10 @@ class ParserData {
 	 *
 	 * @param ParserOutput $parserOutput
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasSemanticData( ParserOutput $parserOutput ) {
-		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			// T301915
-			return (bool)( $parserOutput->getPageProperty( 'smw-semanticdata-status' ) ?? false );
-		} else {
-			// MW < 1.38
-			return (bool)$parserOutput->getProperty( 'smw-semanticdata-status' );
-		}
-
+		return $parserOutput->getExtensionData( 'smw-semanticdata-status' ) ?? false;
 	}
 
 	/**
@@ -410,10 +389,9 @@ class ParserData {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function updateStore( $opts = [] ) {
-
 		$isDeferrableUpdate = false;
 
 		// @legacy
@@ -488,7 +466,6 @@ class ParserData {
 	 * if not available create an empty container
 	 */
 	private function initSemanticData() {
-
 		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {

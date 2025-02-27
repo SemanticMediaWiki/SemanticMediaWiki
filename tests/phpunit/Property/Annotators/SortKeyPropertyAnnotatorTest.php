@@ -11,18 +11,18 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\Property\Annotators\SortKeyPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class SortKeyPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -31,7 +31,6 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +50,6 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider defaultSortDataProvider
 	 */
 	public function testAddAnnotation( array $parameters, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory->setTitle( $parameters['title'] )->newEmptySemanticData();
 
 		$instance = new SortKeyPropertyAnnotator(
@@ -68,7 +66,6 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDontOverrideAnnotationIfAlreadyAvailable() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addPropertyObjectValue(
@@ -96,7 +93,6 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function defaultSortDataProvider() {
-
 		$provider = [];
 
 		// Sort entry

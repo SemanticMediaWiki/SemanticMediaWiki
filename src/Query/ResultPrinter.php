@@ -3,12 +3,11 @@
 namespace SMW\Query;
 
 use ParamProcessor\ParamDefinition;
-use SMWQueryResult as QueryResult;
 
 /**
  * Interface for SMW result printers.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -68,7 +67,7 @@ interface ResultPrinter {
 	 *
 	 * @param $context
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $context );
 
@@ -86,7 +85,7 @@ interface ResultPrinter {
 	/**
 	 * Set whether errors should be shown. By default they are.
 	 *
-	 * @param boolean $show
+	 * @param bool $show
 	 */
 	public function setShowErrors( $show );
 
@@ -107,7 +106,7 @@ interface ResultPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExportFormat();
 

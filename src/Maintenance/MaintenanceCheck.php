@@ -8,7 +8,7 @@ use SMW\Utils\CliMsgFormatter;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -25,8 +25,7 @@ class MaintenanceCheck {
 	 *
 	 * @return bool
 	 */
-	public function canExecute() : bool {
-
+	public function canExecute(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$this->message = '';
 
@@ -62,7 +61,7 @@ class MaintenanceCheck {
 	 *
 	 * @return string
 	 */
-	public function getMessage() : string {
+	public function getMessage(): string {
 		return $this->message;
 	}
 

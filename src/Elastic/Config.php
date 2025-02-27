@@ -2,11 +2,11 @@
 
 namespace SMW\Elastic;
 
-use SMW\Options;
 use RuntimeException;
+use SMW\Options;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -24,6 +24,11 @@ class Config extends Options {
 	const ELASTIC_ENDPOINTS = 'elastic/endpoints';
 
 	/**
+	 * Describes ElasticSearch credentials
+	 */
+	const ELASTIC_CREDENTIALS = 'elastic/credentials';
+
+	/**
 	 * Contains deprecated or renamed settings.
 	 *
 	 * @var array
@@ -38,12 +43,11 @@ class Config extends Options {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDefaultStore() : bool {
-
+	public function isDefaultStore(): bool {
 		$defaultStore = $this->get(
-			Config::DEFAULT_STORE
+			self::DEFAULT_STORE
 		);
 
 		return $defaultStore === ElasticStore::class || $defaultStore === 'SMWElasticStore';
@@ -57,7 +61,6 @@ class Config extends Options {
 	 * @param array $deprecatedKeys
 	 */
 	public function setDeprectedKeys( array $deprecatedKeys ) {
-
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			return;
 		}
@@ -87,7 +90,6 @@ class Config extends Options {
 	 * @param string $data
 	 */
 	public function loadFromJSON( $data ) {
-
 		if ( $data === false ) {
 			return;
 		}
@@ -118,7 +120,6 @@ class Config extends Options {
 	 * @throws RuntimeException
 	 */
 	public function readFile( $file ) {
-
 		if ( $file === false ) {
 			return false;
 		}

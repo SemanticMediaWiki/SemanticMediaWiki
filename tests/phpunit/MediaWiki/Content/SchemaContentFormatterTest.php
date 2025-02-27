@@ -10,18 +10,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Content\SchemaContentFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
+class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -31,7 +31,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			SchemaContentFormatter::class,
 			new SchemaContentFormatter( $this->store )
@@ -39,7 +38,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHelpLink() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,21 +46,20 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHelpLink( $schema )
 		);
 	}
 
 	public function testGetText() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$schema->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnCallback( [ $this, 'schema_get' ] ) );
+			->willReturnCallback( [ $this, 'schema_get' ] );
 
 		$text = '...';
 		$isYaml = false;
@@ -72,21 +69,20 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getText( $text, $schema, $errors )
 		);
 	}
 
 	public function testGetText_Errors() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$schema->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnCallback( [ $this, 'schema_get' ] ) );
+			->willReturnCallback( [ $this, 'schema_get' ] );
 
 		$text = '...';
 		$isYaml = false;
@@ -99,21 +95,20 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getText( $text, $schema, $errors )
 		);
 	}
 
 	public function testGetUsage_Empty() {
-
 		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new SchemaContentFormatter(
 			$this->store
@@ -128,7 +123,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUsage() {
-
 		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -143,11 +137,11 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $sortLetter ) );
+			->willReturn( $sortLetter );
 
 		$instance = new SchemaContentFormatter(
 			$this->store
@@ -155,7 +149,7 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setType( [ 'usage_lookup' => 'Foo' ] );
 
-		list( $usage, $count ) = $instance->getUsage( $schema );
+		[ $usage, $count ] = $instance->getUsage( $schema );
 
 		$this->assertContains(
 			'smw-columnlist-container',
@@ -164,7 +158,6 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUsage_MultipleProperties() {
-
 		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -179,11 +172,11 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnValue( $sortLetter ) );
+			->willReturn( $sortLetter );
 
 		$instance = new SchemaContentFormatter(
 			$this->store
@@ -191,14 +184,13 @@ class SchemaContentFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setType( [ 'usage_lookup' => [ 'Foo', 'Bar' ] ] );
 
-		list( $usage, $count ) = $instance->getUsage( $schema );
+		[ $usage, $count ] = $instance->getUsage( $schema );
 
 		$this->assertContains(
 			'smw-columnlist-container',
 			$usage
 		);
 	}
-
 
 	public function schema_get( $key ) {
 		return $key === Schema::SCHEMA_TAG ? [] : '';

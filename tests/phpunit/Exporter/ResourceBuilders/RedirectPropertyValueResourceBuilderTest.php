@@ -12,17 +12,17 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\RedirectPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class RedirectPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCa
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			RedirectPropertyValueResourceBuilder::class,
 			new RedirectPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testIsNotResourceBuilderForNonRediProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new RedirectPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class RedirectPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testAddResourceValueForRediPropert() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_REDI' );
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 

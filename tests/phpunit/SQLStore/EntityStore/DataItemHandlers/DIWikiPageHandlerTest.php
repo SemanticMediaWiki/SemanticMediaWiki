@@ -10,17 +10,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
  */
-class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
+class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,41 +31,39 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImmutableMethodAccess() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFetchFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableIndexes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getIndexField()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getLabelField()
 		);
 	}
 
 	public function testMutableMethodAccess() {
-
 		// EntityIdTable
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getSMWPageID', 'makeSMWPageID' ] )
@@ -74,11 +71,11 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$idTable->expects( $this->any() )
 			->method( 'makeSMWPageID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -86,17 +83,17 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getWhereConds( DIWikiPage::newFromText( 'Foo' ) )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getInsertValues( DIWikiPage::newFromText( 'Foo' ) )
 		);
 	}
@@ -105,7 +102,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +115,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDataItemFromDBKeys_Sort() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -139,7 +134,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysExceptionProvider
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -151,18 +145,17 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysProvider() {
-
-		#0 SMW_NS_PROPERTY, user defined property
+		# 0 SMW_NS_PROPERTY, user defined property
 		$provider[] = [
 			[ 'Foo', SMW_NS_PROPERTY, 'bar', '', '' ]
 		];
 
-		#1 SMW_NS_PROPERTY, pre-defined property
+		# 1 SMW_NS_PROPERTY, pre-defined property
 		$provider[] = [
 			[ '_Foo', SMW_NS_PROPERTY, 'bar', '', '' ]
 		];
 
-		#0 SMW_NS_PROPERTY, pre-defined property (see bug 48711)
+		# 0 SMW_NS_PROPERTY, pre-defined property (see bug 48711)
 		$provider[] = [
 			[ '_Foo', SMW_NS_PROPERTY, '', '', '' ]
 		];
@@ -175,7 +168,6 @@ class DIWikiPageHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysExceptionProvider() {
-
 		$provider[] = [
 			[ 'Foo' ]
 		];

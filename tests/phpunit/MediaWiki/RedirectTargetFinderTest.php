@@ -9,15 +9,14 @@ use Title;
  * @covers \SMW\MediaWiki\RedirectTargetFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  2.0
  *
  * @author mwjames
  */
-class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
+class RedirectTargetFinderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\RedirectTargetFinder',
 			new RedirectTargetFinder()
@@ -28,7 +27,6 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider redirectTextProvider
 	 */
 	public function testFindRedirectTargetFromText( $text, $expectedHasTarget, $expectedGetTarget ) {
-
 		$instance = new RedirectTargetFinder();
 		$instance->findRedirectTargetFromText( $text );
 
@@ -37,17 +35,17 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->hasRedirectTarget()
 		);
 
-		$this->assertEquals(
-			$expectedGetTarget,
-			$instance->getRedirectTarget()
-		);
+		if ( $expectedGetTarget ) {
+			$this->assertTrue( $instance->getRedirectTarget()->equals( $expectedGetTarget ) );
+		} else {
+			$this->assertNull( $instance->getRedirectTarget() );
+		}
 	}
 
 	/**
 	 * @dataProvider redirectTextProvider
 	 */
 	public function testInjectedRedirectTargetOverridesTextFinder( $text ) {
-
 		$directRedirectTarget = Title::newFromText( 'Foo' );
 
 		$instance = new RedirectTargetFinder();
@@ -58,17 +56,17 @@ class RedirectTargetFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->hasRedirectTarget()
 		);
 
-		$this->assertEquals(
-			$directRedirectTarget,
-			$instance->getRedirectTarget()
-		);
+		if ( $directRedirectTarget ) {
+			$this->assertTrue( $instance->getRedirectTarget()->equals( $directRedirectTarget ) );
+		} else {
+			$this->assertNull( $instance->getRedirectTarget() );
+		}
 	}
 
 	public function redirectTextProvider() {
-
 		$provider[] = [ '#REDIRECT [[:Lala]]', true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '#REDIRECT [[Lala]]',  true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '[[:Lala]]',           false, null ];
+		$provider[] = [ '#REDIRECT [[Lala]]', true, Title::newFromText( 'Lala' ) ];
+		$provider[] = [ '[[:Lala]]', false, null ];
 
 		return $provider;
 	}

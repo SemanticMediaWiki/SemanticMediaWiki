@@ -11,7 +11,7 @@ use SMWDIUri as DIUri;
 /**
  * This class implements Store access to Uri data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -59,7 +59,6 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ) {
-
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
 		// FROM `smw_object_ids`
 		// INNER JOIN `smw_di_uri` AS t1
@@ -91,7 +90,8 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return [ 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) ];
+		$serialization = rawurldecode( $dataItem->getSerialization() );
+		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
 	}
 
 	/**
@@ -100,7 +100,6 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getInsertValues( DataItem $dataItem ) {
-
 		$serialization = rawurldecode( $dataItem->getSerialization() );
 		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
 
@@ -111,7 +110,7 @@ class DIUriHandler extends DataItemHandler {
 
 		return [
 			'o_blob' => $text,
-			'o_serialized' => $serialization,
+			'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ),
 		];
 	}
 
@@ -139,7 +138,6 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
-
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}
@@ -152,7 +150,6 @@ class DIUriHandler extends DataItemHandler {
 	}
 
 	private function getMaxLength() {
-
 		$length = 255;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
@@ -163,7 +160,6 @@ class DIUriHandler extends DataItemHandler {
 	}
 
 	private function getCharFieldType() {
-
 		$fieldType = FieldType::FIELD_TITLE;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_NOCASE ) ) {

@@ -7,12 +7,12 @@ use Onoi\CallbackContainer\CallbackContainerFactory;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class EventsServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private $callbackContainerFactory;
 	private $servicesFileDir;
@@ -20,10 +20,10 @@ class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	private $resultCache;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +43,6 @@ class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-
 		array_unshift( $parameters, $service );
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
@@ -61,7 +60,6 @@ class EventsServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function servicesProvider() {
-
 		$provider[] = [
 			'InvalidateResultCacheEventListener',
 			[],

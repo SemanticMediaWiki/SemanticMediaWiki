@@ -8,24 +8,22 @@ use SMW\SQLStore\Lookup\MissingRedirectLookup;
  * @covers \SMW\SQLStore\Lookup\MissingRedirectLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
+class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MissingRedirectLookup::class,
 			new MissingRedirectLookup( $this->store )
@@ -33,7 +31,6 @@ class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindMissingRedirects() {
-
 		$tables = [
 			'page',
 			'smw_fpt_redi'
@@ -55,20 +52,20 @@ class MissingRedirectLookupTest extends \PHPUnit_Framework_TestCase {
 			'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'select' )
 			->with(
-				$this->equalTo( $tables ),
-				$this->equalTo( $fields ),
-				$this->equalTo( $conditions ) );
+				$tables,
+				$fields,
+				$conditions );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new MissingRedirectLookup(
 			$this->store

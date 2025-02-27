@@ -2,15 +2,15 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
-use DatabaseBase;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAware;
 use RuntimeException;
 use SMW\SQLStore\TableBuilder as TableBuilderInterface;
 use SMW\Utils\CliMsgFormatter;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -18,7 +18,7 @@ use SMW\Utils\CliMsgFormatter;
 abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
 	/**
-	 * @var DatabaseBase
+	 * @var IDatabase
 	 */
 	protected $connection;
 
@@ -37,10 +37,12 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	protected $activityLog = [];
 
+	protected array $droppedTables;
+
 	/**
 	 * @since 2.5
 	 *
-	 * @param DatabaseBase $connection
+	 * @param IDatabase $connection
 	 */
 	protected function __construct( $connection ) {
 		$this->connection = $connection;
@@ -49,17 +51,13 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @since 2.5
 	 *
-	 * @param DatabaseBase $connection
+	 * @param IDatabase $connection
 	 *
 	 * @return TableBuilder
 	 * @throws RuntimeException
 	 */
 	public static function factory( $connection ) {
-
-		if (
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \DatabaseBase ) {
+		if ( !$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
@@ -94,7 +92,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|integer $key
+	 * @param string|int $key
 	 * @param mixed
 	 */
 	public function setConfig( $key, $value ) {
@@ -120,7 +118,6 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string $message
 	 */
 	public function reportMessage( $message ) {
-
 		if ( $this->messageReporter === null ) {
 			return;
 		}
@@ -143,13 +140,12 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * {@inheritDoc}
 	 */
 	public function create( Table $table ) {
-
 		$attributes = $table->getAttributes();
 		$tableName = $table->getName();
 
 		$this->reportMessage( "Checking table $tableName ...\n" );
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
 			$this->reportMessage( "   Table not found, now creating...\n" );
 			$this->doCreateTable( $tableName, $attributes );
 		} else {
@@ -175,7 +171,6 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * {@inheritDoc}
 	 */
 	public function drop( Table $table ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !isset( $this->droppedTables ) ) {
@@ -190,7 +185,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 		$this->droppedTables[$tableName] = true;
 
-		if ( $this->connection->tableExists( $tableName ) === false ) { // create new table
+		if ( $this->connection->tableExists( $tableName, __METHOD__ ) === false ) { // create new table
 			return $this->reportMessage(
 				$cliMsgFormatter->twoCols( "... $tableName (not found) ...", 'SKIPPED', 3 )
 			);
@@ -236,21 +231,21 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 	/**
 	 * @param string $tableName
-	 * @param array $tableOptions
+	 * @param array|null $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, array $tableOptions = null );
+	abstract protected function doCreateTable( $tableName, ?array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
-	 * @param array $tableOptions
+	 * @param array|null $tableOptions
 	 */
-	abstract protected function doUpdateTable( $tableName, array $tableOptions = null );
+	abstract protected function doUpdateTable( $tableName, ?array $tableOptions = null );
 
 	/**
 	 * @param string $tableName
-	 * @param array $indexOptions
+	 * @param array|null $indexOptions
 	 */
-	abstract protected function doCreateIndices( $tableName, array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, ?array $indexOptions = null );
 
 	/**
 	 * @param string $tableName
@@ -268,7 +263,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		foreach ( $haystack as $key => $value ) {
 			$current_key = $key;
 
-			if ( $needle === $value or ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
+			if ( $needle === $value || ( is_array( $value ) && $this->recursive_array_search( $needle, $value ) !== false ) ) {
 				return $current_key;
 			}
 		}

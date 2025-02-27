@@ -4,11 +4,11 @@ namespace SMW\Importer;
 
 use RuntimeException;
 use SMW\Exception\JSONFileParseException;
-use SMW\Utils\FileFetcher;
 use SMW\Utils\File;
+use SMW\Utils\FileFetcher;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -41,7 +41,7 @@ class JsonImportContentsFileDirReader {
 	private $errors = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $importFileDirs = [];
 
@@ -53,7 +53,7 @@ class JsonImportContentsFileDirReader {
 	 * @param File|null $file
 	 * @param array $importFileDirs
 	 */
-	public function __construct( ContentModeller $contentModeller, FileFetcher $fileFetcher, File $file = null, $importFileDirs = [] ) {
+	public function __construct( ContentModeller $contentModeller, FileFetcher $fileFetcher, ?File $file = null, $importFileDirs = [] ) {
 		$this->contentModeller = $contentModeller;
 		$this->fileFetcher = $fileFetcher;
 		$this->file = $file;
@@ -83,7 +83,6 @@ class JsonImportContentsFileDirReader {
 	 * @return ImportContents[]
 	 */
 	public function getContentList() {
-
 		$contents = [];
 		sort( $this->importFileDirs );
 
@@ -91,7 +90,7 @@ class JsonImportContentsFileDirReader {
 
 			try {
 				$files = $this->getFilesFromLocation( $importFileDir, 'json' );
-			} catch( RuntimeException $e ) {
+			} catch ( RuntimeException $e ) {
 				$this->errors[] = $importFileDir . ' is not accessible.';
 				continue;
 			}
@@ -100,7 +99,7 @@ class JsonImportContentsFileDirReader {
 
 				try {
 					$content = $this->readJSONFile( $file );
-				} catch( JSONFileParseException $e ) {
+				} catch ( JSONFileParseException $e ) {
 					$this->errors[] = $e->getMessage();
 					continue;
 				}
@@ -123,7 +122,6 @@ class JsonImportContentsFileDirReader {
 	}
 
 	private function readJSONFile( $file ) {
-
 		$contents = json_decode(
 			$this->file->read( $file ),
 			true
@@ -137,7 +135,6 @@ class JsonImportContentsFileDirReader {
 	}
 
 	private function getFilesFromLocation( $path, $extension ) {
-
 		if ( $path === '' ) {
 			return [];
 		}

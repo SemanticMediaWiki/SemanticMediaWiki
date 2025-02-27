@@ -2,22 +2,22 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use MediaWiki\HookContainer\HookContainer;
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Enum;
+use SMW\Parameters;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
 use SMWDIBlob as DIBlob;
-use SMW\Parameters;
-use SMW\SQLStore\PropertyStatisticsTable;
-use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\Enum;
 use Title;
 
 /**
- * Class Handling all the write and update methods for SMWSQLStore3.
+ * Class Handling all the write and update methods for SQLStore.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Markus Krötzsch
@@ -31,7 +31,7 @@ class SQLStoreUpdater {
 	 * The store used by this store writer.
 	 *
 	 * @since 1.8
-	 * @var SMWSQLStore3
+	 * @var \SMW\SQLStore\SQLStore
 	 */
 	private $store;
 
@@ -66,6 +66,11 @@ class SQLStoreUpdater {
 	private $redirectUpdater;
 
 	/**
+	 * @var HookContainer
+	 */
+	private $hookContainer;
+
+	/**
 	 * @since 1.8
 	 *
 	 * @param SQLStore $store
@@ -78,21 +83,21 @@ class SQLStoreUpdater {
 		$this->propertyTableUpdater = $this->factory->newPropertyTableUpdater();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
 		$this->redirectUpdater = $this->factory->newRedirectUpdater();
+		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 	}
 
 	/**
-	 * @see SMWStore::deleteSubject
+	 * @see \SMW\Store::deleteSubject
 	 *
 	 * @since 1.8
 	 *
 	 * @param Title $title
 	 */
 	public function deleteSubject( Title $title ) {
-
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
-		\Hooks::run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
+		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
 
-		\Hooks::run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', [ $this->store, $title ] );
+		$this->hookContainer->run( 'SMW::SQLStore::BeforeDeleteSubjectComplete', [ $this->store, $title ] );
 
 		// Fetch all possible matches (including any duplicates created by
 		// incomplete rollback or DB deadlock)
@@ -138,15 +143,14 @@ class SQLStoreUpdater {
 		);
 
 		// @deprecated since 2.1, use 'SMW::SQLStore::AfterDeleteSubjectComplete'
-		\Hooks::run( 'SMWSQLStore3::deleteSubjectAfter', [ $this->store, $title ] );
+		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectAfter', [ $this->store, $title ] );
 
-		\Hooks::run( 'SMW::SQLStore::AfterDeleteSubjectComplete', [ $this->store, $title ] );
+		$this->hookContainer->run( 'SMW::SQLStore::AfterDeleteSubjectComplete', [ $this->store, $title ] );
 
 		return $status;
 	}
 
 	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ) {
-
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -179,21 +183,17 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see SMWStore::doDataUpdate
+	 * @see \SMW\Store::doDataUpdate
 	 *
 	 * @since 1.8
 	 *
-	 * @param SemanticData $data
+	 * @param SemanticData $semanticData
 	 */
 	public function doDataUpdate( SemanticData $semanticData ) {
-
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
-		\Hooks::run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
+		$this->hookContainer->run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
-		\Hooks::run( 'SMW::SQLStore::BeforeDataUpdateComplete', [
-			$this->store,
-			$semanticData
-		] );
+		$this->hookContainer->run( 'SMW::SQLStore::BeforeDataUpdateComplete', [ $this->store, $semanticData ] );
 
 		$subject = $semanticData->getSubject();
 
@@ -276,13 +276,16 @@ class SQLStoreUpdater {
 		);
 
 		// Deprecated since 2.3, use SMW::SQLStore::AfterDataUpdateComplete
-		\Hooks::run( 'SMWSQLStore3::updateDataAfter', [ $this->store, $semanticData ] );
+		$this->hookContainer->run( 'SMWSQLStore3::updateDataAfter', [ $this->store, $semanticData ] );
 
-		\Hooks::run( 'SMW::SQLStore::AfterDataUpdateComplete', [
-			$this->store,
-			$semanticData,
-			$changeOp
-		] );
+		$this->hookContainer->run(
+			'SMW::SQLStore::AfterDataUpdateComplete',
+			[
+				$this->store,
+				$semanticData,
+				$changeOp
+			]
+		);
 
 		$connection->endSectionTransaction( SQLStore::UPDATE_TRANSACTION );
 
@@ -358,7 +361,7 @@ class SQLStoreUpdater {
 		}
 
 		// Take care of all remaining property table data
-		list( $insertRows, $deleteRows, $newHashes ) = $this->propertyTableRowDiffer->computeTableRowDiff(
+		[ $insertRows, $deleteRows, $newHashes ] = $this->propertyTableRowDiffer->computeTableRowDiff(
 			$sid,
 			$data
 		);
@@ -395,7 +398,6 @@ class SQLStoreUpdater {
 	}
 
 	private function makeSortKey( $subject, $data ) {
-
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
 			return '';
@@ -437,7 +439,6 @@ class SQLStoreUpdater {
 	}
 
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
-
 		$options = [
 			'page_id' => $pageId,
 			'redirect_id' => $redirectId

@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -30,7 +30,6 @@ class ParameterProcessorFactory {
 	 * @return ParserParameterProcessor
 	 */
 	public function newParserParameterProcessor( array $parameters ) {
-
 		if ( isset( $parameters[0] ) && is_object( $parameters[0] ) ) {
 			array_shift( $parameters );
 		}

@@ -2,16 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
-use SMWDataItem as DataItem;
-use SMW\DIContainer;
-use SMW\RequestOptions;
-use SMW\Options;
-use SMW\MediaWiki\DatabaseHelper;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\RequestOptionsProc;
 use RuntimeException;
+use SMW\Options;
+use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
+use SMW\SQLStore\SQLStore;
+use SMWDataItem as DataItem;
 
 /**
  * @license GNU GPL v2
@@ -68,8 +65,7 @@ class PropertySubjectsLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( $pid, TableDefinition $proptable, DataItem $dataItem = null, RequestOptions $requestOptions = null ) {
-
+	public function fetchFromTable( $pid, TableDefinition $proptable, ?DataItem $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		$this->caller = __METHOD__;
 
 		$res = $this->doFetch( $pid, $proptable, $dataItem, $requestOptions );
@@ -93,7 +89,6 @@ class PropertySubjectsLookup {
 	 * @param RequestOptions $requestOptions
 	 */
 	public function prefetchFromTable( array $ids, DataItem $property, TableDefinition $proptable, RequestOptions $requestOptions ) {
-
 		if ( $ids === [] ) {
 			return [];
 		}
@@ -164,8 +159,7 @@ class PropertySubjectsLookup {
 		return $this->prefetch[$hash] = $result;
 	}
 
-	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, RequestOptions $requestOptions = null ) {
-
+	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$group = false;
 
@@ -327,7 +321,7 @@ class PropertySubjectsLookup {
 			$caller .= " (for " . $requestOptions->getCaller() . ")";
 		}
 
-		$res = $connection->query(
+		$res = $connection->readQuery(
 			$query,
 			$caller
 		);
@@ -347,7 +341,6 @@ class PropertySubjectsLookup {
 	 * @return DIWikiPage
 	 */
 	public function newFromRow( $row ) {
-
 		try {
 			if ( $row->smw_iw === '' || $row->smw_iw[0] != ':' ) { // filter special objects
 
@@ -379,7 +372,6 @@ class PropertySubjectsLookup {
 	}
 
 	private function getWhereConds( $query, $dataItem ) {
-
 		$conds = '';
 
 		if ( $dataItem instanceof \SMWDIContainer ) {
@@ -398,7 +390,6 @@ class PropertySubjectsLookup {
 	}
 
 	private function getIndexHint( $dataItemHandler, $pid, $dataItem = null ) {
-
 		$index = '';
 
 		if ( $dataItem !== null || $dataItemHandler->getIndexHint( $dataItemHandler::IHINT_PSUBJECTS ) === '' ) {

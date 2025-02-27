@@ -2,14 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use RuntimeException;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\JobFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -32,7 +31,7 @@ class IdChanger {
 	 * @param SQLStore $store
 	 * @param JobFactory|null $jobFactory
 	 */
-	public function __construct( SQLStore $store, JobFactory $jobFactory = null ) {
+	public function __construct( SQLStore $store, ?JobFactory $jobFactory = null ) {
 		$this->store = $store;
 		$this->jobFactory = $jobFactory;
 
@@ -51,13 +50,12 @@ class IdChanger {
 	 *
 	 * @since 3.1
 	 *
-	 * @param integer $curid
-	 * @param integer $targetid
+	 * @param int $curid
+	 * @param int $targetid
 	 *
 	 * @return \stdClass
 	 */
 	public function move( $curid, $targetid = 0 ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -156,15 +154,14 @@ class IdChanger {
 	 *
 	 * @since 1.8
 	 *
-	 * @param integer $old_id numeric ID that is to be changed
-	 * @param integer $new_id numeric ID to which the records are to be changed
-	 * @param integer $old_ns namespace of old id's page (-1 to ignore it)
-	 * @param integer $new_ns namespace of new id's page (-1 to ignore it)
-	 * @param boolean $s_data stating whether to update subject references
-	 * @param boolean $po_data stating if to update property/object references
+	 * @param int $old_id numeric ID that is to be changed
+	 * @param int $new_id numeric ID to which the records are to be changed
+	 * @param int $old_ns namespace of old id's page (-1 to ignore it)
+	 * @param int $new_ns namespace of new id's page (-1 to ignore it)
+	 * @param bool $s_data stating whether to update subject references
+	 * @param bool $po_data stating if to update property/object references
 	 */
 	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Change all id entries in property tables:
@@ -240,7 +237,6 @@ class IdChanger {
 	}
 
 	private function update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $s_data && ( ( $old_ns == -1 ) || ( $old_ns == SMW_NS_CONCEPT ) ) ) {

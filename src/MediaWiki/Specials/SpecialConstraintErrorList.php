@@ -9,7 +9,7 @@ use SpecialPage;
  * Convenience special page that just redirects to Special:Ask with a preset
  * of necessary parameters to query the constraint error list.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -27,7 +27,6 @@ class SpecialConstraintErrorList extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 		$limit = $settings->dotGet( 'smwgPagingLimit.errorlist' );
 
@@ -41,7 +40,7 @@ class SpecialConstraintErrorList extends SpecialPage {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 *
 	 * @return string
 	 */
@@ -52,7 +51,7 @@ class SpecialConstraintErrorList extends SpecialPage {
 				'po'     => '?Has improper value for|?Has processing error text',
 				'p'      => 'class=sortable-20smwtable-2Dstriped-20smwtable-2Dclean/sep=ul',
 				'eq'     => 'no',
-				'limit'  =>  $limit,
+				'limit'  => $limit,
 				'bTitle' => 'constrainterrorlist',
 				'bHelp'  => 'smw-constrainterrorlist-helplink',
 				'bMsg'   => 'smw-constrainterrorlist-intro'
@@ -64,12 +63,6 @@ class SpecialConstraintErrorList extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/maintenance';
 	}
 

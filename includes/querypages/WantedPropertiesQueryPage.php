@@ -3,13 +3,14 @@
 namespace SMW;
 
 use Html;
+use Title;
 
 /**
  * Query class that provides content for the Special:WantedProperties page
  *
  * @ingroup QueryPage
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -27,6 +28,8 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @var ListLookup
 	 */
 	private $listLookup;
+
+	private Title $title;
 
 	/**
 	 * @since 1.9
@@ -57,7 +60,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isExpensive() {
 		return false; /// disables caching for now
@@ -65,7 +68,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isSyndicated() {
 		return false; ///TODO: why not?
@@ -80,7 +83,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	public function getCacheInfo() {
-
 		if ( $this->listLookup->isFromCache() ) {
 			return $this->msg( 'smw-sp-properties-cache-info', $this->getLanguage()->userTimeAndDate( $this->listLookup->getTimestamp(), $this->getUser() ) )->parse();
 		}
@@ -93,7 +95,6 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	function getPageHeader() {
-
 		$filer = $this->getRequest()->getVal( 'filter', '' );
 
 		if ( $filer !== 'unapprove' ) {
@@ -132,7 +133,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 			'p',
 			[ 'class' => 'smw-wantedproperties-docu plainlinks' ],
 			$this->msg( 'smw-special-wantedproperties-docu' )->parse()
-		) . $this->getSearchForm( $this->getRequest()->getVal( 'property', '' ), $this->getCacheInfo(), false, $filter )  .
+		) . $this->getSearchForm( $this->getRequest()->getVal( 'property', '' ), $this->getCacheInfo(), false, $filter ) .
 		Html::element(
 			'h2',
 			[],
@@ -142,7 +143,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @param $skin
-	 * @param array $result First item is SMWDIProperty, second item is int
+	 * @param array $result First item is DIProperty, second item is int
 	 *
 	 * @return string
 	 */
@@ -178,10 +179,10 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param SMWRequestOptions $requestOptions
-	 * @return array of SMWDIProperty|SMWDIError
+	 * @return array of \SMW\DIProperty|SMWDIError
 	 */
-	function getResults( $requestoptions ) {
-		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestoptions );
+	function getResults( $requestOptions ) {
+		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}
 }

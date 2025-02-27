@@ -4,24 +4,23 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ParserAfterTidyIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -35,7 +34,7 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->applicationFactory->clear();
 
@@ -43,7 +42,6 @@ class ParserAfterTidyIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonParseForInvokedMessageParse() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -2,28 +2,28 @@
 
 namespace SMW\Tests;
 
+use SMW\Query\ResultPrinters\ResultPrinter;
+
 /**
- * Base class for SMW\ResultPrinter tests.
- *
  * @group SMW
  * @group SMWExtension
  *
  * @codeCoverageIgnore
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 
 	/**
 	 * Returns the names of the formats supported by the
-	 * \SMW\ResultPrinter being tested.
+	 * ResultPrinter being tested.
 	 *
 	 * @since 1.8
 	 *
 	 * @return array
 	 */
-	public abstract function getFormats();
+	abstract public function getFormats();
 
 	/**
 	 * @since 1.8
@@ -47,9 +47,9 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param boolean $isInline
+	 * @param bool $isInline
 	 *
-	 * @return \SMW\ResultPrinter
+	 * @return ResultPrinter
 	 */
 	protected function newInstance( $format, $isInline ) {
 		$class = $this->getClass();
@@ -64,7 +64,7 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 		$phpFails = [ $this, 'newInstance' ];
 
 		return array_map(
-			function( array $args ) use ( $phpFails ) {
+			static function ( array $args ) use ( $phpFails ) {
 				return call_user_func_array( $phpFails, $args );
 			},
 			$this->constructorProvider()
@@ -77,18 +77,11 @@ abstract class QueryPrinterRegistryTestCase extends QueryPrinterTestCase {
 	 * @since 1.8
 	 *
 	 * @param string $format
-	 * @param boolean $isInline
+	 * @param bool $isInline
 	 */
 	public function testConstructor( $format, $isInline ) {
 		$instance = $this->newInstance( $format, $isInline );
 
-		$this->assertInstanceOf( '\SMW\ResultPrinter', $instance );
+		$this->assertInstanceOf( ResultPrinter::class, $instance );
 	}
 }
-
-/**
- * SMWResultPrinter
- *
- * @deprecated since SMW 1.9
- */
-class_alias( 'SMW\Tests\QueryPrinterRegistryTestCase', 'SMW\Tests\ResultPrinterTestCase' );

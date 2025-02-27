@@ -3,24 +3,23 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
+	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
@@ -30,7 +29,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConjunctionInterpreter::class,
 			new ConjunctionInterpreter( $this->conditionBuilder )
@@ -38,7 +36,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_Empty() {
-
 		$instance = new ConjunctionInterpreter(
 			$this->conditionBuilder
 		);
@@ -54,10 +51,9 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_NotEmpty() {
-
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
-			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );
+			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
@@ -65,7 +61,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$description->expects( $this->any() )
 			->method( 'getPrintRequests' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConjunctionInterpreter(
 			$this->conditionBuilder

@@ -3,7 +3,7 @@
 namespace SMW\Elastic\QueryEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -81,7 +81,6 @@ class Condition {
 	 * @return array
 	 */
 	public function toArray() {
-
 		$params = $this->params( $this->parameters, $this->logs );
 
 		if ( $this->type === '' || $this->type === null || $params === [] ) {
@@ -92,7 +91,6 @@ class Condition {
 	}
 
 	private function params( $params, &$logs ) {
-
 		$condition = $params;
 
 		if ( $condition instanceof Condition ) {

@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -22,8 +22,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	private $localizer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceForm::class,
 			new NamespaceForm( $this->namespaceInfo, $this->localizer )
@@ -46,7 +44,6 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeFields() {
-
 		$instance = new NamespaceForm(
 			$this->namespaceInfo,
 			$this->localizer
@@ -56,7 +53,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			$this->messageLocalizer
 		);
 
-		$instance->setSearchableNamespaces( [ 0 => 'Foo '] );
+		$instance->setSearchableNamespaces( [ 0 => 'Foo ' ] );
 
 		$this->assertContains(
 			"<fieldset id='mw-searchoptions'>",
@@ -65,7 +62,6 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckNamespaceEditToken() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -74,8 +70,8 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getEditToken' );
 
 		$user->expects( $this->any() )
-			->method( 'isLoggedIn' )
-			->will( $this->returnValue( true ) );
+			->method( 'isRegistered' )
+			->willReturn( true );
 
 		$specialSearch = $this->getMockBuilder( '\SpecialSearch' )
 			->disableOriginalConstructor()
@@ -83,7 +79,7 @@ class NamespaceFormTest extends \PHPUnit_Framework_TestCase {
 
 		$specialSearch->expects( $this->any() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new NamespaceForm(
 			$this->namespaceInfo,

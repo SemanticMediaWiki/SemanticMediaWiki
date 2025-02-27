@@ -3,51 +3,50 @@
 namespace SMW\Tests\Serializers;
 
 use SMW\DataItemFactory;
+use SMW\Property\SpecificationLookup;
 use SMW\Serializers\QueryResultSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
-use SMW\Tests\PHPUnitCompat;
 use Title;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
+class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private SpecificationLookup $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->propertySpecificationLookup = $this->createMock( SpecificationLookup::class );
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Serializers\QueryResultSerializer',
 			new QueryResultSerializer()
@@ -55,7 +54,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeOutOfBoundsException() {
-
 		$this->expectException( 'OutOfBoundsException' );
 
 		$instance = new QueryResultSerializer();
@@ -69,8 +67,8 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $setup['queryResult'] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$results
 		);
 
@@ -81,18 +79,17 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryResultSerializerForRecordType() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -100,11 +97,11 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'BarList1;BarList2' ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -140,7 +137,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializeFormatForTimeValue() {
-
 		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -163,7 +159,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -182,7 +177,7 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 		$instance = new QueryResultSerializer();
 		$results = $instance->serialize( $queryResult );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 		$this->assertEmpty( $results['printrequests'] );
 		$this->assertEmpty( $results['results'] );
 	}
@@ -191,7 +186,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function numberDataProvider() {
-
 		$provider = [];
 
 		$setup = [
@@ -218,7 +212,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -275,7 +268,6 @@ class QueryResultSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function newMockBuilder() {
-
 		$builder = new MockObjectBuilder();
 		$builder->registerRepository( new CoreMockObjectRepository() );
 		$builder->registerRepository( new MediaWikiMockObjectRepository() );

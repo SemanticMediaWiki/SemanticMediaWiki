@@ -14,6 +14,7 @@
          beStrictAboutTestsThatDoNotTestAnything="true"
          printerClass="SMW\Tests\PHPUnitResultPrinter"
          printerFile="tests/phpunit/PHPUnitResultPrinter.php"
+         stderr="true"
          verbose="true">
     <listeners>
         <listener file="tests/phpunit/ExecutionTimeTestListener.php" class="SMW\Tests\ExecutionTimeTestListener">
@@ -32,7 +33,81 @@
         </testsuite>
         <testsuite name="semantic-mediawiki-unit">
             <directory>tests/phpunit/includes</directory>
-            <directory>tests/phpunit/Unit</directory>
+            <directory>tests/phpunit/Connection</directory>
+            <directory>tests/phpunit/Constraint</directory>
+            <directory>tests/phpunit/DataValues</directory>
+            <directory>tests/phpunit/Deserializers</directory>
+            <directory>tests/phpunit/Elastic</directory>
+            <directory>tests/phpunit/Exception</directory>
+            <directory>tests/phpunit/Exporter</directory>
+            <directory>tests/phpunit/Factbox</directory>
+            <directory>tests/phpunit/Importer</directory>
+            <directory>tests/phpunit/Indicator</directory>
+            <directory>tests/phpunit/IndicatorEntityExaminerIndicators</directory>
+            <directory>tests/phpunit/Iterators</directory>
+            <directory>tests/phpunit/Listener</directory>
+            <directory>tests/phpunit/Localizer</directory>
+            <directory>tests/phpunit/Maintenance</directory>
+            <directory>tests/phpunit/MediaWiki</directory>
+            <directory>tests/phpunit/Parser</directory>
+            <directory>tests/phpunit/ParserFunctions</directory>
+            <directory>tests/phpunit/Property</directory>
+            <directory>tests/phpunit/Protection</directory>
+            <directory>tests/phpunit/Query</directory>
+            <directory>tests/phpunit/Schema</directory>
+            <directory>tests/phpunit/Serializers</directory>
+            <directory>tests/phpunit/Services</directory>
+            <directory>tests/phpunit/SPARQLStore</directory>
+            <directory>tests/phpunit/SQLStore</directory>
+            <directory>tests/phpunit/Updater</directory>
+            <directory>tests/phpunit/Utils</directory>
+            <file>tests/phpunit/CacheFactoryTest.php</file>
+            <file>tests/phpunit/ConstraintFactoryTest.php</file>
+            <file>tests/phpunit/DataItemFactoryTest.php</file>
+            <file>tests/phpunit/DataTypeRegistryTest.php</file>
+            <file>tests/phpunit/DataValueFactoryTest.php</file>
+            <file>tests/phpunit/DefinesTest.php</file>
+            <file>tests/phpunit/DependencyValidatorTest.php</file>
+            <file>tests/phpunit/DisplayTitleFinderTest.php</file>
+            <file>tests/phpunit/EncoderTest.php</file>
+            <file>tests/phpunit/EntityCacheTest.php</file>
+            <file>tests/phpunit/EnumTest.php</file>
+            <file>tests/phpunit/GlobalFunctionsTest.php</file>
+            <file>tests/phpunit/GroupPermissionsTest.php</file>
+            <file>tests/phpunit/HashBuilderTest.php</file>
+            <file>tests/phpunit/HierarchyLookupTest.php</file>
+            <file>tests/phpunit/InMemoryPoolCacheTest.php</file>
+            <file>tests/phpunit/IteratorFactoryTest.php</file>
+            <file>tests/phpunit/NamespaceExaminerTest.php</file>
+            <file>tests/phpunit/NamespaceManagerTest.php</file>
+            <file>tests/phpunit/NamespaceUriFinderTest.php</file>
+            <file>tests/phpunit/OptionsAwareTraitTest.php</file>
+            <file>tests/phpunit/OptionsTest.php</file>
+            <file>tests/phpunit/ParameterListDocBuilderTest.php</file>
+            <file>tests/phpunit/ParameterProcessorFactoryTest.php</file>
+            <file>tests/phpunit/ParametersTest.php</file>
+            <file>tests/phpunit/ParserDataTest.php</file>
+            <file>tests/phpunit/ParserFunctionFactoryTest.php</file>
+            <file>tests/phpunit/ParserParameterProcessorTest.php</file>
+            <file>tests/phpunit/PostProcHandlerTest.php</file>
+            <file>tests/phpunit/ProcessingErrorMsgHandlerTest.php</file>
+            <file>tests/phpunit/PropertyAliasFinderTest.php</file>
+            <file>tests/phpunit/PropertyLabelFinderTest.php</file>
+            <file>tests/phpunit/PropertyRegistryTest.php</file>
+            <file>tests/phpunit/QueryFactoryTest.php</file>
+            <file>tests/phpunit/QueryTest.php</file>
+            <file>tests/phpunit/RequestOptionsTest.php</file>
+            <file>tests/phpunit/SerializerFactoryTest.php</file>
+            <file>tests/phpunit/SettingsTest.php</file>
+            <file>tests/phpunit/SetupCheckTest.php</file>
+            <file>tests/phpunit/SetupFileTest.php</file>
+            <file>tests/phpunit/SetupTest.php</file>
+            <file>tests/phpunit/SiteTest.php</file>
+            <file>tests/phpunit/SortLetterTest.php</file>
+            <file>tests/phpunit/StatusTest.php</file>
+            <file>tests/phpunit/StoreFactoryTest.php</file>
+            <file>tests/phpunit/StringConditionTest.php</file>
+            <file>tests/phpunit/TypesRegistryTest.php</file>
         </testsuite>
         <testsuite name="semantic-mediawiki-integration">
             <directory>tests/phpunit/Integration</directory>
@@ -40,6 +115,7 @@
         </testsuite>
         <testsuite name="semantic-mediawiki-import">
             <directory>tests/phpunit/Integration/MediaWiki/Import</directory>
+            <exclude>tests/phpunit/Integration/MediaWiki/Import/Maintenance/DumpRdfMaintenanceTest.php</exclude>
         </testsuite>
         <testsuite name="semantic-mediawiki-structure">
             <directory>tests/phpunit/Structure</directory>

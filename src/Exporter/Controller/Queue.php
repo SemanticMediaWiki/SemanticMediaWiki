@@ -5,7 +5,7 @@ namespace SMW\Exporter\Controller;
 use SMW\DIWikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -44,9 +44,9 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
-	public function getMembers() : array {
+	public function getMembers(): array {
 		return $this->queue;
 	}
 
@@ -64,7 +64,7 @@ class Queue {
 	 *
 	 * @return int
 	 */
-	public function count() : int {
+	public function count(): int {
 		return count( $this->queue );
 	}
 
@@ -82,7 +82,6 @@ class Queue {
 	 * @param int $recdepth
 	 */
 	public function add( DIWikiPage $dataItem, int $recdepth ) {
-
 		if ( $this->isDone( $dataItem, $recdepth ) ) {
 			return;
 		}
@@ -95,11 +94,11 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @param SMWDIWikiPage $st specifying the object to check
+	 * @param DIWikiPage $dataItem specifying the object to check
 	 *
 	 * @return bool
 	 */
-	public function isNotDone( DIWikiPage $dataItem ) : bool {
+	public function isNotDone( DIWikiPage $dataItem ): bool {
 		return !isset( $this->done[$dataItem->getSha1()] );
 	}
 
@@ -109,12 +108,12 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param SMWDIWikiPage $st specifying the object to check
+	 * @param DIWikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDone( DIWikiPage $dataItem, int $recdepth ) : bool {
+	public function isDone( DIWikiPage $dataItem, int $recdepth ): bool {
 		return $this->isHashDone( $dataItem->getSha1(), $recdepth );
 	}
 
@@ -124,7 +123,7 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param SMWDIWikiPage $st specifying the object to check
+	 * @param DIWikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 */
 	public function done( DIWikiPage $dataItem, int $recdepth ) {
@@ -143,7 +142,6 @@ class Queue {
 
 		// make sure it is not in the queue
 		unset( $this->queue[$hash] );
-
 	}
 
 	/**
@@ -151,7 +149,6 @@ class Queue {
 	 * recursion depth.
 	 */
 	private function isHashDone( string $hash, int $recdepth ) {
-
 		if ( isset( $this->done[$hash] ) && $this->done[$hash] == -1 ) {
 			return true;
 		}

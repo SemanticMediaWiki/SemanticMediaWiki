@@ -3,35 +3,39 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\InMemoryPoolCache;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobQueue;
 use SMW\SQLStore\RedirectStore;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\RedirectStore
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
+class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
-	private $conection;
+	private Database $connection;
 	private $cache;
 	private $testEnvironment;
 	private $connectionManager;
+	private JobQueue $jobQueue;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +50,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->setConnectionManager( $this->connectionManager );
 
@@ -59,13 +63,12 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 		InMemoryPoolCache::getInstance()->clear();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		InMemoryPoolCache::getInstance()->clear();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RedirectStore::class,
 			new RedirectStore( $this->store )
@@ -73,7 +76,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindRedirectIdForNonCachedRedirect() {
-
 		$row = new \stdClass;
 		$row->o_id = 42;
 
@@ -85,7 +87,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( [
 					's_title' => 'Foo',
 					's_namespace' => 0 ] ) )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$instance = new RedirectStore(
 			$this->store
@@ -98,7 +100,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$stats['sql.store.redirect.infostore']['hits']
 		);
@@ -107,14 +109,13 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$stats = InMemoryPoolCache::getInstance()->getStats();
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$stats['sql.store.redirect.infostore']['hits']
 		);
 	}
 
 	public function testFindRedirectIdForNonCachedNonRedirect() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
@@ -123,23 +124,22 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 				$this->equalTo( [
 					's_title' => 'Foo',
 					's_namespace' => 0 ] ) )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new RedirectStore(
 			$this->store
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->findRedirect( 'Foo', 0 )
 		);
 	}
 
 	public function testAddRedirectInfoRecordToFetchFromCache() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insert' )
@@ -163,7 +163,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteRedirectInfoRecord() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
@@ -178,14 +177,13 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->deleteRedirect( 'Foo', 9001 );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->findRedirect( 'Foo', 9001 )
 		);
 	}
 
 	public function testUpdateRedirect() {
-
 		$row = new \stdClass;
 		$row->ns = NS_MAIN;
 		$row->t = 'Bar';
@@ -195,8 +193,8 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( [ 'Foo' => 42 ] ) )
-			->will( $this->returnValue( [ $row ] ) );
+				[ 'Foo' => 42 ] )
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -204,7 +202,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getFields' )
-			->will( $this->returnValue( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] ) );
+			->willReturn( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -215,7 +213,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $propertyTable ] ) );
+			->willReturn( [ $propertyTable ] );
 
 		$store->setOption(
 			\SMW\Store::OPT_CREATE_UPDATE_JOB,
@@ -246,11 +244,10 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateRedirect_OnCommandLine_ActiveSectionTransaction() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'inSectionTransaction' )
-			->with( $this->equalTo( \SMW\SQLStore\SQLStore::UPDATE_TRANSACTION ) )
-			->will( $this->returnValue( true ) );
+			->with( \SMW\SQLStore\SQLStore::UPDATE_TRANSACTION )
+			->willReturn( true );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'lazyPush' );
@@ -261,7 +258,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -269,7 +266,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getFields' )
-			->will( $this->returnValue( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] ) );
+			->willReturn( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -280,7 +277,7 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $propertyTable ] ) );
+			->willReturn( [ $propertyTable ] );
 
 		$store->setOption(
 			\SMW\Store::OPT_CREATE_UPDATE_JOB,
@@ -308,7 +305,6 @@ class RedirectStoreTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateRedirectNotEnabled() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables' ] )

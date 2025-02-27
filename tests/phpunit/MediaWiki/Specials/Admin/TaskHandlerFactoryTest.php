@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
+class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,7 +25,7 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	private $htmlFormRenderer;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -50,7 +50,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TaskHandlerFactory::class,
 			new TaskHandlerFactory( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
@@ -58,7 +57,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewTaskHandlerRegistry() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -85,7 +83,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider methodProvider
 	 */
 	public function testCanConstructByFactory( $method, $expected ) {
-
 		$instance = new TaskHandlerFactory(
 			$this->store,
 			$this->htmlFormRenderer,
@@ -99,7 +96,6 @@ class TaskHandlerFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function methodProvider() {
-
 		$provider[] = [
 			'newTableSchemaTaskHandler',
 			'\SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler'

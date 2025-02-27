@@ -5,12 +5,12 @@ namespace SMW\Property\Annotators;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\RedirectTargetFinder;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 
 /**
  * Handling redirect annotation
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -25,10 +25,10 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
+	public function __construct( Annotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
 		parent::__construct( $propertyAnnotator );
 		$this->redirectTargetFinder = $redirectTargetFinder;
 	}
@@ -37,7 +37,6 @@ class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		if ( !$this->redirectTargetFinder->hasRedirectTarget() ) {
 			return;
 		}

@@ -3,30 +3,27 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\Installer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Installer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class InstallerTest extends \PHPUnit_Framework_TestCase {
+class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 	private $rollover;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Installer::class,
 			new Installer( $this->rollover )
@@ -34,7 +31,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSetupFile() {
-
 		$instance = new Installer( $this->rollover );
 
 		$this->assertInstanceOf(
@@ -44,7 +40,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetup() {
-
 		$this->rollover->expects( $this->exactly( 2 ) )
 			->method( 'update' );
 
@@ -56,7 +51,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDrop() {
-
 		$this->rollover->expects( $this->exactly( 2 ) )
 			->method( 'delete' );
 
@@ -68,10 +62,9 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRollover() {
-
 		$this->rollover->expects( $this->once() )
 			->method( 'rollover' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new Installer(
 			$this->rollover

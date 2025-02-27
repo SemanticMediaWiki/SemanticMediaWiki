@@ -3,32 +3,31 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\SortWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SortWidgetTest extends \PHPUnit_Framework_TestCase {
+class SortWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$testEnvironment = new TestEnvironment();
 
 		$this->stringValidator = $testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testDisabled() {
-
 		SortWidget::setSortingSupport( false );
 
 		$this->assertEmpty(
@@ -37,7 +36,6 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEnabledWithEmptyParameters() {
-
 		SortWidget::setSortingSupport( true );
 
 		$this->assertContains(
@@ -47,7 +45,6 @@ class SortWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEnabledWithParameters() {
-
 		SortWidget::setSortingSupport( true );
 		SortWidget::setRandSortingSupport( true );
 

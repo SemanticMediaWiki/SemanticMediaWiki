@@ -10,21 +10,21 @@ use SMWQuery;
  * @covers \SMW\MediaWiki\Search\ExtendedSearch
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Stephan Gambke
  */
-class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
+class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;
 	private $fallbackSearchEngine;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( 'SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -34,13 +34,12 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtendedSearch::class,
 			new ExtendedSearch( $this->store, $this->fallbackSearchEngine )
@@ -48,7 +47,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFallbackSearchEngineAccessToPublicProperties() {
-
 		$reflect = new \ReflectionObject( $this->fallbackSearchEngine );
 		$properties = [ 'prefix', 'namespaces' ];
 
@@ -66,7 +64,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLimitOffset() {
-
 		$instance = new ExtendedSearch(
 			$this->store,
 			$this->fallbackSearchEngine
@@ -79,14 +76,13 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			$instance->getLimit()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getOffset()
 		);
 	}
 
 	public function testSearchTitle_withNonsemanticQuery() {
-
 		$term = 'Some string that can not be interpreted as a semantic query';
 
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
@@ -95,15 +91,15 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'replacePrefixes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'searchTitle')
-			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
+			->method( 'searchTitle' )
+			->willReturnMap( [ [ $term, $searchResultSet ] ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ExtendedSearch(
 			$this->store,
@@ -117,7 +113,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchTitle_withEmptyQuery() {
-
 		$term = '   ';
 
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
@@ -126,15 +121,15 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'replacePrefixes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'searchTitle')
-			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
+			->method( 'searchTitle' )
+			->willReturnMap( [ [ $term, $searchResultSet ] ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ExtendedSearch(
 			$this->store,
@@ -148,7 +143,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchText_withSemanticQuery() {
-
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
 		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
@@ -159,27 +153,27 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQueryLink' )
-			->will( $this->returnValue( $infoLink ) );
+			->willReturn( $infoLink );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getQueryResult' )
-			->will( $this->returnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
+			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
-			} ) );
+			} );
 
 		$instance = new ExtendedSearch(
 			$this->store,
@@ -200,7 +194,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchText_withNonsemanticQuery() {
-
 		$term = 'Some string that can not be interpreted as a semantic query';
 
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
@@ -209,11 +202,11 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 
 		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'replacePrefixes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'searchText')
-			->will( $this->returnValueMap( [ [ $term, $searchResultSet ] ] ) );
+			->method( 'searchText' )
+			->willReturnMap( [ [ $term, $searchResultSet ] ] );
 
 		$instance = new ExtendedSearch(
 			$this->store,
@@ -227,7 +220,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchTitle_withSemanticQuery() {
-
 		$term = '[[Some string that can be interpreted as a semantic query]]';
 
 		$instance = new ExtendedSearch(
@@ -241,7 +233,6 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_OnEligiblePrefix() {
-
 		$infoLink = $this->getMockBuilder( '\SMWInfolink' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -255,30 +246,30 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 
 		$queryBuilder->expects( $this->any() )
-			->method( 'getQuery')
-			->will( $this->returnValue( $query ) );
+			->method( 'getQuery' )
+			->willReturn( $query );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getResults' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$queryResult->expects( $this->any() )
 			->method( 'getQueryLink' )
-			->will( $this->returnValue( $infoLink ) );
+			->willReturn( $infoLink );
 
 		$this->store->expects( $this->exactly( 3 ) )
 			->method( 'getQueryResult' )
-			->will( $this->returnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
+			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === \SMWQuery::MODE_COUNT ? 9001 : $queryResult;
-			} ) );
+			} );
 
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
@@ -286,7 +277,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'completionSearch' )
-			->with( $this->equalTo( 'fcat:Foo' ) );
+			->with( 'fcat:Foo' );
 
 		$instance = new ExtendedSearch(
 			$this->store,
@@ -294,7 +285,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->setExtraPrefixMap(
-			[ 'abc', 'cat'=> 'bar' ]
+			[ 'abc', 'cat' => 'bar' ]
 		);
 
 		$instance->setQueryBuilder(
@@ -314,14 +305,13 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix() {
-
 		$searchSuggestionSet = $this->getMockBuilder( '\SearchSuggestionSet' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$searchSuggestionSet->expects( $this->any() )
-			->method( 'map')
-			->will( $this->returnValue( [] ) );
+			->method( 'map' )
+			->willReturn( [] );
 
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
@@ -329,7 +319,7 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'completionSearch' )
-			->will( $this->returnValue( $searchSuggestionSet ) );
+			->willReturn( $searchSuggestionSet );
 
 		$instance = new ExtendedSearch(
 			$this->store,
@@ -343,14 +333,13 @@ class ExtendedSearchTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompletionSearch_NoRelevantPrefix_ReplaceEmptySearchTermWithInfusedTerm() {
-
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$fallbackSearchEngine->expects( $this->once() )
 			->method( 'completionSearch' )
-			->with( $this->equalTo( 'origTerm' ) );
+			->with( 'origTerm' );
 
 		$instance = new ExtendedSearch(
 			$this->store,

@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -59,8 +59,7 @@ class UrlArgs {
 	 *
 	 * @return int|null
 	 */
-	public function getInt( string $key, ?int $default = null ) : ?int {
-
+	public function getInt( string $key, ?int $default = null ): ?int {
 		if ( isset( $this->args[$key] ) ) {
 			return (int)$this->args[$key];
 		}
@@ -75,8 +74,7 @@ class UrlArgs {
 	 *
 	 * @return array
 	 */
-	public function getArray( string $key ) : array {
-
+	public function getArray( string $key ): array {
 		if ( !isset( $this->args[$key] ) || $this->args[$key] === '' ) {
 			return [];
 		}
@@ -112,7 +110,7 @@ class UrlArgs {
 	/**
 	 * @since 3.2
 	 */
-	public function clone() : self {
+	public function clone(): self {
 		return clone $this;
 	}
 
@@ -161,6 +159,18 @@ class UrlArgs {
 		}
 
 		return $cgi;
+	}
+
+	/**
+	 * @since 4.1
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function find( string $key, $default = false ) {
+		return DotArray::get( $this->args, $key, $default );
 	}
 
 }

@@ -6,7 +6,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\SQLStore\SQLStore;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -35,9 +35,8 @@ class TouchedField {
 	 * @param array $opts
 	 */
 	public function check( array $opts = [] ) {
-
 		$this->messageReporter->reportMessage( "Checking smw_touched field ...\n" );
-		$connection = $this->store->getConnection( DB_MASTER );
+		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$row = $connection->selectRow(
 			SQLStore::ID_TABLE,

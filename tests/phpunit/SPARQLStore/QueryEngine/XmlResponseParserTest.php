@@ -2,22 +2,22 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
-use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
-use SMWExpLiteral as ExpLiteral;
-use SMWExpResource as ExpResource;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
+class XmlResponseParserTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -32,7 +32,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider rawXmlResultDocumentProvider
 	 */
 	public function testXmlParse( $rawXmlResult, $expectedResultRowItemInstance ) {
-
 		$instance = new XmlResponseParser();
 		$resultFormat = $instance->parse( $rawXmlResult );
 
@@ -48,7 +47,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidXmlThrowsException() {
-
 		$rawResultProvider = new FakeRawResultProvider();
 
 		$instance = new XmlResponseParser();
@@ -58,9 +56,8 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function assertResultFormat( $expectedResultRowItemInstance, $results ) {
-
 		if ( !is_array( $expectedResultRowItemInstance ) ) {
-			$expectedResultRowItemInstance =  [ $expectedResultRowItemInstance ];
+			$expectedResultRowItemInstance = [ $expectedResultRowItemInstance ];
 		}
 
 		foreach ( $results as $key => $row ) {
@@ -69,7 +66,6 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function assertResultRow( $expectedItemInstance, $row ) {
-
 		foreach ( $row as $key => $item ) {
 
 			if ( $item === null ) {
@@ -81,46 +77,45 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function rawXmlResultDocumentProvider() {
-
 		$rawResultProvider = new FakeRawResultProvider();
 
-		#0
+		# 0
 		$provider[] = [
 			$rawResultProvider->getUriResourceSparqlResultXml(),
 			new ExpResource( 'http://example.org/id/Foo' )
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			$rawResultProvider->getEmptySparqlResultXml(),
 			null
 		];
 
-		#2 @bug 62218
+		# 2 @bug 62218
 		$provider[] = [
 			$rawResultProvider->getNonTypeLiteralResultXml(),
 			new ExpLiteral( 'Has foo' )
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			$rawResultProvider->getBooleanSparqlResultXml(),
 			new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' )
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			$rawResultProvider->getStringTypeLiteralSparqlResultXml(),
 			new ExpLiteral( 'Foo', 'http://www.w3.org/2001/XMLSchema#string' )
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			$rawResultProvider->getIntegerTypeLiteralSparqlResultXml(),
 			new ExpLiteral( '1', 'http://www.w3.org/2001/XMLSchema#integer' )
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			$rawResultProvider->getMixedRowsSparqlResultXml(),
 			[
@@ -130,31 +125,31 @@ class XmlResponseParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7 #450
+		# 7 #450
 		$provider[] = [
 			false,
 			null
 		];
 
-		#8 #450
+		# 8 #450
 		$provider[] = [
 			'false',
 			null
 		];
 
-		#9 #626
+		# 9 #626
 		$provider[] = [
 			'true',
 			new ExpLiteral( 'true', 'http://www.w3.org/2001/XMLSchema#boolean' )
 		];
 
-		#10
+		# 10
 		$provider[] = [
 			'',
 			new ExpLiteral( 'false', 'http://www.w3.org/2001/XMLSchema#boolean' )
 		];
 
-		#11
+		# 11
 		$provider[] = [
 			$rawResultProvider->getMixedRowsSparqlResultUtf8Xml(),
 			[

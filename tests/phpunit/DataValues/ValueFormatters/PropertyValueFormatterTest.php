@@ -3,31 +3,32 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataItemFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use SMW\DataValues\PropertyValue;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\PropertyValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
+	private $testEnvironment;
 	private $dataItemFactory;
 	private $propertyLabelFinder;
 	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,7 +40,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,15 +56,14 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new PropertyValueParser() ) );
+			->willReturn( new PropertyValueParser() );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueFormatters\PropertyValueFormatter',
 			new PropertyValueFormatter( $this->propertySpecificationLookup )
@@ -71,8 +71,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +85,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatWithInvalidFormat() {
-
 		$propertyValue = new PropertyValue();
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, true );
@@ -99,14 +97,13 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->format( $propertyValue, [ 'Foo' ] )
 		);
 	}
 
 	public function testFormatWithCaptionOutput() {
-
 		$propertyValue = new PropertyValue();
 		$propertyValue->setDataItem( $this->dataItemFactory->newDIProperty( 'Foo' ) );
 		$propertyValue->setCaption( 'ABC[<>]' );
@@ -131,9 +128,7 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-
 	public function testFormatWithCaptionOutputAndHighlighter() {
-
 		$propertyValue = new PropertyValue();
 		$propertyValue->setOption( PropertyValue::OPT_NO_HIGHLIGHT, false );
 
@@ -163,7 +158,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyValueProvider
 	 */
 	public function testFormat( $property, $type, $linker, $expected ) {
-
 		$propertyValue = new PropertyValue();
 		$propertyValue->setDataItem( $property );
 
@@ -194,7 +188,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider preferredLabelValueProvider
 	 */
 	public function testFormatWithPreferredLabel( $property, $preferredLabel, $type, $linker, $expected ) {
-
 		// Ensures the mocked instance is injected and registered with the
 		// PropertyRegistry instance
 		\SMW\PropertyRegistry::clear();
@@ -205,15 +198,15 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPropertyListFromLabelByLanguageCode' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
-			->will( $this->returnValue( $preferredLabel ) );
+			->willReturn( $preferredLabel );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'searchPropertyIdByLabel' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
@@ -251,7 +244,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider preferredLabelAndCaptionValueProvider
 	 */
 	public function testFormatWithPreferredLabelAndCaption( $property, $caption, $preferredLabel, $type, $linker, $expected ) {
-
 		// Ensures the mocked instance is injected and registered with the
 		// PropertyRegistry instance
 		\SMW\PropertyRegistry::clear();
@@ -262,15 +254,15 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPropertyListFromLabelByLanguageCode' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'findPreferredPropertyLabelByLanguageCode' )
-			->will( $this->returnValue( $preferredLabel ) );
+			->willReturn( $preferredLabel );
 
 		$this->propertyLabelFinder->expects( $this->any() )
 			->method( 'searchPropertyIdByLabel' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
@@ -297,9 +289,13 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 			$expected
 		);
 
+		// Normalize some equivalent HTML entities across versions.
+		$actual = $instance->format( $propertyValue, [ $type, $linker ] );
+		$actual = strtr( $actual, [ '&#160;' => '&nbsp;' ] );
+
 		$this->assertEquals(
 			$expected,
-			$instance->format( $propertyValue, [ $type, $linker ] )
+			$actual
 		);
 
 		\SMW\PropertyRegistry::clear();
@@ -309,7 +305,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider formattedLabelProvider
 	 */
 	public function testFormattedLabelLabel( $property, $linker, $expected ) {
-
 		$propertyValue = new PropertyValue();
 
 		$propertyValue->setOption( PropertyValue::OPT_CONTENT_LANGUAGE, 'en' );
@@ -338,7 +333,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToFormatOnMissingDataValueThrowsException() {
-
 		$instance = new PropertyValueFormatter(
 			$this->propertySpecificationLookup
 		);
@@ -348,7 +342,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyValueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$provider[] = [
@@ -390,7 +383,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function preferredLabelValueProvider() {
-
 		$linker = 'some';
 
 		$provider[] = [
@@ -445,7 +437,6 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function preferredLabelAndCaptionValueProvider() {
-
 		$linker = 'some';
 
 		$provider[] = [
@@ -488,26 +479,25 @@ class PropertyValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function formattedLabelProvider() {
-
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_PROPERTY ) );
+			->willReturn( \SMWDataItem::TYPE_PROPERTY );
 
 		$property->expects( $this->any() )
 			->method( 'getPreferredLabel' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$property->expects( $this->any() )
 			->method( 'getLabel' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$property->expects( $this->any() )
 			->method( 'getCanonicalLabel' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$provider[] = [
 			$property,

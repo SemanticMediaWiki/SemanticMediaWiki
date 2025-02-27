@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Chaduvari",
+			"Mpradeep",
 			"Ravichandra",
 			"Veeven",
 			"రహ్మానుద్దీన్"
@@ -72,6 +73,7 @@
 	"specialpages-group-smw_group-maintenance": "నిర్వహణ",
 	"smw_exportrdf_submit": "ఎగుమతించు",
 	"properties": "లక్షణాలు",
+	"smw-categories": "వర్గాలు",
 	"smw_properties_docu": "ఈ వికీలో ఈ క్రింది లక్షణాలను ఉపయోగించారు.",
 	"smw_property_template": "$1 $2 వ రకం ($3 {{PLURAL:$3|వాడుక|వాడుకలు}})",
 	"smw_propertyhardlyused": "ఈ లక్షణాన్ని ఈ వికీలో ఎక్కడోగానీ వాడలేదు!",
@@ -155,7 +157,6 @@
 	"smw-category": "వర్గం",
 	"smw-help": "సహాయం",
 	"smw-types-title": "రకం: $1",
-	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-listingcontinuesabbrev": "(కొనసాగింపు)",
 	"smw-showingresults": "#<strong>$2</strong> నుండి మొదలుకొని {{PLURAL:$1|</strong>ఒక్క</strong> ఫలితాన్ని|<strong>$1</strong> ఫలితాలను}} కింద చూపించాం."
 }

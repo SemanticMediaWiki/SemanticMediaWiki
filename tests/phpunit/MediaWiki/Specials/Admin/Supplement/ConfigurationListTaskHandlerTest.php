@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class ConfigurationListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,7 +23,7 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,18 +38,17 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputFormatter->expects( $this->any() )
 			->method( 'encodeAsJson' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConfigurationListTaskHandler::class,
 			new ConfigurationListTaskHandler( $this->outputFormatter )
@@ -57,19 +56,17 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new ConfigurationListTaskHandler(
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
 
 	public function testHandleRequest() {
-
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
 

@@ -2,22 +2,20 @@
 
 namespace SMW\Schema;
 
-use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMW\Store;
-use SMWDIBlob as DIBlob;
-use SMWDataItem as DataItem;
-use Title;
-use SMW\DIWikiPage;
-use SMW\PropertySpecificationLookup;
 use Onoi\Cache\Cache;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\Property\SpecificationLookup;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWDIBlob as DIBlob;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -40,7 +38,7 @@ class SchemaFinder {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -50,7 +48,7 @@ class SchemaFinder {
 	private $cache;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL;
 
@@ -58,10 +56,10 @@ class SchemaFinder {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup, Cache $cache ) {
+	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup, Cache $cache ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->cache = $cache;
@@ -84,7 +82,6 @@ class SchemaFinder {
 	 * @param ChangeRecord $changeRecord
 	 */
 	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
-
 		if ( $property->getKey() !== '_SCHEMA_TYPE' ) {
 			return;
 		}
@@ -112,7 +109,6 @@ class SchemaFinder {
 	 * @since 3.1
 	 */
 	public function newSchemaList( DataItem $dataItem, DIProperty $property ): ?SchemaList {
-
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
 			$property
@@ -139,7 +135,6 @@ class SchemaFinder {
 	 * @return SchemaList
 	 */
 	public function getSchemaListByType( $type ) {
-
 		$schemaList = [];
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_LIST, $type ] );
 
@@ -166,7 +161,6 @@ class SchemaFinder {
 	}
 
 	private function findSchemaDefinition( $subject, &$schemaList ) {
-
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}

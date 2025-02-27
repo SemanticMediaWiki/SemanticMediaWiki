@@ -2,16 +2,15 @@
 
 namespace SMW\Elastic\Lookup;
 
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMWDITime as DITime;
-use SMWDataItem as DataItem;
 use SMW\DIProperty;
-use SMW\Store;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\RequestOptions;
-use RuntimeException;
+use SMW\Store;
+use SMWDataItem as DataItem;
+use SMWDITime as DITime;
 
 /**
  * Experimental implementation to showcase how a Elasticsearch specific implementation
@@ -20,7 +19,7 @@ use RuntimeException;
  * The class is targeted to be used for API (e.g. autocomplete etc.) intensive
  * services.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -31,6 +30,8 @@ class ProximityPropertyValueLookup {
 	 * @var Store
 	 */
 	private $store;
+
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @since 3.0
@@ -52,7 +53,6 @@ class ProximityPropertyValueLookup {
 	 * @return array
 	 */
 	public function lookup( DIProperty $property, $value, RequestOptions $opts ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$continueOffset = 0;
 
@@ -136,16 +136,15 @@ class ProximityPropertyValueLookup {
 
 		$params = [
 			'index' => $connection->getIndexName( ElasticClient::TYPE_DATA ),
-			'type'  => ElasticClient::TYPE_DATA,
 			'body'  => $body
 		];
 
-		list( $res, $errors ) = $connection->search( $params );
+		[ $res, $errors ] = $connection->search( $params );
 
 		if ( isset( $res['aggregations'] ) ) {
-			list( $list, $i ) = $this->match_aggregations( $res['aggregations'], $diType, $limit );
+			[ $list, $i ] = $this->match_aggregations( $res['aggregations'], $diType, $limit );
 		} elseif ( isset( $res['hits'] ) ) {
-			list( $list, $i ) = $this->match_hits( $res['hits'], $pid, $field, $limit );
+			[ $list, $i ] = $this->match_hits( $res['hits'], $pid, $field, $limit );
 		} else {
 			$list = [];
 			$i = 0;
@@ -172,7 +171,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function aggs_filter( $diType, $pid, $field, $limit, $property, $value ) {
-
 		// A field on ES to a property can can all different kind of values and
 		// the request is only interested in those values that match a certain
 		// prefix or affix hence use `include` to only return aggregated values
@@ -231,7 +229,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function match_aggregations( $res, $diType, $limit ) {
-
 		$isNumeric = $diType === DataItem::TYPE_NUMBER;
 		$list = [];
 		$i = 0;
@@ -269,7 +266,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function match_hits( $res, $pid, $field, $limit ) {
-
 		$list = [];
 		$i = 0;
 

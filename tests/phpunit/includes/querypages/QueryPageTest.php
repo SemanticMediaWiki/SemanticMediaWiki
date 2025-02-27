@@ -5,18 +5,17 @@ namespace SMW\Tests;
 use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\QueryPage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class QueryPageTest extends \PHPUnit_Framework_TestCase {
+class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,12 +24,11 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	 *
 	 * @since 1.9
 	 *
-	 * @param $result
+	 * @param string $search
 	 *
 	 * @return QueryPage
 	 */
 	private function newInstance( $search = '' ) {
-
 		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
 			->setMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
@@ -62,13 +60,11 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	 * @param $expected
 	 */
 	public function testLinkParameters( $test, $expected ) {
-
 		$search = __METHOD__;
 		$result = $this->newInstance( $test )->linkParameters();
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
-
 	}
 
 	/**
@@ -77,7 +73,6 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 	 * @since 1.9
 	 */
 	public function testGetSearchForm() {
-
 		$search = __METHOD__;
 		$instance = $this->newInstance();
 
@@ -101,7 +96,7 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		$this->assertInternalType( 'string', $result );
+		$this->assertIsString( $result );
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );
@@ -117,16 +112,15 @@ class QueryPageTest extends \PHPUnit_Framework_TestCase {
 		$param = __METHOD__;
 
 		return [
-			[ ''      , [] ],
-			[ null    , [] ],
-			[ $param , [ 'property' => $param ] ],
-			[ "[{$param}]" , [ 'property' => "[{$param}]" ] ],
-			[ "[&{$param}...]" , [ 'property' => "[&{$param}...]" ] ]
+			[ '', [] ],
+			[ null, [] ],
+			[ $param, [ 'property' => $param ] ],
+			[ "[{$param}]", [ 'property' => "[{$param}]" ] ],
+			[ "[&{$param}...]", [ 'property' => "[&{$param}...]" ] ]
 		];
 	}
 
 	private function newContext( $request = [] ) {
-
 		$context = new \RequestContext();
 
 		if ( $request instanceof \WebRequest ) {

@@ -3,12 +3,13 @@
 namespace SMW;
 
 use Html;
+use SMW\Localizer\Message;
 use SMWOutputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -71,12 +72,12 @@ class Highlighter {
 	const TYPE_REFERENCE = 10;
 
 	/**
-	 * @var array $options
+	 * @var array
 	 */
 	private $options;
 
 	/**
-	 * @var int $type
+	 * @var int
 	 */
 	private $type;
 
@@ -118,10 +119,9 @@ class Highlighter {
 	 * @param string $text
 	 * @param string|null $type
 	 *
-	 * @return booelan
+	 * @return bool
 	 */
 	public static function hasHighlighterClass( $text, $type = null ) {
-
 		if ( strpos( $text, 'smw-highlighter' ) === false ) {
 			return false;
 		}
@@ -157,7 +157,9 @@ class Highlighter {
 	 * @return string
 	 */
 	public function getHtml() {
-		SMWOutputs::requireResource( 'ext.smw.tooltips' );
+		SMWOutputs::requireStyle( 'ext.smw.styles' );
+		SMWOutputs::requireStyle( 'ext.smw.tooltip.styles' );
+		SMWOutputs::requireResource( 'ext.smw.tooltip' );
 		return $this->getContainer();
 	}
 
@@ -189,33 +191,33 @@ class Highlighter {
 	 *
 	 * @param string $type
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function getTypeId( $type ) {
 		// TODO: why do we have a htmlspecialchars here?!
-		switch ( strtolower ( htmlspecialchars ( $type ) ) ) {
+		switch ( strtolower( htmlspecialchars( $type ?? '' ) ) ) {
 			case 'property':
-			return self::TYPE_PROPERTY;
+				return self::TYPE_PROPERTY;
 			case 'text':
-			return self::TYPE_TEXT;
+				return self::TYPE_TEXT;
 			case 'quantity':
-			return self::TYPE_QUANTITY;
+				return self::TYPE_QUANTITY;
 			case 'warning':
-			return self::TYPE_WARNING;
+				return self::TYPE_WARNING;
 			case 'error':
-			return self::TYPE_ERROR;
+				return self::TYPE_ERROR;
 			case 'info':
-			return self::TYPE_INFO;
+				return self::TYPE_INFO;
 			case 'help':
-			return self::TYPE_HELP;
+				return self::TYPE_HELP;
 			case 'note':
-			return self::TYPE_NOTE;
+				return self::TYPE_NOTE;
 			case 'service':
-			return self::TYPE_SERVICE;
+				return self::TYPE_SERVICE;
 			case 'reference':
-			return self::TYPE_REFERENCE;
+				return self::TYPE_REFERENCE;
 			default:
-			return self::TYPE_NOTYPE;
+				return self::TYPE_NOTYPE;
 		}
 	}
 
@@ -230,7 +232,6 @@ class Highlighter {
 	 * @return string
 	 */
 	private function getContainer() {
-
 		$captionclass = $this->options['captionclass'];
 
 		// 2.4+ can display context for user-defined properties, here we ensure
@@ -257,7 +258,7 @@ class Highlighter {
 
 		// In case the text contains HTML, remove trailing line feeds to avoid breaking
 		// the display
-		if ( $this->options['content'] != strip_tags( $this->options['content'] ) ) {
+		if ( $this->options['content'] != strip_tags( $this->options['content'] ?? '' ) ) {
 			$this->options['content'] = str_replace( [ "\n" ], [ '' ], $this->options['content'] );
 		}
 
@@ -292,7 +293,7 @@ class Highlighter {
 				// will make the parser go berserk (injecting <p> elements etc.)
 				// hence encode the identifying </> and decode it within the
 				// tooltip
-				str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ) )
+				str_replace( [ "\n", '<', '>' ], [ '</br>', '&lt;', '&gt;' ], htmlspecialchars_decode( $this->options['content'] ?? '' ) )
 			)
 		);
 
@@ -369,20 +370,24 @@ class Highlighter {
 				$settings['state'] = 'persistent';
 				$settings['title'] = 'smw-ui-tooltip-title-info';
 				$settings['captionclass'] = 'smwbuiltin';
-		};
+		}
 
 		return $settings;
 	}
 
 	private function title( $content, $language ) {
-
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
+		$content = $content ?? '';
 		if ( strpos( $content, '[' ) !== false || strpos( $content, '//' ) !== false ) {
 			$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
 		}
 
-		return strip_tags( htmlspecialchars_decode( str_replace( [ "[", '&#160;', "&#10;", "\n" ], [ "&#91;", ' ', '', '' ], $content ) ) );
+		return strip_tags(
+			htmlspecialchars_decode(
+				str_replace( [ "[", '&#160;', "&#10;", "\n", "&#39;", "'" ], [ "&#91;", ' ', '', '', '' ], $content ?? '' ),
+			)
+		);
 	}
 
 }

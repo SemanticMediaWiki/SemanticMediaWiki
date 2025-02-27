@@ -9,23 +9,22 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\MediaWiki\Renderer\HtmlColumnListRenderer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
+class HtmlColumnListRendererTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
 			new HtmlColumnListRenderer()
@@ -33,7 +32,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDefaultColumnUnorderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->addContentsByIndex( [
@@ -55,7 +53,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnUnorderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 2 );
@@ -74,7 +71,7 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 			'<ul><li>Foo</li><li>Bar</li></ul>',
 			'<div class="smw-column-header">B</div><ul><li>Baz</li></ul></div> <!-- end column -->',
 			'<div class="smw-column" style="width:50%;" dir="ltr">',
-			'<div class="smw-column-header">B ' . $listContinuesAbbrev .'</div>',
+			'<div class="smw-column-header">B ' . $listContinuesAbbrev . '</div>',
 			'<ul start=4><li>Fom</li><li>Fin</li><li>Fum</li></ul></div> <!-- end column -->',
 			'<br style="clear: both;"/></div>'
 		];
@@ -86,7 +83,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThreeColumnUnorderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setNumberOfColumns( 3 );
@@ -111,7 +107,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedList() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance
@@ -138,7 +133,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColumnOrderedListNoHeader() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance
@@ -166,7 +160,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResponsiveColumnsToBeDeterminedByBrowser() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )
@@ -191,7 +184,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testItemListWithAttributes() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )
@@ -225,7 +217,6 @@ class HtmlColumnListRendererTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOListWithAttributes() {
-
 		$instance = new HtmlColumnListRenderer();
 
 		$instance->setColumnListClass( 'foo-class' )

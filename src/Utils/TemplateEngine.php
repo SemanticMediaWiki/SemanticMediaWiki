@@ -2,11 +2,11 @@
 
 namespace SMW\Utils;
 
-use SMW\Exception\FileNotReadableException;
 use RuntimeException;
+use SMW\Exception\FileNotReadableException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class TemplateEngine {
 	const HTML_TIDY = 2;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $templates = [];
 
@@ -29,12 +29,12 @@ class TemplateEngine {
 	private $templateDir;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $container = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $compiled = [];
 
@@ -88,7 +88,6 @@ class TemplateEngine {
 	 * @throws FileNotReadableException
 	 */
 	public function load( $file, $target ) {
-
 		if ( isset( self::$templates[$file] ) ) {
 			return $this->container[$target] = self::$templates[$file];
 		}
@@ -109,7 +108,6 @@ class TemplateEngine {
 	 * @param array $args
 	 */
 	public function compile( $target, array $args = [] ) {
-
 		if ( !isset( $this->container[$target] ) ) {
 			return;
 		}
@@ -117,7 +115,9 @@ class TemplateEngine {
 		$complied = $this->container[$target];
 
 		foreach ( $args as $key => $value ) {
-			$complied = str_replace( [ '{{' . $key . '}}', '{{#' . $key . '}}' ], $value, $complied );
+			if ( $value !== null ) {
+				$complied = str_replace( [ '{{' . $key . '}}', '{{#' . $key . '}}' ], $value, $complied );
+			}
 		}
 
 		$this->compiled[$target] = $complied;
@@ -146,7 +146,6 @@ class TemplateEngine {
 	 * @throws RuntimeException
 	 */
 	public function publish( $target, int $flag = -1 ) {
-
 		if ( !isset( $this->compiled[$target] ) ) {
 			throw new RuntimeException( "Unknown `$target` reference!" );
 		}

@@ -8,7 +8,7 @@ use Html;
  * Simple list formatter to transform an indexed array (e.g. array( 'F' => array( 'Foo', 'Bar' ) )
  * into a column divided list.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -17,7 +17,7 @@ use Html;
 class HtmlColumnListRenderer {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numberOfColumns = 1;
 
@@ -32,22 +32,22 @@ class HtmlColumnListRenderer {
 	private $itemAttributes = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numberOfResults = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rowsPerColumn = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columnWidth = 0;
 
@@ -72,7 +72,7 @@ class HtmlColumnListRenderer {
 	private $columnClass = 'smw-column';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
@@ -91,7 +91,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.2
 	 *
-	 * @param string $columnListClass
+	 * @param string $columnClass
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
@@ -103,7 +103,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function setColumnRTLDirectionalityState( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -113,7 +113,7 @@ class HtmlColumnListRenderer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $numberOfColumns
+	 * @param int $numberOfColumns
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
@@ -130,7 +130,6 @@ class HtmlColumnListRenderer {
 	 * @return HtmlColumnListRenderer
 	 */
 	public function setListType( $listType, $olType = '' ) {
-
 		if ( in_array( $listType, [ 'ul', 'ol' ] ) ) {
 			$this->listType = $listType;
 		}
@@ -166,7 +165,6 @@ class HtmlColumnListRenderer {
 	 * @return HtmlColumnListRenderer
 	 */
 	public function addContentsByNoIndex( array $contentsByNoIndex ) {
-
 		$contentsByEmptyIndex[''] = [];
 
 		foreach ( $contentsByNoIndex as $value ) {
@@ -195,7 +193,6 @@ class HtmlColumnListRenderer {
 	 * @return string
 	 */
 	public function getHtml() {
-
 		$result = '';
 		$usedColumnCloser = false;
 		$this->numRows = 0;
@@ -240,7 +237,6 @@ class HtmlColumnListRenderer {
 	}
 
 	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ) {
-
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';

@@ -3,24 +3,23 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
+	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
@@ -30,7 +29,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceDescriptionInterpreter::class,
 			new NamespaceDescriptionInterpreter( $this->conditionBuilder )
@@ -38,7 +36,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_NotPartOfAConjunction() {
-
 		$instance = new NamespaceDescriptionInterpreter(
 			$this->conditionBuilder
 		);
@@ -55,7 +52,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_IsPartOfAConjunction() {
-
 		$instance = new NamespaceDescriptionInterpreter(
 			$this->conditionBuilder
 		);

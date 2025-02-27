@@ -3,28 +3,27 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStoreUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreUpdater;
 use Title;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
+class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $factory;
 	private $idTable;
 	private $redirectUpdater;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -35,11 +34,11 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$propertyTableRowDiffer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowDiffer' )
 			->disableOriginalConstructor()
@@ -47,7 +46,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableRowDiffer->expects( $this->any() )
 			->method( 'computeTableRowDiff' )
-			->will( $this->returnValue( [ [], [], [] ] ) );
+			->willReturn( [ [], [], [] ] );
 
 		$propertyTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableUpdater' )
 			->disableOriginalConstructor()
@@ -71,7 +70,7 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$subobjectListFinder->expects( $this->any() )
 			->method( 'find' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
 			->disableOriginalConstructor()
@@ -83,11 +82,11 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeDiff->expects( $this->any() )
 			->method( 'getTextItems' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeDiff->expects( $this->any() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
 			->disableOriginalConstructor()
@@ -95,23 +94,23 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$changeOp->expects( $this->any() )
 			->method( 'newChangeDiff' )
-			->will( $this->returnValue( $changeDiff ) );
+			->willReturn( $changeDiff );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getChangedEntityIdSummaryList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getDataOps' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getTableChangeOps' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$changeOp->expects( $this->any() )
 			->method( 'getOrderedDiffByTable' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
 			->disableOriginalConstructor()
@@ -119,39 +118,38 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->factory->expects( $this->any() )
 			->method( 'newRedirectUpdater' )
-			->will( $this->returnValue( $this->redirectUpdater ) );
+			->willReturn( $this->redirectUpdater );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyStatisticsStore' )
-			->will( $this->returnValue( $propertyStatisticsStore ) );
+			->willReturn( $propertyStatisticsStore );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyChangeListener' )
-			->will( $this->returnValue( $propertyChangeListener ) );
+			->willReturn( $propertyChangeListener );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newSubobjectListFinder' )
-			->will( $this->returnValue( $subobjectListFinder ) );
+			->willReturn( $subobjectListFinder );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableRowDiffer' )
-			->will( $this->returnValue( $propertyTableRowDiffer ) );
+			->willReturn( $propertyTableRowDiffer );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newPropertyTableUpdater' )
-			->will( $this->returnValue( $propertyTableUpdater ) );
+			->willReturn( $propertyTableUpdater );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newSemanticDataLookup' )
-			->will( $this->returnValue( $semanticDataLookup ) );
+			->willReturn( $semanticDataLookup );
 
 		$this->factory->expects( $this->any() )
 			->method( 'newChangeOp' )
-			->will( $this->returnValue( $changeOp ) );
+			->willReturn( $changeOp );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SQLStoreUpdater::class,
 			new SQLStoreUpdater( $this->store, $this->factory )
@@ -159,7 +157,6 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoDataUpdateForMainNamespaceWithoutSubobject() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -173,19 +170,19 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$objectIdGenerator->expects( $this->any() )
 			->method( 'findIdsByTitle' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$database->expects( $this->once() )
 			->method( 'beginSectionTransaction' )
-			->with( $this->equalTo( SQLStore::UPDATE_TRANSACTION ) );
+			->with( SQLStore::UPDATE_TRANSACTION );
 
 		$database->expects( $this->once() )
 			->method( 'endSectionTransaction' )
-			->with( $this->equalTo( SQLStore::UPDATE_TRANSACTION ) );
+			->with( SQLStore::UPDATE_TRANSACTION );
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -196,30 +193,29 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIdGenerator ) );
+			->willReturn( $objectIdGenerator );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
+			->willReturn( new \SMW\Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
 	}
 
 	public function testDoDataUpdateForConceptNamespaceWithoutSubobject() {
-
 		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -233,9 +229,9 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'findIdsByTitle' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -249,33 +245,32 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
+			->willReturn( new \SMW\Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
 	}
 
 	public function testDoDataUpdateForMainNamespaceWithRedirect() {
-
 		$this->redirectUpdater->expects( $this->any() )
 			->method( 'shouldCleanUpAnnotationsAndRedirects' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
@@ -286,13 +281,13 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -306,29 +301,28 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIdGenerator ) );
+			->willReturn( $objectIdGenerator );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
+			->willReturn( new \SMW\Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
 	}
 
 	public function testAtomicTransactionOnDataUpdate() {
-
 		$this->redirectUpdater->expects( $this->any() )
 			->method( 'shouldCleanUpAnnotationsAndRedirects' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
@@ -339,13 +333,13 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ DIWikiPage::newFromTitle( $title ) ] ) );
+			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
 
 		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -365,33 +359,32 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $objectIdGenerator ) );
+			->willReturn( $objectIdGenerator );
 
 		$parentStore->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
+			->willReturn( new \SMW\Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
 	}
 
 	public function testDeleteSubjectForMainNamespace() {
-
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
 		$this->idTable->expects( $this->atLeastOnce() )
 			->method( 'findIdsByTitle' )
-			->will( $this->returnValue( [ 0 ] ) );
+			->willReturn( [ 0 ] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -405,35 +398,34 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'PropertyTableIdReferenceFinder' ) )
-			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+			->with( 'PropertyTableIdReferenceFinder' )
+			->willReturn( $propertyTableIdReferenceFinder );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$this->store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
+			->willReturn( new \SMW\Options() );
 
 		$instance = new SQLStoreUpdater( $this->store, $this->factory );
 		$instance->deleteSubject( $title );
 	}
 
 	public function testDeleteSubjectForConceptNamespace() {
-
 		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
@@ -446,45 +438,45 @@ class SQLStoreUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'PropertyTableIdReferenceFinder' ) )
-			->will( $this->returnValue( $propertyTableIdReferenceFinder ) );
+			->with( 'PropertyTableIdReferenceFinder' )
+			->willReturn( $propertyTableIdReferenceFinder );
 
 		$this->idTable->expects( $this->atLeastOnce() )
 			->method( 'findIdsByTitle' )
 			->with(
-				$this->equalTo( $title->getDBkey() ),
-				$this->equalTo( $title->getNamespace() ),
-				$this->equalTo( $title->getInterwiki() ),
+				$title->getDBkey(),
+				$title->getNamespace(),
+				$title->getInterwiki(),
 				'' )
-			->will( $this->returnValue( [ 0 ] ) );
+			->willReturn( [ 0 ] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$database->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$this->store->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( new \SMW\Options() ) );
+			->willReturn( new \SMW\Options() );
 
 		$instance = new SQLStoreUpdater( $this->store, $this->factory );
 		$instance->deleteSubject( $title );

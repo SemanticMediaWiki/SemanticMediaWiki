@@ -8,7 +8,7 @@ use Psr\Log\LoggerAwareTrait;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -45,26 +45,26 @@ class HierarchyLookup {
 	private $cache;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $inMemoryCache = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 60 * 60 * 24 * 7;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subcategoryDepth = 10;
 
 	/**
 	 * Use 0 to disable the hierarchy lookup
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	private $subpropertyDepth = 10;
 
@@ -101,7 +101,6 @@ class HierarchyLookup {
 	 * @param DIProperty $property
 	 */
 	public function invalidateCache( DIProperty $property ) {
-
 		if ( $property->getKey() === '_SUBP' ) {
 			$this->cache->delete(
 				smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_PROPERTY, self::TYPE_SUB, $this->subpropertyDepth ] )
@@ -126,7 +125,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $subcategoryDepth
+	 * @param int $subcategoryDepth
 	 */
 	public function setSubcategoryDepth( $subcategoryDepth ) {
 		$this->subcategoryDepth = (int)$subcategoryDepth;
@@ -135,7 +134,7 @@ class HierarchyLookup {
 	/**
 	 * @since 2.3
 	 *
-	 * @param integer $subpropertyDepth
+	 * @param int $subpropertyDepth
 	 */
 	public function setSubpropertyDepth( $subpropertyDepth ) {
 		$this->subpropertyDepth = (int)$subpropertyDepth;
@@ -146,10 +145,9 @@ class HierarchyLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubproperty( DIProperty $property ) {
-
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -166,10 +164,9 @@ class HierarchyLookup {
 	 *
 	 * @param DIWikiPage $category
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubcategory( DIWikiPage $category ) {
-
 		if ( $this->subcategoryDepth < 1 ) {
 			return false;
 		}
@@ -189,7 +186,6 @@ class HierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubpropertyList( DIProperty $property ) {
-
 		if ( $this->subpropertyDepth < 1 ) {
 			return false;
 		}
@@ -205,7 +201,6 @@ class HierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findSubcategoryList( DIWikiPage $category ) {
-
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -221,7 +216,6 @@ class HierarchyLookup {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function findNearbySuperCategories( DIWikiPage $category ) {
-
 		if ( $this->subcategoryDepth < 1 ) {
 			return [];
 		}
@@ -237,7 +231,6 @@ class HierarchyLookup {
 	 * @return DIProperty[]|DIWikiPage[]|[]
 	 */
 	public function getConsecutiveHierarchyList( $id, $hierarchyType = self::TYPE_SUB ) {
-
 		$objectType = null;
 
 		if ( $id instanceof DIProperty ) {
@@ -324,7 +317,6 @@ class HierarchyLookup {
 	}
 
 	private function findSubproperties( &$hierarchyMembers, DIProperty $property, $depth ) {
-
 		if ( $depth++ > $this->subpropertyDepth ) {
 			return;
 		}
@@ -348,7 +340,6 @@ class HierarchyLookup {
 	}
 
 	private function findSubcategories( &$hierarchyMembers, DIWikiPage $category, $depth ) {
-
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -364,7 +355,6 @@ class HierarchyLookup {
 	}
 
 	private function findSuperCategoriesByDepth( &$hierarchyMembers, DIWikiPage $category, $depth ) {
-
 		if ( $depth++ > $this->subcategoryDepth ) {
 			return;
 		}
@@ -380,7 +370,6 @@ class HierarchyLookup {
 	}
 
 	private function lookup( $property, $key, DIWikiPage $subject, $requestOptions ) {
-
 		if ( is_string( $property ) ) {
 			$property = new DIProperty( $property );
 		}

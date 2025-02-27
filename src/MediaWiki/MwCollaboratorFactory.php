@@ -6,21 +6,21 @@ use Language;
 use MediaWiki\Revision\RevisionRecord;
 use Parser;
 use RequestContext;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Connection\ConnectionProvider;
+use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use StripState;
 use Title;
 use User;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function newMessageBuilder( Language $language = null ) {
+	public function newMessageBuilder( ?Language $language = null ) {
 		return new MessageBuilder( $language );
 	}
 
@@ -87,8 +87,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function newHtmlFormRenderer( Title $title, Language $language = null ) {
-
+	public function newHtmlFormRenderer( Title $title, ?Language $language = null ) {
 		if ( $language === null ) {
 			$language = $title->getPageLanguage();
 		}
@@ -119,16 +118,16 @@ class MwCollaboratorFactory {
 	/**
 	 * @since 2.1
 	 *
+	 * @param int $connectionType
+	 * @param bool $asConnectionRef Deprecated parameter since 5.0
+	 *
+	 * @note The parameter $asConnectionRef is deprecated since 5.0
+	 *
 	 * @return LoadBalancerConnectionProvider
 	 */
 	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ) {
-
 		$loadBalancerConnectionProvider = new LoadBalancerConnectionProvider(
 			$connectionType
-		);
-
-		$loadBalancerConnectionProvider->asConnectionRef(
-			$asConnectionRef
 		);
 
 		return $loadBalancerConnectionProvider;
@@ -142,7 +141,6 @@ class MwCollaboratorFactory {
 	 * @return ConnectionProvider
 	 */
 	public function newConnectionProvider( $provider = null ) {
-
 		$connectionProvider = new ConnectionProvider(
 			$provider
 		);
@@ -270,7 +268,6 @@ class MwCollaboratorFactory {
 	 * @return StripMarkerDecoder
 	 */
 	public function newStripMarkerDecoder( StripState $stripState ) {
-
 		$stripMarkerDecoder = new StripMarkerDecoder(
 			$stripState
 		);

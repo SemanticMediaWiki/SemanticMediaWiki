@@ -5,14 +5,13 @@ namespace SMW\Tests;
 use Message;
 use ReflectionClass;
 use SMW\MessageFormatter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the MessageFormatter class
  *
  * @file
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -77,14 +76,13 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		);
 
 		$instance->setType( 'error' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 
 		$instance->setType( 'warning' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 
 		$instance->setType( 'info' );
-		$this->assertInternalType( 'string', $instance->getHtml() );
-
+		$this->assertIsString( $instance->getHtml() );
 	}
 
 	/**
@@ -110,11 +108,8 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		foreach ( $messages as $msg ) {
 			$this->assertInstanceOf( '\Message', $msg );
 
-			// getParams() only got added in MW 1.21
-			if ( method_exists( $msg, 'getParams' ) ) {
-				foreach ( $msg->getParams() as $result ) {
-					$this->assertEquals( $param, $result );
-				}
+			foreach ( $msg->getParams() as $result ) {
+				$this->assertEquals( $param, $result );
 			}
 		}
 	}
@@ -140,7 +135,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
 		$instance->clear();
 		$this->assertEmpty( $instance->getPlain() );
-
 	}
 
 	/**
@@ -150,7 +144,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 * @since  1.9
 	 *
 	 * @param array $messages
-	 * @param integer $count
+	 * @param int $count
 	 */
 	public function testFormat( array $messages, $count ) {
 		$instance = $this->getInstance();
@@ -164,7 +158,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		// Test array normalization and deletion of duplicates
 		$result = $method->invoke( $instance, $instance->getMessages() );
 		$this->assertCount( $count, $result );
-
 	}
 
 	/**
@@ -179,7 +172,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addFromArray( $messages );
 
-		$this->assertInternalType( 'string', $instance->getHtml() );
+		$this->assertIsString( $instance->getHtml() );
 	}
 
 	/**
@@ -194,7 +187,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$instance = $this->getInstance();
 		$instance->addFromArray( $messages );
 
-		$this->assertInternalType( 'string', $instance->getPlain() );
+		$this->assertIsString( $instance->getPlain() );
 	}
 
 	/**
@@ -205,11 +198,10 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 */
 	public function testEscapedUnescaped() {
 		$instance = $this->getInstance();
-		$instance->addFromArray( [  '<Foo>' ] );
+		$instance->addFromArray( [ '<Foo>' ] );
 
 		$this->assertEquals( '&lt;Foo&gt;', $instance->escape( true )->getPlain() );
 		$this->assertEquals( '<Foo>', $instance->escape( false )->getPlain() );
-
 	}
 
 	/**

@@ -8,25 +8,24 @@ use SMW\Connection\CallbackConnectionProvider;
  * @covers \SMW\Connection\CallbackConnectionProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class CallbackConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
-	private $conection;
+	private $connection;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
-		$callback = function() {};
+		$callback = static function () {
+		};
 
 		$this->assertInstanceOf(
 			CallbackConnectionProvider::class,
@@ -39,8 +38,7 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionFormCallback() {
-
-		$callback = function() {
+		$callback = function () {
 			return $this->connection;
 		};
 
@@ -55,7 +53,6 @@ class CallbackConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionFormStaticCallback() {
-
 		$instance = new CallbackConnectionProvider(
 			[ $this, 'getConnection' ]
 		);

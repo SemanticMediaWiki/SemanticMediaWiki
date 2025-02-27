@@ -9,7 +9,7 @@ use SMW\Utils\File;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class ExceptionFileLogger {
 	private $exceptionFile;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $exceptionCount = 0;
 
@@ -47,7 +47,7 @@ class ExceptionFileLogger {
 	 * @param string $namespace
 	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw', File $file = null ) {
+	public function __construct( $namespace = 'smw', ?File $file = null ) {
 		$this->namespace = $namespace;
 		$this->file = $file;
 
@@ -62,12 +62,14 @@ class ExceptionFileLogger {
 	 * @param Options $options
 	 */
 	public function setOptions( Options $options ) {
-
 		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
-		$this->exceptionFile = __DIR__ . "../../../";
+		$this->exceptionFile = __DIR__ . "/../../../";
 
 		if ( $options->has( 'exception-log' ) ) {
 			$this->exceptionFile = $options->get( 'exception-log' );
+			if ( !str_ends_with( $this->exceptionFile, '/' ) ) {
+				$this->exceptionFile = $this->exceptionFile . '/';
+			}
 		}
 
 		$this->exceptionFile .= $this->namespace . "-exceptions-" . $dateTimeUtc->format( 'Y-m-d' ) . ".log";
@@ -85,7 +87,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 2.4
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getExceptionCount() {
 		return $this->exceptionCount;
@@ -110,7 +112,6 @@ class ExceptionFileLogger {
 	 * @since 3.0
 	 */
 	public function doWrite() {
-
 		foreach ( $this->exceptionLogMessages as $id => $exception ) {
 			$this->put( $id, $exception );
 		}
@@ -120,7 +121,6 @@ class ExceptionFileLogger {
 	}
 
 	private function put( $id, $exception ) {
-
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

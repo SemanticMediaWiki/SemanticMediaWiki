@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\SetupCheck;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -14,7 +14,7 @@ use SMW\SetupCheck;
 class ConnectionManager {
 
 	/**
-	 * @var boolean|null
+	 * @var bool|null
 	 */
 	private static $isConnectable;
 
@@ -35,7 +35,6 @@ class ConnectionManager {
 	 * @throws RuntimeException
 	 */
 	public function getConnection( $id = null ) {
-
 		$id = strtolower( $id );
 
 		if ( self::$isConnectable === null ) {
@@ -79,7 +78,6 @@ class ConnectionManager {
 	}
 
 	private function isConnectable() {
-
 		if ( defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return true;
 		}

@@ -10,7 +10,7 @@ use SMWTimeValue as TimeValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -41,7 +41,6 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( TimeValue $dataValue, $value ) {
-
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'The value needs to be a string' );
 		}
@@ -98,7 +97,6 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 	}
 
 	private function getUpperLimit( $dataItem ) {
-
 		$prec = $dataItem->getPrecision();
 		$dateTime = $dataItem->asDateTime();
 

@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,7 +23,6 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testShouldPing() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,12 +50,11 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	 * @dataProvider endpointProvider
 	 */
 	public function testGetEndpoint( $endpoint, $expected ) {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance = new GenericRepositoryConnector (
+		$instance = new GenericRepositoryConnector(
 			new RepositoryClient(
 				'http://foo/myDefaultGraph',
 				'http://localhost:9999/query',
@@ -73,14 +71,13 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testGetLastErrorCode() {
-
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$httpRequest->expects( $this->once() )
 			->method( 'getLastErrorCode' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new GenericRepositoryConnector(
 			new RepositoryClient(
@@ -98,7 +95,6 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function endpointProvider() {
-
 		yield GenericRepositoryConnector::UPDATE_ENDPOINT => [
 			GenericRepositoryConnector::UPDATE_ENDPOINT,
 			'http://localhost:9999/update'

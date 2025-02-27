@@ -9,24 +9,23 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Search\SearchResult
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SearchResultTest extends \PHPUnit_Framework_TestCase {
+class SearchResultTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGetSectionTitle_WithFragment() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new SearchResult( $title );
 
@@ -37,14 +36,13 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSectionTitle_WithoutFragment() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new SearchResult( $title );
 
@@ -54,14 +52,13 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExcerpt() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new SearchResult( $title );
 		$instance->setExcerpt( 'Foo ...' );
@@ -73,22 +70,21 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTitleSnippet() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getFragment' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$instance = new SearchResult( $title );
 
@@ -99,7 +95,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextSnippet_HasHighlight() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -115,7 +110,6 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTextSnippet_NoHighlight() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -124,8 +118,8 @@ class SearchResultTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setExcerpt( 'Foobar' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTextSnippet( [ 'Foo' ] )
 		);
 	}

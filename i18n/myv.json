@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Botuzhaleny-sodamo",
-			"Rueter"
+			"Rueter",
+			"Сантяй"
 		]
 	},
 	"smw_printername_table": "Таблица",
@@ -13,6 +14,7 @@
 	"smw_printername_category": "Явовкс",
 	"validator-type-class-SMWParamSource": "текст",
 	"smw_nofloat": "«$1» аволь числа.",
+	"smw-categories": "Категорият",
 	"smw-special-property-searchform-options": "Мезде кочкамс",
 	"smw-special-wantedproperties-filter-label": "Сувтемесь:",
 	"smw-special-wantedproperties-filter-none": "Арась мезе невтемс",
@@ -20,7 +22,7 @@
 	"smw-ask-order-rand": "Кодамо-понгсь",
 	"smw-ask-delete": "Нардамс",
 	"smw_sbv_property": "Уликсчись:",
-	"browse": "Лопа-лопа ланга ютамо",
+	"browse": "Лопатнень ваннома",
 	"smw_browse_go": "Адя",
 	"smw_pp_type": "Уликсчись:",
 	"smw-ui-tooltip-title-info": "Информация",

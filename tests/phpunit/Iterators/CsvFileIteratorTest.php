@@ -3,26 +3,26 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\CsvFileIterator;
-use SMW\Utils\TempFile;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TempFile;
 
 /**
  * @covers \SMW\Iterators\CsvFileIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
+class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $file;
 	private $tempFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->tempFile = new TempFile();
@@ -31,13 +31,12 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 		$this->tempFile->write( $this->file, 'Foo' );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->tempFile->delete( $this->file );
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CsvFileIterator::class,
 			new CsvFileIterator( $this->file )
@@ -45,13 +44,11 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidFileThrowsException() {
-
 		$this->expectException( '\SMW\Exception\FileNotFoundException' );
 		new CsvFileIterator( 'Foo' );
 	}
 
 	public function testForEachOnCsvFileWithNoHeader() {
-
 		$sample = [
 			'1,Foo,abc',
 			'2,Bar,123'
@@ -81,16 +78,15 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 
 	public function testForEachOnCsvFileWithHeader() {
-
 		$sample = [
 			'No,Text,Other',
 			'1,Foo,abc',
@@ -112,20 +108,20 @@ class CsvFileIteratorTest extends \PHPUnit_Framework_TestCase {
 		}
 
 		$this->assertEquals(
-			$instance->getHeader(),
 			[
 				'No',
 				'Text',
 				'Other'
-			]
+			],
+			$instance->getHeader()
 		);
 
 		$this->assertEquals(
-			$res,
 			[
 				[ '1', 'Foo', 'abc' ],
 				[ '2', 'Bar', '123' ]
-			]
+			],
+			$res
 		);
 	}
 

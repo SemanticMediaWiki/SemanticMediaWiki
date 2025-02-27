@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -23,7 +23,6 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testGetVersion() {
-
 		$data = json_encode( [ 'version' => '3.2' ] );
 
 		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
@@ -33,13 +32,13 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 		$httpRequest->expects( $this->at( 5 ) )
 			->method( 'setOption' )
 			->with(
-				$this->equalTo( CURLOPT_URL ),
+				CURLOPT_URL,
 				$this->stringContains( 'http://usr:pass@localhost:9999/$/server' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
 			->method( 'execute' )
-			->will( $this->returnValue( $data ) );
+			->willReturn( $data );
 
 		$instance = new FusekiRepositoryConnector(
 			new RepositoryClient(
@@ -50,7 +49,7 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 			$httpRequest
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'3.2',
 			$instance->getVersion()
 		);

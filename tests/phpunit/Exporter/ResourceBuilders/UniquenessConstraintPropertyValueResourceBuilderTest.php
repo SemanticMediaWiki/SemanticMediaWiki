@@ -13,18 +13,18 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\UniquenessConstraintPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -33,13 +33,12 @@ class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Fram
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			UniquenessConstraintPropertyValueResourceBuilder::class,
 			new UniquenessConstraintPropertyValueResourceBuilder()
@@ -47,7 +46,6 @@ class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Fram
 	}
 
 	public function testIsNotResourceBuilderForNonUniquenessConstraintProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new UniquenessConstraintPropertyValueResourceBuilder();
@@ -58,7 +56,6 @@ class UniquenessConstraintPropertyValueResourceBuilderTest extends \PHPUnit_Fram
 	}
 
 	public function testAddResourceValueForValidProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_PVUC' );
 
 		$expData = new ExpData(

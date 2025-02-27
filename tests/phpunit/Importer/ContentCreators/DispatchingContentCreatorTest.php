@@ -10,19 +10,19 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Importer\ContentCreators\DispatchingContentCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
+class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $wikiImporter;
 	private $messageReporter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$importStreamSource = $this->getMockBuilder( '\ImportStreamSource' )
@@ -39,7 +39,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Importer\ContentCreators\DispatchingContentCreator',
 			new DispatchingContentCreator( [] )
@@ -47,7 +46,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanCreateContentsFor() {
-
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
@@ -57,8 +55,8 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$contentCreator->expects( $this->any() )
 			->method( 'canCreateContentsFor' )
-			->with( $this->equalTo( $importContents ) )
-			->will( $this->returnValue( true ) );
+			->with( $importContents )
+			->willReturn( true );
 
 		$instance = new DispatchingContentCreator(
 			[
@@ -72,7 +70,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoCreateFrom() {
-
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
@@ -82,12 +79,12 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$contentCreator->expects( $this->any() )
 			->method( 'canCreateContentsFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$contentCreator->expects( $this->any() )
 			->method( 'create' )
-			->with( $this->equalTo( $importContents ) )
-			->will( $this->returnValue( true ) );
+			->with( $importContents )
+			->willReturn( true );
 
 		$instance = new DispatchingContentCreator(
 			[
@@ -105,7 +102,6 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoCreateFromOnNonMatchableCreatorThrowsException() {
-
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
@@ -115,7 +111,7 @@ class DispatchingContentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$contentCreator->expects( $this->any() )
 			->method( 'canCreateContentsFor' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$contentCreator->expects( $this->never() )
 			->method( 'create' );

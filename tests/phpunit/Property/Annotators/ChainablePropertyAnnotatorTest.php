@@ -12,17 +12,17 @@ use SMW\Tests\Utils\UtilityFactory;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class ChainablePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -33,14 +33,13 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider annotationDataProvider
 	 */
 	public function testChainableDecoratorAnnotation( array $parameters, array $expected ) {
-
 		$pageInfoProvider = $this->getMockBuilder( '\SMW\PageInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$pageInfoProvider->expects( $this->atLeastOnce() )
 			->method( 'getModificationDate' )
-			->will( $this->returnValue( $parameters['modificationDate'] ) );
+			->willReturn( $parameters['modificationDate'] );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -88,7 +87,6 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function annotationDataProvider() {
-
 		$provider = [];
 
 		// #0
@@ -107,7 +105,7 @@ class ChainablePropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 3,
 				'propertyKeys'   => [ '_INST', '_MDAT', '_SKEY' ],
-				'propertyValues' => [ 'Foo',  'Bar', '2010-04-29T02:41:43', 'Lala' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar', '2010-04-29T02:41:43', 'Lala' ],
 			]
 		];
 

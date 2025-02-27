@@ -2,42 +2,41 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Api\AskArgs;
-use SMW\Tests\Utils\MwApiFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\AskArgs
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class AskArgsTest extends \PHPUnit_Framework_TestCase {
+class AskArgsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $apiFactory;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->apiFactory = new MwApiFactory();
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new AskArgs(
 			$this->apiFactory->newApiMain( [] ),
 			'askargs'
@@ -53,7 +52,6 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testExecuteOnStore( array $query, array $expected ) {
-
 		$results = $this->apiFactory->doApiRequest( [
 			'action'     => 'askargs',
 			'conditions' => $query['conditions'],
@@ -61,7 +59,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 			'parameters' => $query['parameters'],
 		] );
 
-		$this->assertInternalType( 'array', $results );
+		$this->assertIsArray( $results );
 
 		if ( isset( $expected['error'] ) ) {
 			return $this->assertArrayHasKey( 'error', $results );
@@ -74,7 +72,6 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteOnMockStore() {
-
 		$requestParameters = [
 			'conditions' => 'Foo::+',
 			'printouts'  => 'Bar',
@@ -100,7 +97,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnCallback( [ $this, 'mockStoreQueryResultCallback' ] ) );
+			->willReturnCallback( [ $this, 'mockStoreQueryResultCallback' ] );
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
@@ -111,18 +108,16 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->execute();
 
-		// MW 1.25
-		$result = method_exists( $instance->getResult(), 'getResultData' ) ? $instance->getResult()->getResultData() : $instance->getResultData();
+		$result = $instance->getResult()->getResultData();
 
 		// This came with 1.25, no idea what this suppose to be
 		unset( $result['_type'] );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function mockStoreQueryResultCallback( $query ) {
-
 		$result = '';
 
 		if ( $query->getQueryString() === '[[Foo::+]]' ) {
@@ -137,21 +132,21 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 			];
 		}
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'toArray' )
-			->will( $this->returnValue( $result ) );
+			->willReturn( $result );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'hasFurtherResults' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$queryResult->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		return $queryResult;
 	}
@@ -204,7 +199,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -223,7 +218,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -231,7 +226,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',
@@ -250,7 +245,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 				],
 				[
 					[
-						'label'=> '',
+						'label' => '',
 						'typeid' => '_wpg',
 						'mode' => 2,
 						'format' => false,
@@ -258,7 +253,7 @@ class AskArgsTest extends \PHPUnit_Framework_TestCase {
 						'redi' => ''
 					],
 					[
-						'label'=> 'Modification date',
+						'label' => 'Modification date',
 						'typeid' => '_dat',
 						'mode' => 1,
 						'format' => '',

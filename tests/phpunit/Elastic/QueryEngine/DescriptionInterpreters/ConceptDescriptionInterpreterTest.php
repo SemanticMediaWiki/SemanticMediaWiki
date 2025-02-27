@@ -2,28 +2,30 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
+use SMW\Elastic\QueryEngine\TermsLookup;
 use SMW\Query\DescriptionFactory;
-use SMW\Tests\TestEnvironmentTrait;
+use SMW\Store;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 	private $descriptionFactory;
+	private TermsLookup $termsLookup;
+	private Store $store;
 	private $queryParser;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -40,7 +42,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->termsLookup->expects( $this->any() )
 			->method( 'newParameters' )
-			->will( $this->returnValue( $parameters ) );
+			->willReturn( $parameters );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
@@ -49,11 +51,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getStore' )
-			->will( $this->returnValue( $this->store ) );
+			->willReturn( $this->store );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getTermsLookup' )
-			->will( $this->returnValue( $this->termsLookup ) );
+			->willReturn( $this->termsLookup );
 
 		$this->queryParser = $this->getMockBuilder( '\SMW\Query\Parser' )
 			->disableOriginalConstructor()
@@ -61,7 +63,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConceptDescriptionInterpreter::class,
 			new ConceptDescriptionInterpreter( $this->conditionBuilder, $this->queryParser )
@@ -69,7 +70,6 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_EmptyConcept() {
-
 		$instance = new ConceptDescriptionInterpreter(
 			$this->conditionBuilder,
 			$this->queryParser
@@ -86,26 +86,25 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription_AvailableConceptQuery() {
-
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'interpretDescription' )
-			->will( $this->returnValue( $this->conditionBuilder->newCondition( [ 'Foo' ] ) ) );
+			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$concept = $this->getMockBuilder( '\SMWDIConcept' )
+		$concept = $this->getMockBuilder( '\SMW\DIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $concept ] ) );
+			->willReturn( [ $concept ] );
 
 		$this->queryParser->expects( $this->any() )
 			->method( 'getQueryDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ConceptDescriptionInterpreter(
 			$this->conditionBuilder,

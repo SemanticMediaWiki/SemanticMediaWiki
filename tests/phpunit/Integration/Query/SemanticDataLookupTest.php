@@ -5,29 +5,29 @@ namespace SMW\Tests\Integration\Query;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\StringCondition;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
-use SMWQuery as Query;
+use SMW\StringCondition;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMWDIBlob as DIBlob;
-use SMW\Tests\DatabaseTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SemanticDataLookupTest extends DatabaseTestCase {
+class SemanticDataLookupTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
-	private $subject;
-	private $dataValueFactory;
-	private $queryResultValidator;
 
-	protected function setUp() : void {
+	private $dataValueFactory;
+	private $semanticDataFactory;
+
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -41,8 +41,7 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 		);
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -51,7 +50,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Wpg() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
@@ -85,7 +83,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Wpg_WithSubject() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
@@ -117,7 +114,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Wpg_Sorted() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
@@ -164,7 +160,6 @@ class SemanticDataLookupTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyValueMatch_Txt() {
-
 		$store = StoreFactory::getStore();
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(

@@ -10,12 +10,13 @@ use SMW\Query\Parser\LegacyParser;
 use SMW\Query\Parser\Tokenizer;
 use SMW\Query\PrintRequestFactory;
 use SMW\Query\ProfileAnnotatorFactory;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -35,7 +36,7 @@ class QueryFactory {
 	 * @since 2.4
 	 *
 	 * @param Description $description
-	 * @param integer|false $context
+	 * @param int|false $context
 	 *
 	 * @return Query
 	 */
@@ -74,8 +75,8 @@ class QueryFactory {
 	 * @since 2.4
 	 *
 	 * @param string $string
-	 * @param integer $condition
-	 * @param boolean $isDisjunctiveCondition
+	 * @param int $condition
+	 * @param bool $isDisjunctiveCondition
 	 *
 	 * @return StringCondition
 	 */
@@ -86,7 +87,7 @@ class QueryFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer|boolean $queryFeatures
+	 * @param int|bool $queryFeatures
 	 *
 	 * @return QueryParser
 	 */
@@ -97,12 +98,11 @@ class QueryFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|boolean $queryFeatures
+	 * @param int|bool $queryFeatures
 	 *
 	 * @return QueryParser
 	 */
 	public function newLegacyQueryParser( $queryFeatures = false ) {
-
 		if ( $queryFeatures === false ) {
 			$queryFeatures = Applicationfactory::getInstance()->getSettings()->get( 'smwgQFeatures' );
 		}
@@ -120,12 +120,11 @@ class QueryFactory {
 	 * @param Store $store
 	 * @param Query $query
 	 * @param DIWikiPage[]|[] $results = array()
-	 * @param boolean $continue
+	 * @param bool $continue
 	 *
 	 * @return QueryResult
 	 */
 	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ) {
-
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,

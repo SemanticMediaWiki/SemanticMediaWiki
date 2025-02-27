@@ -5,7 +5,7 @@ namespace SMW\Constraint\Constraints;
 use SMW\Constraint\Constraint;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -13,14 +13,14 @@ use SMW\Constraint\Constraint;
 abstract class DeferrableConstraint implements Constraint {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = $isCommandLineMode;
@@ -32,7 +32,6 @@ abstract class DeferrableConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function getType() {
-
 		if ( $this->isCommandLineMode ) {
 			return Constraint::TYPE_INSTANT;
 		}

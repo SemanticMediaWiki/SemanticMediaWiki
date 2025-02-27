@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
 use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,7 +23,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	private $store;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,13 +39,12 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			OperationalStatisticsListTaskHandler::class,
 			new OperationalStatisticsListTaskHandler( $this->outputFormatter )
@@ -53,30 +52,27 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testGetHtml() {
-
 		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
 
 	public function testIsTaskFor() {
-
 		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter
 		);
 
 		$this->assertTrue(
-			$instance->isTaskFor( 'stats')
+			$instance->isTaskFor( 'stats' )
 		);
 	}
 
 	public function testHandleRequest() {
-
 		$semanticStatistics = [
 			'PROPUSES' => 0,
 			'ERRORUSES' => 0,
@@ -92,7 +88,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 
 		$this->store->expects( $this->once() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $semanticStatistics ) );
+			->willReturn( $semanticStatistics );
 
 		$this->outputFormatter->expects( $this->atLeastOnce() )
 			->method( 'addHtml' );
@@ -111,15 +107,14 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 	}
 
 	public function testHandleSubRequest() {
-
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$webRequest->expects( $this->once() )
 			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->with( 'action' )
+			->willReturn( 'foo' );
 
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
@@ -127,11 +122,11 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit_Framework_TestCa
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$taskHandler->expects( $this->once() )
 			->method( 'handleRequest' )
-			->with( $this->equalTo( $webRequest ) );
+			->with( $webRequest );
 
 		$instance = new OperationalStatisticsListTaskHandler(
 			$this->outputFormatter,

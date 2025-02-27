@@ -2,10 +2,13 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
+use SMW\Localizer\Localizer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -65,7 +68,6 @@ class PropertyRegistry {
 	 * @return PropertyRegistry
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -111,7 +113,6 @@ class PropertyRegistry {
 	 * @param array $dataTypePropertyExemptionList
 	 */
 	public function __construct( DataTypeRegistry $datatypeRegistry, PropertyLabelFinder $propertyLabelFinder, PropertyAliasFinder $propertyAliasFinder, array $dataTypePropertyExemptionList = [] ) {
-
 		$this->datatypeLabels = $datatypeRegistry->getKnownTypeLabels();
 		$this->propertyLabelFinder = $propertyLabelFinder;
 		$this->propertyAliasFinder = $propertyAliasFinder;
@@ -172,12 +173,11 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $valueType SMW type id
 	 * @param string|bool $label user label or false (internal property)
-	 * @param boolean $isVisible only used if label is given, see isShown()
-	 * @param boolean $isAnnotable
-	 * @param boolean $isDeclarative
+	 * @param bool $isVisible only used if label is given, see isShown()
+	 * @param bool $isAnnotable
+	 * @param bool $isDeclarative
 	 */
 	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ) {
-
 		$signature = [ $valueType, $isVisible, $isAnnotable, $isDeclarative ];
 
 		// Don't override an existing property registration with a different signature
@@ -267,7 +267,6 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPropertyLabelById( $id ) {
-
 		// This is a hack but there is no other good way to make it work without
 		// open a whole new can of worms
 		// '__' indicates predefined properties of extensions that contain alias
@@ -323,7 +322,6 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function getPropertyValueTypeById( $id ) {
-
 		if ( $this->isRegistered( $id ) ) {
 			return $this->propertyList[$id][0];
 		}
@@ -351,12 +349,11 @@ class PropertyRegistry {
 	 * return false.
 	 *
 	 * @param string $label normalized property label
-	 * @param boolean $useAlias determining whether to check if the label is an alias
+	 * @param bool $useAlias determining whether to check if the label is an alias
 	 *
 	 * @return mixed string property ID or false
 	 */
 	public function findPropertyIdByLabel( $label, $useAlias = true ) {
-
 		$id = $this->propertyLabelFinder->searchPropertyIdByLabel( $label );
 
 		if ( $id !== false ) {
@@ -377,7 +374,6 @@ class PropertyRegistry {
 	 * @return mixed string property ID or false
 	 */
 	public function findPropertyIdFromLabelByLanguageCode( $label, $languageCode = '' ) {
-
 		$languageCode = mb_strtolower( trim( $languageCode ) );
 
 		// Match the canonical form
@@ -416,7 +412,6 @@ class PropertyRegistry {
 	 * @return string
 	 */
 	public function findPreferredPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
-
 		if ( $languageCode === false || $languageCode === '' ) {
 			$languageCode = Localizer::getInstance()->getUserLanguage()->getCode();
 		}
@@ -443,7 +438,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegistered( $id ) {
 		return isset( $this->propertyList[$id] ) || array_key_exists( $id, $this->propertyList );
@@ -454,7 +449,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isVisible( $id ) {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][1] : false;
@@ -465,7 +460,7 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAnnotable( $id ) {
 		return $this->isRegistered( $id ) ? $this->propertyList[$id][2] : false;
@@ -476,10 +471,9 @@ class PropertyRegistry {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDeclarative( $id ) {
-
 		if ( !$this->isRegistered( $id ) ) {
 			return false;
 		}
@@ -494,7 +488,6 @@ class PropertyRegistry {
 	 * below.
 	 */
 	protected function initProperties( array $propertyList ) {
-
 		$this->propertyList = $propertyList;
 
 		foreach ( $this->datatypeLabels as $id => $label ) {
@@ -502,9 +495,10 @@ class PropertyRegistry {
 		}
 
 		// @deprecated since 2.1
-		\Hooks::run( 'smwInitProperties' );
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		$hookContainer->run( 'smwInitProperties' );
 
-		\Hooks::run( 'SMW::Property::initProperties', [ $this ] );
+		$hookContainer->run( 'SMW::Property::initProperties', [ $this ] );
 	}
 
 	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {

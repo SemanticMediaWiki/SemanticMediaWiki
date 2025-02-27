@@ -3,20 +3,19 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Localizer\Message;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use WebRequest;
-use SMW\Elastic\Indexer\ReplicationStatus;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Config;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -58,7 +57,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'elastic';
 	}
 
@@ -67,8 +66,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
-
+	public function isTaskFor( string $action ): bool {
 		// Root
 		$actions = [
 			$this->getTask()
@@ -92,7 +90,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-title' ),
 			[ 'action' => $this->getTask() ]
@@ -110,7 +107,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		);
 
 		$html = Html::rawElement(
-			'h3',
+			'h2',
 			[],
 			$this->msg( 'smw-admin-supplementary-elastic-section-subtitle' )
 		) . Html::rawElement(
@@ -128,7 +125,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$action = $webRequest->getText( 'action' );
 
@@ -153,20 +149,19 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputNoNodesAvailable( $connection ) {
-
 		$this->outputHead();
 		$config = $connection->getConfig();
 
 		$html = Html::rawElement(
-			'h3',
+			'h2',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-replication-header-title' ] )
 		) . Html::rawElement(
 			'p',
 			[],
 			$this->msg( [ 'smw-admin-supplementary-elastic-no-connection' ], Message::PARSE )
-		). Html::rawElement(
-			'h4',
+		) . Html::rawElement(
+			'h3',
 			[ 'class' => 'smw-title' ],
 			$this->msg( [ 'smw-admin-supplementary-elastic-endpoints' ] )
 		) . Html::rawElement(
@@ -179,7 +174,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputHead() {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch' );
 		$this->outputFormatter->addHelpLink( 'https://www.semantic-mediawiki.org/wiki/Help:ElasticStore' );
 
@@ -197,7 +191,6 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$html = '';
 
@@ -271,6 +264,9 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 
 		unset( $config['elastic/defaultstore'] );
 		unset( $config['elastic/endpoints'] );
+
+		// Do not show credentials through special page
+		unset( $config['elastic/credentials'] );
 
 		$config = ( new JsonView() )->create(
 			'elastic-config',

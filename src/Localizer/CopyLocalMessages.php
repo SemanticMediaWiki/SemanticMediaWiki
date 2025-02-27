@@ -7,7 +7,7 @@ use SMW\Exception\JSONFileParseException;
 use SMW\Utils\FileFetcher;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -24,12 +24,14 @@ class CopyLocalMessages {
 	 */
 	private $languageFileDir = '';
 
+	private array $contents;
+
 	/**
 	 * @since 3.2
 	 *
 	 * @param string $file
 	 */
-	public function __construct( string $file, string $languageFileDir = null ) {
+	public function __construct( string $file, ?string $languageFileDir = null ) {
 		$this->file = $file;
 		$this->languageFileDir = $languageFileDir
 							  ?? ( !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
@@ -42,8 +44,7 @@ class CopyLocalMessages {
 	 *
 	 * @return array
 	 */
-	public function copyCanonicalMessages() : array {
-
+	public function copyCanonicalMessages(): array {
 		$messages = $this->readJSONFile(
 			$this->languageFileDir . '/' . $this->file
 		);
@@ -81,8 +82,7 @@ class CopyLocalMessages {
 	 *
 	 * @return array
 	 */
-	public function copyTranslatedMessages() : array {
-
+	public function copyTranslatedMessages(): array {
 		$messages = $this->readJSONFile( $this->languageFileDir . '/' . $this->file );
 
 		$fileFetcher = new FileFetcher(
@@ -135,7 +135,6 @@ class CopyLocalMessages {
 	}
 
 	private function readJSONFile( $file ) {
-
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {
@@ -152,7 +151,6 @@ class CopyLocalMessages {
 	}
 
 	private function prettify( $json ) {
-
 		// Change the four-space indent to a tab indent
 		$json = str_replace( "\n    ", "\n\t", $json );
 

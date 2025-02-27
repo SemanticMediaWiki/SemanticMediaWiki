@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\NamespaceDescription;
@@ -15,28 +16,28 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -48,7 +49,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Conjunction' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,7 +68,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testConjunctionCondition( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -93,7 +92,6 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function descriptionProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
@@ -166,8 +164,8 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		# 3
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new SomeProperty(
-			new DIProperty( 'Foo'),
+		$description = new SomeProperty(
+			new DIProperty( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -225,7 +223,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 
@@ -264,7 +262,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo'),
+			new DIProperty( 'Foo' ),
 			$description
 		);
 
@@ -298,7 +296,7 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$description = new Conjunction( [
 			new ValueDescription( new DIBlob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
-			new ValueDescription( new DIBlob( 'YetAnotherPropertyBlobValue' ), new DIProperty( 'Foo'), SMW_CMP_NLKE ),
+			new ValueDescription( new DIBlob( 'YetAnotherPropertyBlobValue' ), new DIProperty( 'Foo' ), SMW_CMP_NLKE ),
 			new ThingDescription()
 		] );
 
@@ -324,8 +322,8 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 
-		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(
@@ -335,11 +333,11 @@ class ConjunctionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$category = new DIWikiPage( 'Bar', NS_CATEGORY );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$description = new Conjunction([
+		$description = new Conjunction( [
 			$description,
 			new ClassDescription( $category )
 		] );

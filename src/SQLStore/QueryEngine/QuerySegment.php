@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine;
 /**
  * Class for representing a single (sub)query description.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -62,12 +62,12 @@ class QuerySegment {
 	const Q_PROP_HIERARCHY = 6;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $type = self::Q_TABLE;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	public $depth;
 
@@ -77,17 +77,18 @@ class QuerySegment {
 	public $fingerprint = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $null = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $not = false;
 
 	/**
 	 * @var string
+	 * @note This should be only one of these values: 'LEFT', 'LEFT OUTER', 'INNER'.
 	 */
 	public $joinType = '';
 
@@ -115,9 +116,39 @@ class QuerySegment {
 	public $from = '';
 
 	/**
+	 * @var string[] Array of tables compatible with MediaWiki’s IReadableDatabase::select()
+	 *
+	 * The values are always the table names, and if the index is a string then it is its alias.
+	 * It is not necessary to use $db->tableName() for the table names, this is handled by MediaWiki.
+	 *
+	 * Example:
+	 *  [ 'page', 't0' => 'smw_object_ids' ]
+	 */
+	public $fromTables = [];
+
+	/**
+	 * @var string[][] Array of JOIN conditions created to be compatible with MediaWiki’s IReadableDatabase::select()
+	 *
+	 * The key in the first array must be a string, and represent the table or alias; the corresponding values
+	 * are a list with index 0 and 1, where the value at index 0 is the the type of JOIN and the value at index 1
+	 * is the condition.
+	 * It is not necessary to use $db->tableName() for the table names, this is handled by MediaWiki.
+	 *
+	 *
+	 * Example:
+	 *   [ 'page' => [ 'LEFT JOIN', 'page_latest=rev_id' ] ]
+	 */
+	public $joinConditions = [];
+
+	/**
 	 * @var string
 	 */
 	public $where = '';
+
+	/**
+	 * @var string
+	 */
+	public $sortIndexField;
 
 	/**
 	 * @var string[]
@@ -139,12 +170,12 @@ class QuerySegment {
 	public $sortfields = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $queryNumber;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public static $qnum = 0;
 

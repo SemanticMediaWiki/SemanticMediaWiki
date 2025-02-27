@@ -10,7 +10,7 @@ use SMW\SQLStore\SQLStore;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -33,12 +33,12 @@ class SubobjectListFinder {
 	private $subject;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $mappingIterator = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $skipConditions = [];
 
@@ -61,7 +61,6 @@ class SubobjectListFinder {
 	 * @return MappingIterator
 	 */
 	public function find( DIWikiPage $subject ) {
-
 		$key = $subject->getHash() . ':' . $subject->getId();
 
 		if ( !isset( $this->mappingIterator[$key] ) ) {
@@ -82,9 +81,7 @@ class SubobjectListFinder {
 	 * @return MappingIterator
 	 */
 	private function newMappingIterator( DIWikiPage $subject ) {
-
-		$callback = function( $row ) use ( $subject ) {
-
+		$callback = static function ( $row ) use ( $subject ) {
 			// #1955
 			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
 				$property = new DIProperty( $subject->getDBkey() );
@@ -111,7 +108,6 @@ class SubobjectListFinder {
 	}
 
 	private function newResultIterator( DIWikiPage $subject ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$key = $subject->getDBkey();
 
@@ -122,9 +118,9 @@ class SubobjectListFinder {
 		}
 
 		$conditions = [
-			'smw_title='      . $connection->addQuotes( $key ),
-			'smw_namespace='  . $connection->addQuotes( $subject->getNamespace() ),
-			'smw_iw='         . $connection->addQuotes( $subject->getInterwiki() ),
+			'smw_title=' . $connection->addQuotes( $key ),
+			'smw_namespace=' . $connection->addQuotes( $subject->getNamespace() ),
+			'smw_iw=' . $connection->addQuotes( $subject->getInterwiki() ),
 			'smw_subobject!=' . $connection->addQuotes( '' )
 		];
 

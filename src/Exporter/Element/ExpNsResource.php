@@ -10,7 +10,7 @@ use SMWDataItem as DataItem;
  * A single resource (individual) for export, defined by a URI for which there
  * also is a namespace abbreviation.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -39,6 +39,8 @@ class ExpNsResource extends ExpResource {
 	 */
 	private $namespaceId;
 
+	public bool $isUserDefined;
+
 	/**
 	 * @note The given URI must not contain serialization-specific
 	 * abbreviations or escapings, such as XML entities.
@@ -50,8 +52,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $localName, $namespace, $namespaceId, DataItem $dataItem = null ) {
-
+	public function __construct( $localName, $namespace, $namespaceId, ?DataItem $dataItem = null ) {
 		if ( !is_string( $localName ) ) {
 			throw new InvalidArgumentException( '$localName needs to be a string' );
 		}
@@ -113,7 +114,7 @@ class ExpNsResource extends ExpResource {
 	 * false if it may not be the case. However, we do not check the whole
 	 * range of allowed Unicode entities for performance reasons.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAllowedLocalName() {
 		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->localName );
@@ -125,7 +126,6 @@ class ExpNsResource extends ExpResource {
 	 * @return array
 	 */
 	public function getSerialization() {
-
 		// Use '|' as divider as it is unlikely that symbol appears within a uri
 		$serialization = [
 			'type' => self::TYPE_NSRESOURCE,
@@ -139,7 +139,6 @@ class ExpNsResource extends ExpResource {
 	 * @see ExpElement::newFromSerialization
 	 */
 	protected static function deserialize( $serialization ) {
-
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format, missing a uri element" );
 		}
@@ -148,7 +147,7 @@ class ExpNsResource extends ExpResource {
 			throw new RuntimeException( "Invalid uri format, expected two '|' dividers" );
 		}
 
-		list( $localName, $namespace, $namespaceId ) = explode( '|', $serialization['uri'], 3 );
+		[ $localName, $namespace, $namespaceId ] = explode( '|', $serialization['uri'], 3 );
 
 		return new self(
 			$localName,

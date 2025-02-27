@@ -8,24 +8,22 @@ use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
  * @covers \SMW\Elastic\Indexer\Attachment\AttachmentAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $containerSemanticData;
 
-	protected function setUp() : void {
-
-		$this->containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+	protected function setUp(): void {
+		$this->containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AttachmentAnnotator::class,
 			new AttachmentAnnotator( $this->containerSemanticData )
@@ -33,7 +31,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetProperty() {
-
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData
 		);
@@ -45,7 +42,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetContainer() {
-
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData
 		);
@@ -57,7 +53,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData
 		);
@@ -72,10 +67,9 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider documentProvider
 	 */
 	public function testAddAnnotation( $document, $expected ) {
-
 		$this->containerSemanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
-			->with( $this->equalTo( new \SMW\DIProperty( $expected ) ) );
+			->with( new \SMW\DIProperty( $expected ) );
 
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData,
@@ -89,7 +83,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function documentProvider() {
-
 		yield 'date' => [
 			[ '_source' => [ 'attachment' => [ 'date' => '1362200400' ] ] ],
 			'_CONT_DATE'
@@ -124,7 +117,6 @@ class AttachmentAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[ '_source' => [ 'attachment' => [ 'keywords' => '1001' ] ] ],
 			'_CONT_KEYW'
 		];
-
 	}
 
 }

@@ -2,27 +2,24 @@
 
 namespace SMW\Tests;
 
-use SMW\Tests\TestEnvironment;
 use SMWInfolink as Infolink;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWInfolink
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class InfolinkTest extends \PHPUnit_Framework_TestCase {
+class InfolinkTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$language = $this->getMockBuilder( '\Language' )
@@ -32,7 +29,7 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'ContentLanguage', $language );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -41,7 +38,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testEncodeParameters_ForTitle( array $params, array $expected ) {
-
 		$encodeResult = Infolink::encodeParameters( $params, true );
 
 		$this->assertEquals(
@@ -54,7 +50,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testEncodeParameters_NotForTitle( array $params, array $expected ) {
-
 		$encodeResult = Infolink::encodeParameters( $params, false );
 
 		$this->assertEquals(
@@ -64,7 +59,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewPropertySearchLink_GetText() {
-
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
 			return $this->markTestSkipped( 'NS_SPECIAL produces different representation!' );
 		}
@@ -92,7 +86,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetURL() {
-
 		$instance = new Infolink( true, 'Foo', 'Bar/Foobar' );
 		$instance->setCompactLink( true );
 
@@ -135,7 +128,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider base64Provider
 	 */
 	public function testEncodeBase64( $source, $target ) {
-
 		$this->assertContains(
 			$target,
 			Infolink::encodeCompactLink( $source )
@@ -146,7 +138,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider base64Provider
 	 */
 	public function testEncodeDecodeBase64RoundTrip( $source, $target ) {
-
 		$this->assertEquals(
 			$source,
 			Infolink::decodeCompactLink( Infolink::encodeCompactLink( $source ) )
@@ -157,7 +148,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider base64DecodeProvider
 	 */
 	public function testDecodeBase64( $source, $target ) {
-
 		$this->assertEquals(
 			$source,
 			Infolink::decodeCompactLink( $target )
@@ -165,7 +155,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNotDecodable() {
-
 		$this->assertNotContains(
 			'%3ABar/Foobar',
 			Infolink::decodeCompactLink( 'eD0lM0FCYXIlMkZGb29iYXI' )
@@ -173,7 +162,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function base64Provider() {
-
 		yield [
 			'%3ABar/Foobar',
 			'cl:JTNBQmFyL0Zvb2Jhcg'
@@ -186,7 +174,6 @@ class InfolinkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function base64DecodeProvider() {
-
 		yield [
 			'%3ABar/Foobar',
 			'cl:JTNBQmFyL0Zvb2Jhcg'

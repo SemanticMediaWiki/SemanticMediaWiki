@@ -8,15 +8,14 @@ use SMW\Exception\SettingsAlreadyLoadedException;
  * @covers \SMW\Exception\SettingsAlreadyLoadedException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SettingsAlreadyLoadedExceptionTest extends \PHPUnit_Framework_TestCase {
+class SettingsAlreadyLoadedExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SettingsAlreadyLoadedException();
 
 		$this->assertInstanceof(

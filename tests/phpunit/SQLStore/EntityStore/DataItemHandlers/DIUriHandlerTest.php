@@ -4,28 +4,28 @@ namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIUri as DIUri;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
  */
-class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
+class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,11 +35,10 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,52 +50,50 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImmutableMethodAccess() {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFetchFields()
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableIndexes()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getIndexField()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getLabelField()
 		);
 	}
 
 	public function testMutableMethodAccess() {
-
 		$uri = new DIUri( 'http', 'example.org', '', '' );
 
 		$instance = new DIUriHandler(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getWhereConds( $uri )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getInsertValues( $uri )
 		);
 	}
@@ -105,7 +102,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider fieldTypeProvider
 	 */
 	public function testMutableOnFieldTypeFeature( $fieldTypeFeatures, $expected ) {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -129,7 +125,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -144,7 +139,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dbKeysExceptionProvider
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
-
 		$instance = new DIUriHandler(
 			$this->store
 		);
@@ -154,7 +148,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysProvider() {
-
 		$provider[] = [
 			[ 'http://example.org', '' ]
 		];
@@ -167,7 +160,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dbKeysExceptionProvider() {
-
 		$provider[] = [
 			[ '' ]
 		];
@@ -176,7 +168,6 @@ class DIUriHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function fieldTypeProvider() {
-
 		$provider[] = [
 			SMW_FIELDT_NONE,
 			[

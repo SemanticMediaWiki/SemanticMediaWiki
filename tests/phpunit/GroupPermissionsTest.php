@@ -3,24 +3,23 @@
 namespace SMW\Tests;
 
 use SMW\GroupPermissions;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\GroupPermissions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
+class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -29,13 +28,12 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitPermissions() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onGroupPermissionsBeforeInitializationComplete' );
 
 		$vars = [];
 
-		$instance =  new GroupPermissions();
+		$instance = new GroupPermissions();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -65,12 +63,11 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
-
 		// Avoid re-setting permissions, refs #1137
 		$vars['wgGroupPermissions']['sysop']['smw-admin'] = false;
 		$vars['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
 
-		$instance =  new GroupPermissions();
+		$instance = new GroupPermissions();
 
 		$instance->setHookDispatcher(
 			$this->hookDispatcher
@@ -85,7 +82,6 @@ class GroupPermissionsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(
 			$vars['wgGroupPermissions']['smwadministrator']['smw-admin']
 		);
-
 	}
 
 }

@@ -12,7 +12,7 @@ The objective is to provide an interface to Elasticsearch to:
 
 ## Requirements
 
-- Elasticsearch: Recommended 6.1+, Tested with 5.6.6
+- Elasticsearch: Recommended 7.10.x (SMW 4.1.3), tested with 5.6.6, 6.1+ (SMW 3.x)
 - Semantic MediaWiki: 3.0+
 - [`elasticsearch/elasticsearch`][packagist:es] (PHP ^7.0 `~6.0` or PHP ^5.6.6 `~5.3`)
 
@@ -38,7 +38,7 @@ The `ElasticStore` provides the same query features (given those are tested) as 
 
 Before the ElasticStore (hereby Elasticsearch) can be used as drop-in replacement for the existing `SQLStore` based `QueryEngine` the following settings and operations are required:
 
-- Set `$GLOBALS['smwgDefaultStore'] = 'SMWElasticStore';` (see [`$smwgDefaultStore`][smw:smwgDefaultStore])
+- Set `$GLOBALS['smwgDefaultStore'] = 'SMW\Elastic\ElasticStore';` (see [`$smwgDefaultStore`][smw:smwgDefaultStore])
 - Set `$GLOBALS['smwgElasticsearchEndpoints'] = [ ... ];` (see [`$smwgElasticsearchEndpoints`][smw:smwgElasticsearchEndpoints])
 - Run `php setupStore.php` or `php update.php`
 - Rebuild the index using `php rebuildElasticIndex.php` (see [`rebuildElasticIndex.php`][smw:rebuildElasticIndex.php])

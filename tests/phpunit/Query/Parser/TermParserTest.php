@@ -8,15 +8,14 @@ use SMW\Query\Parser\TermParser;
  * @covers \SMW\Query\Parser\TermParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TermParserTest extends \PHPUnit_Framework_TestCase {
+class TermParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TermParser::class,
 			new TermParser()
@@ -27,7 +26,6 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider termProvider
 	 */
 	public function testTerm_parser( $term, $expected ) {
-
 		$instance = new TermParser();
 
 		$this->assertEquals(
@@ -40,7 +38,6 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider term_prefixProvider
 	 */
 	public function testTerm_prefix_parser( $term, $prefixes, $expected ) {
-
 		$instance = new TermParser( $prefixes );
 
 		$this->assertEquals(
@@ -50,7 +47,6 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function termProvider() {
-
 		yield [
 			'in:foo',
 			'[[in:foo]]'
@@ -178,7 +174,6 @@ class TermParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function term_prefixProvider() {
-
 		yield [
 			'in:foo || not:bar',
 			[ 'keyw' => [ 'Has keyword', 'Keyw' ] ],

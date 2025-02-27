@@ -11,21 +11,20 @@ use SMW\Query\DescriptionFactory;
  * @covers \SMW\Exporter\ConceptMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
+class ConceptMapperTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConceptMapper::class,
 			new ConceptMapper()
@@ -33,8 +32,7 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsMapperFor() {
-
-		$dataItem = $this->getMockBuilder( '\SMWDIConcept' )
+		$dataItem = $this->getMockBuilder( '\SMW\DIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +44,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExpDataForSingleClassDescription() {
-
 		$instance = new ConceptMapper();
 
 		$exact = false;
@@ -80,7 +77,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExpDataForMultipleClassDescriptions() {
-
 		$instance = new ConceptMapper();
 
 		$exact = false;
@@ -122,7 +118,6 @@ class ConceptMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExpDataForThingDescription() {
-
 		$instance = new ConceptMapper();
 
 		$exact = false;

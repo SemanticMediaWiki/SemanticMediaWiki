@@ -1,0 +1,79 @@
+/*!
+ * This file is part of the Semantic MediaWiki Tooltip/Highlighter module
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ * http://www.gnu.org/copyleft/gpl.html
+ *
+ * @since 1.8
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+/* New tooltip icon defaults */
+.smwtticon {
+	padding: 12px 12px 0 0;
+	white-space: nowrap;
+	margin-left: 2px;
+	margin-right: 2px;
+	vertical-align: -0.8px;
+	display: inline-block;
+	background-position: left bottom;
+	background-repeat: no-repeat;
+	background-size: 12px 12px;
+
+	h2 & {
+		vertical-align: 2px;
+	}
+
+	big & {
+		vertical-align: 0px;
+	}
+
+	/* New tooltip, Individual assigned icons ( inline-block is important because the icon <span> is empty) */
+	&.info {
+		background-image: url( ../assets/smw-icon-tooltip-info.png );
+	}
+
+	&.question {
+		background-image: url( ../assets/smw-icon-tooltip-question.png );
+	}
+
+	&.service {
+		background-image: url( ../assets/smw-icon-tooltip-question.png );
+	}
+
+	&.warning {
+		background-image: url( ../assets/smw-icon-tooltip-warning.png );
+	}
+
+	&.error {
+		background-image: url( ../assets/smw-icon-tooltip-error.png );
+	}
+
+	&.note {
+		background-image: url( ../assets/smw-icon-tooltip-question.png );
+	}
+}
+
+/* New tooltip content is always hidden */
+.smwttcontent {
+	display: none;
+}

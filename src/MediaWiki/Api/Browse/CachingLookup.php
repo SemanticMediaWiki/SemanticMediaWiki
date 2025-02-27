@@ -6,7 +6,7 @@ use Onoi\Cache\Cache;
 use SMW\Utils\Timer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -27,9 +27,11 @@ class CachingLookup {
 	private $lookup;
 
 	/**
-	 * @var integer|boolean
+	 * @var int|bool
 	 */
 	private $cacheTTL;
+
+	private Cache $cache;
 
 	/**
 	 * @since 3.0
@@ -46,7 +48,7 @@ class CachingLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer|boolean $cacheTTL
+	 * @param int|bool $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL;
@@ -60,7 +62,6 @@ class CachingLookup {
 	 * @return array
 	 */
 	public function lookup( array $parameters ) {
-
 		Timer::start( __METHOD__ );
 
 		$hash = smwfCacheKey(

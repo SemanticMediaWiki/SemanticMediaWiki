@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Html;
 use OutputPage;
 use Skin;
-use SpecialPage;
-use Title;
-use SMW\Message;
-use Html;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory;
+use SpecialPage;
+use Title;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -18,7 +18,7 @@ use SMW\Services\ServicesFactory;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -33,7 +33,6 @@ class BeforePageDisplay implements HookListener {
 	 * @param OutputPage $outputPage
 	 */
 	public function informAboutExtensionAvailability( OutputPage $outputPage ) {
-
 		if (
 			$this->getOption( 'SMW_EXTENSION_LOADED' ) ||
 			$this->getOption( 'smwgIgnoreExtensionRegistrationCheck' ) ) {
@@ -46,12 +45,11 @@ class BeforePageDisplay implements HookListener {
 			return;
 		}
 
-		$outputPage->prependHTML(
-			'<div class="errorbox" style="display:block;">Semantic MediaWiki ' .
-			'was installed but not enabled on this wiki. Please consult the ' .
-			'<a href="https://www.semantic-mediawiki.org/wiki/Extension_registration">help page</a> for ' .
-			'instructions and further assistances.</div>'
-		);
+		$outputPage->prependHTML( Html::errorBox(
+			'Semantic MediaWiki was installed but not enabled on this wiki. ' .
+			'Please consult the <a href="https://www.semantic-mediawiki.org/wiki/Extension_registration">help page</a> ' .
+			'for instructions and further assistances.'
+		) );
 	}
 
 	/**
@@ -60,29 +58,11 @@ class BeforePageDisplay implements HookListener {
 	 * @param OutputPage $outputPage
 	 * @param Skin $skin
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( OutputPage $outputPage, Skin $skin ) {
-
 		$title = $outputPage->getTitle();
 		$user = $outputPage->getUser();
-
-		// MW 1.26 / T107399 / Async RL causes style delay
-		$outputPage->addModuleStyles(
-			[
-				'ext.smw.style',
-				'ext.smw.tooltip.styles'
-			]
-		);
-
-		if ( $title->getNamespace() === NS_SPECIAL ) {
-			$outputPage->addModuleStyles(
-				[
-					'ext.smw.special.styles'
-				]
-			);
-		}
-
 		// #2726
 		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		if ( $userOptionsLookup->getOption( $user, 'smw-prefs-general-options-suggester-textinput' ) ) {
@@ -90,11 +70,16 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		if ( $this->getOption( 'incomplete_tasks', [] ) !== [] ) {
+			$outputPage->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
 			$outputPage->prependHTML( $this->createIncompleteSetupTaskNotification( $title ) );
 		}
 
 		// Add export link to the head
-		if ( $title instanceof Title && !$title->isSpecialPage() ) {
+		if (
+			$this->getOption( 'smwgEnableExportRDFLink' ) &&
+			$title instanceof Title &&
+			!$title->isSpecialPage()
+		) {
 			$link['rel']   = 'alternate';
 			$link['type']  = 'application/rdf+xml';
 			$link['title'] = $title->getPrefixedText();
@@ -102,17 +87,10 @@ class BeforePageDisplay implements HookListener {
 			$outputPage->addLink( $link );
 		}
 
-		$request = $skin->getContext()->getRequest();
-
-		if ( in_array( $request->getVal( 'action' ), [ 'delete', 'edit', 'protect', 'unprotect', 'diff', 'history' ] ) || $request->getVal( 'diff' ) ) {
-			return true;
-		}
-
 		return true;
 	}
 
 	private function createIncompleteSetupTaskNotification( $title ) {
-
 		$disallowSpecialPages = [
 			'Userlogin',
 			'PendingTaskList',
@@ -130,26 +108,25 @@ class BeforePageDisplay implements HookListener {
 		$is_upgrade = $this->getOption( 'is_upgrade' ) !== null ? 2 : 1;
 		$count = count( $this->getOption( 'incomplete_tasks' ) );
 
-		return Html::rawElement(
-			'div',
+		// TODO: Refactor message content HTML generation into Mustache or another class
+		$title = Html::rawElement( 'strong', [], Message::get( 'smw-title' ) );
+		$note = Html::rawElement( 'span',
 			[
-				'class' => 'smw-callout smw-callout-error plainlinks'
+				'style' => 'color: var( --color-subtle, #54595d ); font-size: 0.75rem;'
 			],
-			Html::rawElement(
-				'div',
-				[
-					'style' => 'font-size: 10px;text-align: right;margin-top: 5px;margin-bottom: -5px; float:right;'
-				],
-				Message::get( [ 'smw-install-incomplete-intro-note' ], Message::PARSE, Message::USER_LANGUAGE )
-			) . Html::rawElement(
-				'div',
-				[
-					'class' => 'title'
-				],
-				Message::get( 'smw-title' )
-			) .
-			Message::get( [ 'smw-install-incomplete-intro', $is_upgrade, $count ], Message::PARSE, Message::USER_LANGUAGE )
+			Message::get( [ 'smw-install-incomplete-intro-note' ], Message::PARSE, Message::USER_LANGUAGE )
+		);
+		$header = Html::rawElement( 'div',
+			[
+				'style' => 'display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.25rem 0.5rem;'
+			],
+			$title . $note
+		);
+		$content = Message::get( [ 'smw-install-incomplete-intro', $is_upgrade, $count ], Message::PARSE, Message::USER_LANGUAGE );
+
+		return Html::errorBox(
+			$header .
+			Html::rawElement( 'p', [], $content )
 		);
 	}
-
 }

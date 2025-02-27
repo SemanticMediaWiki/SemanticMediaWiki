@@ -5,21 +5,20 @@ namespace SMW\Tests\Utils\Validators;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
+class QuerySegmentValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.1
 	 *
-	 * @param  mixed $expected
-	 * @param  QuerySegment[] $querySegment
+	 * @param mixed $expected
+	 * @param QuerySegment[] $querySegment
 	 */
 	public function assertThatContainerContains( $expected, array $querySegment ) {
-
 		$expected = is_array( $expected ) ? $expected : [ $expected ];
 
 		$this->assertEquals(
@@ -41,8 +40,8 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	/**
 	 * @since 2.1
 	 *
-	 * @param  mixed $expected
-	 * @param  QuerySegment $querySegment
+	 * @param mixed $expected
+	 * @param QuerySegment $querySegment
 	 */
 	public function assertThatContainerHasProperties( $expected, QuerySegment $querySegment ) {
 		$this->assertPublicProperty( $expected, $querySegment, 'type' );
@@ -57,7 +56,6 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertPublicProperty( $expected, QuerySegment $querySegment, $property ) {
-
 		if ( !isset( $expected->{$property} ) ) {
 			return null;
 		}
@@ -69,7 +67,7 @@ class QuerySegmentValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function formatMessage( $id, $expected, $actual ) {
-		return "Asserts {$id} to be expected [ " . $this->formatAsString( $expected ) . ' ] vs. actual [ ' . $this->formatAsString( $actual ) .' ]';
+		return "Asserts {$id} to be expected [ " . $this->formatAsString( $expected ) . ' ] vs. actual [ ' . $this->formatAsString( $actual ) . ' ]';
 	}
 
 	private function formatAsString( $expected ) {

@@ -2,8 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Connection\ConnectionManager;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
@@ -14,7 +14,7 @@ use SMW\StoreFactory;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -52,7 +52,6 @@ class SPARQLStoreFactory {
 	 * @return QueryEngine
 	 */
 	public function newMasterQueryEngine() {
-
 		$engineOptions = new EngineOptions();
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'sparql-queryengine' );
@@ -96,7 +95,6 @@ class SPARQLStoreFactory {
 	 * @return TurtleTriplesBuilder
 	 */
 	public function newTurtleTriplesBuilder() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$turtleTriplesBuilder = new TurtleTriplesBuilder(
@@ -115,7 +113,6 @@ class SPARQLStoreFactory {
 	 * @return ReplicationDataTruncator
 	 */
 	public function newReplicationDataTruncator() {
-
 		$replicationDataTruncator = new ReplicationDataTruncator();
 
 		$replicationDataTruncator->setPropertyExemptionList(
@@ -131,7 +128,6 @@ class SPARQLStoreFactory {
 	 * @return ConnectionManager
 	 */
 	public function getConnectionManager() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

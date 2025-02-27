@@ -2,19 +2,19 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Localizer\Message;
 use SMW\DIWikiPage;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use SMW\Utils\TemplateEngine;
+use SMW\Localizer\Message;
+use SMW\Localizer\MessageLocalizerTrait;
+use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
-use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicatorProviders = [];
 
@@ -34,17 +34,17 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	private $permissionExaminer;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $modules = [ 'smw.entityexaminer' ];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
@@ -52,6 +52,8 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 * @var string
 	 */
 	private $languageCode = '';
+
+	private TemplateEngine $templateEngine;
 
 	/**
 	 * @since 3.2
@@ -75,7 +77,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $isDeferredMode
+	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;
@@ -84,9 +86,9 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -95,7 +97,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'deferrablecompoundintegrityexaminer';
 	}
 
@@ -105,7 +107,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
 		return $this->checkIndicators( $subject, $options ) !== [];
@@ -114,7 +116,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -123,7 +125,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return $this->modules;
@@ -139,7 +141,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function checkIndicators( $subject, $options ) {
-
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['error_count'] = 0;
@@ -181,7 +182,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function buildHTML( $subject, array $indicatorProviders, array $options ) {
-
 		$this->templateEngine = new TemplateEngine();
 
 		$this->templateEngine->bulkLoad(
@@ -234,7 +234,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	}
 
 	private function getContent( $indicatorProvider, array $args ) {
-
 		if ( $this->isDeferredMode ) {
 			$args += $indicatorProvider->getIndicators();
 			$args['checked'] = $args['count'] == 1 ? 'checked' : '';

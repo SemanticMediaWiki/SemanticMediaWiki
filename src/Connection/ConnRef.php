@@ -5,7 +5,7 @@ namespace SMW\Connection;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class ConnRef {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasConnection( $key ) {
 		return isset( $this->connectionProviders[$key] );
@@ -51,7 +51,6 @@ class ConnRef {
 	 * @throws RuntimeException
 	 */
 	public function getConnection( $key ) {
-
 		if ( isset( $this->connections[$key] ) ) {
 			return $this->connections[$key];
 		}

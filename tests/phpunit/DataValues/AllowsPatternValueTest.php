@@ -5,29 +5,29 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\AllowsPatternValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
+class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
+	private $mediaWikiNsContentReader;
 	private $dataValueServiceFactory;
 	private $constraintValueValidator;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -37,7 +37,7 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,19 +53,18 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new AllowsPatternValueParser( $this->mediaWikiNsContentReader ) ) );
+			->willReturn( new AllowsPatternValueParser( $this->mediaWikiNsContentReader ) );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $this->constraintValueValidator ) );
+			->willReturn( $this->constraintValueValidator );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\AllowsPatternValue',
 			new AllowsPatternValue()
@@ -73,7 +72,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasErrorForMissingValue() {
-
 		$instance = new AllowsPatternValue();
 
 		$instance->setDataValueServiceFactory(
@@ -90,10 +88,9 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasErrorForNonMatchingContent() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|Bar\n" ) );
+			->willReturn( " \nFoo|Bar\n" );
 
 		$instance = new AllowsPatternValue();
 
@@ -111,10 +108,9 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasNoErrorOnMatchableContent() {
-
 		$this->mediaWikiNsContentReader->expects( $this->once() )
 			->method( 'read' )
-			->will( $this->returnValue( " \nFoo|Bar\n" ) );
+			->willReturn( " \nFoo|Bar\n" );
 
 		$instance = new AllowsPatternValue();
 
@@ -132,7 +128,6 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorOnNotEnabledFeatureWhenUserValueIsNotEmpty() {
-
 		$instance = new AllowsPatternValue();
 
 		$instance->setDataValueServiceFactory(
@@ -147,14 +142,13 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortWikiText() {
-
 		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$allowsPatternValueParser->expects( $this->any() )
 			->method( 'parse' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
 			->disableOriginalConstructor()
@@ -162,11 +156,11 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( $allowsPatternValueParser ) );
+			->willReturn( $allowsPatternValueParser );
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $this->constraintValueValidator ) );
+			->willReturn( $this->constraintValueValidator );
 
 		$instance = new AllowsPatternValue();
 		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );
@@ -184,14 +178,13 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortHtmlText() {
-
 		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$allowsPatternValueParser->expects( $this->any() )
 			->method( 'parse' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
 			->disableOriginalConstructor()
@@ -199,11 +192,11 @@ class AllowsPatternValueTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( $allowsPatternValueParser ) );
+			->willReturn( $allowsPatternValueParser );
 
 		$dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $this->constraintValueValidator ) );
+			->willReturn( $this->constraintValueValidator );
 
 		$instance = new AllowsPatternValue();
 		$instance->setOption( 'smwgDVFeatures', SMW_DV_PVAP );

@@ -4,31 +4,28 @@ namespace SMW\Tests;
 
 use SMW\SetupFile;
 use SMW\Utils\File;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SetupFile
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SetupFileTest extends \PHPUnit_Framework_TestCase {
+class SetupFileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testIsGoodSchema() {
+		$this->assertIsBool(
 
-		$this->assertInternalType(
-			'boolean',
 			SetupFile::isGoodSchema()
 		);
 	}
 
 	public function testMakeUpgradeKey() {
-
 		$var1 = [
 			'smwgUpgradeKey' => '',
 			'smwgDefaultStore' => '',
@@ -56,7 +53,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeUpgradeKey_SpecialFixedProperties() {
-
 		$var1 = [
 			'smwgUpgradeKey' => '',
 			'smwgDefaultStore' => '',
@@ -84,7 +80,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFinalize() {
-
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -112,7 +107,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetMaintenanceMode() {
-
 		$fields = [
 			'upgrade_key' => '2fefe0755c8b2d1b13b22a0a0c0677a24982ad3e',
 			SetupFile::MAINTENANCE_MODE => true,
@@ -129,7 +123,7 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			->method( 'write' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $expected ) );
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -151,12 +145,11 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUpgradeFile() {
-
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
 
 		$fields = [
 			'Foo' => 42,
-			//"upgrade_key_base" => '["",[],"",[]]'
+			// "upgrade_key_base" => '["",[],"",[]]'
 		];
 
 		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );
@@ -168,8 +161,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		$file->expects( $this->once() )
 			->method( 'write' )
 			->with(
-				$this->equalTo( $configFile ),
-				$this->equalTo( $expected ) );
+				$configFile,
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -190,7 +183,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReset() {
-
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
 		$id = \SMW\Site::id();
 
@@ -207,8 +199,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		$file->expects( $this->once() )
 			->method( 'write' )
 			->with(
-				$this->equalTo( $configFile ),
-				$this->equalTo( $expected ) );
+				$configFile,
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -228,7 +220,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemove() {
-
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
 		$expected = '[]';
 
@@ -239,8 +230,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 		$file->expects( $this->once() )
 			->method( 'write' )
 			->with(
-				$this->equalTo( $configFile ),
-				$this->equalTo( $expected ) );
+				$configFile,
+				$expected );
 
 		$instance = new SetupFile(
 			$file
@@ -259,7 +250,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$id = \SMW\Site::id();
 
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
@@ -281,7 +271,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddRemoveIncompleteTask() {
-
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -306,7 +295,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncompleteTasks() {
-
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -331,7 +319,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLatestVersion() {
-
 		$id = \SMW\Site::id();
 
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )
@@ -350,9 +337,8 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 			$instance->get( SetupFile::LATEST_VERSION )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( SetupFile::PREVIOUS_VERSION, [ 'smw.json' => [] ] )
+		$this->assertNull(
+						$instance->get( SetupFile::PREVIOUS_VERSION, [ 'smw.json' => [] ] )
 		);
 
 		// Previous version is known
@@ -370,7 +356,6 @@ class SetupFileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasDatabaseMinRequirement() {
-
 		$id = \SMW\Site::id();
 
 		$file = $this->getMockBuilder( '\SMW\Utils\File' )

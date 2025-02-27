@@ -5,7 +5,7 @@ namespace SMW\Schema;
 use JsonSerializable;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -29,9 +29,18 @@ class SchemaList implements JsonSerializable {
 	}
 
 	/**
+	 * @since 4.1
+	 *
+	 * @return bool
+	 */
+	public function isEmpty(): bool {
+		return $this->list === [];
+	}
+
+	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getList() {
 		return $this->list;
@@ -43,7 +52,6 @@ class SchemaList implements JsonSerializable {
 	 * @param Schema|SchemaList $schema
 	 */
 	public function add( $schema ) {
-
 		if ( $schema instanceof SchemaDefinition ) {
 			$this->list[] = $schema;
 		}
@@ -58,7 +66,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function merge( SchemaList $schemaList ) {
 		$list = [];
@@ -84,7 +92,6 @@ class SchemaList implements JsonSerializable {
 	 * @return mixed
 	 */
 	public function get( $key, $default = [] ) {
-
 		$list = $this->toArray();
 
 		if ( isset( $list[$key] ) ) {
@@ -102,8 +109,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function newCompartmentIteratorByKey( string $key, ?string $type = null ) : CompartmentIterator {
-
+	public function newCompartmentIteratorByKey( string $key, ?string $type = null ): CompartmentIterator {
 		$list = [];
 
 		foreach ( $this->getList() as $schema ) {
@@ -124,7 +130,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function toArray() {
 		$list = [];

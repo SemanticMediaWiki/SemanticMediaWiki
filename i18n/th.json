@@ -4,9 +4,11 @@
 			"Aefgh39622",
 			"Ans",
 			"B20180",
-			"Horus"
+			"Horus",
+			"Passawuth"
 		]
 	},
+	"smw-desc": "ทำให้วิกิของคุณเข้าถึงได้ง่ายสำหรับเครื่อง''และ''มนุษย์ ([https://www.semantic-mediawiki.org/wiki/Help:User_manual คู่มือการใช้งานแบบออนไลน์)",
 	"smw-upgrade-error-why-title": "เหตุใดฉันจึงเห็นข้อผิดพลาดนี้",
 	"smw-upgrade-error-how-title": "ฉันจะแก้ไขข้อผิดพลาดนี้ได้อย่างไร",
 	"smw_viewasrdf": "ฟีด RDF",
@@ -35,6 +37,7 @@
 	"smw_exportrdf_submit": "ส่งออก",
 	"uriresolver": "ตัวแปลงที่อยู่ URI",
 	"properties": "คุณลักษณะ",
+	"smw-categories": "หมวดหมู่",
 	"unusedproperties": "คุณสมบัติที่ไม่ได้ใช้",
 	"smw-unusedproperty-template": "$1 ของประเภท $2",
 	"wantedproperties": "คุณสมบัติที่ต้องการ",

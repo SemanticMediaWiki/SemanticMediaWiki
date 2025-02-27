@@ -9,23 +9,22 @@ use SMW\Utils\Html\SummaryTable;
  * @covers \SMW\Utils\Html\SummaryTable
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SummaryTableTest extends \PHPUnit_Framework_TestCase {
+class SummaryTableTest extends \PHPUnit\Framework\TestCase {
 
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 	}
 
 	public function testBuildHTML() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar' ]
 		);
@@ -41,7 +40,6 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_SetAttributes() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar' ]
 		);
@@ -63,7 +61,6 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildHTML_ColumnThreshold() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar', 'Foobar' => 'Bar' ]
 		);
@@ -80,12 +77,11 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 				'<div class="smw-table-row"><div class="smw-table-cell smwpropname">Foobar</div>',
 				'<div class="smw-table-cell smwprops">Bar</div></div></div></div></div></div>'
 			],
-			$instance->buildHTML( ['columns' => 2 ] )
+			$instance->buildHTML( [ 'columns' => 2 ] )
 		);
 	}
 
 	public function testBuildHTML_ColumnThreshold_NoImage() {
-
 		$instance = new SummaryTable(
 			[ 'Foo' => 'Bar', 'Foobar' => 'Bar' ]
 		);
@@ -101,7 +97,7 @@ class SummaryTableTest extends \PHPUnit_Framework_TestCase {
 				'<div class="smw-table-row"><div class="smw-table-cell smwpropname">Foobar</div><div class="smw-table-cell smwprops">Bar</div></div></div></div></div>',
 				'<div class="smw-summarytable-image"><div class="smw-summarytable-item-center"><div class="smw-summarytable-noimage"></div></div></div></div>'
 			],
-			$instance->buildHTML( ['columns' => 2 ] )
+			$instance->buildHTML( [ 'columns' => 2 ] )
 		);
 	}
 

@@ -2,22 +2,21 @@
 
 namespace SMW\Tests\Maintenance;
 
-use FakeResultWrapper;
 use SMW\Maintenance\PropertyStatisticsRebuilder;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Maintenance\PropertyStatisticsRebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -33,7 +32,6 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuildStatisticsStoreAndInsertCountRows() {
-
 		$tableName = 'Foobar';
 
 		$uRow = new \stdClass;
@@ -57,40 +55,40 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->atLeastOnce() )
 			->method( 'getTableFields' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$database->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->willReturn( $resultWrapper );
 
 		$database->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
 			->with(
 				$this->stringContains( $tableName ),
 				$this->anything(),
-				$this->equalTo( [ 'p_id' => 9999 ] ),
+				[ 'p_id' => 9999 ],
 				$this->anything() )
-			->will( $this->onConsecutiveCalls( $uRow, $nRow ) );
+			->willReturnOnConsecutiveCalls( $uRow, $nRow );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ $this->newPropertyTable( $tableName ) ] ) );
+			->willReturn( [ $this->newPropertyTable( $tableName ) ] );
 
 		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
 			->disableOriginalConstructor()
@@ -99,7 +97,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 		$propertyStatisticsStore->expects( $this->atLeastOnce() )
 			->method( 'insertUsageCount' )
 			->with(
-				$this->equalTo( 9999 ),
+				9999,
 				$this->equalTo( [ 1110, 1 ] ) );
 
 		$instance = new PropertyStatisticsRebuilder(
@@ -111,7 +109,6 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	protected function newPropertyTable( $propertyTableName, $fixedPropertyTable = false ) {
-
 		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isFixedPropertyTable', 'getName' ] )
@@ -119,11 +116,11 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( $fixedPropertyTable ) );
+			->willReturn( $fixedPropertyTable );
 
 		$propertyTable->expects( $this->atLeastOnce() )
 			->method( 'getName' )
-			->will( $this->returnValue( $propertyTableName ) );
+			->willReturn( $propertyTableName );
 
 		return $propertyTable;
 	}

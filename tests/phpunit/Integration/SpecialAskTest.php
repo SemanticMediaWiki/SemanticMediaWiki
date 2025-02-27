@@ -4,24 +4,24 @@ namespace SMW\Tests\Integration;
 
 use DOMDocument;
 use SMW\MediaWiki\Specials\SpecialAsk;
-use SMW\Tests\TestEnvironment;
 use SMW\SPARQLStore\RepositoryConnectionProvider;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Stephan Gambke
  */
-class SpecialAskTest extends \PHPUnit_Framework_TestCase {
+class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 	private $oldRequestValues;
 	private $oldBodyText;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -31,7 +31,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -42,7 +42,6 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 	 * @param $skipFUSEKI
 	 */
 	public function testProducesWellformedHtml( $params, $skipFUSEKI ) {
-
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',
@@ -68,7 +67,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$document = new DOMDocument();
 
 		// https://stackoverflow.com/questions/6090667/php-domdocument-errors-warnings-on-html5-tags
-		libxml_use_internal_errors(true);
+		libxml_use_internal_errors( true );
 		$result = $document->loadHTML( $html );
 		libxml_clear_errors();
 
@@ -119,11 +118,7 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		global $wgOut, $wgRequest;
 
 		foreach ( $params as $key => $value ) {
-			if ( method_exists( $wgRequest, 'unsetVal' ) ) {
-				$wgRequest->unsetVal( $key );
-			} else {
-				$wgRequest->setVal( $key, null );
-			}
+			$wgRequest->unsetVal( $key );
 		}
 		foreach ( $this->oldRequestValues as $key => $value ) {
 			$wgRequest->setVal( $key, $value );

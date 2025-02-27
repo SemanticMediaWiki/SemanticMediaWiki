@@ -22,8 +22,8 @@
 			"subject": "Test/P0110/2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"A unique_value_constraint constraint is assigend to the the &quot;Has Url&quot; property which only permits unique value assignments and the http://example.org/Foo value annotation was already found to be annotated in the &quot;Test/P0110/1&quot; subject.\"",
-					"<span class=\"smwttcontent\">A &lt;code&gt;unique_value_constraint&lt;/code&gt; constraint is assigend to the the \"<a href=.*>Has Url</a>\" property which only permits unique value assignments and the <i><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo\">http://example.org/Foo</a></i> value annotation was already found to be annotated in the \"Test/P0110/1\" subject.</span>"
+					"title=\"A unique_value_constraint constraint is assigned to the &quot;Has Url&quot; property which only permits unique value assignments and the .*http://example.org/Foo.* value annotation was already found to be annotated in the &quot;Test/P0110/1&quot; subject.\"",
+					"<span class=\"smwttcontent\">A &lt;code&gt;unique_value_constraint&lt;/code&gt; constraint is assigned to the \"<a href=.*>Has Url</a>\" property which only permits unique value assignments and the <i><a rel=\"nofollow\" class=\"external free\" href=\"http://example.org/Foo\">http://example.org/Foo</a></i> value annotation was already found to be annotated in the \"Test/P0110/1\" subject.</span>"
 				]
 			}
 		}

@@ -2,27 +2,27 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
-use SMW\DIWikiPage;
-use SMW\Query\DescriptionFactory;
 use SMW\DataItemFactory;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Options;
+use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
+	private DescriptionFactory $descriptionFactory;
+	private DataItemFactory $dataItemFactory;
 	private $conditionBuilder;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -33,11 +33,10 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ValueDescriptionInterpreter::class,
 			new ValueDescriptionInterpreter( $this->conditionBuilder )
@@ -48,7 +47,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testInterpretDescription( $dataItem, $comparator, $options, $expected ) {
-
 		$this->conditionBuilder->setOptions( new Options(
 			[
 				'cjk.best.effort.proximity.match' => true,
@@ -78,7 +76,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictedLength() {
-
 		$options = [
 			'property' => $this->dataItemFactory->newDIProperty( 'Bar' ),
 			'pid'   => 'P:42',
@@ -115,7 +112,6 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$options = [
@@ -162,6 +158,5 @@ class ValueDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 			'{"bool":{"must":[{"multi_match":{"fields":["text_copy"],"query":"テスト","type":"phrase"}}]}}'
 		];
 	}
-
 
 }

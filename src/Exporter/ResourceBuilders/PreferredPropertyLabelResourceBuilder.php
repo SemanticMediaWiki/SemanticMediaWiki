@@ -4,14 +4,14 @@ namespace SMW\Exporter\ResourceBuilders;
 
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\Exporter\Element\ExpLiteral;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
-use SMWExpLiteral as ExpLiteral;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -33,7 +33,6 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 	 * {@inheritDoc}
 	 */
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(

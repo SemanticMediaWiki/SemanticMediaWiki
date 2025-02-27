@@ -6,7 +6,7 @@ use Html;
 use SMW\Utils\HtmlDivTable;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -14,17 +14,17 @@ use SMW\Utils\HtmlDivTable;
 class SummaryTable {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $attributes = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $columnThreshold = 4;
 
@@ -45,10 +45,10 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public static function getModuleStyles() {
-		return [ 'ext.smw.style', 'smw.summarytable' ];
+		return [ 'ext.smw.styles', 'smw.summarytable' ];
 	}
 
 	/**
@@ -63,7 +63,7 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $ColumnThreshold
+	 * @param int $columnThreshold
 	 */
 	public function setColumnThreshold( $columnThreshold ) {
 		$this->columnThreshold = $columnThreshold;
@@ -104,7 +104,6 @@ class SummaryTable {
 	 * @return string
 	 */
 	public function buildHTML( array $opts = [] ) {
-
 		$html = '';
 		$tables = [];
 
@@ -153,7 +152,6 @@ class SummaryTable {
 	}
 
 	private function tableAndImage( $params ) {
-
 		$html = Html::rawElement(
 			'div',
 			[
@@ -180,7 +178,6 @@ class SummaryTable {
 	}
 
 	private function table( $params ) {
-
 		$rows = '';
 		$html = '';
 

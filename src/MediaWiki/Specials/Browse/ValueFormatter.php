@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 
@@ -18,7 +18,7 @@ use SMWInfolink as Infolink;
  * for now this is the easiest way to unclutter the mammoth Browse class and
  * splitting up responsibilities.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -28,12 +28,11 @@ class ValueFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DataValue $value
+	 * @param DataValue $dataValue
 	 *
 	 * @return string
 	 */
 	public static function getFormattedSubject( DataValue $dataValue ) {
-
 		$extra = '';
 
 		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
@@ -47,7 +46,7 @@ class ValueFormatter {
 			// Those with a formatted displayTitle
 			// foaf:homepage&nbsp;<span style="font-size:small;">(Foaf:homepage)</span>
 			if ( strpos( $label, '&nbsp;<span' ) !== false ) {
-				list( $label, $extra ) = explode( '&nbsp;', $label );
+				[ $label, $extra ] = explode( '&nbsp;', $label );
 				$extra = '&nbsp;' . $extra;
 			}
 
@@ -62,14 +61,14 @@ class ValueFormatter {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DataValue $value
-	 * @param PropertyValue $property
-	 * @param boolean $incoming
+	 * @param DataValue $dataValue
+	 * @param PropertyValue $propertyValue
+	 * @param bool $incoming
+	 * @param \User|null $user
 	 *
 	 * @return string
 	 */
 	public static function getFormattedValue( DataValue $dataValue, PropertyValue $propertyValue, $incoming = false, $user = null ) {
-
 		$linker = smwfGetLinker();
 		$dataItem = $dataValue->getContextPage();
 
@@ -133,14 +132,13 @@ class ValueFormatter {
 	 *
 	 * @since 2.5
 	 *
-	 * @param PropertyValue $property
-	 * @param boolean $incoming
-	 * @param boolean $showInverse
+	 * @param PropertyValue $propertyValue
+	 * @param bool $incoming
+	 * @param bool $showInverse
 	 *
 	 * @return string
 	 */
 	public static function getPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
-
 		$proptext = null;
 
 		$linker = smwfGetLinker();
@@ -159,7 +157,6 @@ class ValueFormatter {
 	}
 
 	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
-
 		$property = $propertyValue->getDataItem();
 		$contextPage = $propertyValue->getContextPage();
 
@@ -198,9 +195,8 @@ class ValueFormatter {
 	 * @return string
 	 */
 	public static function addNonBreakingSpace( $text ) {
-
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
-		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text, -1, $count );
+		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text ?? '', -1, $count );
 
 		if ( $count > 2 ) {
 			return preg_replace( '/($nonBreakingSpace)/u', ' ', $text, max( 0, $count - 2 ) );

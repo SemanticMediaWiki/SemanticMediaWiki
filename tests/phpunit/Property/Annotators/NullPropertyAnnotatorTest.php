@@ -8,15 +8,14 @@ use SMW\Property\Annotators\NullPropertyAnnotator;
  * @covers \SMW\Property\Annotators\NullPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class NullPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -28,7 +27,6 @@ class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMethodAccess() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +42,6 @@ class NullPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			'\SMW\Property\Annotators\NullPropertyAnnotator',
 			$instance->addAnnotation()
 		);
-
 	}
 
 }

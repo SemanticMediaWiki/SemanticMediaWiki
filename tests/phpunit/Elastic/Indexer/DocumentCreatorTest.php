@@ -2,36 +2,33 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\DocumentCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
+class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DocumentCreator::class,
 			new DocumentCreator( $this->store )
@@ -39,17 +36,15 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDocumentCreationDuration() {
-
 		$instance = new DocumentCreator( $this->store );
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->getDocumentCreationDuration()
 		);
 	}
 
 	public function testNewFromSemanticData_RedirectDelete() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
@@ -61,15 +56,15 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -77,25 +72,25 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( [] ) );
+			->with( $property )
+			->willReturn( [] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( new DIProperty( '_REDI' ) ) )
-			->will( $this->returnValue( true ) );
+			->with( new DIProperty( '_REDI' ) )
+			->willReturn( true );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new DocumentCreator( $this->store );
 		$document = $instance->newFromSemanticData( $semanticData );
@@ -114,7 +109,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemsProvider
 	 */
 	public function testNewFromSemanticData( $dataItems ) {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
@@ -126,15 +120,15 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -142,20 +136,20 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $dataItems ) );
+			->with( $property )
+			->willReturn( $dataItems );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [ $semanticData ] ) );
+			->willReturn( [ $semanticData ] );
 
 		$instance = new DocumentCreator( $this->store );
 
@@ -169,7 +163,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemsProvider
 	 */
 	public function testNewFromSemanticData_SubDataType( $dataItems ) {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
@@ -181,15 +174,15 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->will( $this->onConsecutiveCalls( [ 42, 43 ] ) );
+			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -197,20 +190,20 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ $property ] ) );
+			->willReturn( [ $property ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( $dataItems ) );
+			->with( $property )
+			->willReturn( $dataItems );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
-			->will( $this->returnValue( [ $semanticData ] ) );
+			->willReturn( [ $semanticData ] );
 
 		$instance = new DocumentCreator( $this->store );
 
@@ -221,7 +214,6 @@ class DocumentCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemsProvider() {
-
 		yield 'page_type' => [
 			[ DIWikiPage::newFromText( 'Bar' ) ]
 		];

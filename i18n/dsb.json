@@ -4,6 +4,7 @@
 			"Derbeth",
 			"Matěj Suchánek",
 			"Michawiki",
+			"Qualia",
 			"아라"
 		]
 	},
@@ -18,7 +19,6 @@
 	"smw_noinvannot": "Gódnoty njedaju se nawopacnym kakosćam pśipokazaś.",
 	"version-semantic": "Semantiske rozšyrjenja",
 	"smw_baduri": "URI formy \"$1\" njejsu dowólone.",
-	"smw_dsv_link": "DSV",
 	"smw_printername_count": "Wuslědki licyś",
 	"smw_printername_csv": "Ako CSV eksportěrowaś",
 	"smw_printername_dsv": "DSV-eksport",
@@ -122,6 +122,7 @@
 	"smw_exportrdf_submit": "Eksportěrowaś",
 	"uriresolver": "Rezolwer URI",
 	"properties": "Kakosći",
+	"smw-categories": "Kategorije",
 	"smw_properties_docu": "Slědujuce kakosći wužywaju se we wikiju.",
 	"smw_property_template": "$1 typa $2 ($3 {{PLURAL:$3|wužyśe|wužyśi|wužyśa|wužyśow}})",
 	"smw_propertylackspage": "Wše kakosći měli se pśez bok wopisaś!",

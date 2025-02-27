@@ -8,15 +8,14 @@ use SMW\Query\ResultFormat;
  * @covers \SMW\Query\ResultFormat
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ResultFormatTest extends \PHPUnit_Framework_TestCase {
+class ResultFormatTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultFormat::class,
 			new ResultFormat( 'type', 'foo' )
@@ -24,9 +23,8 @@ class ResultFormatTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testResolveFormatAliases() {
-
 		foreach ( $GLOBALS['smwgResultAliases'] as $mainFormat => $aliases ) {
-			foreach ($aliases as $alias ) {
+			foreach ( $aliases as $alias ) {
 				$this->assertTrue(
 					ResultFormat::resolveFormatAliases( $alias )
 				);

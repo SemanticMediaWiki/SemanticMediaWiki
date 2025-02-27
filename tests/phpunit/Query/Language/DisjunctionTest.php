@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -15,24 +15,17 @@ use SMW\Query\Language\ValueDescription;
  * @covers \SMW\Query\Language\Disjunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class DisjunctionTest extends \PHPUnit_Framework_TestCase {
+class DisjunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Disjunction',
 			new Disjunction()
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
-			new \SMWDisjunction()
 		);
 	}
 
@@ -40,7 +33,6 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider disjunctionProvider
 	 */
 	public function testCommonMethods( $descriptions, $expected ) {
-
 		$instance = new Disjunction( $descriptions );
 
 		$this->assertEquals(
@@ -88,7 +80,6 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparativeHashProvider
 	 */
 	public function testGetFingerprint( $descriptions, $compareTo, $expected ) {
-
 		$instance = new Disjunction(
 			$descriptions
 		);
@@ -100,7 +91,6 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function disjunctionProvider() {
-
 		$nsHelp = Localizer::getInstance()->getNsText( NS_HELP );
 
 		$descriptions = [
@@ -173,7 +163,6 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrune() {
-
 		$descriptions = [
 			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
@@ -201,7 +190,6 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparativeHashProvider() {
-
 		$descriptions = [
 			new NamespaceDescription( NS_MAIN ),
 			new NamespaceDescription( NS_HELP )
@@ -267,7 +255,6 @@ class DisjunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVaryingHierarchyDepthCausesClassDescriptionToYieldDifferentFingerprint() {
-
 		$descriptions = [
 			new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) )
 		];

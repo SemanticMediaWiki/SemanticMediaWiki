@@ -9,16 +9,16 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
  * @covers \SMW\DataValues\StringValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class StringValueTest extends \PHPUnit_Framework_TestCase {
+class StringValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
@@ -31,11 +31,10 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			StringValue::class,
 			new StringValue( '_txt' )
@@ -43,7 +42,6 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLength() {
-
 		$instance = new StringValue( '_txt' );
 
 		$stringValueFormatter = new StringValueFormatter();
@@ -51,7 +49,7 @@ class StringValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $stringValueFormatter ) );
+			->willReturn( $stringValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory

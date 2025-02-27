@@ -3,26 +3,29 @@
 namespace SMW\MediaWiki\Page;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use ParserOptions;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
-use SMW\Localizer;
+use SMW\ParserData;
+use SMW\Property\DeclarationExaminerFactory;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\StringCondition;
+use SMW\Utils\HtmlTabs;
+use SMW\Utils\JsonView;
 use SMWDataValue;
 use Title;
-use SMW\Utils\HtmlTabs;
-use SMW\Property\DeclarationExaminerFactory;
-use SMW\Utils\JsonView;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -55,12 +58,12 @@ class PropertyPage extends Page {
 	private $itemListBuilder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isLockedView = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $filterCount = 0;
 
@@ -95,7 +98,6 @@ class PropertyPage extends Page {
 	 * @return string
 	 */
 	protected function initHtml() {
-
 		$redirectTarget = $this->store->getRedirectTarget( $this->property );
 
 		if ( !$redirectTarget->equals( $this->property ) ) {
@@ -104,7 +106,7 @@ class PropertyPage extends Page {
 
 		$declarationExaminer = $this->declarationExaminerFactory->newDeclarationExaminer(
 			$this->store,
-			$this->fetchSemanticDataFromEditInfo()
+			$this->getSemanticData()
 		);
 
 		$declarationExaminer->check( $this->property );
@@ -116,11 +118,33 @@ class PropertyPage extends Page {
 	}
 
 	/**
+	 * Retrieve the semantic data for the current page from a possibly cached rendering.
+	 * @return SemanticData|null The semantic data for the current page, or null if the page does not exist.
+	 */
+	private function getSemanticData(): ?SemanticData {
+		$parserOptions = ParserOptions::newFromAnon();
+
+		// Set enableLimitReport explicitly to maintain MW 1.35 compatibility.
+		$enableLimitReport = $this->getContext()->getConfig()->get( 'EnableParserLimitReporting' );
+		$parserOptions->setOption( 'enableLimitReport', $enableLimitReport );
+
+		$parserOutput = $this->getPage()->getParserOutput( $parserOptions );
+
+		if ( $parserOutput === false ) {
+			return null;
+		}
+
+		$parserData = new ParserData( $this->getTitle(), $parserOutput );
+
+		return $parserData->getSemanticData();
+	}
+
+	/**
 	 * @see Page::isLockedView
 	 *
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function isLockedView() {
 		return $this->isLockedView;
@@ -131,10 +155,9 @@ class PropertyPage extends Page {
 	 *
 	 * @since 3.0
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	protected function getRedirectTargetURL() {
-
 		$label = $this->getTitle()->getText();
 
 		if ( ( $key = PropertyRegistry::getInstance()->findPropertyIdByLabel( $label ) ) === false ) {
@@ -162,7 +185,6 @@ class PropertyPage extends Page {
 	 * @return string
 	 */
 	protected function getHtml() {
-
 		if ( !$this->store->getRedirectTarget( $this->property )->equals( $this->property ) ) {
 			return '';
 		}
@@ -172,7 +194,7 @@ class PropertyPage extends Page {
 
 		$matches = [];
 
-		$context->getOutput()->addModuleStyles( [ 'ext.smw.style', 'ext.smw.page.styles' ] );
+		$context->getOutput()->addModuleStyles( [ 'ext.smw.styles', 'ext.smw.page.styles' ] );
 		$context->getOutput()->addModules( [ 'smw.property.page', 'smw.jsonview' ] );
 
 		$context->getOutput()->setPageTitle(
@@ -316,19 +338,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function fetchSemanticDataFromEditInfo() {
-
-		$applicationFactory = ApplicationFactory::getInstance();
-
-		$editInfo = $applicationFactory->newMwCollaboratorFactory()->newEditInfo(
-			$this->getPage()
-		);
-
-		return $editInfo->fetchSemanticData();
-	}
-
 	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {
-
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
 			return [ '', '' ];
@@ -376,7 +386,6 @@ class PropertyPage extends Page {
 	}
 
 	private function makeValueList() {
-
 		$request = $this->getContext()->getRequest();
 		$language = $this->getContext()->getLanguage();
 		$user = $this->getContext()->getUser();
@@ -428,7 +437,6 @@ class PropertyPage extends Page {
 	}
 
 	private function getCount() {
-
 		if ( $this->filterCount !== null ) {
 			return Html::rawElement(
 				'span',

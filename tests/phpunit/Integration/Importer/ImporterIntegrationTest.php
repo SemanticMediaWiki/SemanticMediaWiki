@@ -3,25 +3,26 @@
 namespace SMW\Tests\Integration\Importer;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ImporterIntegrationTest extends DatabaseTestCase {
+class ImporterIntegrationTest extends SMWIntegrationTestCase {
 
 	private $spyMessageReporter;
 	private $importerServiceFactory;
 	private $stringValidator;
 	private $fixtures;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -33,7 +34,6 @@ class ImporterIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testValidTextContent() {
-
 		$importer = $this->importerServiceFactory->newImporter(
 			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidTextContent' ] )
 		);
@@ -53,7 +53,6 @@ class ImporterIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testValidXmlContent() {
-
 		$importer = $this->importerServiceFactory->newImporter(
 			$this->importerServiceFactory->newJsonContentIterator( [ $this->fixtures . '/ValidXmlContent' ] )
 		);

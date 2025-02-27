@@ -4,7 +4,6 @@ namespace SMW\MediaWiki;
 
 use IDBAccessObject;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
@@ -20,7 +19,7 @@ use WikiPage;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -69,7 +68,7 @@ class PageInfoProvider implements PageInfo {
 	/**
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getModificationDate() {
 		return $this->wikiPage->getTimestamp();
@@ -81,7 +80,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @since 1.9
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCreationDate() {
 		return $this->revisionLookup->getFirstRevision(
@@ -95,10 +94,10 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isNewPage() {
-		 if ( $this->isFilePage() ) {
+		if ( $this->isFilePage() ) {
 			return isset( $this->wikiPage->smwFileReUploadStatus ) ? !$this->wikiPage->smwFileReUploadStatus : false;
 		}
 
@@ -120,7 +119,7 @@ class PageInfoProvider implements PageInfo {
 	/**
 	 * @since 1.9.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFilePage() {
 		return $this->wikiPage instanceof WikiFilePage;
@@ -132,7 +131,6 @@ class PageInfoProvider implements PageInfo {
 	 * @return text
 	 */
 	public function getNativeData() {
-
 		if ( $this->wikiPage->getContent() === null ) {
 			return '';
 		}
@@ -152,7 +150,6 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMediaType() {
-
 		if ( $this->isFilePage() === false ) {
 			return null;
 		}
@@ -166,7 +163,6 @@ class PageInfoProvider implements PageInfo {
 	 * @return string|null
 	 */
 	public function getMimeType() {
-
 		if ( $this->isFilePage() === false ) {
 			return null;
 		}
@@ -182,14 +178,9 @@ class PageInfoProvider implements PageInfo {
 	}
 
 	public static function isProtected( Title $title, string $action = '' ) {
-		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {
-			return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
-				$title, $action
-			);
-		}
-
-		// MW < 1.37
-		return $title->isProtected();
+		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
+			$title, $action
+		);
 	}
 
 }

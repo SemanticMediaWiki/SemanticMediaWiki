@@ -9,7 +9,7 @@ use SMW\Iterators\MappingIterator;
 use SMW\Iterators\ResultIterator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class IteratorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param ResultWrapper|Iterator|array $res
+	 * @param \Wikimedia\Rdbms\ResultWrapper|Iterator|array $res
 	 *
 	 * @return ResultIterator
 	 */
@@ -42,8 +42,8 @@ class IteratorFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Iterator/array $$iterable
-	 * @param integer $chunkSize
+	 * @param Iterator|array $iterable
+	 * @param int $chunkSize
 	 *
 	 * @return ChunkedIterator
 	 */
@@ -64,9 +64,9 @@ class IteratorFactory {
 	 * @since 3.0
 	 *
 	 * @param string $file
-	 * @param boolean $parseHeader
+	 * @param bool $parseHeader
 	 * @param string $delimiter
-	 * @param integer $length
+	 * @param int $length
 	 *
 	 * @return CsvFileIterator
 	 */

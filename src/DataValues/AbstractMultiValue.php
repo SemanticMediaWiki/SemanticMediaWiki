@@ -2,15 +2,15 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use SMWPropertyListValue as PropertyListValue;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -63,7 +63,6 @@ abstract class AbstractMultiValue extends DataValue {
 	 * @return DataItem[]|null
 	 */
 	public function getDataItems() {
-
 		if ( !$this->isValid() ) {
 			return [];
 		}
@@ -81,19 +80,18 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by SMWResultArray::loadContent for matching an index as denoted
+	 * @note called by \SMW\Query\Result\ResultArray::loadContent for matching an index as denoted
 	 * in |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @see https://www.semantic-mediawiki.org/wiki/Help:Type_Record#Semantic_search
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DataItem[]|null
 	 */
 	public function getDataItemByIndex( $index ) {
-
 		if ( is_numeric( $index ) ) {
 			$pos = $index - 1;
 			$dataItems = $this->getDataItems();
@@ -109,17 +107,16 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by SMWResultArray::getNextDataValue to match an index
+	 * @note called by \SMW\Query\Result\ResultArray::getNextDataValue to match an index
 	 * that has been denoted using |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @since 2.5
 	 *
-	 * @param string|integer $index
+	 * @param string|int $index
 	 *
 	 * @return DIProperty|null
 	 */
 	public function getPropertyDataItemByIndex( $index ) {
-
 		$properties = $this->getPropertyDataItems();
 
 		if ( is_numeric( $index ) ) {
@@ -146,8 +143,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @return DIProperty[]|[]
 	 */
-	protected function getFieldProperties( DIProperty $property = null ) {
-
+	protected function getFieldProperties( ?DIProperty $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}

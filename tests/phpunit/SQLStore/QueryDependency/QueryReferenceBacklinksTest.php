@@ -10,27 +10,26 @@ use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
  * @covers \SMW\SQLStore\QueryDependency\QueryReferenceBacklinks
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
+class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -42,7 +41,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddQueryReferenceBacklinksTo() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', 'foobar' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -51,13 +49,13 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->any() )
 			->method( 'addPropertyObjectValue' )
 			->with(
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_ASK' ) ),
-				$this->equalTo( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) );
+				$this->dataItemFactory->newDIProperty( '_ASK' ),
+				$this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
 			->disableOriginalConstructor()
@@ -65,16 +63,16 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 		$queryDependencyLinksStore->expects( $this->once() )
 			->method( 'isEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findEmbeddedQueryIdListBySubject' )
-			->with( $this->equalTo( $subject ) )
-			->will( $this->returnValue( [ 'Foo#0##' => 42 ] ) );
+			->with( $subject )
+			->willReturn( [ 'Foo#0##' => 42 ] );
 
 		$queryDependencyLinksStore->expects( $this->once() )
 			->method( 'findDependencyTargetLinksForSubject' )
-			->will( $this->returnValue( [ 'Foo#0##' ] ) );
+			->willReturn( [ 'Foo#0##' ] );
 
 		$instance = new QueryReferenceBacklinks(
 			$queryDependencyLinksStore
@@ -88,7 +86,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindQueryReferenceBacklinks() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 
 		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
@@ -97,7 +94,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 
 		$queryDependencyLinksStore->expects( $this->any() )
 			->method( 'findDependencyTargetLinksForSubject' )
-			->will( $this->returnValue( [ 'Foo#0##' ] ) );
+			->willReturn( [ 'Foo#0##' ] );
 
 		$instance = new QueryReferenceBacklinks(
 			$queryDependencyLinksStore
@@ -112,7 +109,6 @@ class QueryReferenceBacklinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInspectFurtherLinkRequirement() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_ASK' );
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 

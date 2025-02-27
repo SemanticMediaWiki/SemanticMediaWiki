@@ -2,18 +2,18 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
-use SMW\PropertySpecificationLookup;
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
 use SMWDIBlob as DIBlob;
+use SMWNumberValue as NumberValue;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -26,12 +26,12 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	private $allowsListValueParser;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
@@ -44,9 +44,9 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 * @since 2.4
 	 *
 	 * @param AllowsListValueParser $allowsListValueParser
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( AllowsListValueParser $allowsListValueParser, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( AllowsListValueParser $allowsListValueParser, SpecificationLookup $propertySpecificationLookup ) {
 		$this->allowsListValueParser = $allowsListValueParser;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -66,7 +66,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 		$this->errorMsg = 'smw-constraint-error-allows-value-list';
 
@@ -95,7 +94,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 			$allowedValues,
 			$allowedValueList
 		);
-
 
 		if ( $isAllowed ) {
 			return;
@@ -129,7 +127,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 		// Only the first 10 values otherwise the list may become too long
 		$allowedValueList = implode( ', ', array_slice(
-			array_keys( $allowedValueList ), 0 , 10 )
+			array_keys( $allowedValueList ), 0, 10 )
 		);
 
 		$allowedValueList = str_replace( [ '>', '<' ], [ '%3C', '%3E' ], $allowedValueList );
@@ -148,7 +146,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function checkConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
-
 		if ( !is_array( $allowedValues ) ) {
 			return true;
 		}
@@ -224,7 +221,6 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ) {
-
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
@@ -253,14 +249,13 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function check_bounds( $value, $allowedValue, &$isAllowed, &$allowedValueList ) {
-
 		$v = $allowedValue->getString();
 
 		if ( strpos( $v, '...' ) === false ) {
 			return false;
 		}
 
-		list( $lower, $upper ) = explode( '...', $v );
+		[ $lower, $upper ] = explode( '...', $v );
 
 		if ( $value >= intval( $lower ) && $value <= intval( $upper ) ) {
 			return $isAllowed = true;

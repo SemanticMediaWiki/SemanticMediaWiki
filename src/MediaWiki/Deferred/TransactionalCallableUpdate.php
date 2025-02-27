@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Site;
 
 /**
@@ -11,7 +11,7 @@ use SMW\Site;
  * or isolations to ensure an undisturbed update process before and after
  * MediaWiki::preOutputCommit.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
@@ -44,7 +44,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	private $postCommitableCallbacks = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $autoCommit = false;
 
@@ -52,10 +52,9 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @since 3.1
 	 *
 	 * @param callable $callback
-	 * @param Database $instance
+	 * @param Database $connection
 	 */
 	public static function newUpdate( callable $callback, Database $connection ) {
-
 		$transactionalCallableUpdate = new self( $callback, $connection );
 
 		$transactionalCallableUpdate->isCommandLineMode(
@@ -71,7 +70,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param callable|null $callback
 	 * @param Database|null $connection
 	 */
-	public function __construct( callable $callback = null, Database $connection = null ) {
+	public function __construct( ?callable $callback = null, ?Database $connection = null ) {
 		parent::__construct( $callback );
 		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
@@ -148,7 +147,6 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @since 3.0
 	 */
 	public function doUpdate() {
-
 		if ( $this->onTransactionIdle ) {
 			return $this->runOnTransactionIdle();
 		}
@@ -194,14 +192,13 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	protected function registerUpdate( $update ) {
-
 		if ( $this->onTransactionIdle ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Added: {origin} (onTransactionIdle)' ],
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 
-			return $this->connection->onTransactionIdle( function() use( $update ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use( $update ) {
 				$update->onTransactionIdle = false;
 				parent::registerUpdate( $update );
 			} );
@@ -217,10 +214,11 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	}
 
 	private function runOnTransactionIdle() {
-		$this->connection->onTransactionIdle( function() {
+		$fname = __METHOD__;
+		$this->connection->onTransactionCommitOrIdle( function () use ( $fname ) {
 			$this->logger->info(
 				[ 'DeferrableUpdate', 'Transactional', 'Update: {origin} (onTransactionIdle)' ],
-				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin() ]
+				[ 'method' => $fname, 'role' => 'developer', 'origin' => $this->getOrigin() ]
 			);
 			$this->onTransactionIdle = false;
 			$this->doUpdate();

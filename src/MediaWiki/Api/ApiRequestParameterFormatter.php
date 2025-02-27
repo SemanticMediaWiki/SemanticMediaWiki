@@ -9,7 +9,7 @@ use SMW\Query\PrintRequest;
 /**
  * This class handles Api related request parameter formatting
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -43,7 +43,6 @@ final class ApiRequestParameterFormatter {
 	 * @return array
 	 */
 	public function getAskApiParameters() {
-
 		if ( $this->results === null ) {
 			$this->results = isset( $this->requestParameters['query'] ) ? preg_split( "/(?<=[^\|])\|(?=[^\|])(?=[^\+])/", $this->requestParameters['query'] ) : [];
 		}
@@ -59,7 +58,6 @@ final class ApiRequestParameterFormatter {
 	 * @return array
 	 */
 	public function getAskArgsApiParameter( $key ) {
-
 		if ( $this->results === null ) {
 			$this->results = $this->formatAskArgs();
 		}
@@ -75,7 +73,6 @@ final class ApiRequestParameterFormatter {
 	 * @return ObjectDictionary
 	 */
 	protected function formatAskArgs() {
-
 		$result = new Options();
 
 		// Set defaults
@@ -88,11 +85,11 @@ final class ApiRequestParameterFormatter {
 		}
 
 		if ( isset( $this->requestParameters['conditions'] ) && is_array( $this->requestParameters['conditions'] ) ) {
-			$result->set( 'conditions', implode( ' ', array_map( 'self::formatConditions', $this->requestParameters['conditions'] ) ) );
+			$result->set( 'conditions', implode( ' ', array_map( [ $this, 'formatConditions' ], $this->requestParameters['conditions'] ) ) );
 		}
 
 		if ( isset( $this->requestParameters['printouts'] ) && is_array( $this->requestParameters['printouts'] ) ) {
-			$result->set( 'printouts', array_map( 'self::formatPrintouts', $this->requestParameters['printouts'] ) );
+			$result->set( 'printouts', array_map( [ $this, 'formatPrintouts' ], $this->requestParameters['printouts'] ) );
 		}
 
 		return $result;
@@ -106,7 +103,6 @@ final class ApiRequestParameterFormatter {
 	 * @return string
 	 */
 	protected function formatParameters() {
-
 		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {
@@ -134,7 +130,7 @@ final class ApiRequestParameterFormatter {
 	}
 
 	/**
-	 * Format printout and returns a SMWPrintRequest object
+	 * Format printout and returns a PrintRequest object
 	 *
 	 * @since 1.9
 	 *

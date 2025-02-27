@@ -7,7 +7,7 @@ use SMW\DIProperty;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -43,10 +43,9 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 *
-	 * @param string $value
+	 * @param string|null $linker
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -88,7 +87,6 @@ class ExternalIdentifierValue extends StringValue {
 	 * @see StringValue::getShortHTMLText
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -141,7 +139,6 @@ class ExternalIdentifierValue extends StringValue {
 	 * @return DataItem
 	 */
 	public function getUri() {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -155,7 +152,6 @@ class ExternalIdentifierValue extends StringValue {
 	}
 
 	private function makeUri( $value ) {
-
 		if ( $this->uri !== null ) {
 			return $this->uri;
 		}
@@ -200,7 +196,6 @@ class ExternalIdentifierValue extends StringValue {
 	}
 
 	private function filterParameters( &$value ) {
-
 		$parameters = [];
 		$matches = [];
 

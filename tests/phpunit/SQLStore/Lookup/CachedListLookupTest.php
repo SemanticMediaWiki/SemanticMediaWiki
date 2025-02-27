@@ -8,15 +8,14 @@ use SMW\SQLStore\Lookup\CachedListLookup;
  * @covers \SMW\SQLStore\Lookup\CachedListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
+class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testfetchListFromCache() {
-
 		$expectedCachedItem = [
 			'time' => 42,
 			'list' => [ 'Foo' ]
@@ -44,7 +42,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$listLookup->expects( $this->atLeastOnce() )
 			->method( 'getHash' )
-			->will( $this->returnValue( 'Bar#123' ) );
+			->willReturn( 'Bar#123' );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -53,11 +51,11 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 		$cache->expects( $this->once() )
 			->method( 'contains' )
 			->with(	$this->stringContains( 'cacheprefix-foobar:smw:store:lookup:' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( serialize( $expectedCachedItem ) ) );
+			->willReturn( serialize( $expectedCachedItem ) );
 
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = true;
@@ -86,7 +84,6 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRetrieveResultListFromInjectedListLookup() {
-
 		$expectedCacheItem = [
 			'time' => 42,
 			'list' => [ 'Foo' ]
@@ -98,11 +95,11 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$listLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$listLookup->expects( $this->once() )
 			->method( 'getTimestamp' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -113,7 +110,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->stringContains( 'smw:store:lookup' ),
 				$this->anything( serialize( $expectedCacheItem ) ),
-				$this->equalTo( 1001 ) );
+				1001 );
 
 		$cacheOptions = new \stdClass;
 		$cacheOptions->useCache = false;
@@ -137,14 +134,13 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteCache() {
-
 		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$listLookup->expects( $this->once() )
 			->method( 'getHash' )
-			->will( $this->returnValue( 'Foo#123' ) );
+			->willReturn( 'Foo#123' );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
@@ -152,7 +148,7 @@ class CachedListLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( serialize( [ 'smw:store:lookup:6283479db90b04ad3a6db333a3c89766' => true ] ) ) );
+			->willReturn( serialize( [ 'smw:store:lookup:6283479db90b04ad3a6db333a3c89766' => true ] ) );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'delete' )

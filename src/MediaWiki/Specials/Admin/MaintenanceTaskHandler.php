@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
-use SMW\Message;
-use WebRequest;
+use SMW\Localizer\Message;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\HtmlTabs;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -58,7 +58,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return '';
 	}
 
@@ -67,8 +67,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
-
+	public function isTaskFor( string $action ): bool {
 		foreach ( $this->taskHandlers as $taskHandler ) {
 			if ( $taskHandler->isTaskFor( $action ) ) {
 				return true;
@@ -84,7 +83,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$tasks = '';
 		$html = '';
 
@@ -126,7 +124,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$action = $webRequest->getText( 'action' );
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -155,7 +152,6 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function buildHTML() {
-
 		$html = Html::rawElement(
 			'p',
 			[
@@ -206,7 +202,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 					'href' => $this->msg( [ 'smw-helplink', $name ] )
 				],
 				$name
-			) . ":&nbsp;". $description;
+			) . ":&nbsp;" . $description;
 		}
 
 		$list = '';

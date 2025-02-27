@@ -3,14 +3,14 @@
 namespace SMW\MediaWiki\Search;
 
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use Title;
 
 /**
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -18,7 +18,7 @@ use Title;
 class SearchResult extends \SearchResult {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasHighlight = false;
 
@@ -35,7 +35,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getTextSnippet
 	 */
 	function getTextSnippet( $terms = [] ) {
-
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
 		}
@@ -47,7 +46,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getSectionTitle
 	 */
 	function getSectionTitle() {
-
 		if ( !isset( $this->mTitle ) || $this->mTitle->getFragment() === '' ) {
 			return null;
 		}
@@ -66,7 +64,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::isMissingRevision
 	 */
 	function isMissingRevision() {
-
 		if ( $this->mTitle == null ) {
 			return true;
 		}
@@ -89,7 +86,7 @@ class SearchResult extends \SearchResult {
 	 * Set a text excerpt retrieved from a different back-end.
 	 *
 	 * @param string|null $text
-	 * @param boolean $hasHighlight
+	 * @param bool $hasHighlight
 	 */
 	public function setExcerpt( $text = null, $hasHighlight = false ) {
 		$this->mText = $text;
@@ -107,7 +104,6 @@ class SearchResult extends \SearchResult {
 	 * @see SearchResult::getTitleSnippet
 	 */
 	public function getTitleSnippet() {
-
 		if ( !isset( $this->mTitle ) ) {
 			return '';
 		}

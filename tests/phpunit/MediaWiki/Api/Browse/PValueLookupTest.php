@@ -5,39 +5,36 @@ namespace SMW\Tests\MediaWiki\Api\Browse;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Query;
-use SMW\Services\ServicesContainer;
-use FakeResultWrapper;
 use SMW\Tests\PHPUnitCompat;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PValueLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PValueLookupTest extends \PHPUnit_Framework_TestCase {
+class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'ProximityPropertyValueLookup' ) )
-			->will( $this->returnValue( new \SMW\SQLStore\Lookup\ProximityPropertyValueLookup( $this->store ) ) );
+			->with( 'ProximityPropertyValueLookup' )
+			->willReturn( new \SMW\SQLStore\Lookup\ProximityPropertyValueLookup( $this->store ) );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PValueLookup::class,
 			new PValueLookup( $this->store )
@@ -45,12 +42,11 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_wpg_property() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,15 +54,15 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -75,11 +71,11 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$idTable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -87,19 +83,19 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PValueLookup(
 			$this->store
@@ -113,10 +109,10 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
 			[
 				'Test'
-			]
+			],
+			$res['query']
 		);
 
 		$this->assertContains(
@@ -126,7 +122,6 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLookup_wpg_propertyChain() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
@@ -135,17 +130,17 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -154,8 +149,8 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->with(  $this->equalTo( new DIProperty( 'Foobar' ) ) )
-			->will( $this->returnValue( 42 ) );
+			->with( new DIProperty( 'Foobar' ) )
+			->willReturn( 42 );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -163,19 +158,19 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PValueLookup(
 			$this->store
@@ -189,20 +184,19 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
 			[
 				'Test'
-			]
+			],
+			$res['query']
 		);
 	}
 
 	public function testLookup_txt_property() {
-
 		$row = new \stdClass;
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -210,15 +204,15 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -227,11 +221,11 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$idTable->expects( $this->any() )
 			->method( 'isFixedPropertyTable' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -239,23 +233,23 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getLabelField' )
-			->will( $this->returnValue( 'o_hash' ) );
+			->willReturn( 'o_hash' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PValueLookup(
 			$this->store
@@ -269,10 +263,10 @@ class PValueLookupTest extends \PHPUnit_Framework_TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
 			[
 				'Test'
-			]
+			],
+			$res['query']
 		);
 
 		$this->assertContains(

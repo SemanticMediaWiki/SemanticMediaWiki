@@ -8,18 +8,18 @@ use SMW\PropertyLabelFinder;
  * @covers \SMW\PropertyLabelFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -28,7 +28,7 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,7 +36,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -47,7 +46,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPreLoadedPropertyLabel() {
-
 		$languageIndependentPropertyLabels = [ '_Foo' => 'Bar' ];
 		$canonicalPropertyLabels = [];
 
@@ -69,7 +67,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterPropertyLabel() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -106,7 +103,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPreventKnownPropertyLabelToBeRegisteredAsCanonicalWithDifferentId() {
-
 		$languageIndependentPropertyLabels = [];
 
 		$canonicalPropertyLabels = [
@@ -132,7 +128,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSearchPropertyIdForNonRegisteredLabel() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -146,14 +141,13 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 			$instance->searchPropertyIdByLabel( 'Bar' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->findPropertyLabelById( '_Foo' )
 		);
 	}
 
 	public function testFindPropertyLabelByLanguageCode() {
-
 		$languageIndependentPropertyLabels = [];
 		$canonicalPropertyLabels = [];
 
@@ -175,7 +169,6 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPropertyListFromLabelByLanguageCode() {
-
 		$instance = new PropertyLabelFinder(
 			$this->store
 		);
@@ -187,11 +180,10 @@ class PropertyLabelFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindPreferredPropertyLabelByLanguageCode() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getPreferredPropertyLabelByLanguageCode' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( 'ABC' ) );
+			->with( 'Foo' )
+			->willReturn( 'ABC' );
 
 		$instance = new PropertyLabelFinder(
 			$this->store

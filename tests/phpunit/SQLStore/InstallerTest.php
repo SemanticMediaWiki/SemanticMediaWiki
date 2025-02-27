@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\SQLStore\Installer;
 use SMW\Tests\TestEnvironment;
 
@@ -10,12 +11,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\Installer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class InstallerTest extends \PHPUnit_Framework_TestCase {
+class InstallerTest extends \PHPUnit\Framework\TestCase {
 
 	private $spyMessageReporter;
 	private $testEnvironment;
@@ -24,10 +25,11 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	private $tableBuildExaminer;
 	private $versionExaminer;
 	private $tableOptimizer;
+	private JobQueue $jobQueue;
 	private $hookDispatcher;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
@@ -68,7 +70,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
@@ -84,18 +85,17 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstall() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->versionExaminer->expects( $this->atLeastOnce() )
 			->method( 'meetsVersionMinRequirement' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
-			->will( $this->returnValue( [ $table ] ) );
+			->willReturn( [ $table ] );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -126,10 +126,9 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstall_FailsMinimumRequirement() {
-
 		$this->versionExaminer->expects( $this->once() )
 			->method( 'meetsVersionMinRequirement' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Installer(
 			$this->tableSchemaManager,
@@ -147,7 +146,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstallWithSupplementJobs() {
-
 		$this->jobQueue->expects( $this->exactly( 2 ) )
 			->method( 'push' );
 
@@ -157,11 +155,11 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->versionExaminer->expects( $this->atLeastOnce() )
 			->method( 'meetsVersionMinRequirement' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
-			->will( $this->returnValue( [ $table ] ) );
+			->willReturn( [ $table ] );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -196,18 +194,17 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInstallNonVerbose() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->versionExaminer->expects( $this->atLeastOnce() )
 			->method( 'meetsVersionMinRequirement' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->tableSchemaManager->expects( $this->atLeastOnce() )
 			->method( 'getTables' )
-			->will( $this->returnValue( [ $table ] ) );
+			->willReturn( [ $table ] );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -232,14 +229,13 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUninstall() {
-
 		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->tableSchemaManager->expects( $this->once() )
 			->method( 'getTables' )
-			->will( $this->returnValue( [ $table ] ) );
+			->willReturn( [ $table ] );
 
 		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
 			->disableOriginalConstructor()
@@ -267,7 +263,6 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReportMessage() {
-
 		$instance = new Installer(
 			$this->tableSchemaManager,
 			$this->tableBuilder,
@@ -276,7 +271,7 @@ class InstallerTest extends \PHPUnit_Framework_TestCase {
 			$this->tableOptimizer
 		);
 
-		$callback = function() use( $instance ) {
+		$callback = static function () use( $instance ) {
 			$instance->reportMessage( 'Foo' );
 		};
 

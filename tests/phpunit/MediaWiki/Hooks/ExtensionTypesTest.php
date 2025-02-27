@@ -8,15 +8,14 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
  * @covers \SMW\MediaWiki\Hooks\ExtensionTypes
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
+class ExtensionTypesTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExtensionTypes::class,
 			new ExtensionTypes()
@@ -24,7 +23,6 @@ class ExtensionTypesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$extensionTypes = [];
 
 		$instance = new ExtensionTypes();

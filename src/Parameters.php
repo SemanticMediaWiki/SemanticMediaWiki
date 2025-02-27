@@ -5,7 +5,7 @@ namespace SMW;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -41,7 +41,6 @@ class Parameters {
 	 * @param array $value
 	 */
 	public function merge( $key, array $value ) {
-
 		if ( !isset( $this->parameters[$key] ) ) {
 			$this->parameters[$key] = [];
 		}
@@ -54,7 +53,7 @@ class Parameters {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
 		return isset( $this->parameters[$key] ) || array_key_exists( $key, $this->parameters );
@@ -69,7 +68,6 @@ class Parameters {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->parameters[$key];
 		}

@@ -8,15 +8,14 @@ use SMW\Schema\Exception\SchemaTypeNotFoundException;
  * @covers \SMW\Schema\Exception\SchemaTypeNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaTypeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class SchemaTypeNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaTypeNotFoundException( 'foo' );
 
 		$this->assertInstanceof(
@@ -31,7 +30,6 @@ class SchemaTypeNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new SchemaTypeNotFoundException( 'foo' );
 
 		$this->assertEquals(

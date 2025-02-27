@@ -8,15 +8,14 @@ use SMW\Exception\DataItemException;
  * @covers \SMW\Exception\DataItemException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DataItemExceptionTest extends \PHPUnit_Framework_TestCase {
+class DataItemExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new DataItemException();
 
 		$this->assertInstanceof(

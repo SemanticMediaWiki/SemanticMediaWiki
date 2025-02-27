@@ -4,53 +4,48 @@ namespace SMW\Elastic;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
-use Psr\Log\LoggerInterface;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\FileRepoFinder;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
 use SMW\Elastic\Admin\IndicesInfoProvider;
 use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Admin\NodesInfoProvider;
-use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Admin\ReplicationInfoProvider;
+use SMW\Elastic\Admin\SettingsInfoProvider;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Connection\LockManager;
-use SMW\Elastic\Indexer\Indexer;
-use SMW\Elastic\Indexer\FileIndexer;
-use SMW\Elastic\Indexer\Rebuilder\Rollover;
-use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
-use SMW\Elastic\Indexer\Attachment\FileHandler;
+use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
-use SMW\Elastic\Indexer\IndicatorProvider;
+use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\Elastic\Indexer\Replication\ReplicationStatus;
-use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\Elastic\Indexer\FileIndexer;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\Elastic\Indexer\Rebuilder\Rollover;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
-use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\Elastic\Indexer\Replication\ReplicationStatus;
+use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
-use SMW\Elastic\QueryEngine\QueryEngine;
-use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
-use SMW\Elastic\QueryEngine\TermsLookup\TermsLookup;
-use SMW\Options;
-use SMW\SQLStore\PropertyTableRowMapper;
-use SMW\Store;
-use SMW\Elastic\Connection\ConnectionProvider;
-use SMW\Services\ServicesContainer;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
-use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
-use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\Elastic\QueryEngine\QueryEngine;
+use SMW\Elastic\QueryEngine\TermsLookup\CachingTermsLookup;
+use SMW\Elastic\QueryEngine\TermsLookup\TermsLookup;
+use SMW\Options;
+use SMW\Services\ServicesContainer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -77,7 +72,6 @@ class ElasticFactory {
 	 * @return Config
 	 */
 	public function newConfig() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$config = new Config(
@@ -92,6 +86,11 @@ class ElasticFactory {
 		$config->set(
 			Config::ELASTIC_ENDPOINTS,
 			$settings->get( 'smwgElasticsearchEndpoints' )
+		);
+
+		$config->set(
+			Config::ELASTIC_CREDENTIALS,
+			$settings->get( 'smwgElasticsearchCredentials' )
 		);
 
 		$config->loadFromJSON(
@@ -109,7 +108,6 @@ class ElasticFactory {
 	 * @return ConnectionProvider
 	 */
 	public function newConnectionProvider() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connectionProvider = new ConnectionProvider(
@@ -131,8 +129,7 @@ class ElasticFactory {
 	 *
 	 * @return DocumentCreator
 	 */
-	public function newDocumentCreator( Store $store ) : DocumentCreator {
-
+	public function newDocumentCreator( Store $store ): DocumentCreator {
 		$config = $store->getConnection( 'elastic' )->getConfig();
 
 		$documentCreator = new DocumentCreator( $store );
@@ -169,13 +166,12 @@ class ElasticFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 * @param MessageReporter|null $messageReporter
 	 *
 	 * @return Indexer
 	 */
-	public function newIndexer( Store $store = null, MessageReporter $messageReporter = null ) {
-
+	public function newIndexer( ?Store $store = null, ?MessageReporter $messageReporter = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -233,12 +229,12 @@ class ElasticFactory {
 	/**
 	 * @since 3.0
 	 *
+	 * @param Store $store
 	 * @param Indexer $indexer
 	 *
 	 * @return FileIndexer
 	 */
 	public function newFileIndexer( Store $store, Indexer $indexer ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$logger = $applicationFactory->getMediaWikiLogger( 'smw-elastic' );
@@ -297,12 +293,11 @@ class ElasticFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 *
 	 * @return DocumentReplicationExaminer
 	 */
-	public function newDocumentReplicationExaminer( Store $store = null ) {
-
+	public function newDocumentReplicationExaminer( ?Store $store = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -317,16 +312,14 @@ class ElasticFactory {
 		return $documentReplicationExaminer;
 	}
 
-
 	/**
 	 * @since 3.1
 	 *
-	 * @param Store $store
+	 * @param Store|null $store
 	 *
 	 * @return ReplicationCheck
 	 */
-	public function newReplicationCheck( Store $store = null ) {
-
+	public function newReplicationCheck( ?Store $store = null ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -357,7 +350,6 @@ class ElasticFactory {
 	 * @return QueryEngine
 	 */
 	public function newQueryEngine( Store $store ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$config = $store->getConnection( 'elastic' )->getConfig();
 
@@ -413,7 +405,6 @@ class ElasticFactory {
 	 * @return Rebuilder
 	 */
 	public function newRebuilder( Store $store ) {
-
 		$connection = $store->getConnection( 'elastic' );
 		$indexer = $this->newIndexer( $store );
 
@@ -437,7 +428,6 @@ class ElasticFactory {
 	 * @return UpdateEntityCollationComplete
 	 */
 	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
-
 		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
 			$store
 		);
@@ -457,7 +447,6 @@ class ElasticFactory {
 	 * @return ElasticClientTaskHandler
 	 */
 	public function newInfoTaskHandler( Store $store, $outputFormatter ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$replicationInfoProvider = new ReplicationInfoProvider(
@@ -575,7 +564,6 @@ class ElasticFactory {
 	 * @param Store $store
 	 */
 	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ) {
-
 		if ( !$store instanceof ElasticStore || $store->getConnection( 'elastic' ) instanceof DummyClient ) {
 			return true;
 		}
@@ -596,7 +584,6 @@ class ElasticFactory {
 	 * @param DispatchContext $dispatchContext
 	 */
 	public function onInvalidateEntityCache( $dispatchContext ) {
-
 		$store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$store instanceof ElasticStore ) {
@@ -633,7 +620,6 @@ class ElasticFactory {
 	 * @since 3.1
 	 */
 	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ) {
-
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {

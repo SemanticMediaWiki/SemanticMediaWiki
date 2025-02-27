@@ -8,15 +8,14 @@ use SMW\Exception\StoreNotFoundException;
  * @covers \SMW\Exception\StoreNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class StoreNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class StoreNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new StoreNotFoundException();
 
 		$this->assertInstanceof(

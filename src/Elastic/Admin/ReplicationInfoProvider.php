@@ -3,18 +3,17 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
-use WebRequest;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\Message;
 use SMW\Elastic\Indexer\FileIndexer;
-use SMW\Utils\HtmlColumns;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
+use SMW\Localizer\Message;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Utils\HtmlColumns;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -59,7 +58,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-replication-function-title' ),
 			[ 'action' => $this->getTask() ]
@@ -83,7 +81,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( 'smw-admin-supplementary-elastic-replication-header-title' )
 		);
@@ -97,7 +94,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$this->outputFormatter->addModules( 'ext.smw.purge' );
 
 		$html = Html::rawElement(
@@ -168,7 +164,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function buildFromFile( $title ) {
-
 		$response = '';
 
 		$key = $this->entityCache->makeCacheKey(
@@ -239,7 +234,6 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 	}
 
 	private function buildFromTitle( $title ) {
-
 		$response = $this->purge( $title );
 
 		return Html::rawElement(

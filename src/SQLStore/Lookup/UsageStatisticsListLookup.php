@@ -9,7 +9,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -78,7 +78,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache() {
 		return false;
@@ -87,7 +87,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -190,7 +190,6 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @return number
 	 */
 	public function getPropertyPageCount() {
-
 		$options = [];
 
 		// Only match entities that have a NOT null smw_proptable_hash entry
@@ -250,7 +249,6 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @return number
 	 */
 	public function getTotalPropertiesCount() {
-
 		$count = 0;
 
 		$conditions = [
@@ -277,7 +275,6 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @return number
 	 */
 	public function getTotalEntitiesCount() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -296,7 +293,6 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @return number
 	 */
 	public function getUsedPropertiesCount() {
-
 		$options = [];
 
 		$conditions = [
@@ -344,7 +340,6 @@ class UsageStatisticsListLookup implements ListLookup {
 	}
 
 	private function count( $type ) {
-
 		$res = $this->store->getConnection()->select(
 			$this->findPropertyTableByType( $type )->getName(),
 			'COUNT(s_id) AS count',

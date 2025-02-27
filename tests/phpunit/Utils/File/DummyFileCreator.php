@@ -5,7 +5,7 @@ namespace SMW\Tests\Utils\File;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class DummyFileCreator {
 	private $file = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $size = 100;
 
@@ -67,7 +67,6 @@ class DummyFileCreator {
 	}
 
 	private function createFile( $desiredDestName, $content = '' ) {
-
 		$filename = $this->getLocationForTemporaryFile( $desiredDestName );
 
 		$fh = fopen( $filename, 'w' );
@@ -88,7 +87,6 @@ class DummyFileCreator {
 	}
 
 	private function getFile( $path ) {
-
 		$path = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $path );
 
 		if ( is_readable( $path ) ) {

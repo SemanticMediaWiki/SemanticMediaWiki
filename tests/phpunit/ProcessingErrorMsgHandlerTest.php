@@ -5,18 +5,18 @@ namespace SMW\Tests;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
+class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,7 +24,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $testEnvironment;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,7 +34,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGrepPropertyFromRestrictionErrorMsg() {
-
 		$this->assertNull(
 			ProcessingErrorMsgHandler::grepPropertyFromRestrictionErrorMsg( 'Foo' )
 		);
@@ -56,20 +54,18 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider messagesProvider
 	 */
 	public function testNormalizeMessages( $messages, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages, null, 'en' )
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ProcessingErrorMsgHandler::getMessagesAsString( $messages, null, 'en' )
 		);
 	}
 
 	public function testPush() {
-
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -84,7 +80,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
-			->with( $this->equalTo( $this->dataItemFactory->newDIProperty( '_ERRC' ) ) );
+			->with( $this->dataItemFactory->newDIProperty( '_ERRC' ) );
 
 		$instance->addToSemanticData(
 			$semanticData,
@@ -93,7 +89,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorContainerFromMsg() {
-
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -118,18 +113,17 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorContainerFromMsg_TypedError() {
-
 		$processingError = $this->getMockBuilder( '\SMW\ProcessingError' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$processingError->expects( $this->atLeastOnce() )
 			->method( 'encode' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$processingError->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foobar' ) );
+			->willReturn( 'foobar' );
 
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
@@ -155,7 +149,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorContainerFromMsgWithoutProperty() {
-
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -174,7 +167,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorContainerFromDataValue() {
-
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -186,11 +178,11 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
@@ -211,7 +203,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorContainerFromDataValue_CategoryProperty() {
-
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -223,11 +214,11 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( '_INST' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( '_INST' ) );
 
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
@@ -248,7 +239,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetErrorContainerFromDataValue_TypedError() {
-
 		$instance = new ProcessingErrorMsgHandler(
 			DIWikiPage::newFromText( __METHOD__ )
 		);
@@ -260,15 +250,15 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [ '_123' => 'Foo' ] ) );
+			->willReturn( [ '_123' => 'Foo' ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getErrorsByType' )
-			->will( $this->returnValue( [ '_type_1' => [ '_123' ] ] ) );
+			->willReturn( [ '_type_1' => [ '_123' ] ] );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$container = $instance->newErrorContainerFromDataValue( $dataValue );
 
@@ -289,7 +279,6 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function messagesProvider() {
-
 		$provider[] = [
 			[],
 			[]
@@ -327,7 +316,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			[ 'Foo', [ '[2,"smw-title"]' ] ],
-			[ 'Foo' , 'Semantic MediaWiki' ]
+			[ 'Foo', 'Semantic MediaWiki' ]
 		];
 
 		return $provider;

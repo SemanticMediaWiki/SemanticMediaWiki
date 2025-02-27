@@ -4,34 +4,35 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -43,7 +44,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ClassDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +63,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoryProvider
 	 */
 	public function testClassConditionForCategories( $description, $orderByProperty, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -87,14 +86,13 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHierarchyPattern() {
-
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBC );
 
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
@@ -103,8 +101,8 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$hierarchyLookup->expects( $this->once() )
 			->method( 'hasSubcategory' )
-			->with( $this->equalTo( $category ) )
-			->will( $this->returnValue( true ) );
+			->with( $category )
+			->willReturn( true );
 
 		$resultVariable = 'result';
 
@@ -132,7 +130,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function categoryProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
@@ -157,8 +154,8 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription( $category );
@@ -180,14 +177,14 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$categoryFoo = new DIWikiPage( 'Foo', NS_CATEGORY );
 
-		$categoryFooName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryFoo )
+		$categoryFooName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryFoo )
 		);
 
 		$categoryBar = new DIWikiPage( 'Bar', NS_CATEGORY );
 
-		$categoryBarName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
+		$categoryBarName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
 		);
 
 		$description = new ClassDescription( [

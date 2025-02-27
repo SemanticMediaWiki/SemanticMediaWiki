@@ -11,15 +11,14 @@ use SMWExpData as ExpData;
  *
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpDataTest extends \PHPUnit_Framework_TestCase {
+class ExpDataTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructor() {
-
 		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -34,7 +33,6 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider expDataHashProvider
 	 */
 	public function testGetHash( $expData, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			$expData->getHash()
@@ -42,8 +40,7 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function expDataHashProvider() {
-
-		#0
+		# 0
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -53,7 +50,7 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 			'4dc04c87e9660854a5609ff132175fd5'
 		];
 
-		#1
+		# 1
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -68,7 +65,7 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 			'5702e5e8c6145aaf8d89840a4a3b18c2'
 		];
 
-		#2
+		# 2
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -88,7 +85,7 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 			'13edcedd007979f5638fbc958f0cdaf8'
 		];
 
-		#3 Same as 2 but different sorting/same hash
+		# 3 Same as 2 but different sorting/same hash
 		$expData = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);
@@ -108,7 +105,7 @@ class ExpDataTest extends \PHPUnit_Framework_TestCase {
 			'13edcedd007979f5638fbc958f0cdaf8'
 		];
 
-		#4 Nesting
+		# 4 Nesting
 		$expDataLevel2 = new ExpData(
 			new ExpNsResource( 'Foo', 'Bar', 'Mo', null )
 		);

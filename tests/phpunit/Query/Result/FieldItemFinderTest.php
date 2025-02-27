@@ -11,12 +11,12 @@ use SMW\Query\Result\FieldItemFinder;
  * @covers SMW\Query\Result\FieldItemFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
+class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
@@ -24,7 +24,7 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	private $itemFetcher;
 	private $printRequest;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -43,7 +43,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldItemFinder::class,
 			new FieldItemFinder( $this->store, $this->itemFetcher, $this->printRequest )
@@ -51,10 +50,9 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetRequestOptions() {
-
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -69,13 +67,12 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_THIS() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_THIS ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_THIS )
+			->willReturn( true );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -90,21 +87,20 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_CATS() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
-			->will( $this->returnValue( [ $expected ] ) );
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( '_INST' ) )
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 1 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_CATS ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_CATS )
+			->willReturn( true );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -119,25 +115,24 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_CCAT() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with(
-				$this->equalTo( $dataItem ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_INST' ) ) )
-			->will( $this->returnValue( [ $expected ] ) );
+				$dataItem,
+				$this->dataItemFactory->newDIProperty( '_INST' ) )
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 2 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_CCAT ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_CCAT )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $expected ) );
+			->willReturn( $expected );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -152,34 +147,33 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFor_PROP() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
+			->willReturn( $this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -194,35 +188,34 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindForWithIteratorAsValueResultOnPRINT_PROP() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIWikiPage( __METHOD__ );
 
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '' ) );
+			->willReturn( '' );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue(
-				$this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) ) );
+			->willReturn(
+				$this->dataValueFactory->newPropertyValueByLabel( 'Prop' ) );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -237,7 +230,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindForWithBlobValueResultAndRemovedLink() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$expected = $this->dataItemFactory->newDIBlob( 'bar' );
 
@@ -246,27 +238,27 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $propertyValue ) );
+			->willReturn( $propertyValue );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -281,7 +273,6 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindForWithBlobValueResultAndRetainedLink() {
-
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar' );
 		$text = $this->dataItemFactory->newDIBlob( '[[Foo::bar]]' );
 		$expected = $this->dataItemFactory->newDIBlob( '[[Foo::bar]]' );
@@ -291,31 +282,31 @@ class FieldItemFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->itemFetcher->expects( $this->once() )
 			->method( 'fetch' )
 			->with(
-				$this->equalTo( [ $dataItem ] ),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( 'Prop' ) ),
+				[ $dataItem ],
+				$this->dataItemFactory->newDIProperty( 'Prop' ),
 				$this->anything() )
-			->will( $this->returnValue( [ $text ] ) );
+			->willReturn( [ $text ] );
 
 		$this->printRequest->expects( $this->at( 3 ) )
 			->method( 'isMode' )
-			->with($this->equalTo( PrintRequest::PRINT_PROP ) )
-			->will( $this->returnValue( true ) );
+			->with( PrintRequest::PRINT_PROP )
+			->willReturn( true );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getOutputFormat' )
-			->will( $this->returnValue( '-raw' ) );
+			->willReturn( '-raw' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
-			->will( $this->returnValue( '_txt' ) );
+			->willReturn( '_txt' );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( $propertyValue ) );
+			->willReturn( $propertyValue );
 
 		$instance = new FieldItemFinder(
 			$this->store,

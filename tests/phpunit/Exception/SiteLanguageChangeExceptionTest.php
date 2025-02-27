@@ -8,15 +8,14 @@ use SMW\Exception\SiteLanguageChangeException;
  * @covers \SMW\Exception\SiteLanguageChangeException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SiteLanguageChangeExceptionTest extends \PHPUnit_Framework_TestCase {
+class SiteLanguageChangeExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SiteLanguageChangeException( 'Foo', 'Bar' );
 
 		$this->assertInstanceof(

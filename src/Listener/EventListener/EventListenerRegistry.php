@@ -2,16 +2,17 @@
 
 namespace SMW\Listener\EventListener;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventListenerCollection;
-use SMW\Query\QueryComparator;
-use SMWExporter as Exporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
+use SMW\Query\QueryComparator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMWExporter as Exporter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -43,7 +44,6 @@ class EventListenerRegistry implements EventListenerCollection {
 	 * @since 2.2
 	 */
 	public function getCollection() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$logger = $applicationFactory->getMediaWikiLogger();
 
@@ -88,23 +88,24 @@ class EventListenerRegistry implements EventListenerCollection {
 
 		$this->addListenersToCollection();
 
-		\Hooks::run( 'SMW::Event::RegisterEventListeners', [ $this->eventListenerCollection ] );
+		MediaWikiServices::getInstance()
+			->getHookContainer()
+			->run( 'SMW::Event::RegisterEventListeners', [ $this->eventListenerCollection ] );
 
 		return $this->eventListenerCollection->getCollection();
 	}
 
 	private function addListenersToCollection() {
-
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
 		$this->eventListenerCollection->registerCallback(
-			'exporter.reset', function() {
+			'exporter.reset', static function () {
 				Exporter::getInstance()->clear();
 			}
 		);
 
 		$this->eventListenerCollection->registerCallback(
-			'query.comparator.reset', function() {
+			'query.comparator.reset', static function () {
 				QueryComparator::getInstance()->clear();
 			}
 		);

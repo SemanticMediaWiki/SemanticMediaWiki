@@ -8,7 +8,7 @@ use SMW\Exporter\Element\ExpElement;
 use SMWExpData as ExpData;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class ExpDataSerializer implements Serializer {
 	 * @since 2.2
 	 */
 	public function serialize( $expData ) {
-
 		if ( !$expData instanceof ExpData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
@@ -30,7 +29,6 @@ class ExpDataSerializer implements Serializer {
 	}
 
 	private function doSerialize( $expData ) {
-
 		$serialization = [
 			'subject' => $expData->getSubject()->getSerialization()
 		];
@@ -48,7 +46,6 @@ class ExpDataSerializer implements Serializer {
 	}
 
 	private function doSerializeChildren( array $elements ) {
-
 		$children = [];
 
 		if ( $elements === [] ) {

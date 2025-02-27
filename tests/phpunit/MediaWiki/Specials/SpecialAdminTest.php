@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialAdmin;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use Title;
 
@@ -12,18 +12,18 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialAdmin
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
+class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -35,13 +35,12 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Specials\SpecialAdmin',
 			new SpecialAdmin()
@@ -49,7 +48,6 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteWithValidUser() {
-
 		$user = new MockSuperUser();
 		$this->testEnvironment->overrideUserPermissions( $user, [ 'smw-admin' ] );
 
@@ -79,7 +77,6 @@ class SpecialAdminTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExecuteWithInvalidPermissionThrowsException() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();

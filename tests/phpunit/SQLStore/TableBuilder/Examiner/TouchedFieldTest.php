@@ -3,26 +3,26 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\TouchedField
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
+class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -32,7 +32,6 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TouchedField::class,
 			new TouchedField( $this->store )
@@ -40,25 +39,24 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck() {
-
 		$row = [
 			'count' => 42
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'update' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new TouchedField(
 			$this->store
@@ -72,6 +70,5 @@ class TouchedFieldTest extends \PHPUnit_Framework_TestCase {
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 	}
-
 
 }

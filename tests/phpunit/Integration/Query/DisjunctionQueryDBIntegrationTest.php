@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -20,21 +20,22 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-integration
  * @group semantic-mediawiki-query
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
+class DisjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -45,11 +46,10 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 
-	//	$this->getStore()->getSparqlDatabase()->deleteAll();
+	// $this->getStore()->getSparqlDatabase()->deleteAll();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -61,7 +61,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * {{#ask: [[Category:WickedPlaces]] OR [[LocatedIn.MemberOf::Wonderland]] }}
 	 */
 	public function testDisjunctionSubqueryForPageTypePropertyChainThatComparesEqualToValue() {
-
 		/**
 		 * Page ...-dangerland annotated with [[Category:WickedPlaces]]
 		 */
@@ -166,7 +165,6 @@ class DisjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubqueryDisjunction() {
-
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 

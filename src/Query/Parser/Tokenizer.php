@@ -3,7 +3,7 @@
 namespace SMW\Query\Parser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -21,7 +21,6 @@ class Tokenizer {
 	 * @param array $prefixes
 	 */
 	public function setDefaultPattern( array $prefixes ) {
-
 		$pattern = '';
 
 		foreach ( $prefixes as $pref ) {
@@ -48,15 +47,14 @@ class Tokenizer {
 	 * $consume specifies whether the returned chunk should be removed from the
 	 * query string.
 	 *
-	 * @param string $currentString
+	 * @param string &$currentString
 	 * @param string $stoppattern
-	 * @param boolean $consume
-	 * @param boolean $trim
+	 * @param bool $consume
+	 * @param bool $trim
 	 *
 	 * @return string
 	 */
 	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ) {
-
 		if ( $stoppattern === '' ) {
 			$stoppattern = $this->defaultPattern;
 		}

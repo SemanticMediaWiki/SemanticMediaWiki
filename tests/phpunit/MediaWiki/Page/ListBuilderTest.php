@@ -2,25 +2,25 @@
 
 namespace SMW\Tests\MediaWiki\Page;
 
-use SMW\MediaWiki\Page\ListBuilder;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Page\ListBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ListBuilderTest extends \PHPUnit_Framework_TestCase {
+class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $sortLetter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
@@ -33,12 +33,11 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->with( $this->equalTo( 'SortLetter' ) )
-			->will( $this->returnValue( $this->sortLetter ) );
+			->with( 'SortLetter' )
+			->willReturn( $this->sortLetter );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ListBuilder::class,
 			new ListBuilder( $this->store )
@@ -46,10 +45,9 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetList() {
-
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new ListBuilder(
 			$this->store
@@ -62,7 +60,6 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetList_Sorted() {
-
 		$list = [
 			DIWikiPage::newFromText( 'Foo' ),
 			DIWikiPage::newFromText( 'ABC' )
@@ -70,11 +67,11 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->sortLetter->expects( $this->at( 0 ) )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$this->sortLetter->expects( $this->at( 1 ) )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'A' ) );
+			->willReturn( 'A' );
 
 		$instance = new ListBuilder(
 			$this->store
@@ -87,10 +84,9 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetColumnList() {
-
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new ListBuilder(
 			$this->store
@@ -111,16 +107,15 @@ class ListBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetColumnList_ItemFormatter() {
-
 		$this->sortLetter->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new ListBuilder(
 			$this->store
 		);
 
-		$instance->setItemFormatter( function( $dataValue, $linker ) {
+		$instance->setItemFormatter( static function ( $dataValue, $linker ) {
 			return 'Bar';
 		} );
 

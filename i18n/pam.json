@@ -1,7 +1,10 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Katimawan2005"
+		]
 	},
+	"smw-categories": "Kategoriya",
 	"smw-livepreview-loading": "Máglulan…",
 	"smw-listingcontinuesabbrev": "katuglung.",
 	"smw-showingresults": "Ing/ding {{PLURAL:$1|'''1''' a resulta|'''$1''' resulta}} manibatan king #'''$2'''."

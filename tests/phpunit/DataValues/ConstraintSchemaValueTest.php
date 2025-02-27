@@ -3,23 +3,22 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
-use SMW\DataValueFactory;
 use SMW\DataValues\ConstraintSchemaValue;
-use SMW\PropertySpecificationLookup;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ConstraintSchemaValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,25 +26,24 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( PropertySpecificationLookup::class )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintSchemaValue::class,
 			new ConstraintSchemaValue( ConstraintSchemaValue::TYPE_ID, $this->propertySpecificationLookup )
@@ -53,10 +51,9 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoSchema() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,
@@ -76,7 +73,6 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSchemaType_PropertyNamespace() {
-
 		$data = json_encode(
 			[
 				'type' => 'CLASS_CONSTRAINT_SCHEMA'
@@ -87,8 +83,8 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSpecification' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $data ) ] ) );
+				$this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) )
+			->willReturn( [ $this->dataItemFactory->newDIBlob( $data ) ] );
 
 		$instance = new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,
@@ -103,12 +99,11 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'[2,"smw-constraint-schema-property-invalid-type","Foo","PROPERTY_CONSTRAINT_SCHEMA"]',
-			implode(',', $instance->getErrors() )
+			implode( ',', $instance->getErrors() )
 		);
 	}
 
 	public function testInvalidSchemaType_CategoryNamespace() {
-
 		$data = json_encode(
 			[
 				'type' => 'PROPERTY_CONSTRAINT_SCHEMA'
@@ -119,8 +114,8 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getSpecification' )
 			->with(
 				$this->anything(),
-				$this->equalTo( $this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIBlob( $data ) ] ) );
+				$this->dataItemFactory->newDIProperty( '_SCHEMA_DEF' ) )
+			->willReturn( [ $this->dataItemFactory->newDIBlob( $data ) ] );
 
 		$instance = new ConstraintSchemaValue(
 			ConstraintSchemaValue::TYPE_ID,
@@ -135,7 +130,7 @@ class ConstraintSchemaValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertContains(
 			'[2,"smw-constraint-schema-category-invalid-type","Foo","CLASS_CONSTRAINT_SCHEMA"]',
-			implode(',', $instance->getErrors() )
+			implode( ',', $instance->getErrors() )
 		);
 	}
 

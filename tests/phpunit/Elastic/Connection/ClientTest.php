@@ -2,28 +2,27 @@
 
 namespace SMW\Tests\Elastic\Connection;
 
-use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\Client
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ClientTest extends \PHPUnit_Framework_TestCase {
+class ClientTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $elasticClient;
 	private $lockManager;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		if ( !class_exists( '\Elasticsearch\Client' ) ) {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
@@ -38,7 +37,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Client::class,
 			new Client( $this->elasticClient, $this->lockManager )
@@ -46,7 +44,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMaintenanceLock() {
-
 		$this->lockManager->expects( $this->once() )
 			->method( 'hasMaintenanceLock' );
 
@@ -59,7 +56,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetMaintenanceLock() {
-
 		$this->lockManager->expects( $this->once() )
 			->method( 'setMaintenanceLock' );
 
@@ -72,8 +68,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBulkOnIllegalArgumentErrorThrowsReplicationException() {
-
-		$options = new Config (
+		$options = new Config(
 			[
 				'replication' => [
 					'throw.exception.on.illegal.argument.error' => true
@@ -85,7 +80,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'bulk' )
-			->will( $this->returnValue( json_decode( $response, true ) ) );
+			->willReturn( json_decode( $response, true ) );
 
 		$instance = new Client(
 			$this->elasticClient,

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Template;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -11,14 +11,14 @@ namespace SMW\MediaWiki\Template;
 class TemplateSet {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $templates = [];
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param string $name
+	 * @param array $templates
 	 */
 	public function __construct( array $templates = [] ) {
 		$this->templates = $templates;
@@ -39,7 +39,6 @@ class TemplateSet {
 	 * @return string
 	 */
 	public function text() {
-
 		$text = '';
 
 		foreach ( $this->templates as $template ) {

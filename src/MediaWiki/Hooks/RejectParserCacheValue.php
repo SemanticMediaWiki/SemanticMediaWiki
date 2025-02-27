@@ -2,19 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\DependencyValidator;
-use SMW\NamespaceExaminer;
-use SMW\DIWikiPage;
-use SMW\EntityCache;
-use Title;
 use Page;
-use SMW\MediaWiki\HookListener;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DependencyValidator;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\HookListener;
+use SMW\NamespaceExaminer;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -47,12 +45,11 @@ class RejectParserCacheValue implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Title $title
+	 * @param Page $page
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( Page $page ) {
-
 		$title = $page->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {

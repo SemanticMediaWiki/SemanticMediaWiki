@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use ParserOutput;
+use NamespaceInfo as MwNamespaceInfo;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,50 +10,51 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\NamespaceInfo
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class NamespaceInfoTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
-	public function testCanConstruct() {
+	private MwNamespaceInfo $mwNamespaceInfo;
+	private NamespaceInfo $namespaceInfo;
 
-		$this->assertInstanceOf(
-			NamespaceInfo::class,
-			new NamespaceInfo()
-		);
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->mwNamespaceInfo = $this->createMock( MwNamespaceInfo::class );
+		$this->namespaceInfo = new NamespaceInfo( $this->mwNamespaceInfo );
 	}
 
 	public function testGetCanonicalName() {
+		$this->mwNamespaceInfo->expects( $this->any() )
+			->method( 'getCanonicalName' )
+			->with( NS_MAIN )
+			->willReturn( '' );
 
-		$instance = new NamespaceInfo();
-
-		$this->assertInternalType(
-			'string',
-			$instance->getCanonicalName( NS_MAIN )
-		);
+		$this->assertSame( '', $this->namespaceInfo->getCanonicalName( NS_MAIN ) );
 	}
 
 	public function testGetValidNamespaces() {
+		$this->mwNamespaceInfo->expects( $this->any() )
+			->method( 'getValidNamespaces' )
+			->willReturn( [ NS_MAIN ] );
 
-		$instance = new NamespaceInfo();
-
-		$this->assertInternalType(
-			'array',
-			$instance->getValidNamespaces()
-		);
+		$this->assertSame( [ NS_MAIN ], $this->namespaceInfo->getValidNamespaces() );
 	}
 
 	public function testGetSubject() {
+		$this->mwNamespaceInfo->expects( $this->any() )
+			->method( 'getSubject' )
+			->with( NS_TALK )
+			->willReturn( NS_MAIN );
 
-		$instance = new NamespaceInfo();
-
-		$this->assertInternalType(
-			'integer',
-			$instance->getSubject( NS_MAIN )
+		$this->assertSame(
+			NS_MAIN,
+			$this->mwNamespaceInfo->getSubject( NS_TALK )
 		);
 	}
 

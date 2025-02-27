@@ -2,20 +2,19 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIProperty;
-use SMW\Message;
-use SMW\Parser\InTextAnnotationParser;
-use SMW\PropertySpecificationLookup;
 use SMW\DataTypeRegistry;
-use SMWDataValue as DataValue;
+use SMW\DIProperty;
+use SMW\Localizer\Message;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\Property\SpecificationLookup;
 use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
 use SMWWikiPageValue as WikiPageValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -28,7 +27,7 @@ class InfoLinksProvider {
 	private $dataValue;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -40,34 +39,34 @@ class InfoLinksProvider {
 	/**
 	 * Used to control the addition of the standard search link.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasSearchLink;
 
 	/**
 	 * Used to control service link creation.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasServiceLinks;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabledServiceLinks = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $compactLink = false;
 
 	/**
-	 * @var boolean|array
+	 * @var bool|array
 	 */
 	private $serviceLinkParameters = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $disabledLinksByKey = [ '_ERRT' ];
 
@@ -75,9 +74,9 @@ class InfoLinksProvider {
 	 * @since 2.4
 	 *
 	 * @param DataValue $dataValue
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( DataValue $dataValue, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( DataValue $dataValue, SpecificationLookup $propertySpecificationLookup ) {
 		$this->dataValue = $dataValue;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -104,7 +103,7 @@ class InfoLinksProvider {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $compactLink
+	 * @param bool $compactLink
 	 */
 	public function setCompactLink( $compactLink ) {
 		$this->compactLink = (bool)$compactLink;
@@ -115,7 +114,7 @@ class InfoLinksProvider {
 	 *
 	 * @since 2.4
 	 *
-	 * @param Infolink $link
+	 * @param Infolink $infoLink
 	 */
 	public function addInfolink( Infolink $infoLink ) {
 		$this->infoLinks[] = $infoLink;
@@ -139,7 +138,6 @@ class InfoLinksProvider {
 	 * @since 2.4
 	 */
 	public function createInfoLinks() {
-
 		if ( $this->infoLinks !== [] ) {
 			return $this->infoLinks;
 		}
@@ -171,7 +169,6 @@ class InfoLinksProvider {
 			$value = str_replace( ':', '-3A', $value );
 		}
 
-
 		if ( DataTypeRegistry::getInstance()->isRecordType( $this->dataValue->getTypeID() ) ) {
 			$infoLink = Infolink::newPropertySearchLink( '+', $property->getLabel(), $value );
 			$infoLink->setCompactLink( $this->compactLink );
@@ -198,13 +195,12 @@ class InfoLinksProvider {
 	 * Return text serialisation of info links. Ensures more uniform layout
 	 * throughout wiki (Factbox, Property pages, ...).
 	 *
-	 * @param integer $outputformat Element of the SMW_OUTPUT_ enum
+	 * @param int $outputformat Element of the SMW_OUTPUT_ enum
 	 * @param Linker|null $linker
 	 *
 	 * @return string
 	 */
 	public function getInfolinkText( $outputformat, $linker = null ) {
-
 		$result = '';
 		$first = true;
 		$extralinks = [];
@@ -244,7 +240,6 @@ class InfoLinksProvider {
 	 * particular datatype in mind.
 	 */
 	public function addServiceLinks() {
-
 		if ( $this->hasServiceLinks ) {
 			return;
 		}
@@ -282,7 +277,6 @@ class InfoLinksProvider {
 	}
 
 	private function makeLink( $dataItem, $args ) {
-
 		if ( !( $dataItem instanceof DIBlob ) ) {
 			return;
 		}

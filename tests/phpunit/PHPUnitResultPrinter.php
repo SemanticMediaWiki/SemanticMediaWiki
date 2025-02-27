@@ -2,22 +2,22 @@
 
 namespace SMW\Tests;
 
-use PHPUnit_TextUI_ResultPrinter;
-use PHPUnit_Framework_TestSuite;
+use MediaWikiPHPUnitResultPrinter;
+use PHPUnit\Framework\TestSuite;
 
-class PHPUnitResultPrinter extends PHPUnit_TextUI_ResultPrinter {
+class PHPUnitResultPrinter extends MediaWikiPHPUnitResultPrinter {
 
 	/**
-	 * @see PHPUnit_TextUI_ResultPrinter::endTestSuite
+	 * @see TestSuite::endTestSuite
 	 */
-	public function endTestSuite( PHPUnit_Framework_TestSuite $suite ): void {
+	public function endTestSuite( TestSuite $suite ): void {
 		parent::endTestSuite( $suite );
 
-		if ( !isset( $suite->_slowTestsReport ) ) {
+		$slowTestsReport = ExecutionTimeTestListener::getSlowTestsReport( $suite );
+		if ( $slowTestsReport === null ) {
 			return;
 		}
 
-		$slowTestsReport = $suite->_slowTestsReport;
 		$i = 0;
 
 		$this->write( "\n\n" );
@@ -37,11 +37,10 @@ class PHPUnitResultPrinter extends PHPUnit_TextUI_ResultPrinter {
 			}
 
 			$i++;
-			$this->write( sprintf("\n%-73s%ss", "- $label", $time ) );
+			$this->write( sprintf( "\n%-73s%ss", "- $label", $time ) );
 		}
 
 		$this->write( "\n\n" );
 		$this->write( sprintf( "%'-80s", '' ) );
 	}
-
 }

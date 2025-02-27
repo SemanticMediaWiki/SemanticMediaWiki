@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DataItemFactory;
 use SMW\Exporter\ExporterFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exporter\ExporterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
+class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ExporterFactory::class,
 			new ExporterFactory()
@@ -28,7 +26,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetExporter() {
-
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
@@ -38,7 +35,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructExportController() {
-
 		$serializer = $this->getMockBuilder( '\SMW\Exporter\Serializer\Serializer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -55,7 +51,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider serializerByTypeProvider
 	 */
 	public function testCanConstructSerializerByType( $type ) {
-
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
@@ -65,7 +60,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerializerByInvalidType_ThrowsException() {
-
 		$instance = new ExporterFactory();
 
 		$this->expectException( '\InvalidArgumentException' );
@@ -73,7 +67,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRDFXMLSerializer() {
-
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
@@ -83,7 +76,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructTurtleSerializer() {
-
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
@@ -93,7 +85,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructExpDataFactory() {
-
 		$exporter = $this->getMockBuilder( '\SMWExporter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -107,12 +98,11 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( ExporterFactory::class );
 
 		// Match all "testCanConstruct" to define the expected set of methods
-		$testMethods = preg_grep('/^testCanConstruct/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testCanConstruct/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testCanConstruct', 'new', $testMethods )
@@ -129,7 +119,6 @@ class ExporterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function serializerByTypeProvider() {
-
 		yield [
 			'turtle'
 		];

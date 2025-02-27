@@ -5,10 +5,10 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\SQLStore\SQLStore;
 
-Hooks::register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( SQLStore $store, $oldTitle, $newTitle, $pageId, $redirectId ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function( SQLStore $store, $oldTitle, $newTitle, $pageId, $redirectId ) {
 
 	return true;
 } );

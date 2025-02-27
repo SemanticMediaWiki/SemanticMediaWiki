@@ -8,15 +8,14 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  * @covers \SMW\Exception\ConfigPreloadFileNotReadableException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ConfigPreloadFileNotReadableExceptionTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloadFileNotReadableExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ConfigPreloadFileNotReadableException( 'Foo' );
 
 		$this->assertInstanceof(

@@ -3,7 +3,6 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter;
@@ -12,10 +11,11 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpr
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
+use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -50,7 +50,6 @@ class DescriptionInterpreterFactory {
 	 * @return DispatchingDescriptionInterpreter
 	 */
 	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ) {
-
 		$pplicationFactory = ApplicationFactory::getInstance();
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 

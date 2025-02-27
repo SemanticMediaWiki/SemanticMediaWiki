@@ -2,25 +2,24 @@
 
 namespace SMW\Tests\Structure;
 
-use SMW\Services\ServicesFactory;
-use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMW\SQLStore\SQLStore;
 use ReflectionClass;
+use SMW\Services\ServicesFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit_Framework_TestCase {
+class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	const FILENAME = 'db-primary-keys.php';
 
 	public function testCheckTableList() {
-
 		$store = ServicesFactory::getInstance()->getStore( SQLStore::class );
 		$file = $GLOBALS['smwgDir'] . '/data/config/' . self::FILENAME;
 
@@ -34,7 +33,7 @@ class ConfigPreloadTableListPrimaryKeysCompleteTest extends \PHPUnit_Framework_T
 		$tableKeys = $reflectionClass->getConstant( 'PRIMARY_KEYS' );
 
 		$unlistedTables = [];
-		$connection = $store->getConnection( DB_MASTER );
+		$connection = $store->getConnection( DB_PRIMARY );
 
 		$tableSchemaManager = new TableSchemaManager(
 			$store

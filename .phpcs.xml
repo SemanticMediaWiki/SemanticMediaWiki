@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<ruleset>
+	<rule ref="./vendor/mediawiki/mediawiki-codesniffer/MediaWiki">
+		<exclude name="Generic.Files.LineLength.TooLong" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPrivate" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamTag" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturn" />
+		<exclude name="MediaWiki.NamingConventions.LowerCamelFunctionsName.FunctionName" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.NoParamType" />
+		<exclude name="MediaWiki.Files.ClassMatchesFilename.NotMatch" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPublic" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationProtected" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingDocumentationPrivate" />
+		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition" /> 
+		<exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
+		<exclude name="Generic.CodeAnalysis.AssignmentInCondition.Found" />
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationPrivate" />
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationProtected" />
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingDocumentationPublic" />
+		<exclude name="MediaWiki.PHPUnit.AssertEmpty.AssertEmptyUsed" />
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.WrongStyle" />
+		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
+		<exclude name="MediaWiki.Commenting.LicenseComment.InvalidLicenseTag" />
+		<exclude name="MediaWiki.PHPUnit.DeprecatedPHPUnitMethods.AssertInternalTypeGeneric" />
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
+		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers" />
+		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
+		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
+		<exclude name="MediaWiki.PHPUnit.SetMethods.SetMethods" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
+		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
+		<exclude name="MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix" />
+		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTest" />
+		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotClass" />
+		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.is_resource" />
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.proc_open" />
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec" />
+		<exclude name="MediaWiki.Files.ClassMatchesFilename.WrongCase" />
+		<exclude name="MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.ExtraParamComment" />
+		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged" />
+		<exclude name="MediaWiki.Usage.DeprecatedGlobalVariables.Deprecated$wgTitle" />
+		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVarType" />
+		<exclude name="MediaWiki.Commenting.VariadicArgument.SuperfluousVariadicArgComment" />
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.assert" />
+		<exclude name="Squiz.Scope.MethodScope.Missing" />
+		<exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
+		<exclude name="PSR2.Methods.MethodDeclaration.Underscore" />
+		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
+		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
+		<exclude name="MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix" />
+		<exclude name="MediaWiki.Commenting.LicenseComment.LicenseTagNonFileComment" />
+		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
+	</rule>
+	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
+		<properties>
+			<property name="allowedPrefixes" type="array" value="eg,wg" />
+		</properties>
+	</rule>
+	<rule ref="MediaWiki.Commenting.FunctionComment.ObjectTypeHintReturn">
+		<severity>0</severity>
+	</rule>
+	<file>.</file>
+	<exclude-pattern>/(vendor|conf)/</exclude-pattern>
+	<exclude-pattern type="relative">extensions/*</exclude-pattern>
+	<arg name="extensions" value="php"/>
+	<arg name="encoding" value="UTF-8"/>
+</ruleset>

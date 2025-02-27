@@ -2,14 +2,13 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Exception\ExtendedPermissionsError;
+use PermissionsError;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
-use SMW\Message;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
 use SpecialPage;
 
@@ -21,7 +20,7 @@ use SpecialPage;
  * Access to the special page and its function is limited to users with the
  * `smw-admin` right.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -47,10 +46,8 @@ class SpecialAdmin extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		if ( !$this->userCanExecute( $this->getUser() ) ) {
-			// $this->mRestriction is private MW 1.23-
-			throw new ExtendedPermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
+			throw new PermissionsError( 'smw-admin', [ 'smw-admin-permission-missing' ] );
 		}
 
 		// https://phabricator.wikimedia.org/T109652#1562641
@@ -65,7 +62,11 @@ class SpecialAdmin extends SpecialPage {
 		$output->setPageTitle( $this->msg_text( 'smw-title' ) );
 		$output->addHelpLink( $this->msg_text( 'smw-admin-helplink' ), true );
 
-		$output->addModuleStyles( 'ext.smw.special.style' );
+		$output->addModuleStyles( [
+			'ext.smw.styles',
+			'ext.smw.special.styles',
+			'mediawiki.codex.messagebox.styles'
+		] );
 		$output->addModules( 'ext.smw.admin' );
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -166,7 +167,7 @@ class SpecialAdmin extends SpecialPage {
 
 		$htmlTabs->tab(
 			'alerts',
-			'<span class="smw-icon-alert smw-tab-icon"></span>' . $this->msg_text( 'smw-admin-tab-alerts' ),
+			'<span class="smw-icon-alert smw-tab-icon skin-invert"></span>' . $this->msg_text( 'smw-admin-tab-alerts' ),
 			[
 				'hide'  => $alertsSection === '',
 				'class' => 'smw-tab-warning'

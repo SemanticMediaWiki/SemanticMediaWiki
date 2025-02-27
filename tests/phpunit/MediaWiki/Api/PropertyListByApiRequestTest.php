@@ -10,17 +10,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\PropertyListByApiRequest
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
+class PropertyListByApiRequestTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -31,13 +31,12 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
- 	}
+	}
 
 	public function testCanConstruct() {
-
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +47,6 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSerializedListForProperty() {
-
 		$list[] = [
 			new DIProperty( 'Foo' ),
 			42
@@ -101,17 +99,17 @@ class PropertyListByApiRequestTest extends \PHPUnit_Framework_TestCase {
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'fetchList' )
-			->will( $this->returnValue( $list ) );
+			->willReturn( $list );
 
 		$cachedListLookup->expects( $this->once() )
 			->method( 'isFromCache' )
-			->will( $this->returnValue( $isCached ) );
+			->willReturn( $isCached );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertiesSpecial' )
-			->will( $this->returnValue( $cachedListLookup ) );
+			->willReturn( $cachedListLookup );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

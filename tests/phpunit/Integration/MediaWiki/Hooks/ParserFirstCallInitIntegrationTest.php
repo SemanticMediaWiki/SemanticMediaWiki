@@ -3,32 +3,28 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
+class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 	private $mwHooksHandler;
-	private $testEnvironment;
+
 	private $store;
 	private $queryResult;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment( [
-			'smwgMainCacheType' => CACHE_NONE
-		] );
-
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
@@ -36,26 +32,26 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
-			->setMethods( ['getQueryResult', 'getObjectIds', 'service' ] )
+			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $this->queryResult ) );
+			->willReturn( $this->queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -65,9 +61,8 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
-		$this->testEnvironment->tearDown();
 
 		parent::tearDown();
 	}
@@ -76,14 +71,13 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-		$this->markTestSkipped( "database connections" );
 		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$singleEntityQueryLookup->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $this->queryResult ) );
+			->willReturn( $this->queryResult );
 
 		$monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
 			->disableOriginalConstructor()
@@ -91,8 +85,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->will( $this->returnCallback( function( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
-
+			->willReturnCallback( static function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}
@@ -100,7 +93,7 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 				if ( $service === 'MonolingualTextLookup' ) {
 					return $monolingualTextLookup;
 				}
-			 } ) );
+			} );
 
 		$expectedNullOutputFor = [
 			'concept',
@@ -129,7 +122,6 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionDisabled( $parserName, $text ) {
-		$this->markTestSkipped( "database connections" );
 		$expectedNullOutputFor = [
 			'concept',
 			'declare',
@@ -156,34 +148,33 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textToParseProvider() {
-
 		$provider = [];
 
-		#0 ask
+		# 0 ask
 		$provider[] = [
 			'ask',
 			'{{#ask: [[Modification date::+]]|limit=1}}'
 		];
 
-		#1 show
+		# 1 show
 		$provider[] = [
 			'show',
 			'{{#show: [[Foo]]|limit=1}}'
 		];
 
-		#2 subobject
+		# 2 subobject
 		$provider[] = [
 			'subobject',
 			'{{#subobject:|foo=bar|lila=lula,linda,luna|+sep=,}}'
 		];
 
-		#3 set
+		# 3 set
 		$provider[] = [
 			'set',
 			'{{#set:|foo=bar|lila=lula,linda,luna|+sep=,}}'
 		];
 
-		#4 set_recurring_event
+		# 4 set_recurring_event
 		$provider[] = [
 			'set_recurring_event',
 			'{{#set_recurring_event:some more tests|property=has date|' .
@@ -192,13 +183,13 @@ class ParserFirstCallInitIntegrationTest extends \PHPUnit_Framework_TestCase {
 			'exclude=March 15, 2010;March 22, 2010|+sep=;}}'
 		];
 
-		#5 declare
+		# 5 declare
 		$provider[] = [
 			'declare',
 			'{{#declare:population=Foo}}'
 		];
 
-		#6 concept
+		# 6 concept
 		$provider[] = [
 			'concept',
 			'{{#concept:[[Modification date::+]]|Foo}}'

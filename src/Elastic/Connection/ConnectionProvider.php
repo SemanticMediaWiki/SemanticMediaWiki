@@ -3,17 +3,16 @@
 namespace SMW\Elastic\Connection;
 
 use Elasticsearch\ClientBuilder;
-use SMW\Elastic\Exception\ClientBuilderNotFoundException;
-use SMW\Elastic\Exception\MissingEndpointConfigException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Elastic\Config;
-use Psr\Log\LoggerAwareTrait;
+use SMW\Elastic\Exception\ClientBuilderNotFoundException;
+use SMW\Elastic\Exception\MissingEndpointConfigException;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -33,7 +32,7 @@ class ConnectionProvider implements IConnectionProvider {
 	private $config;
 
 	/**
-	 * @var ElasticClient
+	 * @var Client
 	 */
 	private $connection;
 
@@ -53,10 +52,9 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 *
-	 * @return Connection
+	 * @return Client
 	 */
 	public function getConnection() {
-
 		if ( $this->connection !== null ) {
 			return $this->connection;
 		}
@@ -67,6 +65,8 @@ class ConnectionProvider implements IConnectionProvider {
 		if ( !$this->hasEndpoints( $endpoints ) ) {
 			throw new MissingEndpointConfigException();
 		}
+
+		$endpoints = array_map( [ $this, 'buildHostString' ], $endpoints );
 
 		$params = [
 			'hosts' => $endpoints,
@@ -87,6 +87,15 @@ class ConnectionProvider implements IConnectionProvider {
 			// since it will save a small amount of overhead by reducing indirection
 			// 'handler' => ClientBuilder::singleHandler()
 		];
+
+		$authentication = $this->config->safeGet( Config::ELASTIC_CREDENTIALS );
+
+		if ( $authentication ) {
+			$user = $authentication['user'] ?? $authentication[0];
+			$pass = $authentication['pass'] ?? $authentication[1];
+
+			$params['basicAuthentication'] = [ $user, $pass ];
+		}
 
 		if ( $this->hasAvailableClientBuilder() ) {
 			$clientBuilder = ClientBuilder::fromConfig( $params, true );
@@ -116,7 +125,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newClient( $clientBuilder = null ) {
-
 		if ( $clientBuilder === null ) {
 			return new DummyClient();
 		}
@@ -132,7 +140,6 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasEndpoints( $endpoints ) {
-
 		if ( $this->config->isDefaultStore() === false ) {
 			return true;
 		}
@@ -141,18 +148,38 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function hasAvailableClientBuilder() {
-
 		if ( $this->config->isDefaultStore() === false ) {
 			return false;
 		}
 
 		// Fail hard because someone selected the ElasticStore but forgot to install
 		// the elastic interface!
-		if ( !class_exists( '\Elasticsearch\ClientBuilder' ) ) {
+		if ( !class_exists( 'Elasticsearch\ClientBuilder' ) ) {
 			throw new ClientBuilderNotFoundException();
 		}
 
 		return true;
+	}
+
+	/**
+	 * ElasticSearch client 8.0 no longer supports the associative array syntax for hosts. This function acts as a
+	 * B/C adapter, that transform a host in the old syntax to a host in the new syntax.
+	 *
+	 * @see https://github.com/elastic/elasticsearch-php/issues/1214
+	 *
+	 * @param array|string $host
+	 * @return string
+	 */
+	private function buildHostString( $host ): string {
+		if ( is_string( $host ) ) {
+			return $host;
+		}
+
+		$scheme = $host['scheme'] ?? 'https';
+		$hostName = $host['host'] ?? 'localhost';
+		$port = $host['port'] ?? 9200;
+
+		return $scheme . '://' . $hostName . ':' . $port;
 	}
 
 }

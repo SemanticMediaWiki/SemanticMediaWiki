@@ -3,18 +3,18 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Message;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use WebRequest;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\MediaWiki\Specials\Admin\ActionableTask;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -68,7 +68,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'lookup';
 	}
 
@@ -77,7 +77,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -96,7 +96,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-idlookup-short-title' ),
 			[
@@ -122,7 +121,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-idlookup-title' ) ] )
 		);
@@ -144,11 +142,10 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	/**
-	 * @param integer $id
+	 * @param int $id
 	 * @param User|null $use
 	 */
 	private function doDispose( $id ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
@@ -163,8 +160,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function getForm( $webRequest, $id ) {
-
-		list( $result, $error ) = $this->createInfoMessageById( $webRequest, $id );
+		[ $result, $error ] = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
 			$id = null;
@@ -175,7 +171,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
 			->addParagraph( $error )
-			->addHeader( 'h3', $this->msg( 'smw-admin-idlookup-title' ), [ 'class' => 'smw-title' ] )
+			->addHeader( 'h2', $this->msg( 'smw-admin-idlookup-title' ), [ 'class' => 'smw-title' ] )
 			->addParagraph( $this->msg( 'smw-admin-idlookup-docu' ) )
 			->addInputField(
 				$this->msg( 'smw-admin-objectid' ),
@@ -203,7 +199,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			->setMethod( 'get' )
 			->addHiddenField( 'action', 'lookup' )
 			->addHiddenField( 'id', $id )
-			->addHeader( 'h3', $this->msg( 'smw-admin-iddispose-title' ), [ 'class' => 'smw-title' ] )
+			->addHeader( 'h2', $this->msg( 'smw-admin-iddispose-title' ), [ 'class' => 'smw-title' ] )
 			->addParagraph( $this->msg( 'smw-admin-iddispose-docu', Message::PARSE ), [ 'class' => 'plainlinks' ] )
 			->addInputField(
 				$this->msg( 'smw-admin-objectid' ),
@@ -226,14 +222,13 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function createInfoMessageById( $webRequest, &$id ) {
-
 		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
 			return [ '', '' ];
 		}
 
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( ctype_digit( $id ) ) {
+		if ( ctype_digit( (string)$id ) ) {
 			$condition = 'smw_id=' . intval( $id );
 		} else {
 			$op = strpos( $id, '*' ) !== false ? ' LIKE ' : '=';
@@ -261,7 +256,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	}
 
 	private function createMessageFromRows( &$id, $rows ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$references = [];
@@ -303,11 +297,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 			);
 			$output .= '<pre>' . $this->outputFormatter->encodeAsJson( $references ) . '</pre>';
 		} else {
-			$error .= Html::element(
-				'div',
-				[
-					'class' => 'smw-callout smw-callout-warning'
-				],
+			$error .= Html::warningBox(
 				$this->msg( [ 'smw-admin-iddispose-no-references', $id ] )
 			);
 
@@ -320,7 +310,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	private function addFulltextInfo( $id, &$references ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE ) ) {
+		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ ) ) {
 			return;
 		}
 

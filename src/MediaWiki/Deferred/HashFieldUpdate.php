@@ -4,17 +4,16 @@ namespace SMW\MediaWiki\Deferred;
 
 use DeferrableUpdate;
 use DeferredUpdates;
-use Title;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\SQLStore\SQLStore;
 
 /**
  * Run a deferred update on the `smw_hash` field.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -29,7 +28,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	private $connection;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id;
 
@@ -39,7 +38,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	private $hash;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public static $isCommandLineMode;
 
@@ -47,7 +46,7 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 * @since 3.1
 	 *
 	 * @param Database $connection
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $hash
 	 */
 	public function __construct( Database $connection, $id, $hash ) {
@@ -60,11 +59,10 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 * @since 3.1
 	 *
 	 * @param Database $connection
-	 * @param integer $id
+	 * @param int $id
 	 * @param string $hash
 	 */
 	public static function addUpdate( Database $connection, $id, $hash ) {
-
 		$hashFieldUpdate = new self( $connection, $id, $hash );
 
 		$hashFieldUpdate->setLogger(
@@ -86,7 +84,6 @@ class HashFieldUpdate implements DeferrableUpdate {
 	 * @since 3.1
 	 */
 	public function doUpdate() {
-
 		$this->logger->info(
 			[ 'DeferrableUpdate', 'HashFieldUpdate', "ID: {id}, sha1:{hash}" ],
 			[ 'role' => 'user', 'id' => $this->id, 'hash' => $this->hash ]

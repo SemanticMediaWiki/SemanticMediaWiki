@@ -9,18 +9,18 @@ use SMW\Query\Result\Restrictions;
  * @covers SMW\Query\Result\Restrictions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class RestrictionsTest extends \PHPUnit_Framework_TestCase {
+class RestrictionsTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $store;
 	private $printRequest;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -30,7 +30,6 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Restrictions::class,
 			new Restrictions()
@@ -38,16 +37,15 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplyLimitRestriction() {
-
 		$this->printRequest->expects( $this->at( 0 ) )
 			->method( 'getParameter' )
-			->with( $this->equalTo( 'limit' ) )
-			->will( $this->returnValue( 2 ) );
+			->with( 'limit' )
+			->willReturn( 2 );
 
 		$this->printRequest->expects( $this->at( 1 ) )
 			->method( 'getParameter' )
-			->with( $this->equalTo( 'offset' ) )
-			->will( $this->returnValue( 1 ) );
+			->with( 'offset' )
+			->willReturn( 1 );
 
 		$content = [
 			$this->dataItemFactory->newDIWikiPage( 'Foo' ),
@@ -67,11 +65,10 @@ class RestrictionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApplySortRestriction() {
-
 		$this->printRequest->expects( $this->at( 0 ) )
 			->method( 'getParameter' )
-			->with( $this->equalTo( 'order' ) )
-			->will( $this->returnValue( 'desc' ) );
+			->with( 'order' )
+			->willReturn( 'desc' );
 
 		$content = [
 			$this->dataItemFactory->newDIWikiPage( 'Foo' ),

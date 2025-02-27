@@ -8,18 +8,17 @@ use SMW\Utils\DotArray;
  * @covers \SMW\Utils\DotArray
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class DotArrayTest extends \PHPUnit_Framework_TestCase {
+class DotArrayTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider dotProvider
 	 */
 	public function testDotGet( $options, $key, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			DotArray::get( $options, $key )
@@ -27,7 +26,6 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dotProvider() {
-
 		$options = [
 			'Foo' => [
 				'Bar' => [ 'Foobar' => 42 ],
@@ -136,7 +134,7 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 		yield 'compound_key_takes_precedence_over_array_match' => [
 			[
 				'query' => [
-					'highlight.fragment' => [ 'number' => 1 ,'size' => 100, 'type' => false ],
+					'highlight.fragment' => [ 'number' => 1, 'size' => 100, 'type' => false ],
 					'highlight.fragment.type' => 'foo'
 				]
 
@@ -144,7 +142,6 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase {
 			'query.highlight.fragment.type',
 			'foo'
 		];
-
 	}
 
 }

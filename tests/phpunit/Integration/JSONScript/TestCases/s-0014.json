@@ -27,30 +27,6 @@
 		{
 			"type": "special",
 			"about": "#0",
-			"skip-on": {
-				"mediawiki": [ ">1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
-			},
-			"special-page": {
-				"page": "Browse",
-				"query-parameters": "Example/S0014/L'oéal",
-				"request-parameters": {
-					"output": "legacy"
-				}
-			},
-			"assert-output": {
-				"to-contain": [
-					"Example-2FS0014-2FL%27o%C3%A9al",
-					"title=\"Example/S0014/L'oéal\">Example/S0014/L'oéal</a>",
-					"Example-2FS0014-2FL'oéal"
-				]
-			}
-		},
-		{
-			"type": "special",
-			"about": "#0 (1.30+)",
-			"skip-on": {
-				"mediawiki": [ "<1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
-			},
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "Example/S0014/L'oéal",
@@ -69,31 +45,6 @@
 		{
 			"type": "special",
 			"about": "#1",
-			"skip-on": {
-				"mediawiki": [ ">1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
-			},
-			"special-page": {
-				"page": "Browse",
-				"query-parameters": "",
-				"request-parameters": {
-					"output": "legacy",
-					"article" : "Example/S0014/L'oéal"
-				}
-			},
-			"assert-output": {
-				"to-contain": [
-					"Example-2FS0014-2FL%27o%C3%A9al",
-					"title=\"Example/S0014/L'oéal\">Example/S0014/L'oéal</a>",
-					"Example-2FS0014-2FL'oéal"
-				]
-			}
-		},
-		{
-			"type": "special",
-			"about": "#1 (1.30+)",
-			"skip-on": {
-				"mediawiki": [ "<1.29.x", "MediaWiki changed sanitization from `'` to `&#039;`" ]
-			},
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "",
@@ -193,14 +144,14 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
-					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&*^-25-20-2D</a>",
+					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&amp;*^-25-20-2D</a>",
 					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
 				]
 			}
 		},
 		{
 			"type": "special",
-			"about": "#6",
+			"about": "#7",
 			"special-page": {
 				"page": "Browse",
 				"query-parameters": "",
@@ -212,7 +163,7 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
-					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&*^-25-20-2D</a>",
+					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&amp;*^-25-20-2D</a>",
 					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
 				]
 			}
@@ -230,9 +181,6 @@
 		}
 	},
 	"meta": {
-		"skip-on": {
-			"mw-1.25.6": "Somehow the content lang is not set correctly on Travis (locally works fine)."
-		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Services\ServicesContainer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
+class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ServicesContainer::class,
 			new ServicesContainer()
@@ -27,7 +26,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$mock = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'runService' ] )
@@ -46,7 +44,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTypedService() {
-
 		$instance = new ServicesContainer(
 			[
 				'test' => [
@@ -63,7 +60,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_MultipleArgs() {
-
 		$fake = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'runService' ] )
@@ -83,7 +79,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAdd() {
-
 		$fake = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'runService' ] )
@@ -99,7 +94,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddClosure() {
-
 		$fake = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'runService' ] )
@@ -110,7 +104,7 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new ServicesContainer();
 
-		$closure = function( $arg ) use( $fake ) {
+		$closure = static function ( $arg ) use( $fake ) {
 			$fake->runService( $arg );
 		};
 
@@ -119,7 +113,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownServiceThrowsException() {
-
 		$instance = new ServicesContainer();
 
 		$this->expectException( '\SMW\Services\Exception\ServiceNotFoundException' );
@@ -127,7 +120,6 @@ class ServicesContainerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonCallableServiceThrowsException() {
-
 		$instance = new ServicesContainer(
 			[
 				'test' => 'Foo'

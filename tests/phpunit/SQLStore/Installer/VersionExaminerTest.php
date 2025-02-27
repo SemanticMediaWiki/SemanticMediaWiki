@@ -2,40 +2,39 @@
 
 namespace SMW\Tests\SQLStore\Installer;
 
-use SMW\MediaWiki\Database;
+use SMW\SetupFile;
 use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\VersionExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
+class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $spyMessageReporter;
-	private $SetupFile;
+	private SetupFile $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,19 +45,18 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequirements() {
-
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new VersionExaminer(
 			$connection
@@ -77,15 +75,14 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRequirements_InvalidDefined() {
-
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new VersionExaminer(
 			$connection
@@ -99,19 +96,18 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMeetsVersionMinRequirement() {
-
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'remove' );
@@ -123,26 +119,24 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$this->assertEquals(
-			true,
-			$instance->meetsVersionMinRequirement( [ 'foo' => 1 ] )
+		$this->assertTrue(
+						$instance->meetsVersionMinRequirement( [ 'foo' => 1 ] )
 		);
 	}
 
 	public function testMeetsVersionMinRequirement_FailsMinimumRequirement() {
-
-		$connection = $this->getMockBuilder( '\DatabaseBase' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getServerInfo' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'set' );
@@ -157,9 +151,8 @@ class VersionExaminerTest extends \PHPUnit_Framework_TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->setSetupFile( $this->setupFile );
 
-		$this->assertEquals(
-			false,
-			$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
+		$this->assertFalse(
+						$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
 		);
 
 		$this->assertContains(

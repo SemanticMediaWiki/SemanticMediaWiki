@@ -12,7 +12,7 @@ use SMWDIError;
  *
  * @ingroup QueryPage
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -52,7 +52,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isExpensive() {
 		return false; // Disables caching for now
@@ -60,7 +60,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isSyndicated() {
 		return false; // TODO: why not?
@@ -75,7 +75,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	public function getCacheInfo() {
-
 		if ( $this->listLookup->isFromCache() ) {
 			return $this->msg(
 				'smw-sp-properties-cache-info',
@@ -91,7 +90,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	function getPageHeader() {
-
 		return Html::rawElement(
 			'p',
 			[ 'class' => 'smw-unusedproperties-docu' ],
@@ -106,17 +104,16 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * Format a result in the list of results as a string. We expect the
-	 * result to be an object of type SMWDIProperty (normally) or maybe
+	 * result to be an object of type DIProperty (normally) or maybe
 	 * SMWDIError (if something went wrong).
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
 	 *
-	 * @return String
+	 * @return string
 	 * @throws InvalidResultException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
-
 		if ( $result instanceof DIProperty ) {
 			return $this->formatPropertyItem( $result );
 		} elseif ( $result instanceof SMWDIError ) {
@@ -142,7 +139,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 */
 	protected function formatPropertyItem( DIProperty $property ) {
-
 		// Clear formatter before invoking messages and
 		// avoid having previous data to be present
 		$this->getMessageFormatter()->clear();
@@ -189,7 +185,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param SMWRequestOptions $requestOptions
-	 * @return array of SMWDIProperty|SMWDIError
+	 * @return array of \SMW\DIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );

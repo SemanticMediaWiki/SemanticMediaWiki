@@ -2,36 +2,33 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
-use SMW\MediaWiki\Connection\Query;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
  */
-class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
+class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ByGroupPropertyValuesLookup::class,
 			new ByGroupPropertyValuesLookup( $this->store )
@@ -39,20 +36,19 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchGroup_Empty() {
-
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'tablename' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -60,9 +56,9 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'foo' => 'id' ] ) );
+			->willReturn( [ 'foo' => 'id' ] );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,35 +68,35 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$instance = new ByGroupPropertyValuesLookup(
 			$this->store
@@ -108,14 +104,13 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$res = $instance->findValueGroups( $property, [ 'foo', 'bar' ] );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$res
 		);
 	}
 
 	public function testFetchGroup_PageResult() {
-
 		$row = [
 			'smw_title' => 'Foobar',
 			'smw_namespace' => 0,
@@ -127,17 +122,17 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'tablename' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -145,13 +140,13 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'foo' => 'id' ] ) );
+			->willReturn( [ 'foo' => 'id' ] );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'dataItemFromDBKeys' )
-			->will( $this->returnValue( DIWikiPage::newFromtext( 'Foobar' ) ) );
+			->willReturn( DIWikiPage::newFromtext( 'Foobar' ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -161,35 +156,35 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$instance = new ByGroupPropertyValuesLookup(
 			$this->store
@@ -207,7 +202,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFetchGroup_NonPageResult() {
-
 		$row = [
 			'foo_field' => '1001',
 			'count' => 42
@@ -216,17 +210,17 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyValueType( '_txt' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'tablename' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -234,13 +228,13 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'getFetchFields' )
-			->will( $this->returnValue( [ 'foo_field' => 'x_type' ] ) );
+			->willReturn( [ 'foo_field' => 'x_type' ] );
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'dataItemFromDBKeys' )
-			->will( $this->returnValue( new \SMWDIBlob( 'test' ) ) );
+			->willReturn( new \SMWDIBlob( 'test' ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -250,35 +244,35 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->once() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ (object)$row ] ) );
+			->willReturn( [ (object)$row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $dataItemHandler ) );
+			->willReturn( $dataItemHandler );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'Foo' => $tableDefinition ] ) );
+			->willReturn( [ 'Foo' => $tableDefinition ] );
 
 		$instance = new ByGroupPropertyValuesLookup(
 			$this->store

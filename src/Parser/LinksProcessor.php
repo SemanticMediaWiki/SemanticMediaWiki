@@ -3,7 +3,7 @@
 namespace SMW\Parser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -14,12 +14,12 @@ class LinksProcessor {
 	 * Internal state for switching SMW link annotations off/on during parsing
 	 * ([[SMW::on]] and [[SMW:off]])
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isAnnotation = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isStrictMode = true;
 
@@ -30,7 +30,7 @@ class LinksProcessor {
 	 *
 	 * @since 2.3
 	 *
-	 * @param boolean $isStrictMode
+	 * @param bool $isStrictMode
 	 */
 	public function isStrictMode( $isStrictMode ) {
 		$this->isStrictMode = (bool)$isStrictMode;
@@ -39,7 +39,7 @@ class LinksProcessor {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isAnnotation() {
 		return $this->isAnnotation;
@@ -58,12 +58,11 @@ class LinksProcessor {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $linksInValues
+	 * @param bool $linksInValues
 	 *
 	 * @return string
 	 */
 	public static function getRegexpPattern( $linksInValues = false ) {
-
 		if ( $linksInValues ) {
 			return '/\[\[             # Beginning of the link
 				(?:([^:][^]]*):[=:])+ # Property name (or a list of those)
@@ -95,7 +94,6 @@ class LinksProcessor {
 	 * @return string
 	 */
 	public function preprocess( array $semanticLink ) {
-
 		$value = '';
 		$caption = false;
 
@@ -135,7 +133,6 @@ class LinksProcessor {
 	 * @return string
 	 */
 	public function process( array $semanticLink ) {
-
 		$valueCaption = false;
 		$property = '';
 		$value = '';
@@ -146,8 +143,8 @@ class LinksProcessor {
 			// the regex splits it into `Foo:` and `Bar` loosing `=` from the value.
 			// Restore the link to its previous form of `Foo::=Bar` and reapply
 			// a simple split.
-			if( strpos( $semanticLink[0], '::=' ) && substr( $semanticLink[1], -1 ) == ':' ) {
-				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . ':=' . $semanticLink[2], 2 );
+			if ( strpos( $semanticLink[0], '::=' ) && substr( $semanticLink[1], -1 ) == ':' ) {
+				[ $semanticLink[1], $semanticLink[2] ] = explode( '::', $semanticLink[1] . ':=' . $semanticLink[2], 2 );
 			}
 
 			// #1252 Strict mode being disabled for support of multi property
@@ -159,7 +156,7 @@ class LinksProcessor {
 			// then concatenate the string again and split for the first :: occurrence
 			// only
 			if ( $this->isStrictMode && strpos( $semanticLink[1], ':' ) !== false && isset( $semanticLink[2] ) ) {
-				list( $semanticLink[1], $semanticLink[2] ) = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
+				[ $semanticLink[1], $semanticLink[2] ] = explode( '::', $semanticLink[1] . '::' . $semanticLink[2], 2 );
 			}
 
 			$property = $semanticLink[1];
@@ -190,7 +187,6 @@ class LinksProcessor {
 	}
 
 	private function setAnnotation( $value ) {
-
 		switch ( $value ) {
 			case 'on':
 				$this->isAnnotation = true;

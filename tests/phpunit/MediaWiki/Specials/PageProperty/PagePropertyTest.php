@@ -5,19 +5,19 @@ namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PageProperty\PageBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PagePropertyTest extends \PHPUnit_Framework_TestCase {
+class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,7 +25,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 	private $htmlFormRenderer;
 	private $options;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +37,12 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PageBuilder::class,
 			new PageBuilder( $this->htmlFormRenderer, $this->options )
@@ -51,7 +50,6 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testbuildForm() {
-
 		$methods = [
 			'setName',
 			'withFieldset',
@@ -70,7 +68,7 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -81,27 +79,25 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildForm()
 		);
 	}
 
 	public function testbuildHtml_Empty() {
-
 		$instance = new PageBuilder(
 			$this->htmlFormRenderer,
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHtml( [] )
 		);
 	}
 
 	public function testbuildHtml_WithResult() {
-
 		$this->options->set( 'limit', 20 );
 		$this->options->set( 'property', 'Bar' );
 
@@ -110,8 +106,8 @@ class PagePropertyTest extends \PHPUnit_Framework_TestCase {
 			$this->options
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->buildHtml( [ DIWikiPage::newFromText( 'Foo' ) ] )
 		);
 	}

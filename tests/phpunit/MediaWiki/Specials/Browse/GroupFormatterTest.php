@@ -11,22 +11,22 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Browse\GroupFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
+class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $propertySpecificationLookup;
 	private $schemaFinder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,7 +36,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			GroupFormatter::class,
 			new GroupFormatter( $this->propertySpecificationLookup, $this->schemaFinder )
@@ -44,10 +43,9 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindGroupMembership() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
+			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
 
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
@@ -55,11 +53,11 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'getList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
@@ -92,7 +90,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindGroupMembershipFromSchema() {
-
 		$data = [
 			[ 'properties' => [ 'Foo' ], 'group_name' => 'Foo schema' ]
 		];
@@ -103,16 +100,16 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaDefinition->expects( $this->any() )
 			->method( 'getName' )
-			->will( $this->returnValue( 'Foo schema' ) );
+			->willReturn( 'Foo schema' );
 
 		$schemaDefinition->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( 'groups') )
-			->will( $this->returnValue( $data ) );
+			->with( 'groups' )
+			->willReturn( $data );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
@@ -120,11 +117,11 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'getList' )
-			->will( $this->returnValue( [ $schemaDefinition ] ) );
+			->willReturn( [ $schemaDefinition ] );
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
@@ -157,10 +154,9 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindGroupMembershipWhereShowGroupIsDisabled() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->will( $this->returnValue( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
+			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
 
 		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
 			->disableOriginalConstructor()
@@ -168,11 +164,11 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaList->expects( $this->any() )
 			->method( 'getList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->schemaFinder->expects( $this->any() )
 			->method( 'getSchemaListByType' )
-			->will( $this->returnValue( $schemaList ) );
+			->willReturn( $schemaList );
 
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
@@ -197,7 +193,6 @@ class GroupFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMessageClassLink() {
-
 		$instance = new GroupFormatter(
 			$this->propertySpecificationLookup,
 			$this->schemaFinder

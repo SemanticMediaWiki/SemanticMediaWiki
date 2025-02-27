@@ -4,24 +4,23 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\StoreFactory;
-use SMWDataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyTableDefinition::class,
 			new PropertyTableDefinition( 'foo', 'bar' )
@@ -29,15 +28,14 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetters() {
-
 		$diType = SMWDataItem::TYPE_NUMBER;
 		$name   = 'smw_di_number';
 
 		$instance = new PropertyTableDefinition( $diType, $name );
 
-		$this->assertInternalType(
-			'array',
-			$instance->getFields( StoreFactory::getStore( 'SMWSQLStore3' ) )
+		$this->assertIsArray(
+
+			$instance->getFields( StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ) )
 		);
 
 		$this->assertEquals(
@@ -52,7 +50,6 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIdSubject() {
-
 		$instance = new PropertyTableDefinition( 'foo', 'bar' );
 		$instance->setUsesIdSubject( false );
 
@@ -62,7 +59,6 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFixedProperty() {
-
 		$instance = new PropertyTableDefinition( 'foo', 'bar' );
 
 		$this->expectException( 'OutOfBoundsException' );
@@ -70,7 +66,6 @@ class PropertyTableDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTableType() {
-
 		$instance = new PropertyTableDefinition( 'foo', 'bar' );
 		$instance->setTableType( PropertyTableDefinition::TYPE_CORE );
 

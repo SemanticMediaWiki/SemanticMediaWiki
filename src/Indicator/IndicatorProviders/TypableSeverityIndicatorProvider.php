@@ -5,7 +5,7 @@ namespace SMW\Indicator\IndicatorProviders;
 use SMW\Indicator\IndicatorProvider;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -28,7 +28,7 @@ interface TypableSeverityIndicatorProvider extends IndicatorProvider {
 	const SEVERITY_WARNING = 'severity/warning';
 
 	/**
-	 *Indicates that an indicator describes an error state.
+	 * Indicates that an indicator describes an error state.
 	 */
 	const SEVERITY_ERROR = 'severity/error';
 
@@ -37,8 +37,8 @@ interface TypableSeverityIndicatorProvider extends IndicatorProvider {
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isSeverityType( string $severityType ) : bool;
+	public function isSeverityType( string $severityType ): bool;
 
 }

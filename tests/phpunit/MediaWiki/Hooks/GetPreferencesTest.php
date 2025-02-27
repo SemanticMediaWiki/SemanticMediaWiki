@@ -8,17 +8,18 @@ use SMW\MediaWiki\Hooks\GetPreferences;
  * @covers \SMW\MediaWiki\Hooks\GetPreferences
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
+class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 
 	private $hookDispatcher;
 	private $permissionExaminer;
+	private $schemaFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -28,10 +29,13 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+			->disableOriginalConstructor()
+			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +44,7 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertInstanceOf(
 			GetPreferences::class,
-			new GetPreferences( $this->permissionExaminer )
+			new GetPreferences( $this->permissionExaminer, $this->schemaFactory )
 		);
 	}
 
@@ -48,10 +52,9 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider keyProvider
 	 */
 	public function testProcess( $key ) {
-
 		$this->permissionExaminer->expects( $this->any() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -60,7 +63,8 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 		$preferences = [];
 
 		$instance = new GetPreferences(
-			$this->permissionExaminer
+			$this->permissionExaminer,
+			$this->schemaFactory
 		);
 
 		$instance->setHookDispatcher(
@@ -82,7 +86,6 @@ class GetPreferencesTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function keyProvider() {
-
 		$provider[] = [
 			'smw-prefs-intro'
 		];

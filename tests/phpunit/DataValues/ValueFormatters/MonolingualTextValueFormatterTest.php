@@ -11,18 +11,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class MonolingualTextValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
@@ -35,15 +35,14 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new MonolingualTextValueParser() ) );
+			->willReturn( new MonolingualTextValueParser() );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter',
 			new MonolingualTextValueFormatter()
@@ -51,7 +50,6 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-
 		$monolingualTextValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +62,6 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToUseCaptionOutput() {
-
 		$monolingualTextValue = new MonolingualTextValue();
 
 		$monolingualTextValue->setDataValueServiceFactory(
@@ -90,7 +87,6 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringValueProvider
 	 */
 	public function testFormat( $stringValue, $type, $linker, $expected ) {
-
 		$monolingualTextValue = new MonolingualTextValue();
 
 		$monolingualTextValue->setDataValueServiceFactory(
@@ -108,7 +104,6 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToFormatOnMissingDataValueThrowsException() {
-
 		$instance = new MonolingualTextValueFormatter();
 
 		$this->expectException( 'RuntimeException' );
@@ -116,7 +111,6 @@ class MonolingualTextValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringValueProvider() {
-
 		$provider[] = [
 			'foo@en',
 			MonolingualTextValueFormatter::VALUE,

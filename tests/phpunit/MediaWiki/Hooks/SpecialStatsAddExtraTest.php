@@ -2,28 +2,27 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra
  * @group smenatic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
+class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		ApplicationFactory::clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -38,14 +37,13 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider statisticsDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $setup['statistics'] ) );
+			->willReturn( $setup['statistics'] );
 
 		$extraStats = $setup['extraStats'];
 
@@ -67,7 +65,6 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess_FakeStats() {
-
 		$extraStats = [];
 
 		$statistics = [
@@ -89,7 +86,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( $statistics ) );
+			->willReturn( $statistics );
 
 		$instance = new SpecialStatsAddExtra(
 			$store
@@ -108,34 +105,32 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 		$instance->process( $extraStats );
 
 		$this->assertEquals(
-			$extraStats,
-			$expected
+			$expected,
+			$extraStats
 		);
 	}
 
 	public function matchArray( array $matcher, $searchValue ) {
-
 		foreach ( $matcher as $key => $value ) {
 
 			if ( $searchValue === $key || $searchValue === $value ) {
 				return true;
-			};
+			}
 
 			if ( is_array( $value ) ) {
 				return $this->matchArray( $value, $searchValue );
-			};
+			}
 		}
 
 		return $searchValue !== null ? false : true;
 	}
 
 	public function statisticsDataProvider() {
-
 		$input = [
 			'PROPUSES' => 1001
 		];
 
-		#0
+		# 0
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -146,7 +141,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 unknown
+		# 1 unknown
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -157,7 +152,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 MW 1.21+
+		# 2 MW 1.21+
 		$provider[] = [
 			[
 				'extraStats' => [],
@@ -168,7 +163,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 MW 1.21+ - unknown
+		# 3 MW 1.21+ - unknown
 		$provider[] = [
 			[
 				'extraStats' => [],

@@ -2,28 +2,29 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
- * @covers \SMWQueryResult
+ * @covers \SMW\Query\QueryResult
  *
  * @group SMW
  * @group SMWExtension
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
+class QueryResultQueryProcessorIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjects = [];
 	private $semanticDataFactory;
@@ -34,7 +35,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	private $fixturesProvider;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = UtilityFactory::getInstance();
@@ -49,8 +50,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 
 		$fixturesCleaner
@@ -61,7 +61,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUriQueryFromRawParameters() {
-
 		$property = $this->fixturesProvider->getProperty( 'url' );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
@@ -92,7 +91,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 			'limit=1'
 		];
 
-		list( $queryString, $parameters, $printouts ) = QueryProcessor::getComponentsFromFunctionParams(
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams(
 			$rawParams,
 			false
 		);
@@ -117,9 +116,8 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testCanConstructor( array $test ) {
-
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$this->getQueryResultFor( $test['query'] )
 		);
 	}
@@ -128,7 +126,6 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testToArray( array $test, array $expected ) {
-
 		$instance = $this->getQueryResultFor( $test['query'] );
 		$results  = $instance->toArray();
 
@@ -137,8 +134,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function getQueryResultFor( $queryString ) {
-
-		list( $query, $formattedParams ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $formattedParams ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$queryString,
 			SMW_OUTPUT_WIKI,
 			QueryProcessor::INLINE_QUERY,
@@ -149,11 +145,10 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$provider = [];
 
 		// #1 Standard query
-		$provider[] =[
+		$provider[] = [
 			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date',
@@ -162,7 +157,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -170,7 +165,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => '',
@@ -181,7 +176,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 		];
 
 		// #2 Query containing a printrequest formatting
-		$provider[] =[
+		$provider[] = [
 			[ 'query' => [
 				'[[Modification date::+]]',
 				'?Modification date#ISO',
@@ -190,7 +185,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 			],
 			[
 				[
-					'label'=> '',
+					'label' => '',
 					'typeid' => '_wpg',
 					'mode' => 2,
 					'format' => false,
@@ -198,7 +193,7 @@ class QueryResultQueryProcessorIntegrationTest extends DatabaseTestCase {
 					'redi' => ''
 				],
 				[
-					'label'=> 'Modification date',
+					'label' => 'Modification date',
 					'typeid' => '_dat',
 					'mode' => 1,
 					'format' => 'ISO',

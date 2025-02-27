@@ -3,26 +3,26 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\Hooks;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Hooks
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class HooksTest extends \PHPUnit_Framework_TestCase {
+class HooksTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $elasticFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -38,13 +38,12 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Hooks::class,
 			new Hooks( $this->elasticFactory )
@@ -52,26 +51,24 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHandlers() {
-
 		$instance = new Hooks(
 			$this->elasticFactory
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getHandlers()
 		);
 	}
 
 	public function testOnRegisterTaskHandlers() {
-
 		$infoTaskHandler = $this->getMockBuilder( '\SMW\Elastic\Admin\ElasticClientTaskHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newInfoTaskHandler' )
-			->will( $this->returnValue( $infoTaskHandler ) );
+			->willReturn( $infoTaskHandler );
 
 		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
 			->disableOriginalConstructor()
@@ -95,7 +92,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new Hooks(
 			$this->elasticFactory
@@ -105,7 +102,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
-
 		$indicatorProviders = [];
 
 		$replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
@@ -114,7 +110,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$this->elasticFactory->expects( $this->once() )
 			->method( 'newReplicationCheck' )
-			->will( $this->returnValue( $replicationCheck ) );
+			->willReturn( $replicationCheck );
 
 		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
 			->disableOriginalConstructor()
@@ -126,7 +122,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $config ) );
+			->willReturn( $config );
 
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
@@ -134,7 +130,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new Hooks(
 			$this->elasticFactory
@@ -148,12 +144,11 @@ class HooksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfirmAllCanConstructMethodsWereCalled() {
-
 		// Available class methods to be tested
 		$classMethods = get_class_methods( Hooks::class );
 
 		// Match all "testOn" to define the expected set of methods
-		$testMethods = preg_grep('/^testOn/', get_class_methods( $this ) );
+		$testMethods = preg_grep( '/^testOn/', get_class_methods( $this ) );
 
 		$testMethods = array_flip(
 			str_replace( 'testOn', 'on', $testMethods )

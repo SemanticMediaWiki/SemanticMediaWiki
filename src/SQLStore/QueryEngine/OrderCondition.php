@@ -14,7 +14,7 @@ use SMW\Query\Language\Description;
  * that joins with the SMW ID_TABELE so that the field alias.smw_title is
  * available for default sorting.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -42,12 +42,12 @@ class OrderCondition {
 	private $sortKeys = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSupported = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $asUnconditional = false;
 
@@ -79,7 +79,7 @@ class OrderCondition {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isSupported
+	 * @param bool $isSupported
 	 */
 	public function isSupported( $isSupported ) {
 		$this->isSupported = $isSupported;
@@ -88,7 +88,7 @@ class OrderCondition {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $asUnconditional
+	 * @param bool $asUnconditional
 	 */
 	public function asUnconditional( $asUnconditional ) {
 		$this->asUnconditional = $asUnconditional;
@@ -98,10 +98,9 @@ class OrderCondition {
 	 * @since 2.5
 	 *
 	 * @param ConditionBuilder $conditionBuilder
-	 * @param integer $qid
+	 * @param int $qid
 	 */
 	public function addConditions( ConditionBuilder $conditionBuilder, $qid ) {
-
 		if ( !$this->isSupported ) {
 			return $conditionBuilder->getQuerySegmentList();
 		}
@@ -130,7 +129,6 @@ class OrderCondition {
 	}
 
 	private function findDescriptionsFromSortKeys( $querySegment ) {
-
 		$extraDescriptions = [];
 
 		foreach ( $this->sortKeys as $label => $order ) {
@@ -148,7 +146,6 @@ class OrderCondition {
 	}
 
 	private function findDescription( $querySegment, $label, $order ) {
-
 		$description = null;
 
 		// Is assigned, leave ...
@@ -213,7 +210,6 @@ class OrderCondition {
 	}
 
 	private function extendConditions( $conditionBuilder, $querySegment, array $extraDescriptions ) {
-
 		if ( $extraDescriptions === [] ) {
 			return;
 		}

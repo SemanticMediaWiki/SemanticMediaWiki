@@ -3,27 +3,26 @@
 namespace SMW\Tests\Query\PrintRequest;
 
 use SMW\DataValues\PropertyChainValue;
-use SMW\Localizer;
+use SMW\DataValues\PropertyValue;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequest\Deserializer;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @covers SMW\Query\PrintRequest\Deserializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DeserializerTest extends \PHPUnit_Framework_TestCase {
+class DeserializerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider
 	 */
 	public function testDeserialize( $text, $showMode, $expectedLabel, $expectedMode, $expectedDataInstance, $expectedOutputFormat ) {
-
 		$options = [
 			'show_mode' => $showMode
 		];
@@ -54,8 +53,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			'Foo',
 			false,
@@ -65,7 +63,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'-Foo',
 			false,
@@ -75,7 +73,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'-Foo=Bar',
 			false,
@@ -85,7 +83,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#3
+		# 3
 		// Category
 		$categoryName = Localizer::getInstance()->getNsText(
 			NS_CATEGORY
@@ -100,7 +98,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#4
+		# 4
 		// Category
 		$categoryName = Localizer::getInstance()->getNsText(
 			NS_CATEGORY
@@ -115,7 +113,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#5
+		# 5
 		// Category
 		$provider[] = [
 			'Categories',
@@ -126,7 +124,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#6
+		# 6
 		// "... ask for one particular category ... contains X for all pages
 		// that directly belong to that category ..."
 		$label = Localizer::getInstance()->createTextWithNamespacePrefix(
@@ -141,13 +139,13 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'Foo',
 			// Mode
 			PrintRequest::PRINT_CCAT,
-			//DataInstance
+			// DataInstance
 			null,
 			// OutputFormat
 			'x'
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			'Bar#foobar',
 			false,
@@ -157,7 +155,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'foobar'
 		];
 
-		#8
+		# 8
 		$provider[] = [
 			'Foo#',
 			false,
@@ -167,7 +165,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'-'
 		];
 
-		#9, 1464
+		# 9, 1464
 		$provider[] = [
 			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,
@@ -177,7 +175,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>'
 		];
 
-		#10
+		# 10
 		$provider[] = [
 			'Foo.Bar',
 			false,
@@ -187,7 +185,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#11
+		# 11
 		$provider[] = [
 			'Foo.Bar#foobar',
 			false,
@@ -197,7 +195,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'foobar'
 		];
 
-		#12
+		# 12
 		$provider[] = [
 			'Foo = <span style="color: green; font-size: 120%;">Label</span>',
 			false,
@@ -207,7 +205,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#13
+		# 13
 		$provider[] = [
 			'Foo#Bar = <span style="color: green; font-size: 120%;">Label</span>',
 			false,
@@ -217,7 +215,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'Bar'
 		];
 
-		#14 #481
+		# 14 #481
 		$provider[] = [
 			'#=Foo',
 			false,
@@ -227,7 +225,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			''
 		];
 
-		#15 #481
+		# 15 #481
 		$provider[] = [
 			'#=Foo#',
 			false,
@@ -237,7 +235,7 @@ class DeserializerTest extends \PHPUnit_Framework_TestCase {
 			'-'
 		];
 
-		#16 #481
+		# 16 #481
 		$provider[] = [
 			'#=Foo#-',
 			false,

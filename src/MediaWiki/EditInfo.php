@@ -11,7 +11,7 @@ use User;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -64,7 +64,6 @@ class EditInfo {
 	 * @return SemanticData|null
 	 */
 	public function fetchSemanticData() {
-
 		$parserOutput = $this->fetchEditInfo()->getOutput();
 
 		if ( $parserOutput === null ) {
@@ -77,8 +76,7 @@ class EditInfo {
 	/**
 	 * @since 2.0
 	 */
-	public function fetchEditInfo() : self {
-
+	public function fetchEditInfo(): self {
 		if ( $this->page !== null && $this->revision === null ) {
 			$this->revision = $this->revisionGuard->newRevisionFromPage( $this->page );
 		}
@@ -96,13 +94,7 @@ class EditInfo {
 			$content->getContentHandler()->getDefaultFormat()
 		);
 
-		// #3943
-		// https://github.com/wikimedia/mediawiki/commit/fdbb64f3546e6fda0ee0ce003467b4cfb13a090f
-		if ( method_exists( $prepareEdit, 'getOutput' ) ) {
-			$this->parserOutput = $prepareEdit->getOutput();
-		} else {
-			$this->parserOutput = isset( $prepareEdit->output ) ? $prepareEdit->output : null;
-		}
+		$this->parserOutput = $prepareEdit->getOutput();
 
 		return $this;
 	}

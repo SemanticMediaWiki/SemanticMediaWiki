@@ -5,7 +5,7 @@ namespace SMW\Tests;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -40,7 +40,6 @@ class TestConfig {
 	 * @param array $configurations
 	 */
 	public function set( array $configurations = [] ) {
-
 		foreach ( $configurations as $key => $value ) {
 
 			if ( array_key_exists( $key, $GLOBALS ) ) {
@@ -58,7 +57,6 @@ class TestConfig {
 	 * @since 3.0
 	 */
 	public function reset() {
-
 		foreach ( $this->configurations as $key => $value ) {
 			$GLOBALS[$key] = $value;
 			$this->settings->set( $key, $value );

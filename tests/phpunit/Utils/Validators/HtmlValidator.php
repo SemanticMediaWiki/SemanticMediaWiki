@@ -6,12 +6,12 @@ use DOMDocument;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author Stephan Gambke
  */
-class HtmlValidator extends \PHPUnit_Framework_Assert {
+class HtmlValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @var array
@@ -19,7 +19,7 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	private $documentCache = [];
 
 	/**
-	 * @var null|boolean
+	 * @var null|bool
 	 */
 	private $canUse;
 
@@ -28,17 +28,15 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatHtmlIsValid( $actual, $message = '' ) {
-
 		$document = $this->getDomDocumentFromHtmlFragment( $actual );
 
 		self::assertTrue( $document !== false, "Failed test `{$message}` (assertion HtmlIsValid) for $actual" );
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
-
 		if ( $this->canUse === null ) {
 			$this->canUse = class_exists( '\Symfony\Component\CssSelector\CssSelectorConverter' );
 		}
@@ -52,7 +50,6 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	 * @return bool|DOMDocument
 	 */
 	private function getDomDocumentFromHtmlFragment( $fragment ) {
-
 		$cacheKey = md5( $fragment );
 
 		if ( !isset( $this->documentCache[ $cacheKey ] ) ) {
@@ -67,7 +64,6 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	 * @param $cacheKey
 	 */
 	private function addHtmlFragmentToCache( $fragment, $cacheKey ) {
-
 		$fragment = self::wrapHtmlFragment( $fragment );
 
 		$document = new DOMDocument();
@@ -78,7 +74,6 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 		libxml_use_internal_errors( false );
 
 		$this->documentCache[ $cacheKey ] = ( $result === true ) ? $document : false;
-
 	}
 
 	/**
@@ -96,7 +91,6 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 	 * @param string $message
 	 */
 	public function assertThatHtmlContains( $cssSelectors, $htmlFragment, $message = '', $expected = true ) {
-
 		$document = $this->getDomDocumentFromHtmlFragment( $htmlFragment );
 		$xpath = new \DOMXPath( $document );
 		$converter = new CssSelectorConverter();
@@ -105,11 +99,11 @@ class HtmlValidator extends \PHPUnit_Framework_Assert {
 
 			if ( is_array( $selector ) ) {
 				$expectedCount = array_pop( $selector );
-				$expectedCountText = ( ( $expected === true) ? '' : 'not ') . $expectedCount;
+				$expectedCountText = ( ( $expected === true ) ? '' : 'not ' ) . $expectedCount;
 				$selector = array_shift( $selector );
 			} else {
 				$expectedCount = false;
-				$expectedCountText = ( $expected === true) ? 'at least 1' : 'none';
+				$expectedCountText = ( $expected === true ) ? 'at least 1' : 'none';
 			}
 
 			$message = "Failed assertion for test case `{$message}` on: \n=====\n$htmlFragment\n=====\nExpected pattern: `$selector`\n";

@@ -5,9 +5,9 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 
-\Hooks::register( 'SMW::ResultFormat::OverrideDefaultFormat', function( &$format, $printRequests ) {
+\MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::ResultFormat::OverrideDefaultFormat', function( &$format, $printRequests ) {
 
 	return true;
 } );

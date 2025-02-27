@@ -2,16 +2,14 @@
 
 namespace SMW\Schema;
 
-use SeekableIterator;
-use Iterator;
 use Countable;
-use OutOfBoundsException;
-use RuntimeException;
-use SMW\Utils\DotArray;
+use Iterator;
+use SeekableIterator;
 use SMW\Iterators\SeekableIteratorTrait;
+use SMW\Utils\DotArray;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -54,8 +52,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * @return bool
 	 */
-	public function has( string $key ) : bool {
-
+	public function has( string $key ): bool {
 		foreach ( $this->container as $data ) {
 			if ( DotArray::get( $data, $key, false ) !== false ) {
 				return true;
@@ -73,7 +70,6 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 */
 	#[\ReturnTypeWillChange]
 	public function current() {
-
 		$data = current( $this->container );
 
 		if ( $data instanceof Compartment ) {
@@ -99,8 +95,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * @return CompartmentIterator
 	 */
-	public function find( string $key, ?string $flag = null ) : CompartmentIterator {
-
+	public function find( string $key, ?string $flag = null ): CompartmentIterator {
 		$meta = [];
 		$result = [];
 
@@ -111,7 +106,6 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	}
 
 	private function search( $key, $flag, $data, $meta, &$result ) {
-
 		foreach ( $data as $section => $value ) {
 
 			if ( isset( $data[Compartment::ASSOCIATED_SCHEMA] ) ) {

@@ -8,7 +8,7 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
 /**
  * Factory for "result formats", ie classes implementing QueryResultPrinter.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5 (since 1.9, renamed in 2.5)
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -73,7 +73,6 @@ final class QueryPrinterFactory {
 	 * @throws InvalidArgumentException
 	 */
 	public function registerFormat( $formatName, $class ) {
-
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
@@ -98,7 +97,6 @@ final class QueryPrinterFactory {
 	 * @throws InvalidArgumentException
 	 */
 	public function registerAliases( $formatName, array $aliases ) {
-
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
@@ -130,7 +128,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @param string $formatName Format name or alias
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFormat( $formatName ) {
 		$formatName = $this->getCanonicalName( $formatName );
@@ -181,7 +179,6 @@ final class QueryPrinterFactory {
 	 * @throws InvalidArgumentException
 	 */
 	public function getCanonicalName( $formatName ) {
-
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}

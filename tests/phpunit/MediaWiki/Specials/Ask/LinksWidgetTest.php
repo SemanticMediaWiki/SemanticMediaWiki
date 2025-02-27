@@ -9,57 +9,51 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Ask\LinksWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
+class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testFieldset() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			LinksWidget::fieldset()
 		);
 	}
 
 	public function testEmbeddedCodeLink() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			LinksWidget::embeddedCodeLink()
 		);
 	}
 
 	public function testEmbeddedCodeBlock() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			LinksWidget::embeddedCodeBlock( 'Foo' )
 		);
 	}
 
 	public function testResultSubmitLinkHide() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			LinksWidget::resultSubmitLink( true )
 		);
 	}
 
 	public function testResultSubmitLinkShow() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			LinksWidget::resultSubmitLink( false )
 		);
 	}
 
 	public function testShowHideLink() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -68,14 +62,13 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::showHideLink( $title, $urlArgs )
 		);
 	}
 
 	public function testDebugLink() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,14 +77,13 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::debugLink( $title, $urlArgs )
 		);
 	}
 
 	public function testNoQCacheLink() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -100,14 +92,13 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::noQCacheLink( $title, $urlArgs, true )
 		);
 	}
 
 	public function testNoQCacheLinkOnFalseFromCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -122,13 +113,12 @@ class LinksWidgetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClipboardLink() {
-
 		$infolink = $this->getMockBuilder( '\SMWInfolink' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			LinksWidget::clipboardLink( $infolink )
 		);
 	}

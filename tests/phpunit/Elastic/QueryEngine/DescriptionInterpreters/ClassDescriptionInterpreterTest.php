@@ -2,25 +2,24 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\Query\DescriptionFactory;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $conditionBuilder;
 
-	public function setUp() : void {
-
+	public function setUp(): void {
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getID', 'findHierarchyMembers', 'prepareCache' ] )
@@ -28,7 +27,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ClassDescriptionInterpreter::class,
 			new ClassDescriptionInterpreter( $this->conditionBuilder )
@@ -39,14 +37,13 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider classDescriptionProvider
 	 */
 	public function testInterpretDescription( $description, $isConjunction, $hierarchyMembers, $expected ) {
-
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'getID' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9000, 110001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
 		$this->conditionBuilder->expects( $this->any() )
 			->method( 'findHierarchyMembers' )
-			->will( $this->returnValue( $hierarchyMembers ) );
+			->willReturn( $hierarchyMembers );
 
 		$instance = new ClassDescriptionInterpreter(
 			$this->conditionBuilder
@@ -64,7 +61,6 @@ class ClassDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function classDescriptionProvider() {
-
 		$descriptionFactory = new DescriptionFactory();
 		$cat_foo = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
 		$cat_bar = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );

@@ -8,15 +8,15 @@ use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Parser as QueryParser;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -61,7 +61,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ConceptDescription;
@@ -84,7 +84,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 		$concept = $description->getConcept();
 
@@ -123,12 +122,12 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		global $smwgQConceptCaching, $smwgQMaxSize, $smwgQMaxDepth, $smwgQFeatures, $smwgQConceptCacheLifetime;
 
 		$may_be_computed = ( $smwgQConceptCaching == CONCEPT_CACHE_NONE ) ||
-		    ( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
-		      ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
+			( ( $smwgQConceptCaching == CONCEPT_CACHE_HARD ) && ( ( ~( ~( $row->concept_features + 0 ) | $smwgQFeatures ) ) == 0 ) &&
+			  ( $smwgQMaxSize >= $row->concept_size ) && ( $smwgQMaxDepth >= $row->concept_depth ) );
 
 		if ( $row->cache_date &&
-		     ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
-		       !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
+			 ( ( $row->cache_date > ( strtotime( "now" ) - $smwgQConceptCacheLifetime * 60 ) ) ||
+			   !$may_be_computed ) ) { // Cached concept, use cache unless it is dead and can be revived.
 
 			$query->joinTable = SQLStore::CONCEPT_CACHE_TABLE;
 			$query->joinfield = "$query->alias.s_id";
@@ -184,7 +183,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * Unescaping is the same as in SMW_DV_Conept's getWikiValue().
 	 */
 	private function buildDescription( $conceptQuery ) {
-
 		if ( $this->queryParser === null ) {
 			throw new RuntimeException( 'Missing a QueryParser instance' );
 		}
@@ -195,7 +193,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function findCircularDescription( $concept, &$description ) {
-
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

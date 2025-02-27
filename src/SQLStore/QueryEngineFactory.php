@@ -2,21 +2,21 @@
 
 namespace SMW\SQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QueryEngine;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -24,7 +24,7 @@ use SMW\Utils\CircularReferenceGuard;
 class QueryEngineFactory {
 
 	/**
-	 * @var SMWSQLStore3
+	 * @var \SMW\SQLStore\SQLStore
 	 */
 	private $store;
 
@@ -43,7 +43,6 @@ class QueryEngineFactory {
 	 * @return ConditionBuilder
 	 */
 	public function newConditionBuilder() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 		$orderCondition = new OrderCondition();
 
@@ -78,7 +77,6 @@ class QueryEngineFactory {
 	 * @return QuerySegmentListProcessor
 	 */
 	public function newQuerySegmentListProcessor() {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
@@ -118,7 +116,6 @@ class QueryEngineFactory {
 	 * @return QueryEngine
 	 */
 	public function newQueryEngine() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$queryEngine = new QueryEngine(
@@ -141,7 +138,6 @@ class QueryEngineFactory {
 	 * @return ConceptQuerySegmentBuilder
 	 */
 	public function newConceptQuerySegmentBuilder() {
-
 		$pplicationFactory = ApplicationFactory::getInstance();
 
 		$conceptQuerySegmentBuilder = new ConceptQuerySegmentBuilder(
@@ -159,7 +155,6 @@ class QueryEngineFactory {
 	}
 
 	private function newTemporaryTableBuilder() {
-
 		$temporaryTableBuilder = new TemporaryTableBuilder(
 			$this->store->getConnection( 'mw.db.queryengine' )
 		);

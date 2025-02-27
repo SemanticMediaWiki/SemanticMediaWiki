@@ -2,29 +2,26 @@
 
 namespace SMW\Tests\Exporter\Serializer;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\RDFXMLSerializer;
 use SMW\Tests\PHPUnitCompat;
 use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpNsResource;
-use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * @covers \SMW\Exporter\Serializer\RDFXMLSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class RDFXMLSerializerTest extends \PHPUnit_Framework_TestCase {
+class RDFXMLSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testFlushContent_Empty() {
-
 		$instance = new RDFXMLSerializer();
 		$instance->startSerialization();
 		$instance->finishSerialization();
@@ -36,7 +33,6 @@ class RDFXMLSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFlushContent_EmptyElement() {
-
 		$expData = new ExpData(
 			new ExpNsResource( 'Foobar', 'Bar', 'Mo', null )
 		);
@@ -54,7 +50,6 @@ class RDFXMLSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFlushContent_SingleElement() {
-
 		$expData = new ExpData(
 			new ExpNsResource( 'Foobar', 'Bar', 'ns:Mo', null )
 		);

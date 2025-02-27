@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Factbox\FactboxCache;
 use SMW\MediaWiki\Hooks\ArticlePurge;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use WikiPage;
@@ -13,19 +12,19 @@ use WikiPage;
  * @covers \SMW\MediaWiki\Hooks\ArticlePurge
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
+class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 
 	private $applicationFactory;
 	private $testEnvironment;
 	private $cache;
 	private $eventDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -45,7 +44,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->testEnvironment->tearDown();
 
@@ -56,10 +55,9 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
-			->with( $this->equalTo( 'InvalidateEntityCache' ) );
+			->with( 'InvalidateEntityCache' );
 
 		$wikiPage = new WikiPage( $setup['title'] );
 		$pageId   = $wikiPage->getTitle()->getArticleID();
@@ -130,18 +128,21 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-
-		$validIdTitle =  MockTitle::buildMock( 'validIdTitle' );
+		$validIdTitle = MockTitle::buildMock( 'validIdTitle' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 9999 ) );
+			->willReturn( 9999 );
 
 		$validIdTitle->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
-		#0 Id = cache
+		$validIdTitle->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
+		# 0 Id = cache
 		$provider[] = [
 			[
 				'title'  => $validIdTitle,
@@ -157,16 +158,20 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 Disabled setting
-		$validIdTitle =  MockTitle::buildMock( 'Disabled' );
+		# 1 Disabled setting
+		$validIdTitle = MockTitle::buildMock( 'Disabled' );
 
 		$validIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 9099 ) );
+			->willReturn( 9099 );
 
 		$validIdTitle->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
+
+		$validIdTitle->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		$provider[] = [
 			[
@@ -184,15 +189,19 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		// #2 No Id
-		$nullIdTitle =  MockTitle::buildMock( 'NullId' );
+		$nullIdTitle = MockTitle::buildMock( 'NullId' );
 
 		$nullIdTitle->expects( $this->atLeastOnce() )
 			->method( 'getArticleID' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$nullIdTitle->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
+
+		$nullIdTitle->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		$provider[] = [
 			[
@@ -209,7 +218,7 @@ class ArticlePurgeTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#3 No Id
+		# 3 No Id
 		$provider[] = [
 			[
 				'title'  => $nullIdTitle,

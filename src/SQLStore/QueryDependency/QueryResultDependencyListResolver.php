@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
@@ -13,10 +13,11 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -39,7 +40,6 @@ class QueryResultDependencyListResolver {
 	/**
 	 * @since 2.3
 	 *
-	 * @param $queryResult Can be a string for when format=Debug
 	 * @param HierarchyLookup $hierarchyLookup
 	 */
 	public function __construct( HierarchyLookup $hierarchyLookup ) {
@@ -75,7 +75,6 @@ class QueryResultDependencyListResolver {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function getDependencyListByLateRetrievalFrom( $queryResult ) {
-
 		if ( !$this->canResolve( $queryResult ) ) {
 			return [];
 		}
@@ -96,7 +95,6 @@ class QueryResultDependencyListResolver {
 	 * @return DIWikiPage[]|[]
 	 */
 	public function getDependencyListFrom( $queryResult ) {
-
 		if ( !$this->canResolve( $queryResult ) ) {
 			return [];
 		}
@@ -138,7 +136,6 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function doResolveDependenciesFromDescription( &$subjects, $store, $description ) {
-
 		// Ignore entities that use a comparator other than SMW_CMP_EQ
 		// [[Has page::~Foo*]] or similar is going to be ignored
 		if ( $description instanceof ValueDescription &&
@@ -182,7 +179,6 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function doMatchProperty( &$subjects, DIProperty $property ) {
-
 		if ( $property->isInverse() ) {
 			$property = new DIProperty( $property->getKey() );
 		}
@@ -202,7 +198,6 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function doMatchSubcategory( &$subjects, DIWikiPage $category ) {
-
 		$hash = $category->getHash();
 		$subcategories = [];
 
@@ -223,7 +218,6 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function doMatchSubproperty( &$subjects, $subject, DIProperty $property ) {
-
 		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for
@@ -249,11 +243,10 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function doResolveDependenciesFromPrintRequest( &$subjects, array $printRequests ) {
-
 		foreach ( $printRequests as $printRequest ) {
 			$data = $printRequest->getData();
 
-			if ( $data instanceof \SMWPropertyValue ) {
+			if ( $data instanceof PropertyValue ) {
 				$subjects[] = $data->getDataItem()->getCanonicalDiWikiPage();
 			}
 
@@ -265,7 +258,6 @@ class QueryResultDependencyListResolver {
 	}
 
 	private function getConceptDescription( $store, DIWikiPage $concept ) {
-
 		$value = $store->getPropertyValues(
 			$concept,
 			new DIProperty( '_CONC' )

@@ -11,13 +11,13 @@ use Traversable;
 /**
  * @see Guzzle::ChunkedIterator
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  */
 class ChunkedIterator extends IteratorIterator {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $chunkSize = 0;
 
@@ -29,11 +29,10 @@ class ChunkedIterator extends IteratorIterator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Traversable|array $iterator
-	 * @param integer $chunkSize
+	 * @param Traversable|array $iterable
+	 * @param int $chunkSize
 	 */
 	public function __construct( $iterable, $chunkSize = 500 ) {
-
 		$chunkSize = (int)$chunkSize;
 
 		if ( is_array( $iterable ) ) {
@@ -57,6 +56,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function rewind() {
 		parent::rewind();
 		$this->next();
@@ -67,6 +67,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function next() {
 		$this->chunk = [];
 
@@ -81,6 +82,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return $this->chunk;
 	}
@@ -90,6 +92,7 @@ class ChunkedIterator extends IteratorIterator {
 	 *
 	 * {@inheritDoc}
 	 */
+	#[\ReturnTypeWillChange]
 	public function valid() {
 		return (bool)$this->chunk;
 	}

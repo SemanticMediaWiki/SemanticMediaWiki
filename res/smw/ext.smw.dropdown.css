@@ -88,6 +88,7 @@
 	background-color: white;
 	box-shadow: 0 3px 6px rgba( 0, 0, 0, .175 );
 	margin: 0 0 0 0 !important;
+	z-index: 10;
 }
 
 .smw-dropdown input[type=checkbox]:checked + .smw-dropdown-menu {

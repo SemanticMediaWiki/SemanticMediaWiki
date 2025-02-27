@@ -6,7 +6,7 @@ use Collation;
 use MediaWiki\MediaWikiServices;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -55,17 +55,11 @@ class Collator {
 	 * @return Collator
 	 */
 	public static function singleton( $collationName = '' ) {
-
 		$collationName = $collationName === '' ? $GLOBALS['smwgEntityCollation'] : $collationName;
 
 		if ( !isset( self::$instance[$collationName] ) ) {
 			$services = MediaWikiServices::getInstance();
-			// BC for MW <= 1.36
-			if ( method_exists( $services, 'getCollationFactory' ) ) {
-				$collation = $services->getCollationFactory()->makeCollation( $collationName );
-			} else {
-				$collation = Collation::factory( $collationName );
-			}
+			$collation = $services->getCollationFactory()->makeCollation( $collationName );
 
 			self::$instance[$collationName] = new self( $collation, $collationName );
 		}
@@ -89,7 +83,6 @@ class Collator {
 	 * @return string
 	 */
 	public function armor( $text, $source = '' ) {
-
 		if ( strpos( $this->collationName, 'uca' ) === false ) {
 			return $text;
 		}
@@ -118,7 +111,6 @@ class Collator {
 	 * @return string
 	 */
 	public function getFirstLetter( $text ) {
-
 		// Add check otherwise the Collation instance returns with a
 		// "Uninitialized string offset: 0"
 		if ( $text === '' ) {
@@ -134,7 +126,7 @@ class Collator {
 	 * @param string $old
 	 * @param string $new
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isIdentical( $old, $new ) {
 		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );

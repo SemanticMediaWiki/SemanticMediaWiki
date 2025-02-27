@@ -2,12 +2,9 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use SMW\PropertySpecificationLookup;
-use SMW\DIWikiPage;
-use SMWDataValue as DataValue;
-use SMW\RequestOptions;
-use SMW\Store;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\Property\SpecificationLookup;
+use SMWDataValue as DataValue;
 
 /**
  * @private
@@ -19,7 +16,7 @@ use SMW\Constraint\Constraints\UniqueValueConstraint;
  * value with the same literal representation is being identified as violating the
  * uniqueness constraint.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -32,12 +29,12 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	private $uniqueValueConstraint;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
@@ -45,9 +42,9 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 * @since 2.4
 	 *
 	 * @param UniqueValueConstraint $uniqueValueConstraint
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( UniqueValueConstraint $uniqueValueConstraint, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( UniqueValueConstraint $uniqueValueConstraint, SpecificationLookup $propertySpecificationLookup ) {
 		$this->uniqueValueConstraint = $uniqueValueConstraint;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -76,7 +73,6 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 
 		if ( !$this->canValidate( $dataValue ) ) {
@@ -94,7 +90,6 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	}
 
 	private function canValidate( $dataValue ) {
-
 		if ( !$dataValue->isEnabledFeature( SMW_DV_PVUC ) || !$dataValue instanceof DataValue ) {
 			return false;
 		}

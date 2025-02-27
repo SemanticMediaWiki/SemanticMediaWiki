@@ -2,28 +2,31 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $compositeIndicatorHtmlBuilder;
+
+	private PermissionExaminer $permissionExaminer;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +40,12 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$indicatorProviders = [];
 
 		$this->assertInstanceOf(
@@ -63,7 +65,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testGetName() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -71,14 +72,13 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
 
 	public function testGetIndicators() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -86,14 +86,13 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
 
 	public function testGetModules() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -101,14 +100,13 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
 
 	public function testGetInlineStyle() {
-
 		$indicatorProviders = [];
 
 		$instance = new EntityExaminerCompositeIndicatorProvider(
@@ -116,14 +114,13 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
 
 	public function testHasIndicator_Empty() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
@@ -132,11 +129,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$indicatorProviders = [
 			$indicatorProvider
@@ -147,14 +144,13 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
 
 	public function testHasIndicator_Option_ActionEdit() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
@@ -176,7 +172,6 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testHasIndicator_Option_Diff() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
@@ -198,12 +193,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	}
 
 	public function testHasIndicator_SomeContent() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->once() )
 			->method( 'buildHTML' )
-			->will( $this->returnValue( '...' ) );
+			->willReturn( '...' );
 
 		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
 			->disableOriginalConstructor()
@@ -211,11 +205,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'hasIndicator' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$indicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'getModules' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$indicatorProviders = [
 			$indicatorProvider
@@ -226,14 +220,13 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$indicatorProviders
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
 
 	public function testNoIndicatorOnFailedPermission() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->never() )
@@ -241,7 +234,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$indicatorProviders = [
 			$this->newPermissionAwareIndicatorProvider()
@@ -256,8 +249,8 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 			$this->permissionExaminer
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasIndicator( $subject, [] )
 		);
 	}
@@ -265,7 +258,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 	private function newPermissionAwareIndicatorProvider() {
 		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
 
-			public function getName() : string {
+			public function getName(): string {
 				return '';
 			}
 
@@ -273,7 +266,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options) {
+			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -285,7 +278,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit_Framework_Te
 				return [];
 			}
 
-			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) : bool {
+			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ): bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};

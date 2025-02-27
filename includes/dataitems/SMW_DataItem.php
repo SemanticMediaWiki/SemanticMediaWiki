@@ -2,6 +2,9 @@
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
+use SMW\DIConcept;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\SemanticData;
 
@@ -33,29 +36,29 @@ use SMW\SemanticData;
 abstract class SMWDataItem implements JsonUnserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
-	const TYPE_NOTYPE    = 0;
+	const TYPE_NOTYPE = 0;
 	/// Data item ID for SMWDINumber
-	const TYPE_NUMBER    = 1;
+	const TYPE_NUMBER = 1;
 	/// Data item ID for SMWDIBlob
-	const TYPE_BLOB      = 2;
+	const TYPE_BLOB = 2;
 	///  Data item ID for SMWDIBoolean
-	const TYPE_BOOLEAN   = 4;
+	const TYPE_BOOLEAN = 4;
 	///  Data item ID for SMWDIUri
-	const TYPE_URI       = 5;
+	const TYPE_URI = 5;
 	///  Data item ID for SMWDITimePoint
-	const TYPE_TIME      = 6;
+	const TYPE_TIME = 6;
 	///  Data item ID for SMWDIGeoCoord
-	const TYPE_GEO       = 7;
+	const TYPE_GEO = 7;
 	///  Data item ID for SMWDIContainer
 	const TYPE_CONTAINER = 8;
-	///  Data item ID for SMWDIWikiPage
-	const TYPE_WIKIPAGE  = 9;
-	///  Data item ID for SMWDIConcept
-	const TYPE_CONCEPT   = 10;
-	///  Data item ID for SMWDIProperty
-	const TYPE_PROPERTY  = 11;
+	///  Data item ID for DIWikiPage
+	const TYPE_WIKIPAGE = 9;
+	///  Data item ID for DIConcept
+	const TYPE_CONCEPT = 10;
+	///  Data item ID for DIProperty
+	const TYPE_PROPERTY = 11;
 	///  Data item ID for SMWDIError
-	const TYPE_ERROR     = 12;
+	const TYPE_ERROR = 12;
 
 	/**
 	 * @var Options
@@ -66,7 +69,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * Convenience method that returns a constant that defines the concrete
 	 * class that implements this data item. Used to switch when processing
 	 * data items.
-	 * @return integer that specifies the basic type of data item
+	 * @return int that specifies the basic type of data item
 	 */
 	abstract public function getDIType();
 
@@ -99,7 +102,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @since 1.8
 	 *
 	 * @param SMWDataItem $di
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract public function equals( SMWDataItem $di );
 
@@ -161,7 +164,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * Create a data item of the given dataitem ID based on the the
 	 * provided serialization string and (optional) typeid.
 	 *
-	 * @param integer $diType dataitem ID
+	 * @param int $diType dataitem ID
 	 * @param string $serialization
 	 *
 	 * @return SMWDataItem
@@ -174,7 +177,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	/**
 	 * Gets the class name of the data item that has the provided type id.
 	 *
-	 * @param integer $diType Element of the SMWDataItem::TYPE_ enum
+	 * @param int $diType Element of the SMWDataItem::TYPE_ enum
 	 *
 	 * @throws InvalidArgumentException
 	 *
@@ -197,14 +200,15 @@ abstract class SMWDataItem implements JsonUnserializable {
 			case self::TYPE_CONTAINER:
 				return SMWDIContainer::class;
 			case self::TYPE_WIKIPAGE:
-				return SMWDIWikiPage::class;
+				return DIWikiPage::class;
 			case self::TYPE_CONCEPT:
-				return SMWDIConcept::class;
+				return DIConcept::class;
 			case self::TYPE_PROPERTY:
-				return SMWDIProperty::class;
+				return DIProperty::class;
 			case self::TYPE_ERROR:
 				return SMWDIError::class;
-			case self::TYPE_NOTYPE: default:
+			case self::TYPE_NOTYPE:
+			default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
 		}
 	}
@@ -216,7 +220,6 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @param string $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -233,7 +236,6 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -247,7 +249,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -274,7 +276,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 */
 	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
 		$obj = static::doUnserialize( $json['value'] );
-		$obj->options = $json['options'] ? SemanticData::maybeUnserialize($unserializer, $json['options'] ) : null;
+		$obj->options = $json['options'] ? SemanticData::maybeUnserialize( $unserializer, $json['options'] ) : null;
 		return $obj;
 	}
 

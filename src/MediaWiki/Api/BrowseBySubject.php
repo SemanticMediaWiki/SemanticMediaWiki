@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Browse a subject api module
@@ -18,7 +18,7 @@ use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -36,7 +36,6 @@ class BrowseBySubject extends ApiBase {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 
 		if ( isset( $params['type'] ) && $params['type'] === 'html' ) {
@@ -53,7 +52,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function buildHTML( $params ) {
-
 		$subject = new DIWikiPage(
 			$params['subject'],
 			$params['ns'],
@@ -74,7 +72,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function doSerialize( $params ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$title = $applicationFactory->newTitleFactory()->newFromText(
@@ -87,13 +84,7 @@ class BrowseBySubject extends ApiBase {
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
 		} catch ( \Exception $e ) {
-
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
-			} else {
-				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable' );
-			}
+			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		}
 
 		$dataItem = new DIWikiPage(
@@ -113,7 +104,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function doFormat( $serialized ) {
-
 		$this->addIndexTags( $serialized );
 
 		if ( isset( $serialized['sobj'] ) ) {
@@ -129,7 +119,6 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function addIndexTags( &$serialized ) {
-
 		if ( isset( $serialized['data'] ) && is_array( $serialized['data'] ) ) {
 
 			$this->getResult()->setIndexedTagName( $serialized['data'], 'property' );

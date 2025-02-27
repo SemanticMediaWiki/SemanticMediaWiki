@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
 /**
  * @covers \SMW\Query\QueryResult
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class QueryResultTest extends \PHPUnit_Framework_TestCase {
+class QueryResultTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -38,7 +37,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFilterMap() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,7 +62,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testVerifyThatAfterSerializeToArrayResultNextCanBeUsed() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -84,21 +81,20 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->serializeToArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getNext()
 		);
 
 		$instance->getHash();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getNext()
 		);
 	}
 
 	public function testIsFromCache() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -129,7 +125,6 @@ class QueryResultTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();

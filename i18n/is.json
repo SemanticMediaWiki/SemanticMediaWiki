@@ -2,11 +2,13 @@
 	"@metadata": {
 		"authors": [
 			"LoveIceLang",
+			"Steinninn",
 			"Sveinn í Felli"
 		]
 	},
 	"specialpages-group-smw_group-properties-concepts-types": "Eiginleikar, hugtök og tegundir",
 	"properties": "Eiginleikar",
+	"smw-categories": "Flokkar",
 	"concepts": "Hugtök",
 	"unusedproperties": "Ónotaðir eiginleikar",
 	"wantedproperties": "Eiginleikar sem vantar",

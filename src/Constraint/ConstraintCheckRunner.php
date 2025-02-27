@@ -7,7 +7,7 @@ use SMW\Schema\Schema;
 use SMW\Schema\SchemaList;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -20,27 +20,27 @@ class ConstraintCheckRunner {
 	private $constraintRegistry;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraintChecks = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraints = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $constraintSchemas = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasDeferrableConstraint = false;
 
@@ -56,7 +56,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasViolation() {
 		return $this->hasViolation;
@@ -65,7 +65,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDeferrableConstraint() {
 		return $this->hasDeferrableConstraint;
@@ -78,7 +78,6 @@ class ConstraintCheckRunner {
 	 * @param Schema|SchemaList $schema
 	 */
 	public function load( $key, $schema ) {
-
 		$this->hasViolation = false;
 		$this->constraints = [];
 
@@ -102,7 +101,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getConstraints() {
 		return $this->constraints;
@@ -114,7 +113,6 @@ class ConstraintCheckRunner {
 	 * @param mixed $dataValue
 	 */
 	public function check( $dataValue ) {
-
 		$this->hasDeferrableConstraint = false;
 		$this->hasViolation = false;
 
@@ -136,7 +134,6 @@ class ConstraintCheckRunner {
 	}
 
 	private function checkConstraint( $key, $value, $dataValue ) {
-
 		$constraint = $this->constraintRegistry->getConstraintByKey(
 			$key
 		);

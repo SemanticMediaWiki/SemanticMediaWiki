@@ -4,19 +4,19 @@ namespace SMW\Query\ResultPrinters;
 
 use Html;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
+use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
 use SMWDataValue;
 use SMWDIBlob as DIBlob;
-use SMWQueryResult as QueryResult;
-use SMWResultArray as ResultArray;
 
 /**
  * Print query results in tables
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -29,6 +29,10 @@ class TableResultPrinter extends ResultPrinter {
 	 * @var HtmlTable
 	 */
 	private $htmlTable;
+
+	private $isDataTable;
+
+	private $prefixParameterProcessor;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -56,7 +60,6 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getParamDefinitions( array $definitions ) {
-
 		$params = parent::getParamDefinitions( $definitions );
 
 		$params['class'] = [
@@ -76,6 +79,12 @@ class TableResultPrinter extends ResultPrinter {
 			'default' => '',
 		];
 
+		$params['prefix'] = [
+			'message' => 'smw-paramdesc-prefix',
+			'default' => 'none',
+			'values' => [ 'all', 'subject', 'none', 'auto' ],
+		];
+
 		return $params;
 	}
 
@@ -85,6 +94,8 @@ class TableResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
+		$this->prefixParameterProcessor = new PrefixParameterProcessor( $res->getQuery(),
+			$this->params['prefix'] );
 
 		$this->isHTML = ( $outputMode === SMW_OUTPUT_HTML );
 		$this->isDataTable = false;
@@ -107,7 +118,7 @@ class TableResultPrinter extends ResultPrinter {
 		// building headers
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
-			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
+			foreach ( $res->getPrintRequests() as $pr ) {
 				$attributes = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
 				$attributes['class'] = $columnClass;
@@ -142,10 +153,10 @@ class TableResultPrinter extends ResultPrinter {
 
 			$this->htmlTable->cell(
 					$link->getText( $outputMode, $this->mLinker ),
-					[ 'class' => 'sortbottom', 'colspan' => $res->getColumnCount() ]
+					[ 'colspan' => $res->getColumnCount() ]
 			);
 
-			$this->htmlTable->row( [ 'class' => 'smwfooter' ] );
+			$this->htmlTable->row( [ 'class' => 'smwfooter sortbottom' ] );
 		}
 
 		$tableAttrs = [ 'class' => $class ];
@@ -203,7 +214,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray[] $subject
+	 * @param ResultArray[] $subject
 	 * @param int $outputMode
 	 * @param string[] $columnClasses
 	 *
@@ -228,7 +239,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray $resultArray
+	 * @param \ $resultArray
 	 * @param int $outputMode
 	 * @param string $columnClass
 	 *
@@ -268,7 +279,7 @@ class TableResultPrinter extends ResultPrinter {
 			}
 
 			if ( $this->isDataTable && $sortKey !== '' ) {
-				$attributes['data-order'] = $sortKey;
+				$attributes['data-order'] = htmlspecialchars( $sortKey );
 			}
 
 			$alignment = trim( $printRequest->getParameter( 'align' ) );
@@ -306,30 +317,30 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param SMWDataValue[] $dataValues
 	 * @param $outputMode
-	 * @param boolean $isSubject
+	 * @param bool $isSubject
 	 *
 	 * @return string
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
-		$values = [];
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
+		$values = [];
 		foreach ( $dataValues as $dv ) {
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ||
-				$outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) {
+			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) ) {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $dv->getShortText( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
 					Message::PARSE
 				);
 			} else {
-				$value = $dv->getShortText( $outputMode, $this->getLinker( $isSubject ) );
+				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
 			}
-
 
 			$values[] = $value === '' ? '&nbsp;' : $value;
 		}
@@ -351,7 +362,6 @@ class TableResultPrinter extends ResultPrinter {
 	 * @see ResultPrinter::getResources
 	 */
 	protected function getResources() {
-
 		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
 
 		if ( strpos( $class, 'datatable' ) === false ) {
@@ -375,7 +385,6 @@ class TableResultPrinter extends ResultPrinter {
 	}
 
 	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
-
 		$tableAttrs['width'] = '100%';
 		$tableAttrs['style'] = 'opacity:.0; display:none;';
 

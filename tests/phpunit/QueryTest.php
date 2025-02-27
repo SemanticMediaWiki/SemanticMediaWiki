@@ -3,25 +3,24 @@
 namespace SMW\Tests;
 
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWQuery
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit_Framework_TestCase {
+class QueryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $smwgQMaxLimit;
 	private $smwgQMaxInlineLimit;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->smwgQMaxLimit = $GLOBALS['smwgQMaxLimit'];
@@ -29,7 +28,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$this->assertInstanceOf(
@@ -39,7 +37,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetLimitForLowerbound() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -72,7 +69,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsRestrictedByGLOBALRequirements() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -105,7 +101,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsUnrestricted() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
@@ -131,7 +126,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
 
 		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
@@ -143,8 +137,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$serialized = $instance->toArray();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$serialized
 		);
 
@@ -172,7 +166,6 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getFingerprint' ] )
@@ -183,8 +176,8 @@ class QueryTest extends \PHPUnit_Framework_TestCase {
 
 		$hash = $instance->getHash();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$hash
 		);
 

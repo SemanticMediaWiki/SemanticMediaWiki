@@ -16,7 +16,7 @@ use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class DataItemHandlerFactory {
 	private $handlers = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $fieldTypeFeatures = false;
 
@@ -50,7 +50,7 @@ class DataItemHandlerFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $fieldTypeFeatures
+	 * @param int $fieldTypeFeatures
 	 */
 	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
@@ -65,7 +65,6 @@ class DataItemHandlerFactory {
 	 * @throws RuntimeException
 	 */
 	public function getHandlerByType( $type ) {
-
 		if ( !isset( $this->handlers[$type] ) ) {
 			$this->handlers[$type] = $this->newHandlerByType( $type );
 		}
@@ -74,7 +73,6 @@ class DataItemHandlerFactory {
 	}
 
 	private function newHandlerByType( $type ) {
-
 		switch ( $type ) {
 			case DataItem::TYPE_NUMBER:
 				$handler = new DINumberHandler( $this->store );

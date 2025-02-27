@@ -52,6 +52,12 @@
 			"properties": {
 				"sequence_map": {
 					"$ref": "#/definitions/sequence_map"
+				},
+				"range_group": {
+					"$ref": "#/definitions/range_group"
+				},
+				"range_control": {
+					"$ref": "#/definitions/range_control"
 				}
 			},
 			"additionalProperties": false
@@ -63,6 +69,49 @@
 			"type": "boolean",
 			"default": false,
 			"title": "Whether to store annotation values in the order of the input or not"
+		},
+		"range_group": {
+			"$id": "#/definitions/range_group",
+			"type": "object",
+			"patternProperties": {
+				"^(.*)$": {
+					"$ref": "#/definitions/range_group_field_value"
+				}
+			}
+		},
+		"range_group_field_value": {
+			"$id": "#/definitions/range_group_field_value",
+			"type": "string",
+			"default": false,
+			"pattern": "^(.*)(\\.\\.\\.)(.*)$"
+		},
+		"range_control": {
+			"$id": "#/definitions/range_control",
+			"type": "object",
+			"properties": {
+				"min_interval": {
+					"type": "number",
+					"title": "Number to define the minimum range required for the values"
+				},
+				"step_size": {
+					"type": "number",
+					"title": "Specifies the size of increment between values"
+				},
+				"precision": {
+					"type": "number",
+					"title": "Specifies a number of digits after the decimal point"
+				},
+				"uncertainty": {
+					"type": "number",
+					"title": "Specifies a number of uncertainty for the minimum and maximum range value"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"min_interval",
+				"step_size",
+				"precision"
+			]
 		}
 	}
 }

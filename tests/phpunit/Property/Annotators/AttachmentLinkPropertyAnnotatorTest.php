@@ -3,28 +3,28 @@
 namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\SemanticData;
-use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Localizer\Localizer;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
-use SMW\Localizer;
 
 /**
  * @covers \SMW\Property\Annotators\AttachmentLinkPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;
-	private $nsFileName;
+	private $fileNS;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataValidator = TestEnvironment::newValidatorFactory()->newSemanticDataValidator();
@@ -33,7 +33,6 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,7 +49,6 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
@@ -81,7 +79,6 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddAnnotation_EmptyAttachments() {
-
 		$semanticData = new SemanticData(
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);

@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Iterators\ChunkedIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
+class ChunkedIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChunkedIterator::class,
 			new ChunkedIterator( [] )
@@ -27,7 +26,6 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChunkedOnArray() {
-
 		$result = [
 			1, 42, 1001, 9999
 		];
@@ -44,24 +42,22 @@ class ChunkedIteratorTest extends \PHPUnit_Framework_TestCase {
 		$chunks = iterator_to_array( $instance, false );
 
 		$this->assertEquals(
-			[1, 42],
+			[ 1, 42 ],
 			$chunks[0]
 		);
 
 		$this->assertEquals(
-			[1001, 9999],
+			[ 1001, 9999 ],
 			$chunks[1]
 		);
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-
 		$this->expectException( 'RuntimeException' );
 		$instance = new ChunkedIterator( 2 );
 	}
 
 	public function testInvalidChunkSizeArgumentThrowsException() {
-
 		$this->expectException( 'InvalidArgumentException' );
 		$instance = new ChunkedIterator( [], -1 );
 	}

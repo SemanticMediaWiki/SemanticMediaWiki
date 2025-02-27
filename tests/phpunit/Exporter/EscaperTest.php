@@ -10,23 +10,23 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Exporter\Escaper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class EscaperTest extends \PHPUnit_Framework_TestCase {
+class EscaperTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgExportResourcesAsIri', false );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -35,19 +35,16 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider encodePageProvider
 	 */
 	public function testEncodePage( $page, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			Escaper::encodePage( $page )
 		);
 	}
 
-
 	/**
 	 * @dataProvider encodeUriProvider
 	 */
 	public function testEncodeUri( $uri, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Escaper::encodeUri( $uri )
@@ -63,7 +60,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider decodeUriProvider
 	 */
 	public function testDecodeUri( $uri, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Escaper::decodeUri( $uri )
@@ -76,7 +72,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodeUriProvider() {
-
 		$provider[] = [
 			'Foo:"&+!%#',
 			'Foo-3A-22-26-2B-21-25-23'
@@ -90,7 +85,6 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function decodeUriProvider() {
-
 		$provider[] = [
 			'Foo-3A-22-26-2B-21-25-23',
 			'Foo:"&+!%#'
@@ -105,50 +99,48 @@ class EscaperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function encodePageProvider() {
-
-		#0
+		# 0
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '' )
-			, 'Foo'
+			new DIWikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo'
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			new DIWikiPage( 'Foo_bar', NS_MAIN, '', '' ),
 			'Foo_bar'
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			new DIWikiPage( 'Foo%bar', NS_MAIN, '', '' ),
 			'Foo-25bar'
 		];
 
-		#3 / #759
+		# 3 / #759
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'bar-3AFoo'
 		];
 
-		#4 / #759
+		# 4 / #759
 		$provider[] = [
 			new DIWikiPage( 'Foo', NS_MAIN, 'bar', 'yuu' ),
 			'bar-3AFoo'
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			new DIWikiPage( 'Fooºr', NS_MAIN, '', '' ),
 			'Foo-C2-BAr'
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			new DIWikiPage( 'Fooºr', SMW_NS_PROPERTY, '', '' ),
 			'Property-3AFoo-C2-BAr'
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			new DIWikiPage( 'Fooºr', NS_CATEGORY, '', '' ),
 			'Category-3AFoo-C2-BAr'

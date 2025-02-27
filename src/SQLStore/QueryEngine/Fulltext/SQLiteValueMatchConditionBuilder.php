@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use SMW\Query\Language\ValueDescription;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -18,10 +18,9 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @param ValueDescription $description
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canHaveMatchCondition( ValueDescription $description ) {
-
 		if ( !$this->isEnabled() ) {
 			return false;
 		}
@@ -57,7 +56,6 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 * @return string
 	 */
 	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
-
 		$matchableText = $this->getMatchableTextFromDescription(
 			$description
 		);

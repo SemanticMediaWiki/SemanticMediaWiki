@@ -3,24 +3,23 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\JobFactory;
-use Title;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\JobFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class JobFactoryTest extends \PHPUnit_Framework_TestCase {
+class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JobFactory::class,
 			new JobFactory()
@@ -31,7 +30,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testNewByType( $type, $expected ) {
-
 		$instance = new JobFactory();
 
 		$this->assertInstanceOf(
@@ -44,7 +42,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider typeProvider
 	 */
 	public function testNewByTypeWithNullTitle( $type ) {
-
 		$instance = new JobFactory();
 
 		$this->assertInstanceOf(
@@ -54,7 +51,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewByTypeOnUnknownJobThrowsException() {
-
 		$instance = new JobFactory();
 
 		$this->expectException( 'RuntimeException' );
@@ -62,7 +58,6 @@ class JobFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function typeProvider() {
-
 		$provider[] = [
 			'SMW\RefreshJob',
 			'\SMW\MediaWiki\Jobs\RefreshJob'

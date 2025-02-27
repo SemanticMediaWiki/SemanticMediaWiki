@@ -2,16 +2,15 @@
 
 namespace SMW\Parser;
 
-use Hooks;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
-use SMW\Localizer;
-use SMW\SemanticData;
+use SMW\Localizer\Localizer;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\ParserData;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Timer;
 use SMWOutputs;
 use Title;
@@ -23,7 +22,7 @@ use Title;
  * This class is contains all functions necessary for parsing wiki text before
  * it is displayed or previewed while identifying SMW related annotations.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -77,7 +76,7 @@ class InTextAnnotationParser {
 	private $stripMarkerDecoder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isEnabledNamespace;
 
@@ -85,17 +84,17 @@ class InTextAnnotationParser {
 	 * Internal state for switching SMW link annotations off/on during parsing
 	 * ([[SMW::on]] and [[SMW:off]])
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isAnnotation = true;
 
 	/**
-	 * @var boolean|integer
+	 * @var bool|int
 	 */
 	private $isLinksInValues = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showErrors = true;
 
@@ -118,7 +117,7 @@ class InTextAnnotationParser {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isLinksInValues
+	 * @param bool $isLinksInValues
 	 */
 	public function isLinksInValues( $isLinksInValues ) {
 		$this->isLinksInValues = $isLinksInValues;
@@ -127,7 +126,7 @@ class InTextAnnotationParser {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $showErrors
+	 * @param bool $showErrors
 	 */
 	public function showErrors( $showErrors ) {
 		$this->showErrors = (bool)$showErrors;
@@ -218,7 +217,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasMarker( $text ) {
 		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
@@ -229,7 +228,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasPropertyLink( $text ) {
 		return strpos( $text, '::@@@' ) !== false;
@@ -282,12 +281,11 @@ class InTextAnnotationParser {
 	 *
 	 * @param Title|null $redirectTarget
 	 */
-	public function setRedirectTarget( Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ) {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
 	protected function addRedirectTargetAnnotationFromText( $text ) {
-
 		if ( !$this->isEnabledNamespace ) {
 			return;
 		}
@@ -317,8 +315,7 @@ class InTextAnnotationParser {
 	 */
 	protected function getModules() {
 		return [
-			'ext.smw.style',
-			'ext.smw.tooltips'
+			'ext.smw.styles'
 		];
 	}
 
@@ -326,7 +323,7 @@ class InTextAnnotationParser {
 	 * @see LinksProcessor::getRegexpPattern
 	 * @since 1.9
 	 *
-	 * @param boolean $linksInValues
+	 * @param bool $linksInValues
 	 *
 	 * @return string
 	 */
@@ -343,7 +340,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	public function preprocess( array $semanticLink ) {
-
 		$semanticLinks = $this->linksProcessor->preprocess( $semanticLink );
 
 		if ( is_string( $semanticLinks ) ) {
@@ -362,7 +358,6 @@ class InTextAnnotationParser {
 	 * @return string
 	 */
 	protected function process( array $semanticLink ) {
-
 		$valueCaption = false;
 		$property = '';
 		$value = '';
@@ -377,7 +372,7 @@ class InTextAnnotationParser {
 			return $semanticLinks;
 		}
 
-		list( $properties, $value, $valueCaption ) = $semanticLinks;
+		[ $properties, $value, $valueCaption ] = $semanticLinks;
 
 		$subject = $this->parserData->getSubject();
 
@@ -394,12 +389,14 @@ class InTextAnnotationParser {
 	 *
 	 * @since 1.9
 	 *
+	 * @param $subject
 	 * @param array $properties
+	 * @param $value
+	 * @param $valueCaption
 	 *
 	 * @return string
 	 */
 	protected function addPropertyValue( $subject, array $properties, $value, $valueCaption ) {
-
 		$origValue = $value;
 
 		if ( $this->stripMarkerDecoder !== null ) {
@@ -445,7 +442,6 @@ class InTextAnnotationParser {
 	}
 
 	protected function doStripMagicWordsFromText( &$text ) {
-
 		$words = [];
 
 		$this->magicWordsFinder->setOutput( $this->parserData->getOutput() );
@@ -471,7 +467,6 @@ class InTextAnnotationParser {
 	}
 
 	private function makePropertyLink( $subject, $properties, $value, $caption ) {
-
 		$property = end( $properties );
 		$linker = smwfGetLinker();
 		$class = 'smw-property';

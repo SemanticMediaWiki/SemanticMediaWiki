@@ -3,25 +3,27 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIProperty;
-use SMW\Tests\DatabaseTestCase;
-use SMW\Tests\Utils\UtilityFactory;
 use SMW\DIWikiPage;
+use SMW\Tests\SMWIntegrationTestCase;
+use SMW\Tests\Utils\UtilityFactory;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
+class SemanticDataCountMapIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataFactory;
+	private $mwHooksHandler;
 	private $subjects = [];
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
@@ -30,8 +32,7 @@ class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 		$this->mwHooksHandler->deregisterListedHooks();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->subjects );
 		$this->mwHooksHandler->restoreListedHooks();
@@ -40,7 +41,6 @@ class SemanticDataCountMapIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testCountMapFromDatabase() {
-
 		$store = $this->getStore();
 
 		$semanticData = $this->semanticDataFactory

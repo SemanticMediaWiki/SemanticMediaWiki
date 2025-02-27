@@ -2,32 +2,30 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\RequestOptions;
 use SMW\SQLStore\RequestOptionsProcessor;
-use SMWRequestOptions as RequestOptions;
-use SMWStringCondition as StringCondition;
+use SMW\StringCondition;
 
 /**
  * @covers \SMW\SQLStore\RequestOptionsProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.3
  *
  * @author mwjames
  */
-class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
+class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testGetSQLOptions() {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 		$requestOptions->offset = 2;
@@ -45,7 +43,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSQLOptionsWithOrderBy() {
-
 		$instance = new RequestOptionsProcessor( $this->store );
 
 		$requestOptions = new RequestOptions();
@@ -69,18 +66,17 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestOptionsToSqlConditionsProvider
 	 */
 	public function testGetSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->assertEquals(
 			$expected,
@@ -92,7 +88,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider requestOptionsToApplyProvider
 	 */
 	public function testApplyRequestOptions( $data, $requestOptions, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			RequestOptionsProcessor::applyRequestOptions( $this->store, $data, $requestOptions )
@@ -100,7 +95,6 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function requestOptionsToSqlConditionsProvider() {
-
 		$provider = [];
 
 		# 0
@@ -228,10 +222,9 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function requestOptionsToApplyProvider() {
-
 		$provider = [];
 
-		#0
+		# 0
 		$requestOptions = new RequestOptions();
 		$requestOptions->boundary = true;
 
@@ -245,7 +238,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1
+		# 1
 		$requestOptions = new RequestOptions();
 		$requestOptions->addStringCondition( 'Foo', StringCondition::STRCOND_PRE );
 
@@ -259,7 +252,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#2 String not match
+		# 2 String not match
 		$requestOptions = new RequestOptions();
 		$requestOptions->addStringCondition( 'Bar', StringCondition::STRCOND_POST );
 
@@ -271,7 +264,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			[]
 		];
 
-		#3 Limit
+		# 3 Limit
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = 1;
 
@@ -286,7 +279,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#4 ascending
+		# 4 ascending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = true;
@@ -303,7 +296,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#5 descending
+		# 5 descending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = false;
@@ -320,7 +313,7 @@ class RequestOptionsProcessorTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#6 descending
+		# 6 descending
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->ascending = false;

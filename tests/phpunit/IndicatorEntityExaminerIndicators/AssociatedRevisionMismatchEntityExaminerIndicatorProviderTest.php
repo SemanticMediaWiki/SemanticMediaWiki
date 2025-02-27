@@ -2,31 +2,33 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
+	private EntityIdManager $entityIdManager;
 	private $store;
 	private $errorLookup;
 	private $messageLocalizer;
 	private $revisionGuard;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +44,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 
 		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
 			->disableOriginalConstructor()
@@ -54,16 +56,15 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$this->messageLocalizer->expects( $this->any() )
 			->method( 'msg' )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider',
 			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
@@ -81,95 +82,88 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testHasPermission() {
-
 		$permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->with( $this->equalTo( 'smw-viewentityassociatedrevisionmismatch' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-viewentityassociatedrevisionmismatch' )
+			->willReturn( true );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPermission( $permissionExaminer )
 		);
 	}
 
 	public function testGetName() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
 
 	public function testIsSeverityType() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isSeverityType( 'foo' )
 		);
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
 
 	public function testGetModules() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
 
 	public function testHasIndicator_SameRevision() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -195,14 +189,13 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testHasIndicator_DifferentRevision() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -235,15 +228,14 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 	}
 
 	public function testPredefinedPropertyHasIndicator_DifferentRevision() {
-
 		$this->entityIdManager->expects( $this->once() )
 			->method( 'findAssociatedRev' )
-			->with( $this->equalTo( '_MDAT' ) )
-			->will( $this->returnValue( 42 ) );
+			->with( '_MDAT' )
+			->willReturn( 42 );
 
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 1001 ) );
+			->willReturn( 1001 );
 
 		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 

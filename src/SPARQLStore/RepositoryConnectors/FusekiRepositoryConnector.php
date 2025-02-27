@@ -10,7 +10,7 @@ use SMW\Utils\Url;
 /**
  * @see https://jena.apache.org/documentation/serving_data/index.html
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 	 * @see GenericRepositoryConnector::doQuery
 	 */
 	public function doQuery( $sparql ) {
-
 		if ( $this->repositoryClient->getQueryEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -63,7 +62,6 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 	 * @see GenericRepositoryConnector::getVersion
 	 */
 	public function getVersion() {
-
 		$url = new Url(
 			$this->repositoryClient->getQueryEndpoint()
 		);

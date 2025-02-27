@@ -5,7 +5,7 @@ namespace SMW;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -29,9 +29,9 @@ class Status {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function has( string $key ) : bool {
+	public function has( string $key ): bool {
 		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
 	}
 
@@ -41,9 +41,9 @@ class Status {
 	 * @param string $key
 	 * @param mixed $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function is( string $key, $value ) : bool {
+	public function is( string $key, $value ): bool {
 		return $this->get( $key ) === $value;
 	}
 
@@ -56,7 +56,6 @@ class Status {
 	 * @throws InvalidArgumentException
 	 */
 	public function get( string $key ) {
-
 		if ( $this->has( $key ) ) {
 			return $this->options[$key];
 		}

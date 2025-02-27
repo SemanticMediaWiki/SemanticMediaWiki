@@ -8,7 +8,7 @@ use SMWNumberValue as NumberValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -32,12 +32,12 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 3.0
 	 *
+	 * @param NumberValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description
 	 */
 	public function newDescription( NumberValue $dataValue, $value ) {
-
 		$comparator = SMW_CMP_EQ;
 
 		$this->dataValue = $dataValue;

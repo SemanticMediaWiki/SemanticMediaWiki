@@ -3,17 +3,17 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWQuery;
 use SMWQueryProcessor;
-use SMWQueryResult;
 
 /**
  * Base for API modules that query SMW
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -33,7 +33,6 @@ abstract class Query extends ApiBase {
 	 * @return SMWQuery
 	 */
 	protected function getQuery( $queryString, array $printouts, array $parameters = [] ) {
-
 		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
 
 		$query = SMWQueryProcessor::createQuery(
@@ -56,10 +55,10 @@ abstract class Query extends ApiBase {
 	 *
 	 * @param SMWQuery $query
 	 *
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
 	protected function getQueryResult( SMWQuery $query ) {
-		return ApplicationFactory::getInstance()->getStore()->getQueryResult( $query );
+		return ApplicationFactory::getInstance()->getQuerySourceFactory()->get( $query->getQuerySource() )->getQueryResult( $query );
 	}
 
 	/**
@@ -67,10 +66,9 @@ abstract class Query extends ApiBase {
 	 *
 	 * @since 1.6.2
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 */
-	protected function addQueryResult( SMWQueryResult $queryResult, $outputFormat = 'json' ) {
-
+	protected function addQueryResult( QueryResult $queryResult, $outputFormat = 'json' ) {
 		$result = $this->getResult();
 
 		$resultFormatter = new ApiQueryResultFormatter( $queryResult );
@@ -78,9 +76,9 @@ abstract class Query extends ApiBase {
 		$resultFormatter->doFormat();
 
 		if ( $resultFormatter->getContinueOffset() ) {
-		//	$result->disableSizeCheck();
+		// $result->disableSizeCheck();
 			$result->addValue( null, 'query-continue-offset', $resultFormatter->getContinueOffset() );
-		//	$result->enableSizeCheck();
+		// $result->enableSizeCheck();
 		}
 
 		$result->addValue(

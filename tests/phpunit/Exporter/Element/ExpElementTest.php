@@ -11,15 +11,14 @@ use SMW\Exporter\Element\ExpResource;
  * @covers \SMW\Exporter\Element\ExpElement
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ExpElementTest extends \PHPUnit_Framework_TestCase {
+class ExpElementTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -29,9 +28,8 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 			$instance
 		);
 
-		// Legacy
 		$this->assertInstanceOf(
-			'\SMWExpElement',
+			'\SMW\Exporter\Element\ExpElement',
 			$instance
 		);
 	}
@@ -40,7 +38,6 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider instanceProvider
 	 */
 	public function testGetDataItem( ExpElement $element ) {
-
 		if ( $element->getDataItem() === null ) {
 			$this->assertNull(
 				$element->getDataItem()
@@ -57,7 +54,6 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider instanceProvider
 	 */
 	public function testSerielization( ExpElement $element ) {
-
 		$serialization = ExpElement::newFromSerialization(
 			$element->getSerialization()
 		);
@@ -69,7 +65,6 @@ class ExpElementTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function instanceProvider() {
-
 		$provider = [];
 
 		$provider[] = [ new ExpResource( 'foo' ) ];

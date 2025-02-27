@@ -2,14 +2,13 @@
 
 namespace SMW;
 
-use SMW\Store;
 use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -30,9 +29,9 @@ class SortLetter {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param Collator $collator
+	 * @param Collator|null $collator
 	 */
-	public function __construct( Store $store, Collator $collator = null ) {
+	public function __construct( Store $store, ?Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
 
@@ -49,7 +48,6 @@ class SortLetter {
 	 * @return string
 	 */
 	public function getFirstLetter( DataItem $dataItem ) {
-
 		$sortKey = $dataItem->getSortKey();
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {

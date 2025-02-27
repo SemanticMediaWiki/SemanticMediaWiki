@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
+class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper',
 			new ComparatorMapper()
@@ -27,7 +26,6 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidComparatorThrowsException() {
-
 		$value = '';
 
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -44,14 +42,13 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider comparatorProvider
 	 */
 	public function testSQLComparatorElement( $comparator, $value, $expected ) {
-
 		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$valueDescription->expects( $this->once() )
 			->method( 'getComparator' )
-			->will( $this->returnValue( $comparator ) );
+			->willReturn( $comparator );
 
 		$instance = new ComparatorMapper();
 
@@ -67,16 +64,15 @@ class ComparatorMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function comparatorProvider() {
+		$provider[] = [ SMW_CMP_EQ, 'Foo%_*?', [ 'comparator' => '=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_LESS, 'Foo%_*?', [ 'comparator' => '<', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_GRTR, 'Foo%_*?', [ 'comparator' => '>', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_LEQ, 'Foo%_*?', [ 'comparator' => '<=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_GEQ, 'Foo%_*?', [ 'comparator' => '>=', 'value' => 'Foo%_*?' ] ];
+		$provider[] = [ SMW_CMP_NEQ, 'Foo%_*?', [ 'comparator' => '!=', 'value' => 'Foo%_*?' ] ];
 
-		$provider[] = [ SMW_CMP_EQ,   'Foo%_*?', [ 'comparator' => '=',  'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_LESS, 'Foo%_*?', [ 'comparator' => '<',  'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_GRTR, 'Foo%_*?', [ 'comparator' => '>',  'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_LEQ,  'Foo%_*?', [ 'comparator' => '<=', 'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_GEQ,  'Foo%_*?', [ 'comparator' => '>=', 'value' => 'Foo%_*?' ] ];
-		$provider[] = [ SMW_CMP_NEQ,  'Foo%_*?', [ 'comparator' => '!=', 'value' => 'Foo%_*?' ] ];
-
-		$provider[] = [ SMW_CMP_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ',     'value' => 'Foo\%\_%_\\\\' ] ];
-		$provider[] = [ SMW_CMP_PRIM_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ',     'value' => 'Foo\%\_%_\\\\' ] ];
+		$provider[] = [ SMW_CMP_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
+		$provider[] = [ SMW_CMP_PRIM_LIKE, 'Foo%_*?\\', [ 'comparator' => ' LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
 		$provider[] = [ SMW_CMP_NLKE, 'Foo%_*?\\', [ 'comparator' => ' NOT LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
 		$provider[] = [ SMW_CMP_PRIM_NLKE, 'Foo%_*?\\', [ 'comparator' => ' NOT LIKE ', 'value' => 'Foo\%\_%_\\\\' ] ];
 

@@ -12,15 +12,14 @@ use SMW\Query\Parser\DescriptionProcessor;
  * @covers SMW\Query\Parser\DescriptionProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
+class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DescriptionProcessor::class,
 			new DescriptionProcessor()
@@ -28,7 +27,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testError() {
-
 		$instance = new DescriptionProcessor();
 		$instance->addError( 'abc' );
 
@@ -46,7 +44,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDescriptionForPropertyObjectValue() {
-
 		$instance = new DescriptionProcessor();
 
 		$this->assertInstanceOf(
@@ -56,7 +53,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDescriptionForWikiPageValueChunkOnEqualMatch() {
-
 		$instance = new DescriptionProcessor();
 
 		$valueDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -73,7 +69,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testnewDescriptionForWikiPageValueChunkOnApproximateValue() {
-
 		$instance = new DescriptionProcessor();
 
 		$valueDescription = $instance->newDescriptionForWikiPageValueChunk( '~bar' );
@@ -85,7 +80,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDisjunctiveCompoundDescription() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -102,7 +96,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDisjunctiveCompoundDescriptionForCurrentConjunction() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = new Conjunction();
@@ -119,7 +112,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDisjunctiveCompoundDescriptionForCurrentDisjunction() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = new Disjunction();
@@ -136,7 +128,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetDisjunctiveCompoundDescriptionForNullNewDescription() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -148,7 +139,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetDisjunctiveCompoundDescriptionForNullCurrentDescription() {
-
 		$instance = new DescriptionProcessor();
 
 		$newDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -160,7 +150,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConjunctiveCompoundDescription() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -177,7 +166,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConjunctiveCompoundDescriptionForCurrentConjunction() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = new Conjunction();
@@ -194,7 +182,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConjunctiveCompoundDescriptionForCurrentDisjunction() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = new Disjunction();
@@ -211,7 +198,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetConjunctiveCompoundDescriptionForNullNewDescription() {
-
 		$instance = new DescriptionProcessor();
 
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -223,7 +209,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetConjunctiveCompoundDescriptionForNullCurrentDescription() {
-
 		$instance = new DescriptionProcessor();
 
 		$newDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
@@ -235,7 +220,6 @@ class DescriptionProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstuctDescriptionWithContextPage() {
-
 		$instance = new DescriptionProcessor();
 
 		$instance->setContextPage(

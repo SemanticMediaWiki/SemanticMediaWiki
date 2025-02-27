@@ -22,7 +22,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'FixedInMemoryLruCache' => function ( $containerBuilder, $cacheSize = 500 ) {
+	'FixedInMemoryLruCache' => static function ( $containerBuilder, $cacheSize = 500 ) {
 		return CacheFactory::getInstance()->newFixedInMemoryLruCache( $cacheSize );
 	},
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -32,8 +32,7 @@ class CliOutputFormatter {
 	 *
 	 * @param array $report
 	 */
-	public function format( array $report  ) {
-
+	public function format( array $report ) {
 		if ( $this->formatType === self::FORMAT_TREE ) {
 			return $this->doFormatAsTree( $report );
 		}

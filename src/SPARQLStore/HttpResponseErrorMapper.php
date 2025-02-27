@@ -12,7 +12,7 @@ use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
  *
  * @ingroup Sparql
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -69,7 +69,6 @@ class HttpResponseErrorMapper {
 	}
 
 	private function createResponseToHttpError( $httpCode, $endpoint, $sparql ) {
-
 		/// TODO We are guessing the meaning of HTTP codes here -- the SPARQL 1.1 spec does not yet provide this information for updates (April 15 2011)
 
 		if ( $httpCode == 400 ) { // malformed query
@@ -84,4 +83,3 @@ class HttpResponseErrorMapper {
 	}
 
 }
-

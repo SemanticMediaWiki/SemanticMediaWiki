@@ -2,13 +2,14 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory;
 use Title;
 use WikiFilePage;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -23,7 +24,6 @@ class TitleFactory {
 	 * @return Title|null
 	 */
 	public function newFromText( $text, $namespace = null ) {
-
 		if ( $namespace === null ) {
 			$namespace = NS_MAIN;
 		}
@@ -34,7 +34,7 @@ class TitleFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Title|null
 	 */
@@ -50,7 +50,32 @@ class TitleFactory {
 	 * @return Title[]
 	 */
 	public function newFromIDs( $ids ) {
-		return Title::newFromIDs( $ids );
+		if ( !count( $ids ) ) {
+			return [];
+		}
+
+		$container = MediaWikiServices::getInstance();
+
+		$dbr = $container
+			->getDBLoadBalancer()
+			->getMaintenanceConnectionRef( DB_REPLICA );
+
+		$fields = $container->getPageStore()->getSelectFields();
+
+		$res = $dbr->select(
+			'page',
+			$fields,
+			[ 'page_id' => $ids ],
+			__METHOD__
+		);
+
+		$titles = [];
+
+		foreach ( $res as $row ) {
+			$titles[] = $container->getTitleFactory()->newFromRow( $row );
+		}
+
+		return $titles;
 	}
 
 	/**

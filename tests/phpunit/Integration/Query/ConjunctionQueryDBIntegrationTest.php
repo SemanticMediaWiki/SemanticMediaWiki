@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
@@ -21,21 +21,23 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
+class ConjunctionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
+	private $fixturesProvider;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -51,10 +53,11 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->fixturesProvider->setupDependencies( $this->getStore() );
 
 		$this->queryParser = ApplicationFactory::getInstance()->getQueryFactory()->newQueryParser();
+
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$fixturesCleaner = UtilityFactory::getInstance()->newFixturesFactory()->newFixturesCleaner();
 		$fixturesCleaner
 			->purgeSubjects( $this->subjectsToBeCleared )
@@ -67,7 +70,6 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * {{#ask: [[Category:HappyPlaces]] [[LocatedIn.MemberOf::Wonderland]] }}
 	 */
 	public function testConjunctionForCategoryAndPropertyChainSubqueryThatComparesEqualToSpecifiedValue() {
-
 		/**
 		 * Page ...-neverland annotated with [[LocatedIn::BananaWonderland]]
 		 */
@@ -158,7 +160,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 			$semanticDataOfDreamland->getSubject()
 		];
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);
@@ -176,7 +178,6 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testNestedPropertyConjunction() {
-
 		/**
 		 * Page annotated with [[Born in::Paris]]
 		 */
@@ -236,7 +237,7 @@ class ConjunctionQueryDBIntegrationTest extends DatabaseTestCase {
 
 		$queryResult = $this->getStore()->getQueryResult( $query );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$queryResult->getCount()
 		);

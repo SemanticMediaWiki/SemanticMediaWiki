@@ -2,13 +2,12 @@
 
 namespace SMW\Maintenance;
 
-use SMW\Utils\File;
-use RuntimeException;
-use SMW\Site;
 use SMW\SetupFile;
+use SMW\Site;
+use SMW\Utils\File;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -33,12 +32,12 @@ class AutoRecovery {
 	private $file;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $enabled = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $safeMargin = 0;
 
@@ -47,13 +46,15 @@ class AutoRecovery {
 	 */
 	private $contents;
 
+	private string $dir;
+
 	/**
 	 * @since 3.1
 	 *
 	 * @param string $identifier
 	 * @param File|null $file
 	 */
-	public function __construct( $identifier, File $file = null ) {
+	public function __construct( $identifier, ?File $file = null ) {
 		$this->identifier = $identifier;
 		$this->file = $file;
 		$this->site = Site::id();
@@ -68,7 +69,7 @@ class AutoRecovery {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $enabled
+	 * @param bool $enabled
 	 */
 	public function enable( $enabled ) {
 		$this->enabled = (bool)$enabled;
@@ -86,7 +87,7 @@ class AutoRecovery {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $safeMargin
+	 * @param int $safeMargin
 	 */
 	public function safeMargin( $safeMargin ) {
 		$this->safeMargin = $safeMargin;
@@ -108,7 +109,6 @@ class AutoRecovery {
 	 * @param mixed $value
 	 */
 	public function set( $key, $value ) {
-
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -133,7 +133,6 @@ class AutoRecovery {
 	 * @return mixed
 	 */
 	public function get( $key ) {
-
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -156,10 +155,9 @@ class AutoRecovery {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
-
 		if ( !$this->enabled ) {
 			return false;
 		}
@@ -176,7 +174,6 @@ class AutoRecovery {
 	}
 
 	private function initContents( $key ) {
-
 		$file = $this->getFile();
 
 		$this->contents = [

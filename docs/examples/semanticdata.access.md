@@ -69,3 +69,22 @@ $semanticData = ApplicationFactory::getInstance()->getStore->getSemanticData(
 	$subject
 );
 ```
+
+### SubSemanticData
+Properties like monolingual texts are stored inside the SubSemanticData. See example below;
+```php
+$store = ServicesFactory::getInstance()->getStore();
+
+/** @var EntityLookup::getSemanticData $data */
+$data = $store->getSemanticData( $subject, [ MonolingualTextValue::TYPE_ID ] );
+
+if ( $data->hasSubSemanticData() ) {
+	foreach ( $data->getSubSemanticData() as $subSemanticData ) {
+		/** @var \SMWDIBlob $text */
+		$textDataItems = $subSemanticData->getPropertyValues( new DIProperty( '_TEXT' ) );
+		/** @var \SMWDIBlob $lang */
+		$langDataItems = $subSemanticData->getPropertyValues( new DIProperty( '_LCODE' ) );
+		...
+	}
+}
+```

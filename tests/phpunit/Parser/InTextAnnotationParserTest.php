@@ -5,11 +5,11 @@ namespace SMW\Tests\Parser;
 use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
-use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -17,12 +17,12 @@ use Title;
  * @covers \SMW\Parser\InTextAnnotationParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $stringValidator;
@@ -31,7 +31,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	private $magicWordsFinder;
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -55,7 +55,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -64,7 +64,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testCanConstruct( $namespace ) {
-
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -89,7 +88,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasMarker() {
-
 		$this->assertTrue(
 			InTextAnnotationParser::hasMarker( '[[SMW::off]]' )
 		);
@@ -107,13 +105,12 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider magicWordDataProvider
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
-
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
 
-		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create('MagicWordsFinder', $parserData->getOutput() );
+		$magicWordsFinder = ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
 
 		$instance = new InTextAnnotationParser(
 			$parserData,
@@ -138,7 +135,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testTextParse( $namespace, array $settings, $text, array $expected ) {
-
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
@@ -185,7 +181,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectAnnotationFromText() {
-
 		$namespace = NS_MAIN;
 		$text      = '#REDIRECT [[:Lala]]';
 
@@ -231,7 +226,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirectAnnotationFromInjectedRedirectTarget() {
-
 		$namespace = NS_MAIN;
 		$text      = '';
 		$redirectTarget = Title::newFromText( 'Foo' );
@@ -279,7 +273,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStripMarkerDecoding() {
-
 		$redirectTargetFinder = $this->getMockBuilder( 'SMW\MediaWiki\RedirectTargetFinder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -291,16 +284,16 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'hasStripMarker' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$stripMarkerDecoder->expects( $this->once() )
 			->method( 'unstrip' )
 			->with( $this->stringContains( '<nowiki>Bar</nowiki>' ) )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),
@@ -341,7 +334,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnReflection() {
-
 		$parserData = new ParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -362,13 +354,13 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 		$result = $method->invoke( $instance, [] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, [ 'Test::foo', 'SMW' , 'lula' ] );
+		$result = $method->invoke( $instance, [ 'Test::foo', 'SMW', 'lula' ] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, [ 'Test::bar', 'SMW' , 'on' ] );
+		$result = $method->invoke( $instance, [ 'Test::bar', 'SMW', 'on' ] );
 		$this->assertEmpty( $result );
 
-		$result = $method->invoke( $instance, [ 'Test::lula', 'SMW' , 'off' ] );
+		$result = $method->invoke( $instance, [ 'Test::lula', 'SMW', 'off' ] );
 		$this->assertEmpty( $result );
 	}
 
@@ -376,7 +368,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stripTextWithAnnotationProvider
 	 */
 	public function testStrip( $text, $expectedRemoval, $expectedObscuration ) {
-
 		$this->assertEquals(
 			$expectedRemoval,
 			InTextAnnotationParser::removeAnnotation( $text )
@@ -389,7 +380,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stripTextWithAnnotationProvider() {
-
 		$provider = [];
 
 		$provider[] = [
@@ -402,7 +392,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textDataProvider() {
-
 		$testEnvironment = new TestEnvironment();
 		$provider = [];
 
@@ -443,7 +432,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 				'resultText'    => 'Lorem ipsum dolor sit &$% consectetuer auctor at quis' .
 					' [[:Dictumst|寒い]] cursus. Nisl sit condimentum Quisque facilisis' .
 					' Suspendisse [[:Tincidunt semper|tincidunt semper]] facilisi dolor Aenean. Ut' .
-					' Aliquam {{volutpat}} arcu ultrices eu Ut quis'.
+					' Aliquam {{volutpat}} arcu ultrices eu Ut quis' .
 					' [[:Http:://www/foo/9001|http:://www/foo/9001]] et Donec.',
 				'propertyCount'  => 3,
 				'propertyLabels' => [ 'Foo', 'Bar', 'FooBar' ],
@@ -551,7 +540,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#7 673
+		# 7 673
 
 		// Special:Types/Number
 		$provider[] = [
@@ -562,7 +551,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			],
 			'[[has type::number]], [[has Type::page]] ',
 			[
-				//                     Special:Types/Number -> .*/Number
+				// Special:Types/Number -> .*/Number
 				'resultText'     => "[[.*/Number|number]], [[:Page|page]]",
 				'propertyCount'  => 2,
 				'propertyLabels' => [ 'Has type', 'Has Type' ],
@@ -570,7 +559,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#8 1048, Double-double
+		# 8 1048, Double-double
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -586,7 +575,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#9 T32603
+		# 9 T32603
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -602,7 +591,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#10 #1252 (disabled strict mode)
+		# 10 #1252 (disabled strict mode)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -618,7 +607,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#11 #1747 (left pipe)
+		# 11 #1747 (left pipe)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -632,7 +621,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#12 #1747 (left pipe + including one annotation)
+		# 12 #1747 (left pipe + including one annotation)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -648,7 +637,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#13 @@@ syntax
+		# 13 @@@ syntax
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -662,7 +651,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#14 @@@|# syntax (#4037)
+		# 14 @@@|# syntax (#4037)
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -676,7 +665,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#15 [ ... ] in-text link
+		# 15 [ ... ] in-text link
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -692,7 +681,7 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#16 (#2671) external [] decode use
+		# 16 (#2671) external [] decode use
 		$provider[] = [
 			NS_MAIN,
 			[
@@ -712,7 +701,6 @@ class InTextAnnotationParserTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function magicWordDataProvider() {
-
 		$provider = [];
 
 		// #0 __NOFACTBOX__

@@ -9,19 +9,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exception\JSONFileParseException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
+class JSONFileParseExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$instance = new JSONFileParseException(
-			SMW_PHPUNIT_DIR . '/Fixtures/Exception/invalid.trailing.comma.json'
+			\SMW_PHPUNIT_DIR . '/Fixtures/Exception/invalid.trailing.comma.json'
 		);
 
 		$this->assertContains(
@@ -31,7 +30,6 @@ class JSONFileParseExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct_FileNotReadable() {
-
 		$instance = new JSONFileParseException(
 			'Foo'
 		);

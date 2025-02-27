@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -17,7 +17,7 @@ interface ChainableFilter extends SchemaFilter {
 	 *
 	 * @return string
 	 */
-	public function getName() : string;
+	public function getName(): string;
 
 	/**
 	 * Inject a filter as a node to build a decision tree by chaining together

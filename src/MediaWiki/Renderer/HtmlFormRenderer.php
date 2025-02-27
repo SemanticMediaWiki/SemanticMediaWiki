@@ -23,7 +23,7 @@ use Xml;
  * 	->getForm();
  * @endcode
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
@@ -51,17 +51,17 @@ class HtmlFormRenderer {
 	private $name = '';
 
 	/**
-	 * @var string|boolean
+	 * @var string|bool
 	 */
 	private $method = false;
 
 	/**
-	 * @var string|boolean
+	 * @var string|bool
 	 */
 	private $useFieldset = false;
 
 	/**
-	 * @var string|boolean
+	 * @var string|bool
 	 */
 	private $actionUrl = false;
 
@@ -182,13 +182,12 @@ class HtmlFormRenderer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param string $description
+	 * @param string $text
 	 * @param array $attributes
 	 *
 	 * @return HtmlFormRenderer
 	 */
 	public function addParagraph( $text, $attributes = [] ) {
-
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-paragraph' ];
 		}
@@ -205,7 +204,6 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addHorizontalRule( $attributes = [] ) {
-
 		if ( $attributes === [] ) {
 			$attributes = [ 'class' => $this->defaultPrefix . '-horizontalrule' ];
 		}
@@ -223,7 +221,6 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addHeader( $level, $text, $attributes = [] ) {
-
 		$level = strtolower( $level );
 		$level = in_array( $level, [ 'h2', 'h3', 'h4' ] ) ? $level : 'h2';
 
@@ -296,13 +293,12 @@ class HtmlFormRenderer {
 	 * @param string $name
 	 * @param string $value
 	 * @param string|null $id
-	 * @param integer $length
+	 * @param int $size
 	 * @param array $attributes
 	 *
 	 * @return HtmlFormRenderer
 	 */
 	public function addInputField( $label, $name, $value, $id = null, $size = 20, array $attributes = [] ) {
-
 		if ( $id === null ) {
 			$id = $name;
 		}
@@ -330,7 +326,6 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addHiddenField( $inputName, $inputValue ) {
-
 		$this->addQueryParameter( $inputName, $inputValue );
 
 		$this->content[] = Html::hidden( $inputName, $inputValue );
@@ -349,7 +344,6 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addOptionSelectList( $label, $inputName, $inputValue, $options, $id = null ) {
-
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -364,7 +358,7 @@ class HtmlFormRenderer {
 		foreach ( $options as $internalId => $name ) {
 			$optionsHtml[] = Html::element(
 				'option', [
-				//	'disabled' => false,
+				// 'disabled' => false,
 					'value' => $internalId,
 					'selected' => $internalId == $inputValue,
 				], $name
@@ -392,13 +386,12 @@ class HtmlFormRenderer {
 	 * @param string $label
 	 * @param string $inputName
 	 * @param string $inputValue
-	 * @param boolean $isChecked
+	 * @param bool $isChecked
 	 * @param string|null $id
 	 *
 	 * @return HtmlFormRenderer
 	 */
 	public function addCheckbox( $label, $inputName, $inputValue, $isChecked = false, $id = null, $attributes = [] ) {
-
 		if ( $id === null ) {
 			$id = $inputName;
 		}
@@ -427,26 +420,24 @@ class HtmlFormRenderer {
 	 * @note Encapsulate as closure to ensure that the build contains all query
 	 * parameters that are necessary to build the paging links
 	 *
-	 * @param integer $limit
-	 * @param integer $offset
-	 * @param integer $count
-	 * @param integer|null $messageCount
+	 * @param int $limit
+	 * @param int $offset
+	 * @param int $count
+	 * @param int|null $messageCount
 	 *
 	 * @return HtmlFormRenderer
 	 */
 	public function addPaging( $limit, $offset, $count, $messageCount = null ) {
-
 		$title = $this->title;
 
-		$this->content[] = function( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
-
+		$this->content[] = static function ( $instance ) use ( $title, $limit, $offset, $count, $messageCount ) {
 			if ( $messageCount === null ) {
 				$messageCount = ( $count > $limit ? $count - 1 : $count );
 			}
 
 			$resultCount = $instance->getMessageBuilder()
 				->getMessage( 'showingresults' )
-				->numParams( $messageCount, $offset + 1 )
+				->numParams( $messageCount, (int)$offset + 1 )
 				->parse();
 
 			$paging = $instance->getMessageBuilder()->prevNextToText(
@@ -469,7 +460,6 @@ class HtmlFormRenderer {
 	 * @return string
 	 */
 	public function getForm() {
-
 		$content = '';
 
 		foreach ( $this->content as $value ) {
@@ -493,7 +483,7 @@ class HtmlFormRenderer {
 			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
 		], Html::hidden(
 			'title',
-			strtok( $this->title->getPrefixedText(), '/' )
+			strtok( $this->title->getPrefixedText() ?? '', '/' )
 		) . $content );
 
 		$this->clear();

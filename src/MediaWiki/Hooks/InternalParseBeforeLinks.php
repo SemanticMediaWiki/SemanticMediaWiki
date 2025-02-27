@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Parser\InTextAnnotationParser;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use StripState;
 
 /**
@@ -30,7 +30,7 @@ use StripState;
  *
  * @ingroup FunctionHook
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -52,7 +52,7 @@ class InternalParseBeforeLinks implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Parser $parser
+	 * @param Parser &$parser
 	 * @param StripState $stripState
 	 */
 	public function __construct( Parser &$parser, $stripState ) {
@@ -63,12 +63,11 @@ class InternalParseBeforeLinks implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string $text
+	 * @param string &$text
 	 *
 	 * @return true
 	 */
 	public function process( &$text ) {
-
 		if ( !$this->canPerformUpdate( $text, $this->parser->getTitle() ) ) {
 			return true;
 		}
@@ -77,7 +76,6 @@ class InternalParseBeforeLinks implements HookListener {
 	}
 
 	private function canPerformUpdate( $text, $title ) {
-
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
 		}
@@ -109,7 +107,6 @@ class InternalParseBeforeLinks implements HookListener {
 	}
 
 	private function performUpdate( &$text ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		/**
@@ -149,16 +146,8 @@ class InternalParseBeforeLinks implements HookListener {
 		return true;
 	}
 
-	/**
-	 * #656 / MW 1.24+
-	 */
 	private function getRedirectTarget() {
-
-		if ( method_exists( $this->parser->getOptions(), 'getRedirectTarget' ) ) {
-			return $this->parser->getOptions()->getRedirectTarget();
-		}
-
-		return null;
+		return $this->parser->getOptions()->getRedirectTarget();
 	}
 
 }

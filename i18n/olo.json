@@ -1,9 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mashoi7"
+			"Mashoi7",
+			"Ruppijeva"
 		]
 	},
-	"browse": "Livua wikii",
+	"smw-categories": "Kategouriet",
+	"browse": "Kačo wikii",
 	"smw-listingcontinuesabbrev": "(jatko)"
 }

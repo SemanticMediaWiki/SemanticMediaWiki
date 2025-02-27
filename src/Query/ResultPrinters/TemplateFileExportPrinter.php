@@ -2,19 +2,17 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Sanitizer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQueryResult as QueryResult;
 use SMW\MediaWiki\Template\Template;
-use SMW\MediaWiki\Template\TemplateSet;
 use SMW\MediaWiki\Template\TemplateExpander;
+use SMW\MediaWiki\Template\TemplateSet;
+use SMW\Query\QueryResult;
 
 /**
  * Exports data as file in a format that is defined by its invoked templates.
  * Custom specifications and requirements can be specified freely by relying on
  * the available template system.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,7 +20,7 @@ use SMW\MediaWiki\Template\TemplateExpander;
 class TemplateFileExportPrinter extends FileExportPrinter {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numRows = 0;
 
@@ -43,7 +41,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	public function getMimeType( QueryResult $queryResult ) {
-
 		if ( $this->params['mimetype'] !== '' ) {
 			return $this->params['mimetype'];
 		}
@@ -127,7 +124,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $queryResult, $outputMode ) {
-
 		// Always return a link for when the output mode is not a file request,
 		// a file request is normally only initiated when resolving the query
 		// via Special:Ask
@@ -147,7 +143,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function getFileLink( QueryResult $queryResult, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 
@@ -160,7 +155,6 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 	}
 
 	private function newTemplateSet( $queryResult ) {
-
 		$templateSet = new TemplateSet();
 
 		$link = $this->getLink(

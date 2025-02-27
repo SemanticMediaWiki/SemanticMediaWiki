@@ -3,12 +3,10 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Options;
 use SMW\HierarchyLookup;
-use SMW\Services\ServicesContainer;
+use SMW\Options;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -17,6 +15,7 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\Services\ServicesContainer;
 use SMW\Store;
 use SMWDataItem as DataItem;
 
@@ -24,7 +23,7 @@ use SMWDataItem as DataItem;
  * Build an internal representation for a SPARQL condition from individual query
  * descriptions.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -124,12 +123,12 @@ class ConditionBuilder {
 	private $descriptionLog = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isConstantScore = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $initServices = false;
 
@@ -165,7 +164,6 @@ class ConditionBuilder {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = false ) {
-
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -206,7 +204,6 @@ class ConditionBuilder {
 	 * @return FieldMapper
 	 */
 	public function getFieldMapper() {
-
 		if ( $this->fieldMapper === null ) {
 			$this->fieldMapper = new FieldMapper();
 		}
@@ -271,10 +268,9 @@ class ConditionBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getID( $dataItem ) {
-
 		if ( $dataItem instanceof DIProperty ) {
 			return (int)$this->store->getObjectIds()->getSMWPropertyID(
 				$dataItem
@@ -308,12 +304,11 @@ class ConditionBuilder {
 	 * @since 3.0
 	 *
 	 * @param Description $description
-	 * @param boolean $isConstantScore
+	 * @param bool $isConstantScore
 	 *
 	 * @return array
 	 */
 	public function makeFromDescription( Description $description, $isConstantScore = true ) {
-
 		$this->errors = [];
 		$this->queryInfo = [];
 
@@ -348,13 +343,13 @@ class ConditionBuilder {
 		}
 
 		if ( $this->options->safeGet( 'sort.property.must.exists' ) && $this->sortFields !== [] ) {
-			$params = [];
+			$must = [ $query ];
 
 			foreach ( $this->sortFields as $field ) {
-				$params[] = $this->fieldMapper->exists( "$field" );
+				$must[] = $this->fieldMapper->exists( "$field" );
 			}
 
-			$query = $this->fieldMapper->bool( 'must', [ $query, $params ] );
+			$query = $this->fieldMapper->bool( 'must', $must );
 		}
 
 		// If we know we don't need any score we turn this into a `constant_score`
@@ -371,12 +366,11 @@ class ConditionBuilder {
 	 * @since 3.0
 	 *
 	 * @param DataItem|null $dataItem
-	 * @param integer $hierarchyDepth
+	 * @param int $hierarchyDepth
 	 *
 	 * @return array
 	 */
-	public function findHierarchyMembers( DataItem $dataItem = null, $hierarchyDepth ) {
-
+	public function findHierarchyMembers( ?DataItem $dataItem, $hierarchyDepth ) {
 		$ids = [];
 
 		if ( $dataItem !== null && ( $members = $this->hierarchyLookup->getConsecutiveHierarchyList( $dataItem ) ) !== [] ) {
@@ -403,7 +397,6 @@ class ConditionBuilder {
 	 * @return array
 	 */
 	public function interpretDescription( Description $description, $isConjunction = false ) {
-
 		$params = [];
 
 		if ( $this->initServices === false ) {
@@ -450,7 +443,6 @@ class ConditionBuilder {
 	 * @return Condition
 	 */
 	public function interpretSomeValue( ValueDescription $description, array &$options ) {
-
 		if ( $this->initServices === false ) {
 			$this->initServices();
 		}
@@ -459,7 +451,6 @@ class ConditionBuilder {
 	}
 
 	private function initServices() {
-
 		$this->somePropertyInterpreter = $this->servicesContainer->get( 'SomePropertyInterpreter', $this );
 		$this->conceptDescriptionInterpreter = $this->servicesContainer->get( 'ConceptDescriptionInterpreter', $this );
 		$this->classDescriptionInterpreter = $this->servicesContainer->get( 'ClassDescriptionInterpreter', $this );

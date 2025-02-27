@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Игорь Бродский"
+			"Игорь Бродский",
+			"Лариса Чиркова"
 		]
 	},
 	"smw_viewasrdf": "RDF-purde",
@@ -12,9 +13,11 @@
 	"smw_printername_broadtable": "Leved tablut",
 	"smw_exportrdf_submit": "Eksport",
 	"properties": "Ičendad",
+	"smw-categories": "Kategorijad",
 	"ask": "Semantine ecind",
 	"smw_ask_submit": "Löuta rezul'tatad",
 	"smw_ask_editquery": "Redaktiruida küzund",
+	"browse": "Kacu wiki",
 	"smw_browse_go": "Mäne",
 	"smw_pp_from": "Lehtpolelpäi",
 	"smw_pp_type": "Ičend",

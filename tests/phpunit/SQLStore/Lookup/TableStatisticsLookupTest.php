@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\TableStatisticsLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.01
  *
  * @author mwjames
  */
-class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
+class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -22,19 +22,18 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $query;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->connection->expects( $this->any() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $this->query ) );
+			->willReturn( $this->query );
 
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -46,15 +45,14 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableStatisticsLookup::class,
 			new TableStatisticsLookup( $this->store )
@@ -62,37 +60,35 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
-
 		$this->query->expects( $this->any() )
 			->method( 'execute' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'count' => 0 ] ) );
+			->willReturn( (object)[ 'count' => 0 ] );
 
 		$instance = new TableStatisticsLookup(
 			$this->store
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getStats()
 		);
 	}
 
 	public function testGet_last_id() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'selectField' )
 			->with(
 				$this->anything(),
 				$this->stringContains( 'MAX(smw_id)' ) )
-			->will( $this->returnValue( "42" ) );
+			->willReturn( "42" );
 
 		$instance = new TableStatisticsLookup(
 			$this->store
@@ -105,13 +101,12 @@ class TableStatisticsLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet_rows_total_count() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'selectField' )
 			->with(
 				$this->anything(),
 				$this->stringContains( 'Count(*)' ) )
-			->will( $this->returnValue( "42" ) );
+			->willReturn( "42" );
 
 		$instance = new TableStatisticsLookup(
 			$this->store

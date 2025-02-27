@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\ChangeOp\FieldChangeOp
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
+class FieldChangeOpTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldChangeOp::class,
 			new FieldChangeOp()
@@ -27,7 +26,6 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testChangeOp() {
-
 		$op = [
 			's_id' => 462,
 			'o_serialized' => '1/2016/6/10/2/3/31/0',
@@ -56,7 +54,6 @@ class FieldChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidGetRequestThrowsException() {
-
 		$instance = new FieldChangeOp();
 
 		$this->expectException( 'InvalidArgumentException' );

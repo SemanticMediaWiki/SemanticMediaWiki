@@ -2,13 +2,12 @@
 
 namespace SMW\Property;
 
-use SMW\PropertyAnnotator;
 use SMW\SemanticData;
 
 /**
  * Interface specifying available methods to interact with the Decorator
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -29,7 +28,7 @@ interface Annotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return PropertyAnnotator
+	 * @return Annotator
 	 */
 	public function addAnnotation();
 

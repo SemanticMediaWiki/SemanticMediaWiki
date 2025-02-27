@@ -43,11 +43,11 @@ $magicWords['ar'] = [
 	'concept' => [ 0, 'مفهوم' ],
 	'subobject' => [ 0, 'كائن_فرعي' ],
 	'smwdoc' => [ 0, 'وثائق_سمو', 'توثيق_سمو' ],
-	'set' => [ 0, 'تعيين' ], //من تعيين القيمة للمتغير\الكائن
+	'set' => [ 0, 'تعيين' ], // من تعيين القيمة للمتغير\الكائن
 	'set_recurring_event' => [ 0, 'تعيين_حدث_متكرر' ],
 	'declare' => [ 0, 'إقرار', 'إعلان' ],
 	'SMW_NOFACTBOX' => [ 0, '__لا_صندوق_حقائق__', '__لا_صندوق_حقيقة__' ],
-	'SMW_SHOWFACTBOX' => [ 0, '__عرض_صندوق_الحقائق__', '__عرض_صندوق_الحقيقة__' ,]
+	'SMW_SHOWFACTBOX' => [ 0, '__عرض_صندوق_الحقائق__', '__عرض_صندوق_الحقيقة__', ]
 ];
 
 /** Egyptian Arabic (مصرى) */
@@ -135,7 +135,7 @@ $magicWords['es'] = [
 
 /** Persian (فارسی) */
 $magicWords['fa'] = [
-	'ask' => [ 0, 'پرسش','سوال' ],
+	'ask' => [ 0, 'پرسش', 'سوال' ],
 	'show' => [ 0, 'نمایش' ],
 	'info' => [ 0, 'اطلاع' ],
 	'concept' => [ 0, 'مفهوم' ],
@@ -342,9 +342,12 @@ $magicWords['sr-ec'] = [
 	'show' => [ 0, 'прикажи' ],
 	'info' => [ 0, 'подаци' ],
 	'concept' => [ 0, 'концепт' ],
+	'subobject' => [ 0, 'подобјекат' ],
 	'set' => [ 0, 'постави' ],
 	'set_recurring_event' => [ 0, 'постави_периодични_догађај' ],
 	'declare' => [ 0, 'одреди' ],
+	'SMW_NOFACTBOX' => [ 0, '__БЕЗЧИЊЕНИЦА__', '__БЕЗ_ЧИЊЕНИЦА__' ],
+	'SMW_SHOWFACTBOX' => [ 0, '__ПРИКАЖИЧИЊЕНИЦЕ__', '__ПРИКАЖИ_ЧИЊЕНИЦЕ__' ],
 ];
 
 /** Serbian (Latin script) (srpski (latinica)‎) */
@@ -353,6 +356,7 @@ $magicWords['sr-el'] = [
 	'show' => [ 0, 'prikaži' ],
 	'info' => [ 0, 'podaci' ],
 	'concept' => [ 0, 'koncept' ],
+	'subobject' => [ 0, 'podobjekat' ],
 	'set' => [ 0, 'postavi' ],
 	'set_recurring_event' => [ 0, 'postavi_periodični_događaj' ],
 	'declare' => [ 0, 'odredi' ],

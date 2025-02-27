@@ -1,7 +1,12 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Girmitya",
+			"Thakurji"
+		]
 	},
+	"smw-categories": "Vibhag",
+	"browse": "Wiki me dekho",
 	"smw-livepreview-loading": "load karaa jaae hae...",
 	"smw-listingcontinuesabbrev": "aur",
 	"smw-showingresults": "Niche dekhae hai {{PLURAL:$1|'''1''' result|'''$1''' results}} #'''$2''' se suruu hoe ke."

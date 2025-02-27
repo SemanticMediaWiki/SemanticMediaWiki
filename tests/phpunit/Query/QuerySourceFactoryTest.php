@@ -6,26 +6,27 @@ use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWQuery as Query;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QuerySourceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
+class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
+	private Store $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -35,13 +36,12 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QuerySourceFactory::class,
 			new QuerySourceFactory( $this->store )
@@ -49,7 +49,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFromFakeSource() {
-
 		$instance = new QuerySourceFactory(
 			$this->store,
 			[
@@ -64,7 +63,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStandardStore() {
-
 		$instance = new QuerySourceFactory(
 			$this->store,
 			[]
@@ -82,14 +80,13 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetAsString() {
-
 		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store->expects( $this->once() )
 			->method( 'getInfo' )
-			->will( $this->returnValue( [ 'SPARQLStore' ] ) );
+			->willReturn( [ 'SPARQLStore' ] );
 
 		$instance = new QuerySourceFactory(
 			$store,
@@ -103,7 +100,6 @@ class QuerySourceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFromAnotherFakeSourceThatImplementsStoreAware() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )

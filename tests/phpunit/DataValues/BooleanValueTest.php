@@ -3,24 +3,23 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\BooleanValue;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\BooleanValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class BooleanValueTest extends \PHPUnit_Framework_TestCase {
+class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			BooleanValue::class,
 			new BooleanValue()
@@ -28,7 +27,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetBoolean() {
-
 		$instance = new BooleanValue();
 
 		$this->assertFalse(
@@ -43,7 +41,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseUserValueOnSpecificPageContentLanguage() {
-
 		$language = Localizer::getInstance()->getLanguage( 'ja' );
 
 		$title = $this->getMockBuilder( 'Title' )
@@ -52,7 +49,7 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getPageLanguage' )
-			->will( $this->returnValue( $language ) );
+			->willReturn( $language );
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
@@ -60,7 +57,7 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 
 		$subject->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new BooleanValue();
 
@@ -71,14 +68,13 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 			$instance->getBoolean()
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getWikiValue()
 		);
 	}
 
 	public function testGetShortWikiTextForLocalizedOutputFormat() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
@@ -91,7 +87,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetShortHTMLTextForLocalizedOutputFormat() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
@@ -104,7 +99,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongWikiTextForLocalizedOutputFormat() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
@@ -117,7 +111,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongWikiText_PlainFormatter() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
@@ -130,13 +123,12 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongWikiText_NumFormatter() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
 		$instance->setOutputFormat( 'num' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getLongWikiText()
 		);
@@ -144,14 +136,13 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 		$instance->setUserValue( 'false' );
 		$instance->setOutputFormat( 'num' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->getLongWikiText()
 		);
 	}
 
 	public function testGetLongWikiText_TickFormatter() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
@@ -172,7 +163,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLongWikiText_xFormatter() {
-
 		$instance = new BooleanValue();
 
 		$instance->setUserValue( 'true' );
@@ -193,7 +183,6 @@ class BooleanValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecognizeCanonicalForm() {
-
 		$instance = new BooleanValue();
 		$instance->setOption( BooleanValue::OPT_CONTENT_LANGUAGE, 'el' );
 

@@ -8,16 +8,16 @@ use SMW\MediaWiki\Hooks\ApiModuleManager;
  * @covers \SMW\MediaWiki\Hooks\ApiModuleManager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
+class ApiModuleManagerTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -26,7 +26,6 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ApiModuleManager::class,
 			new ApiModuleManager()
@@ -34,7 +33,6 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testApiModuleManager() {
-
 		$modules = [
 			'smwinfo' => '\SMW\MediaWiki\Api\Info',
 			'smwtask' => '\SMW\MediaWiki\Api\Task',
@@ -49,17 +47,15 @@ class ApiModuleManagerTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-
 		$apiModuleManager->expects( $this->once() )
 			->method( 'addModules' )
-			 ->with($this->equalTo( $modules ) );
+			 ->with( $modules );
 
 		$instance = new ApiModuleManager();
 		$instance->process( $apiModuleManager );
 	}
 
 	public function testApiModuleManager_Disabled() {
-
 		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )
 			->disableOriginalConstructor()
 			->getMock();

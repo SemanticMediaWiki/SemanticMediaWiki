@@ -3,26 +3,24 @@
 namespace SMW\Tests;
 
 use SMW\Settings;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Settings
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SettingsTest extends \PHPUnit_Framework_TestCase {
+class SettingsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $hookDispatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
@@ -30,7 +28,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
@@ -38,7 +36,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider settingsProvider
 	 */
 	public function testCanConstruct( array $settings ) {
-
 		$instance = Settings::newFromArray( $settings );
 
 		$this->assertInstanceOf(
@@ -55,7 +52,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider settingsProvider
 	 */
 	public function testGet( array $settings ) {
-
 		$instance = Settings::newFromArray( $settings );
 
 		foreach ( $settings as $name => $value ) {
@@ -66,7 +62,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnknownSettingThrowsException() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
 		$this->expectException( '\SMW\Exception\SettingNotFoundException' );
@@ -74,7 +69,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSafeGetOnUnknownSetting() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
 		$this->assertFalse(
@@ -83,23 +77,22 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterChangeListener() {
-
 		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$changeListener->expects( $this->once() )
 			->method( 'canTrigger' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$changeListener->expects( $this->once() )
 			->method( 'setAttrs' )
-			->with( $this->equalTo( [ 'Foo' => 'Bar' ] ) );
+			->with( [ 'Foo' => 'Bar' ] );
 
 		$changeListener->expects( $this->once() )
 			->method( 'trigger' )
-			->with( $this->equalTo( 'Foo' ) );
+			->with( 'Foo' );
 
 		$instance = Settings::newFromArray( [] );
 		$instance->registerChangeListener( $changeListener );
@@ -112,7 +105,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider settingsProvider
 	 */
 	public function testSet( array $settings ) {
-
 		$instance = Settings::newFromArray( [] );
 
 		foreach ( $settings as $name => $value ) {
@@ -127,7 +119,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider globalsSettingsProvider
 	 */
 	public function testNewFromGlobals( $setting ) {
-
 		$instance = new Settings();
 
 		$instance->setHookDispatcher(
@@ -144,7 +135,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReloadAttemptThrowsException() {
-
 		$instance = new Settings();
 
 		$instance->setHookDispatcher(
@@ -158,7 +148,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMung() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
 
 		$this->assertEquals(
@@ -168,7 +157,6 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMungOnUnknownTypeThrowsException() {
-
 		$instance = Settings::newFromArray( [ 'Foo' => 123 ] );
 
 		$this->expectException( '\RuntimeException' );
@@ -194,7 +182,7 @@ class SettingsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function globalsSettingsProvider() {
 		$settings = array_intersect_key( $GLOBALS,
-			array_flip( preg_grep('/^smwg/', array_keys( $GLOBALS ) ) )
+			array_flip( preg_grep( '/^smwg/', array_keys( $GLOBALS ) ) )
 		);
 
 		unset( $settings['smwgDeprecationNotices'] );

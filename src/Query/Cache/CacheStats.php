@@ -5,7 +5,7 @@ namespace SMW\Query\Cache;
 use SMW\Utils\Stats;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,8 +38,7 @@ class CacheStats extends Stats {
 	 * @return array
 	 */
 	public function getStats() {
-
-		$stats = array_filter( parent::getStats(), function ( $key ) {
+		$stats = array_filter( parent::getStats(), static function ( $key ) {
 			return $key !== false;
 		} );
 
@@ -64,7 +63,7 @@ class CacheStats extends Stats {
 
 	// http://stackoverflow.com/questions/3777995/php-array-recursive-sum
 	private static function sum( $value, $container ) {
-		return $value + ( is_array( $container ) ? array_reduce( $container, 'self::sum' ) : $container );
+		return $value + ( is_array( $container ) ? array_reduce( $container, self::class . '::sum' ) : $container );
 	}
 
 }

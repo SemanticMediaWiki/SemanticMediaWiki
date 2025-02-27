@@ -4,23 +4,23 @@ namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\AskParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -30,7 +30,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	private $circularReferenceGuard;
 	private $expensiveFuncExecutionWatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -53,15 +53,15 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -69,18 +69,17 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +94,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testParse( array $params ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -108,21 +106,20 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$this->expensiveFuncExecutionWatcher
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->parse( $params )
 		);
 	}
 
 	public function testIsQueryDisabled() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -138,7 +135,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasReachedExpensiveLimit() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'?Modification date',
@@ -156,11 +152,11 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -176,7 +172,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetShowMode() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -199,7 +194,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCircularGuard() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -213,7 +207,7 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->circularReferenceGuard->expects( $this->once() )
 			->method( 'isCircular' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new AskParserFunction(
 			$parserData,
@@ -230,7 +224,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryIdStabilityForFixedSetOfParametersWithFingerprintMethod() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -276,7 +269,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected, array $settings ) {
-
 		foreach ( $settings as $key => $value ) {
 			$this->testEnvironment->addConfiguration( $key, $value );
 		}
@@ -295,8 +287,8 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->parse( $params );
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
-			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
+			$this->assertInstanceOf( '\SMW\DataModel\ContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
@@ -306,7 +298,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmbeddedQueryWithError() {
-
 		$params = [
 			'[[--ABC·|DEF::123]]',
 			'format=table'
@@ -338,7 +329,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWithDisabledQueryProfiler() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'format=table'
@@ -371,7 +361,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoQueryProfileOnSpecialPages() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'format=table'
@@ -404,7 +393,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryWithAnnotationMarker() {
-
 		$params = [
 			'[[Modification date::+]]',
 			'format=table',
@@ -435,7 +423,6 @@ class AskParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$categoryNS = Localizer::getInstance()->getNsText( NS_CATEGORY );
 		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 

@@ -8,15 +8,14 @@ use SMW\Exception\PropertyNotFoundException;
  * @covers \SMW\Exception\PropertyNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class PropertyNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new PropertyNotFoundException();
 
 		$this->assertInstanceof(

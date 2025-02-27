@@ -11,12 +11,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
  */
-class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
+class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,8 +25,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	private $requestOptions;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -39,7 +38,6 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup',
 			new PropertyLabelSimilarityLookup( $this->store )
@@ -47,12 +45,11 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyMaxCount() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getStatistics' )
-			->will( $this->returnValue( [ 'TOTALPROPS' => 42 ] ) );
+			->willReturn( [ 'TOTALPROPS' => 42 ] );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,23 +65,22 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompareAndFindLabels() {
-
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,39 +93,38 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->compareAndFindLabels( $requestOptions );
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->getLookupCount()
 		);
 	}
 
 	public function testCompareAndFindLabelsWithExemption() {
-
 		$row1 = new \stdClass;
 		$row1->smw_title = 'Foo';
 
 		$row2 = new \stdClass;
 		$row2->smw_title = 'Foobar';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row1, $row2 ] ) );
+			->willReturn( [ $row1, $row2 ] );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIWikiPage( 'Foobar', SMW_NS_PROPERTY ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Foobar', SMW_NS_PROPERTY ) ] );
 
 		$instance = new PropertyLabelSimilarityLookup(
 			$this->store,
@@ -141,8 +136,8 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit_Framework_TestCase {
 		$instance->setExemptionProperty( 'Bar' );
 		$instance->setThreshold( 10 );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->compareAndFindLabels( $requestOptions )
 		);
 	}

@@ -7,7 +7,7 @@ namespace SMW\Elastic\Indexer\Attachment;
  * return with "Fatal error: Allowed memory size of ..." therefore temporary lift
  * and scope the memory limitation!
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class ScopeMemoryLimiter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $url
+	 * @param string $memoryLimit
 	 *
 	 * @return string
 	 */
@@ -35,7 +35,7 @@ class ScopeMemoryLimiter {
 	 *
 	 * @return int
 	 */
-	public function getMemoryLimit() : int {
+	public function getMemoryLimit(): int {
 		return ini_get( 'memory_limit' );
 	}
 
@@ -45,7 +45,6 @@ class ScopeMemoryLimiter {
 	 * @param callable $callable
 	 */
 	public function execute( callable $callable ) {
-
 		$memory_limit = ini_get( 'memory_limit' );
 
 		if ( $this->toInt( $memory_limit ) < $this->toInt( $this->memoryLimit ) ) {

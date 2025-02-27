@@ -2,14 +2,11 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
-use SMW\Schema\Compartment;
+use SMW\Schema\SchemaFilter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -32,7 +29,7 @@ class CompositeFilter implements SchemaFilter {
 	private $matches = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $options = [];
 
@@ -50,7 +47,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasMatches() : bool {
+	public function hasMatches(): bool {
 		return $this->matches !== [];
 	}
 
@@ -59,7 +56,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMatches() : iterable {
+	public function getMatches(): iterable {
 		return $this->matches;
 	}
 
@@ -78,16 +75,14 @@ class CompositeFilter implements SchemaFilter {
 	 * {@inheritDoc}
 	 */
 	public function sortMatches( $type, $order = 'desc' ) {
-
 		if ( $this->matches === [] ) {
 			return;
 		}
 
 		$order = strtolower( $order );
 
-		if ( $type === self:: SORT_FILTER_SCORE ) {
-			usort( $this->matches, function( $a, $b ) use ( $order ) {
-
+		if ( $type === self::SORT_FILTER_SCORE ) {
+			usort( $this->matches, static function ( $a, $b ) use ( $order ) {
 				if ( $order === 'desc' ) {
 					return $b->filterScore <=> $a->filterScore;
 				}
@@ -103,7 +98,6 @@ class CompositeFilter implements SchemaFilter {
 	 * {@inheritDoc}
 	 */
 	public function filter( iterable $compartments ) {
-
 		$nodeFilter = null;
 
 		foreach ( $this->filters as $filter ) {

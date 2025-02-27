@@ -8,15 +8,14 @@ use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
  * @covers \SMW\Schema\Exception\SchemaTypeAlreadyExistsException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SchemaTypeAlreadyExistsExceptionTest extends \PHPUnit_Framework_TestCase {
+class SchemaTypeAlreadyExistsExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaTypeAlreadyExistsException( 'foo' );
 
 		$this->assertInstanceof(

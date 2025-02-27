@@ -11,25 +11,24 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataModel\SubSemanticData
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class SubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SubSemanticData::class,
 			new SubSemanticData( $this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN ) )
@@ -37,7 +36,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubSemanticData() {
-
 		$instance = new SubSemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
@@ -60,12 +58,11 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddSubSemanticDataWithMismatchedSubjectThrowsException() {
-
 		$instance = new SubSemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException');
+		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 
 		$instance->addSubSemanticData(
 			ContainerSemanticData::makeAnonymousContainer( true, true )
@@ -73,7 +70,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveSubSemanticData() {
-
 		$instance = new SubSemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
@@ -100,7 +96,6 @@ class SubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new SubSemanticData(

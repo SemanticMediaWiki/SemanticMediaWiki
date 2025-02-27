@@ -9,15 +9,14 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @covers \SMW\MediaWiki\PageCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
  */
-class PageCreatorTest extends \PHPUnit_Framework_TestCase {
+class PageCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageCreator',
 			 new PageCreator()
@@ -25,7 +24,6 @@ class PageCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreatePage() {
-
 		$instance = new PageCreator();
 
 		$this->assertInstanceOf(
@@ -35,7 +33,6 @@ class PageCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateFilePage() {
-
 		$instance = new PageCreator();
 
 		$this->assertInstanceOf(

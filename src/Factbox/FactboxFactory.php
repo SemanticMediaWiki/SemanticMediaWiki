@@ -2,14 +2,12 @@
 
 namespace SMW\Factbox;
 
-use IContextSource;
-use OutputPage;
+use ParserOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
-use ParserOutput;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -33,12 +31,12 @@ class FactboxFactory {
 	 * @return CachedFactbox
 	 */
 	public function newCachedFactbox() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
 		$cachedFactbox = new CachedFactbox(
-			$applicationFactory->getEntityCache()
+			$applicationFactory->getEntityCache(),
+			$applicationFactory->getFactboxText()
 		);
 
 		// Month = 30 * 24 * 3600
@@ -76,7 +74,6 @@ class FactboxFactory {
 	 * @return Factbox
 	 */
 	public function newFactbox( Title $title, ParserOutput $parserOutput ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$factbox = new Factbox(

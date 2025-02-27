@@ -50,57 +50,57 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
 	 * SMWDITime::PREC_YMD, or SMWDITime::PREC_YMDT.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_precision;
 	/**
 	 * Calendar model: SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_model;
 	/**
 	 * Number of year, possibly negative.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_year;
 	/**
 	 * Number of month.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_month;
 	/**
 	 * Number of day.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_day;
 	/**
 	 * Hours of the day.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_hours;
 	/**
 	 * Minutes of the hour.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_minutes;
 	/**
 	 * Seconds of the minute.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_seconds;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $timezone;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	protected $era = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	protected $julianDay = null;
 
@@ -117,13 +117,12 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @param $hour mixed integer number or false
 	 * @param $minute mixed integer number or false
 	 * @param $second mixed integer number or false
-	 * @param integer|false $timezone
+	 * @param int|false $timezone
 	 *
 	 * @todo Implement more validation here.
 	 */
 	public function __construct( $calendarmodel, $year, $month = false, $day = false,
-	                             $hour = false, $minute = false, $second = false, $timezone = false ) {
-
+								 $hour = false, $minute = false, $second = false, $timezone = false ) {
 		if ( ( $calendarmodel != self::CM_GREGORIAN ) && ( $calendarmodel != self::CM_JULIAN ) ) {
 			throw new DataItemException( "Unsupported calendar model constant \"$calendarmodel\"." );
 		}
@@ -158,7 +157,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDIType() {
 		return SMWDataItem::TYPE_TIME;
@@ -167,7 +166,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getCalendarModel() {
 		return $this->m_model;
@@ -176,7 +175,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 2.5
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimezone() {
 		return $this->timezone;
@@ -185,7 +184,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getPrecision() {
 		return $this->m_precision;
@@ -201,7 +200,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 *
 	 * @since 2.4
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getEra() {
 		return $this->era;
@@ -210,7 +209,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getYear() {
 		return $this->m_year;
@@ -219,7 +218,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMonth() {
 		return $this->m_month;
@@ -228,7 +227,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDay() {
 		return $this->m_day;
@@ -237,7 +236,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getHour() {
 		return $this->m_hours;
@@ -246,7 +245,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMinute() {
 		return $this->m_minutes;
@@ -255,7 +254,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSecond() {
 		return $this->m_seconds;
@@ -267,7 +266,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return string
 	 */
 	public function getCalendarModelLiteral() {
-
 		$literal = [
 			self::CM_GREGORIAN => '',
 			self::CM_JULIAN    => 'JL'
@@ -285,7 +283,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @throws DataItemException
 	 */
 	public static function newFromDateTime( DateTime $dateTime ) {
-
 		$calendarModel = self::CM_JULIAN;
 
 		$year = $dateTime->format( 'Y' );
@@ -307,7 +304,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return DateTime
 	 */
 	public function asDateTime() {
-
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
 
 		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
@@ -321,10 +317,10 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		$seconds = number_format( str_pad( $this->m_seconds, 2, '0', STR_PAD_LEFT ), 7, '.', '' );
 
 		$time = $year . '-' .
-			str_pad( $this->m_month, 2, '0', STR_PAD_LEFT )     . '-' .
-			str_pad( $this->m_day, 2, '0', STR_PAD_LEFT )       . ' ' .
-			str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT )     . ':' .
-			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT )   . ':' .
+			str_pad( $this->m_month, 2, '0', STR_PAD_LEFT ) . '-' .
+			str_pad( $this->m_day, 2, '0', STR_PAD_LEFT ) . ' ' .
+			str_pad( $this->m_hours, 2, '0', STR_PAD_LEFT ) . ':' .
+			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ) . ':' .
 			$seconds;
 
 		return new DateTime( $time );
@@ -422,7 +418,6 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return double
 	 */
 	public function getJD() {
-
 		if ( $this->julianDay !== null ) {
 			return $this->julianDay;
 		}
@@ -510,13 +505,12 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * calendar model, presicion.
 	 *
 	 * @param double $jdValue
-	 * @param integer|null $calendarmodel
-	 * @param integer|null $precision
+	 * @param int|null $calendarModel
+	 * @param int|null $precision
 	 *
 	 * @return self
 	 */
 	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
-
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
 		$jdValue = JulianDay::format( $jdValue );
@@ -525,7 +519,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			$precision = strpos( strval( $jdValue ), '.5' ) !== false ? self::PREC_YMD : self::PREC_YMDT;
 		}
 
-		list( $calendarModel, $year, $month, $day ) = JulianDay::JD2Date( $jdValue, $calendarModel );
+		[ $calendarModel, $year, $month, $day ] = JulianDay::JD2Date( $jdValue, $calendarModel );
 
 		if ( $precision <= self::PREC_YM ) {
 			$day = false;
@@ -535,7 +529,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		}
 
 		if ( $precision === self::PREC_YMDT ) {
-			list( $hour, $minute, $second ) = JulianDay::JD2Time( $jdValue );
+			[ $hour, $minute, $second ] = JulianDay::JD2Time( $jdValue );
 		}
 
 		return new self( $calendarModel, $year, $month, $day, $hour, $minute, $second, $timezone );
@@ -546,15 +540,15 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * This calculation assumes that neither calendar has a year 0.
 	 * @param $year integer year number
 	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function isLeapYear( $year, $calendarmodel ) {
+	public static function isLeapYear( $year, $calendarmodel ) {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 		if ( $calendarmodel == self::CM_JULIAN ) {
 			return ( $astroyear % 4 ) == 0;
 		} else {
 			return ( ( $astroyear % 400 ) == 0 ) ||
-			       ( ( ( $astroyear % 4 ) == 0 ) && ( ( $astroyear % 100 ) != 0 ) );
+				   ( ( ( $astroyear % 4 ) == 0 ) && ( ( $astroyear % 100 ) != 0 ) );
 		}
 	}
 
@@ -565,9 +559,9 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @param $month integer month number
 	 * @param $year integer year number
 	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function getDayNumberForMonth( $month, $year, $calendarmodel ) {
+	public static function getDayNumberForMonth( $month, $year, $calendarmodel ) {
 		if ( $month !== 2 ) {
 			return self::$m_daysofmonths[$month];
 		} elseif ( self::isLeapYear( $year, $calendarmodel ) ) {
@@ -610,7 +604,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -623,7 +617,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

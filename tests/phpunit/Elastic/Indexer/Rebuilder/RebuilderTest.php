@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class RebuilderTest extends \PHPUnit_Framework_TestCase {
+class RebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,8 +25,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	private $installer;
 	private $messageReporter;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -50,10 +49,13 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\NullMessageReporter' )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$this->connection->expects( $this->any() )
+			->method( 'getVersion' )
+			->willReturn( '6.4.0' );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Rebuilder::class,
 			new Rebuilder( $this->connection, $this->indexer, $this->fileIndexer, $this->documentCreator, $this->installer )
@@ -61,8 +63,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelect() {
-
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,7 +74,7 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $database ) );
+			->willReturn( $database );
 
 		$instance = new Rebuilder(
 			$this->connection,
@@ -83,14 +84,13 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 			$this->installer
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->select( $store, [] )
 		);
 	}
 
 	public function testDeleteAndSetupIndices() {
-
 		$this->installer->expects( $this->once() )
 			->method( 'drop' );
 
@@ -113,10 +113,9 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasIndices() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'hasIndex' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new Rebuilder(
 			$this->connection,
@@ -132,17 +131,10 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateIndices() {
-
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'existsAlias', 'updateAliases' ] )
-			->getMock();
-
-		$indices->expects( $this->atLeastOnce() )
+		$this->connection->expects( $this->exactly( 2 ) )
+			->method( 'createIndex' );
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'updateAliases' );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
 
 		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'setLock' );
@@ -163,24 +155,15 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetDefaults() {
+		$this->connection->expects( $this->exactly( 2 ) )
+			->method( 'openIndex' );
 
-		$indices = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'delete', 'close', 'open' ] )
-			->getMock();
-
-		$indices->expects( $this->atLeastOnce() )
-			->method( 'open' );
-
-		$indices->expects( $this->atLeastOnce() )
-			->method( 'close' );
-
-		$this->connection->expects( $this->any() )
-			->method( 'indices' )
-			->will( $this->returnValue( $indices ) );
+		$this->connection->expects( $this->exactly( 2 ) )
+			->method( 'closeIndex' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'hasIndex' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'releaseLock' );
@@ -201,7 +184,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'delete' );
 
@@ -217,7 +199,6 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRebuild() {
-
 		$options = $this->getMockBuilder( '\SMW\Options' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -236,21 +217,21 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->documentCreator->expects( $this->any() )
 			->method( 'newFromSemanticData' )
-			->will( $this->returnValue( $document ) );
+			->willReturn( $document );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $options ) );
+			->willReturn( $options );
 
 		$this->indexer->expects( $this->once() )
 			->method( 'indexDocument' )
 			->with(
 				$this->anything( $document ),
-				$this->equalTo( false ) );
+				false );
 
 		$instance = new Rebuilder(
 			$this->connection,
@@ -264,10 +245,9 @@ class RebuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRefresh() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'hasIndex' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'refresh' );

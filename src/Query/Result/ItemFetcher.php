@@ -2,9 +2,7 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DataValueFactory;
 use SMW\DataTypeRegistry;
-use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Parser\InTextAnnotationParser;
@@ -14,10 +12,9 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -50,7 +47,7 @@ class ItemFetcher {
 	private $dataItems = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $prefetch = true;
 
@@ -87,7 +84,7 @@ class ItemFetcher {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ) {
 		$this->queryToken = $queryToken;
 	}
 
@@ -97,7 +94,6 @@ class ItemFetcher {
 	 * @param DataItem|null|false $dataItem
 	 */
 	public function highlightTokens( $dataItem ) {
-
 		if ( !$dataItem instanceof DIBlob || !$this->printRequest instanceof PrintRequest ) {
 			return $dataItem;
 		}
@@ -145,7 +141,6 @@ class ItemFetcher {
 	 * @return array
 	 */
 	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ) {
-
 		if ( $this->prefetch === false ) {
 			return $this->legacyFetch( $dataItems, $property, $requestOptions );
 		}
@@ -202,7 +197,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ) {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 
@@ -210,7 +205,6 @@ class ItemFetcher {
 	}
 
 	private function legacyFetch( $dataItems, $property, $requestOptions ) {
-
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );
@@ -235,7 +229,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ) {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 

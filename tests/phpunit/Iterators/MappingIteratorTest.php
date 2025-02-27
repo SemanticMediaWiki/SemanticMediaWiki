@@ -10,38 +10,35 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Iterators\MappingIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
+class MappingIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MappingIterator::class,
-			new MappingIterator( [], function() {
+			new MappingIterator( [], static function () {
 			} )
 		);
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-
 		$this->expectException( 'RuntimeException' );
-		$instance = new MappingIterator( 2, function() {
+		$instance = new MappingIterator( 2, static function () {
 		} );
 	}
 
 	public function testdoIterateOnArray() {
-
 		$expected = [
-			1 , 42
+			1, 42
 		];
 
-		$mappingIterator = new MappingIterator( $expected, function( $counter ) {
+		$mappingIterator = new MappingIterator( $expected, static function ( $counter ) {
 			return $counter;
 		} );
 
@@ -54,12 +51,11 @@ class MappingIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoIterateOnArrayIterator() {
-
 		$expected = [
-			1001 , 42
+			1001, 42
 		];
 
-		$mappingIterator = new MappingIterator( new ArrayIterator( $expected ), function( $counter ) {
+		$mappingIterator = new MappingIterator( new ArrayIterator( $expected ), static function ( $counter ) {
 			return $counter;
 		} );
 

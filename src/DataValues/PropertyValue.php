@@ -8,10 +8,9 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
 use SMW\DIProperty;
 use SMW\Exception\DataItemException;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue;
-use SMWDataValue as DataValue;
 use SMWWikiPageValue;
 
 /**
@@ -36,7 +35,7 @@ use SMWWikiPageValue;
  * objects/values, but never for subjects (pages as such). Hence it does not
  * provide a complete Title-like interface, or support for things like sortkey.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -122,7 +121,7 @@ class PropertyValue extends SMWDataValue {
 	 * original object's content.
 	 */
 	public function __clone() {
-		if ( !is_null( $this->m_wikipage ) ) {
+		if ( $this->m_wikipage !== null ) {
 			$this->m_wikipage = clone $this->m_wikipage;
 		}
 	}
@@ -213,12 +212,11 @@ class PropertyValue extends SMWDataValue {
 	/**
 	 * @see SMWDataValue::loadDataItem()
 	 *
-	 * @param $dataitem DataItem
+	 * @param $dataItem DataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
@@ -268,7 +266,6 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	public function setOutputFormat( $formatstring ) {
-
 		if ( $formatstring === false || $formatstring === '' ) {
 			return;
 		}
@@ -292,7 +289,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return SMWWikiPageValue or null
 	 */
 	public function getWikiPageValue() {
-
 		if ( isset( $this->m_wikipage ) ) {
 			return $this->m_wikipage;
 		}
@@ -325,10 +321,9 @@ class PropertyValue extends SMWDataValue {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRestricted() {
-
 		if ( !$this->isValid() ) {
 			return true;
 		}
@@ -354,12 +349,11 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getShortWikiText
+	 * @see SMWDataValue::getShortWikiText
 	 *
 	 * @return string
 	 */
 	public function getShortWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -368,12 +362,11 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getShortHTMLText
+	 * @see SMWDataValue::getShortHTMLText
 	 *
 	 * @return string
 	 */
 	public function getShortHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -382,12 +375,11 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getLongWikiText
+	 * @see SMWDataValue::getLongWikiText
 	 *
 	 * @return string
 	 */
 	public function getLongWikiText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -396,12 +388,11 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getLongHTMLText
+	 * @see SMWDataValue::getLongHTMLText
 	 *
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -410,12 +401,11 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see DataValue::getWikiValue
+	 * @see SMWDataValue::getWikiValue
 	 *
 	 * @return string
 	 */
 	public function getWikiValue() {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -427,13 +417,12 @@ class PropertyValue extends SMWDataValue {
 	 * Outputs a formatted property label that takes into account preferred/
 	 * canonical label characteristics
 	 *
-	 * @param integer|string $format
+	 * @param int|string $format
 	 * @param Linker|null $linker
 	 *
 	 * @return string
 	 */
 	public function getFormattedLabel( $format = DataValueFormatter::VALUE, $linker = null ) {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -456,7 +445,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getSearchLabel() {
-
 		if ( $this->valueFormatter === null ) {
 			$this->valueFormatter = $this->dataValueServiceFactory->getValueFormatter( $this );
 		}
@@ -473,7 +461,6 @@ class PropertyValue extends SMWDataValue {
 	 * @return string
 	 */
 	public function getPropertyTypeID() {
-
 		if ( !$this->isValid() ) {
 			return '__err';
 		}
@@ -482,7 +469,6 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
-
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		// Probe on capitalizedFirstChar because we only want predefined

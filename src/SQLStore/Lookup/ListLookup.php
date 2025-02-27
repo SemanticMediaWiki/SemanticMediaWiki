@@ -6,7 +6,7 @@ namespace SMW\SQLStore\Lookup;
  * A simple interface for fetching a list from either a DB or being used as
  * decorator to cache results
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -23,7 +23,7 @@ interface ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFromCache();
 
@@ -40,7 +40,7 @@ interface ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getTimestamp();
 

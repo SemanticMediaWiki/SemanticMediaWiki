@@ -3,15 +3,15 @@
 namespace SMW\MediaWiki;
 
 use RuntimeException;
+use SMW\MediaWiki\Page\ConceptPage;
+use SMW\MediaWiki\Page\PropertyPage;
+use SMW\Property\DeclarationExaminerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use Title;
-use SMW\Property\DeclarationExaminerFactory;
-use SMW\MediaWiki\Page\PropertyPage;
-use SMW\MediaWiki\Page\ConceptPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -41,7 +41,6 @@ class PageFactory {
 	 * @throws RuntimeException
 	 */
 	public function newPageFromTitle( Title $title ) {
-
 		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
 			return $this->newPropertyPage( $title );
 		} elseif ( $title->getNamespace() === SMW_NS_CONCEPT ) {
@@ -59,7 +58,6 @@ class PageFactory {
 	 * @return PropertyPage
 	 */
 	public function newPropertyPage( Title $title ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -100,7 +98,6 @@ class PageFactory {
 	 * @return ConceptPage
 	 */
 	public function newConceptPage( Title $title ) {
-
 		$conceptPage = new ConceptPage( $title );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 

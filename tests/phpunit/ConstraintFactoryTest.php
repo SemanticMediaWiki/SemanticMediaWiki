@@ -3,26 +3,22 @@
 namespace SMW\Tests;
 
 use SMW\ConstraintFactory;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\Fixtures\PlainClass;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ConstraintFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
+class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintFactory::class,
 			new ConstraintFactory()
@@ -30,7 +26,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConstraintRegistry() {
-
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
@@ -40,7 +35,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConstraintCheckRunner() {
-
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
@@ -50,7 +44,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNullConstraint() {
-
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
@@ -60,7 +53,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConstraintSchemaCompiler() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -74,7 +66,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewConstraintByClassInvalidClassThrowsException() {
-
 		$instance = new ConstraintFactory();
 
 		$this->expectException( '\SMW\Exception\ClassNotFoundException' );
@@ -82,7 +73,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewConstraintByClassNonConstraintClassThrowsException() {
-
 		$instance = new ConstraintFactory();
 
 		$this->expectException( '\RuntimeException' );
@@ -93,7 +83,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider constraintByClass
 	 */
 	public function testCanConstructConstraintByClass( $class, $expected ) {
-
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
@@ -108,7 +97,6 @@ class ConstraintFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function constraintByClass() {
-
 		yield [
 			'\SMW\Constraint\Constraints\NullConstraint',
 			'\SMW\Constraint\Constraints\NullConstraint'

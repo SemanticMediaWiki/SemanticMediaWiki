@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Listener\ChangeListener\ChangeRecord
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
+class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeRecord::class,
 			new ChangeRecord()
@@ -27,7 +26,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$changeRecord = new ChangeRecord(
 			[
 				's_id' => 1000,
@@ -43,7 +41,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFromInnerRecord() {
-
 		$changeRecord = new ChangeRecord(
 			[
 				new ChangeRecord( [ 's_id' => 42 ] ),
@@ -59,7 +56,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetFromInnerMultiRecord() {
-
 		$changeRecord = new ChangeRecord(
 			[
 				new ChangeRecord( [ 'row' => [ 's_id' => 42 ] ] ),
@@ -75,7 +71,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterateOuterRecord() {
-
 		$changeRecord = new ChangeRecord(
 			[
 				new ChangeRecord( [ 's_id' => 42 ] )
@@ -91,7 +86,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHas_NonExistingKey() {
-
 		$changeRecord = new ChangeRecord();
 
 		$this->assertFalse(
@@ -100,7 +94,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetOnNonExistingKey_ThrowsException() {
-
 		$changeRecord = new ChangeRecord();
 
 		$this->expectException( '\RuntimeException' );

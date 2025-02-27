@@ -3,23 +3,23 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\ShowParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -29,7 +29,7 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	private $circularReferenceGuard;
 	private $expensiveFuncExecutionWatcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -53,15 +53,15 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$this->expensiveFuncExecutionWatcher->expects( $this->any() )
 			->method( 'hasReachedExpensiveLimit' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -69,18 +69,17 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -102,7 +101,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -127,14 +125,13 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsQueryDisabled() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->messageFormatter->expects( $this->any() )
 			->method( 'addFromKey' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$this->messageFormatter->expects( $this->once() )
 			->method( 'getHtml' );
@@ -155,7 +152,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryDataProvider
 	 */
 	public function testInstantiatedQueryData( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -172,8 +168,8 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->parse( $params );
 
-		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ){
-			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
+		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
+			$this->assertInstanceOf( '\SMW\DataModel\ContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,
@@ -183,7 +179,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryWithErroneousData() {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -246,7 +241,6 @@ class ShowParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryDataProvider() {
-
 		$provider = [];
 
 		// #0

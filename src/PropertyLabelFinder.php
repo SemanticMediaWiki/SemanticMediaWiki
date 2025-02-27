@@ -2,8 +2,12 @@
 
 namespace SMW;
 
+use SMW\Localizer\Localizer;
+use SMW\Query\QueryResult;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -62,10 +66,9 @@ class PropertyLabelFinder {
 	 *
 	 * @param string $id
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
 	public function findCanonicalPropertyLabelById( $id ) {
-
 		// Due to mapped lists avoid possible mismatch on dataTypes
 		// (e.g. Text -> _TEXT vs. Text -> _txt)
 		if ( ( $label = array_search( $id, $this->canonicalDatatypeLabels ) ) ) {
@@ -86,7 +89,6 @@ class PropertyLabelFinder {
 	 * @return string
 	 */
 	public function findPropertyLabelById( $id ) {
-
 		if ( array_key_exists( $id, $this->languageDependentPropertyLabels ) ) {
 			return $this->languageDependentPropertyLabels[$id];
 		}
@@ -106,7 +108,6 @@ class PropertyLabelFinder {
 	 * @return string
 	 */
 	public function findPropertyLabelFromIdByLanguageCode( $id, $languageCode = '' ) {
-
 		if ( $languageCode === '' ) {
 			return $this->findPropertyLabelById( $id );
 		}
@@ -133,7 +134,6 @@ class PropertyLabelFinder {
 	 * @return string
 	 */
 	public function findPreferredPropertyLabelByLanguageCode( $id, $languageCode = '' ) {
-
 		if ( $id === '' || $id === false ) {
 			return '';
 		}
@@ -158,7 +158,6 @@ class PropertyLabelFinder {
 	 * @return DIProperty[]|[]
 	 */
 	public function findPropertyListFromLabelByLanguageCode( $text, $languageCode = '' ) {
-
 		if ( $text === '' ) {
 			return [];
 		}
@@ -193,7 +192,7 @@ class PropertyLabelFinder {
 			$query
 		);
 
-		if ( !$queryResult instanceof \SMWQueryResult ) {
+		if ( !$queryResult instanceof QueryResult ) {
 			return $propertyList;
 		}
 
@@ -222,7 +221,6 @@ class PropertyLabelFinder {
 	 * @param string $label
 	 */
 	public function registerPropertyLabel( $id, $label, $asCanonical = true ) {
-
 		// Prevent an extension from overriding an already registered
 		// canonical label that may point to a different ID
 		if ( isset( $this->canonicalPropertyLabels[$label] ) && $this->canonicalPropertyLabels[$label] !== $id ) {

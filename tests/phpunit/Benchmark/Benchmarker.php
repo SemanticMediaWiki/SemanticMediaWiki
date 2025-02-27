@@ -3,7 +3,7 @@
 namespace SMW\Tests\Benchmark;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -16,12 +16,12 @@ class Benchmarker {
 	private $container = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useAsSample = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $roundFactor;
 
@@ -54,7 +54,7 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $roundFactor
+	 * @param int $roundFactor
 	 */
 	public function roundBy( $roundFactor ) {
 		$this->roundFactor = $roundFactor;
@@ -64,8 +64,8 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $point
-	 * @param integer $decimals
+	 * @param int $point
+	 * @param int $decimals
 	 */
 	public function addBenchmarkPoint( $point, $decimals = 10 ) {
 		$this->container[] = number_format( $point, $decimals );
@@ -74,7 +74,7 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer[] $poins
+	 * @param int[] $poins
 	 */
 	public function addBenchmarkPoints( array $poins ) {
 		$this->container = $poins;
@@ -83,7 +83,7 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSum() {
 		return $this->round( array_sum( $this->container ) );
@@ -92,7 +92,7 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getMean() {
 		return $this->round( $this->getSum() / count( $this->container ) );
@@ -101,10 +101,9 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getVariance() {
-
 		$mean  = $this->getMean();
 		$count = count( $this->container );
 
@@ -120,7 +119,7 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getStandardDeviation() {
 		return $this->round( (float)sqrt( $this->getVariance() ) );
@@ -129,9 +128,9 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $basis
+	 * @param int $basis
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getStandardScoreBy( $basis = 0 ) {
 		return $this->round( ( $basis - $this->getMean() ) / $this->getStandardDeviation() );
@@ -140,9 +139,9 @@ class Benchmarker {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $basis
+	 * @param int $basis
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getNormalizedValueBy( $basis = 1 ) {
 		return $this->round( $this->getMean() / $basis );

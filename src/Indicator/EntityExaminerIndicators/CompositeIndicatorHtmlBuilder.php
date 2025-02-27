@@ -2,16 +2,16 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Utils\TemplateEngine;
+use RuntimeException;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
-use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use RuntimeException;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -47,8 +47,7 @@ class CompositeIndicatorHtmlBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $indicatorProviders, array $options ) : string {
-
+	public function buildHTML( array $indicatorProviders, array $options ): string {
 		if ( !isset( $options['subject'] ) ) {
 			throw new RuntimeException( "Expected a subject reference!" );
 		}
@@ -64,7 +63,7 @@ class CompositeIndicatorHtmlBuilder {
 			'highlighter_title' => $options['highlighter_title'],
 			'placeholder_title' => $options['placeholder_title'],
 			'dir' => $options['dir'],
-			'uselang' => $options['uselang'],
+			'uselang' => $options['uselang'] ?? '',
 			'subject' => $options['subject'],
 			'options_raw' => $options['options_raw'],
 			'count' => count( $indicatorProviders ),
@@ -149,7 +148,6 @@ class CompositeIndicatorHtmlBuilder {
 	}
 
 	private function highlighter( $content, $tabset, $options ) {
-
 		$this->templateEngine->load( '/indicator/comment.ms', 'comment_template' );
 
 		$this->templateEngine->compile(
@@ -192,7 +190,6 @@ class CompositeIndicatorHtmlBuilder {
 	}
 
 	private function placeholder( $options ) {
-
 		$this->templateEngine->load( '/indicator/composite.placeholder.ms', 'placeholder_template' );
 
 		$this->templateEngine->compile(

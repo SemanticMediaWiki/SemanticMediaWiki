@@ -3,15 +3,15 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
+use SMW\Query\QueryLinker;
 use SMW\Query\QueryResult;
-use Title;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\UrlArgs;
-use SMW\Query\QueryLinker;
 use SMWQuery as Query;
+use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -44,17 +44,17 @@ class HtmlForm {
 	private $callbacks = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEditMode = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isBorrowedMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPostSubmit = false;
 
@@ -88,9 +88,9 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Query $query
+	 * @param Query|null $query
 	 */
-	public function setQuery( Query $query = null ) {
+	public function setQuery( ?Query $query = null ) {
 		$this->query = $query;
 	}
 
@@ -106,7 +106,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isEditMode
+	 * @param bool $isEditMode
 	 */
 	public function isEditMode( $isEditMode ) {
 		$this->isEditMode = (bool)$isEditMode;
@@ -115,7 +115,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isBorrowedMode
+	 * @param bool $isBorrowedMode
 	 */
 	public function isBorrowedMode( $isBorrowedMode ) {
 		$this->isBorrowedMode = (bool)$isBorrowedMode;
@@ -124,7 +124,7 @@ class HtmlForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isPostSubmit
+	 * @param bool $isPostSubmit
 	 */
 	public function isPostSubmit( $isPostSubmit ) {
 		$this->isPostSubmit = (bool)$isPostSubmit;
@@ -139,7 +139,6 @@ class HtmlForm {
 	 * @return string
 	 */
 	public function getForm( UrlArgs $urlArgs, $queryResult = null, array $queryLog = [] ) {
-
 		$html = $this->buildHTML( $urlArgs, $queryResult, $queryLog );
 
 		if ( $this->isPostSubmit ) {
@@ -160,15 +159,14 @@ class HtmlForm {
 	}
 
 	private function buildHTML( $urlArgs, $queryResult, array $queryLog ) {
-
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;
 		$infoText = '';
 
 		if ( $queryLog !== [] ) {
-			$infoText = '<h3>' . wfMessage( 'smw-ask-extra-query-log' )->text() . '</h3>';
-			$infoText .= '<pre>' . json_encode( $queryLog, JSON_PRETTY_PRINT ) . '</pre>';
+			$infoText = '<h3>' . wfMessage( 'smw-ask-extra-query-log' )->escaped() . '</h3>';
+			$infoText .= Html::element( 'pre', [], json_encode( $queryLog, JSON_PRETTY_PRINT ) );
 		}
 
 		if ( $queryResult instanceof QueryResult ) {

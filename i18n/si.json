@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
+			"1100100",
 			"Susith Chandira Gts",
 			"SusithCM",
-			"පසිඳු කාවින්ද",
-			1100100
+			"නන්දිමිතුරු",
+			"පසිඳු කාවින්ද"
 		]
 	},
 	"smw_viewasrdf": "RDF පෝෂකය",
@@ -63,6 +64,7 @@
 	"smw_exportrdf_submit": "නිර්යාත කරන්න",
 	"uriresolver": "URIපිළිවිසඳුව",
 	"properties": "ගුණ",
+	"smw-categories": "ප්‍රවර්ග",
 	"smw_properties_docu": "පහත දැක්වෙන වත්කම් විකිය තුල භාවිතා වේ.",
 	"smw_propertylackspage": "සියලුම වත්කම් පිටුවක් මඟින් විස්තර කල යුතු වේ!",
 	"smw_propertyhardlyused": "මෙම වත්කම විකිය තුල දැඩි ලෙස භාවිතා වේ!",

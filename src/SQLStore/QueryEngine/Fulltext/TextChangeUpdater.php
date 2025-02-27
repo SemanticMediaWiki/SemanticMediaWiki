@@ -4,16 +4,16 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\Utils\Timer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -38,17 +38,17 @@ class TextChangeUpdater {
 	private $searchTableUpdater;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $asDeferredUpdate = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isPrimary = false;
 
@@ -71,7 +71,7 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $asDeferredUpdate
+	 * @param bool $asDeferredUpdate
 	 */
 	public function asDeferredUpdate( $asDeferredUpdate ) {
 		$this->asDeferredUpdate = (bool)$asDeferredUpdate;
@@ -84,7 +84,7 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
@@ -93,7 +93,7 @@ class TextChangeUpdater {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isPrimary
+	 * @param bool $isPrimary
 	 */
 	public function isPrimary( $isPrimary ) {
 		$this->isPrimary = $isPrimary;
@@ -107,7 +107,6 @@ class TextChangeUpdater {
 	 * @param ChangeOp $changeOp
 	 */
 	public function pushUpdates( ChangeOp $changeOp ) {
-
 		if ( !$this->searchTableUpdater->isEnabled() ) {
 			return;
 		}
@@ -155,7 +154,6 @@ class TextChangeUpdater {
 	 * @param array|boolan $parameters
 	 */
 	public function pushUpdatesFromJobParameters( $parameters ) {
-
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
 			return;
 		}
@@ -184,10 +182,9 @@ class TextChangeUpdater {
 	/**
 	 * @since 2.5
 	 *
-	 * @param ChangeOp $changeOp
+	 * @param ChangeDiff|null $changeDiff
 	 */
-	public function doUpdateFromChangeDiff( ChangeDiff $changeDiff = null ) {
-
+	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ) {
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
@@ -218,7 +215,7 @@ class TextChangeUpdater {
 		}
 
 		foreach ( $updates as $key => $value ) {
-			list( $sid, $pid ) = explode( ':', $key, 2 );
+			[ $sid, $pid ] = explode( ':', $key, 2 );
 
 			if ( $this->searchTableUpdater->exists( $sid, $pid ) === false ) {
 				$this->searchTableUpdater->insert( $sid, $pid );
@@ -247,7 +244,6 @@ class TextChangeUpdater {
 	}
 
 	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
-
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -271,7 +267,6 @@ class TextChangeUpdater {
 	}
 
 	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ) {
-
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 
 			// Replace s_id for subobjects etc. with the o_id
@@ -292,7 +287,6 @@ class TextChangeUpdater {
 	}
 
 	private function canPostUpdate( $changeOp ) {
-
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 

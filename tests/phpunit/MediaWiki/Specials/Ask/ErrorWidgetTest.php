@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use Html;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\Tests\PHPUnitCompat;
 
@@ -9,35 +10,32 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Ask\ErrorWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
+class ErrorWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testSessionFailure() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			ErrorWidget::sessionFailure()
 		);
 	}
 
 	public function testNoScript() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			ErrorWidget::noScript()
 		);
 	}
 
 	public function testNoResult() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			ErrorWidget::noResult()
 		);
 	}
@@ -46,14 +44,13 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryErrorProvider
 	 */
 	public function testGetFormattedQueryErrorElement( $errors, $expected ) {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( $errors ) );
+			->willReturn( $errors );
 
 		$this->assertEquals(
 			$expected,
@@ -61,8 +58,19 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function queryErrorProvider() {
+	/**
+	 * Return an error box using core MW method
+	 * This is required because the output is different depending on the MW version
+	 *
+	 * @param string $message
+	 * @return $string HTML of the error message box
+	 * @since 5.0.0
+	 */
+	private function getErrorMessageHTML( $message ) {
+		return Html::errorBox( $message, '', 'smw-error-result-error' );
+	}
 
+	public function queryErrorProvider() {
 		$provider[] = [
 			'',
 			''
@@ -70,23 +78,23 @@ class ErrorWidgetTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [
 			[ 'Foo' ],
-			'<div id="result-error" class="smw-callout smw-callout-error">Foo</div>'
+			$this->getErrorMessageHTML( 'Foo' )
 		];
 
 		$provider[] = [
 			[ 'Foo', 'Bar' ],
-			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
+			$this->getErrorMessageHTML( '<ul><li>Foo</li><li>Bar</li></ul>' )
 		];
 
 		$provider[] = [
 			[ 'Foo', [ 'Bar' ] ],
-			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
+			$this->getErrorMessageHTML( '<ul><li>Foo</li><li>Bar</li></ul>' )
 		];
 
 		// Filter duplicate
 		$provider[] = [
 			[ 'Foo', [ 'Bar' ], 'Bar' ],
-			'<div id="result-error" class="smw-callout smw-callout-error"><ul><li>Foo</li><li>Bar</li></ul></div>'
+			$this->getErrorMessageHTML( '<ul><li>Foo</li><li>Bar</li></ul>' )
 		];
 
 		return $provider;

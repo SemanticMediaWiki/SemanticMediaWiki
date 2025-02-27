@@ -10,7 +10,7 @@ use RuntimeException;
  * @group SMWExtension
  * @group semantic-mediawiki-sparql
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -70,7 +70,6 @@ class FakeRawResultProvider {
 	}
 
 	private function isReadableFile( $file ) {
-
 		if ( is_readable( $file ) ) {
 			return $file;
 		}

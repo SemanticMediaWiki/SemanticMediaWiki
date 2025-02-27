@@ -5,10 +5,9 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\FileRepoFinder;
 use Title;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -68,9 +67,8 @@ class FileHandler {
 	 *
 	 * @return string
 	 */
-	public function fetchContentFromURL( string $url ) : string {
-
-		//PHP 7.1+
+	public function fetchContentFromURL( string $url ): string {
+		// PHP 7.1+
 		$readCallback = $this->readCallback;
 
 		if ( $this->readCallback !== null ) {
@@ -105,8 +103,7 @@ class FileHandler {
 	 *
 	 * @return string
 	 */
-	public function format( string $contents, string $type = '' ) : string {
-
+	public function format( string $contents, string $type = '' ): string {
 		if ( $type === self::FORMAT_BASE64 ) {
 			return base64_encode( $contents );
 		}

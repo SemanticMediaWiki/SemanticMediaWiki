@@ -2,32 +2,33 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DIWikiPage;
+use Onoi\Cache\Cache;
 use SMW\DIProperty;
-use SMWDIBlob as DIBlob;
+use SMW\DIWikiPage;
 use SMW\Schema\SchemaFinder;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Schema\SchemaFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
+class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $propertySpecificationLookup;
+	private Cache $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +38,6 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SchemaFinder::class,
 			new SchemaFinder( $this->store, $this->propertySpecificationLookup, $this->cache )
@@ -45,26 +45,25 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSchemaListByType() {
-
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
 
 		$this->cache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [
+			->willReturn( [
 				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ) ] ) );
+				DIWikiPage::newFromText( 'Bar' ) ] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
 			->with(
 				$this->anyThing(),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ], [ $data[1] ] ) );
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ], [ $data[1] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -79,7 +78,6 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConstraintSchema() {
-
 		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
@@ -88,16 +86,16 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( new DIProperty( 'Foo' ) ),
-				$this->equalTo( new DIProperty( '_CONSTRAINT_SCHEMA' ) ) )
-			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+				new DIProperty( 'Foo' ),
+				new DIProperty( '_CONSTRAINT_SCHEMA' ) )
+			->willReturnOnConsecutiveCalls( [ $subject ] );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ], [ $data[1] ] ) );
+				$subject,
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ], [ $data[1] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -112,7 +110,6 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaList() {
-
 		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
@@ -120,16 +117,16 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( new DIProperty( 'Foo' ) ),
-				$this->equalTo( new DIProperty( 'BAR' ) ) )
-			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+				new DIProperty( 'Foo' ),
+				new DIProperty( 'BAR' ) )
+			->willReturnOnConsecutiveCalls( [ $subject ] );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ] ) );
+				$subject,
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -144,10 +141,9 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaList_NoMatch() {
-
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -155,30 +151,28 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 			$this->cache
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+		$this->assertNull(
+						$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
 		);
 	}
 
 	public function testNewSchemaList_EmptyDefinition() {
-
 		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 		$data[] = new DIBlob( '' );
 
 		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( new DIProperty( 'Foo' ) ),
-				$this->equalTo( new DIProperty( 'BAR' ) ) )
-			->will( $this->onConsecutiveCalls( [ $subject ] ) );
+				new DIProperty( 'Foo' ),
+				new DIProperty( 'BAR' ) )
+			->willReturnOnConsecutiveCalls( [ $subject ] );
 
 		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
 			->method( 'getSpecification' )
 			->with(
-				$this->equalTo( $subject ),
-				$this->equalTo( new DIProperty( '_SCHEMA_DEF' ) ) )
-			->will( $this->onConsecutiveCalls( [ $data[0] ] ) );
+				$subject,
+				new DIProperty( '_SCHEMA_DEF' ) )
+			->willReturnOnConsecutiveCalls( [ $data[0] ] );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -193,14 +187,13 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRegisterPropertyChangeListener() {
-
 		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyChangeListener->expects( $this->once() )
 			->method( 'addListenerCallback' )
-			->with(	$this->equalTo( '_SCHEMA_TYPE' ) );
+			->with(	'_SCHEMA_TYPE' );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -212,7 +205,6 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord() {
-
 		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
 			[
 				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
@@ -233,7 +225,6 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord_InvalidKey() {
-
 		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
 			[
 				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
@@ -253,7 +244,6 @@ class SchemaFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord_NoHashField() {
-
 		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
 			[
 				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_id' => 42 ] ] )

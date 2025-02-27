@@ -3,17 +3,17 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Message;
-use WebRequest;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'stats/cache';
 	}
 
@@ -57,7 +57,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -67,7 +67,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ),
 			[ 'action' => $this->getTask() ]
@@ -91,7 +90,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ) ] )
 		);
@@ -105,7 +103,6 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	}
 
 	private function outputQueryCacheStatistics() {
-
 		$resultCache = ApplicationFactory::getInstance()->singleton( 'ResultCache' );
 
 		if ( !$resultCache->isEnabled() ) {
@@ -138,7 +135,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 
 		$htmlTabs->tab( 'legend', $this->msg( 'smw-legend' ) );
 		$htmlTabs->content( 'legend', Html::rawElement(
-					'p', [] , $this->msg( 'smw-admin-statistics-querycache-legend', Message::PARSE ) ) );
+					'p', [], $this->msg( 'smw-admin-statistics-querycache-legend', Message::PARSE ) ) );
 
 		$html = $htmlTabs->buildHTML( [ 'class' => 'cache-statistics' ] );
 

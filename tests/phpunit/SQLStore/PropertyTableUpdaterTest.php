@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\SQLStore\PropertyTableUpdater;
 use SMW\Parameters;
+use SMW\SQLStore\PropertyTableUpdater;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,10 +26,10 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	private $propertyStatisticsStore;
 	private $propertyChangeListener;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,11 +43,11 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->idTable ) );
+			->willReturn( $this->idTable );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -63,7 +63,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyTableUpdater::class,
 			new PropertyTableUpdater( $this->store, $this->propertyStatisticsStore )
@@ -71,10 +70,9 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_OnEmptyInsertRows() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertyStatisticsStore->expects( $this->once() )
 			->method( 'addToUsageCounts' );
@@ -84,7 +82,7 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$params= new Parameters(
+		$params = new Parameters(
 			[
 				'insert_rows' => [],
 				'delete_rows' => [],
@@ -96,7 +94,6 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_WithInsertRows() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'insert' );
 
@@ -108,11 +105,11 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyTable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'table_foo' => $this->propertyTable ] ) );
+			->willReturn( [ 'table_foo' => $this->propertyTable ] );
 
 		$this->propertyStatisticsStore->expects( $this->once() )
 			->method( 'addToUsageCounts' )
@@ -147,25 +144,24 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_Touched() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'timestamp' )
-			->will( $this->returnValue( '19700101000000' ) );
+			->willReturn( '19700101000000' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'update' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'smw_touched' => '19700101000000' ] ),
+				[ 'smw_touched' => '19700101000000' ],
 				$this->equalTo( [ 'smw_id' => [ 1001, 99999, 99998 ] ] ) );
 
 		$this->propertyTable->expects( $this->any() )
 			->method( 'usesIdSubject' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'table_foo' => $this->propertyTable ] ) );
+			->willReturn( [ 'table_foo' => $this->propertyTable ] );
 
 		$instance = new PropertyTableUpdater(
 			$this->store,
@@ -196,17 +192,16 @@ class PropertyTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdate_WithInsertRowsButMissingIdFieldThrowsException() {
-
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'table_foo' => $this->propertyTable ] ) );
+			->willReturn( [ 'table_foo' => $this->propertyTable ] );
 
 		$instance = new PropertyTableUpdater(
 			$this->store,
 			$this->propertyStatisticsStore
 		);
 
-		$params= new Parameters(
+		$params = new Parameters(
 			[
 				'insert_rows' => [
 					'table_foo' => []

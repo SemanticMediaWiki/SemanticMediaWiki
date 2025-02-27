@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -20,7 +20,7 @@ class Document implements JsonSerializable {
 	const TYPE_DELETE = 'type/delete';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id = 0;
 
@@ -47,7 +47,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param array $data
 	 * @param string $type
 	 */
@@ -60,7 +60,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getId() {
 		return $this->id;
@@ -80,7 +80,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isType( $type ) {
 		return $this->type === $type;
@@ -98,7 +98,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPriorityDeleteList() {
 		return $this->priorityDeleteList;
@@ -146,9 +146,9 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasSubDocumentById( $id ) {
 		return isset( $this->subDocuments[$id] );
@@ -157,7 +157,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Document
 	 */
@@ -177,7 +177,7 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function toArray() {
 		return [
@@ -185,7 +185,8 @@ class Document implements JsonSerializable {
 			'type' => $this->type,
 			'data' => $this->data,
 			'sub_docs' => array_map(
-				function( $v ) { return $v->toArray(); },
+				static function ( $v ) { return $v->toArray();
+				},
 				$this->subDocuments
 			)
 		];

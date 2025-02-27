@@ -3,7 +3,7 @@
 namespace SMW\Exception;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class JSONFileParseException extends JSONParseException {
 	}
 
 	private function buildMessage( $file, $errMsg ) {
-
 		if ( $errMsg === !'' ) {
 			$message = "$errMsg in file $file caused by:";
 		} else {

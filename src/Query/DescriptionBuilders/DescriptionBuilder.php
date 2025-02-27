@@ -2,12 +2,12 @@
 
 namespace SMW\Query\DescriptionBuilders;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataItemFactory;
+use SMW\DIProperty;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use SMW\DIProperty;
 
 /**
  * @private
@@ -29,7 +29,7 @@ use SMW\DIProperty;
  * return ThingDescription to not impose any condition, e.g. if parsing
  * failed. Error messages of this DataValue object are propagated.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -57,7 +57,7 @@ abstract class DescriptionBuilder {
 	 * @param DescriptionFactory|null $descriptionFactory
 	 * @param DataItemFactory|null $dataItemFactory
 	 */
-	public function __construct( DescriptionFactory $descriptionFactory = null, DescriptionFactory $dataItemFactory = null ) {
+	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DescriptionFactory $dataItemFactory = null ) {
 		$this->descriptionFactory = $descriptionFactory;
 		$this->dataItemFactory = $dataItemFactory;
 
@@ -75,7 +75,7 @@ abstract class DescriptionBuilder {
 	 *
 	 * @param DataValue|null $dataValue
 	 */
-	public abstract function isBuilderFor( $dataValue );
+	abstract public function isBuilderFor( $dataValue );
 
 	/**
 	 * @since 2.3
@@ -83,7 +83,6 @@ abstract class DescriptionBuilder {
 	 * @param string $error
 	 */
 	public function addError( $error ) {
-
 		if ( is_array( $error ) ) {
 			return $this->errors = array_merge( $this->errors, $error );
 		}
@@ -113,10 +112,11 @@ abstract class DescriptionBuilder {
 	 * to consist only of the remaining effective value string (without the
 	 * comparator).
 	 *
-	 * @param string $value
-	 * @param string|integer $comparator
+	 * @param DIProperty|null $property
+	 * @param string|null &$value
+	 * @param string|int &$comparator
 	 */
-	protected function prepareValue( DIProperty $property = null, &$value, &$comparator ) {
+	protected function prepareValue( ?DIProperty $property, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
 		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a

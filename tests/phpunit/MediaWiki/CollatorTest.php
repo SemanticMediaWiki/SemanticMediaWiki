@@ -8,15 +8,14 @@ use SMW\MediaWiki\Collator;
  * @covers \SMW\MediaWiki\Collator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class CollatorTest extends \PHPUnit_Framework_TestCase {
+class CollatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Collator::class,
 			Collator::singleton()
@@ -24,14 +23,13 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsIdentical() {
-
 		$collation = $this->getMockBuilder( '\Collation' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$collation->expects( $this->exactly( 2 ) )
 			->method( 'getSortKey' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new Collator(
 			$collation
@@ -46,7 +44,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider uppercaseProvider
 	 */
 	public function testGetFirstLetterOnUppercaseCollation( $text, $firstLetter, $sortKey ) {
-
 		$instance = Collator::singleton( 'uppercase' );
 
 		$this->assertSame(
@@ -64,7 +61,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider identityProvider
 	 */
 	public function testGetFirstLetterOnIdentityCollation( $text, $firstLetter, $sortKey ) {
-
 		$instance = Collator::singleton( 'identity' );
 
 		$this->assertSame(
@@ -82,7 +78,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider armorProvider
 	 */
 	public function testArmor( $collation, $text, $expected ) {
-
 		$instance = Collator::singleton( $collation );
 
 		$this->assertSame(
@@ -92,7 +87,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testArmorOnUCA() {
-
 		if ( !extension_loaded( 'intl' ) ) {
 			$this->markTestSkipped( 'Skipping because intl (ICU) is not available.' );
 		}
@@ -107,7 +101,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function uppercaseProvider() {
-
 		$provider[] = [
 			'',
 			'',
@@ -142,7 +135,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function identityProvider() {
-
 		$provider[] = [
 			'',
 			'',
@@ -177,7 +169,6 @@ class CollatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function armorProvider() {
-
 		$provider[] = [
 			'uppercase',
 			'XmlTest',

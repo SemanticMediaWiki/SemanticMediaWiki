@@ -4,10 +4,9 @@ namespace SMW\MediaWiki\Api\Tasks;
 
 use Onoi\Cache\Cache;
 use SMW\Store;
-use Iterator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -22,9 +21,11 @@ class TableStatisticsTask extends Task {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cacheUsage;
+
+	private Cache $cache;
 
 	/**
 	 * @since 3.1
@@ -54,7 +55,6 @@ class TableStatisticsTask extends Task {
 	 * @return array
 	 */
 	public function process( array $parameters ) {
-
 		$cacheTTL = 3600;
 
 		if ( isset( $this->cacheUsage['api.table.statistics'] ) ) {

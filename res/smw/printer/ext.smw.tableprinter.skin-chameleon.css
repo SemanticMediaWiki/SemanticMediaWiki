@@ -1,0 +1,35 @@
+/**
+ * specific styles
+ */
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.smw-datatable .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+	padding: 0.55rem 0.85rem;
+	line-height: 1.0;
+	font-size: 14px;
+}
+
+.smw-datatable .dataTables_wrapper .dataTables_filter input {
+	line-height: 1.35;
+}
+
+.dataTables_wrapper label {
+	font-weight: normal;
+}
+
+table th {
+	text-align: center;
+}
+
+.smw-datatable-toolbar .smw-dropdown button {
+	padding: 2px 25px 2px 15px;
+	border-radius: 0.2rem;
+}
+
+.smw-datatable .smw-datatable-sep {
+	padding: 0 0.2em 0.2em 0;
+}

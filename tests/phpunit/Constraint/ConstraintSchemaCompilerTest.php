@@ -3,39 +3,36 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Localizer\Message;
 use SMWDIBlob as DIBlob;
-use SMW\Message;
 
 /**
  * @covers \SMW\Constraint\ConstraintSchemaCompiler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
+class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 
 	private $schemaFinder;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConstraintSchemaCompiler::class,
 			new ConstraintSchemaCompiler( $this->schemaFinder, $this->propertySpecificationLookup )
@@ -43,20 +40,18 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrettifyOnEmpty() {
-
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
 			$this->propertySpecificationLookup
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			'',
 			$instance->prettify( [] )
 		);
 	}
 
 	public function testPrettifyAsJSON() {
-
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
 			$this->propertySpecificationLookup
@@ -71,20 +66,19 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		$this->assertSame(
-			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES |JSON_UNESCAPED_UNICODE ),
+			json_encode( $constraintSchema, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ),
 			$instance->prettify( $constraintSchema )
 		);
 	}
 
 	public function testCompileConstraintSchema_allowed_values() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( [ new DIBlob( 'foo' ) ] ) );
+			->willReturn( [ new DIBlob( 'foo' ) ] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [ new DIBlob( 'bar' ) ] ) );
+			->willReturn( [ new DIBlob( 'bar' ) ] );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -92,7 +86,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyValueType' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
@@ -114,7 +108,6 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompileConstraintSchema_allowed_pattern() {
-
 		$hash = Message::getHash(
 			[ 'smw_allows_pattern' ],
 			Message::TEXT,
@@ -125,15 +118,15 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedPatternBy' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -141,7 +134,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyValueType' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,
@@ -165,18 +158,17 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCompileConstraintSchema_unique_value_constraint() {
-
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'hasUniquenessConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$property = $this->getMockBuilder( '\SMW\DIProperty' )
 			->disableOriginalConstructor()
@@ -184,7 +176,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit_Framework_TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'findPropertyValueType' )
-			->will( $this->returnValue( '_foo' ) );
+			->willReturn( '_foo' );
 
 		$instance = new ConstraintSchemaCompiler(
 			$this->schemaFinder,

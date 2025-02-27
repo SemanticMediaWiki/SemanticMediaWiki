@@ -3,7 +3,7 @@
 namespace SMW\Query\Language;
 
 use SMW\DataValueFactory;
-use SMw\DIProperty;
+use SMW\DIProperty;
 use SMW\Query\QueryComparator;
 use SMWDataItem as DataItem;
 use SMWNumberValue as NumberValue;
@@ -18,7 +18,7 @@ use SMWURIValue as UriValue;
  * In RDF, concrete domain predicates that define ranges (like "greater or
  * equal to") are not directly available.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -31,7 +31,7 @@ class ValueDescription extends Description {
 	private $dataItem;
 
 	/**
-	 * @var integer element in the SMW_CMP_ enum
+	 * @var int element in the SMW_CMP_ enum
 	 */
 	private $comparator;
 
@@ -43,9 +43,9 @@ class ValueDescription extends Description {
 	/**
 	 * @param DataItem $dataItem
 	 * @param null|DIProperty $property
-	 * @param integer $comparator
+	 * @param int $comparator
 	 */
-	public function __construct( DataItem $dataItem, DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
+	public function __construct( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
 		$this->dataItem = $dataItem;
 		$this->comparator = $comparator;
 		$this->property = $property;
@@ -58,7 +58,6 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		$property = null;
 
 		if ( $this->property !== null ) {
@@ -96,7 +95,7 @@ class ValueDescription extends Description {
 	}
 
 	/**
-	 * @return integer
+	 * @return int
 	 */
 	public function getComparator() {
 		return $this->comparator;
@@ -108,7 +107,6 @@ class ValueDescription extends Description {
 	 * @return string
 	 */
 	public function getQueryString( $asValue = false ) {
-
 		$comparator = QueryComparator::getInstance()->getStringForComparator(
 			$this->comparator
 		);

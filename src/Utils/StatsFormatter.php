@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -34,7 +34,6 @@ class StatsFormatter {
 	 * @return string|array
 	 */
 	public static function format( array $stats, $format = null ) {
-
 		$output = '';
 
 		if ( $format === self::FORMAT_PLAIN ) {
@@ -88,7 +87,6 @@ class StatsFormatter {
 	 * @return array
 	 */
 	public static function getStatsFromFlatKey( array $stats, $separator = '.' ) {
-
 		$data = $stats;
 		$stats = [];
 
@@ -105,7 +103,6 @@ class StatsFormatter {
 
 	// https://stackoverflow.com/questions/10123604/multidimensional-array-from-string
 	private static function stringToArray( $separator, $path, $value ) {
-
 		$pos = strpos( $path, $separator );
 
 		if ( $pos === false ) {

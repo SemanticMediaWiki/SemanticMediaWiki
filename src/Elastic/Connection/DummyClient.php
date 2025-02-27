@@ -5,13 +5,12 @@ namespace SMW\Elastic\Connection;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use Psr\Log\NullLogger;
-use RuntimeException;
 use SMW\Elastic\Config;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -21,7 +20,7 @@ class DummyClient extends Client {
 	/**
 	 * @var Client
 	 */
-	private $client;
+	protected $client;
 
 	/**
 	 * @var Cache
@@ -36,11 +35,11 @@ class DummyClient extends Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ElasticClient $client
+	 * @param \Elasticsearch\Client|null $client
 	 * @param Cache|null $cache
 	 * @param Config|null $config
 	 */
-	public function __construct( $client = null, Cache $cache = null, Config $config = null ) {
+	public function __construct( $client = null, ?Cache $cache = null, ?Config $config = null ) {
 		$this->client = $client;
 		$this->cache = $cache;
 		$this->config = $config;
@@ -64,23 +63,16 @@ class DummyClient extends Client {
 	}
 
 	/**
-	 * @see Client::getIndexNameByType
-	 */
-	public function getIndexNameByType( $type ) {
-		return $this->getIndexName( $type );
-	}
-
-	/**
 	 * @see Client::getIndexName
 	 */
-	public function getIndexName( $type ) {
+	public function getIndexName( string $type ): string {
 		return '';
 	}
 
 	/**
-	 * @see Client::getIndexDefByType
+	 * @see Client::getIndexDefinition
 	 */
-	public function getIndexDefByType( $type ) {
+	public function getIndexDefinition( string $type ): string {
 		return '';
 	}
 
@@ -96,7 +88,7 @@ class DummyClient extends Client {
 	 */
 	public function getSoftwareInfo() {
 		return [
-			'component' => "[https://www.elastic.co/products/elasticsearch Elasticsearch]",
+			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => null
 		];
 	}
@@ -104,14 +96,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::info
 	 */
-	public function info() {
+	public function info(): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::stats
 	 */
-	public function stats( $type = 'indices', $params = [] ) {
+	public function stats( string $type = 'indices', array $params = [] ): array {
 		return [];
 	}
 
@@ -132,22 +124,26 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::createIndex
 	 */
-	public function createIndex( $type ) {}
+	public function createIndex( $type ) {
+	}
 
 	/**
 	 * @see Client::deleteIndex
 	 */
-	public function deleteIndex( $type ) {}
+	public function deleteIndex( $index ) {
+	}
 
 	/**
 	 * @see Client::putSettings
 	 */
-	public function putSettings( array $params ) {}
+	public function putSettings( array $params ) {
+	}
 
 	/**
 	 * @see Client::putMapping
 	 */
-	public function putMapping( array $params ) {}
+	public function putMapping( array $params ) {
+	}
 
 	/**
 	 * @see Client::getMapping
@@ -166,7 +162,8 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::refresh
 	 */
-	public function refresh( array $params ) {}
+	public function refresh( array $params ) {
+	}
 
 	/**
 	 * @see Client::validate
@@ -213,17 +210,20 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::update
 	 */
-	public function update( array $params ) {}
+	public function update( array $params ) {
+	}
 
 	/**
 	 * @see Client::index
 	 */
-	public function index( array $params ) {}
+	public function index( array $params ) {
+	}
 
 	/**
 	 * @see Client::bulk
 	 */
-	public function bulk( array $params ) {}
+	public function bulk( array $params ) {
+	}
 
 	/**
 	 * @see Client::count
@@ -247,6 +247,38 @@ class DummyClient extends Client {
 	}
 
 	/**
+	 * @see Client::updateAliases
+	 */
+	public function updateAliases( array $params ) {
+	}
+
+	/**
+	 * @see Client::indexExists
+	 */
+	public function indexExists( string $index ): bool {
+		return true;
+	}
+
+	/**
+	 * @see Client::aliasExists
+	 */
+	public function aliasExists( string $index ): bool {
+		return true;
+	}
+
+	/**
+	 * @see Client::openIndex
+	 */
+	public function openIndex( string $index ) {
+	}
+
+	/**
+	 * @see Client::closeIndex
+	 */
+	public function closeIndex( string $index ) {
+	}
+
+	/**
 	 * @see Client::hasMaintenanceLock
 	 */
 	public function hasMaintenanceLock() {
@@ -256,12 +288,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::setMaintenanceLock
 	 */
-	public function setMaintenanceLock() {}
+	public function setMaintenanceLock() {
+	}
 
 	/**
 	 * @see Client::setLock
 	 */
-	public function setLock( $type, $version ) {}
+	public function setLock( $type, $version ) {
+	}
 
 	/**
 	 * @see Client::hasLock
@@ -280,6 +314,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getLock
 	 */
-	public function releaseLock( $type ) {}
+	public function releaseLock( $type ) {
+	}
 
 }

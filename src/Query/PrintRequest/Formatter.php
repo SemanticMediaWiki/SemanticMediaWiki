@@ -3,11 +3,12 @@
 namespace SMW\Query\PrintRequest;
 
 use Linker;
+use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author Markus Krötzsch
@@ -27,12 +28,11 @@ class Formatter {
 	 *
 	 * @param PrintRequest $printRequest
 	 * @param Linker|null $linker
-	 * @param integer|null $outputType
+	 * @param int|null $outputType
 	 *
 	 * @return string
 	 */
 	public static function format( PrintRequest $printRequest, $linker = null, $outputType = null ) {
-
 		if ( $outputType === self::FORMAT_WIKI || $outputType === SMW_OUTPUT_WIKI ) {
 			return self::getWikiText( $printRequest, $linker );
 		}
@@ -41,11 +41,10 @@ class Formatter {
 	}
 
 	private static function getHTMLText( $printRequest, $linker = null ) {
-
 		$label = $printRequest->getLabel();
 
 		if ( \SMW\Parser\InTextAnnotationParser::hasPropertyLink( $label ) ) {
-			return \SMW\Message::get( [ 'smw-parse', $label ], \SMW\Message::PARSE );
+			return Message::get( [ 'smw-parse', $label ], Message::PARSE );
 		}
 
 		$label = htmlspecialchars( $printRequest->getLabel() );
@@ -69,7 +68,6 @@ class Formatter {
 	}
 
 	private static function getWikiText( $printRequest, $linker = false ) {
-
 		$label = $printRequest->getLabel();
 
 		if ( $linker === null || $linker === false || $label === '' ) {

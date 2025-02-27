@@ -3,19 +3,19 @@
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use Title;
 
 /**
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJob extends DatabaseTestCase {
+class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 
 	private $job = null;
 	private $pages = [];
@@ -26,7 +26,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	private $jobQueueRunner;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -47,8 +47,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgEnableUpdateJobs', true );
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$this->testEnvironment->flushPages(
 			$this->pages
 		);
@@ -60,8 +59,7 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testTriggerUpdateJob() {
-
-		$index = 1; //pass-by-reference
+		$index = 1; // pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
 
@@ -72,7 +70,6 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testPropertyTypeChangeToCreateUpdateJob() {
-
 		$this->skipTestForDatabase(
 			'sqlite', 'No idea why SQLite fails here with "Failed asserting that 0 is greater than 0".'
 		);
@@ -127,7 +124,6 @@ class ChangePropagationDispatchJob extends DatabaseTestCase {
 	}
 
 	public function testCategoryChangeToCreateUpdateJob() {
-
 		$this->skipTestForDatabase(
 			'sqlite', 'No idea why SQLite fails here with "Failed asserting that 0 is greater than 0".'
 		);

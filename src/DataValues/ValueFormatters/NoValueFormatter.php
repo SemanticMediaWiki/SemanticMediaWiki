@@ -6,7 +6,7 @@ use RuntimeException;
 use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -28,7 +28,6 @@ class NoValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function format( $type, $linker = null ) {
-
 		if ( !$this->dataValue instanceof DataValue ) {
 			throw new RuntimeException( "The formatter is missing a valid DataValue object" );
 		}

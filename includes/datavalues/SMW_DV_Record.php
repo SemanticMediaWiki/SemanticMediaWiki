@@ -1,12 +1,12 @@
 <?php
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\AbstractMultiValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWDIContainer as DIContainer;
 
@@ -74,7 +74,6 @@ class SMWRecordValue extends AbstractMultiValue {
 	}
 
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 			return;
@@ -131,7 +130,7 @@ class SMWRecordValue extends AbstractMultiValue {
 			++$propertyIndex;
 		}
 
-		if ( $empty && $this->getErrors() === []  ) {
+		if ( $empty && $this->getErrors() === [] ) {
 			$this->addErrorMsg( [ 'smw_novalues' ] );
 		}
 
@@ -143,8 +142,8 @@ class SMWRecordValue extends AbstractMultiValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem DataItem
-	 * @return boolean
+	 * @param $dataItem DataItem
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
@@ -251,14 +250,13 @@ class SMWRecordValue extends AbstractMultiValue {
 	 * @return array of DIProperty
 	 */
 	public function getPropertyDataItems() {
-
 		if ( $this->m_diProperties !== null ) {
 			return $this->m_diProperties;
 		}
 
 		$this->m_diProperties = $this->getFieldProperties( $this->m_property );
 
-		if ( $this->m_diProperties  === [] ) { // TODO internalionalize
+		if ( $this->m_diProperties === [] ) { // TODO internalionalize
 			$this->addError( 'The list of properties to be used for the data fields has not been specified properly.' );
 		}
 
@@ -298,20 +296,19 @@ class SMWRecordValue extends AbstractMultiValue {
 	protected function makeValueOutputText( $type, SMWDataValue $dataValue, $linker ) {
 		switch ( $type ) {
 			case 0:
-			return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getShortWikiText( $linker );
 			case 1:
-			return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getShortHTMLText( $linker );
 			case 2:
-			return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getShortWikiText( $linker );
 			case 3:
-			return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getShortHTMLText( $linker );
 			case 4:
-			return str_replace( ";", "\;", $dataValue->getWikiValue() );
+				return str_replace( ";", "\;", $dataValue->getWikiValue() );
 		}
 	}
 
 	private function newContainerSemanticData( $value ) {
-
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

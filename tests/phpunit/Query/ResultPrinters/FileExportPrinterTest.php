@@ -6,16 +6,15 @@ namespace SMW\Tests\Query\ResultPrinters;
  * @covers \SMW\Query\ResultPrinters\FileExportPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class FileExportPrinterTest extends \PHPUnit_Framework_TestCase {
+class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOutputAsFile_AccessSequence() {
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,16 +26,15 @@ class FileExportPrinterTest extends \PHPUnit_Framework_TestCase {
 		// #4375 (needs to be accessed first)
 		$fileExportPrinter->expects( $this->at( 0 ) )
 			->method( 'getFileResult' )
-			->with(
-				$this->equalTo( $queryResult ),
-				$this->anything() )
-			->will( $this->returnValue( __METHOD__ ) );
+			->with( $queryResult )
+			->willReturn( __METHOD__ );
 
 		$fileExportPrinter->expects( $this->at( 1 ) )
 			->method( 'getMimeType' );
 
 		$fileExportPrinter->expects( $this->at( 2 ) )
-			->method( 'getFileName' );
+			->method( 'getFileName' )
+			->willReturn( 'test' );
 
 		$fileExportPrinter->disableHttpHeader();
 

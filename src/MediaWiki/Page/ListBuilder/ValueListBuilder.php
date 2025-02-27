@@ -3,27 +3,24 @@
 namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
-use SMW\Message;
-use SMW\Utils\Pager;
 use SMW\Query\Language\SomeProperty;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
-use SMW\Utils\NextPager;
+use SMW\Utils\Pager;
 use SMWDataItem as DataItem;
-use SMWDITime as DITime;
 use SMWDataValue as DataValue;
+use SMWDITime as DITime;
 use SMWInfolink as Infolink;
 use SMWPageLister as PageLister;
-use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -36,17 +33,17 @@ class ValueListBuilder {
 	private $store;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $pagingLimit = 0;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $filterCount;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $maxPropertyValues = 3;
 
@@ -56,12 +53,12 @@ class ValueListBuilder {
 	private $languageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $localTimeOffset = false;
 
@@ -86,7 +83,7 @@ class ValueListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $pagingLimit
+	 * @param int $pagingLimit
 	 */
 	public function setPagingLimit( $pagingLimit ) {
 		$this->pagingLimit = $pagingLimit;
@@ -104,7 +101,7 @@ class ValueListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -113,7 +110,7 @@ class ValueListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $localTimeOffset
+	 * @param bool $localTimeOffset
 	 */
 	public function applyLocalTimeOffset( $localTimeOffset ) {
 		$this->localTimeOffset = $localTimeOffset;
@@ -122,7 +119,7 @@ class ValueListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $maxPropertyValues
+	 * @param int $maxPropertyValues
 	 */
 	public function setMaxPropertyValues( $maxPropertyValues ) {
 		$this->maxPropertyValues = $maxPropertyValues;
@@ -137,7 +134,6 @@ class ValueListBuilder {
 	 * @return string
 	 */
 	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ) {
-
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
 		$from = isset( $query['from'] ) ? $query['from'] : 0;
@@ -260,13 +256,12 @@ class ValueListBuilder {
 	}
 
 	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ) {
-
 		if ( $diWikiPages instanceof \Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
 		$ac = count( $diWikiPages );
-		//$contentLanguage = Localizer::getInstance()->getContentLanguage();
+		// $contentLanguage = Localizer::getInstance()->getContentLanguage();
 		$title = $dataItem->getTitle();
 
 		if ( $ac > $limit ) {
@@ -406,7 +401,6 @@ class ValueListBuilder {
 	}
 
 	private function filterByValue( $property, $value, $options ) {
-
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$queryParser = $queryFactory->newQueryParser();
 

@@ -5,11 +5,11 @@ namespace SMW\MediaWiki\Template;
 use Parser;
 use ParserOptions;
 use RequestContext;
-use Title;
 use RuntimeException;
+use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -54,12 +54,11 @@ class TemplateExpander {
 	 * @see Special:ExpandTemplates
 	 * @since 3.1
 	 *
-	 * @param Template|TemplateSet|srting $template
+	 * @param Template|TemplateSet|string $template
 	 *
 	 * @return string
 	 */
 	public function expand( $template ) {
-
 		if ( !$this->parser instanceof Parser && !$this->parser instanceof \StubObject ) {
 			throw new RuntimeException( 'Missing a parser instance!' );
 		}
@@ -74,7 +73,6 @@ class TemplateExpander {
 			$user = RequestContext::getMain()->getUser();
 			$options = new ParserOptions( $user );
 			$options->setRemoveComments( true );
-			$options->setTidy( true );
 			$options->setMaxIncludeSize( self::MAX_INCLUDE_SIZE );
 		}
 
@@ -98,7 +96,7 @@ class TemplateExpander {
 		$text = str_replace(
 			[ '_&lt;nowiki&gt;_', '_&lt;/nowiki&gt;_', '_&lt;nowiki */&gt;_', '<nowiki>', '</nowiki>' ],
 			'',
-			$text
+			$text ?? ''
 		);
 
 		return $text;

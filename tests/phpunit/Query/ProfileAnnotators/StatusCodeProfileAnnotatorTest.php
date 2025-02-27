@@ -2,34 +2,33 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
 use SMW\Tests\TestEnvironment;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class StatusCodeProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->semanticDataValidator = TestEnvironment::newValidatorFactory()->newSemanticDataValidator();
 	}
 
 	public function testCanConstruct() {
-
 		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -44,7 +43,6 @@ class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider codesDataProvider
 	 */
 	public function testCreateProfile( $codes, $expected ) {
-
 		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYe7d20a88' );
 
 		$container = new DIContainer(
@@ -65,7 +63,6 @@ class StatusCodeProfileAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function codesDataProvider() {
-
 		$provider[] = [
 			[],
 			[

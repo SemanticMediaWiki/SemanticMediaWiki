@@ -2,18 +2,18 @@
 
 namespace SMW\Constraint\Constraints;
 
+use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataValue as DataValue;
-use SMWDataItem as DataItem;
-use SMW\DIProperty;
 use SMW\DataTypeRegistry;
+use SMW\DIProperty;
 use SMW\SemanticData;
-use RuntimeException;
+use SMWDataItem as DataItem;
+use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -26,7 +26,7 @@ class ShapeConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'shape_constraint';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasViolation = false;
 
@@ -59,7 +59,6 @@ class ShapeConstraint implements Constraint {
 	 * {@inheritDoc}
 	 */
 	public function checkConstraint( array $constraints, $dataValue ) {
-
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -80,7 +79,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function check( $constraint, $dataValue ) {
-
 		$errors = [];
 
 		if ( !isset( $constraint['property'] ) ) {
@@ -130,7 +128,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function isType( $type, $property ) {
-
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeId()
 		);
@@ -166,7 +163,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function hasMinLength( $minLength, $property ) {
-
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -181,7 +177,7 @@ class ShapeConstraint implements Constraint {
 				continue;
 			}
 
-			if ( mb_strlen( $dataItem->getString() < $minLength ) ) {
+			if ( mb_strlen( $dataItem->getString() ) < $minLength ) {
 				return false;
 			}
 		}
@@ -190,7 +186,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function hasMaxCardinality( $maxCardinality, $property ) {
-
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -203,7 +198,6 @@ class ShapeConstraint implements Constraint {
 	}
 
 	private function reportError( $dataValue, array $errors ) {
-
 		if ( $errors === [] ) {
 			return;
 		}

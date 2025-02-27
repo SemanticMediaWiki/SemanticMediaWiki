@@ -12,7 +12,7 @@ use SMW\Site;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -23,7 +23,6 @@ class Info extends ApiBase {
 	 * @see ApiBase::execute
 	 */
 	public function execute() {
-
 		$params = $this->extractRequestParams();
 		$requestedInfo = $params['info'];
 
@@ -145,7 +144,6 @@ class Info extends ApiBase {
 	}
 
 	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ) {
-
 		$resultInfo = [];
 
 		foreach ( $map as $apiName => $smwName ) {

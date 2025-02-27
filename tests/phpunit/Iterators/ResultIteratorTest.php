@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Iterators\ResultIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
+class ResultIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultIterator::class,
 			new ResultIterator( [] )
@@ -27,13 +26,11 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-
 		$this->expectException( 'RuntimeException' );
 		$instance = new ResultIterator( 2 );
 	}
 
 	public function testdoIterateOnArray() {
-
 		$result = [
 			1, 42
 		];
@@ -59,7 +56,6 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoSeekOnArray() {
-
 		$result = [
 			1, 42, 1001
 		];
@@ -74,18 +70,17 @@ class ResultIteratorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testdoIterateOnResultWrapper() {
-
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$resultWrapper->expects( $this->exactly( 3 ) )
 			->method( 'numRows' )
-			->will( $this->returnValue( 1 ) );
+			->willReturn( 1 );
 
 		$resultWrapper->expects( $this->atLeastOnce() )
 			->method( 'current' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance = new ResultIterator( $resultWrapper );
 

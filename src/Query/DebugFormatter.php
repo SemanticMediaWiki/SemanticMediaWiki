@@ -6,7 +6,7 @@ use SMW\ProcessingErrorMsgHandler;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -62,7 +62,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function getFormat() : string {
+	public function getFormat(): string {
 		return $this->format;
 	}
 
@@ -74,16 +74,15 @@ class DebugFormatter {
 	 * contexts.
 	 *
 	 * @param $entries array of name => value of informative entries to display
-	 * @param $query SMWQuery or null, if given add basic data about this query as well
+	 * @param null $query SMWQuery or null, if given add basic data about this query as well
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $entries, Query $query = null ) {
-
+	public function buildHTML( array $entries, ?Query $query = null ) {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();
-			$queryString = str_replace( '[', '&#91;', $description->getQueryString() );
+			$queryString = str_replace( '[', '&#91;', $description->getQueryString() ?? '' );
 
 			$preEntries['ASK Query'] = '<div class="smwpre">' . $queryString . '</div>';
 			$entries = array_merge( $preEntries, $entries );
@@ -108,7 +107,7 @@ class DebugFormatter {
 
 		$style = '';
 		$result = '<div class="smw-debug-box">' .
-		          "<div class='smw-column-header'><big>Debug output <span style='float:right'>$this->name</span></big></div>";
+				  "<div class='smw-column-header'><big>Debug output <span style='float:right'>$this->name</span></big></div>";
 
 		foreach ( $entries as $header => $information ) {
 			$result .= "<div class='smw-column-header'>$header</div>";
@@ -126,28 +125,27 @@ class DebugFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array $rows
+	 * @param iterable $res
 	 *
 	 * @return string
 	 */
 	public function prettifyExplain( iterable $res ) {
-
 		$output = '';
 
 		// https://dev.mysql.com/doc/refman/5.0/en/explain-output.html
 		if ( $this->type === 'mysql' ) {
 			$output .= '<div class="smwpre" style="word-break:normal;">' .
 			'<table class="" style="border-spacing: 5px;"><tr>' .
-			'<th style="text-align: left;">ID</th>'.
-			'<th style="text-align: left;">select_type</th>'.
-			'<th style="text-align: left;">table</th>'.
-			'<th style="text-align: left;">type</th>'.
-			'<th style="text-align: left;">possible_keys</th>'.
-			'<th style="text-align: left;">key</th>'.
-			'<th style="text-align: left;">key_len</th>'.
-			'<th style="text-align: left;">ref</th>'.
-			'<th style="text-align: left;">rows</th>'.
-			'<th style="text-align: left;">filtered</th>'.
+			'<th style="text-align: left;">ID</th>' .
+			'<th style="text-align: left;">select_type</th>' .
+			'<th style="text-align: left;">table</th>' .
+			'<th style="text-align: left;">type</th>' .
+			'<th style="text-align: left;">possible_keys</th>' .
+			'<th style="text-align: left;">key</th>' .
+			'<th style="text-align: left;">key_len</th>' .
+			'<th style="text-align: left;">ref</th>' .
+			'<th style="text-align: left;">rows</th>' .
+			'<th style="text-align: left;">filtered</th>' .
 			'<th style="text-align: left;">Extra</th></tr>';
 
 			foreach ( $res as $row ) {
@@ -163,14 +161,14 @@ class DebugFormatter {
 					$possible_keys = implode( ', ', explode( ',', $possible_keys ) );
 				}
 
-				if ( strpos( $ref, ',' ) !== false ) {
+				if ( strpos( $ref ?? '', ',' ) !== false ) {
 					$ref = implode( ', ', explode( ',', $ref ) );
 				}
 
 				$output .= "<tr style='vertical-align: top;'><td>" . $row->id .
 				"</td><td>" . $row->select_type .
 				"</td><td>" . $row->table .
-				"</td><td>" . $row->type  .
+				"</td><td>" . $row->type .
 				"</td><td>" . $possible_keys .
 				"</td><td>" . $row->key .
 				"</td><td>" . $row->key_len .
@@ -230,7 +228,6 @@ class DebugFormatter {
 	 * @return string
 	 */
 	public function prettifySPARQL( $sparql ) {
-
 		$sparql = str_replace(
 			[
 				'[',
@@ -246,7 +243,7 @@ class DebugFormatter {
 				'&#x3C;',
 				'&#x3E;'
 			],
-			$sparql
+			$sparql ?? ''
 		);
 
 		return '<div class="smwpre">' . $sparql . '</div>';
@@ -261,11 +258,10 @@ class DebugFormatter {
 	 * @return string
 	 */
 	public function prettifySQL( $sql, $alias ) {
-
 		$matches = [];
 		$i = 0;
 
-		$sql = preg_replace_callback( '/NOT IN .*\)/', function ( $m ) use ( &$matches, &$i ) {
+		$sql = preg_replace_callback( '/NOT IN .*\)/', static function ( $m ) use ( &$matches, &$i ) {
 			$i++;
 
 			$string = str_replace( [ 'AND ((' ], [ "AND (<br>   (" ], $m[0] );

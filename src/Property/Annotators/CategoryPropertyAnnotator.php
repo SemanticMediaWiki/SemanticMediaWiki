@@ -2,21 +2,20 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\ProcessingErrorMsgHandler;
-use SMW\PropertyAnnotator;
-use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\Parser\AnnotationProcessor;
+use SMW\ProcessingErrorMsgHandler;
+use SMW\Property\Annotator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Handling category annotation
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -34,22 +33,22 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $hiddenCategories = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showHiddenCategories = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useCategoryInstance = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useCategoryHierarchy = true;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $useCategoryRedirect = true;
 
@@ -58,10 +57,10 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param array $categories
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, array $categories ) {
+	public function __construct( Annotator $propertyAnnotator, array $categories ) {
 		parent::__construct( $propertyAnnotator );
 		$this->categories = $categories;
 	}
@@ -69,7 +68,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $showHiddenCategories
+	 * @param bool $showHiddenCategories
 	 */
 	public function showHiddenCategories( $showHiddenCategories ) {
 		$this->showHiddenCategories = (bool)$showHiddenCategories;
@@ -78,7 +77,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $useCategoryInstance
+	 * @param bool $useCategoryInstance
 	 */
 	public function useCategoryInstance( $useCategoryInstance ) {
 		$this->useCategoryInstance = (bool)$useCategoryInstance;
@@ -87,7 +86,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.3
 	 *
-	 * @param boolean $useCategoryHierarchy
+	 * @param bool $useCategoryHierarchy
 	 */
 	public function useCategoryHierarchy( $useCategoryHierarchy ) {
 		$this->useCategoryHierarchy = (bool)$useCategoryHierarchy;
@@ -96,7 +95,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $useCategoryRedirect
+	 * @param bool $useCategoryRedirect
 	 */
 	public function useCategoryRedirect( $useCategoryRedirect ) {
 		$this->useCategoryRedirect = (bool)$useCategoryRedirect;
@@ -106,7 +105,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 * @see PropertyAnnotatorDecorator::addPropertyValues
 	 */
 	protected function addPropertyValues() {
-
 		$subject = $this->getSemanticData()->getSubject();
 		$namespace = $subject->getNamespace();
 		$property = null;
@@ -143,7 +141,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
-
 		$cat = new DIWikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
@@ -182,7 +179,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function isHiddenCategory( $catName ) {
-
 		if ( $this->hiddenCategories === null ) {
 
 			$wikipage = ApplicationFactory::getInstance()->newPageCreator()->createPage(
@@ -204,7 +200,6 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function getRedirectTarget( $subject ) {
-
 		if ( $this->useCategoryRedirect ) {
 			return ApplicationFactory::getInstance()->getStore()->getRedirectTarget( $subject );
 		}

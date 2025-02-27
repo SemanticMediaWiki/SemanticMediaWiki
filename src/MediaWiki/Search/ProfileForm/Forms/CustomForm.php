@@ -2,16 +2,14 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
 use SMW\DIProperty;
-use Title;
-use WebRequest;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
+use WebRequest;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -29,22 +27,22 @@ class CustomForm {
 	private $field;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isActiveForm = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $fieldCounter = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $html5TypeMap = [
 		'_txt' => 'text',
@@ -67,17 +65,15 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return []
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isActiveForm
+	 * @param bool $isActiveForm
 	 */
 	public function isActiveForm( $isActiveForm ) {
 		$this->isActiveForm = (bool)$isActiveForm;
@@ -89,7 +85,6 @@ class CustomForm {
 	 * @param array $definition
 	 */
 	public function makeFields( $definition ) {
-
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];
@@ -125,10 +120,10 @@ class CustomForm {
 
 			// Find request related value for the active form
 			if ( $this->isActiveForm ) {
-				$vals = $this->request->getArray( $name );
+				$vals = $this->request->getArray( $name, [] );
 
 				$i = $this->fieldCounter[$name];
-				$value = isset( $vals[$i] ) ? $vals[$i] : $vals[0];
+				$value = $vals[$i] ?? '';
 				$this->parameters[$name] = $value;
 			}
 
@@ -140,7 +135,6 @@ class CustomForm {
 	}
 
 	private function makeField( $name, $property, $value, $options ) {
-
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 

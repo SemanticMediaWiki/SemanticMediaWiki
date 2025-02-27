@@ -3,19 +3,19 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\EntityCollation
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class EntityCollationTest extends \PHPUnit_Framework_TestCase {
+class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,7 +23,7 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $setupFile;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
@@ -37,7 +37,6 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EntityCollation::class,
 			new EntityCollation( $this->store )
@@ -45,11 +44,10 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_DifferentCollationTriggerIncompleteTask() {
-
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$this->setupFile->expects( $this->once() )
 			->method( 'addIncompleteTask' );
@@ -69,11 +67,10 @@ class EntityCollationTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheck_Collection() {
-
 		$this->setupFile->expects( $this->once() )
 			->method( 'get' )
 			->with( $this->stringContains( 'entity_collation' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->willReturn( 'foo' );
 
 		$instance = new EntityCollation(
 			$this->store

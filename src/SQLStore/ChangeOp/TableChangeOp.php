@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\ChangeOp;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -46,7 +46,7 @@ class TableChangeOp {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFixedPropertyOp() {
 		return isset( $this->changeOps['property'] );
@@ -60,7 +60,6 @@ class TableChangeOp {
 	 * @return null|string
 	 */
 	public function getFixedPropertyValByField( $field ) {
-
 		if ( $this->isFixedPropertyOp() && isset( $this->changeOps['property'][$field] ) ) {
 			return $this->changeOps['property'][$field];
 		}
@@ -85,7 +84,7 @@ class TableChangeOp {
 	 *
 	 * @param string $opType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasChangeOp( $opType ) {
 		return isset( $this->changeOps[$opType] );
@@ -100,7 +99,6 @@ class TableChangeOp {
 	 * @return FieldChangeOp[]|[]
 	 */
 	public function getFieldChangeOps( $opType = null, $filter = [] ) {
-
 		if ( $opType !== null && !$this->hasChangeOp( $opType ) ) {
 			return [];
 		}

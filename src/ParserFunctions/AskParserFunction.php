@@ -4,7 +4,6 @@ namespace SMW\ParserFunctions;
 
 use ParamProcessor\ProcessedParam;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
@@ -12,6 +11,7 @@ use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Query\Deferred;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
@@ -21,7 +21,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -67,17 +67,17 @@ class AskParserFunction {
 	private $expensiveFuncExecutionWatcher;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $curtailmentMode = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $context = QueryProcessor::INLINE_QUERY;
 
@@ -144,7 +144,7 @@ class AskParserFunction {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $curtailmentMode
+	 * @param bool $curtailmentMode
 	 */
 	public function setCurtailmentMode( $curtailmentMode ) {
 		$this->curtailmentMode = (bool)$curtailmentMode;
@@ -179,13 +179,12 @@ class AskParserFunction {
 	 * @return string|null
 	 */
 	public function parse( array $functionParams ) {
-
 		// Do we still need this?
 		// Reference found in SRF_Exhibit.php, SRF_Ploticus.php, SRF_Timeline.php, SRF_JitGraph.php
 		$GLOBALS['smwgIQRunningNumber']++;
 		$result = '';
 
-		list( $functionParams, $extraKeys ) = $this->prepareFunctionParameters(
+		[ $functionParams, $extraKeys ] = $this->prepareFunctionParameters(
 			$functionParams
 		);
 
@@ -219,7 +218,6 @@ class AskParserFunction {
 	}
 
 	private function prepareFunctionParameters( array $functionParams ) {
-
 		// Remove parser object from parameters array
 		if ( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
 			array_shift( $functionParams );
@@ -285,7 +283,6 @@ class AskParserFunction {
 	}
 
 	private function doFetchResultsFromFunctionParameters( array $functionParams, array $extraKeys ) {
-
 		$contextPage = $this->parserData->getSubject();
 		$action = $this->parserData->getOption( 'request.action' );
 		$status = [];
@@ -294,7 +291,7 @@ class AskParserFunction {
 			$contextPage = null;
 		}
 
-		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $this->params ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$functionParams,
 			SMW_OUTPUT_WIKI,
 			$this->context,
@@ -400,7 +397,6 @@ class AskParserFunction {
 	}
 
 	private function hasReachedExpensiveExecutionLimit( $query ) {
-
 		if ( $this->expensiveFuncExecutionWatcher->hasReachedExpensiveLimit( $query ) === false ) {
 			return false;
 		}
@@ -412,7 +408,6 @@ class AskParserFunction {
 	}
 
 	private function addQueryProfile( $query, $format, $extraKeys ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -446,7 +441,6 @@ class AskParserFunction {
 	}
 
 	private function addProcessingError( $errors ) {
-
 		if ( $errors === [] ) {
 			return;
 		}

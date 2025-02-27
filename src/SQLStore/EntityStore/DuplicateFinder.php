@@ -2,19 +2,16 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
-use SMW\IteratorFactory;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\RedirectStore;
-use SMW\SQLStore\PropertyTableInfoFetcher;
-use SMW\Store;
 use InvalidArgumentException;
+use SMW\IteratorFactory;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -47,10 +44,9 @@ class DuplicateFinder {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasDuplicate( DataItem $dataItem ) {
-
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
@@ -82,7 +78,7 @@ class DuplicateFinder {
 		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWDELETEIW ) );
 		$query->condition( $query->neq( 'smw_iw', SMW_SQL3_SMWREDIIW ) );
 
-		$res = $connection->query(
+		$res = $connection->readQuery(
 			$query,
 			__METHOD__
 		);
@@ -93,12 +89,11 @@ class DuplicateFinder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|null $name
+	 * @param string|null $table
 	 *
 	 * @return Iterator|[]
 	 */
 	public function findDuplicates( $table = null ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 
@@ -124,7 +119,6 @@ class DuplicateFinder {
 		}
 
 		$callback = function ( $row ) use ( $connection, $table, $fname ) {
-
 			$map = self::mapRow( $table, $row );
 			$map = [ 'count' => $row->count ] + $map;
 
@@ -190,7 +184,6 @@ class DuplicateFinder {
 	}
 
 	private static function fields( $tableName ) {
-
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {
@@ -201,7 +194,6 @@ class DuplicateFinder {
 	}
 
 	private static function mapRow( $tableName, $row ) {
-
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {

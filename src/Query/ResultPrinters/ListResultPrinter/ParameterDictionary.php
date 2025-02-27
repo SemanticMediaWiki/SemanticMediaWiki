@@ -5,7 +5,7 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 /**
  * Class ParameterDictionary
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -19,7 +19,6 @@ class ParameterDictionary {
 	 * @param mixed $value
 	 */
 	public function set( $setting, $value = null ) {
-
 		if ( !is_array( $setting ) ) {
 			$setting = [ $setting => $value ];
 		}
@@ -42,7 +41,6 @@ class ParameterDictionary {
 	 * @param mixed $value
 	 */
 	public function setDefault( $setting, $value = null ) {
-
 		if ( !is_array( $setting ) ) {
 			$setting = [ $setting => $value ];
 		}

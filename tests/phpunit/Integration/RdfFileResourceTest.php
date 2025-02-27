@@ -3,26 +3,26 @@
 namespace SMW\Tests\Integration;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
-use SMW\Tests\DatabaseTestCase;
 use SMW\Exporter\ExporterFactory;
-use Title;
+use SMW\Localizer\Localizer;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
  */
-class RdfFileResourceTest extends DatabaseTestCase {
+class RdfFileResourceTest extends SMWIntegrationTestCase {
 
 	private $fixturesFileProvider;
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		if ( $GLOBALS['wgLanguageCode'] !== 'en' ) {
@@ -30,6 +30,7 @@ class RdfFileResourceTest extends DatabaseTestCase {
 		}
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
+		$utilityFactory->newMwHooksHandler()->invokeHooksFromRegistry();
 
 		$this->fixturesFileProvider = $utilityFactory->newFixturesFactory()->newFixturesFileProvider();
 		$this->stringValidator = $utilityFactory->newValidatorFactory()->newStringValidator();
@@ -55,7 +56,7 @@ class RdfFileResourceTest extends DatabaseTestCase {
 		\SMWExporter::clear();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}

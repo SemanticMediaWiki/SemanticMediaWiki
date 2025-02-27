@@ -2,24 +2,24 @@
 
 namespace SMW\Tests\Integration\Parser;
 
-use ParserOutput;
-use ParserOptions;
 use MediaWiki\MediaWikiServices;
+use ParserOptions;
+use ParserOutput;
 use RequestContext;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_TestCase {
+class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,7 +27,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	private $testEnvironment;
 	private $applicationFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,7 +42,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
@@ -57,12 +57,10 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	 * @return text
 	 */
 	private function runTemplateTransclusion( Title $title, $text, $return ) {
-
 		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$user = RequestContext::getMain()->getUser();
 		$options = new ParserOptions( $user );
-		$options->setTemplateCallback( function ( $title, $parser = false ) use ( $return ) {
-
+		$options->setTemplateCallback( static function ( $title, $parser = false ) use ( $return ) {
 			$text = $return;
 			$deps = [];
 
@@ -71,7 +69,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 				'finalTitle' => $title,
 				'deps' => $deps
 			];
-
 		} );
 
 		return $parser->preprocess( $text, $title, $options );
@@ -81,11 +78,10 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	 * @dataProvider templateDataProvider
 	 */
 	public function testPreprocessTemplateAndParse( $namespace, array $settings, $text, $tmplValue, array $expected ) {
-
 		$parserOutput = new ParserOutput();
 		$title        = Title::newFromText( __METHOD__, $namespace );
 
-		$outputText   = $this->runTemplateTransclusion( $title, $text, $tmplValue );
+		$outputText = $this->runTemplateTransclusion( $title, $text, $tmplValue );
 
 		$this->testEnvironment->withConfiguration( $settings );
 
@@ -122,7 +118,6 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit_Framework_
 	}
 
 	public function templateDataProvider() {
-
 		$provider = [];
 
 		// #0 Bug 54967

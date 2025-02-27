@@ -8,18 +8,17 @@ use SMW\Parser\LinksEncoder;
  * @covers \SMW\Parser\LinksEncoder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
+class LinksEncoderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider obfuscateProvider
 	 */
 	public function testRoundTripLinkObfuscation( $text ) {
-
 		$newText = LinksEncoder::encodeLinks( $text );
 
 		$this->assertEquals(
@@ -32,7 +31,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider obfuscateProvider
 	 */
 	public function testfindAndEncodeLinks( $text, $expected ) {
-
 		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\Parser\InTextAnnotationParser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -47,7 +45,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stripTextWithAnnotationProvider
 	 */
 	public function testStrip( $text, $expectedRemoval, $expectedObscuration ) {
-
 		$this->assertEquals(
 			$expectedRemoval,
 			LinksEncoder::removeAnnotation( $text )
@@ -60,7 +57,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stripTextWithAnnotationProvider() {
-
 		$provider = [];
 
 		$provider[] = [
@@ -122,7 +118,6 @@ class LinksEncoderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function obfuscateProvider() {
-
 		$provider = [];
 
 		$provider[] = [

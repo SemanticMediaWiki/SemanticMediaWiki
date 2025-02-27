@@ -10,17 +10,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
+class DeferredConstraintCheckUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -37,13 +37,12 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,7 +54,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
@@ -70,7 +68,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider jobProvider
 	 */
 	public function testRun( $subject, $parameters ) {
-
 		$instance = new DeferredConstraintCheckUpdateJob(
 			$subject->getTitle(),
 			$parameters
@@ -82,7 +79,6 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function jobProvider() {
-
 		$provider[] = [
 			DIWikiPage::newFromText( __METHOD__ ),
 			[]

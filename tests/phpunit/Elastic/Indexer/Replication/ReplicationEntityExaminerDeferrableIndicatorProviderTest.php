@@ -2,30 +2,31 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
-use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_Framework_TestCase {
+class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
+	private TestEnvironment $testEnvironment;
 	private $store;
 	private $connection;
 	private $entityCache;
 	private $replicationCheck;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -40,7 +41,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
 			->disableOriginalConstructor()
@@ -51,13 +52,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationEntityExaminerDeferrableIndicatorProvider::class,
 			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
@@ -75,91 +75,84 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testGetName() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
 			$this->replicationCheck
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getName()
 		);
 	}
 
 	public function testIsSeverityType() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
 			$this->replicationCheck
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isSeverityType( 'foo' )
 		);
 	}
 
 	public function testGetIndicators() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
 			$this->replicationCheck
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getIndicators()
 		);
 	}
 
 	public function testIsDeferredMode() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
 			$this->replicationCheck
 		);
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->isDeferredMode()
 		);
 	}
 
 	public function testGetModules() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
 			$this->replicationCheck
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getModules()
 		);
 	}
 
 	public function testGetInlineStyle() {
-
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
 			$this->entityCache,
 			$this->replicationCheck
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getInlineStyle()
 		);
 	}
 
 	public function testHasIndicators_NoCheck() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
@@ -176,14 +169,13 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_CheckOnMaintenanceLock() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->never() )
 			->method( 'fetch' );
@@ -204,15 +196,14 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_FromCache_NoCheck() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
 			->with(	$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) )
-			->will( $this->returnValue( \SMW\Elastic\Indexer\Replication\ReplicationCheck::TYPE_SUCCESS ) );
+			->willReturn( \SMW\Elastic\Indexer\Replication\ReplicationCheck::TYPE_SUCCESS );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -230,14 +221,13 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCache_Check() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -260,14 +250,13 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCache_DeferredCheck() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -298,23 +287,22 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit_
 	}
 
 	public function testHasIndicators_NoCache_DeferredCheck_ErrorSeverity() {
-
 		$this->connection->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->replicationCheck->expects( $this->any() )
 			->method( 'checkReplication' )
-			->with(	$this->equalTo( DIWikiPage::newFromText( '_MDAT', SMW_NS_PROPERTY ) ) )
-			->will( $this->returnValue( '' ) );
+			->with(	DIWikiPage::newFromText( '_MDAT', SMW_NS_PROPERTY ) )
+			->willReturn( '' );
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getSeverityType' )
-			->will( $this->returnValue( \SMW\Elastic\Indexer\Replication\ReplicationCheck::SEVERITY_TYPE_ERROR ) );
+			->willReturn( \SMW\Elastic\Indexer\Replication\ReplicationCheck::SEVERITY_TYPE_ERROR );
 
 		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 

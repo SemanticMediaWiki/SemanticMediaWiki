@@ -13,7 +13,7 @@ use SMWRecordValue as RecordValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -37,13 +37,13 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	/**
 	 * @since 2.3
 	 *
+	 * @param DataValue $dataValue
 	 * @param string $value
 	 *
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
 	public function newDescription( $dataValue, $value ) {
-
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'value needs to be a string' );
 		}
@@ -92,16 +92,15 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	private function getDescriptionFor( $subdescriptions ) {
 		switch ( count( $subdescriptions ) ) {
 			case 0:
-			return new ThingDescription();
+				return new ThingDescription();
 			case 1:
-			return reset( $subdescriptions );
+				return reset( $subdescriptions );
 			default:
-			return new Conjunction( $subdescriptions );
+				return new Conjunction( $subdescriptions );
 		}
 	}
 
 	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ) {
-
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
 

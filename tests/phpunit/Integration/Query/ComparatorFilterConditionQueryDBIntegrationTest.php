@@ -3,11 +3,11 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DIProperty;
+use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMwConjunction as Conjunction;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
@@ -21,28 +21,28 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
+class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -68,7 +68,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider dateConjunctionFilterProvider
 	 */
 	public function testDateConjunctionConstraints( $range, $parameters, $expected ) {
-
 		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' )
 			&& is_a( $this->getStore()->getConnection( 'sparql' ), '\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector' ) ) {
 			$this->markTestSkipped( "Date filter constraints do not work properly in Virtuoso" );
@@ -78,7 +77,6 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function queryPagesThatUseConjunctionConstraintsForPropertyValues( $range, $parameters, $expected ) {
-
 		$expectedSubjects = [];
 		$property = $parameters['property'];
 
@@ -128,11 +126,10 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function numericConjunctionFilterProvider() {
-
 		$property = new DIProperty( 'SomeNumericPropertyToFilter' );
 		$property->setPropertyTypeId( '_num' );
 
-		#0 Numeric Greater Equal, Less Equal
+		# 0 Numeric Greater Equal, Less Equal
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -152,7 +149,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#1 Numeric Greater, Equal
+		# 1 Numeric Greater, Equal
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -173,7 +170,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#2 Numeric Greater, Less
+		# 2 Numeric Greater, Less
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -192,7 +189,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#3 Numeric Greater, Not Like
+		# 3 Numeric Greater, Not Like
 		$provider[] = [
 			[
 				1 => new DINumber( 1 ),
@@ -216,11 +213,10 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function textConjunctionFilterProvider() {
-
 		$property = new DIProperty( 'SomeBlobPropertyToFilter' );
 		$property->setPropertyTypeId( '_txt' );
 
-		#4 Text, Greater Equal, Less Equal
+		# 4 Text, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'AA' => new DIBlob( 'AA' ),
@@ -240,7 +236,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#5 Text, Like, Like
+		# 5 Text, Like, Like
 		$provider[] = [
 			[
 				'A'   => new DIBlob( 'A' ),
@@ -261,7 +257,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#6 Text, Like, Not Like
+		# 6 Text, Like, Not Like
 		$provider[] = [
 			[
 				'AABA' => new DIBlob( 'AABA' ),
@@ -285,11 +281,10 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function dateConjunctionFilterProvider() {
-
 		$property = new DIProperty( 'SomeDatePropertyToFilter' );
 		$property->setPropertyTypeId( '_dat' );
 
-		#7 Date, Greater Equal, Less Equal
+		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'197001' => new DITime( 1, 1970, 01, 01, 1, 1 ),
@@ -309,7 +304,7 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends DatabaseTestCase {
 			]
 		];
 
-		#7 Date, Greater Equal, Less Equal
+		# 7 Date, Greater Equal, Less Equal
 		$provider[] = [
 			[
 				'1970011' => new DITime( 1, 1970, 01, 01, 1, 1 ),

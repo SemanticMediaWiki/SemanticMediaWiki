@@ -2,31 +2,30 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\SPARQLStore;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Framework_TestCase {
+class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit\Framework\TestCase {
 
 	private $repositoryConnection;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
 		if ( !$this->store instanceof SPARQLStore ) {
@@ -45,7 +44,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	 * @dataProvider resourceProvider
 	 */
 	public function testRedirectTargetLookupForNonExistingEntry( $expNsResource ) {
-
 		$instance = new RepositoryRedirectLookup( $this->repositoryConnection );
 		$instance->reset();
 
@@ -60,7 +58,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	}
 
 	public function testRedirectTargetLookupForExistingEntry() {
-
 		$property = new DIProperty( 'TestRepositoryRedirectLookup' );
 
 		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
@@ -91,7 +88,6 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit_Fr
 	}
 
 	public function resourceProvider() {
-
 		$provider[] = [
 			Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )
 		];

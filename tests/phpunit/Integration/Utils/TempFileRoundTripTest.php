@@ -7,15 +7,14 @@ use SMW\Utils\TempFile;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TempFileRoundTripTest extends \PHPUnit_Framework_TestCase {
+class TempFileRoundTripTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRoundTrip() {
-
 		$expected = 'Test write file';
 		$tempFile = new TempFile();
 

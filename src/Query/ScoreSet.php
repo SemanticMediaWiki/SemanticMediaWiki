@@ -8,7 +8,7 @@ use SMW\DIWikiPage;
  * Record scores for query results retrieved from stores that support the computation
  * of relevance scores.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -16,24 +16,24 @@ use SMW\DIWikiPage;
 class ScoreSet {
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $scores = [];
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $max_score = null;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $min_score = null;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $max_score
+	 * @param string|int $max_score
 	 */
 	public function max_score( $max_score ) {
 		$this->max_score = $max_score;
@@ -42,7 +42,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string|integer $min_score
+	 * @param string|int $min_score
 	 */
 	public function min_score( $min_score ) {
 		$this->min_score = $min_score;
@@ -55,10 +55,9 @@ class ScoreSet {
 	 * @since 3.0
 	 *
 	 * @param DIWikiPage|string $hash
-	 * @param string|integer $score
+	 * @param string|int $score
 	 */
 	public function addScore( $hash, $score, $pos = null ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -75,10 +74,9 @@ class ScoreSet {
 	 *
 	 * @param DIWikiPage|string $hash
 	 *
-	 * @return string|integer|false
+	 * @return string|int|false
 	 */
 	public function getScore( $hash ) {
-
 		if ( $hash instanceof DIWikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -95,7 +93,7 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getScores() {
 		return $this->scores;
@@ -104,16 +102,14 @@ class ScoreSet {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $usort
+	 * @param bool $usort
 	 */
 	public function usort( $usort ) {
-
 		if ( !$usort || $this->scores === [] ) {
 			return;
 		}
 
-		usort( $this->scores, function( $a, $b ) {
-
+		usort( $this->scores, static function ( $a, $b ) {
 			if ( $a[1] == $b[1] ) {
 				return 0;
 			}
@@ -130,7 +126,6 @@ class ScoreSet {
 	 * @return string
 	 */
 	public function asTable( $class = '' ) {
-
 		if ( $this->scores === [] ) {
 			return '';
 		}

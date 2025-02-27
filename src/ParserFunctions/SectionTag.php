@@ -2,14 +2,14 @@
 
 namespace SMW\ParserFunctions;
 
+use Html;
 use Parser;
 use PPFrame;
-use Html;
 
 /**
  * To support the generation of <section> ... </section>
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -41,17 +41,16 @@ class SectionTag {
 	 * @since 3.0
 	 *
 	 * @param Parser $parser
-	 * @param boolean $supportSectionTag
+	 * @param bool $supportSectionTag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function register( Parser $parser, $supportSectionTag = true ) {
-
 		if ( $supportSectionTag === false ) {
 			return false;
 		}
 
-		$parser->setHook( 'section', function ( $input, array $args, Parser $parser, PPFrame $frame ) {
+		$parser->setHook( 'section', static function ( $input, array $args, Parser $parser, PPFrame $frame ) {
 			return ( new self( $parser, $frame ) )->parse( $input, $args );
 		} );
 
@@ -67,7 +66,6 @@ class SectionTag {
 	 * @return string
 	 */
 	public function parse( $input, array $args ) {
-
 		$attributes = [];
 		$title = $this->parser->getTitle();
 

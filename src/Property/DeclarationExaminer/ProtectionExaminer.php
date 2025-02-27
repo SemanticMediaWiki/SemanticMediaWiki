@@ -7,7 +7,7 @@ use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\Protection\ProtectionValidator;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -36,7 +36,6 @@ class ProtectionExaminer extends DeclarationExaminer {
 	 * {@inheritDoc}
 	 */
 	protected function validate( DIProperty $property ) {
-
 		if ( $this->declarationExaminer->isLocked() ) {
 			return;
 		}
@@ -49,7 +48,6 @@ class ProtectionExaminer extends DeclarationExaminer {
 	}
 
 	private function checkCreateProtectionRight( $title, $property ) {
-
 		if ( !$this->protectionValidator->hasCreateProtection( $title ) ) {
 			return;
 		}
@@ -65,7 +63,6 @@ class ProtectionExaminer extends DeclarationExaminer {
 	}
 
 	private function checkEditProtectionRight( $title, $property ) {
-
 		$editProtectionRight = $this->protectionValidator->getEditProtectionRight();
 
 		if ( $this->protectionValidator->hasEditProtection( $title ) ) {

@@ -12,15 +12,14 @@ use SMW\Utils\JsonSchemaValidator;
  * @covers \SMW\Utils\JsonSchemaValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
+class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonSchemaValidator::class,
 			new JsonSchemaValidator()
@@ -40,7 +39,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoSchemaValidator() {
-
 		$instance = new JsonSchemaValidator();
 
 		$this->assertFalse(
@@ -49,7 +47,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidate() {
-
 		if ( !class_exists( SchemaValidator::class ) ) {
 			$this->markTestSkipped( 'JsonSchema\Validator is not available.' );
 		}
@@ -60,7 +57,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$data->expects( $this->any() )
 			->method( 'jsonSerialize' )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$schemaValidator = $this->getMockBuilder( SchemaValidator::class )
 			->setMethods( [ 'check' ] )
@@ -82,7 +79,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testValidateWhereSchemaValidatorThrowsException() {
-
 		if ( !class_exists( SchemaValidator::class ) ) {
 			$this->markTestSkipped( 'JsonSchema\Validator is not available.' );
 		}
@@ -93,7 +89,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$data->expects( $this->any() )
 			->method( 'jsonSerialize' )
-			->will( $this->returnValue( json_encode( [ 'Foo' ] ) ) );
+			->willReturn( json_encode( [ 'Foo' ] ) );
 
 		$schemaValidator = $this->getMockBuilder( SchemaValidator::class )
 			->setMethods( [ 'check' ] )
@@ -101,7 +97,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 
 		$schemaValidator->expects( $this->any() )
 			->method( 'check' )
-			->will($this->throwException( new ResourceNotFoundException() ) );
+			->willThrowException( new ResourceNotFoundException() );
 
 		$instance = new JsonSchemaValidator(
 			$schemaValidator
@@ -119,7 +115,6 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoJSONValidatorButSchemaLink() {
-
 		$instance = new JsonSchemaValidator();
 
 		$instance->validate( $this->newJsonSerializable( [] ), 'Foo' );
@@ -142,7 +137,7 @@ class JsonSchemaValidatorTest extends \PHPUnit_Framework_TestCase {
 				$this->data = $data;
 			}
 
-			public function jsonSerialize() {
+			public function jsonSerialize(): string {
 				return json_encode( $this->data );
 			}
 		};

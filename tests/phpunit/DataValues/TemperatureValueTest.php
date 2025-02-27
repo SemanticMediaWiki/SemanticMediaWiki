@@ -5,19 +5,19 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\TemperatureValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
+class TemperatureValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,13 +26,13 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	private $propertySpecificationLookup;
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,19 +48,18 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getConstraintValueValidator' )
-			->will( $this->returnValue( $constraintValueValidator ) );
+			->willReturn( $constraintValueValidator );
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getPropertySpecificationLookup' )
-			->will( $this->returnValue( $this->propertySpecificationLookup ) );
+			->willReturn( $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\TemperatureValue',
 			new TemperatureValue()
@@ -68,7 +67,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueToReturnKelvinForAnyNonPreferredDisplayUnit() {
-
 		$instance = new TemperatureValue();
 
 		$numberValueFormatter = new NumberValueFormatter();
@@ -76,7 +74,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $numberValueFormatter ) );
+			->willReturn( $numberValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
@@ -103,7 +101,6 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueOnUnknownUnit() {
-
 		$instance = new TemperatureValue();
 
 		$numberValueFormatter = new NumberValueFormatter();
@@ -111,7 +108,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $numberValueFormatter ) );
+			->willReturn( $numberValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
@@ -126,10 +123,9 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueToReturnOnPreferredDisplayUnit() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getDisplayUnits' )
-			->will( $this->returnValue( [ 'Celsius' ] ) );
+			->willReturn( [ 'Celsius' ] );
 
 		$instance = new TemperatureValue();
 
@@ -138,7 +134,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $numberValueFormatter ) );
+			->willReturn( $numberValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory
@@ -167,10 +163,9 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetUserValueToReturnOnPreferredDisplayPrecision() {
-
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getDisplayPrecision' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$instance = new TemperatureValue();
 
@@ -179,7 +174,7 @@ class TemperatureValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueFormatter' )
-			->will( $this->returnValue( $numberValueFormatter ) );
+			->willReturn( $numberValueFormatter );
 
 		$instance->setDataValueServiceFactory(
 			$this->dataValueServiceFactory

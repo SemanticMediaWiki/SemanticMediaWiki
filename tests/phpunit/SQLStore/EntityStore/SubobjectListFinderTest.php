@@ -2,31 +2,30 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SubobjectListFinder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
+class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 
 	private $iteratorFactory;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -45,14 +44,13 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testNewMappingIterator( $subject ) {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -61,7 +59,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SubobjectListFinder(
 			$store,
@@ -78,7 +76,6 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testIterateOn( $subject ) {
-
 		$row = new \stdClass;
 		$row->smw_id = 42;
 		$row->smw_sortkey = 'sort';
@@ -89,7 +86,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 			'Foo', 0, '', 'sort', '10000000001'
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,8 +95,8 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 			->with(
 				$this->anything(),
 				$this->anything(),
-				$this->equalTo( 'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' ) )
-			->will( $this->returnValue( [ $row ] ) );
+				'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' )
+			->willReturn( [ $row ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -108,7 +105,7 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new SubobjectListFinder(
 			$store,
@@ -121,7 +118,6 @@ class SubobjectListFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function subjectProvider() {
-
 		$provider[] = [
 			DIWikiPage::newFromText( 'Foo' )
 		];

@@ -5,10 +5,10 @@ namespace SMW\MediaWiki\Specials\Admin;
 use FormatJson;
 use Html;
 use OutputPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -99,11 +99,7 @@ class OutputFormatter {
 	 * @param string $text
 	 */
 	public function addWikiText( $text ) {
-		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
-			$this->outputPage->addWikiTextAsInterface( $text );
-		} else {
-			$this->outputPage->addWikiText( $text );
-		}
+		$this->outputPage->addWikiTextAsInterface( $text );
 	}
 
 	/**
@@ -112,7 +108,6 @@ class OutputFormatter {
 	 * @param string $fragment
 	 */
 	public function redirectToRootPage( $fragment = '', $query = [] ) {
-
 		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
 
@@ -174,7 +169,6 @@ class OutputFormatter {
 	 * @return string
 	 */
 	public function encodeAsJson( array $input ) {
-
 		if ( defined( 'JSON_PRETTY_PRINT' ) ) {
 			return json_encode( $input, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 		}

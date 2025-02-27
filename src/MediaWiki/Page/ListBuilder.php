@@ -2,18 +2,17 @@
 
 namespace SMW\MediaWiki\Page;
 
-use SMW\Store;
-use SMW\Message;
-use SMW\MediaWiki\Collator;
+use Linker;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMWInfolink as Infolink;
-use SMWDataItem as DataItem;
+use SMW\Localizer\Message;
+use SMW\MediaWiki\Collator;
+use SMW\Store;
 use SMW\Utils\HtmlColumns;
-use Linker;
+use SMWInfolink as Infolink;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -41,7 +40,7 @@ class ListBuilder {
 	private $property;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isRTL = false;
 
@@ -56,7 +55,7 @@ class ListBuilder {
 	private $linker = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $sort = SORT_NATURAL;
 
@@ -66,7 +65,7 @@ class ListBuilder {
 	 * @param Store $store
 	 * @param Collator|null $collator
 	 */
-	public function __construct( Store $store, Collator $collator = null ) {
+	public function __construct( Store $store, ?Collator $collator = null ) {
 		$this->store = $store;
 		$this->collator = $collator;
 	}
@@ -83,7 +82,7 @@ class ListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $isRTL
+	 * @param bool $isRTL
 	 */
 	public function isRTL( $isRTL ) {
 		$this->isRTL = (bool)$isRTL;
@@ -119,7 +118,7 @@ class ListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $sort
+	 * @param int $sort
 	 */
 	public function sort( $sort ) {
 		$this->sort = $sort;
@@ -144,7 +143,6 @@ class ListBuilder {
 	 * @return string
 	 */
 	public function getColumnList( array $dataItems, $colsThreshold = 10 ) {
-
 		$htmlColumns = new HtmlColumns();
 
 		$htmlColumns->setResponsiveCols();
@@ -165,7 +163,6 @@ class ListBuilder {
 	}
 
 	private function buildList( $dataItems ) {
-
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		if ( $this->linker === false ) {

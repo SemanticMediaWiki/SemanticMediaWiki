@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SMW\DIProperty;
-use Title;
 use SMW\MediaWiki\HookListener;
+use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -33,12 +33,11 @@ class TitleIsMovable implements HookListener {
 	/**
 	 * @since 2.1
 	 *
-	 * @param boolean &$isMovable
+	 * @param bool &$isMovable
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( &$isMovable ) {
-
 		// We don't allow rule pages to be moved as we cannot track JSON content
 		// as redirects and therefore invalidate any rule assignment without a
 		// possibility to automatically reassign IDs

@@ -8,15 +8,14 @@ use SMW\Schema\Rule;
  * @covers \SMW\Schema\Rule
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class RuleTest extends \PHPUnit_Framework_TestCase {
+class RuleTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			Rule::class,
 			new Rule()
@@ -24,24 +23,22 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterScore() {
-
 		$instance = new Rule();
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$instance->filterScore
 		);
 
 		$instance->incrFilterScore();
 
-		$this->assertEquals(
+		$this->assertSame(
 			1,
 			$instance->filterScore
 		);
 	}
 
 	public function testIf() {
-
 		$data = [
 			'if' => [
 				'foo',
@@ -55,8 +52,8 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 			$data
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->if( 'foo' )
 		);
 
@@ -67,7 +64,6 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testThen() {
-
 		$data = [
 			'then' => [
 				'foo',
@@ -81,8 +77,8 @@ class RuleTest extends \PHPUnit_Framework_TestCase {
 			$data
 		);
 
-		$this->assertEquals(
-			'',
+		$this->assertSame(
+			null,
 			$instance->then( 'foo' )
 		);
 

@@ -3,11 +3,13 @@
 namespace SMW\MediaWiki\Connection;
 
 use RuntimeException;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -15,7 +17,7 @@ use RuntimeException;
 class CleanUpTables {
 
 	/**
-	 * @var Database
+	 * @var Database|IDatabase
 	 */
 	private $connection;
 
@@ -23,12 +25,9 @@ class CleanUpTables {
 	 * @since 3.1
 	 */
 	public function __construct( $connection ) {
-
 		if (
-			!$connection instanceof \SMW\MediaWiki\Database &&
-			!$connection instanceof \Wikimedia\Rdbms\IDatabase &&
-			!$connection instanceof \IDatabase &&
-			!$connection instanceof \DatabaseBase ) {
+			!$connection instanceof Database &&
+			!$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
 
@@ -41,7 +40,6 @@ class CleanUpTables {
 	 * @param string $tablePrefix
 	 */
 	public function dropTables( $tablePrefix ) {
-
 		$tables = $this->connection->listTables();
 
 		// MW SQLite does some prefix meddling hence we require to remove any
@@ -52,14 +50,14 @@ class CleanUpTables {
 
 		foreach ( $tables as $table ) {
 
-			if ( strpos( $table, $tablePrefix ) === false || !$this->connection->tableExists( $table ) ) {
+			if ( strpos( $table, $tablePrefix ) === false || !$this->connection->tableExists( $table, __METHOD__ ) ) {
 				continue;
 			}
 
 			if ( $this->connection->getType() === 'postgres' ) {
-				$this->connection->query( "DROP TABLE IF EXISTS $table CASCADE", __METHOD__ );
+				$this->connection->query( "DROP TABLE IF EXISTS $table CASCADE", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			} else {
-				$this->connection->query( "DROP TABLE $table", __METHOD__ );
+				$this->connection->query( "DROP TABLE $table", __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 			}
 		}
 	}

@@ -2,16 +2,14 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
+use RuntimeException;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
-use RuntimeException;
+use SMW\Schema\SchemaFilter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -21,7 +19,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $categories = [];
 
@@ -44,12 +42,11 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'category';
 	}
 
 	private function match( Compartment $compartment ) {
-
 		if ( $this->isLoaded === false ) {
 			$this->loadCategories();
 		}
@@ -76,7 +73,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			/**
 			 * `oneOf` matches against only one category
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"category": { "oneOf": [ "Foo", "Bar" ] }
@@ -84,15 +81,15 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchOneOf( (array)$conditions['oneOf'] );
 		} elseif ( isset( $conditions['anyOf'] ) ) {
 			/**
 			 * `anyOf` matches against any (one or more) category
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"category": { "anyOf": [ "Foo", "Bar" ] }
@@ -100,15 +97,15 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchAnyOf( (array)$conditions['anyOf'] );
 		} elseif ( isset( $conditions['allOf'] ) ) {
 			/**
 			 * `allOf` matches against all categories
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"category": { "allOf": [ "Foo", "Bar" ] }
@@ -116,8 +113,8 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = $this->matchAllOf( (array)$conditions['allOf'] );
 		} elseif ( isset( $conditions['not'] ) ) {
@@ -125,7 +122,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 * `not` on multiple categories means if "any of" them is validated then
 			 * the condition is fullfilled.
 			 *
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"category": { "not": [ "Foo", "Bar" ] }
@@ -133,8 +130,8 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 			unset( $conditions['not'] );
@@ -146,7 +143,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 
 		if ( $matchedCondition && isset( $conditions['not'] ) ) {
 			/**
-			 *```
+			 * ```
 			 * {
 			 *	"if": {
 			 *		"category": { "not": [ "Foobar" ], "oneOf": [ "Foo", "Bar" ] }
@@ -154,8 +151,8 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 			 *	"then": {
 			 *		...
 			 *	}
-			 *}
-			 *```
+			 * }
+			 * ```
 			 */
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 
@@ -171,7 +168,6 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function loadCategories() {
-
 		// Allow categories to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->categories ) ) {
@@ -196,8 +192,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		$this->isLoaded = true;
 	}
 
-	private function matchAllOf( array $categories ) : bool {
-
+	private function matchAllOf( array $categories ): bool {
 		$count = count( $categories );
 
 		foreach ( $categories as $category ) {
@@ -211,8 +206,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return $count == 0;
 	}
 
-	private function matchOneOf( array $categories ) : bool {
-
+	private function matchOneOf( array $categories ): bool {
 		$count = 0;
 
 		foreach ( $categories as $category ) {
@@ -226,8 +220,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return $count == 1;
 	}
 
-	private function matchAnyOf( array $categories ) : bool {
-
+	private function matchAnyOf( array $categories ): bool {
 		foreach ( $categories as $category ) {
 			$category = str_replace( ' ', '_', $category );
 

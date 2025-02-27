@@ -3,7 +3,7 @@
 namespace SMW;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -32,7 +32,6 @@ class NamespaceUriFinder {
 	 * @return false|string
 	 */
 	public static function getUri( $key ) {
-
 		$key = strtolower( $key );
 
 		if ( isset( self::$namespaceUriList[$key] ) ) {

@@ -26,7 +26,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * MediaWiki namespace integer.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_namespace;
 
@@ -59,9 +59,11 @@ class DIWikiPage extends SMWDataItem {
 	private $pageLanguage = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id = 0;
+
+	public int $recdepth;
 
 	/**
 	 * Constructor. We do not bother with too much detailed validation here,
@@ -72,7 +74,7 @@ class DIWikiPage extends SMWDataItem {
 	 * careful and since errors here do not have major consequences.
 	 *
 	 * @param string $dbkey
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectname
 	 */
@@ -85,7 +87,7 @@ class DIWikiPage extends SMWDataItem {
 
 		// Check for a potential fragment such as Foo#Bar, Bar#_49c8ab
 		if ( strpos( $dbkey, '#' ) !== false ) {
-			list( $dbkey, $subobjectname ) = explode( '#', $dbkey );
+			[ $dbkey, $subobjectname ] = explode( '#', $dbkey );
 		}
 
 		$this->m_dbkey = str_replace( ' ', '_', $dbkey );
@@ -119,14 +121,13 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param string $prefix
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isSubEntityOf( string $prefix ) : bool {
-
+	public function isSubEntityOf( string $prefix ): bool {
 		if (
 			$this->m_dbkey === '' ||
-			$this->m_subobjectname ===  '' ||
-			$prefix ===  '' ) {
+			$this->m_subobjectname === '' ||
+			$prefix === '' ) {
 			return false;
 		}
 
@@ -138,9 +139,9 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param int $namespace
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function inNamespace( int $namespace ) : bool {
+	public function inNamespace( int $namespace ): bool {
 		return $this->m_dbkey !== '' && $this->m_namespace === $namespace;
 	}
 
@@ -159,7 +160,7 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $sortkey
 	 */
 	public function setSortKey( $sortkey ) {
-		$this->sortkey = str_replace( '_', ' ', $sortkey );
+		$this->sortkey = str_replace( '_', ' ', $sortkey ?? '' );
 	}
 
 	/**
@@ -169,7 +170,6 @@ class DIWikiPage extends SMWDataItem {
 	 * "new SMW\DIProperty( '_SKEY' )".
 	 */
 	public function getSortKey() {
-
 		if ( $this->sortkey === null || $this->sortkey === '' ) {
 			$this->sortkey = str_replace( '_', ' ', $this->m_dbkey );
 		}
@@ -205,7 +205,6 @@ class DIWikiPage extends SMWDataItem {
 	 * @return string
 	 */
 	public function getPageLanguage() {
-
 		if ( $this->pageLanguage === null ) {
 			$this->pageLanguage = false;
 
@@ -220,7 +219,7 @@ class DIWikiPage extends SMWDataItem {
 	/**
 	 * @since  2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function setId( $id ) {
 		$this->id = (int)$id;
@@ -339,7 +338,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * Implements \JsonSerializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @return array
@@ -355,7 +354,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * Implements JsonUnserializable.
-	 * 
+	 *
 	 * @since 4.0.0
 	 *
 	 * @param JsonUnserializer $unserializer Unserializer

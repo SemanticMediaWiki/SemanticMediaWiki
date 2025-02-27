@@ -4,38 +4,36 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Settings;
-use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwHooksHandler;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
+class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $mwHooksHandler;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = new MwHooksHandler();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
 
 	public function testRunNamespaceManagerWithNoConstantsDefined() {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 
 		$default = [
@@ -54,13 +52,12 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'isDefinedConstant' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$instance->init( $default );
 	}
 
 	public function testCanonicalNames() {
-
 		$this->mwHooksHandler->deregisterListedHooks();
 		$applicationFactory = ApplicationFactory::getInstance();
 		$namespaceInfo = $applicationFactory->singleton( 'NamespaceInfo' );
@@ -69,8 +66,8 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit_Framework_TestCase {
 		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );
 		$names = NamespaceManager::getCanonicalNames();
 
-		$this->assertInternalType( 'array', $names );
-		$this->assertInternalType( 'array', $index );
+		$this->assertIsArray( $names );
+		$this->assertIsArray( $index );
 
 		foreach ( $index as $ns => $idx ) {
 

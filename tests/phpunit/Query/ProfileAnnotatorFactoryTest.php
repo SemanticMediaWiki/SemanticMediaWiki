@@ -10,15 +10,14 @@ use SMWQuery as Query;
  * @covers \SMW\Query\ProfileAnnotatorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
+class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Query\ProfileAnnotatorFactory',
 			new ProfileAnnotatorFactory()
@@ -26,7 +25,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructDescriptionProfileAnnotator() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -37,11 +35,11 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -52,7 +50,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructCombinedProfileAnnotator() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,11 +60,11 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -78,7 +75,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructProfileAnnotatorsWithSourceAnnotator() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -89,15 +85,15 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->once() )
 			->method( 'getQuerySource' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -108,7 +104,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructProfileAnnotatorsWithDurationAnnotator() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,16 +114,16 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->at( 4 ) )
 			->method( 'getOption' )
-			->with( $this->equalTo( Query::PROC_QUERY_TIME ) )
-			->will( $this->returnValue( 42 ) );
+			->with( Query::PROC_QUERY_TIME )
+			->willReturn( 42 );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -139,7 +134,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructProfileAnnotatorsWithStatCodeAnnotator() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -150,16 +144,16 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->at( 6 ) )
 			->method( 'getOption' )
-			->with( $this->equalTo( Query::PROC_STATUS_CODE ) )
-			->will( $this->returnValue( [ 100 ] ) );
+			->with( Query::PROC_STATUS_CODE )
+			->willReturn( [ 100 ] );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -170,7 +164,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructCombinedProfileAnnotatorOnNullContextPage() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -181,11 +174,11 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( null ) );
+			->willReturn( null );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -196,7 +189,6 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConstructProfileAnnotators_SchemaLink() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -207,16 +199,16 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
-			->will( $this->returnValue( $description ) );
+			->willReturn( $description );
 
 		$query->expects( $this->at( 7 ) )
 			->method( 'getOption' )
-			->with( $this->equalTo( 'schema_link' ) )
-			->will( $this->returnValue( 'Foo' ) );
+			->with( 'schema_link' )
+			->willReturn( 'Foo' );
 
 		$instance = new ProfileAnnotatorFactory();
 

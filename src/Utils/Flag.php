@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -27,22 +27,22 @@ class Flag {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function is( $flag ) : bool {
+	public function is( $flag ): bool {
 		return ( ( (int)$this->flag & $flag ) == $flag );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function not( $flag ) : bool {
+	public function not( $flag ): bool {
 		return !$this->is( $flag );
 	}
 

@@ -2,21 +2,21 @@
 
 namespace SMW\Tests\Maintenance;
 
-use SMW\Maintenance\UpdateQueryDependencies;
-use FakeResultWrapper;
-use SMW\Tests\TestEnvironment;
 use SMW\DIWikiPage;
+use SMW\Maintenance\updateQueryDependencies;
+use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
- * @covers \SMW\Maintenance\UpdateQueryDependencies
+ * @covers \SMW\Maintenance\updateQueryDependencies
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
+class UpdateQueryDependenciesTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $messageReporter;
@@ -24,9 +24,8 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $entityCache;
 
-	protected function setUp() : void {
-
-		$this->testEnvironment =  new TestEnvironment();
+	protected function setUp(): void {
+		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
 			->disableOriginalConstructor()
@@ -36,7 +35,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,21 +47,19 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'EntityCache', $this->entityCache );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
-			UpdateQueryDependencies::class,
-			new UpdateQueryDependencies()
+			updateQueryDependencies::class,
+			new updateQueryDependencies()
 		);
 	}
 
 	public function testExecute() {
-
 		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -73,7 +70,7 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -102,17 +99,17 @@ class UpdateQueryDependenciesTest extends \PHPUnit_Framework_TestCase {
 				$this->anything(),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( new FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
-		$instance = new UpdateQueryDependencies();
+		$instance = new updateQueryDependencies();
 
 		$instance->setMessageReporter(
 			$this->messageReporter

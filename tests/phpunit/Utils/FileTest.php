@@ -2,24 +2,23 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\File;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\File;
 
 /**
  * @covers \SMW\Utils\File
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FileTest extends \PHPUnit_Framework_TestCase {
+class FileTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$instance = new File();
 
 		$this->assertInstanceOf(
@@ -29,7 +28,6 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testWrite_ThrowsException() {
-
 		$instance = new File();
 
 		$this->expectException( '\SMW\Exception\FileNotWritableException' );
@@ -37,9 +35,8 @@ class FileTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDir() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			File::dir( 'foo' )
 		);
 	}

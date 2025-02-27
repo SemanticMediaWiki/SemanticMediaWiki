@@ -2,14 +2,13 @@
 
 namespace SMW\Schema;
 
-use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Filters\CategoryFilter;
-use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Filters\CompositeFilter;
-use SMW\DIWikiPage;
+use SMW\Schema\Filters\NamespaceFilter;
+use SMW\Schema\Filters\PropertyFilter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -23,7 +22,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return CompositeFilter
 	 */
-	public function newCompositeFilter( array $filters ) : CompositeFilter {
+	public function newCompositeFilter( array $filters ): CompositeFilter {
 		return new CompositeFilter( $filters );
 	}
 
@@ -34,7 +33,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return NamespaceFilter
 	 */
-	public function newNamespaceFilter( ?int $namespace ) : NamespaceFilter {
+	public function newNamespaceFilter( ?int $namespace ): NamespaceFilter {
 		return new NamespaceFilter( $namespace );
 	}
 
@@ -45,7 +44,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return CategoryFilter
 	 */
-	public function newCategoryFilter( $categories ) : CategoryFilter {
+	public function newCategoryFilter( $categories ): CategoryFilter {
 		return new CategoryFilter( $categories );
 	}
 
@@ -56,7 +55,7 @@ class SchemaFilterFactory {
 	 *
 	 * @return PropertyFilter
 	 */
-	public function newPropertyFilter( $properties ) : PropertyFilter {
+	public function newPropertyFilter( $properties ): PropertyFilter {
 		return new PropertyFilter( $properties );
 	}
 

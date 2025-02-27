@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"Adam78",
 			"Bencemac",
 			"Dani",
 			"David92003",
@@ -83,7 +84,7 @@
 	"smw_nofloat": "„$1” nem egy szám.",
 	"smw_infinite": "Ilyen nagy számok („$1”) nem támogatottak.",
 	"smw_unitnotallowed": "A(z) \"$1\" nem érvényes mértékegysége ennek a tulajdonságnak.",
-	"smw_nounitsdeclared": "Nem határozták meg mértékegységet ennek a tulajdonságnak.",
+	"smw_nounitsdeclared": "Nincs meghatározva mértékegység ehhez a tulajdonsághoz.",
 	"smw_novalues": "Nincsenek megadva értékek.",
 	"smw_nodatetime": "A(z) „$1” dátum nem értelmezhető.",
 	"smw_toomanyclosing": "A(z) „$1” túl sokszor fordul elő a lekérdezésben.",
@@ -115,6 +116,7 @@
 	"smw_exportrdf_submit": "Exportálás",
 	"uriresolver": "URI feloldó",
 	"properties": "Tulajdonságok",
+	"smw-categories": "Kategóriák",
 	"smw_properties_docu": "A wikiben az alábbi tulajdonságok használatosak.",
 	"smw_property_template": "$2 típusú $1 ($3 használat)",
 	"smw_propertylackspage": "Minden tulajdonságnak kell hogy legyen leírólapja!",
@@ -238,7 +240,6 @@
 	"smw-admin-maintenance-tab-scripts": "Karbantartó szkriptek",
 	"smw-livepreview-loading": "Betöltés…",
 	"smw-datavalue-allows-value-list-missing-marker": "A(z) „$1” lista tartalmában nincsenek elemek * listajelzővel.",
-	"smw-schema-error-violation": "[\"$1\", \"$2\"]",
 	"smw-schema-error-json": "JSON hiba: \"$1\"",
 	"smw-schema-usage": "Használat",
 	"smw-listingcontinuesabbrev": "folyt.",

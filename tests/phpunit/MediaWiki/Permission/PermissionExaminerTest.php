@@ -9,19 +9,19 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Permission\PermissionExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
+class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $permissionManager;
 	private $user;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
@@ -34,7 +34,6 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PermissionExaminer::class,
 			new PermissionExaminer( $this->permissionManager )
@@ -42,13 +41,12 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPermissionOf() {
-
 		$this->permissionManager->expects( $this->any() )
 			->method( 'userHasRight' )
 			->with(
-				$this->equalTo( $this->user ),
-				$this->equalTo( 'foo' ) )
-			->will( $this->returnValue( false ) );
+				$this->user,
+				'foo' )
+			->willReturn( false );
 
 		$instance = new PermissionExaminer(
 			$this->permissionManager
@@ -56,8 +54,8 @@ class PermissionExaminerTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->setUser( $this->user );
 
-		$this->assertInternalType(
-			'bool',
+		$this->assertIsBool(
+
 			$instance->hasPermissionOf( 'foo' )
 		);
 	}

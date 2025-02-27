@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
+class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IncompleteSetupTasks::class,
 			new IncompleteSetupTasks()
@@ -27,7 +26,6 @@ class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTitle() {
-
 		$instance = new IncompleteSetupTasks();
 
 		$this->assertEquals(
@@ -37,14 +35,13 @@ class IncompleteSetupTasksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$setupFile->expects( $this->atLeastOnce() )
 			->method( 'findIncompleteTasks' )
-			->will( $this->returnValue( [ 'Foo', 'Bar' ] ) );
+			->willReturn( [ 'Foo', 'Bar' ] );
 
 		$instance = new IncompleteSetupTasks(
 			$setupFile

@@ -13,12 +13,13 @@ use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFu
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunc;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -35,7 +36,7 @@ class ParserFunctionFactory {
 	 *
 	 * @param Parser|null $parser
 	 */
-	public function __construct( Parser $parser = null ) {
+	public function __construct( ?Parser $parser = null ) {
 		$this->parser = $parser;
 	}
 
@@ -72,26 +73,25 @@ class ParserFunctionFactory {
 	 * @param Parser $parser
 	 */
 	public function registerFunctionHandlers( Parser $parser ) {
-
-		list( $name, $definition, $flag ) = $this->getAskParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getAskParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getShowParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getShowParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSubobjectParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSubobjectParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSetRecurringEventParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSetRecurringEventParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getSetParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getSetParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getConceptParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getConceptParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 
-		list( $name, $definition, $flag ) = $this->getDeclareParserFunctionDefinition();
+		[ $name, $definition, $flag ] = $this->getDeclareParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 	}
 
@@ -103,7 +103,6 @@ class ParserFunctionFactory {
 	 * @return AskParserFunction
 	 */
 	public function newAskParserFunction( Parser $parser ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
@@ -171,7 +170,6 @@ class ParserFunctionFactory {
 	 * @return ShowParserFunction
 	 */
 	public function newShowParserFunction( Parser $parser ) {
-
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$askParserFunction = $this->newAskParserFunction(
@@ -197,7 +195,6 @@ class ParserFunctionFactory {
 	 * @return SetParserFunction
 	 */
 	public function newSetParserFunction( Parser $parser ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -236,7 +233,6 @@ class ParserFunctionFactory {
 	 * @return ConceptParserFunction
 	 */
 	public function newConceptParserFunction( Parser $parser ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -268,7 +264,6 @@ class ParserFunctionFactory {
 	 * @return SubobjectParserFunction
 	 */
 	public function newSubobjectParserFunction( Parser $parser ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -315,7 +310,6 @@ class ParserFunctionFactory {
 	 * @return RecurringEventsParserFunction
 	 */
 	public function newRecurringEventsParserFunction( Parser $parser ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -366,7 +360,6 @@ class ParserFunctionFactory {
 	 * @return DeclareParserFunction
 	 */
 	public function newDeclareParserFunction( Parser $parser ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()
@@ -385,9 +378,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getAskParserFunctionDefinition() {
-
-		$askParserFunctionDefinition = function( $parser ) {
-
+		$askParserFunctionDefinition = function ( $parser ) {
 			$applicationFactory = ApplicationFactory::getInstance();
 			$settings = $applicationFactory->getSettings();
 
@@ -411,9 +402,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getShowParserFunctionDefinition() {
-
-		$showParserFunctionDefinition = function( $parser ) {
-
+		$showParserFunctionDefinition = function ( $parser ) {
 			$applicationFactory = ApplicationFactory::getInstance();
 			$settings = $applicationFactory->getSettings();
 
@@ -437,9 +426,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getSubobjectParserFunctionDefinition() {
-
-		$subobjectParserFunctionDefinition = function( $parser ) {
-
+		$subobjectParserFunctionDefinition = function ( $parser ) {
 			$subobjectParserFunction = $this->newSubobjectParserFunction(
 				$parser
 			);
@@ -458,9 +445,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getSetRecurringEventParserFunctionDefinition() {
-
-		$recurringEventsParserFunctionDefinition = function( $parser ) {
-
+		$recurringEventsParserFunctionDefinition = function ( $parser ) {
 			$recurringEventsParserFunction = $this->newRecurringEventsParserFunction(
 				$parser
 			);
@@ -479,9 +464,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getSetParserFunctionDefinition() {
-
-		$setParserFunctionDefinition = function( $parser ) {
-
+		$setParserFunctionDefinition = function ( $parser ) {
 			$setParserFunction = $this->newSetParserFunction(
 				$parser
 			);
@@ -500,9 +483,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getConceptParserFunctionDefinition() {
-
-		$conceptParserFunctionDefinition = function( $parser ) {
-
+		$conceptParserFunctionDefinition = function ( $parser ) {
 			$conceptParserFunction = $this->newConceptParserFunction(
 				$parser
 			);
@@ -519,9 +500,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getDeclareParserFunctionDefinition() {
-
-		$declareParserFunctionDefinition = function( $parser, $frame, $args ) {
-
+		$declareParserFunctionDefinition = function ( $parser, $frame, $args ) {
 			$declareParserFunction = $this->newDeclareParserFunction(
 				$parser
 			);

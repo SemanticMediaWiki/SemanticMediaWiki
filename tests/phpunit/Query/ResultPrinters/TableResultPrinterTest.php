@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Query\ResultPrinters\TableResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TableResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class TableResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableResultPrinter::class,
 			new TableResultPrinter( 'table' )
@@ -27,19 +26,18 @@ class TableResultPrinterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetResult_Empty() {
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getErrors' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new TableResultPrinter( 'table' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getResult( $queryResult, [], SMW_OUTPUT_WIKI )
 		);
 	}

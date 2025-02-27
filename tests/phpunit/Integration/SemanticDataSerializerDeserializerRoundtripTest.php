@@ -3,23 +3,23 @@
 namespace SMW\Tests\Integration;
 
 use ReflectionClass;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Serializers\SemanticDataSerializer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework\TestCase {
 
 	private function newSerializerInstance() {
 		return new SemanticDataSerializer();
@@ -33,14 +33,12 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @dataProvider semanticDataProvider
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
-
 		$serialized = $this->newSerializerInstance()->serialize( $data );
 
 		$this->assertEquals(
 			$serialized,
 			$this->newSerializerInstance()->serialize( $this->newDeserializerInstance()->deserialize( $serialized ) )
 		);
-
 
 		$this->assertEquals(
 			$data->getHash(),
@@ -52,7 +50,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @dataProvider incompleteSubobjectDataProvider
 	 */
 	public function testSerializerDeserializerWithIncompleteSubobjectData( $data ) {
-
 		$serialized = $this->newSerializerInstance()->serialize( $data );
 
 		$this->assertInstanceOf(
@@ -65,7 +62,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @dataProvider typeChangeSemanticDataProvider
 	 */
 	public function testForcedTypeErrorDuringRountrip( $data, $type ) {
-
 		$serialized   = $this->newSerializerInstance()->serialize( $data );
 		$deserializer = $this->newDeserializerInstance();
 
@@ -90,7 +86,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	}
 
 	public function semanticDataProvider() {
-
 		ApplicationFactory::clear();
 
 		$provider = [];
@@ -141,7 +136,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @return array
 	 */
 	public function incompleteSubobjectDataProvider() {
-
 		$provider = [];
 
 		$title = \Title::newFromText( __METHOD__ );
@@ -162,7 +156,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit_Framework
 	 * @return array
 	 */
 	public function typeChangeSemanticDataProvider() {
-
 		$provider = [];
 		$title = \Title::newFromText( __METHOD__ );
 

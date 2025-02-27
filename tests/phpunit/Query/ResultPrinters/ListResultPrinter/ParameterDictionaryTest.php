@@ -8,15 +8,14 @@ use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
  * @covers \SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
  */
-class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
+class ParameterDictionaryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetGet() {
-
 		$dict = new ParameterDictionary();
 
 		$dict->set( 'foo', 'Derek' );
@@ -28,11 +27,10 @@ class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetArrayGet() {
-
 		$dict = new ParameterDictionary();
 
-		$dict->set( ['foo' => 'Derek', 'bar' => 'Devin' ] );
-		$dict->set( ['foo' => 'Chelsea', 'baz' => 'Carolynn' ] );
+		$dict->set( [ 'foo' => 'Derek', 'bar' => 'Devin' ] );
+		$dict->set( [ 'foo' => 'Chelsea', 'baz' => 'Carolynn' ] );
 
 		$this->assertEquals( 'Chelsea', $dict->get( 'foo' ) );
 		$this->assertEquals( 'Devin', $dict->get( 'bar' ) );
@@ -40,7 +38,6 @@ class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetDefaultGet() {
-
 		$dict = new ParameterDictionary();
 
 		$dict->setDefault( 'foo', 'Derek' );
@@ -52,11 +49,10 @@ class ParameterDictionaryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetDefaultArrayGet() {
-
 		$dict = new ParameterDictionary();
 
-		$dict->set( ['foo' => 'Derek', 'bar' => 'Devin' ] );
-		$dict->setDefault( ['foo' => 'Chelsea', 'baz' => 'Carolynn' ] );
+		$dict->set( [ 'foo' => 'Derek', 'bar' => 'Devin' ] );
+		$dict->setDefault( [ 'foo' => 'Chelsea', 'baz' => 'Carolynn' ] );
 
 		$this->assertEquals( 'Derek', $dict->get( 'foo' ) );
 		$this->assertEquals( 'Devin', $dict->get( 'bar' ) );

@@ -6,7 +6,7 @@ use SMW\MediaWiki\Job;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -32,10 +32,9 @@ class DeferredConstraintCheckUpdateJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function pushJob( Title $title, $params = [] ) {
-
 		$deferredConstraintCheckUpdateJob = new self(
 			$title,
 			self::newRootJobParams( self::JOB_COMMAND, $title ) + [ 'waitOnCommandLine' => true ] + $params
@@ -52,7 +51,6 @@ class DeferredConstraintCheckUpdateJob extends Job {
 	 * @since 3.1
 	 */
 	public function run() {
-
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}

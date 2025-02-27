@@ -1,0 +1,19 @@
+{
+	"description": "Semantic MediaWiki search import",
+	"import": [
+		{
+			"page": "Profile:Facetedsearch default profile",
+			"namespace": "SMW_NS_SCHEMA",
+			"import_performer": "SemanticMediaWikiImporter",
+			"contents": {
+				"importFrom": "/search/facetedsearch.defaultprofile.json"
+			},
+			"options": {
+				"replaceable": { "LAST_EDITOR": "IS_IMPORTER" }
+			}
+		}
+	],
+	"meta": {
+		"version": "1"
+	}
+}

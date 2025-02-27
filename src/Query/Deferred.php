@@ -7,7 +7,7 @@ use ParserOutput;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -47,7 +47,6 @@ class Deferred {
 	 * @return string
 	 */
 	public static function buildHTML( Query $query ) {
-
 		$isShowMode = $query->getOption( self::SHOW_MODE );
 		$params = $query->getOption( 'query.params' );
 
@@ -57,10 +56,10 @@ class Deferred {
 		$result = Html::rawElement(
 			$element,
 			[
-				'class' => 'smw-deferred-query' . ( isset( $params['class'] ) ? ' ' . $params['class'] : '' ),
+				'class' => 'smw-deferred-query',
 				'data-query' => json_encode(
 					[
-						'query'  => trim( $query->getOption( self::QUERY_PARAMETERS ) ),
+						'query'  => trim( $query->getOption( self::QUERY_PARAMETERS ) ?? '' ),
 						'params' => $params,
 						'limit'  => $query->getLimit(),
 						'offset' => $query->getOffset(),

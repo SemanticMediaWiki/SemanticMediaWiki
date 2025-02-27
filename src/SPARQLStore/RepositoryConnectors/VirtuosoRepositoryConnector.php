@@ -37,7 +37,7 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
  *
  * @ingroup Sparql
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.7.1
  *
  * @author Markus Krötzsch
@@ -54,10 +54,9 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "DELETE" .
@@ -78,10 +77,9 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $where string condition for data to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) . "MODIFY" .
@@ -100,10 +98,9 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $triples string of triples to insert
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function insertData( $triples, $extraNamespaces = [] ) {
-
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -128,10 +125,9 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $triples string of triples to delete
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function deleteData( $triples, $extraNamespaces = [] ) {
-
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -151,10 +147,9 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $sparql string with the complete SPARQL update query (INSERT or DELETE)
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doUpdate( $sparql ) {
-
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -177,4 +172,3 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	}
 
 }
-

@@ -14,7 +14,7 @@ use SMWDIBlob as DIBlob;
  * For a wildcard search, build tokens from the query string, and allow to highlight
  * them in the result set.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -76,7 +76,6 @@ class QueryToken {
 	 * @param Description $description
 	 */
 	public function addFromDesciption( Description $description ) {
-
 		if ( $description instanceof Conjunction ) {
 			foreach ( $description->getDescriptions() as $desc ) {
 				return $this->addFromDesciption( $desc );
@@ -119,12 +118,11 @@ class QueryToken {
 	 * @since 2.5
 	 *
 	 * @param string $text
-	 * @param type $text
+	 * @param string $type
 	 *
 	 * @return string
 	 */
 	public function highlight( $text, $type = self::HL_BOLD ) {
-
 		if ( $this->tokens === [] || strpos( strtolower( $this->outputFormat ), '-hl' ) === false ) {
 			return $text;
 		}
@@ -133,7 +131,6 @@ class QueryToken {
 	}
 
 	private function doHighlight( $text, $type, $tokens ) {
-
 		if ( $type === self::HL_BOLD ) {
 			$replacement = "<b>$0</b>";
 		} elseif ( $type === self::HL_UNDERLINE ) {
@@ -152,11 +149,10 @@ class QueryToken {
 	}
 
 	private function addTokensFromText( $text ) {
-
 		// Remove query related chars
 		$text = str_replace(
 			[ '*', '"', '~', '_', '+', '-' ],
-			[ '',  '',  '',  ' ', '', '' ],
+			[ '', '', '', ' ', '', '' ],
 			$text
 		);
 

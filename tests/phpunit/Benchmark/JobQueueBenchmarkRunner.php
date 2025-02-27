@@ -10,7 +10,7 @@ use Title;
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -70,7 +70,6 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -93,7 +92,6 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doRunJob( array $case ) {
-
 		$this->jobQueueRunner->setType( $case['job'] );
 		$memoryBefore = memory_get_peak_usage( false );
 

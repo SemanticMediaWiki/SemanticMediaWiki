@@ -4,13 +4,14 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
+use SMW\Query\Result\ResultArray;
+use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;
-use SMWResultArray;
 
 /**
  * Class ValueTextsBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -20,29 +21,31 @@ class ValueTextsBuilder {
 	use ParameterDictionaryUser;
 
 	private $linker;
+	private $prefixParameterProcessor;
+
+	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {
+		$this->prefixParameterProcessor = $prefixParameterProcessor;
+	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	public function getValuesText( SMWResultArray $field, $column = 0 ) {
-
+	public function getValuesText( ResultArray $field, $column = 0 ) {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valuesep' ), $valueTexts );
-
+		return implode( $this->get( 'valuesep' ), $valueTexts );
 	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 * @param int $column
 	 *
 	 * @return string[]
 	 */
-	private function getValueTexts( SMWResultArray $field, $column ) {
-
+	private function getValueTexts( ResultArray $field, $column ) {
 		$valueTexts = [];
 
 		$field->reset();
@@ -65,8 +68,10 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
+		$isSubject = ( $column === 0 );
+		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
-		$text = $value->getShortText( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
 
 		return $this->sanitizeValueText( $text );
 	}
@@ -80,7 +85,6 @@ class ValueTextsBuilder {
 	 * @return \Linker|null
 	 */
 	private function getLinkerForColumn( $columnNumber ) {
-
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||
 			( $columnNumber > 0 && $this->get( 'link-others' ) ) ) {
 			return $this->getLinker();
@@ -109,20 +113,13 @@ class ValueTextsBuilder {
 	 * @return string
 	 */
 	private function sanitizeValueText( $text ) {
-
 		if ( $this->isSimpleList() ) {
 			return $text;
 		}
 
-		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-			return Sanitizer::removeSomeTags(
-				$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
-			);
-		} else {
-			return Sanitizer::removeHTMLtags(
-				$text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ]
-			);
-		}
+		return Sanitizer::removeSomeTags(
+			$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
+		);
 	}
 
 	/**

@@ -8,7 +8,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  * Administrative class to manage the rights and roles in connection with
  * Semantic MediaWiki.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -27,7 +27,6 @@ class GroupPermissions {
 	 * @param array &$vars
 	 */
 	public function initPermissions( &$vars ) {
-
 		$groups = [
 			'smwadministrator' => $this->forAdminRole(),
 			'smwcurator' => $this->forCuratorRole(),

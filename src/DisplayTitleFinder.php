@@ -5,7 +5,7 @@ namespace SMW;
 use SMWDataItem as DataItem;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class DisplayTitleFinder {
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $canUse = true;
 
@@ -41,7 +41,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canUse
+	 * @param bool $canUse
 	 */
 	public function getEntityCache() {
 		return $this->entityCache;
@@ -50,7 +50,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canUse
+	 * @param bool $canUse
 	 */
 	public function setCanUse( $canUse ) {
 		$this->canUse = (bool)$canUse;
@@ -62,7 +62,6 @@ class DisplayTitleFinder {
 	 * @param SemanticData $semanticData
 	 */
 	public function prefetchFromSemanticData( SemanticData $semanticData ) {
-
 		if ( $this->canUse === false ) {
 			return;
 		}
@@ -114,7 +113,6 @@ class DisplayTitleFinder {
 	 * @param array $dataItems
 	 */
 	public function prefetchFromList( $dataItems ) {
-
 		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
 			return;
 		}
@@ -150,7 +148,7 @@ class DisplayTitleFinder {
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
-		} catch( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
 			return;
 		}
 
@@ -198,7 +196,6 @@ class DisplayTitleFinder {
 	 * @return string
 	 */
 	public function findDisplayTitle( DIWikiPage $subject ) {
-
 		if ( $this->canUse === false ) {
 			return '';
 		}
@@ -221,7 +218,6 @@ class DisplayTitleFinder {
 	}
 
 	private function findDisplayTitleFor( $subject ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->setCaller( __METHOD__ );
 

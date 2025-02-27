@@ -12,23 +12,22 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -40,7 +39,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanBuildConditionFor() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\NamespaceDescription' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,7 +58,6 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testNamespaceCondition( $description, $orderByProperty, $expectedConditionType, $expectedConditionString ) {
-
 		$resultVariable = 'result';
 
 		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -84,13 +81,12 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
 		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
 
-		$description =  new NamespaceDescription( NS_MAIN );
+		$description = new NamespaceDescription( NS_MAIN );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder

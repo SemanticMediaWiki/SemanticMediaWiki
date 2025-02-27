@@ -3,30 +3,30 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\ShapeConstraint;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
+use SMWDataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\ShapeConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
+class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ShapeConstraint::class,
 			new ShapeConstraint()
@@ -34,7 +34,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new ShapeConstraint();
 
 		$this->assertEquals(
@@ -44,7 +43,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new ShapeConstraint();
 
 		$this->assertFalse(
@@ -53,7 +51,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_missing_property() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo' ] ]
 		];
@@ -66,21 +63,22 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'Foo' )
+			->willReturn( false );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -94,7 +92,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_wrong_type() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo', 'property_type' => 'Text' ] ]
 		];
@@ -107,21 +104,22 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -135,7 +133,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_invalid_max_cardinality() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo', 'max_cardinality' => 1 ] ]
 		];
@@ -152,25 +149,26 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem, $dataItem ] ) );
+			->willReturn( [ $dataItem, $dataItem ] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -184,7 +182,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_shape_constraint_invalid_min_textlength() {
-
 		$constraint = [
 			'shape_constraint' => [ [ 'property' => 'Foo', 'min_textlength' => 100 ] ]
 		];
@@ -197,7 +194,7 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataItem->expects( $this->atLeastOnce() )
 			->method( 'getString' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -205,25 +202,26 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Foo' )
+			->willReturn( true );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'addError', 'getCallable' ] )
-			->getMockForAbstractClass();
+		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue->expects( $this->any() )
+			->method( 'getWikiValue' )
+			->willReturn( 'foo' );
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
@@ -237,7 +235,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_mandatory_properties_ThrowsException() {
-
 		$constraint = [
 			'mandatory_properties' => true
 		];
@@ -249,7 +246,6 @@ class ShapeConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

@@ -9,15 +9,14 @@ use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
  * @covers \SMW\DataValues\ValueFormatters\CodeStringValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class CodeStringValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CodeStringValueFormatter::class,
 			new CodeStringValueFormatter()
@@ -28,7 +27,6 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringValueProvider
 	 */
 	public function testFormat( $userValue, $type, $linker, $expected ) {
-
 		$codeStringValue = DataValueFactory::getInstance()->newDataValueByType( '_cod' );
 		$codeStringValue->setUserValue( $userValue );
 
@@ -41,7 +39,6 @@ class CodeStringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringValueProvider() {
-
 		$provider[] = [
 			'foo',
 			CodeStringValueFormatter::VALUE,

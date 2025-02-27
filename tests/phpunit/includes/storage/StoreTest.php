@@ -5,11 +5,9 @@ namespace SMW\Tests;
 use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
 use SMW\StoreFactory;
-use SMWTestsDatabaseTestCase;
-use SMWRequestOptions;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * Tests for the SMWStore class.
@@ -23,7 +21,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author Nischay Nahata
  */
-class StoreTest extends DatabaseTestCase {
+class StoreTest extends SMWIntegrationTestCase {
 
 	use PHPUnitCompat;
 
@@ -36,9 +34,9 @@ class StoreTest extends DatabaseTestCase {
 	}
 
 	/**
-	* @dataProvider getSemanticDataProvider
-	*/
-	public function testGetSemanticData( $titleText ,$filter = false) {
+	 * @dataProvider getSemanticDataProvider
+	 */
+	public function testGetSemanticData( $titleText, $filter = false ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
@@ -52,33 +50,33 @@ class StoreTest extends DatabaseTestCase {
 
 	public function getPropertyValuesDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText(), new DIProperty('_MDAT') ],
-			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel('Age') ],
+			[ Title::newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
+			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
 		];
 	}
 
 	/**
-	* @dataProvider getPropertyValuesDataProvider
-	*/
+	 * @dataProvider getPropertyValuesDataProvider
+	 */
 	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
-		$this->assertInternalType( 'array', $result );
+		$this->assertIsArray( $result );
 		$this->assertContainsOnlyInstancesOf( '\SMWDataItem', $result );
 	}
 
 	public function getPropertySubjectsDataProvider() {
 		return [
-			[ new DIProperty('_MDAT'), null ],
+			[ new DIProperty( '_MDAT' ), null ],
 		];
 	}
 
 	/**
-	* @dataProvider getPropertySubjectsDataProvider
-	*/
+	 * @dataProvider getPropertySubjectsDataProvider
+	 */
 	public function testGetPropertySubjects( DIProperty $property, $value, $requestOptions = null ) {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
@@ -88,7 +86,7 @@ class StoreTest extends DatabaseTestCase {
 			$result
 		);
 
-		foreach( $result as $page ) {
+		foreach ( $result as $page ) {
 			$this->assertInstanceOf(
 				'\SMW\DIWikiPage',
 				$page,
@@ -104,17 +102,17 @@ class StoreTest extends DatabaseTestCase {
 	}
 
 	/**
-	* @dataProvider getPropertiesDataProvider
-	*/
+	 * @dataProvider getPropertiesDataProvider
+	 */
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = Title::newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 
-		foreach( $result as $property ) {
+		foreach ( $result as $property ) {
 			$this->assertInstanceOf(
 				'\SMWDataItem',
 				$property,
@@ -129,16 +127,16 @@ class StoreTest extends DatabaseTestCase {
 		// Really bailing out here and making the test database dependent!!
 
 		// This test fails on mysql http://bugs.mysql.com/bug.php?id=10327
-		if( $GLOBALS['wgDBtype'] == 'mysql' ) {
+		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
 			$this->assertTrue( true );
 			return;
 		}
 
 		$store = StoreFactory::getStore();
-		$result = $store->getPropertiesSpecial( new SMWRequestOptions() );
+		$result = $store->getPropertiesSpecial( new RequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach ( $result->fetchList() as $row ) {
 			$this->assertCount( 2, $row );
 
 			$this->assertInstanceOf(
@@ -151,10 +149,10 @@ class StoreTest extends DatabaseTestCase {
 
 	public function testGetUnusedPropertiesSpecial() {
 		$store = StoreFactory::getStore();
-		$result = $store->getUnusedPropertiesSpecial( new SMWRequestOptions() );
+		$result = $store->getUnusedPropertiesSpecial( new RequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDataItem',
 				$row,
@@ -165,10 +163,10 @@ class StoreTest extends DatabaseTestCase {
 
 	public function testGetWantedPropertiesSpecial() {
 		$store = StoreFactory::getStore();
-		$result = $store->getWantedPropertiesSpecial( new SMWRequestOptions() );
+		$result = $store->getWantedPropertiesSpecial( new RequestOptions() );
 
 		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
-		foreach( $result->fetchList() as $row ) {
+		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMW\DIProperty',
 				$row[0],
@@ -181,25 +179,23 @@ class StoreTest extends DatabaseTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getStatistics();
 
-		$this->assertTrue( is_array( $result ) );
+		$this->assertIsArray( $result );
 		$this->assertArrayHasKey( 'PROPUSES', $result );
 		$this->assertArrayHasKey( 'USEDPROPS', $result );
 		$this->assertArrayHasKey( 'DECLPROPS', $result );
 	}
 
 	public function testConnection() {
-
 		$store = StoreFactory::getStore();
 		$store->setConnectionManager( new ConnectionManager() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Database',
+			'\SMW\MediaWiki\Connection\Database',
 			$store->getConnection( 'mw.db' )
 		);
 	}
 
 	public function testGetRedirectTarget() {
-
 		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
 		$expected = new DIWikiPage( 'Bar', NS_MAIN );
 
@@ -210,7 +206,7 @@ class StoreTest extends DatabaseTestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $expected ] ) );
+			->willReturn( [ $expected ] );
 
 		$this->assertEquals(
 			$expected,

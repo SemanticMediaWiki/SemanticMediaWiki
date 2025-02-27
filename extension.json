@@ -1,11 +1,11 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "4.0.2",
+	"version": "5.0.0-beta",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
 		"James Hong Kong",
-		"[https://professional.wiki/ Professional.Wiki]",
+		"[https://professional.wiki/ Professional Wiki]",
 		"[https://www.semantic-mediawiki.org/wiki/Contributors ...]"
 	],
 	"url": "https://www.semantic-mediawiki.org",
@@ -14,7 +14,7 @@
 	"license-name": "GPL-2.0-or-later",
 	"type": "semantic",
 	"requires": {
-		"MediaWiki": ">= 1.35"
+		"MediaWiki": ">= 1.39"
 	},
 	"MessagesDirs": {
 		"SemanticMediaWiki": [
@@ -22,14 +22,17 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"SMW\\": "src/"
+		"SMW\\": "src/",
+		"SMW\\Maintenance": "maintenance/",
+		"Onoi\\Tesa\\": "Tesa/src/"
 	},
 	"Hooks": {
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
 	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
+		"SemanticMediaWiki": "includes/SemanticMediaWiki.php",
+		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
@@ -46,7 +49,6 @@
 		"ext.smw.tests": {
 			"scripts": [
 				"tests/qunit/smw/ext.smw.test.js",
-				"tests/qunit/smw/util/ext.smw.util.tooltip.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.wikiPage.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.uri.test.js",
 				"tests/qunit/smw/data/ext.smw.dataItem.time.test.js",
@@ -76,6 +78,7 @@
 		"SMWAdmin": "SMW\\MediaWiki\\Specials\\SpecialAdmin",
 		"PendingTaskList": "SMW\\MediaWiki\\Specials\\SpecialPendingTaskList",
 		"Ask": "SMW\\MediaWiki\\Specials\\SpecialAsk",
+		"FacetedSearch": "SMW\\MediaWiki\\Specials\\SpecialFacetedSearch",
 		"Browse": "SMW\\MediaWiki\\Specials\\SpecialBrowse",
 		"Concepts": "SMW\\SpecialConcepts",
 		"PageProperty": "SMW\\MediaWiki\\Specials\\SpecialPageProperty",
@@ -90,9 +93,37 @@
 		"UnusedProperties": "SMW\\SpecialUnusedProperties",
 		"WantedProperties": "SMW\\SpecialWantedProperties"
 	},
+	"JobClasses": {
+		"smw.update": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+		"smw.refresh": "SMW\\MediaWiki\\Jobs\\RefreshJob",
+		"smw.updateDispatcher": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
+		"smw.fulltextSearchTableUpdate": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
+		"smw.entityIdDisposer": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
+		"smw.propertyStatisticsRebuild": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
+		"smw.fulltextSearchTableRebuild": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
+		"smw.changePropagationDispatch": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
+		"smw.changePropagationUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
+		"smw.changePropagationClassUpdate": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
+		"smw.deferredConstraintCheckUpdateJob": "SMW\\MediaWiki\\Jobs\\DeferredConstraintCheckUpdateJob",
+		"smw.elasticIndexerRecovery": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
+		"smw.elasticFileIngest": "SMW\\Elastic\\Jobs\\FileIngestJob",
+		"smw.parserCachePurgeJob": "SMW\\MediaWiki\\Jobs\\ParserCachePurgeJob",
+		"SMW\\UpdateJob": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+		"SMW\\RefreshJob": "SMW\\MediaWiki\\Jobs\\RefreshJob",
+		"SMW\\UpdateDispatcherJob": "SMW\\MediaWiki\\Jobs\\UpdateDispatcherJob",
+		"SMW\\FulltextSearchTableUpdateJob": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableUpdateJob",
+		"SMW\\EntityIdDisposerJob": "SMW\\MediaWiki\\Jobs\\EntityIdDisposerJob",
+		"SMW\\PropertyStatisticsRebuildJob": "SMW\\MediaWiki\\Jobs\\PropertyStatisticsRebuildJob",
+		"SMW\\FulltextSearchTableRebuildJob": "SMW\\MediaWiki\\Jobs\\FulltextSearchTableRebuildJob",
+		"SMW\\ChangePropagationDispatchJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
+		"SMW\\ChangePropagationUpdateJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
+		"SMW\\ChangePropagationClassUpdateJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
+		"SMWUpdateJob'": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+		"SMWRefreshJob": "SMW\\MediaWiki\\Jobs\\RefreshJob"
+	},
 	"DefaultUserOptions": {
 		"smw-prefs-general-options-show-entity-issue-panel": true
 	},
 	"load_composer_autoloader": true,
-	"manifest_version": 1
+	"manifest_version": 2
 }

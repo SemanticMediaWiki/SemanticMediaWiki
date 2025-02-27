@@ -8,18 +8,17 @@ use SMW\Query\QueryStringifier;
  * @covers \SMW\Query\QueryStringifier
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
+class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider queryProvider
 	 */
 	public function testToArray( $query, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			QueryStringifier::toArray( $query )
@@ -30,7 +29,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testToJson( $query, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			json_decode( QueryStringifier::toJson( $query ), true )
@@ -41,7 +39,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testGet( $query, $array, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			QueryStringifier::toString( $query )
@@ -52,7 +49,6 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryProvider
 	 */
 	public function testRawUrlEncode( $query, $array, $encode, $expected ) {
-
 		$this->assertSame(
 			$expected,
 			QueryStringifier::rawUrlEncode( $query )
@@ -60,23 +56,22 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryProvider() {
-
-		#0
+		# 0
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		yield [
 			$query,
@@ -93,26 +88,26 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
 		];
 
-		#1
+		# 1
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getQuerySource' )
-			->will( $this->returnValue( 'Baz' ) );
+			->willReturn( 'Baz' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		yield [
 			$query,
@@ -130,26 +125,26 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csource%3DBaz'
 		];
 
-		#2
+		# 2
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [ 'Foobar' => 'DESC' ] ) );
+			->willReturn( [ 'Foobar' => 'DESC' ] );
 
 		yield [
 			$query,
@@ -168,26 +163,26 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%7Corder%3Ddesc'
 		];
 
-		#3
+		# 3
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getSortKeys' )
-			->will( $this->returnValue( [ 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ] ) );
+			->willReturn( [ 'Foobar' => 'DESC', 'Foobaz' => 'ASC' ] );
 
 		yield [
 			$query,
@@ -206,14 +201,14 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D%7Csort%3DFoobar%2CFoobaz%7Corder%3Ddesc%2Casc'
 		];
 
-		#4
+		# 4
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -221,19 +216,19 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [ $printRequest ] ) );
+			->willReturn( [ $printRequest ] );
 
 		yield [
 			$query,
@@ -252,14 +247,14 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 			'%5B%5BFoo%3A%3Abar%5D%5D%7C%3FABC%7Climit%3D42%7Coffset%3D0%7Cmainlabel%3D'
 		];
 
-		#5 (#show returns with an extra =)
+		# 5 (#show returns with an extra =)
 		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$printRequest->expects( $this->any() )
 			->method( 'getSerialisation' )
-			->will( $this->returnValue( '?ABC' ) );
+			->willReturn( '?ABC' );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -267,19 +262,19 @@ class QueryStringifierTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->any() )
 			->method( 'getQueryString' )
-			->will( $this->returnValue( '[[Foo::bar]]' ) );
+			->willReturn( '[[Foo::bar]]' );
 
 		$query->expects( $this->any() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$query->expects( $this->any() )
 			->method( 'getOffset' )
-			->will( $this->returnValue( 0 ) );
+			->willReturn( 0 );
 
 		$query->expects( $this->any() )
 			->method( 'getExtraPrintouts' )
-			->will( $this->returnValue( [ $printRequest ] ) );
+			->willReturn( [ $printRequest ] );
 
 		yield [
 			$query,

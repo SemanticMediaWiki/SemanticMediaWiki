@@ -18,6 +18,7 @@
 	"smw_baduri": "URI të formës \"$1\" nuk lejohen.",
 	"smw_printername_csv": "Eksport CSV",
 	"smw_printername_dsv": "Eksport DSV",
+	"smw-categories": "Kategori",
 	"browse": "Shfletoni wiki",
 	"smw-admin-bugsreport": "Të metat mund të njoftohen te <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">ndjekësi i problemeve</a>, faqja <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Reporting_bugs\">e njoftimit të të metave</a> jep ca ndihmë mbi se si të shkruhet një raport efikas të mete.",
 	"smw-livepreview-loading": "Duke punuar…",

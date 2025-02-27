@@ -10,16 +10,16 @@ use SMW\Settings;
  * @covers \SMW\Services\ImporterServiceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
+class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $containerBuilder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$callbackContainerFactory = new CallbackContainerFactory();
@@ -44,7 +44,7 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->containerBuilder->registerObject( 'WikiImporter', $wikiImporter );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +54,7 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->containerBuilder->registerObject( 'ConnectionManager', $connectionManager );
 
@@ -67,7 +67,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ImporterServiceFactory::class,
 			new ImporterServiceFactory( $this->containerBuilder )
@@ -75,7 +74,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructImportStringSource() {
-
 		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);
@@ -87,7 +85,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructWikiImporter() {
-
 		$importSource = $this->getMockBuilder( '\ImportSource' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +100,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructImporter() {
-
 		$contentIterator = $this->getMockBuilder( '\SMW\Importer\ContentIterator' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -119,7 +115,6 @@ class ImporterServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructJsonContentIterator() {
-
 		$instance = new ImporterServiceFactory(
 			$this->containerBuilder
 		);

@@ -2,17 +2,16 @@
 
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListener;
-use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
-use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Store;
-use SMW\DIProperty;
-use SMW\Exception\PropertyLabelNotResolvedException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use RuntimeException;
+use SMW\DIProperty;
+use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
+use SMW\Listener\ChangeListener\ChangeListener;
+use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -28,12 +27,12 @@ class PropertyChangeListener implements ChangeListener {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $propertyIdKeyMap = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $changes = [];
 
@@ -55,7 +54,6 @@ class PropertyChangeListener implements ChangeListener {
 	 * @since 3.2
 	 */
 	public function loadListeners() {
-
 		if ( $this->initListeners === true ) {
 			return;
 		}
@@ -71,7 +69,6 @@ class PropertyChangeListener implements ChangeListener {
 	 * @param callable $callback
 	 */
 	public function addListenerCallback( DIProperty $property, callable $callback ) {
-
 		$key = $property->getKey();
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID(
@@ -90,13 +87,12 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $pid
+	 * @param int $pid
 	 * @param array $record
 	 *
 	 * @throws RuntimeException
 	 */
 	public function recordChange( int $pid, array $record ) {
-
 		if ( $this->initListeners === false ) {
 			throw new RuntimeException(
 				"Hook wasn't run, possible listeners weren't registered from the available hook!"
@@ -144,14 +140,13 @@ class PropertyChangeListener implements ChangeListener {
 	 * @since 3.2
 	 */
 	public function runChangeListeners() {
-		$this->store->getConnection( 'mw.db' )->onTransactionIdle( [ $this, 'triggerChangeListeners' ] );
+		$this->store->getConnection( 'mw.db' )->onTransactionCommitOrIdle( [ $this, 'triggerChangeListeners' ] );
 	}
 
 	/**
 	 * @see CallableChangeListenerTrait::triggerByKey
 	 */
 	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
-
 		$property = new DIProperty( $key );
 
 		foreach ( $this->changeListeners[$key] as $changeListener ) {

@@ -3,23 +3,23 @@
 namespace SMW\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use SMW\SemanticData;
 
 /**
- * Decorator that contains the reference to the invoked PropertyAnnotator
+ * Decorator that contains the reference to the invoked Annotator
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
+abstract class PropertyAnnotatorDecorator implements Annotator {
 
 	/**
-	 * @var PropertyAnnotator
+	 * @var Annotator
 	 */
 	protected $propertyAnnotator;
 
@@ -31,15 +31,15 @@ abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator ) {
+	public function __construct( Annotator $propertyAnnotator ) {
 		$this->propertyAnnotator = $propertyAnnotator;
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	/**
-	 * @see PropertyAnnotator::getSemanticData
+	 * @see Annotator::getSemanticData
 	 *
 	 * @since 1.9
 	 *
@@ -50,14 +50,13 @@ abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
+	 * @see Annotator::addAnnotation
 	 *
 	 * @since 1.9
 	 *
 	 * @return PropertyAnnotator
 	 */
 	public function addAnnotation() {
-
 		$this->propertyAnnotator->addAnnotation();
 		$this->addPropertyValues();
 
@@ -67,6 +66,6 @@ abstract class PropertyAnnotatorDecorator implements PropertyAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	protected abstract function addPropertyValues();
+	abstract protected function addPropertyValues();
 
 }

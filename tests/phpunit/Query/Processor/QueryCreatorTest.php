@@ -2,22 +2,21 @@
 
 namespace SMW\Tests\Query\Processor;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Query\Processor\QueryCreator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @covers SMW\Query\Processor\QueryCreator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
+class QueryCreatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -32,7 +31,6 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider queryStringProvider
 	 */
 	public function testCreate( $queryString, $params, $expected ) {
-
 		$instance = new QueryCreator(
 			ApplicationFactory::getInstance()->getQueryFactory()
 		);
@@ -51,7 +49,6 @@ class QueryCreatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function queryStringProvider() {
-
 		$provider[] = [
 			'[[Foo::Bar]]',
 			[

@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Query\PrintRequest;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**
@@ -20,28 +20,28 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class SortableQueryDBIntegrationTest extends DatabaseTestCase {
+class SortableQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->queryResultValidator = UtilityFactory::getInstance()->newValidatorFactory()->newQueryResultValidator();
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -50,7 +50,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDefaultSortedQueryResult() {
-
 		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
@@ -77,7 +76,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	 * @see Virtuoso MaxSortedTopRows setting
 	 */
 	public function testAscendingOrderedQueryResult() {
-
 		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
@@ -100,7 +98,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDescendingOrderedQueryResult() {
-
 		$expectedSubjects = [
 			new DIWikiPage( 'AA', NS_MAIN ),
 			new DIWikiPage( 'AB', NS_MAIN ),
@@ -123,7 +120,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function createQueryForSamplePagesThatContain( $property, array &$expectedSubjects ) {
-
 		foreach ( $expectedSubjects as $key => $expectedSubject ) {
 
 			$subjectTitle = $expectedSubject->getTitle()->getText() . '-' . __METHOD__;
@@ -160,7 +156,6 @@ class SortableQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function assertResultOrder( $expected, $results ) {
-
 		$hasSameOrder = true;
 
 		foreach ( $results as $key => $dataItem ) {

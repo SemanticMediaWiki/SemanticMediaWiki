@@ -12,7 +12,7 @@ use SMWURIValue as UriValue;
  * Locator" (URL) refers to the subset of URIs that provide a means of locating
  * the resource by describing its primary access mechanism ..."
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -32,7 +32,6 @@ class ExternalFormatterUriValue extends UriValue {
 	 * @param string $value
 	 */
 	protected function parseUserValue( $value ) {
-
 		if ( $value === '' ) {
 			$this->addErrorMsg( 'smw_emptystring' );
 			return;
@@ -54,10 +53,9 @@ class ExternalFormatterUriValue extends UriValue {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMultiSubstitute() {
-
 		$dataItem = $this->getDataItem();
 		$uri = str_replace( [ '%24' ], [ '$' ], $dataItem->getUri() );
 
@@ -73,7 +71,6 @@ class ExternalFormatterUriValue extends UriValue {
 	 * @return string
 	 */
 	public function substituteAndFormatUri( $value, $parameters = [] ) {
-
 		if ( !$this->isValid() ) {
 			return '';
 		}

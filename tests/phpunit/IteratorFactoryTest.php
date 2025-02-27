@@ -8,20 +8,19 @@ use SMW\IteratorFactory;
  * @covers \SMW\IteratorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
+class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstructResultIterator() {
-
 		$instance = new IteratorFactory();
 
-		$result = $this->getMockBuilder( '\ResultWrapper' )
+		$result = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -32,22 +31,18 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMappingIterator() {
-
 		$instance = new IteratorFactory();
 
-		$iterator = $this->getMockBuilder( '\ArrayIterator' )
-			->disableOriginalConstructor()
-			->getMock();
+		$iterator = new \ArrayIterator( [] );
 
 		$this->assertInstanceOf(
 			'\SMW\Iterators\MappingIterator',
-			$instance->newMappingIterator( $iterator, function(){
+			$instance->newMappingIterator( $iterator, static function (){
 			} )
 		);
 	}
 
 	public function testCanConstructChunkedIterator() {
-
 		$instance = new IteratorFactory();
 
 		$iterator = $this->getMockBuilder( '\Iterator' )
@@ -61,7 +56,6 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructAppendIterator() {
-
 		$instance = new IteratorFactory();
 
 		$this->assertInstanceOf(
@@ -71,7 +65,6 @@ class IteratorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCsvFileIterator() {
-
 		$instance = new IteratorFactory();
 
 		$this->expectException( 'SMW\Exception\FileNotFoundException' );

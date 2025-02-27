@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exception\JSONParseException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class JSONParseExceptionTest extends \PHPUnit_Framework_TestCase {
+class JSONParseExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testGetMessage() {
-
 		$json = '{ "test": 123, }';
 
 		$instance = new JSONParseException(
@@ -33,15 +32,14 @@ class JSONParseExceptionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTidyMessage() {
-
 		$json = '{ "test": 123, }';
 
 		$instance = new JSONParseException(
 			$json
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getTidyMessage()
 		);
 	}

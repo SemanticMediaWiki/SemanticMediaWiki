@@ -6,7 +6,7 @@ use Onoi\EventDispatcher\EventDispatcher;
 use Onoi\EventDispatcher\EventDispatcherFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -38,7 +38,6 @@ class EventHandler {
 	 * @return self
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self( self::newEventDispatcher() );
 		}
@@ -78,7 +77,6 @@ class EventHandler {
 	 * @param Closure $callback
 	 */
 	public function addCallbackListener( $event, \Closure $callback ) {
-
 		$listener = EventDispatcherFactory::getInstance()->newGenericCallbackEventListener();
 		$listener->registerCallback( $callback );
 
@@ -89,7 +87,6 @@ class EventHandler {
 	}
 
 	private static function newEventDispatcher() {
-
 		$eventListenerRegistry = new EventListenerRegistry(
 			EventDispatcherFactory::getInstance()->newGenericEventListenerCollection()
 		);

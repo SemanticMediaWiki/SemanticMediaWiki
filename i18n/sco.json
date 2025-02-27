@@ -2,14 +2,16 @@
 	"@metadata": {
 		"authors": [
 			"AmaryllisGardener",
+			"CiphriusKane",
 			"John Reid"
 		]
 	},
 	"smw_attribute_header": "Pages uisin the property \"$1\"",
+	"smw-categories": "Categeries",
 	"browse": "Brouse wiki",
 	"smw-admin-bugsreport": "Bugs can be reported til <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-idlookup-title": "Object ID leukup",
-	"smw-admin-idlookup-docu": "Displeys details aneat aen internal object Id that represents indeevidual entities (wikipage, subobject etc.) in Semantic MediaWiki.",
+	"smw-admin-idlookup-docu": "This section shaws technical details anent ae individual entity (wikipage, subobjeck, property, etc.) in Semantic MediaWiki. The inpit can be ae numeric ID or ae string value tae match the relevant sairch field, yet ony ID reference relates tae Semantic MediaWiki an nae tae MediaWiki's page or revision ID.",
 	"smw-admin-objectid": "The Object Id:",
 	"smw-livepreview-loading": "Laidin...",
 	"smw-listingcontinuesabbrev": "cont.",

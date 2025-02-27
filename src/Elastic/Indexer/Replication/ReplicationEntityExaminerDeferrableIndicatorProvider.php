@@ -2,18 +2,17 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Store;
-use SMW\Message;
+use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\EntityCache;
-use SMW\Utils\TemplateEngine;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -38,17 +37,17 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	private $replicationCheck;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkReplication = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
 
@@ -56,6 +55,8 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @var string
 	 */
 	private $severityType = '';
+
+	private TemplateEngine $templateEngine;
 
 	/**
 	 * @since 3.2
@@ -73,7 +74,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $checkReplication
+	 * @param bool $checkReplication
 	 */
 	public function canCheckReplication( $checkReplication ) {
 		$this->checkReplication = (bool)$checkReplication;
@@ -82,7 +83,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $type
+	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;
@@ -91,9 +92,9 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -102,9 +103,9 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -113,7 +114,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-deferred-elastic-replication';
 	}
 
@@ -123,10 +124,9 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
 		}
@@ -137,7 +137,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -146,7 +146,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];
@@ -170,7 +170,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @return void
 	 */
 	private function checkReplication( $subject, $options ) {
-
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
@@ -201,7 +200,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @return null
 	 */
 	private function runCheck( $subject, $options ) {
-
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
 
 		$this->templateEngine = new TemplateEngine();
@@ -231,7 +229,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	}
 
 	private function wasChecked( $subject ) {
-
 		$connection = $this->store->getConnection( 'elastic' );
 		$wasChecked = false;
 

@@ -2,16 +2,12 @@
 
 namespace SMW;
 
-use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\NamespaceExaminer;
-use SMW\DIWikiPage;
-use SMW\EntityCache;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use Title;
-use Page;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -36,7 +32,7 @@ class DependencyValidator {
 	private $entityCache;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 3600;
 
@@ -44,6 +40,11 @@ class DependencyValidator {
 	 * @var string
 	 */
 	private $eTag;
+
+	/**
+	 * @var array Title IDs marked as having outdated dependencies.
+	 */
+	private static $titles = [];
 
 	/**
 	 * @since 3.1
@@ -61,7 +62,7 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL;
@@ -79,7 +80,7 @@ class DependencyValidator {
 	/**
 	 * @since 2.2
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function makeCacheKey( Title $title ) {
 		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
@@ -94,7 +95,7 @@ class DependencyValidator {
 	 * @param Title $title
 	 */
 	public function markTitle( Title $title ) {
-		$title->smwLikelyOutdatedDependencies = true;
+		self::$titles[$title->getPrefixedText()] = true;
 	}
 
 	/**
@@ -102,21 +103,20 @@ class DependencyValidator {
 	 *
 	 * @param Title $title
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public static function hasLikelyOutdatedDependencies( Title $title ) {
-		return isset( $title->smwLikelyOutdatedDependencies ) && $title->smwLikelyOutdatedDependencies;
+	public static function hasLikelyOutdatedDependencies( Title $title ): bool {
+		return self::$titles[$title->getPrefixedText()] ?? false;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param Page $page
+	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
-
 		$title = $subject->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
@@ -156,10 +156,9 @@ class DependencyValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canKeepParserCache( DIWikiPage $subject ) {
-
 		$key = $this->makeCacheKey( $subject->getTitle() );
 
 		// Test for a recent rejection, being unrelated etc.

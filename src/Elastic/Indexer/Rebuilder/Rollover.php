@@ -13,7 +13,7 @@ use SMW\Elastic\Exception\NoConnectionException;
  *
  * @see https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -43,17 +43,14 @@ class Rollover {
 	 * @return string
 	 */
 	public function rollover( $type, $version ) {
-
-		$index = $this->connection->getIndexNameByType( $type );
-		$indices = $this->connection->indices();
+		$index = $this->connection->getIndexName( $type );
 
 		$params = [];
-		$actions = [];
 
 		$old = $version === 'v2' ? 'v1' : 'v2';
 		$check = false;
 
-		if ( $indices->exists( [ 'index' => "$index-$old" ] ) ) {
+		if ( $this->connection->indexExists( "$index-$old" ) ) {
 			$actions = [
 				[ 'remove' => [ 'index' => "$index-$old", 'alias' => $index ] ],
 				[ 'add' => [ 'index' => "$index-$version", 'alias' => $index ] ]
@@ -71,10 +68,10 @@ class Rollover {
 
 		$params['body'] = [ 'actions' => $actions ];
 
-		$indices->updateAliases( $params );
+		$this->connection->updateAliases( $params );
 
-		if ( $check && $indices->exists( [ 'index' => "$index-$old" ] ) ) {
-			$indices->delete( [ "index" => "$index-$old" ] );
+		if ( $check && $this->connection->indexExists( "$index-$old" ) ) {
+			$this->connection->deleteIndex( "$index-$old" );
 		}
 
 		$this->connection->releaseLock( $type );
@@ -90,13 +87,10 @@ class Rollover {
 	 * @throws NoConnectionException
 	 */
 	public function update( $type ) {
-
 		// Fail hard since we expect to create an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
 		}
-
-		$indices = $this->connection->indices();
 
 		$index = $this->connection->getIndexName(
 			$type
@@ -104,21 +98,21 @@ class Rollover {
 
 		// Shouldn't happen but just in case where the root index is
 		// used as index but not an alias
-		if ( $indices->exists( [ 'index' => "$index" ] ) && !$indices->existsAlias( [ 'name' => "$index" ] ) ) {
-			$indices->delete( [ 'index' => "$index" ] );
+		if ( $this->connection->indexExists( "$index" ) && !$this->connection->aliasExists( "$index" ) ) {
+			$this->connection->deleteIndex( "$index" );
 		}
 
 		// Check v1/v2 and if both exists (which shouldn't happen but most likely
 		// caused by an unfinshed rebuilder run) then use v1 as master
-		if ( $indices->exists( [ 'index' => "$index-v1" ] ) ) {
+		if ( $this->connection->indexExists( "$index-v1" ) ) {
 
 			// Just in case
-			if ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
-				$indices->delete( [ 'index' => "$index-v2" ] );
+			if ( $this->connection->indexExists( "$index-v2" ) ) {
+				$this->connection->deleteIndex( "$index-v2" );
 			}
 
 			$actions[] = [ 'add' => [ 'index' => "$index-v1", 'alias' => $index ] ];
-		} elseif ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
+		} elseif ( $this->connection->indexExists( "$index-v2" ) ) {
 			$actions[] = [ 'add' => [ 'index' => "$index-v2", 'alias' => $index ] ];
 		} else {
 			$version = $this->connection->createIndex( $type );
@@ -129,7 +123,7 @@ class Rollover {
 		}
 
 		$params['body'] = [ 'actions' => $actions ];
-		$indices->updateAliases( $params );
+		$this->connection->updateAliases( $params );
 
 		return $index;
 	}
@@ -142,28 +136,23 @@ class Rollover {
 	 * @throws NoConnectionException
 	 */
 	public function delete( $type ) {
-
 		// Fail hard since we expect to delete an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
 		}
 
-		$indices = $this->connection->indices();
+		$index = $this->connection->getIndexName( $type );
 
-		$index = $this->connection->getIndexName(
-			$type
-		);
-
-		if ( $indices->exists( [ 'index' => "$index-v1" ] ) ) {
-			$indices->delete( [ 'index' => "$index-v1" ] );
+		if ( $this->connection->indexExists( "$index-v1" ) ) {
+			$this->connection->deleteIndex( "$index-v1" );
 		}
 
-		if ( $indices->exists( [ 'index' => "$index-v2" ] ) ) {
-			$indices->delete( [ 'index' => "$index-v2" ] );
+		if ( $this->connection->indexExists( "$index-v2" ) ) {
+			$this->connection->deleteIndex( "$index-v2" );
 		}
 
-		if ( $indices->exists( [ 'index' => "$index" ] ) && !$indices->existsAlias( [ 'name' => "$index" ] ) ) {
-			$indices->delete( [ 'index' => "$index" ] );
+		if ( $this->connection->indexExists( "$index" ) && !$this->connection->aliasExists( "$index" ) ) {
+			$this->connection->deleteIndex( "$index" );
 		}
 
 		$this->connection->releaseLock( $type );

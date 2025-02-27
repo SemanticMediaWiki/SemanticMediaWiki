@@ -2,19 +2,18 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Message;
-use SMW\Store;
-use SMW\EntityCache;
-use SMW\DIWikiPage;
-use SMW\RequestOptions;
 use SMW\Constraint\ConstraintError;
+use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
-use SMW\Utils\TemplateEngine;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use Html;
+use SMW\RequestOptions;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -36,12 +35,12 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	private $entityCache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkConstraintErrors = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $indicators = [];
 
@@ -54,6 +53,10 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 * @var string
 	 */
 	private $languageCode = '';
+
+	private string $errorTitle;
+
+	private TemplateEngine $templateEngine;
 
 	/**
 	 * @since 3.2
@@ -71,9 +74,9 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -82,14 +85,14 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-deferred-constraint-error';
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $checkConstraintErrors
+	 * @param bool $checkConstraintErrors
 	 */
 	public function setConstraintErrorCheck( $checkConstraintErrors ) {
 		$this->checkConstraintErrors = $checkConstraintErrors;
@@ -101,10 +104,9 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}
@@ -115,7 +117,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -124,7 +126,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];
@@ -146,7 +148,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	protected function runCheck( $subject, $options ) {
-
 		$this->languageCode = $options['uselang'] ?? Message::USER_LANGUAGE;
 
 		$errors = $this->findErrors( $subject );
@@ -247,7 +248,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	private function findErrors( $subject ) {
-
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
 		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
@@ -285,7 +285,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	}
 
 	private function decodeErrors( $errors ) {
-
 		if ( $errors === 'null' ) {
 			return [];
 		}

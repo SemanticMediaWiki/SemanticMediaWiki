@@ -3,22 +3,19 @@
 namespace SMW\Tests\Schema;
 
 use SMW\Schema\SchemaFilterFactory;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Schema\SchemaFilterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
+class SchemaFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructCompositeFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
@@ -28,7 +25,6 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNamespaceFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
@@ -38,7 +34,6 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCategoryFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
@@ -48,7 +43,6 @@ class SchemaFilterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPropertyFilter() {
-
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(

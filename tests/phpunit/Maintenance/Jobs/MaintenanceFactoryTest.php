@@ -8,16 +8,16 @@ use SMW\Maintenance\MaintenanceFactory;
  * @covers \SMW\Maintenance\MaintenanceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -26,7 +26,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\MaintenanceFactory',
 			new MaintenanceFactory()
@@ -34,7 +33,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMaintenanceHelper() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -44,7 +42,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructLocalMessageProvider() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -54,7 +51,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDataRebuilder() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -64,7 +60,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConceptCacheRebuilder() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -74,7 +69,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPropertyStatisticsRebuilder() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -84,17 +78,15 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRebuildPropertyStatistics() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\RebuildPropertyStatistics',
+			'\SMW\Maintenance\rebuildPropertyStatistics',
 			$instance->newRebuildPropertyStatistics()
 		);
 	}
 
 	public function testCanConstructDuplicateEntitiesDisposer() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -104,7 +96,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMaintenanceLogger() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
@@ -114,7 +105,6 @@ class MaintenanceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructAutoRecovery() {
-
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(

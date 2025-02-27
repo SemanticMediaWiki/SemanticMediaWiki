@@ -8,16 +8,16 @@ use SMW\UncaughtExceptionHandler;
  * @covers \SMW\UncaughtExceptionHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
+class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $setupCheck;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setupCheck = $this->getMockBuilder( '\SMW\SetupCheck' )
@@ -26,7 +26,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UncaughtExceptionHandler::class,
 			new UncaughtExceptionHandler( $this->setupCheck )
@@ -34,13 +33,12 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConfigPreloadError() {
-
 		$this->setupCheck->expects( $this->once() )
 			->method( 'showErrorAndAbort' );
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( $this->equalTo( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN ) );
+			->with( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck
@@ -54,7 +52,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtensionRegistryError() {
-
 		$this->setupCheck->expects( $this->once() )
 			->method( 'showErrorAndAbort' );
 
@@ -73,7 +70,6 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testExtensionDependencyError( $args, $expected ) {
-
 		$exception = $this->getMockBuilder( '\ExtensionDependencyError' )
 			->setConstructorArgs( [ [ $args ] ] )
 			->getMock();
@@ -83,7 +79,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( $this->equalTo( $expected ) );
+			->with( $expected );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck
@@ -93,23 +89,22 @@ class UncaughtExceptionHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function errorTypeProvider() {
-
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoo', 'type' => 'Foo' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticBar', 'type' => 'incompatible-core' ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoobar', 'type' => 'incompatible-php' ],
-			( version_compare( MW_VERSION, '1.32', '<' ) ? \SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY : \SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE )
+			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
-		yield[
+		yield [
 			[ 'msg' => 'SemanticFoOBaR', 'type' => 'incompatible-extensions', 'incompatible' => [] ],
 			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];

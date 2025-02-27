@@ -11,10 +11,10 @@ use SMW\Tests\Utils\Validators\StringValidator;
  * @covers SMW\ParameterListDocBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
+class ParameterListDocBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @var ParameterListDocBuilder
@@ -26,12 +26,12 @@ class ParameterListDocBuilderTest extends \PHPUnit_Framework_TestCase {
 	 */
 	private $stringValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
 
-		$this->builder = new ParameterListDocBuilder( function( $key ) {
+		$this->builder = new ParameterListDocBuilder( static function ( $key ) {
 			return $key;
 		} );
 	}

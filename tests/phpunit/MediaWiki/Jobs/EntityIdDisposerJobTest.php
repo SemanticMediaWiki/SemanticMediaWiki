@@ -10,28 +10,28 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\EntityIdDisposerJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
+class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $connection;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ 'Foo' ] ) );
+			->willReturn( [ 'Foo' ] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->getMockForAbstractClass();
@@ -42,20 +42,19 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 
 		$connectionManager->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->setConnectionManager( $connectionManager );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -67,7 +66,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructOutdatedEntitiesResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -81,7 +79,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -95,7 +92,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructOutdatedQueryLinksResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -109,7 +105,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructUnassignedQueryLinksResultIterator() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -126,7 +121,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testJobRun( $parameters ) {
-
 		$row = [
 			'smw_id' => 42,
 			'smw_title' => 'Foo',
@@ -140,7 +134,7 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)$row ) );
+			->willReturn( (object)$row );
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
@@ -155,7 +149,6 @@ class EntityIdDisposerJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];

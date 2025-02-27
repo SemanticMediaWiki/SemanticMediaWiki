@@ -7,15 +7,15 @@ use Onoi\HttpRequest\CachedCurlRequest;
 use Onoi\HttpRequest\CurlRequest;
 use Onoi\HttpRequest\HttpRequest;
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -33,7 +33,7 @@ class RemoteRequest implements QueryEngine {
 	const REQUEST_ID = "\x7fsmw-remote-request\x7f";
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -43,12 +43,12 @@ class RemoteRequest implements QueryEngine {
 	private $httpRequest;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $features = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $isConnected;
 
@@ -58,7 +58,7 @@ class RemoteRequest implements QueryEngine {
 	 * @param array $parameters
 	 * @param HttpRequest|null $httpRequest
 	 */
-	public function __construct( array $parameters = [], HttpRequest $httpRequest = null ) {
+	public function __construct( array $parameters = [], ?HttpRequest $httpRequest = null ) {
 		$this->parameters = $parameters;
 		$this->httpRequest = $httpRequest;
 		$this->features = $GLOBALS['smwgRemoteReqFeatures'];
@@ -78,9 +78,9 @@ class RemoteRequest implements QueryEngine {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $flag
+	 * @param int $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasFeature( $flag ) {
 		return ( ( (int)$this->features & $flag ) == $flag );
@@ -94,16 +94,15 @@ class RemoteRequest implements QueryEngine {
 	 * @return StringResult|string
 	 */
 	public function getQueryResult( Query $query ) {
-
 		if ( $query->isEmbedded() && $query->getLimit() == 0 ) {
 			return $this->further_link( $query );
 		}
 
+		$source = $query->getQuerySource();
 		if ( !isset( $this->parameters['url'] ) ) {
 			throw new RuntimeException( "Missing a remote URL for $source" );
 		}
 
-		$source = $query->getQuerySource();
 		$this->init();
 
 		if ( !$this->canConnect( $this->parameters['url'] ) ) {
@@ -133,7 +132,7 @@ class RemoteRequest implements QueryEngine {
 			$isDisabled = true;
 		} else {
 
-			list( $count, $hasFurtherResults ) = $this->findExtraInformation(
+			[ $count, $hasFurtherResults ] = $this->findExtraInformation(
 				$result
 			);
 
@@ -141,8 +140,7 @@ class RemoteRequest implements QueryEngine {
 		}
 
 		// Add an information note depending on the context before the actual output
-		$callback = function( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
-
+		$callback = function ( $result, array $options ) use( $isFromCache, $isDisabled, $source ) {
 			$options['source'] = $source;
 			$options['is.cached'] = $isFromCache;
 			$options['is.disabled'] = $isDisabled;
@@ -171,7 +169,6 @@ class RemoteRequest implements QueryEngine {
 	 * @return string
 	 */
 	public function format_result( $result, array $options ) {
-
 		// No changes to any export related output
 		if ( ( isset( $options['is.disabled'] ) && $options['is.disabled'] ) || !$this->hasFeature( SMW_REMOTE_REQ_SHOW_NOTE ) ) {
 			return $result;
@@ -207,7 +204,7 @@ class RemoteRequest implements QueryEngine {
 
 		if ( $matches !== [] ) {
 			foreach ( $matches[1] as $val ) {
-				list( $k, $v ) = explode( ':', $val );
+				[ $k, $v ] = explode( ':', $val );
 
 				if ( $k === 'COUNT' ) {
 					$count = intval( $v );
@@ -225,7 +222,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function further_link( $query ) {
-
 		$link = QueryLinker::get( $query );
 
 		// Find remaining parameters, format, template etc.
@@ -248,7 +244,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function init() {
-
 		if ( $this->httpRequest === null && isset( $this->parameters['cache'] ) ) {
 			$this->httpRequest = new CachedCurlRequest(
 				curl_init(),
@@ -274,18 +269,14 @@ class RemoteRequest implements QueryEngine {
 	private function error() {
 		$params = func_get_args();
 
-		return Html::rawElement(
-			'div',
-			[
-				'id' => $params[0],
-				'class' => 'smw-callout smw-callout-error'
-			],
-			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE )
+		return Html::errorBox(
+			Message::get( $params, Message::PARSE, Message::USER_LANGUAGE ),
+			'',
+			$params[0]
 		);
 	}
 
 	private function canConnect( $url ) {
-
 		$this->httpRequest->setOption( CURLOPT_URL, $url );
 
 		if ( self::$isConnected === null ) {
@@ -296,7 +287,6 @@ class RemoteRequest implements QueryEngine {
 	}
 
 	private function fetch( $query ) {
-
 		$parameters = $query->toArray();
 		$default = '';
 		$params = [ 'title' => 'Special:Ask', 'q' => '', 'po' => '', 'p' => [] ];

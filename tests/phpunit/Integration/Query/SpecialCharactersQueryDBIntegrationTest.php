@@ -3,17 +3,17 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
 use SMW\Subobject;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**
@@ -24,14 +24,15 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
+class SpecialCharactersQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
@@ -39,7 +40,7 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -47,8 +48,7 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 
 			if ( $subject->getTitle() === null ) {
@@ -65,7 +65,6 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 	 * @dataProvider specialCharactersNameProvider
 	 */
 	public function testSpecialCharactersInQuery( $subject, $subobjectId, $property, $dataItem ) {
-
 		$dataValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			$property
@@ -122,7 +121,6 @@ class SpecialCharactersQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function specialCharactersNameProvider() {
-
 		$provider[] = [
 			'特殊文字',
 			'Nuñez',

@@ -9,17 +9,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\JobListTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class JobListTaskTest extends \PHPUnit_Framework_TestCase {
+class JobListTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobQueue;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,13 +29,12 @@ class JobListTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new JobListTask( $this->jobQueue );
 
 		$this->assertInstanceOf(
@@ -45,17 +44,16 @@ class JobListTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
-			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )
-			->will( $this->returnValue( '--job-done' ) );
+			->with( [ 'FooJob' => 1 ] )
+			->willReturn( '--job-done' );
 
 		$instance = new JobListTask(
 			$this->jobQueue
 		);
 
-		$instance->process( [ 'subject' => 'Foo#0##', 'jobs' => [ 'FooJob' => 1 ] ]);
+		$instance->process( [ 'subject' => 'Foo#0##', 'jobs' => [ 'FooJob' => 1 ] ] );
 	}
 
 }

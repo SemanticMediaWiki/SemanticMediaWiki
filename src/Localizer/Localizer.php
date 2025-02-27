@@ -5,20 +5,21 @@ namespace SMW\Localizer;
 use DateTime;
 use IContextSource;
 use Language;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use RequestContext;
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\DIWikiPage;
-use SMW\Site;
-use SMW\NamespaceManager;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\LocalTime;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
+use SMW\Site;
 use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -67,7 +68,6 @@ class Localizer {
 	 * @return Localizer
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -114,10 +114,9 @@ class Localizer {
 	 *
 	 * @param User|null $user
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLocalTimeOffsetPreference( $user = null ) {
-
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -134,7 +133,6 @@ class Localizer {
 	 * @return DateTime
 	 */
 	public function getLocalTime( DateTime $dateTime, $user = null ) {
-
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
@@ -173,7 +171,6 @@ class Localizer {
 	 * @return Language
 	 */
 	public function getPreferredContentLanguage( $title = null ) {
-
 		$language = '';
 
 		if ( $title instanceof DIWikiPage ) {
@@ -205,23 +202,22 @@ class Localizer {
 	 * @return Language
 	 */
 	public function getLanguage( $languageCode = '' ) {
-
 		if ( $languageCode === '' || !$languageCode || $languageCode === null ) {
 			return $this->getContentLanguage();
 		}
 
-		return Language::factory( $languageCode );
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		return $languageFactory->getLanguage( $languageCode );
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param Language|string $languageCode
+	 * @param Language|string $language
 	 *
 	 * @return LocalLanguage
 	 */
 	public function getLang( $language = '' ) {
-
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
@@ -238,7 +234,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
@@ -249,12 +245,11 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
 	public function getCanonicalNamespaceTextById( $index ) {
-
 		$canonicalNames = NamespaceManager::getCanonicalNames();
 
 		if ( isset( $canonicalNames[$index] ) ) {
@@ -269,7 +264,7 @@ class Localizer {
 	 *
 	 * @param string $namespaceName
 	 *
-	 * @return integer|boolean
+	 * @return int|bool
 	 */
 	public function getNsIndex( $namespaceName ) {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
@@ -287,8 +282,10 @@ class Localizer {
 	 *
 	 * @return string a string representation of the namespace
 	 */
-	public function convertNamespace( $ns, $variant = null ) : string {
-		return $this->contentLanguage->getConverter()->convertNamespace( $ns, $variant );
+	public function convertNamespace( $ns, $variant = null ): string {
+		$services = MediaWikiServices::getInstance();
+		$langConverter = $services->getLanguageConverterFactory()->getLanguageConverter( $this->contentLanguage );
+		return $langConverter->convertNamespace( $ns, $variant );
 	}
 
 	/**
@@ -296,18 +293,13 @@ class Localizer {
 	 *
 	 * @param string $languageCode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isKnownLanguageTag( $languageCode ) {
-
 		$languageCode = mb_strtolower( $languageCode );
+		$languageNameUtils = MediaWikiServices::getInstance()->getLanguageNameUtils();
 
-		// FIXME 1.19 doesn't know Language::isKnownLanguageTag
-		if ( !method_exists( '\Language', 'isKnownLanguageTag' ) ) {
-			return Language::isValidBuiltInCode( $languageCode );
-		}
-
-		return Language::isKnownLanguageTag( $languageCode );
+		return $languageNameUtils->isKnownLanguageTag( $languageCode );
 	}
 
 	/**
@@ -320,11 +312,6 @@ class Localizer {
 	 * @return string
 	 */
 	public static function asBCP47FormattedLanguageCode( $languageCode ) {
-		if ( !is_callable( [ '\LanguageCode', 'bcp47' ] ) ) {
-			// Backwards compatibility: remove once MW 1.30 is no
-			// longer supported (#3179)
-			return wfBCP47( $languageCode );
-		}
 		return \LanguageCode::bcp47( $languageCode );
 	}
 
@@ -343,7 +330,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 * @param string $text
 	 *
 	 * @return string
@@ -355,13 +342,12 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $ns
+	 * @param int $index
 	 * @param string $url
 	 *
 	 * @return string
 	 */
 	public function getCanonicalizedUrlByNamespace( $index, $url ) {
-
 		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
@@ -393,7 +379,6 @@ class Localizer {
 	 * @return string|false
 	 */
 	public static function getAnnotatedLanguageCodeFrom( &$value ) {
-
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}
@@ -422,8 +407,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function normalizeTitleText( string $text ) : string {
-
+	public function normalizeTitleText( string $text ): string {
 		$text = trim( $text );
 
 		if ( Site::isCapitalLinks() ) {

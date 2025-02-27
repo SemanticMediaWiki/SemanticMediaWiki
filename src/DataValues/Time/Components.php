@@ -5,7 +5,7 @@ namespace SMW\DataValues\Time;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -49,7 +49,7 @@ class Components {
 	];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $components = [];
 
@@ -66,7 +66,6 @@ class Components {
 	 * @since 3.0
 	 */
 	public function get( $key ) {
-
 		if ( isset( $this->components[$key] ) ) {
 			return $this->components[$key];
 		}

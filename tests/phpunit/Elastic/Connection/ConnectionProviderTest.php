@@ -2,43 +2,40 @@
 
 namespace SMW\Tests\Elastic\Connection;
 
+use Psr\Log\LoggerInterface;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
-use SMW\Elastic\Connection\Client;
-use SMW\Elastic\Config;
+use SMW\Elastic\Connection\LockManager;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\ConnectionProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
+class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
-	private $logger;
-	private $lockManager;
+	private LoggerInterface $logger;
+	private LockManager $lockManager;
+	private Config $config;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
+		$this->logger = $this->createMock( LoggerInterface::class );
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->lockManager = $this->getMockBuilder( '\SMW\Elastic\Connection\LockManager' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->lockManager = $this->createMock( LockManager::class );
 
 		$this->config = new Config();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConnectionProvider::class,
 			new ConnectionProvider( $this->lockManager, $this->config )
@@ -46,10 +43,9 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_MissingEndpointsThrowsException() {
-
-		$config = new Config (
+		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore'
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore'
 			]
 		);
 
@@ -63,8 +59,7 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_DummyClient() {
-
-		$config = new Config (
+		$config = new Config(
 			[
 				Config::DEFAULT_STORE => 'SMWSQLStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
@@ -85,14 +80,13 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnection_Client() {
-
 		if ( !class_exists( '\Elasticsearch\ClientBuilder' ) ) {
 			$this->markTestSkipped( "elasticsearch-php dependency is not available." );
 		}
 
-		$config = new Config (
+		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
@@ -111,14 +105,13 @@ class ConnectionProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionThrowsExceptionWhenNotInstalled() {
-
 		if ( class_exists( '\Elasticsearch\ClientBuilder' ) ) {
 			$this->markTestSkipped( "\Elasticsearch\ClientBuilder is available, no exception is thrown" );
 		}
 
-		$config = new Config (
+		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);

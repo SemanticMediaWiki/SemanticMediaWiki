@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Ask\HelpWidget
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HelpWidgetTest extends \PHPUnit_Framework_TestCase {
+class HelpWidgetTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testSessionFailure() {
-
 		$this->assertContains(
 			'ask-help',
 			HelpWidget::html()

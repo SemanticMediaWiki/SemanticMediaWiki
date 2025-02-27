@@ -3,15 +3,15 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Query\PrintRequest;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**
@@ -22,14 +22,15 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
+class CategoryClassQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
 	private $semanticDataFactory;
@@ -37,7 +38,7 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	private $dataValueFactory;
 	private $queryResultValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -45,8 +46,7 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -55,7 +55,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testSubjects_onCategoryCondition() {
-
 		$property = new DIProperty( '_INST' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property, 'SomeCategory' );
@@ -105,7 +104,6 @@ class CategoryClassQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function searchForResultsThatCompareEqualToClassOf( $categoryName ) {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( new DIProperty( '_INST' ) );
 

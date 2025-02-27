@@ -7,11 +7,11 @@
 ### Signature
 
 ```php
-use Hooks;
+use MediaWiki\MediaWikiServices;
 use SMW\Store;
 use Onoi\MessageReporter\MessageReporter;
 
-Hooks::register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', function( Store $store, MessageReporter $messageReporter ) {
+MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', function( Store $store, MessageReporter $messageReporter ) {
 
 	return true;
 } );

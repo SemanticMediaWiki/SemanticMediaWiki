@@ -8,15 +8,14 @@ use SMW\Schema\SchemaDefinition;
  * @covers \SMW\Schema\SchemaDefinition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
+class SchemaDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaDefinition( 'foo', [] );
 
 		$this->assertInstanceof(
@@ -36,7 +35,6 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new SchemaDefinition(
 			'foo',
 			[]
@@ -49,7 +47,6 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSchemaLink() {
-
 		$instance = new SchemaDefinition(
 			'foo',
 			[],
@@ -63,7 +60,6 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfo_Default() {
-
 		$instance = new SchemaDefinition(
 			'foo',
 			[],
@@ -77,7 +73,6 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToArray() {
-
 		$def = [
 			'type' => 'foo_bar',
 			'description' => 'bar foo bar',
@@ -105,7 +100,6 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$def = [
 			'type' => 'foo_bar',
 			'description' => 'bar foo bar',
@@ -143,7 +137,6 @@ class SchemaDefinitionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$def = [
 			'type' => 'foo_bar',
 			'description' => 'bar foo bar',

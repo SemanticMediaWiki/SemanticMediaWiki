@@ -5,16 +5,18 @@
 			"Roustammr",
 			"Айсар",
 			"Ансар",
+			"З. ӘЙЛЕ",
 			"Рустам Нурыев"
 		]
 	},
-	"smw-paramdesc-source": "Һорауҙың икенсе сығанағы",
-	"smw_ask_editquery": "Һорауҙы мөхәррирләү",
+	"smw-paramdesc-source": "Икенсе сығанаҡтан һоратыу",
+	"smw-categories": "Категориялар",
+	"smw_ask_editquery": "Һоратыуҙы мөхәррирләү",
 	"browse": "Вики күҙәтеү",
 	"smw_browselink": "Үҙенсәлектәрҙе ҡарарға",
-	"smw-admin-setupsuccess": "Һаҡлау системаһы уңышлы ҡуйылды",
-	"smw-livepreview-loading": "Сығарыу...",
-	"smw-format-datatable-toolbar-export": "Экспорт",
-	"smw-listingcontinuesabbrev": "дауамы",
-	"smw-showingresults": "Түбәндә №&nbsp;<strong>$2</strong> һөҙөмтәнән башлап <strong>$1</strong> {{PLURAL:$1|һөҙөмтә}} күрһәтелгән."
+	"smw-admin-setupsuccess": "Һаҡлау системаһы ҡуйылды",
+	"smw-livepreview-loading": "Йөкләнә...",
+	"smw-format-datatable-toolbar-export": "Сығарырға",
+	"smw-listingcontinuesabbrev": "(дауамы)",
+	"smw-showingresults": "Түбәндә #<strong>$2</strong> һөҙөмтәнән башлап {{PLURAL:$1|<strong>1</strong> һөҙөмтә|<strong>$1</strong> һөҙөмтәләр}} күрһәтелгән."
 }

@@ -3,30 +3,29 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\SingleValueConstraint;
-use SMW\Tests\PHPUnitCompat;
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\SingleValueConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
+class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SingleValueConstraint::class,
 			new SingleValueConstraint()
@@ -34,7 +33,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new SingleValueConstraint();
 
 		$this->assertEquals(
@@ -44,7 +42,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new SingleValueConstraint();
 
 		$this->assertFalse(
@@ -53,7 +50,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_single_value_constraint() {
-
 		$constraint = [
 			'single_value_constraint' => true
 		];
@@ -66,7 +62,7 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] ) );
+			->willReturn( [ $this->dataItemFactory->newDIProperty( 'Foobar' ) ] );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -75,17 +71,18 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getCallable' )
-			->will( $this->returnValue( function() use( $semanticData ) { return $semanticData; } ) );
+			->willReturn( static function () use( $semanticData ) { return $semanticData;
+			} );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$instance = new SingleValueConstraint();
 
@@ -97,7 +94,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_single_value_constraint_ThrowsException() {
-
 		$constraint = [
 			'single_value_constraint' => true
 		];
@@ -109,7 +105,6 @@ class SingleValueConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

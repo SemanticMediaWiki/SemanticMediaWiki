@@ -1,7 +1,6 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80",
 			"Patriot Kor",
 			"Patriot Kur",
 			"Гусейн"
@@ -9,10 +8,17 @@
 	},
 	"smw_finallistconjunct": ", ијән",
 	"smw_printername_list": "Сијоһи",
-	"smw_printername_template": "Шаблон",
-	"smw_printername_category": "Kateqoriya",
+	"smw_printername_template": "Šablon",
+	"smw_printername_category": "Kategorijə",
+	"smw_exportrdf_submit": "İxroc",
+	"smw-categories": "Kategorijon",
 	"smw_purge": "Тожә кардеј",
-	"browse": "Сәһифон дијәкә",
-	"smw-admin-supplementary-elastic-version-info": "Versiyə",
+	"browse": "Səhifon dijə karde",
+	"smw-admin-supplementary-elastic-version-info": "Versiya",
+	"smw-ui-tooltip-title-info": "Məlumot",
+	"smw-format-datatable-toolbar-export": "İxroc",
+	"smw-property-reserved-category": "Kategorijə",
+	"smw-category": "Kategorijə",
+	"smw-entity-examiner-deferred-fake": "Pesoxtə",
 	"smw-listingcontinuesabbrev": "dəvom"
 }

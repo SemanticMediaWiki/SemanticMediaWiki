@@ -3,14 +3,13 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use SMW\DIProperty;
-use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
-use SMW\Store;
-use SMW\SemanticData;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
-use SMW\Message;
+use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -28,23 +27,23 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	private $semanticData;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isLocked = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $changePropagationProtection = true;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DeclarationExaminer $DeclarationExaminer
+	 * @param DeclarationExaminer $declarationExaminer
 	 * @param Store $store
-	 * @param SemanticData $semanticData
+	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, SemanticData $semanticData = null ) {
+	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, ?SemanticData $semanticData = null ) {
 		$this->declarationExaminer = $declarationExaminer;
 		$this->store = $store;
 		$this->semanticData = $semanticData;
@@ -53,7 +52,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $changePropagationProtection
+	 * @param bool $changePropagationProtection
 	 */
 	public function setChangePropagationProtection( $changePropagationProtection ) {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;
@@ -83,7 +82,6 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 * {@inheritDoc}
 	 */
 	protected function validate( DIProperty $property ) {
-
 		$subject = $property->getCanonicalDiWikiPage();
 		$semanticData = $this->store->getSemanticData( $subject );
 
@@ -114,7 +112,6 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	}
 
 	private function checkForPendingChangePropagationDispatchJob( $property ) {
-
 		$subject = $property->getCanonicalDiWikiPage();
 
 		if ( !ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {

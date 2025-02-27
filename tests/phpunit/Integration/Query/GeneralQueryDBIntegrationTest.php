@@ -3,13 +3,13 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Query\PrintRequest;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**
@@ -20,22 +20,23 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
+class GeneralQueryDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $subjectsToBeCleared = [];
-	private $subject;
 
 	private $dataValueFactory;
 	private $queryResultValidator;
+	private $semanticDataFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataValueFactory = DataValueFactory::getInstance();
@@ -45,8 +46,7 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		foreach ( $this->subjectsToBeCleared as $subject ) {
 			$this->getStore()->deleteSubject( $subject->getTitle() );
 		}
@@ -55,7 +55,6 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPropertyBeforeAfterDataRemoval() {
-
 		$property = new DIProperty( 'SomePagePropertyBeforeAfter' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -92,7 +91,6 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUserDefinedPropertyUsedForInvalidValueAssignment() {
-
 		$property = new DIProperty( 'SomePropertyWithInvalidValueAssignment' );
 		$property->setPropertyTypeId( '_tem' );
 
@@ -103,7 +101,7 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 
 		$this->getStore()->updateData( $semanticData );
 
-		$this->assertEquals(
+		$this->assertSame(
 			0,
 			$this->searchForResultsThatCompareEqualToOnlySingularPropertyOf( $property )->getCount()
 		);
@@ -114,7 +112,6 @@ class GeneralQueryDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	private function searchForResultsThatCompareEqualToOnlySingularPropertyOf( DIProperty $property ) {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( $property );
 

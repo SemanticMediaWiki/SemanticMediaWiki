@@ -2,8 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use ParserOptions;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
@@ -12,18 +13,19 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\InternalParseBeforeLinks
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
+class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $parserFactory;
+	private $stripState;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -42,13 +44,12 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,15 +61,15 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonProcessForEmptyText() {
-
 		$text = '';
 
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser->expects( $this->once() )
-			->method( 'getOptions' );
+		$parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $this->createMock( ParserOptions::class ) );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -81,7 +82,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisableProcessOfInterfaceMessageOnNonSpecialPage() {
-
 		$text = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -90,7 +90,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOptions->expects( $this->once() )
 			->method( 'getInterfaceMessage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
@@ -106,11 +106,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $parserOptions ) );
+			->willReturn( $parserOptions );
 
 		$parser->expects( $this->once() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -123,7 +123,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOfInterfaceMessageOnEnabledSpecialPage() {
-
 		$text = 'Foo';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -132,20 +131,20 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Bar' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Bar' )
+			->willReturn( true );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -157,7 +156,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOptions->expects( $this->once() )
 			->method( 'getInterfaceMessage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$parser = $this->getMockBuilder( 'Parser' )
 			->disableOriginalConstructor()
@@ -165,7 +164,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $parserOptions ) );
+			->willReturn( $parserOptions );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -182,7 +181,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOfInterfaceMessageOnSpecialPageWithOnOffMarker() {
-
 		$text = '[[SMW::off]]Foo[[SMW::on]]';
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -191,20 +189,20 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Bar' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Bar' )
+			->willReturn( true );
 
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
@@ -218,13 +216,17 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$parser->expects( $this->any() )
+			->method( 'getOptions' )
+			->willReturn( $parserOptions );
+
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance = new InternalParseBeforeLinks(
 			$parser,
@@ -238,7 +240,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testProcess( $title ) {
-
 		$text   = 'Foo';
 		$parser = $this->parserFactory->newFromTitle( $title );
 
@@ -256,7 +257,6 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testTextChangeWithParserOuputUpdateIntegration( $parameters, $expected ) {
-
 		$this->testEnvironment->withConfiguration(
 			$parameters['settings']
 		);
@@ -303,43 +303,40 @@ class InternalParseBeforeLinksTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
-		#0
+		# 0
 		$provider[] = [ Title::newFromText( __METHOD__ ) ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
-		#1
+		# 1
 		$provider[] = [ $title ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
-
-		#2
+		# 2
 		$provider[] = [ $title ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
-		#3
+		# 3
 		$provider[] = [ $title ];
 
 		return $provider;
 	}
 
 	public function textDataProvider() {
-
 		$provider = [];
 
 		// #0 NS_MAIN; [[FooBar...]] with a different caption

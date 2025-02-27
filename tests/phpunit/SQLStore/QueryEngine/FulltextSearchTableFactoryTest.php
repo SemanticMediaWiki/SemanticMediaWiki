@@ -8,31 +8,29 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
  * @covers \SMW\SQLStore\QueryEngine\FulltextSearchTableFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstructValueMatchConditionBuilderOnUnknownConnectionType() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -43,18 +41,17 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructValueMatchConditionBuilderOnMySQLConnectionType() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'getType' )
-			->will( $this->returnValue( 'mysql' ) );
+			->willReturn( 'mysql' );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -65,7 +62,6 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructTextSanitizer() {
-
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
@@ -75,7 +71,6 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSearchTable() {
-
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
@@ -85,14 +80,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSearchTableUpdater() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -103,14 +97,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructTextChangeUpdater() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 
@@ -121,14 +114,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSearchTableRebuilder() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new FulltextSearchTableFactory();
 

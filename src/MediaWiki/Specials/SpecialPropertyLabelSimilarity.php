@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
-use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use SMW\Message;
-use SpecialPage;
 use Html;
+use SMW\Localizer\Message;
+use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
+use SpecialPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -28,10 +28,11 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	 * @see SpecialPage::execute
 	 */
 	public function execute( $query ) {
-
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$webRequest = $this->getRequest();
+
+		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
@@ -86,17 +87,10 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	 * @see SpecialPage::getGroupName
 	 */
 	protected function getGroupName() {
-
-		if ( version_compare( MW_VERSION, '1.33', '<' ) ) {
-			return 'smw_group';
-		}
-
-		// #3711, MW 1.33+
 		return 'smw_group/properties-concepts-types';
 	}
 
 	private static function makeSpecialPageBreadcrumbLink( $query = [] ) {
-
 		return Html::rawElement(
 			'div',
 			[

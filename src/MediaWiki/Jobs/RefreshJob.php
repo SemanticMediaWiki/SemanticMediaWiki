@@ -16,7 +16,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -46,10 +46,9 @@ class RefreshJob extends Job {
 	/**
 	 * @see Job::run
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function run() {
-
 		if ( $this->hasParameter( 'spos' ) ) {
 			$this->refreshData( $this->getParameter( 'spos' ) );
 		}
@@ -65,9 +64,8 @@ class RefreshJob extends Job {
 	 * @return double
 	 */
 	public function getProgress() {
-
 		$prog = $this->hasParameter( 'prog' ) ? $this->getParameter( 'prog' ) : 0;
-		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ): 1;
+		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 		$rc   = $this->hasParameter( 'rc' ) ? $this->getParameter( 'rc' ) : 1;
 
 		return round( ( $run - 1 + $prog ) / $rc, 1 );
@@ -77,8 +75,7 @@ class RefreshJob extends Job {
 	 * @param $spos start index
 	 */
 	protected function refreshData( $spos ) {
-
-		$run  = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
+		$run = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
 		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(
 			$spos,
@@ -113,7 +110,6 @@ class RefreshJob extends Job {
 	}
 
 	protected function createNextJob( array $parameters ) {
-
 		$job = new self(
 			$this->getTitle(),
 			$parameters
@@ -124,7 +120,6 @@ class RefreshJob extends Job {
 	}
 
 	protected function getNamespace( $run ) {
-
 		if ( !$this->hasParameter( 'rc' ) ) {
 			return false;
 		}

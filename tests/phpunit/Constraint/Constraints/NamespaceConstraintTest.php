@@ -3,34 +3,33 @@
 namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\NamespaceConstraint;
-use SMW\Tests\TestEnvironment;
 use SMW\DataItemFactory;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Constraint\Constraints\NamespaceConstraint
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
+class NamespaceConstraintTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceConstraint::class,
 			new NamespaceConstraint()
@@ -38,7 +37,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetType() {
-
 		$instance = new NamespaceConstraint();
 
 		$this->assertEquals(
@@ -48,7 +46,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasViolation() {
-
 		$instance = new NamespaceConstraint();
 
 		$this->assertFalse(
@@ -57,7 +54,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckConstraint_allowed_namespaces() {
-
 		$constraint = [
 			'allowed_namespaces' => [ 'NS_HELP' ]
 		];
@@ -71,17 +67,17 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'addError' )
-			->with( $this->callback( function( $error ) use ( $expectedErrMsg ) {
+			->with( $this->callback( function ( $error ) use ( $expectedErrMsg ) {
 				return $this->checkConstraintError( $error, $expectedErrMsg );
 			} ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIProperty( 'Bar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIProperty( 'Bar' ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'Foo' ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Foo' ) );
 
 		$instance = new NamespaceConstraint();
 
@@ -93,7 +89,6 @@ class NamespaceConstraintTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function checkConstraintError( $error, $expectedErrMsg ) {
-
 		if ( strpos( $error->__toString(), $expectedErrMsg ) !== false ) {
 			return true;
 		}

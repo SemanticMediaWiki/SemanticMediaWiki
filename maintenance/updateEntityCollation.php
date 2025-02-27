@@ -2,31 +2,29 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use SMW\DIProperty;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\Setup;
-use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\MediaWiki\HookDispatcher;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Maintenance\MaintenanceCheck;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -95,9 +93,8 @@ class updateEntityCollation extends \Maintenance {
 	 * @see Maintenance::execute
 	 */
 	public function execute() {
-
 		if ( ( $maintenanceCheck = new MaintenanceCheck() )->canExecute() === false ) {
-			exit ( $maintenanceCheck->getMessage() );
+			exit( $maintenanceCheck->getMessage() );
 		}
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -177,7 +174,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function informAboutDifferences( $smwgEntityCollation, $wgCategoryCollation ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -208,7 +204,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function fetchRows() {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$this->lastId = (int)$connection->selectField(
@@ -241,7 +236,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function runUpdate( $rows, $count ) {
-
 		$tableFieldUpdater = new TableFieldUpdater(
 			$this->store
 		);
@@ -278,7 +272,6 @@ class updateEntityCollation extends \Maintenance {
 	}
 
 	private function getSortKey( $row, $pv ) {
-
 		if ( $pv !== [] ) {
 			return end( $pv )->getString();
 		}
@@ -298,5 +291,7 @@ class updateEntityCollation extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = updateEntityCollation::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

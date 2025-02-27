@@ -3,32 +3,32 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
-use SMW\Tests\DatabaseTestCase;
-use Title;
+use SMW\Localizer\Localizer;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group SMW
  * @group SMWExtension
  *
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class FileUploadIntegrationTest extends DatabaseTestCase {
+class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 
 	private $mwHooksHandler;
 	private $fixturesFileProvider;
 	private $semanticDataValidator;
 	private $pageEditor;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$utilityFactory = $this->testEnvironment->getUtilityFactory();
@@ -70,7 +70,7 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 		$this->getStore()->setup( false );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 		$this->testEnvironment->tearDown();
 
@@ -107,7 +107,6 @@ class FileUploadIntegrationTest extends DatabaseTestCase {
 	 * @depends testFileUploadForDummyTextFile
 	 */
 	public function testReUploadDummyTextFileToEditFilePage() {
-
 		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );

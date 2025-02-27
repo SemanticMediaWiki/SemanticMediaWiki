@@ -2,13 +2,11 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
-
 /**
  * Interface for result printers that require some dependency to be fully
  * functional.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -26,7 +24,7 @@ interface ResultPrinterDependency {
 	 *
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasMissingDependency();
 

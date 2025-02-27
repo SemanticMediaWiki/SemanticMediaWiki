@@ -9,18 +9,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Services\DataValueServiceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
+class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $containerBuilder;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->containerBuilder = $this->getMockBuilder( '\Onoi\CallbackContainer\ContainerBuilder' )
@@ -29,7 +29,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DataValueServiceFactory::class,
 			new DataValueServiceFactory( $this->containerBuilder )
@@ -37,15 +36,13 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetServiceFile() {
+		$this->assertIsString(
 
-		$this->assertInternalType(
-			'string',
 			DataValueServiceFactory::SERVICE_FILE
 		);
 	}
 
 	public function testNewDataValueByTypeOrClass() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -53,7 +50,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
 			->with( $this->stringContains( 'bar' ) )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -63,7 +60,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDataValueFactory() {
-
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
 		);
@@ -75,7 +71,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValueParser() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -92,7 +87,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValueFormatterOnRegisteredFormatters() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -103,12 +97,12 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
-			->will( $this->returnValue( $dataValueFormatter ) );
+			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -118,7 +112,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValueFormatterOnNonRegisteredFormatters() {
-
 		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -129,12 +122,12 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->containerBuilder->expects( $this->once() )
 			->method( 'isRegistered' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( DataValueServiceFactory::TYPE_FORMATTER ) )
-			->will( $this->returnValue( $dataValueFormatter ) );
+			->willReturn( $dataValueFormatter );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -144,15 +137,14 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyRestrictionExaminer() {
-
-		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\PropertyRestrictionExaminer' )
+		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\Property\RestrictionExaminer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'PropertyRestrictionExaminer' ) )
-			->will( $this->returnValue( $propertyRestrictionExaminer ) );
+			->willReturn( $propertyRestrictionExaminer );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -162,7 +154,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDescriptionBuilderRegistry() {
-
 		$descriptionBuilderRegistry = $this->getMockBuilder( '\SMW\Query\DescriptionBuilderRegistry' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -170,7 +161,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'DescriptionBuilderRegistry' ) )
-			->will( $this->returnValue( $descriptionBuilderRegistry ) );
+			->willReturn( $descriptionBuilderRegistry );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder
@@ -180,7 +171,6 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetUnitConverter() {
-
 		$unitConverter = $this->getMockBuilder( '\SMW\DataValues\Number\UnitConverter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -188,7 +178,7 @@ class DataValueServiceFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->containerBuilder->expects( $this->atLeastOnce() )
 			->method( 'singleton' )
 			->with( $this->stringContains( 'UnitConverter' ) )
-			->will( $this->returnValue( $unitConverter ) );
+			->willReturn( $unitConverter );
 
 		$instance = new DataValueServiceFactory(
 			$this->containerBuilder

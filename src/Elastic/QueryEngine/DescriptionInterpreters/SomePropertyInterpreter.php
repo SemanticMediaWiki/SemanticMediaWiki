@@ -2,30 +2,21 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use Maps\Semantic\ValueDescriptions\AreaDescription;
 use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
-use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
-use SMW\Elastic\QueryEngine\QueryBuilder;
+use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMW\Query\Language\ClassDescription;
-use SMW\Query\Language\NamespaceDescription;
 use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDIGeoCoord as DIGeoCoord;
-use SMWDInumber as DINumber;
-use SMWDITime as DITime;
-use SMWDIUri as DIUri;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -64,7 +55,6 @@ class SomePropertyInterpreter {
 	 * @return Condition|array
 	 */
 	public function interpretDescription( SomeProperty $description, $isConjunction = false, $isChain = false ) {
-
 		// Query types
 		//
 		// - term: query matches a single term as it is, the value is not
@@ -158,22 +148,17 @@ class SomePropertyInterpreter {
 
 		// Build an extra condition to restore strictness by making sure
 		// the property exist on those matched entities
-		// `[[Has text::!~foo*]]` becomes `[[Has text::!~foo*]] [[Has text::+]`
+		// `[[Has text::!~foo*]]` becomes `[[Has text::!~foo*]] [[Has text::+]]`
 		if ( $opType === Condition::TYPE_MUST_NOT && !$desc instanceof ThingDescription ) {
 
 			// Use case: `[[Category:Q0905]] [[!Example/Q0905/1]] <q>[[Has page::123]]
 			// OR [[Has page::!ABCD]]</q>`
 			$params = [ $this->fieldMapper->exists( "$pid.$field" ), $condition ];
 			$condition = $this->conditionBuilder->newCondition( $params );
-			$condition->type( '' );
+			$condition->type( 'must' );
 
 			if ( $this->conditionBuilder->getOption( 'must_not.property.exists' ) ) {
 				$description->notConditionField = "$pid.$field";
-			}
-
-			// Use case: `[[Has telephone number::!~*123*]]`
-			if ( !$isConjunction ) {
-				$condition->type( 'must' );
 			}
 		}
 
@@ -211,7 +196,6 @@ class SomePropertyInterpreter {
 	}
 
 	private function interpretDisjunction( $description, $property, $pid, $field, &$opType ) {
-
 		$p = [];
 		$opType = Condition::TYPE_SHOULD;
 
@@ -234,14 +218,13 @@ class SomePropertyInterpreter {
 			return [];
 		}
 
-		//$this->fieldMapper->bool( 'should', $p );
+		// $this->fieldMapper->bool( 'should', $p );
 		$condition = $this->conditionBuilder->newCondition( $p );
 
 		return $condition;
 	}
 
 	private function interpretClassDescription( $description, $property, $pid, $field ) {
-
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -284,7 +267,6 @@ class SomePropertyInterpreter {
 	}
 
 	private function interpretNamespaceDescription( $description, $property, $pid, $field ) {
-
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -311,7 +293,6 @@ class SomePropertyInterpreter {
 	}
 
 	private function interpretConjunction( $description, $property, $pid, $field ) {
-
 		$p = [];
 		$logs = [];
 		$queryString = $description->getQueryString();
@@ -372,7 +353,6 @@ class SomePropertyInterpreter {
 	}
 
 	private function interpretChain( $desc, $property, $pid, $field ) {
-
 		$desc->sourceChainMemberField = "$pid.wpgID";
 		$p = [];
 
@@ -406,7 +386,7 @@ class SomePropertyInterpreter {
 		}
 
 		if ( $property->isInverse() ) {
-			if ( !is_array($p) ) {
+			if ( !is_array( $p ) ) {
 				$p = $p->toArray();
 			}
 			$parameters = $this->termsLookup->newParameters(
@@ -429,7 +409,6 @@ class SomePropertyInterpreter {
 	}
 
 	private function interpretThingDescription( $desc, $property, $pid, $field, &$opType ) {
-
 		$isResourceType = false;
 
 		if ( DataTypeRegistry::getInstance()->getDataItemByType( $property->findPropertyValueType() ) === DataItem::TYPE_WIKIPAGE ) {
@@ -464,7 +443,6 @@ class SomePropertyInterpreter {
 	}
 
 	private function interpretValueDescription( $desc, $property, $pid, &$field, &$type ) {
-
 		$options = [
 			'type' => $type,
 			'field' => $field,

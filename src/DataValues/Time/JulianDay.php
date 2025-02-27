@@ -14,7 +14,7 @@ use RuntimeException;
  * For dates on or before 4 October 1582, the Julian calendar is used; for dates
  * on or after 15 October 1582, the Gregorian calendar is used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch
@@ -34,13 +34,13 @@ class JulianDay implements CalendarModel {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $calendarmodel
-	 * @param integer $year
-	 * @param integer $month
-	 * @param integer $day
-	 * @param integer $hour
-	 * @param integer $minute
-	 * @param integer $second
+	 * @param int $calendarModel
+	 * @param int $year
+	 * @param int $month
+	 * @param int $day
+	 * @param int $hour
+	 * @param int $minute
+	 * @param int $second
 	 *
 	 * @return float
 	 */
@@ -85,10 +85,10 @@ class JulianDay implements CalendarModel {
 	 * calendar model. This calculation assumes that neither calendar
 	 * has a year 0.
 	 *
+	 * @param $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
 	 * @param $year integer representing the year
 	 * @param $month integer representing the month
 	 * @param $day integer representing the day
-	 * @param $calendarmodel integer either CM_GREGORIAN or CM_JULIAN
 	 *
 	 * @return float Julian Day number
 	 * @throws RuntimeException
@@ -133,13 +133,12 @@ class JulianDay implements CalendarModel {
 	 * values will be returned. Avoid date conversions before 10000 BCE.
 	 *
 	 * @param $jdValue float number of Julian Days
-	 * @param $calendarModel integer either CM_GREGORIAN or CM_JULIAN
+	 * @param null $calendarModel integer either CM_GREGORIAN or CM_JULIAN
 	 *
 	 * @return array( calendarModel, yearnumber, monthnumber, daynumber )
 	 * @throws RuntimeException
 	 */
 	public static function JD2Date( $jdValue, $calendarModel = null ) {
-
 		if ( $calendarModel === null ) { // 1582/10/15
 			$calendarModel = $jdValue < self::J1582 ? self::CM_JULIAN : self::CM_GREGORIAN;
 		}

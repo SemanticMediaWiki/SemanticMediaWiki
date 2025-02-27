@@ -6,13 +6,13 @@ use OutOfBoundsException;
 use Serializers\DispatchableSerializer;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-use SMWResultArray;
 use Title;
 
 /**
- * Class for serializing SMWDataItem and SMWQueryResult objects to a context
+ * Class for serializing SMWDataItem and QueryResult objects to a context
  * independent object consisting of arrays and associative arrays, which can
  * be fed directly to json_encode, the MediaWiki API, and similar serializers.
  *
@@ -21,7 +21,7 @@ use Title;
  *
  * @ingroup Serializers
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.7
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -29,14 +29,14 @@ use Title;
 class QueryResultSerializer implements DispatchableSerializer {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $version = 2;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $version
+	 * @param int $version
 	 */
 	public function version( $version ) {
 		self::$version = (int)$version;
@@ -51,7 +51,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 * @throws OutOfBoundsException
 	 */
 	public function serialize( $queryResult ) {
-
 		if ( !( $this->isSerializerFor( $queryResult ) ) ) {
 			throw new OutOfBoundsException( 'Object was not identified as a QueryResult instance' );
 		}
@@ -80,7 +79,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	public static function getSerialization( DataItem $dataItem, $printRequest = null ) {
 		switch ( $dataItem->getDIType() ) {
 			case DataItem::TYPE_WIKIPAGE:
-
 				// Support for a deserializable _rec type with 0.6
 				if ( $printRequest !== null && strpos( $printRequest->getTypeID(), '_rec' ) !== false ) {
 					$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -173,11 +171,11 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	/**
-	 * Get the serialization for a SMWQueryResult object.
+	 * Get the serialization for a QueryResult object.
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWQueryResult $result
+	 * @param QueryResult $queryResult
 	 *
 	 * @return array
 	 */
@@ -202,7 +200,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			$result = [ 'printouts' => [] ];
 
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
-				$resultArray = SMWResultArray::factory( $diWikiPage, $printRequest, $queryResult );
+				$resultArray = ResultArray::factory( $diWikiPage, $printRequest, $queryResult );
 
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();
@@ -252,7 +250,6 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	private static function serialize_printrequest( $printRequest ) {
-
 		$serialized = [
 			'label'  => $printRequest->getLabel(),
 			'key'    => '',

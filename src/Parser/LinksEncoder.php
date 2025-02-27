@@ -3,7 +3,7 @@
 namespace SMW\Parser;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -19,7 +19,6 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ) {
-
 		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
@@ -49,7 +48,6 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function removeLinkObfuscation( $text ) {
-
 		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
 		$to = [ '[', ']', '|' ];
 
@@ -92,7 +90,7 @@ class LinksEncoder {
 	public static function obfuscateAnnotation( $text ) {
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			function( array $matches ) {
+			static function ( array $matches ) {
 				return str_replace( '[', '&#91;', $matches[0] );
 			},
 			self::decodeSquareBracket( $text )
@@ -107,20 +105,18 @@ class LinksEncoder {
 	 * @return text
 	 */
 	public static function removeAnnotation( $text ) {
-
 		if ( strpos( $text, '::' ) === false && strpos( $text, ':=' ) === false ) {
 			return $text;
 		}
 
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
-			'self::doRemoveAnnotation',
+			[ self::class, 'doRemoveAnnotation' ],
 			self::decodeSquareBracket( $text )
 		);
 	}
 
 	private static function doRemoveAnnotation( array $matches ) {
-
 		$caption = false;
 		$value = '';
 
@@ -132,7 +128,7 @@ class LinksEncoder {
 		// Strict mode matching
 		if ( array_key_exists( 1, $matches ) ) {
 			if ( strpos( $matches[1], ':' ) !== false && isset( $matches[2] ) ) {
-				list( $matches[1], $matches[2] ) = explode( '::', $matches[1] . '::' . $matches[2], 2 );
+				[ $matches[1], $matches[2] ] = explode( '::', $matches[1] . '::' . $matches[2], 2 );
 			}
 		}
 
@@ -157,7 +153,6 @@ class LinksEncoder {
 	}
 
 	private static function matchAndReplace( $text, $parser ) {
-
 		/**
 		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
 		 *
@@ -206,7 +201,6 @@ class LinksEncoder {
 	}
 
 	private static function replace( $match, $parser, $isOffAnnotation = false ) {
-
 		// Remove the Leading and last square bracket to avoid distortion
 		// during the annotation parsing
 		$match = substr( substr( $match, 2 ), 0, -2 );

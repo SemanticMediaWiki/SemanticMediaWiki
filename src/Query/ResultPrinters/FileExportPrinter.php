@@ -3,22 +3,22 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\Query\ExportPrinter;
+use SMW\Query\QueryResult;
 use SMWQuery;
 use SMWQueryProcessor;
-use SMWQueryResult;
 
 /**
  * Base class for file export result printers
  *
  * @since 1.8
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $httpHeader = true;
 
@@ -27,7 +27,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @since 1.8
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isExportFormat() {
 		return true;
@@ -45,11 +45,10 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 * @param array $params
 	 */
-	public function outputAsFile( SMWQueryResult $queryResult, array $params ) {
-
+	public function outputAsFile( QueryResult $queryResult, array $params ) {
 		$result = $this->getFileResult( $queryResult, $params );
 
 		$this->httpHeader(
@@ -77,11 +76,11 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 *
-	 * @return string|boolean
+	 * @return string|bool
 	 */
-	public function getFileName( SMWQueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ) {
 		return false;
 	}
 
@@ -91,7 +90,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @param $mode
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
 		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;

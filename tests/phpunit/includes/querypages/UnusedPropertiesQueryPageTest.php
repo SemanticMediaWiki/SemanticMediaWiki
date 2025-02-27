@@ -4,20 +4,18 @@ namespace SMW\Tests;
 
 use SMW\DataItemFactory;
 use SMW\Settings;
-use SMW\Tests\TestEnvironment;
 use SMW\UnusedPropertiesQueryPage;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\UnusedPropertiesQueryPage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
+class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,7 +25,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,12 +43,11 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\UnusedPropertiesQueryPage',
 			new UnusedPropertiesQueryPage( $this->store, $this->settings )
@@ -58,8 +55,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatResultDIError() {
-
-		$error = $this->dataItemFactory->newDIError( 'Foo');
+		$error = $this->dataItemFactory->newDIError( 'Foo' );
 
 		$instance = new UnusedPropertiesQueryPage(
 			$this->store,
@@ -71,8 +67,8 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 			$error
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$result
 		);
 
@@ -83,7 +79,6 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidResultThrowsException() {
-
 		$instance = new UnusedPropertiesQueryPage(
 			$this->store,
 			$this->settings
@@ -94,7 +89,6 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemOnUserDefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new UnusedPropertiesQueryPage(
@@ -114,7 +108,6 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatPropertyItemOnPredefinedProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_MDAT' );
 
 		$instance = new UnusedPropertiesQueryPage(

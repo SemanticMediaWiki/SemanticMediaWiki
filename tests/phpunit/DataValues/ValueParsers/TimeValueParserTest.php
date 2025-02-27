@@ -9,15 +9,14 @@ use SMW\DataValues\ValueParsers\TimeValueParser;
  * @covers \SMW\DataValues\ValueParsers\TimeValueParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TimeValueParserTest extends \PHPUnit_Framework_TestCase {
+class TimeValueParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TimeValueParser::class,
 			new TimeValueParser()
@@ -28,7 +27,6 @@ class TimeValueParserTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testParse( $value, $expected, $errors ) {
-
 		$instance = new TimeValueParser();
 
 		$this->assertEquals(
@@ -43,7 +41,6 @@ class TimeValueParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		yield [
 			'1 Jan 1970',
 			[

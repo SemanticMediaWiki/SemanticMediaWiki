@@ -8,7 +8,7 @@ use SMW\Exporter\Element\ExpElement;
 use SMWExpData as ExpData;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -24,7 +24,6 @@ class ExpDataDeserializer implements Deserializer {
 	 * @throws OutOfBoundsException
 	 */
 	public function deserialize( $serialization ) {
-
 		$expData = null;
 
 		if ( isset( $serialization['version'] ) && $serialization['version'] !== 0.1 ) {
@@ -49,7 +48,6 @@ class ExpDataDeserializer implements Deserializer {
 	}
 
 	private function doDeserialize( $serialization, $expData ) {
-
 		foreach ( $serialization['data'] as $data ) {
 
 			$property = ExpElement::newFromSerialization( $data['property'] );
@@ -64,7 +62,6 @@ class ExpDataDeserializer implements Deserializer {
 	}
 
 	private function doDeserializeChild( $serialization ) {
-
 		if ( !isset( $serialization['subject'] ) ) {
 			return ExpElement::newFromSerialization( $serialization );
 		}

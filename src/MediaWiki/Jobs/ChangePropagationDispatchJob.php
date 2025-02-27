@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use SMW\MediaWiki\Job;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Job;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMWExporter as Exporter;
 use Title;
@@ -33,7 +33,7 @@ use Title;
  * during tests that would lead to an out-of-memory) to store a list of
  * entities that require an update.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -69,10 +69,9 @@ class ChangePropagationDispatchJob extends Job {
 	 * @param DIWikiPage $subject
 	 * @param array $params
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function planAsJob( DIWikiPage $subject, $params = [] ) {
-
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->invalidateCache(
 			$subject
@@ -90,7 +89,6 @@ class ChangePropagationDispatchJob extends Job {
 	 * @param DIWikiPage $subject
 	 */
 	public static function cleanUp( DIWikiPage $subject ) {
-
 		$namespace = $subject->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -110,10 +108,9 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function hasPendingJobs( DIWikiPage $subject ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -150,10 +147,9 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public static function getPendingJobsCount( DIWikiPage $subject ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -192,11 +188,10 @@ class ChangePropagationDispatchJob extends Job {
 	 * @since 3.0
 	 */
 	public function run() {
-
 		$subject = DIWikiPage::newFromTitle( $this->getTitle() );
 
-		if ( $this->hasParameter( 'dataFile' ) ) {
-			return $this->dispatchFromFile( $subject, $this->getParameter( 'dataFile' ) );
+		if ( $this->hasParameter( 'data' ) ) {
+			return $this->dispatchFromData( $subject, $this->getParameter( 'data' ) );
 		}
 
 		if ( $this->hasParameter( 'schema_change_propagation' ) ) {
@@ -209,7 +204,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function findAndDispatch() {
-
 		$namespace = $this->getTitle()->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -264,54 +258,38 @@ class ChangePropagationDispatchJob extends Job {
 		);
 
 		$i = 0;
-		$tempFile = $applicationFactory->create( 'TempFile' );
-
-		$file = $tempFile->generate(
-			'smw_chgprop_',
-			$subject->getHash(),
-			uniqid()
-		);
 
 		foreach ( $chunkedIterator as $chunk ) {
-			$this->pushChangePropagationDispatchJob( $tempFile, $file, $i++, $chunk );
+			$this->pushChangePropagationDispatchJob( $i++, $chunk );
 		}
 	}
 
-	private function pushChangePropagationDispatchJob( $tempFile, $file, $num, $chunk ) {
-
+	private function pushChangePropagationDispatchJob( $num, $chunk ) {
 		$data = [];
-		$file .= "_$num.tmp";
 
 		// Filter any subobject
 		foreach ( $chunk as $val ) {
 			$data[] = ( $val instanceof DIWikiPage ? $val->asBase()->getHash() : $val );
 		}
 
-		// Filter duplicates and write the temp file
-		$tempFile->write(
-			$file,
-			implode( "\n", array_keys( array_flip( $data ) ) )
-		);
+		// Filter duplicates
+		$contents = implode( "\n", array_keys( array_flip( $data ) ) );
 
-		$checkSum = $tempFile->getCheckSum( $file );
+		$checkSum = md5( $contents );
 
-		// Use the checkSum as verification method to avoid manipulation of the
-		// contents by third-parties
 		$changePropagationDispatchJob = new ChangePropagationDispatchJob(
 			$this->getTitle(),
 			[
-				'dataFile' => $file,
-				'checkSum' => $checkSum
+				'data' => $contents
 			] + self::newRootJobParams(
-				"ChangePropagationDispatchJob:$file:$checkSum"
+				"ChangePropagationDispatchJob:smw_chgprop_$num\_tmp:$checkSum"
 			)
 		);
 
 		$changePropagationDispatchJob->lazyPush();
 	}
 
-	private function dispatchFromFile( $subject, $file ) {
-
+	private function dispatchFromData( $subject, $data ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
 
@@ -323,7 +301,6 @@ class ChangePropagationDispatchJob extends Job {
 			$subject
 		);
 
-		$tempFile = $applicationFactory->create( 'TempFile' );
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
 
 		// SemanticData hasn't been updated, re-enter the cycle to ensure that
@@ -347,25 +324,17 @@ class ChangePropagationDispatchJob extends Job {
 			return true;
 		}
 
-		$contents = $tempFile->read(
-			$file,
-			$this->getParameter( 'checkSum' )
-		);
-
 		// @see ChangePropagationDispatchJob::pushChangePropagationDispatchJob
-		$dataItems = explode( "\n", $contents );
+		$dataItems = explode( "\n", $data );
 
 		$this->scheduleChangePropagationUpdateJobFromList(
 			$dataItems
 		);
 
-		$tempFile->delete( $file );
-
 		return true;
 	}
 
 	private function dispatchFromSchema( $subject, $property_key ) {
-
 		$store = ApplicationFactory::getInstance()->getStore();
 
 		// Find all properties that point to the schema and hereby require
@@ -390,7 +359,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function scheduleChangePropagationUpdateJobFromList( $dataItems ) {
-
 		foreach ( $dataItems as $dataItem ) {
 
 			if ( $dataItem === '' ) {
@@ -411,7 +379,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function commitSpecificationChangePropagationAsJob( $subject, $count ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
@@ -451,7 +418,6 @@ class ChangePropagationDispatchJob extends Job {
 	}
 
 	private function newChangePropagationUpdateJob( $title, $parameters ) {
-
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters = $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
 

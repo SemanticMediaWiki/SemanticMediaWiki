@@ -25,7 +25,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					">Label with spaces</a>&nbsp;<span title=\"SomeProperty\"><sup>ᵖ</sup>"
+					">Label&#160;with&#160;spaces</a>&nbsp;<span title=\"SomeProperty\"><sup>ᵖ</sup>"
 				]
 			}
 		}

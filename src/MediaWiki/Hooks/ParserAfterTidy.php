@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Onoi\Cache\Cache;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Psr\Log\LoggerAwareTrait;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\NamespaceExaminer;
+use SMW\OptionsAwareTrait;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Onoi\Cache\Cache;
-use SMW\NamespaceExaminer;
-use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
-use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\PageInfoProvider;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Hook: ParserAfterTidy to add some final processing to the
@@ -20,7 +20,7 @@ use SMW\MediaWiki\PageInfoProvider;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ParserAfterTidy
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -49,20 +49,20 @@ class ParserAfterTidy implements HookListener {
 	private $cache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isReady = true;
 
 	/**
 	 * @since  1.9
 	 *
-	 * @param Parser $parser
-	 * @param NamespaceExaminer $NamespaceExaminer
+	 * @param Parser &$parser
+	 * @param NamespaceExaminer $namespaceExaminer
 	 * @param Cache $cache
 	 */
 	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
@@ -76,7 +76,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @since 2.5
 	 *
-	 * @param boolean $isCommandLineMode
+	 * @param bool $isCommandLineMode
 	 */
 	public function isCommandLineMode( $isCommandLineMode ) {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
@@ -85,7 +85,7 @@ class ParserAfterTidy implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $isReady
+	 * @param bool $isReady
 	 */
 	public function isReady( $isReady ) {
 		$this->isReady = (bool)$isReady;
@@ -94,12 +94,11 @@ class ParserAfterTidy implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string $text
+	 * @param string &$text
 	 *
 	 * @return true
 	 */
 	public function process( &$text ) {
-
 		if ( $this->canPerformUpdate() ) {
 			$this->performUpdate( $text );
 		}
@@ -108,7 +107,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function canPerformUpdate() {
-
 		// #2432 avoid access to the DBLoadBalancer while being in readOnly mode
 		// when for example Title::isProtected is accessed
 		if ( $this->isReady === false ) {
@@ -135,25 +133,30 @@ class ParserAfterTidy implements HookListener {
 
 		$parserOutput = $this->parser->getOutput();
 
-		if ( method_exists( $parserOutput, 'getPageProperty' ) ) {
-			// T301915
-			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
-			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
+		// T301915
+		$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+		$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
+
+		$parserCategories = [];
+		// MW >= 1.40
+		if ( method_exists( $parserOutput, 'getCategorySortKey' ) ) {
+			$names = $parserOutput->getCategoryNames();
+			foreach ( $names as $name ) {
+				$parserCategories[$name] = $parserOutput->getCategorySortKey( $name );
+			}
 		} else {
-			// MW < 1.38
-			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
-			$parserDefaultSort = $this->parser->getDefaultSort();
+			$parserCategories = $parserOutput->getCategories();
 		}
 
 		if ( $displayTitle ||
 			$parserOutput->getImages() !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
-			$parserOutput->getCategories() ) {
+			$parserCategories ) {
 			return true;
 		}
 
 		if ( ParserData::hasSemanticData( $parserOutput ) ||
-			PageInfoProvider::isProtected( $title, 'edit ') ||
+			PageInfoProvider::isProtected( $title, 'edit ' ) ||
 			$parserDefaultSort ) {
 			return true;
 		}
@@ -173,7 +176,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function performUpdate( &$text ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -200,16 +202,17 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
-
 		$parserOutput = $this->parser->getOutput();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
 			$semanticData
 		);
 
+		$parserCategoryKeys = $parserOutput->getCategoryNames();
+
 		$propertyAnnotator = $propertyAnnotatorFactory->newCategoryPropertyAnnotator(
 			$propertyAnnotator,
-			array_keys( $parserOutput->getCategories() )
+			$parserCategoryKeys
 		);
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newMandatoryTypePropertyAnnotator(
@@ -226,15 +229,9 @@ class ParserAfterTidy implements HookListener {
 			$parserOutput
 		);
 
-		if ( method_exists( $parserOutput, 'getPageProperty') ) {
-			// T301915
-			$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
-			$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' );
-		} else {
-			// MW < 1.38
-			$displayTitle = $parserOutput->getProperty( 'displaytitle' );
-			$parserDefaultSort = $this->parser->getDefaultSort();
-		}
+		// T301915
+		$displayTitle = $parserOutput->getPageProperty( 'displaytitle' ) ?? false;
+		$parserDefaultSort = $parserOutput->getPageProperty( 'defaultsort' ) ?? '';
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newDisplayTitlePropertyAnnotator(
 			$propertyAnnotator,
@@ -274,7 +271,6 @@ class ParserAfterTidy implements HookListener {
 	 * work hence the reliance on the cache as temporary persistence marker
 	 */
 	private function checkPurgeRequest( $parserData ) {
-
 		$start = microtime( true );
 		$title = $this->parser->getTitle();
 
@@ -321,7 +317,6 @@ class ParserAfterTidy implements HookListener {
 	}
 
 	private function doAbort() {
-
 		$this->logger->info(
 			"ParserAfterTidy was invoked but the site isn't ready yet, aborting the processing."
 		);

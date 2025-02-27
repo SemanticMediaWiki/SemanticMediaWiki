@@ -10,12 +10,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Admin\ReplicationInfoProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
+class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,8 +25,7 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	private $entityCache;
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,11 +50,10 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( new DummyClient() ) );
+			->willReturn( new DummyClient() );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ReplicationInfoProvider::class,
 			new ReplicationInfoProvider( $this->outputFormatter, $this->replicationCheck, $this->entityCache )
@@ -63,7 +61,6 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTask() {
-
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
@@ -82,28 +79,26 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
 			$this->replicationCheck,
 			$this->entityCache
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
 
 	public function tesHandleRequest_NoFailures() {
-
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'addParentLink' )
-			->with(	$this->equalTo( [ 'action' => 'elastic' ] ) );
+			->with(	[ 'action' => 'elastic' ] );
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getReplicationFailures' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
@@ -116,12 +111,11 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleRequest_WithFailuresOnPages() {
-
 		$ns = NS_FILE;
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getReplicationFailures' )
-			->will( $this->returnValue( [ 'Foo#0##', "Bar#$ns##" ] ) );
+			->willReturn( [ 'Foo#0##', "Bar#$ns##" ] );
 
 		$instance = new ReplicationInfoProvider(
 			$this->outputFormatter,
@@ -132,6 +126,5 @@ class ReplicationInfoProviderTest extends \PHPUnit_Framework_TestCase {
 		$instance->setStore( $this->store );
 		$instance->handleRequest( $this->webRequest );
 	}
-
 
 }

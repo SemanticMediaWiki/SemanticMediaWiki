@@ -10,7 +10,7 @@ use SMW\Tests\Utils\Fixtures\Properties\LocatedInProperty;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -32,7 +32,7 @@ class FranceFactsheet {
 	 *
 	 * @param DIWikiPage|null $targetSubject
 	 */
-	public function __construct( DIWikiPage $targetSubject = null ) {
+	public function __construct( ?DIWikiPage $targetSubject = null ) {
 		$this->targetSubject = $targetSubject;
 
 		if ( $this->targetSubject === null ) {
@@ -66,7 +66,6 @@ class FranceFactsheet {
 	 * @return SemanticData
 	 */
 	public function asEntity() {
-
 		$semanticData = new SemanticData( $this->asSubject() );
 		$semanticData->addDataValue( $this->getLocatedInValue() );
 
@@ -83,7 +82,6 @@ class FranceFactsheet {
 	 * @return DataValue
 	 */
 	public function getLocatedInValue() {
-
 		$locatedInProperty = new LocatedInProperty();
 
 		return $this->dataValueFactory->newDataValueByItem(
@@ -97,7 +95,6 @@ class FranceFactsheet {
 	 * @since 2.1
 	 */
 	public function purge() {
-
 		$subjects = [];
 
 		$subjects[] = $this->asSubject();

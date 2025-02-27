@@ -10,17 +10,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
+class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -32,7 +31,6 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryForNonValue() {
-
 		$pageRequestOptions = new PageRequestOptions( 'Foo', [] );
 		$pageRequestOptions->initialize();
 
@@ -46,18 +44,17 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->isType( 'null' ),
 				$this->isInstanceOf( '\SMW\DIProperty' ),
 				$this->anything() )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryResultLookup( $store );
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->doQuery( $pageRequestOptions )
 		);
 	}
 
 	public function testDoQueryForExactValue() {
-
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
@@ -71,7 +68,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->isInstanceOf( '\SMW\DIProperty' ),
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new QueryResultLookup( $store );
 
@@ -82,17 +79,16 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryForNearbyResults() {
-
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$queryResult->expects( $this->any() )
 			->method( 'getNext' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -101,7 +97,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->once() )
 			->method( 'getQueryResult' )
 			->with( $this->isInstanceOf( '\SMWQuery' ) )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$instance = new QueryResultLookup( $store );
 
@@ -112,14 +108,13 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoQueryLinksReferences() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'getId' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42 ) );
+			->willReturnOnConsecutiveCalls( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -128,7 +123,7 @@ class QueryResultLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();

@@ -3,26 +3,26 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\ValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -34,13 +34,12 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testGetFormattedSubject() {
-
 		$dataItem = \SMW\DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -50,54 +49,52 @@ class ValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$dataValue->expects( $this->once() )
 			->method( 'getLongHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getDataItem' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getFormattedSubject( $dataValue )
 		);
 	}
 
 	public function testGetFormattedValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$dataValue->expects( $this->once() )
 			->method( 'getLongHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getFormattedValue( $dataValue, $propertyValue )
 		);
 	}
 
 	public function testGetPropertyLabel() {
-
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyValue->expects( $this->once() )
 			->method( 'isVisible' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$propertyValue->expects( $this->once() )
 			->method( 'getShortHTMLText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			ValueFormatter::getPropertyLabel( $propertyValue )
 		);
 	}

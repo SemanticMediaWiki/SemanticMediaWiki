@@ -11,25 +11,24 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataModel\ContainerSemanticData
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class ContainerSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ContainerSemanticData::class,
 			new ContainerSemanticData( $this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN ) )
@@ -37,7 +36,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMakeAnonymousContainer() {
-
 		$instance = ContainerSemanticData::makeAnonymousContainer();
 		$instance->skipAnonymousCheck();
 
@@ -52,7 +50,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSubjectOnAnonymousContainerWithoutSkipThrowsException() {
-
 		$instance = ContainerSemanticData::makeAnonymousContainer();
 
 		$this->expectException( '\SMW\Exception\DataItemException' );
@@ -60,7 +57,6 @@ class ContainerSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCopyDataFrom() {
-
 		$subject = $this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN );
 
 		$semanticData = new SemanticData(

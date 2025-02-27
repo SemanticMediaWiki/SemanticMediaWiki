@@ -2,33 +2,33 @@
 
 namespace SMW\Tests\Query\Cache;
 
-use SMW\Query\Cache\ResultCache;
-use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Query\Cache\CacheStats;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use SMW\DIWikiPage;
+use SMW\Query\Cache\CacheStats;
+use SMW\Query\Cache\ResultCache;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Cache\ResultCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ResultCacheTest extends \PHPUnit_Framework_TestCase {
+class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 	private $queryFactory;
 	private $blobStore;
+	private Container $container;
 	private $cacheStats;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -51,7 +51,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ResultCache::class,
 			new ResultCache( $this->store, $this->queryFactory, $this->blobStore, $this->cacheStats )
@@ -59,7 +58,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultForEmptyQuery() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -70,7 +68,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$queryEngine->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with($this->identicalTo( $query ) );
+			->with( $this->identicalTo( $query ) );
 
 		$instance = new ResultCache(
 			$this->store,
@@ -85,14 +83,13 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetQueryResultFromTempCache() {
-
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'read' )
-			->will( $this->returnValue( $this->container ) );
+			->willReturn( $this->container );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -100,15 +97,15 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getQueryId' )
-			->will( $this->returnValue( __METHOD__ ) );
+			->willReturn( __METHOD__ );
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
 			->disableOriginalConstructor()
@@ -116,7 +113,7 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$queryEngine->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with($this->identicalTo( $query ) );
+			->with( $this->identicalTo( $query ) );
 
 		$instance = new ResultCache(
 			$this->store,
@@ -134,14 +131,13 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheByQueryList() {
-
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' );
@@ -157,13 +153,12 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoCache() {
-
 		$this->blobStore->expects( $this->never() )
 			->method( 'read' );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
@@ -171,16 +166,16 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getLimit' )
-			->will( $this->returnValue( 100 ) );
+			->willReturn( 100 );
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( DIWikiPage::newFromText( __METHOD__ ) ) );
+			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->at( 2 ) )
 			->method( 'getOption' )
-			->with( $this->equalTo( $query::NO_CACHE ) )
-			->will( $this->returnValue( true ) );
+			->with( $query::NO_CACHE )
+			->willReturn( true );
 
 		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
 			->disableOriginalConstructor()
@@ -198,7 +193,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissingQueryEngineThrowsException() {
-
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -215,20 +209,19 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheBySubject() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
-			->with( $this->equalTo( '1d1e1d94a78b9476c8213a16febe2c9b' ) );
+			->with( '1d1e1d94a78b9476c8213a16febe2c9b' );
 
 		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
@@ -244,20 +237,19 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWithHasHMutation() {
-
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
-			->with( $this->equalTo( '1e5509cfde15f1f569db295e845ce997' ) );
+			->with( '1e5509cfde15f1f569db295e845ce997' );
 
 		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
@@ -274,29 +266,28 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWith_QUERY() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$subject->expects( $this->atLeastOnce() )
 			->method( 'getSubobjectName' )
-			->will( $this->returnValue( '_QUERYfoo' ) );
+			->willReturn( '_QUERYfoo' );
 
 		$subject->expects( $this->never() )
 			->method( 'asBase' );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'delete' )
-			->with( $this->equalTo( 'dc63f8b4cab1bb1214979932b637cdec' ) );
+			->with( 'dc63f8b4cab1bb1214979932b637cdec' );
 
 		$this->cacheStats->expects( $this->once() )
 			->method( 'recordStats' );
@@ -312,7 +303,6 @@ class ResultCacheTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStats() {
-
 		$this->cacheStats->expects( $this->once() )
 			->method( 'getStats' );
 

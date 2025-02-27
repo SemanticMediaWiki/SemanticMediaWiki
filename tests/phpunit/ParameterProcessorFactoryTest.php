@@ -8,15 +8,14 @@ use SMW\ParameterProcessorFactory;
  * @covers \SMW\ParameterProcessorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
+class ParameterProcessorFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'SMW\ParameterProcessorFactory',
 			new ParameterProcessorFactory()
@@ -24,7 +23,6 @@ class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToEliminateFirstParameterIfObject() {
-
 		$parameter = [
 			new \stdClass
 		];
@@ -42,7 +40,6 @@ class ParameterProcessorFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewFromArray() {
-
 		$parameter = [
 			'La' => 'Lu'
 		];

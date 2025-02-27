@@ -14,7 +14,7 @@ use SMWDataItem as DataItem;
  * identifier string. IDs are local to the current context, such as a list of
  * triples or an SMWExpData container.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -28,7 +28,7 @@ class ExpResource extends ExpElement {
 	private $uri;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isImported = false;
 
@@ -41,8 +41,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function __construct( $uri, DataItem $dataItem = null ) {
-
+	public function __construct( $uri, ?DataItem $dataItem = null ) {
 		if ( !is_string( $uri ) ) {
 			throw new InvalidArgumentException( '$uri needs to be a string' );
 		}
@@ -59,7 +58,7 @@ class ExpResource extends ExpElement {
 	/**
 	 * Return true if this resource represents a blank node.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBlankNode() {
 		return $this->uri === '' || $this->uri[0] == '_';
@@ -68,7 +67,7 @@ class ExpResource extends ExpElement {
 	/**
 	 * @since 2.5
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isImported() {
 		return $this->isImported;
@@ -90,7 +89,6 @@ class ExpResource extends ExpElement {
 	 * @return array
 	 */
 	public function getSerialization() {
-
 		$serialization = [
 			'type' => self::TYPE_RESOURCE,
 			'uri'  => $this->getUri()
@@ -103,7 +101,6 @@ class ExpResource extends ExpElement {
 	 * @see ExpElement::newFromSerialization
 	 */
 	protected static function deserialize( $serialization ) {
-
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format" );
 		}

@@ -4,12 +4,12 @@ namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\DIWikiPage;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	private $compositeIndicatorHtmlBuilder;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicatorProviders = [];
 
@@ -32,12 +32,12 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	private $permissionExaminer;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $modules = [ 'smw.entityexaminer' ];
 
@@ -65,7 +65,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -74,7 +74,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return $this->modules;
@@ -85,7 +85,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner';
 	}
 
@@ -106,10 +106,9 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( isset( $options['action'] ) && ( $options['action'] === 'edit' || $options['action'] === 'history' ) ) {
 			return false;
 		}
@@ -121,8 +120,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 		return $this->checkIndicators( $subject, $options );
 	}
 
-	private function checkIndicators( DIWikiPage $subject, array $options ) : bool {
-
+	private function checkIndicators( DIWikiPage $subject, array $options ): bool {
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['options_raw'] = json_encode( $options );

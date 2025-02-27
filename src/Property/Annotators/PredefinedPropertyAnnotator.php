@@ -5,7 +5,7 @@ namespace SMW\Property\Annotators;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\PageInfo;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use SMW\PropertyRegistry;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -13,7 +13,7 @@ use SMWDIBoolean as DIBoolean;
 use SMWDITime as DITime;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -33,10 +33,10 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param PageInfo $pageInfo
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, PageInfo $pageInfo ) {
+	public function __construct( Annotator $propertyAnnotator, PageInfo $pageInfo ) {
 		parent::__construct( $propertyAnnotator );
 		$this->pageInfo = $pageInfo;
 	}
@@ -51,7 +51,6 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		$cachedProperties = [];
 
 		foreach ( $this->predefinedPropertyList as $propertyId ) {
@@ -82,20 +81,19 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function createDataItemByPropertyId( $propertyId ) {
-
 		$dataItem = null;
 
 		switch ( $propertyId ) {
-			case DIProperty::TYPE_MODIFICATION_DATE :
+			case DIProperty::TYPE_MODIFICATION_DATE:
 				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getModificationDate() );
 				break;
-			case DIProperty::TYPE_CREATION_DATE :
+			case DIProperty::TYPE_CREATION_DATE:
 				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getCreationDate() );
 				break;
-			case DIProperty::TYPE_NEW_PAGE :
+			case DIProperty::TYPE_NEW_PAGE:
 				$dataItem = new DIBoolean( $this->pageInfo->isNewPage() );
 				break;
-			case DIProperty::TYPE_LAST_EDITOR :
+			case DIProperty::TYPE_LAST_EDITOR:
 				$dataItem = $this->pageInfo->getLastEditor() ? DIWikiPage::newFromTitle( $this->pageInfo->getLastEditor() ) : null;
 				break;
 			case DIProperty::TYPE_MEDIA : // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength

@@ -3,18 +3,18 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Message;
-use SMW\NamespaceManager;
-use WebRequest;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\NamespaceManager;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -49,7 +49,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'settings';
 	}
 
@@ -58,7 +58,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -68,7 +68,6 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-settings-title' ),
 			[
@@ -94,7 +93,6 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-settings-title' ) ] )
 		);
@@ -163,7 +161,6 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 	}
 
 	private function cleanPath( array &$options ) {
-
 		foreach ( $options as $key => &$value ) {
 			if ( is_array( $value ) ) {
 				$this->cleanPath( $value );

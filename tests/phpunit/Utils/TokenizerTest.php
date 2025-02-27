@@ -8,18 +8,17 @@ use SMW\Utils\Tokenizer;
  * @covers \SMW\Utils\Tokenizer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TokenizerTest extends \PHPUnit_Framework_TestCase {
+class TokenizerTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider textProvider
 	 */
 	public function testTokenize( $text, $expected ) {
-
 		$this->assertEquals(
 			$expected,
 			Tokenizer::tokenize( $text )
@@ -27,7 +26,6 @@ class TokenizerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
 		$provider[] = [
 			'foo',
 			[ 'foo' ]

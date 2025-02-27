@@ -3,7 +3,7 @@
 /**
  * Collection of resource module definitions
  *
- * @license GNU GPL v2 or later
+ * @license GNU GPL v2
  * @since 1.8
  *
  * @author mwjames
@@ -14,8 +14,7 @@ $pathParts = explode( '/', str_replace( DIRECTORY_SEPARATOR, '/', __DIR__ ) );
 
 $moduleTemplate = [
 	'localBasePath' => __DIR__,
-	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) ),
-	'group' => 'ext.smw'
+	'remoteExtPath' => implode( '/', array_slice( $pathParts, -2 ) )
 ];
 
 return [
@@ -29,31 +28,33 @@ return [
 	// Resource is loaded at the top otherwise the stylesheet will only
 	// become active after all content is loaded with icons appearing with a
 	// delay due to missing stylesheet definitions at the time of the display
-	'ext.smw.style' => $moduleTemplate + [
+	'ext.smw.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.css',
-			'smw/ext.smw.skin.css',
 			'smw/ext.smw.dropdown.css',
 			'smw/ext.smw.table.css',
-			'smw/ext.smw.tabs.css',
-			'smw/factbox/smw.factbox.css',
+			'smw/ext.smw.tabs.less',
 			'smw/smw.indicators.css',
 			'smw/smw.jsonview.css'
 		],
-		'position' => 'top',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	'ext.smw.special.styles' => $moduleTemplate + [
-		'styles' => [
-			'smw/special/smw.special.preferences.css'
+		'skinStyles' => [
+			'chameleon' => [ 'smw/ext.smw.skin-chameleon.css' ],
+			'foreground' => [ 'smw/ext.smw.skin-foreground.css' ],
+			'vector' => [ 'smw/ext.smw.skin-vector.css' ]
 		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
+	// https://github.com/TerryZ/SelectMenu
 	'smw.ui' => $moduleTemplate + [
-		'scripts' => 'smw/smw.ui.js',
-		'dependencies' => [ 'ext.smw', 'jquery.selectmenu' ],
+		'scripts' => [
+			'jquery/jquery.selectmenu.js',
+			'smw/smw.ui.js'
+		],
+		'dependencies' => [
+			'ext.smw',
+			'smw.ui.styles'
+		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -62,7 +63,6 @@ return [
 			'jquery/jquery.selectmenu.css',
 			'smw/smw.selectmenu.css'
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -70,51 +70,15 @@ return [
 		'styles' => [
 			'smw/smw.summarytable.css'
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	'ext.smw.special.style' => $moduleTemplate + [
+	'ext.smw.special.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/special/ext.smw.special.css'
+			'smw/special/ext.smw.special.less',
+			'smw/special/ext.smw.special.preferences.css'
 		],
-		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// https://github.com/TerryZ/SelectMenu
-	'jquery.selectmenu' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.selectmenu.js',
-		'dependencies' => [
-		'jquery.selectmenu.styles'
-		],
-		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'jquery.selectmenu.styles' => $moduleTemplate + [
-		'styles' => [
-			'jquery/jquery.selectmenu.css',
-			'smw/smw.selectmenu.css'
-		],
-		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'jquery.jsonview' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.jsonview.js',
-		'styles' => 'jquery/jquery.jsonview.css',
-		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
 	],
 
 	// Load the module explicitly, otherwise mobile will complain with
@@ -122,54 +86,6 @@ return [
 	'ext.jquery.async' => $moduleTemplate + [
 		'scripts' => 'jquery/jquery.async.js',
 		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Avoid "Warning: Use of the json module is deprecated since MediaWiki 1.29"
-	// jStorage was added in MW 1.20
-	'ext.jquery.jStorage' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.jstorage.js',
-		'dependencies' => version_compare( MW_VERSION, '1.29', '<' ) ? 'json' : [],
-	],
-
-	// md5 hash key generator
-	'ext.jquery.md5' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.md5.js'
-	],
-
-	// dataItem representation
-	'ext.smw.dataItem' => $moduleTemplate + [
-		'scripts' => [
-			'smw/data/ext.smw.dataItem.wikiPage.js',
-			'smw/data/ext.smw.dataItem.uri.js',
-			'smw/data/ext.smw.dataItem.time.js',
-			'smw/data/ext.smw.dataItem.property.js',
-			'smw/data/ext.smw.dataItem.unknown.js',
-			'smw/data/ext.smw.dataItem.number.js',
-			'smw/data/ext.smw.dataItem.text.js',
-			'smw/data/ext.smw.dataItem.geo.js',
-		],
-		'dependencies' => [
-			'ext.smw',
-			'mediawiki.Title',
-			'mediawiki.Uri'
-		]
-	],
-
-	// dataValue representation
-	'ext.smw.dataValue' => $moduleTemplate + [
-		'scripts' => [
-			'smw/data/ext.smw.dataValue.quantity.js',
-		],
-		'dependencies' => 'ext.smw.dataItem'
-	],
-
-	// dataItem representation
-	'ext.smw.data' => $moduleTemplate + [
-		'scripts' => 'smw/data/ext.smw.data.js',
-		'dependencies' => [
-			'ext.smw.dataItem',
-			'ext.smw.dataValue'
-		]
 	],
 
 	// Query
@@ -184,13 +100,25 @@ return [
 
 	// API
 	'ext.smw.api' => $moduleTemplate + [
-		'scripts' => 'smw/api/ext.smw.api.js',
+		'scripts' => [
+			'smw/data/ext.smw.dataItem.wikiPage.js',
+			'smw/data/ext.smw.dataItem.uri.js',
+			'smw/data/ext.smw.dataItem.time.js',
+			'smw/data/ext.smw.dataItem.property.js',
+			'smw/data/ext.smw.dataItem.unknown.js',
+			'smw/data/ext.smw.dataItem.number.js',
+			'smw/data/ext.smw.dataItem.text.js',
+			'smw/data/ext.smw.dataItem.geo.js',
+			'smw/data/ext.smw.dataValue.quantity.js',
+			'smw/data/ext.smw.data.js',
+			'smw/api/ext.smw.api.js'
+		],
 		'dependencies' => [
+			'mediawiki.Title',
+			'mediawiki.storage',
 			'mediawiki.util',
-			'ext.smw.data',
-			'ext.smw.query',
-			'ext.jquery.jStorage',
-			'ext.jquery.md5'
+			'ext.smw',
+			'ext.smw.query'
 		]
 	],
 
@@ -200,34 +128,31 @@ return [
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip qtip2 resources
-	'ext.jquery.qtip.styles' => $moduleTemplate + [
-		'styles' => 'jquery/jquery.qtip.css',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip qtip2 resources
-	'ext.jquery.qtip' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.qtip.js',
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip
+	// Critical CSS for ext.smw.tooltip
 	'ext.smw.tooltip.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/util/ext.smw.util.tooltip.css'
+			'smw/util/ext.smw.tooltip.less'
 		],
 		'position' => 'top',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
-	// Tooltip
-	'ext.smw.tooltip.old' => $moduleTemplate + [
-		'scripts' => 'smw/util/ext.smw.util.tooltip.js',
-		'dependencies' => [
-			'ext.smw.tooltip.styles',
+	'ext.smw.tooltip'  => $moduleTemplate + [
+		'position' => 'top',
+		'styles' => [
+			'libs/tippy/light-border.css',
+			'libs/tippy/scale.css',
+			'smw/util/ext.smw.tooltip.tippy.less'
+		],
+		'scripts'  => [
+			'libs/tippy/popper.min.js',
+			'libs/tippy/tippy.min.js',
+			'smw/util/ext.smw.tooltip.tippy.js'
+		],
+		'dependencies'  => [
 			'ext.smw',
-			'ext.jquery.qtip'
+			'ext.smw.tooltip.styles',
+			'mediawiki.api'
 		],
 		'messages' => [
 			'smw-ui-tooltip-title-property',
@@ -237,25 +162,15 @@ return [
 			'smw-ui-tooltip-title-warning',
 			'smw-ui-tooltip-title-parameter',
 			'smw-ui-tooltip-title-event',
+			'smw-ui-tooltip-title-error',
+			'smw-ui-tooltip-title-note',
+			'smw-ui-tooltip-title-legend',
+			'smw-ui-tooltip-title-reference'
 		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	// Tooltip
-	'ext.smw.tooltip' => $moduleTemplate + [
-		'dependencies' => [
-			'ext.smw.tooltip.styles',
-			'smw.tippy'
-		],
-		'targets' => [ 'mobile', 'desktop' ]
-	],
-
-	'ext.smw.tooltips' => $moduleTemplate + [
-		'dependencies' => [
-			'ext.smw.style',
-			'smw.tippy'
-		],
-		'targets' => [ 'mobile', 'desktop' ]
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
 	],
 
 	// Autocomplete resources
@@ -272,10 +187,9 @@ return [
 			'smw-purge-failed',
 			'smw-purge-update-dependencies'
 		],
-		'position' => 'top',
-		'dependencies' => array_merge( [
-			'mediawiki.api',
-		], version_compare( MW_VERSION, '1.35', '<' ) ? [ 'mediawiki.notify' ] : [] ),
+		'dependencies' => [
+			'mediawiki.api'
+		],
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -287,7 +201,6 @@ return [
 		'styles' => [
 			'smw/util/ext.smw.vertical.tabs.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -302,7 +215,6 @@ return [
 		'scripts' => [
 			'smw/util/ext.smw.vertical.tabs.js'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -314,7 +226,6 @@ return [
 		'styles' => [
 			'smw/util/ext.smw.modal.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -329,7 +240,6 @@ return [
 		'scripts' => [
 			'smw/util/ext.smw.modal.js'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -339,7 +249,6 @@ return [
 	// Special:Search
 	'smw.special.search.styles' => $moduleTemplate + [
 		'styles' => 'smw/special.search/search.css',
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -353,8 +262,8 @@ return [
 			'smw/special.search/search.form.js'
 		],
 		'styles' => 'smw/special.search/search.css',
-		'position' => 'top',
 		'dependencies' => [
+			'ext.smw.styles',
 			'ext.smw',
 			'smw.ui'
 		],
@@ -371,13 +280,12 @@ return [
 	// Postproc resources
 	'ext.smw.postproc' => $moduleTemplate + [
 		'scripts' => 'smw/util/ext.smw.util.postproc.js',
-		'position' => 'top',
 		'messages' => [
 			'smw-postproc-queryref'
 		],
-		'dependencies' => array_merge( [
-			'mediawiki.api',
-		], version_compare( MW_VERSION, '1.35', '<' ) ? [ 'mediawiki.notify' ] : [] ),
+		'dependencies' => [
+			'mediawiki.api'
+		],
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -385,35 +293,18 @@ return [
 	],
 
 	// https://github.com/ichord/Caret.js
-	'ext.jquery.caret' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.caret.js',
-		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	// https://github.com/ichord/At.js
-	'ext.jquery.atwho' => $moduleTemplate + [
-		'scripts' => 'jquery/jquery.atwho.js',
-		'styles' => 'jquery/jquery.atwho.css',
-		'position' => 'top',
-		'dependencies' => [
-			'ext.jquery.caret'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
 	'ext.smw.suggester' => $moduleTemplate + [
-		'scripts' => 'smw/suggester/ext.smw.suggester.js',
-		'position' => 'top',
+		'scripts' => [
+			'jquery/jquery.caret.js',
+			'jquery/jquery.atwho.js',
+			'smw/suggester/ext.smw.suggester.js'
+		],
+		'styles' => [
+			'jquery/jquery.atwho.css'
+		],
 		'dependencies' => [
-			'ext.smw',
-			'ext.jquery.atwho'
+			'ext.smw'
 		],
 		'targets' => [
 			'mobile',
@@ -423,7 +314,6 @@ return [
 
 	'ext.smw.suggester.textInput' => $moduleTemplate + [
 		'scripts' => 'smw/suggester/ext.smw.suggester.textInput.js',
-		'position' => 'top',
 		'dependencies' => [
 			'ext.smw',
 			'ext.smw.suggester'
@@ -440,7 +330,6 @@ return [
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
 		],
-		'position' => 'bottom',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
@@ -454,14 +343,12 @@ return [
 			'mediawiki.util',
 			'ext.jquery.autocomplete'
 		],
-		'position' => 'bottom',
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
 	// Special:Ask
 	'ext.smw.ask.styles' => $moduleTemplate + [
-		'styles' => 'smw/special/ext.smw.special.ask.css',
-		'position' => 'top',
+		'styles' => 'smw/special/ext.smw.special.ask.less',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -473,7 +360,7 @@ return [
 		'scripts' => 'smw/special/ext.smw.special.ask.js',
 		'dependencies' => [
 			'ext.smw.tooltip',
-			'ext.smw.style',
+			'ext.smw.styles',
 			'ext.smw.ask.styles',
 			'ext.smw.suggester'
 		],
@@ -487,7 +374,6 @@ return [
 			'smw-section-expand',
 			'smw-section-collapse'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -499,21 +385,42 @@ return [
 		'styles' => [
 			'smw/ext.smw.table.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
 		]
 	],
 
-	// Facts and browse
+	// Factbox styles
+	'ext.smw.factbox.styles' => $moduleTemplate + [
+		'styles' => [
+			'smw/factbox.less'
+		],
+		'skinStyles' => [
+			'vector-2022' => [ 'smw/factbox-vector-2022.less' ]
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	// Load sortable script for attachment table
+	'ext.smw.factbox' => $moduleTemplate + [
+		'packagedFiles' => [
+			'smw/ext.smw.factbox.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	// Special:Browse
 	'ext.smw.browse.styles' => $moduleTemplate + [
 		'styles' => [
-			'smw/ext.smw.table.css',
-			'smw/special/ext.smw.special.browse.css',
-			'smw/special/ext.smw.special.browse.skin.css',
+			'smw/special/ext.smw.special.browse.less'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -524,9 +431,8 @@ return [
 		'scripts' => 'smw/special/ext.smw.special.browse.js',
 		'dependencies' => [
 			'mediawiki.api',
-			'ext.smw.style'
+			'ext.smw.styles'
 		],
-		'position' => 'top',
 		'messages' => [
 			'smw-browse-api-subject-serialization-invalid'
 		],
@@ -558,7 +464,28 @@ return [
 			'smw-no-data-available',
 			'smw-list-count'
 		],
-		'position' => 'top',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	// Special:FactedSearch
+	'smw.special.facetedsearch.styles' => $moduleTemplate + [
+		'styles' => 'smw/special/smw.special.facetedsearch.css',
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'smw.special.facetedsearch' => $moduleTemplate + [
+		'scripts' => 'smw/special/smw.special.facetedsearch.js',
+		'dependencies' => [
+			'smw.special.facetedsearch.styles',
+			'onoi.rangeslider',
+			// 'vue'
+		],
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -577,7 +504,6 @@ return [
 			'smw-personal-jobqueue-watchlist-explain',
 			'brackets'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -590,14 +516,15 @@ return [
 			'smw/printer/ext.smw.tableprinter.js'
 		],
 		'styles'   => [
-			'smw/printer/ext.smw.tableprinter.css',
-			'smw/printer/ext.smw.tableprinter.skin.css'
+			'smw/printer/ext.smw.tableprinter.css'
+		],
+		'skinStyles' => [
+			'chameleon' => [ 'smw/printer/ext.smw.tableprinter.skin-chameleon.css' ]
 		],
 		'dependencies' => [
 			'onoi.dataTables',
 			'ext.smw.query'
 		],
-		'position' => 'top',
 		'messages' => [
 			"smw-format-datatable-emptytable",
 			"smw-format-datatable-info",
@@ -622,19 +549,18 @@ return [
 
 	'smw.tableprinter.datatable.styles' => $moduleTemplate + [
 		'styles'   => [
-			'smw/printer/ext.smw.tableprinter.css',
-			'smw/printer/ext.smw.tableprinter.skin.css'
+			'smw/printer/ext.smw.tableprinter.css'
 		],
-		'position' => 'top',
+		'skinStyles' => [
+			'chameleon' => [ 'smw/printer/ext.smw.tableprinter.skin-chameleon.css' ]
+		],
 		'targets' => [ 'mobile', 'desktop' ]
 	],
 
 	// Deferred
 	'ext.smw.deferred.styles'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles'   => [
-			'smw/deferred/ext.smw.deferred.css',
-			'smw/deferred/ext.smw.deferred.skin.css'
+			'smw/deferred/ext.smw.deferred.css'
 		],
 		'targets' => [
 			'mobile',
@@ -643,15 +569,12 @@ return [
 	],
 
 	'ext.smw.deferred'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles'   => [
-			'smw/deferred/ext.smw.deferred.css',
-			'smw/deferred/ext.smw.deferred.skin.css'
+			'smw/deferred/ext.smw.deferred.css'
 		],
 		'scripts'  => [ 'smw/deferred/ext.smw.deferred.js' ],
 		'dependencies'  => [
 			'mediawiki.api',
-			'mediawiki.api.parse',
 			'onoi.rangeslider'
 		],
 		'messages' => [
@@ -667,9 +590,9 @@ return [
 	'ext.smw.page.styles' => $moduleTemplate + [
 		'styles' => [
 			'smw/ext.smw.page.css',
-			'smw/ext.smw.table.css'
+			'smw/ext.smw.table.css',
+			'smw/smw.jsonview.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -677,35 +600,30 @@ return [
 	],
 
 	'smw.property.page'  => $moduleTemplate + [
-		'position' => 'top',
 		'scripts'  => [ 'smw/util/smw.property.page.js' ],
 		'dependencies'  => [
 			'mediawiki.api',
-			'mediawiki.api.parse',
 			'ext.smw.tooltip',
+			'smw.jsonview'
 		],
 		'messages' => [
 			'smw_result_noresults'
 		],
-	],
-
-	// Schema content styles
-	'smw.content.schema' => $moduleTemplate + [
-		'styles' => [
-			'smw/content/smw.schema.css',
-			'smw/ext.smw.table.css'
-		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
 		]
 	],
 
-	'smw.factbox'  => $moduleTemplate + [
-		'scripts'  => [
-			'libs/tinysort/tinysort.min.js',
-			'smw/factbox/smw.factbox.js'
+	// Schema content styles
+	'smw.content.schema' => $moduleTemplate + [
+		'styles' => [
+			'smw/content/smw.schema.less',
+			'smw/ext.smw.table.css'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
 		]
 	],
 
@@ -715,18 +633,6 @@ return [
 		],
 		'dependencies'  => [
 			'smw.jsonview'
-		],
-		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'jquery.mark.js'  => $moduleTemplate + [
-		'position' => 'top',
-		'scripts'  => [
-			'jquery/jquery.mark.js'
 		],
 		'targets' => [
 			'mobile',
@@ -738,7 +644,6 @@ return [
 		'styles' => [
 			'smw/smw.jsonview.css'
 		],
-		'position' => 'top',
 		'targets' => [
 			'mobile',
 			'desktop'
@@ -747,9 +652,12 @@ return [
 
 	'smw.jsonview' => $moduleTemplate + [
 		'scripts' => [
+			'jquery/jquery.jsonview.js',
+			'jquery/jquery.mark.js',
 			'smw/smw.jsonview.js'
 		],
 		'styles' => [
+			'jquery/jquery.jsonview.css',
 			'smw/smw.jsonview.css'
 		],
 		'messages' => [
@@ -762,59 +670,7 @@ return [
 			'smw-jsonview-search-label'
 		],
 		'dependencies'  => [
-			'jquery.jsonview',
-			'jquery.mark.js',
 			'ext.smw'
-		],
-		'position' => 'top',
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'ext.libs.tippy'  => $moduleTemplate + [
-		'position' => 'top',
-		'styles' => [
-			'libs/tippy/tippy.css',
-			'libs/tippy/light-border.css',
-			'libs/tippy/light.css'
-		],
-		'scripts'  => [
-			'libs/tippy/popper.min.js',
-			'libs/tippy/tippy.js'
-		],
-		'targets' => [
-			'mobile',
-			'desktop'
-		]
-	],
-
-	'smw.tippy'  => $moduleTemplate + [
-		'position' => 'top',
-		'styles' => [
-			'smw/util/smw.tippy.css'
-		],
-		'scripts'  => [
-			'smw/util/smw.tippy.js'
-		],
-		'dependencies'  => [
-			'ext.smw',
-			'mediawiki.api',
-			'ext.libs.tippy',
-		],
-		'messages' => [
-			'smw-ui-tooltip-title-property',
-			'smw-ui-tooltip-title-quantity',
-			'smw-ui-tooltip-title-info',
-			'smw-ui-tooltip-title-service',
-			'smw-ui-tooltip-title-warning',
-			'smw-ui-tooltip-title-parameter',
-			'smw-ui-tooltip-title-event',
-			'smw-ui-tooltip-title-error',
-			'smw-ui-tooltip-title-note',
-			'smw-ui-tooltip-title-legend',
-			'smw-ui-tooltip-title-reference'
 		],
 		'targets' => [
 			'mobile',
@@ -823,7 +679,6 @@ return [
 	],
 
 	'smw.entityexaminer'  => $moduleTemplate + [
-		'position' => 'top',
 		'styles' => [
 			'smw/util/smw.entityexaminer.css'
 		],
@@ -831,8 +686,8 @@ return [
 			'smw/util/smw.entityexaminer.js'
 		],
 		'dependencies'  => [
-			'mediawiki.api',
-			'smw.tippy',
+			'ext.smw',
+			'mediawiki.api'
 		],
 		'targets' => [
 			'mobile',
@@ -840,5 +695,56 @@ return [
 		]
 	],
 
+	'onoi.rangeslider' => $moduleTemplate + [
+		'styles' => [
+			'onoi/jquery.rangeSlider/ion.rangeSlider.css',
+			'onoi/jquery.rangeSlider/ion.rangeSlider.skinFlat.css'
+		],
+		'scripts' => [
+			'onoi/jquery.rangeSlider/ion.rangeSlider.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
 
+	'onoi.blobstore' => $moduleTemplate + [
+		'scripts' => [
+			'onoi/localForage/localforage.min.js',
+			'onoi/onoi.blobstore.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.clipboard' => $moduleTemplate + [
+		'scripts' => [
+			'onoi/clipboard/clipboard.js',
+			'onoi/onoi.clipboard.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
+
+	'onoi.dataTables' => $moduleTemplate + [
+		'styles' => [
+			'onoi/jquery.dataTables/dataTables.searchHighlight.css',
+			'onoi/jquery.dataTables/datatables.min.css'
+		],
+		'scripts' => [
+			'onoi/jquery.highlight/jquery.highlight.js',
+			'onoi/jquery.dataTables/dataTables.searchHighlight.js',
+			'onoi/jquery.dataTables/datatables.min.js',
+			'onoi/jquery.dataTables/dataTables.search.js'
+		],
+		'targets' => [
+			'mobile',
+			'desktop'
+		]
+	],
 ];

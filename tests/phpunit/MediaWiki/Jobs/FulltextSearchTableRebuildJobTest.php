@@ -2,41 +2,60 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
+use SMW\StoreFactory;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
+class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	/**
+	 * @var TestDatabaseTableBuilder
+	 */
+	protected $testDatabaseTableBuilder;
+
+	/**
+	 * @var bool
+	 */
+	protected $isUsableUnitTestDatabase = true;
+
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->getMockForAbstractClass();
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
 
-		$this->testEnvironment->registerObject( 'Store', $store );
+		try {
+			$this->testDatabaseTableBuilder->doBuild();
+		} catch ( RuntimeException $e ) {
+			$this->isUsableUnitTestDatabase = false;
+		}
+
+		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -51,7 +70,6 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new FulltextSearchTableRebuildJob(
@@ -65,7 +83,6 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];
@@ -79,6 +96,10 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return $provider;
+	}
+
+	protected function getStore() {
+		return StoreFactory::getStore();
 	}
 
 }

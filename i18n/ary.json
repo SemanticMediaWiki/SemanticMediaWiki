@@ -2,14 +2,16 @@
 	"@metadata": {
 		"authors": [
 			"Abdeaitali",
-			"Amire80",
 			"Ideophagous",
 			"Reda Benkhadra",
 			"SADIQUI"
 		]
 	},
+	"smw-categories": "تصنيفات",
 	"smw-ask-order-rand": "صفحة كيما كانت",
 	"browse": "تصفّح الويكي",
+	"smw_browse_go": "سير",
+	"pageproperty": "التقلاب ف مزيّات صفحة",
 	"smw-admin-supplementary-elastic-version-info": "نسخة",
 	"smw-admin-supplementary-elastic-config": "ريكلاج",
 	"smw-livepreview-loading": "tssna wa7d chwiya kaytcharja ....",

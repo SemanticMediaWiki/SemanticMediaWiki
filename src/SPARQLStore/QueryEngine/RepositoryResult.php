@@ -3,17 +3,17 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use Iterator;
-use SMWExpLiteral as ExpLiteral;
+use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * Class for accessing SPARQL query results in a unified form. The data is
- * structured in tabular form, with each cell containing some SMWExpElement.
+ * structured in tabular form, with each cell containing some \SMW\Exporter\Element\ExpElement.
  * Rows should always have the same number of columns, but the datatype of the
  * cells in each column may not be uniform throughout the result.
  *
  * @ingroup Sparql
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -41,7 +41,7 @@ class RepositoryResult implements Iterator {
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
 	 *
-	 * @var array of array of (SMWExpElement or null)
+	 * @var array of array of (\SMW\Exporter\Element\ExpElement or null)
 	 */
 	protected $data;
 
@@ -56,7 +56,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Error code.
 	 *
-	 * @var integer
+	 * @var int
 	 */
 	protected $errorCode;
 
@@ -64,7 +64,7 @@ class RepositoryResult implements Iterator {
 	 * Initialise a result set from a result string in SPARQL XML format.
 	 *
 	 * @param $header array mapping SPARQL variable names to column indices
-	 * @param $data array of array of (SMWExpElement or null)
+	 * @param $data array of array of (\SMW\Exporter\Element\ExpElement or null)
 	 * @param $comments array of string comments if the result contained any
 	 * @param $errorCode integer an error code
 	 */
@@ -79,7 +79,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Get the number of rows in the result object.
 	 *
-	 * @return integer number of result rows
+	 * @return int number of result rows
 	 */
 	public function numRows() {
 		return count( $this->data );
@@ -89,7 +89,7 @@ class RepositoryResult implements Iterator {
 	 * Return error code. SMWSparqlResultWrapper::ERROR_NOERROR (0)
 	 * indicates that no error occurred.
 	 *
-	 * @return integer error code
+	 * @return int error code
 	 */
 	public function getErrorCode() {
 		return $this->errorCode;
@@ -126,15 +126,15 @@ class RepositoryResult implements Iterator {
 	 * the case that the results do not look at all like the result of
 	 * an ASK query).
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isBooleanTrue() {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
 			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
-			     ( $expElement->getLexicalForm() == 'true' ) &&
-			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
+				 ( $expElement->getLexicalForm() == 'true' ) &&
+				 ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#boolean' ) ) {
 				return true;
 			}
 		}
@@ -147,14 +147,14 @@ class RepositoryResult implements Iterator {
 	 * other cases (including the case that the results do not look at all
 	 * like the result of a SELECT COUNT query).
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getNumericValue() {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
 			if ( ( count( $row ) == 1 ) && ( $expElement instanceof ExpLiteral ) &&
-			     ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
+				 ( $expElement->getDatatype() == 'http://www.w3.org/2001/XMLSchema#integer' ) ) {
 				return (int)$expElement->getLexicalForm();
 			}
 		}
@@ -164,15 +164,16 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Reset iterator to position 0. Standard method of Iterator.
 	 */
-	public function rewind() {
+	public function rewind(): void {
 		reset( $this->data );
 	}
 
 	/**
 	 * Return the current result row. Standard method of Iterator.
 	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
+	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function current() {
 		return current( $this->data );
 	}
@@ -181,8 +182,9 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
+	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function next() {
 		return next( $this->data );
 	}
@@ -191,8 +193,9 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
+	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
 	 */
+	#[\ReturnTypeWillChange]
 	public function key() {
 		return key( $this->data );
 	}
@@ -201,9 +204,9 @@ class RepositoryResult implements Iterator {
 	 * Return true if the internal pointer refers to a valid element.
 	 * Standard method of Iterator.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function valid() {
+	public function valid(): bool {
 		return ( current( $this->data ) !== false );
 	}
 

@@ -8,7 +8,7 @@ use SMW\Utils\JsonView;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -30,7 +30,6 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-settings-title' ),
 			[ 'action' => $this->getTask() ]
@@ -54,7 +53,6 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch settings' );
 
 		$this->outputFormatter->addParentLink(
@@ -66,18 +64,17 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$settings = [
-			$connection->getSettings(
+			ElasticClient::TYPE_DATA => $connection->getSettings(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_DATA )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_DATA )
 				]
 			),
-			$connection->getSettings(
+			ElasticClient::TYPE_LOOKUP => $connection->getSettings(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_LOOKUP )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP )
 				]
 			)
 		];

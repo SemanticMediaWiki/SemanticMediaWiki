@@ -2,28 +2,27 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\ErrorLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ErrorLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
+class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $connection;
 	private $iteratorFactory;
 
-	protected function setUp() : void {
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+	protected function setUp(): void {
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,7 +33,7 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
@@ -42,7 +41,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ErrorLookup::class,
 			new ErrorLookup( $this->store )
@@ -50,7 +48,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildArray() {
-
 		$res = [
 			(object)[ 'o_hash' => 'Foo', 'o_blob' => null ],
 			(object)[ 'o_hash' => 'Foo', 'o_blob' => 'Bar' ]
@@ -58,7 +55,7 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'unescape_bytea' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$instance = new ErrorLookup(
 			$this->store
@@ -74,7 +71,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindErrorsByType() {
-
 		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -86,37 +82,37 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->expects( $this->any() )
 			->method( 'findDiTypeTableId' )
-			->will( $this->onConsecutiveCalls( '_foo', '_bar' ) );
+			->willReturnOnConsecutiveCalls( '_foo', '_bar' );
 
 		$store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->onConsecutiveCalls( 'smw_di_blob', 'smw_di_blob', 'smw_di_blob' ) );
+			->willReturnOnConsecutiveCalls( 'smw_di_blob', 'smw_di_blob', 'smw_di_blob' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance = new ErrorLookup(
 			$store
@@ -145,7 +141,6 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindErrorsByType_WithSubobjects() {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->setOption( 'checkConstraintErrors', SMW_CONSTRAINT_ERR_CHECK_ALL );
 
@@ -160,37 +155,37 @@ class ErrorLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$store->expects( $this->any() )
 			->method( 'findDiTypeTableId' )
-			->will( $this->onConsecutiveCalls( '_foo', '_bar' ) );
+			->willReturnOnConsecutiveCalls( '_foo', '_bar' );
 
 		$store->expects( $this->any() )
 			->method( 'findPropertyTableID' )
-			->will( $this->onConsecutiveCalls( 'smw_fpt_sobj', 'smw_di_blob', 'smw_di_blob' ) );
+			->willReturnOnConsecutiveCalls( 'smw_fpt_sobj', 'smw_di_blob', 'smw_di_blob' );
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$instance = new ErrorLookup(
 			$store

@@ -3,46 +3,47 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWRecordValue as RecordValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMWRecordValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class RecordValueTest extends \PHPUnit_Framework_TestCase {
+class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	private $propertySpecificationLookup;
+
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMWRecordValue',
 			new RecordValue()
@@ -50,7 +51,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyDataItems() {
-
 		$expected = [
 			$this->dataItemFactory->newDIProperty( 'Bar' ),
 			$this->dataItemFactory->newDIProperty( 'Foobar' )
@@ -63,11 +63,11 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -88,7 +88,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseValue() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
@@ -96,11 +95,11 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -125,7 +124,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseValueOnMissingValues() {
-
 		$instance = new RecordValue();
 		$instance->setProperty(
 			$this->dataItemFactory->newDIProperty( 'Foo' )
@@ -140,7 +138,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testParseValueWithErroredDv() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
@@ -148,11 +145,11 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
 			->method( 'getFieldListBy' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) ) );
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
 
 		$store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -175,7 +172,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetValuesFromStringWithEncodedSemicolon() {
-
 		$instance = new RecordValue();
 
 		$this->assertEquals(
@@ -188,14 +184,13 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testGetQueryDescription( $properties, $value, $expected ) {
-
 		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\dataValueServiceFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->will( $this->returnValue( new \SMW\Query\DescriptionBuilderRegistry() ) );
+			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
 
 		$instance = new RecordValue( '_rec' );
 		$instance->setFieldProperties( $properties );
@@ -213,7 +208,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testGetWikiValue( $properties, $value, $expected ) {
-
 		$instance = new RecordValue( '_rec' );
 		$instance->setFieldProperties( $properties );
 
@@ -226,7 +220,6 @@ class RecordValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$dataItemFactory = new DataItemFactory();
 
 		$properties = [

@@ -10,12 +10,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
+class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,7 +23,7 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	private $key;
 	private $changeRecord;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
@@ -32,7 +32,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			CallableChangeListener::class,
 			new CallableChangeListener()
@@ -40,10 +39,8 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanTrigger() {
-
 		$instance = new CallableChangeListener();
 		$instance->addListenerCallback( 'foo', [ $this, 'observeChange' ] );
-
 
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )
@@ -55,7 +52,6 @@ class ChangeRecordTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTrigger() {
-
 		$instance = new CallableChangeListener();
 		$instance->addListenerCallback( 'foo', [ $this, 'observeChange' ] );
 

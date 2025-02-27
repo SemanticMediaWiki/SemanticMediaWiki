@@ -7,7 +7,7 @@ use SMWQueryProcessor as QueryProcessor;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -15,19 +15,19 @@ use WebRequest;
 class ParametersProcessor {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $defaultLimit = 50;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private static $maxInlineLimit = 500;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $defaultLimit
+	 * @param int $defaultLimit
 	 */
 	public static function setDefaultLimit( $defaultLimit ) {
 		self::$defaultLimit = $defaultLimit;
@@ -36,7 +36,7 @@ class ParametersProcessor {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $maxInlineLimit
+	 * @param int $maxInlineLimit
 	 */
 	public static function setMaxInlineLimit( $maxInlineLimit ) {
 		self::$maxInlineLimit = $maxInlineLimit;
@@ -51,7 +51,6 @@ class ParametersProcessor {
 	 * @return string
 	 */
 	public static function process( WebRequest $request, $params ) {
-
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
 		$parameterList = self::getParameterList( $request, $params );
@@ -66,7 +65,7 @@ class ParametersProcessor {
 		// Parameters separated by newlines here (compatible with text-input for
 		// printouts)
 		if ( ( $po = $request->getText( 'po' ) ) !== '' ) {
-			$printouts = explode( "\n", $po );
+			$printouts = explode( "\n", $po ?? '' );
 		}
 
 		// Check for param strings in po (printouts), appears in some links
@@ -77,7 +76,7 @@ class ParametersProcessor {
 			$printouts
 		);
 
-		list( $queryString, $parameters, $printouts ) =  QueryProcessor::getComponentsFromFunctionParams(
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parameterList,
 			false
 		);
@@ -164,7 +163,6 @@ class ParametersProcessor {
 	 * @return array
 	 */
 	private static function getParameterList( $request, $params ) {
-
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
 			return Infolink::decodeParameters( $params ?? '', true );
@@ -202,12 +200,11 @@ class ParametersProcessor {
 	}
 
 	private static function checkParameterList( $request, $parameterList, $printouts ) {
-
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
 
-			if ( ( $param !== '' ) && ( $param [0] != '?' ) ) {
+			if ( ( $param !== '' ) && ( $param[0] != '?' ) ) {
 				$param = '?' . $param;
 			}
 
@@ -254,7 +251,6 @@ class ParametersProcessor {
 	}
 
 	private static function hasPipe( $key, $value ) {
-
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}
@@ -273,7 +269,7 @@ class ParametersProcessor {
 	private static function replace( $source, $target, $value ) {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			function( array $matches ) use ( $source, $target ) {
+			static function ( array $matches ) use ( $source, $target ) {
 				return str_replace( [ $source ], [ $target ], $matches[0] );
 			},
 			$value

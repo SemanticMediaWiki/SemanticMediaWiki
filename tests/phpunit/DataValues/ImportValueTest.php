@@ -9,16 +9,16 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  * @covers \SMW\DataValues\ImportValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ImportValueTest extends \PHPUnit_Framework_TestCase {
+class ImportValueTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataValueServiceFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
@@ -31,11 +31,10 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 
 		$this->dataValueServiceFactory->expects( $this->any() )
 			->method( 'getValueParser' )
-			->will( $this->returnValue( new ImportValueParser( $mediaWikiNsContentReader ) ) );
+			->willReturn( new ImportValueParser( $mediaWikiNsContentReader ) );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValues\ImportValue',
 			new ImportValue()
@@ -43,7 +42,6 @@ class ImportValueTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testErrorForInvalidUserValue() {
-
 		$instance = new ImportValue();
 		$instance->setDataValueServiceFactory( $this->dataValueServiceFactory );
 

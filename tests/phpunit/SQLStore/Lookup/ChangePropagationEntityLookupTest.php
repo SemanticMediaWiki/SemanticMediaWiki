@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Iterators\AppendIterator;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMW\Tests\PHPUnitCompat;
 
@@ -11,19 +12,21 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\ChangePropagationEntityLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 	private $iteratorFactory;
 
-	protected function setUp() : void {
+	private AppendIterator $appendIterator;
+
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -40,7 +43,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationEntityLookup::class,
 			new ChangePropagationEntityLookup( $this->store, $this->iteratorFactory )
@@ -48,12 +50,11 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByProperty() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$this->iteratorFactory->expects( $this->any() )
 			->method( 'newAppendIterator' )
-			->will( $this->returnValue( $this->appendIterator ) );
+			->willReturn( $this->appendIterator );
 
 		$instance = new ChangePropagationEntityLookup(
 			$this->store,
@@ -67,12 +68,11 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByProperty_TypePropagation() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$this->iteratorFactory->expects( $this->any() )
 			->method( 'newAppendIterator' )
-			->will( $this->returnValue( $this->appendIterator ) );
+			->willReturn( $this->appendIterator );
 
 		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
 			->disableOriginalConstructor()
@@ -80,7 +80,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableInfoFetcher->expects( $this->any() )
 			->method( 'getDefaultDataItemTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$entityIdManager = $this->getMockBuilder( '\stdClass' )
 			->disableOriginalConstructor()
@@ -89,11 +89,11 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getDataItemPoolHashListFor' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -101,11 +101,11 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$instance = new ChangePropagationEntityLookup(
 			$store,
@@ -128,12 +128,11 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindByCategory() {
-
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
 		$this->iteratorFactory->expects( $this->any() )
 			->method( 'newAppendIterator' )
-			->will( $this->returnValue( $this->appendIterator ) );
+			->willReturn( $this->appendIterator );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -142,16 +141,16 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->equalTo( new DIProperty( '_INST' ) ),
+				new DIProperty( '_INST' ),
 				$this->anything() )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
 			->with(
 				$this->anything(),
-				$this->equalTo( new DIProperty( '_SUBC' ) ) )
-			->will( $this->returnValue( [ DIWikiPage::newFromText( 'Bar' ) ] ) );
+				new DIProperty( '_SUBC' ) )
+			->willReturn( [ DIWikiPage::newFromText( 'Bar' ) ] );
 
 		$instance = new ChangePropagationEntityLookup(
 			$store,
@@ -172,7 +171,6 @@ class ChangePropagationEntityLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAllOnUnknownTypeThrowsException() {
-
 		$instance = new ChangePropagationEntityLookup(
 			$this->store,
 			$this->iteratorFactory

@@ -8,15 +8,14 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
+class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory',
 			new DescriptionInterpreterFactory()
@@ -24,7 +23,6 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDispatchingDescriptionInterpreter() {
-
 		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
 			->getMock();

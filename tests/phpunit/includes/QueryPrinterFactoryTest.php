@@ -2,21 +2,21 @@
 
 namespace SMW\Tests;
 
-use SMW\QueryPrinterFactory;
 use SMW\Query\ResultPrinter;
+use SMW\Query\ResultPrinters\ListResultPrinter;
+use SMW\QueryPrinterFactory;
 use SMW\TableResultPrinter;
-use SMWListResultPrinter;
 
 /**
  * @covers \SMW\QueryPrinterFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -47,17 +47,17 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 		$factory = new QueryPrinterFactory();
 
 		$factory->registerFormat( 'table', TableResultPrinter::class );
-		$factory->registerFormat( 'list', SMWListResultPrinter::class );
+		$factory->registerFormat( 'list', ListResultPrinter::class );
 
 		$this->assertContains( 'table', $factory->getFormats() );
 		$this->assertContains( 'list', $factory->getFormats() );
 		$this->assertCount( 2, $factory->getFormats() );
 
-		$factory->registerFormat( 'table', SMWListResultPrinter::class );
+		$factory->registerFormat( 'table', ListResultPrinter::class );
 
 		$printer = $factory->getPrinter( 'table' );
 
-		$this->assertInstanceOf( SMWListResultPrinter::class, $printer );
+		$this->assertInstanceOf( ListResultPrinter::class, $printer );
 	}
 
 	public function testRegisterAliases() {
@@ -98,17 +98,17 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	public function testGetFormats() {
 		$factory = new QueryPrinterFactory();
 
-		$this->assertInternalType( 'array', $factory->getFormats() );
+		$this->assertIsArray( $factory->getFormats() );
 
 		$factory->registerFormat( 'table', TableResultPrinter::class );
-		$factory->registerFormat( 'list', SMWListResultPrinter::class );
+		$factory->registerFormat( 'list', ListResultPrinter::class );
 
 		$factory->registerAliases( 'foo', [ 'bar' ] );
 		$factory->registerAliases( 'foo', [ 'baz' ] );
 		$factory->registerAliases( 'ohi', [ 'there', 'o_O' ] );
 
 		$formats = $factory->getFormats();
-		$this->assertInternalType( 'array', $formats );
+		$this->assertIsArray( $formats );
 
 		$this->assertContains( 'table', $factory->getFormats() );
 		$this->assertContains( 'list', $factory->getFormats() );
@@ -135,7 +135,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPrinterThrowsException() {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
@@ -143,7 +142,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetCanonicalNameThrowsException() {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -154,7 +152,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider registerFormatExceptioProvider
 	 */
 	public function testRegisterFormatThrowsException( $formatName, $class ) {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -177,7 +174,6 @@ class QueryPrinterFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider registerAliasesExceptionProvider
 	 */
 	public function testRegisterAliasesThrowsException( $formatName, array $aliases ) {
-
 		$factory = new QueryPrinterFactory();
 
 		$this->expectException( 'InvalidArgumentException' );

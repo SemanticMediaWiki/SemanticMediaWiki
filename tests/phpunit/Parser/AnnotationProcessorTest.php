@@ -2,25 +2,23 @@
 
 namespace SMW\Tests\Parser;
 
-use SMW\Parser\LinksProcessor;
 use SMW\Parser\AnnotationProcessor;
 
 /**
  * @covers \SMW\Parser\AnnotationProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
+class AnnotationProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticData;
 	private $dataValueFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -31,7 +29,6 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			AnnotationProcessor::class,
 			new AnnotationProcessor( $this->semanticData )
@@ -39,7 +36,6 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSemanticData() {
-
 		$instance = new AnnotationProcessor(
 			$this->semanticData,
 			$this->dataValueFactory
@@ -52,7 +48,6 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanAnnotate() {
-
 		$instance = new AnnotationProcessor(
 			$this->semanticData,
 			$this->dataValueFactory
@@ -70,7 +65,6 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDataValueByText() {
-
 		$this->dataValueFactory->expects( $this->once() )
 			->method( 'newDataValueByText' );
 
@@ -83,7 +77,6 @@ class AnnotationProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewDataValueByItem() {
-
 		$dataItem = $this->getMockBuilder( 'SMWDataItem' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

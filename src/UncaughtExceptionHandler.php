@@ -8,7 +8,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -35,7 +35,6 @@ class UncaughtExceptionHandler {
 	 * @param Throwable $e
 	 */
 	public function registerHandler( $e ) {
-
 		$message = $e->getMessage();
 
 		if ( $e instanceof ConfigPreloadFileNotReadableException ) {
@@ -63,7 +62,6 @@ class UncaughtExceptionHandler {
 	}
 
 	private function reportConfigPreloadError( $e ) {
-
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -78,7 +76,6 @@ class UncaughtExceptionHandler {
 	}
 
 	private function reportExtensionRegistryError( $e ) {
-
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -97,7 +94,6 @@ class UncaughtExceptionHandler {
 	}
 
 	private function reportExtensionDependencyError( $e ) {
-
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -124,4 +120,3 @@ class UncaughtExceptionHandler {
 	}
 
 }
-

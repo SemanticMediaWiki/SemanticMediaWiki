@@ -12,19 +12,21 @@ use Title;
 /**
  * @covers \SMW\ParserData
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ParserDataTest extends \PHPUnit_Framework_TestCase {
+class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
+	private $revisionGuard;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,20 +41,19 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
@@ -65,7 +66,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInitialDataIsEmpty() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -77,7 +77,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateJobState() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -91,7 +90,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetterInstances() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -114,7 +112,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDataVlaueAndClear() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -140,7 +137,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddDataValueAndPushSemanticDataToParserOutput() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -153,7 +149,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
 		$instance->pushSemanticDataToParserOutput();
 
-		$title = Title::newFromText( __METHOD__ .'-1' );
+		$title = Title::newFromText( __METHOD__ . '-1' );
 
 		$newInstance = new ParserData( $title, $instance->getOutput() );
 
@@ -164,7 +160,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetSemanticData() {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -192,9 +187,9 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 	public function getPropertyValueDataProvider() {
 		return [
-			[ 'Foo'  , 'Bar', 0, 1 ],
-			[ '-Foo' , 'Bar', 1, 0 ],
-			[ '_Foo' , 'Bar', 1, 0 ],
+			[ 'Foo', 'Bar', 0, 1 ],
+			[ '-Foo', 'Bar', 1, 0 ],
+			[ '_Foo', 'Bar', 1, 0 ],
 		];
 	}
 
@@ -202,7 +197,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider getPropertyValueDataProvider
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
-
 		$title = Title::newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
@@ -232,18 +226,17 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateStore() {
-
 		$idTable = $this->getMockBuilder( '\stdClass' )
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
 		$idTable->expects( $this->any() )
 			->method( 'exists' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$idTable->expects( $this->any() )
 			->method( 'findAssociatedRev' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -255,7 +248,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -270,10 +263,9 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSkipUpdateOnMatchedMarker() {
-
 		$this->revisionGuard->expects( $this->once() )
 			->method( 'isSkippableUpdate' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 
@@ -283,11 +275,11 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
 			->disableOriginalConstructor()
@@ -306,7 +298,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasSemanticData() {
-
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData(
@@ -333,7 +324,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testImportFromParserOutput() {
-
 		$import = new ParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -369,14 +359,13 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddLimitReport() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()
@@ -389,24 +378,18 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 				$this->stringContains( 'smw-limitreport-Foo' ),
 				$this->stringContains( 'Bar' ) );
 
-		// FIXME 1.22+
-		if ( !method_exists( $parserOutput, 'setLimitReportData' ) ) {
-			$this->markTestSkipped( 'LimitReportData is not available.' );
-		}
-
 		$instance = new ParserData( $title, $parserOutput );
 		$instance->addLimitReport( 'Foo', 'Bar' );
 	}
 
 	public function testIsBlocked() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = new ParserOutput();
 
@@ -427,14 +410,13 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetGetOption() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = new ParserOutput();
 
@@ -451,7 +433,6 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddExtraParserKey() {
-
 		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -466,7 +447,7 @@ class ParserDataTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( -1 ) );
+			->willReturn( -1 );
 
 		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
 			->disableOriginalConstructor()

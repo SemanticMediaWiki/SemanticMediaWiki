@@ -17,7 +17,7 @@ use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -29,11 +29,11 @@ class DescriptionFactory {
 	 *
 	 * @param DataItem $dataItem
 	 * @param DIProperty|null $property = null
-	 * @param integer $comparator
+	 * @param int $comparator
 	 *
 	 * @return ValueDescription
 	 */
-	public function newValueDescription( DataItem $dataItem, DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
+	public function newValueDescription( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
 		return new ValueDescription( $dataItem, $property, $comparator );
 	}
 
@@ -83,7 +83,7 @@ class DescriptionFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $ns
+	 * @param int $ns
 	 *
 	 * @return NamespaceDescription
 	 */
@@ -121,7 +121,6 @@ class DescriptionFactory {
 	 * @return Description
 	 */
 	public function newFromDataValue( DataValue $dataValue ) {
-
 		if ( !$dataValue->isValid() ) {
 			return $this->newThingDescription();
 		}

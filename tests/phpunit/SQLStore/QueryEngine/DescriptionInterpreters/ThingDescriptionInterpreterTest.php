@@ -10,21 +10,21 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
+class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $conditionBuilder;
 	private $querySegmentValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,7 +34,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
 			->disableOriginalConstructor()
@@ -45,7 +45,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ThingDescriptionInterpreter::class,
 			new ThingDescriptionInterpreter( $this->conditionBuilder )
@@ -53,7 +52,6 @@ class ThingDescriptionInterpreterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInterpretDescription() {
-
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -8,7 +8,7 @@ use SMW\Tests\Utils\Runners\XmlImportRunner;
 /**
  * @group semantic-mediawiki-benchmark
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -70,7 +70,6 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 	 * @param array $case
 	 */
 	public function run( array $case ) {
-
 		$this->benchmarkReport = [];
 		$this->benchmarker->clear();
 
@@ -81,7 +80,7 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 		$file = $this->testCaseLocation . $case['importFrom'];
 
 		if ( !is_readable( $file ) ) {
-			throw new RuntimeException( $file  . ' as import file is not available.' );
+			throw new RuntimeException( $file . ' as import file is not available.' );
 		}
 
 		$ext = pathinfo( $file, PATHINFO_EXTENSION );
@@ -89,7 +88,6 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 		switch ( $ext ) {
 			case 'xml':
 				return $this->doXmlImport( $file, $case );
-				break;
 			default:
 				# code...
 				break;
@@ -97,7 +95,6 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 	}
 
 	private function doXmlImport( $file, array $case ) {
-
 		$this->xmlImportRunner->setFile( $file );
 		$this->xmlImportRunner->setVerbose( true );
 

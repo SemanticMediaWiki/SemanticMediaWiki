@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
-use SMW\SQLStore\TableDefinition;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMWDataItem as DataItem;
 
@@ -11,17 +11,17 @@ use SMWDataItem as DataItem;
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
+class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $propertyTypeFinder;
 	private $mwHooksHandler;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = new MwHooksHandler();
@@ -32,15 +32,13 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$this->mwHooksHandler->restoreListedHooks();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$dataItems = [];
 		$specials = [];
 		$fixed = [];
@@ -52,7 +50,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDataItemTypes() {
-
 		$dataItems = [ DataItem::TYPE_NUMBER => 'smw_di_number' ];
 		$specials = [];
 		$fixed = [];
@@ -71,7 +68,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 			DataItem::TYPE_NUMBER, 'smw_di_number'
 		);
 
-		$definition->setTableType( TableDefinition::TYPE_CORE );
+		$definition->setTableType( PropertyTableDefinition::TYPE_CORE );
 
 		$expected = [
 			'smw_di_number' => $definition
@@ -84,7 +81,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUserDefinedFixedPropertyDeclaration() {
-
 		$propertyKey = 'foo bar';
 		$expectedKey = 'Foo_bar';
 
@@ -94,7 +90,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->propertyTypeFinder->expects( $this->any() )
 			->method( 'findTypeID' )
-			->will( $this->returnValue( '_num' ) );
+			->willReturn( '_num' );
 
 		$instance = new PropertyTableDefinitionBuilder(
 			$this->propertyTypeFinder
@@ -109,7 +105,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->createHashedTableNameFrom( $expectedKey );
 		$definition = $instance->newTableDefinition( DataItem::TYPE_NUMBER, $tableName, $expectedKey );
 
-		$definition->setTableType( TableDefinition::TYPE_CORE );
+		$definition->setTableType( PropertyTableDefinition::TYPE_CORE );
 
 		$expected = [
 			'definition' => [ $tableName => $definition ],
@@ -128,7 +124,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSpecialProperties() {
-
 		$propertyKey = '_MDAT';
 
 		$dataItems = [];
@@ -148,7 +143,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableName = $instance->getTablePrefix() . strtolower( $propertyKey );
 
 		$definition = $instance->newTableDefinition( DataItem::TYPE_TIME, $tableName, $propertyKey );
-		$definition->setTableType( TableDefinition::TYPE_CORE );
+		$definition->setTableType( PropertyTableDefinition::TYPE_CORE );
 
 		$expected = [ $tableName => $definition ];
 
@@ -159,7 +154,6 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRedirects() {
-
 		$propertyKey = '_REDI';
 
 		$dataItems = [];
@@ -183,7 +177,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$tableDefinitions = $instance->getTableDefinitions();
 
 		$this->assertTrue(
-			$tableDefinitions[$tableName]->isTableType( TableDefinition::TYPE_CORE )
+			$tableDefinitions[$tableName]->isTableType( PropertyTableDefinition::TYPE_CORE )
 		);
 
 		$this->assertFalse(

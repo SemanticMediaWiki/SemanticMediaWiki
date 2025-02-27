@@ -3,9 +3,11 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use SMW\ConstraintFactory;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
@@ -22,29 +24,31 @@ use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
+use SMW\Store;
 use SMWNumberValue as NumberValue;
-use SMWPropertyValue as PropertyValue;
 use SMWTimeValue as TimeValue;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
+	private Store $store;
 	private $callbackContainerFactory;
 	private $servicesFileDir;
 	private $mediaWikiNsContentReader;
 	private $propertySpecificationLookup;
 	private $logger;
 	private $schemaFactory;
+	private ConstraintFactory $constraintFactory;
 	private $entityCache;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -55,7 +59,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +89,6 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-
 		array_unshift( $parameters, $service );
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
@@ -98,8 +101,8 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$containerBuilder->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 		$containerBuilder->registerObject( 'Store', $this->store );
 		$containerBuilder->registerObject( 'MediaWikiLogger', $this->logger );
-		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory  );
-		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory  );
+		$containerBuilder->registerObject( 'SchemaFactory', $this->schemaFactory );
+		$containerBuilder->registerObject( 'ConstraintFactory', $this->constraintFactory );
 		$containerBuilder->registerObject( 'EntityCache', $this->entityCache );
 
 		$containerBuilder->registerFromFile( $this->servicesFileDir . '/' . 'datavalues.php' );
@@ -111,7 +114,6 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function servicesProvider() {
-
 		$provider[] = [
 			DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID,
 			[],
@@ -190,11 +192,11 @@ class DataValueServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 			TimeValueFormatter::class
 		];
 
-		$provider[] = array(
+		$provider[] = [
 			'UnitConverter',
 			[],
 			'\SMW\DataValues\Number\UnitConverter'
-		);
+		];
 
 		return $provider;
 	}

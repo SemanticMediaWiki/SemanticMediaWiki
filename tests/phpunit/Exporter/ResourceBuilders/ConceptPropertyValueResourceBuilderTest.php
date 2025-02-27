@@ -12,17 +12,17 @@ use SMWExpData as ExpData;
  * @covers \SMW\Exporter\ResourceBuilders\ConceptPropertyValueResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConceptPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 		$this->testEnvironment = new TestEnvironment();
@@ -30,13 +30,12 @@ class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			ConceptPropertyValueResourceBuilder::class,
 			new ConceptPropertyValueResourceBuilder()
@@ -44,7 +43,6 @@ class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testIsNotResourceBuilderForNonConcProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new ConceptPropertyValueResourceBuilder();
@@ -55,7 +53,6 @@ class ConceptPropertyValueResourceBuilderTest extends \PHPUnit_Framework_TestCas
 	}
 
 	public function testAddResourceValueForConcProperty() {
-
 		$property = $this->dataItemFactory->newDIProperty( '_CONC' );
 		$dataItem = $this->dataItemFactory->newDIConcept( 'Foo' );
 

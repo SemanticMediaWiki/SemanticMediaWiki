@@ -2,16 +2,14 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DIWikiPage;
+use SMW\IteratorFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\IteratorFactory;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -34,12 +32,12 @@ class QueryLinksTableDisposer {
 	private $connection;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $onTransactionIdle = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $waitForReplication = false;
 
@@ -75,7 +73,6 @@ class QueryLinksTableDisposer {
 	 * @return ResultIterator
 	 */
 	public function newOutdatedQueryLinksResultIterator() {
-
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -101,7 +98,6 @@ class QueryLinksTableDisposer {
 	 * @return ResultIterator
 	 */
 	public function newUnassignedQueryLinksResultIterator() {
-
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -121,10 +117,9 @@ class QueryLinksTableDisposer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param stdClass|integer $id
+	 * @param stdClass|int $id
 	 */
 	public function cleanUpTableEntriesById( $id ) {
-
 		$fname = __METHOD__;
 
 		if ( isset( $id->id ) ) {
@@ -132,7 +127,7 @@ class QueryLinksTableDisposer {
 		}
 
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionIdle( function() use ( $id, $fname ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ) {
 				$this->connection->delete(
 					SQLStore::QUERY_LINKS_TABLE,
 					[

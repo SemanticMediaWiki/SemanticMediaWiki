@@ -6,7 +6,7 @@ use RuntimeException;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -56,7 +56,6 @@ class DeepRedirectTargetResolver {
 	}
 
 	private function doResolveRedirectTarget( Title $title ) {
-
 		$this->addToResolverTracker( $title );
 
 		if ( $this->isCircularByKnownRedirectTarget( $title ) ) {
@@ -79,7 +78,6 @@ class DeepRedirectTargetResolver {
 	}
 
 	private function addToResolverTracker( $title ) {
-
 		if ( !isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) ) {
 			$this->recursiveResolverTracker[$title->getPrefixedDBkey()] = 0;
 		}

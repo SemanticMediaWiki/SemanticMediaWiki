@@ -10,19 +10,19 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase {
+class UniquenessConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
 	private $uniqueValueConstraint;
 	private $propertySpecificationLookup;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
@@ -30,17 +30,16 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			UniquenessConstraintValueValidator::class,
 			new UniquenessConstraintValueValidator( $this->uniqueValueConstraint, $this->propertySpecificationLookup )
@@ -48,7 +47,6 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testValidate_HasNoConstraintViolation() {
-
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -58,22 +56,22 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$this->uniqueValueConstraint->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' );
 
 		$this->uniqueValueConstraint->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->setOption(
 			'smwgDVFeatures',
@@ -93,7 +91,6 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 	}
 
 	public function testValidate_HasConstraintViolation() {
-
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -103,22 +100,22 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit_Framework_TestCase
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->will( $this->returnValue( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) ) );
+			->willReturn( $this->dataItemFactory->newDIWikiPage( 'UV', NS_MAIN ) );
 
 		$dataValue->expects( $this->atLeastOnce() )
 			->method( 'getProperty' )
-			->will( $this->returnValue( $property ) );
+			->willReturn( $property );
 
 		$this->uniqueValueConstraint->expects( $this->atLeastOnce() )
 			->method( 'checkConstraint' );
 
 		$this->uniqueValueConstraint->expects( $this->once() )
 			->method( 'hasViolation' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'hasUniquenessConstraint' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$dataValue->setOption(
 			'smwgDVFeatures',

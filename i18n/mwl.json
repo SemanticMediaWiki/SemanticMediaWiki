@@ -1,10 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
-			"Athena in Wonderland"
+			"Athena in Wonderland",
+			"Cecílio"
 		]
 	},
 	"smw_exportrdf_submit": "Sportar",
+	"smw-categories": "Catadories",
 	"smw-ask-search": "Percurar",
 	"browse": "Nabegar pula wiki",
 	"prefs-general-options": "Oupçones girales",

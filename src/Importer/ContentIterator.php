@@ -5,7 +5,7 @@ namespace SMW\Importer;
 use IteratorAggregate;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -31,6 +31,6 @@ interface ContentIterator extends IteratorAggregate {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() : string;
+	public function getFingerprint(): string;
 
 }

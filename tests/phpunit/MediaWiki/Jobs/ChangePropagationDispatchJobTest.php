@@ -10,16 +10,16 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\ChangePropagationDispatchJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -31,13 +31,12 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -49,8 +48,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCleanUp() {
-
-		$subject = DIWikiPage::newFromText(__METHOD__, SMW_NS_PROPERTY );
+		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->getMockForAbstractClass();
@@ -64,7 +62,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasPendingJobs() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -78,7 +75,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 
@@ -88,7 +85,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPendingJobsCount() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -102,7 +98,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->testEnvironment->registerObject( 'Cache', $cache );
 
@@ -113,7 +109,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAndDispatchOnNonPropertyEntity() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -133,7 +128,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPlanAsJob() {
-
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -149,17 +143,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindAndDispatchOnPropertyEntity() {
-
 		$subject = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
-
-		$tempFile = $this->getMockBuilder( '\SMW\Utils\TempFile' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tempFile->expects( $this->atLeastOnce() )
-			->method( 'write' );
-
-		$this->testEnvironment->registerObject( 'TempFile', $tempFile );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -180,9 +164,9 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$propertyTableInfoFetcher->expects( $this->atLeastOnce() )
 			->method( 'getDefaultDataItemTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -192,27 +176,27 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTableInfoFetcher' )
-			->will( $this->returnValue( $propertyTableInfoFetcher ) );
+			->willReturn( $propertyTableInfoFetcher );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getAllPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertySubjects' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -227,7 +211,6 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDispatchSchemaChangePropagation() {
-
 		$dataItem = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -236,14 +219,14 @@ class ChangePropagationDispatchJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( [ $dataItem ] ) );
+			->willReturn( [ $dataItem ] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		// Check that it is the dataItem from `getPropertyValues`
-		$checkJobParameterCallback = function( $jobs ) use( $dataItem ) {
+		$checkJobParameterCallback = static function ( $jobs ) use( $dataItem ) {
 			foreach ( $jobs as $job ) {
 				return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
 			}

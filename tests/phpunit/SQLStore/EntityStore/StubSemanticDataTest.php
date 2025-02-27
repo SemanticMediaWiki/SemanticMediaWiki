@@ -12,18 +12,17 @@ use SMWDITime as DITime;
 /**
  * @covers SMW\SQLStore\EntityStore\StubSemanticData
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
+class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -32,17 +31,16 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
@@ -51,7 +49,7 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$this->assertInstanceOf(
 			StubSemanticData::class,
@@ -60,7 +58,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNotToResolveSubobjectsForRedirect() {
-
 		$instance = $this->getMockBuilder( StubSemanticData::class )
 			->setConstructorArgs( [
 				DIWikiPage::newFromText( __METHOD__ ),
@@ -73,11 +70,11 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getProperties' )
-			->will( $this->returnValue( [ new DIProperty( '_SOBJ' ) ] ) );
+			->willReturn( [ new DIProperty( '_SOBJ' ) ] );
 
 		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$instance->expects( $this->never() )
 			->method( 'getPropertyValues' );
@@ -86,7 +83,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( DIWikiPage::newFromText( __METHOD__ ) ),
 			$this->store
@@ -110,7 +106,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyObjectProvider
 	 */
 	public function testPhpSerialization( $property, $dataItem ) {
-
 		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ),
 			$this->store
@@ -133,7 +128,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider propertyObjectProvider
 	 */
 	public function testRemovePropertyObjectValue( $property, $dataItem ) {
-
 		$instance = StubSemanticData::newFromSemanticData(
 			new SemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ),
 			$this->store
@@ -147,7 +141,6 @@ class StubSemanticDataTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function propertyObjectProvider() {
-
 		$provider = [];
 
 		// #0

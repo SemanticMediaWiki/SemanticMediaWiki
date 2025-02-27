@@ -2,22 +2,21 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\Message;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\DIWikiPage;
+use SMW\GroupPermissions;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
-use SMW\Utils\TemplateEngine;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\GroupPermissions;
-use Title;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -33,7 +32,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $indicators = [];
 
@@ -48,9 +47,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	private $languageCode = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isDeferredMode = false;
+
+	private TemplateEngine $templateEngine;
 
 	/**
 	 * @since 3.2
@@ -69,14 +70,14 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return bool
 	 */
-	public function hasPermission( PermissionExaminer $permissionExaminer ) : bool {
+	public function hasPermission( PermissionExaminer $permissionExaminer ): bool {
 		return $permissionExaminer->hasPermissionOf( GroupPermissions::VIEW_ENTITY_ASSOCIATEDREVISIONMISMATCH );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param boolean $type
+	 * @param bool $isDeferredMode
 	 */
 	public function setDeferredMode( bool $isDeferredMode ) {
 		$this->isDeferredMode = $isDeferredMode;
@@ -85,9 +86,9 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isDeferredMode() : bool {
+	public function isDeferredMode(): bool {
 		return $this->isDeferredMode;
 	}
 
@@ -96,9 +97,9 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @param string $severityType
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isSeverityType( string $severityType ) : bool {
+	public function isSeverityType( string $severityType ): bool {
 		return $this->severityType === $severityType;
 	}
 
@@ -107,7 +108,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return string
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'smw-entity-examiner-associated-revision-mismatch';
 	}
 
@@ -117,10 +118,9 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 * @param DIWikiPage $subject
 	 * @param array $options
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndicator( DIWikiPage $subject, array $options ) {
-
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}
@@ -133,7 +133,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getIndicators() {
 		return $this->indicators;
@@ -142,7 +142,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getModules() {
 		return [];
@@ -158,7 +158,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	}
 
 	private function runCheck( $subject, $options ) {
-
 		$this->indicators = [];
 
 		$latestRevID = $this->revisionGuard->getLatestRevID(
@@ -188,7 +187,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	}
 
 	private function buildHTML( $latestRevID, $associatedRev, $options ) {
-
 		$content = '';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
 
@@ -239,7 +237,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		);
 
 		$content .= $this->templateEngine->code( 'text_template' );
-	//	$content .= $this->templateEngine->code( 'line_template' );
+	// $content .= $this->templateEngine->code( 'line_template' );
 		$content .= $this->templateEngine->code( 'compare_list_template' );
 		$content .= $this->templateEngine->code( 'line_template' );
 		$content .= $this->templateEngine->code( 'bottom_comment_template' );

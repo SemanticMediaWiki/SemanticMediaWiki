@@ -8,20 +8,19 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
+class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	private $connection;
 	private $searchTable;
 	private $textSanitizer;
 
-	protected function setUp() : void {
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+	protected function setUp(): void {
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +34,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater',
 			new SearchTableUpdater( $this->connection, $this->searchTable, $this->textSanitizer )
@@ -43,7 +41,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRead() {
-
 		$row = new \stdClass;
 		$row->o_text = 'Foo';
 
@@ -51,9 +48,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'o_text' ] ),
+				[ 'o_text' ],
 				$this->equalTo( [ 's_id' => 12, 'p_id' => 42 ] ) )
-			->will( $this->returnValue( $row ) );
+			->willReturn( $row );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -65,11 +62,10 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptimizeOnEnabledType() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
-			->with( $this->equalTo( 'mysql' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'mysql' )
+			->willReturn( true );
 
 		$this->connection->expects( $this->once() )
 			->method( 'query' );
@@ -86,10 +82,9 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOptimizeOnDisabledType() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'isType' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->never() )
 			->method( 'query' );
@@ -106,7 +101,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateWithText() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
 
@@ -120,7 +114,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDeleteOnUpdateWithEmptyText() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' );
 
@@ -137,7 +130,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInsert() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
@@ -157,7 +149,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
@@ -176,12 +167,11 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFlushTable() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
-				$this->equalTo( '*' ) );
+				'*' );
 
 		$instance = new SearchTableUpdater(
 			$this->connection,
@@ -193,7 +183,6 @@ class SearchTableUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExists() {
-
 		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(

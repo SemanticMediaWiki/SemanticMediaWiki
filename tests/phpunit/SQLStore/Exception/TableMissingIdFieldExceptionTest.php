@@ -8,15 +8,14 @@ use SMW\SQLStore\Exception\TableMissingIdFieldException;
  * @covers \SMW\SQLStore\Exception\TableMissingIdFieldException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TableMissingIdFieldExceptionTest extends \PHPUnit_Framework_TestCase {
+class TableMissingIdFieldExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new TableMissingIdFieldException( 'foo' );
 
 		$this->assertInstanceof(

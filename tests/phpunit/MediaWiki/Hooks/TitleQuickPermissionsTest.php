@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
 use SMW\Tests\TestEnvironment;
 
@@ -10,12 +9,12 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Hooks\TitleQuickPermissions
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
+class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $titlePermissions;
@@ -23,7 +22,7 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 	private $title;
 	private $user;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,13 +44,12 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TitleQuickPermissions::class,
 			new TitleQuickPermissions( $this->namespaceExaminer, $this->titlePermissions )
@@ -59,10 +57,9 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnArchaicDependencies_TitleQuickPermissions() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->titlePermissions->expects( $this->once() )
 			->method( 'checkPermissionFor' );
@@ -81,10 +78,9 @@ class TitleQuickPermissionsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnDisabledNamespace() {
-
 		$this->namespaceExaminer->expects( $this->once() )
 			->method( 'isSemanticEnabled' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->titlePermissions->expects( $this->never() )
 			->method( 'checkPermissionFor' );

@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDITime as DITime;
 use Title;
@@ -16,13 +16,14 @@ use Title;
  * @group semantic-mediawiki-integration
  * @group mediawiki-databaseless
  * @group medium
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
  */
-class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
+class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCase {
 
 	private $semanticDataValidator;
 	private $applicationFactory;
@@ -30,7 +31,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	private $mwHooksHandler;
 	private $pageCreator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->mwHooksHandler = UtilityFactory::getInstance()->newMwHooksHandler();
@@ -46,7 +47,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->applicationFactory->clear();
 		$this->mwHooksHandler->restoreListedHooks();
 
@@ -54,7 +55,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
-
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
 		$title   = Title::newFromText( __METHOD__ );
@@ -80,7 +80,6 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
-
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
 		$title   = Title::newFromText( __METHOD__ );

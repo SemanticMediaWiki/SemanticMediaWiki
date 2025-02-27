@@ -3,7 +3,7 @@
 namespace SMW\Tests\Utils\Runners;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
@@ -21,7 +21,6 @@ class RunnerFactory {
 	 * @return RunnerFactory
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
@@ -37,19 +36,18 @@ class RunnerFactory {
 	 * @return MaintenanceRunner
 	 */
 	public function newMaintenanceRunner( $maintenanceClass ) {
-
 		switch ( $maintenanceClass ) {
 			case 'rebuildPropertyStatistics':
-				$maintenanceClass = 'SMW\Maintenance\RebuildPropertyStatistics';
+				$maintenanceClass = '\SMW\Maintenance\rebuildPropertyStatistics';
 				break;
 			case 'rebuildData':
-				$maintenanceClass = 'SMW\Maintenance\RebuildData';
+				$maintenanceClass = '\SMW\Maintenance\rebuildData';
 				break;
-			case 'rebuildConceptCache';
-				$maintenanceClass = 'SMW\Maintenance\RebuildConceptCache';
+			case 'rebuildConceptCache':
+				$maintenanceClass = '\SMW\Maintenance\rebuildConceptCache';
 				break;
-			case 'setupStore';
-				$maintenanceClass = 'SMW\Maintenance\SetupStore';
+			case 'setupStore':
+				$maintenanceClass = '\SMW\Maintenance\setupStore';
 				break;
 		}
 

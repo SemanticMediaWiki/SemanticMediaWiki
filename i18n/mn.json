@@ -2,11 +2,14 @@
 	"@metadata": {
 		"authors": [
 			"Chinneeb",
+			"Enkhsaihan2005",
 			"Munkhzaya.E",
 			"Wisdom"
 		]
 	},
 	"smw-paramdesc-table-transpose": "table -ын толгойг босоогоор, үр дүнг хэвтээгээр",
+	"smw-categories": "Ангиллууд",
+	"browse": "Викиг үзэх",
 	"smw_browse_go": "Явах",
 	"smw_smwadmin_datarefreshstopconfirm": "Тийм, би {{GENDER:$1|итгэлтэй байна}}.",
 	"smw-ui-tooltip-title-quantity": "Нэгжийн шилжүүлэг",

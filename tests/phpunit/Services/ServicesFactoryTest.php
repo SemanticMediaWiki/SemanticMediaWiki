@@ -8,28 +8,27 @@ use SMW\Services\ServicesFactory;
  * @covers \SMW\Services\ServicesFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
+class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	private $ServicesFactory;
+	private ServicesFactory $servicesFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->servicesFactory = ServicesFactory::getInstance();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->servicesFactory->clear();
 
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ServicesFactory::class,
 			ServicesFactory::getInstance()
@@ -37,7 +36,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSerializerFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\SerializerFactory',
 			$this->servicesFactory->newSerializerFactory()
@@ -45,7 +43,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructJobFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\JobFactory',
 			$this->servicesFactory->newJobFactory()
@@ -53,7 +50,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructParserFunctionFactory() {
-
 		$parser = $this->getMockBuilder( '\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -65,7 +61,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQuerySourceFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\Query\QuerySourceFactory',
 			$this->servicesFactory->getQuerySourceFactory()
@@ -73,7 +68,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetStore() {
-
 		$this->assertInstanceOf(
 			'\SMW\Store',
 			$this->servicesFactory->getStore()
@@ -81,7 +75,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetSettings() {
-
 		$this->assertInstanceOf(
 			'\SMW\Settings',
 			$this->servicesFactory->getSettings()
@@ -89,7 +82,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetConnectionManager() {
-
 		$this->assertInstanceOf(
 			'\SMW\Connection\ConnectionManager',
 			$this->servicesFactory->getConnectionManager()
@@ -97,7 +89,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructTitleFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\TitleFactory',
 			$this->servicesFactory->newTitleFactory()
@@ -105,7 +96,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPageCreator() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageCreator',
 			$this->servicesFactory->newPageCreator()
@@ -113,7 +103,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPageUpdater() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageUpdater',
 			$this->servicesFactory->newPageUpdater()
@@ -121,7 +110,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructInTextAnnotationParser() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -133,7 +121,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructContentParser() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -145,7 +132,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMwCollaboratorFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\MwCollaboratorFactory',
 			$this->servicesFactory->newMwCollaboratorFactory()
@@ -153,7 +139,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNamespaceExaminer() {
-
 		$this->assertInstanceOf(
 			'\SMW\NamespaceExaminer',
 			$this->servicesFactory->getNamespaceExaminer()
@@ -161,7 +146,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDataUpdater() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -173,7 +157,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDataItemFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataItemFactory',
 			$this->servicesFactory->getDataItemFactory()
@@ -181,7 +164,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMaintenanceFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\Maintenance\MaintenanceFactory',
 			$this->servicesFactory->newMaintenanceFactory()
@@ -189,7 +171,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructCacheFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\CacheFactory',
 			$this->servicesFactory->newCacheFactory()
@@ -197,7 +178,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructIteratorFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\IteratorFactory',
 			$this->servicesFactory->getIteratorFactory()
@@ -205,7 +185,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDataValueFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\DataValueFactory',
 			$this->servicesFactory->getDataValueFactory()
@@ -213,15 +192,13 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPropertySpecificationLookup() {
-
 		$this->assertInstanceOf(
-			'\SMW\PropertySpecificationLookup',
+			'\SMW\Property\SpecificationLookup',
 			$this->servicesFactory->getPropertySpecificationLookup()
 		);
 	}
 
 	public function testCanConstructHierarchyLookup() {
-
 		$this->assertInstanceOf(
 			'\SMW\HierarchyLookup',
 			$this->servicesFactory->newHierarchyLookup()
@@ -229,7 +206,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQueryFactory() {
-
 		$this->assertInstanceOf(
 			'\SMW\QueryFactory',
 			$this->servicesFactory->getQueryFactory()
@@ -237,7 +213,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructPropertyLabelFinder() {
-
 		$this->assertInstanceOf(
 			'\SMW\PropertyLabelFinder',
 			$this->servicesFactory->getPropertyLabelFinder()
@@ -245,8 +220,7 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeferredCallableUpdate() {
-
-		$callback = function() {
+		$callback = static function () {
 			return null;
 		};
 
@@ -257,7 +231,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDeferredTransactionalCallableUpdate() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\Deferred\TransactionalCallableUpdate',
 			$this->servicesFactory->newDeferredTransactionalCallableUpdate( null )
@@ -265,7 +238,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructMediaWikiLogger() {
-
 		$this->assertInstanceOf(
 			'\Psr\Log\LoggerInterface',
 			$this->servicesFactory->getMediaWikiLogger()
@@ -273,7 +245,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructEventDispatcher() {
-
 		$this->assertInstanceOf(
 			'\Onoi\EventDispatcher\EventDispatcher',
 			$this->servicesFactory->getEventDispatcher()
@@ -281,7 +252,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructJobQueue() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\JobQueue',
 			$this->servicesFactory->getJobQueue()
@@ -292,7 +262,6 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider callbackContainerProvider
 	 */
 	public function testCanConstructFromCallbackContainer( $service, $arguments, $expected ) {
-
 		array_unshift( $arguments, $service );
 
 		$this->assertInstanceOf(
@@ -302,10 +271,9 @@ class ServicesFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function callbackContainerProvider() {
-
 		$provider[] = [
 			'ResultCache',
-			array(),
+			[],
 			'\SMW\Query\Cache\ResultCache'
 		];
 

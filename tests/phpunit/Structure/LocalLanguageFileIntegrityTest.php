@@ -8,18 +8,17 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group semantic-mediawiki
  * @group system-test
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider i18nFileProvider
 	 */
 	public function testPropertyLabelsTrailingSpaces( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$contents = $jsonFileReader->read();
 		$isComplete = true;
@@ -46,7 +45,6 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider i18nFileProvider
 	 */
 	public function testPropertyAliasesTrailingSpaces( $file ) {
-
 		$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 		$contents = $jsonFileReader->read();
 		$isComplete = true;
@@ -70,7 +68,7 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function i18nFileProvider() {
-		return array_filter( $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] ), function( $args ) {
+		return array_filter( $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] ), static function ( $args ) {
 			$file = $args[0];
 			$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 			$contents = $jsonFileReader->read();
@@ -82,7 +80,6 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	private function findFilesIn( $location ) {
-
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider( $location );

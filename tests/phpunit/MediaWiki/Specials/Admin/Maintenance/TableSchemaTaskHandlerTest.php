@@ -9,19 +9,19 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $store;
 	private $htmlFormRenderer;
 	private $outputFormatter;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -41,13 +41,12 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			TableSchemaTaskHandler::class,
 			new TableSchemaTaskHandler( $this->store, $this->htmlFormRenderer, $this->outputFormatter )
@@ -55,7 +54,6 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$methods = [
 			'setName',
 			'setMethod',
@@ -68,7 +66,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		foreach ( $methods as $method ) {
 			$this->htmlFormRenderer->expects( $this->any() )
 				->method( $method )
-				->will( $this->returnSelf() );
+				->willReturnSelf();
 		}
 
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
@@ -79,12 +77,12 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 			$this->htmlFormRenderer,
 			$this->outputFormatter
 		);
+		$instance->setFeatureSet( SMW_ADM_SETUP );
 
 		$instance->getHtml();
 	}
 
 	public function testHandleRequest() {
-
 		$this->store->expects( $this->once() )
 			->method( 'setup' );
 
@@ -94,7 +92,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$webRequest->expects( $this->once() )
 			->method( 'getVal' )
-			->will( $this->returnValue( 'done' ) );
+			->willReturn( 'done' );
 
 		$instance = new TableSchemaTaskHandler(
 			$this->store,

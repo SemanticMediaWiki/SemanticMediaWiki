@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use RuntimeException;
+use SMW\MediaWiki\Connection\Database;
 use Title;
 
 /**
@@ -12,7 +13,7 @@ use Title;
  *
  * @ingroup SMW
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -25,7 +26,7 @@ class TitleLookup {
 	private $connection = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace = null;
 
@@ -57,7 +58,6 @@ class TitleLookup {
 	 * @throws RuntimeException
 	 */
 	public function selectAll() {
-
 		if ( $this->namespace === null ) {
 			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
@@ -91,7 +91,6 @@ class TitleLookup {
 	 * @return Title[]
 	 */
 	public function getRedirectPages() {
-
 		$conditions = [];
 		$options = [];
 
@@ -117,7 +116,6 @@ class TitleLookup {
 	 * @throws RuntimeException
 	 */
 	public function selectByIdRange( $startId = 0, $endId = 0 ) {
-
 		if ( $this->namespace === null ) {
 			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
@@ -151,7 +149,6 @@ class TitleLookup {
 	 * @return int
 	 */
 	public function getMaxId() {
-
 		if ( $this->namespace === NS_CATEGORY ) {
 			$tableName = 'category';
 			$var = 'MAX(cat_id)';
@@ -169,7 +166,6 @@ class TitleLookup {
 	}
 
 	protected function makeTitlesFromSelection( $res ) {
-
 		$pages = [];
 
 		if ( $res === false ) {
@@ -184,7 +180,6 @@ class TitleLookup {
 	}
 
 	private function newTitleFromRow( $row ) {
-
 		if ( $this->namespace === NS_CATEGORY ) {
 			$ns = NS_CATEGORY;
 			$title = $row->cat_title;

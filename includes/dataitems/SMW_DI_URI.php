@@ -88,6 +88,11 @@ class SMWDIUri extends SMWDataItem {
 			. ( $this->m_query ? '?' . $this->m_query : '' )
 			. ( $this->m_fragment ? '#' . $this->m_fragment : '' );
 
+		// #1878
+		// https://tools.ietf.org/html/rfc3986
+		// Normalize spaces to use `_` instead of %20 and so ensure
+		// that http://example.org/Foo bar === http://example.org/Foo_bar === http://example.org/Foo%20bar
+		// return str_replace( [ ' ', '%20' ], '_', $uri );
 		return $uri;
 	}
 
@@ -129,7 +134,7 @@ class SMWDIUri extends SMWDataItem {
 		// *** this could replace the block below, from '$escapeFrom'
 		// however that appears to be more consistent
 		// $serialization = str_replace( ' ', '%20', $serialization );
-
+ 
 		// try to split "schema:rest"
 		$parts = explode( ':', $serialization, 2 );
 		$strict = true;

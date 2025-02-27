@@ -17,6 +17,7 @@
 	"exportrdf": "ܐܦܩ ܦܐܬܬ̈ܐ ܠ RDF",
 	"smw_exportrdf_submit": "ܐܦܩ",
 	"properties": "ܕ̈ܝܠܝܬܐ",
+	"smw-categories": "ܣܕܪ̈ܐ",
 	"smw_properties_docu": "ܕ̈ܝܠܝܬܐ ܕܐܬܝܢ ܡܬܦܠܚܝܢ ܒܘܝܩܝ",
 	"smw_property_template": "$1 ܡܢ ܐܕܫܐ ܕ $2 ($3 {{PLURAL:$3|ܦܘܠܚܐ|ܦܘܠܚ̈ܐ}})",
 	"unusedproperties": "ܕ̈ܝܠܝܬܐ ܠܐ ܦܠܝܚܬ̈ܐ",

@@ -3,19 +3,18 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use Title;
-use Wikipage;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -60,8 +59,7 @@ class ArticleDelete implements HookListener {
 	 * @return true
 	 */
 	public function process( Title $title ) {
-
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function() use( $title ) {
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ) {
 			$this->doDelete( $title );
 		} );
 
@@ -77,7 +75,6 @@ class ArticleDelete implements HookListener {
 	 * @param Title $title
 	 */
 	public function doDelete( Title $title ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subject = DIWikiPage::newFromTitle( $title );
 

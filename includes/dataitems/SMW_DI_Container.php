@@ -3,6 +3,7 @@
  * @ingroup SMWDataItems
  */
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
 use SMW\Exception\DataItemException;
 use SMWDIBlob as DIBlob;
@@ -19,14 +20,14 @@ use SMWDIBlob as DIBlob;
  * assignments, and this pattern is searched for.
  *
  * The data encapsulated in a container data item is essentially an
- * SMWSemanticData object of class SMWContainerSemanticData. This class allows
+ * SMWSemanticData object of class ContainerSemanticData. This class allows
  * the subject to be kept anonymous if not known (if no context page is
  * available for finding a suitable subobject name). See the repsective
  * documentation for details.
  *
  * Being a mere placeholder/template for other data, an SMWDIContainer is not
  * immutable as the other basic data items. New property-value pairs can always
- * be added to the internal SMWContainerSemanticData.
+ * be added to the internal ContainerSemanticData.
  *
  * @since 1.6
  *
@@ -43,13 +44,13 @@ class SMWDIContainer extends SMWDataItem {
 	protected $m_semanticData;
 
 	/**
-	 * Constructor. The given SMWContainerSemanticData object will be owned
+	 * Constructor. The given ContainerSemanticData object will be owned
 	 * by the constructed object afterwards, and in particular will not
 	 * allow further changes.
 	 *
-	 * @param $semanticData SMWContainerSemanticData
+	 * @param $semanticData ContainerSemanticData
 	 */
-	public function __construct( SMWContainerSemanticData $semanticData ) {
+	public function __construct( ContainerSemanticData $semanticData ) {
 		$this->m_semanticData = $semanticData;
 	}
 
@@ -87,7 +88,6 @@ class SMWDIContainer extends SMWDataItem {
 	 * @return string
 	 */
 	public function getHash() {
-
 		$hash = $this->getValueHash( $this->m_semanticData );
 		sort( $hash );
 
@@ -98,7 +98,6 @@ class SMWDIContainer extends SMWDataItem {
 	}
 
 	private function getValueHash( $semanticData ) {
-
 		$hash = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -125,7 +124,7 @@ class SMWDIContainer extends SMWDataItem {
 	public static function doUnserialize( $serialization ) {
 		/// TODO May issue an E_NOTICE when problems occur; catch this
 		$data = unserialize( $serialization );
-		if ( !( $data instanceof SMWContainerSemanticData ) ) {
+		if ( !( $data instanceof ContainerSemanticData ) ) {
 			throw new DataItemException( "Could not unserialize SMWDIContainer from the given string." );
 		}
 		return new SMWDIContainer( $data );

@@ -2,24 +2,23 @@
 
 namespace SMW\Tests\Schema\Filters;
 
-use SMW\Schema\Filters\NamespaceFilter;
 use SMW\Schema\Compartment;
-use SMW\Schema\Rule;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Filters\NamespaceFilter;
+use SMW\Schema\Rule;
 
 /**
  * @covers \SMW\Schema\Filters\NamespaceFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
+class NamespaceFilterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceFilter::class,
 			new NamespaceFilter( null )
@@ -27,7 +26,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetName() {
-
 		$instance = new NamespaceFilter( null );
 
 		$this->assertEquals(
@@ -37,28 +35,26 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIfCondition() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( null );
 		$instance->filter( $compartment );
 	}
 
 	public function testNoCondition_FilterNotRequired() {
-
 		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$compartment->expects( $this->once() )
 			->method( 'get' )
-			->with(	$this->equalTo( 'if.namespace' ) );
+			->with(	'if.namespace' );
 
 		$instance = new NamespaceFilter( NS_MAIN );
 		$instance->addOption( NamespaceFilter::FILTER_CONDITION_NOT_REQUIRED, true );
@@ -75,7 +71,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceFilterProvider
 	 */
 	public function testHasMatches_Compartment( $ns, $compartment, $expected ) {
-
 		$instance = new NamespaceFilter(
 			$ns
 		);
@@ -94,7 +89,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceFilterProvider
 	 */
 	public function testHasMatches_Rule( $ns, $compartment, $expected ) {
-
 		$instance = new NamespaceFilter(
 			$ns
 		);
@@ -120,7 +114,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceFilterProvider
 	 */
 	public function testHasMatches_CompartmentIterator( $ns, $compartment, $expected ) {
-
 		$instance = new NamespaceFilter(
 			$ns
 		);
@@ -136,7 +129,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceFilterProvider() {
-
 		yield 'oneOf.1: single one_of' => [
 			NS_MAIN,
 			[
@@ -186,7 +178,6 @@ class NamespaceFilterTest extends \PHPUnit_Framework_TestCase {
 			],
 			true
 		];
-
 	}
 
 }

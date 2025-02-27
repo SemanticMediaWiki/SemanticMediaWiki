@@ -9,30 +9,29 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Task
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class TaskTest extends \PHPUnit_Framework_TestCase {
+class TaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $apiFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new Task(
 			$this->apiFactory->newApiMain( [] ),
 			'smwtask'
@@ -45,7 +44,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpdateTask() {
-
 		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -59,7 +57,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -78,14 +76,13 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDupLookupTask() {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$cache->expects( $this->once() )
 			->method( 'save' );
@@ -96,7 +93,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 
 		$entityTable->expects( $this->atLeastOnce() )
 			->method( 'findDuplicates' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -104,7 +101,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityTable ) );
+			->willReturn( $entityTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'Cache', $cache );
@@ -125,7 +122,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGenericJobTask() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -140,10 +136,10 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 		$jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newByType' )
 			->with(
-				$this->equalTo( 'Foobar' ),
+				'Foobar',
 				$this->anything(),
 				$this->anything() )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
@@ -168,7 +164,6 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunJobListTask() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -179,8 +174,8 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 
 		$jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
-			->with( $this->equalTo( [ 'FooJob' => 1 ] ) )
-			->will( $this->returnValue( '--job-done' ) );
+			->with( [ 'FooJob' => 1 ] )
+			->willReturn( '--job-done' );
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
@@ -205,8 +200,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCheckQueryTask() {
-
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +210,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )
-			->will( $this->returnValue( $queryResult ) );
+			->willReturn( $queryResult );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 

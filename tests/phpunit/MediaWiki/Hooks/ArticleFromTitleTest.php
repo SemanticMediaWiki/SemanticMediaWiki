@@ -3,21 +3,22 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
+class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -26,7 +27,6 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ArticleFromTitle::class,
 			new ArticleFromTitle( $this->store )
@@ -37,14 +37,14 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testProcess( $namespace, $expected ) {
-
-		$title = $this->getMockBuilder( '\Title' )
-			->disableOriginalConstructor()
-			->getMock();
+		$title = $this->createMock( Title::class );
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
@@ -60,7 +60,6 @@ class ArticleFromTitleTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			SMW_NS_PROPERTY,
 			'SMW\MediaWiki\Page\PropertyPage'

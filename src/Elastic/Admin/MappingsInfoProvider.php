@@ -4,12 +4,12 @@ namespace SMW\Elastic\Admin;
 
 use Html;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use WebRequest;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-mappings-title' ),
 			[ 'action' => $this->getTask() ]
@@ -55,7 +54,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		$this->outputFormatter->setPageTitle( 'Elasticsearch mappings' );
 
 		$this->outputFormatter->addParentLink(
@@ -67,21 +65,20 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	}
 
 	private function outputInfo() {
-
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
-		$mappings = array_merge(
-			$connection->getMapping(
+		$mappings = [
+			ElasticClient::TYPE_DATA => $connection->getMapping(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_DATA )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_DATA )
 				]
 			),
-			$connection->getMapping(
+			ElasticClient::TYPE_LOOKUP => $connection->getMapping(
 				[
-					'index' => $connection->getIndexNameByType( ElasticClient::TYPE_LOOKUP )
+					'index' => $connection->getIndexName( ElasticClient::TYPE_LOOKUP )
 				]
 			)
-		);
+		];
 
 		$limits = [
 			ElasticClient::TYPE_DATA => [
@@ -140,7 +137,6 @@ class MappingsInfoProvider extends InfoProviderHandler {
 	}
 
 	private function getSummary( $mappings ) {
-
 		$summary = [
 			ElasticClient::TYPE_DATA => [
 				'fields' => [
@@ -158,23 +154,17 @@ class MappingsInfoProvider extends InfoProviderHandler {
 			]
 		];
 
-		foreach ( $mappings as $inx ) {
-			foreach ( $inx as $key => $value ) {
-				$this->countFields( $value, ElasticClient::TYPE_DATA, $summary );
-				$this->countFields( $value, ElasticClient::TYPE_LOOKUP, $summary );
+		foreach ( $mappings as $type => $mapping ) {
+			foreach ( $mapping as $inx ) {
+				$this->countFields( $inx['mappings'], $type, $summary );
 			}
 		}
 
 		return $summary;
 	}
 
-	private function countFields( $value, $type, &$count ) {
-
-		if ( !isset( $value[$type] ) ) {
-			return;
-		}
-
-		foreach ( $value[$type]['properties'] as $k => $val ) {
+	private function countFields( $mapping, $type, &$count ) {
+		foreach ( $mapping['properties'] as $k => $val ) {
 			foreach ( $val as $p => $v ) {
 				if ( $p === 'properties' ) {
 					foreach ( $v as $field => $mappings ) {

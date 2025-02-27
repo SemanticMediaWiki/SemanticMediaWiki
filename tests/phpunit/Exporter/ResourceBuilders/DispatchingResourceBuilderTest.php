@@ -10,22 +10,21 @@ use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
  * @covers \SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
+class DispatchingResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	private $dataItemFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			DispatchingResourceBuilder::class,
 			new DispatchingResourceBuilder()
@@ -33,7 +32,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsResourceBuilderForValidMatch() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$resourceBuilder = $this->getMockBuilder( ResourceBuilder::class )
@@ -42,8 +40,8 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'isResourceBuilderFor' )
-			->with( $this->equalTo( $property ) )
-			->will( $this->returnValue( true ) );
+			->with( $property )
+			->willReturn( true );
 
 		$instance = new DispatchingResourceBuilder();
 		$instance->addResourceBuilder( $resourceBuilder );
@@ -54,7 +52,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsResourceBuilderForInvalidMatch() {
-
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
 		$instance = new DispatchingResourceBuilder();
@@ -65,7 +62,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueOnValidMatchedResourceBuilder() {
-
 		$expData = $this->getMockBuilder( '\SMWExpData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -79,7 +75,7 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'isResourceBuilderFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'addResourceValue' );
@@ -91,7 +87,6 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddResourceValueOnDefaultResourceBuilderWhenOthersCannotMatch() {
-
 		$expData = $this->getMockBuilder( '\SMWExpData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -105,7 +100,7 @@ class DispatchingResourceBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$resourceBuilder->expects( $this->once() )
 			->method( 'isResourceBuilderFor' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$defaultResourceBuilder = $this->getMockBuilder( ResourceBuilder::class )
 			->disableOriginalConstructor()

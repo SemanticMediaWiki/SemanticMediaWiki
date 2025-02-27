@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\Field
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FieldTest extends \PHPUnit_Framework_TestCase {
+class FieldTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testTooltip() {
-
 		$instance = new Field();
 
 		$this->assertContains(
@@ -29,7 +28,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreate() {
-
 		$instance = new Field();
 
 		$this->assertContains(
@@ -44,7 +42,6 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSelect() {
-
 		$instance = new Field();
 
 		$attr = [
@@ -77,25 +74,27 @@ class FieldTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider inputAttributeProvider
 	 */
 	public function testInput( $attr, $expected ) {
-
 		$instance = new Field();
+
+		$actual = $instance->input( $attr );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
 
 		$this->assertContains(
 			$expected,
-			$instance->input( $attr )
+			$actual
 		);
 	}
 
 	public function inputAttributeProvider() {
-
 		yield [
 			[ 'name' => 'Foobar' ],
-			'<div class="smw-input-field"><input name="Foobar" placeholder=""/></div>'
+			'<div class="smw-input-field"><input name="Foobar" placeholder=""></div>'
 		];
 
 		yield [
 			[ 'name' => 'Foobar', 'multifield' => true ],
-			'<div class="smw-input-field"><input name="Foobar[]" placeholder=""/></div>'
+			'<div class="smw-input-field"><input name="Foobar[]" placeholder=""></div>'
 		];
 	}
 

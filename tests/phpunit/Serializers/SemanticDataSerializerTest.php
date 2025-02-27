@@ -6,20 +6,20 @@ use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Subobject;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
+class SemanticDataSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,7 +27,6 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	private $semanticDataFactory;
 
 	public function testCanConstructor() {
-
 		$this->assertInstanceOf(
 			'\SMW\Serializers\SemanticDataSerializer',
 			new SemanticDataSerializer()
@@ -35,7 +34,6 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSerializerObjectThrowsException() {
-
 		$this->expectException( 'OutOfBoundsException' );
 
 		$instance = new SemanticDataSerializer();
@@ -46,28 +44,26 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider semanticDataProvider
 	 */
 	public function testSerializerDeserializerRountrip( $data ) {
-
 		$instance = new SemanticDataSerializer();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->serialize( $data )
 		);
 	}
 
 	public function semanticDataProvider() {
-
 		// Is a dataprovider therefore can't use the setUp
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
 		$title = Title::newFromText( 'Foo' );
 
-		#0 Empty container
+		# 0 Empty container
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$provider[] = [ $foo ];
 
-		#1 Single entry
+		# 1 Single entry
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$provider[] = [ $foo ];
@@ -87,7 +83,7 @@ class SemanticDataSerializerTest extends \PHPUnit_Framework_TestCase {
 
 		$provider[] = [ $foo ];
 
-		#3 Multiple entries
+		# 3 Multiple entries
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has queez', 'Xeey' ) );

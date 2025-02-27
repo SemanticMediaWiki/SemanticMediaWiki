@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\Number;
 
-use SMW\PropertySpecificationLookup;
-use SMW\EntityCache;
 use SMW\DIProperty;
+use SMW\EntityCache;
+use SMW\Property\SpecificationLookup;
 use SMWDIBlob as DIBlob;
 use SMWNumberValue as NumberValue;
 
@@ -15,7 +15,7 @@ use SMWNumberValue as NumberValue;
  * The cache is evicted as soon as the subject that contains "Corresponds to"
  * is altered.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -23,7 +23,7 @@ use SMWNumberValue as NumberValue;
 class UnitConverter {
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -60,10 +60,10 @@ class UnitConverter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup, EntityCache $entityCache ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup, EntityCache $entityCache ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->entityCache = $entityCache;
 	}
@@ -119,7 +119,6 @@ class UnitConverter {
 	 * @param NumberValue $numberValue
 	 */
 	public function loadConversionData( NumberValue $numberValue ) {
-
 		$this->errors = [];
 		$property = $numberValue->getProperty();
 
@@ -145,7 +144,6 @@ class UnitConverter {
 	 * @param NumberValue $numberValue
 	 */
 	public function fetchConversionData( NumberValue $numberValue ) {
-
 		$property = $numberValue->getProperty();
 
 		$this->unitIds = [];
@@ -173,8 +171,8 @@ class UnitConverter {
 
 			// ignore corrupted data and bogus inputs
 			if ( !( $di instanceof DIBlob ) ||
-			     ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
-			     ( $number == 0 ) ) {
+				 ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
+				 ( $number == 0 ) ) {
 				continue;
 			}
 
@@ -201,7 +199,6 @@ class UnitConverter {
 	}
 
 	private function initConversionData( $subject, $key, $numberValue ) {
-
 		$this->fetchConversionData( $numberValue );
 
 		foreach ( $this->errors as $error ) {

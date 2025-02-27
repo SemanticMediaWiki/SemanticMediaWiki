@@ -8,15 +8,14 @@ use SMW\Exception\ClassNotFoundException;
  * @covers \SMW\Exception\ClassNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class ClassNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class ClassNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ClassNotFoundException( 'Foo' );
 
 		$this->assertInstanceof(

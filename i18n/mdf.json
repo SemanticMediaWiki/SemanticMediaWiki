@@ -1,7 +1,12 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Numulunj pilgae",
+			"Валгриш"
+		]
 	},
+	"smw-categories": "Категориет",
+	"browse": "Лопатнень ванондома",
 	"smw-livepreview-loading": "Аноклакшни…",
 	"smw-listingcontinuesabbrev": "полатксоц",
 	"smw-showingresults": "Ала няфтеви {{PLURAL:$1|мувсь '''1'''|мувсть '''$1'''}} '''$2'''-ста ушедомс."

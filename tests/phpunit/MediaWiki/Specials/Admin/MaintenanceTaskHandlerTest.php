@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,7 +24,7 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	private $outputFormatter;
 	private $fileFetcher;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -44,13 +44,12 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			MaintenanceTaskHandler::class,
 			new MaintenanceTaskHandler( $this->outputFormatter, $this->fileFetcher, [] )
@@ -58,14 +57,13 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHtml() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->fileFetcher->expects( $this->once() )
 			->method( 'findByExtension' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new MaintenanceTaskHandler(
 			$this->outputFormatter,
@@ -74,23 +72,23 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 				$taskHandler
 			]
 		);
+		$instance->setFeatureSet( SMW_ADM_MAINTENANCE_SCRIPT_DOCS );
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHtml()
 		);
 	}
 
 	public function testIsTaskFor() {
-
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->with( $this->equalTo( 'foo' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'foo' )
+			->willReturn( true );
 
 		$instance = new MaintenanceTaskHandler(
 			$this->outputFormatter,
@@ -106,15 +104,14 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHandleSubRequest() {
-
 		$webRequest = $this->getMockBuilder( '\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$webRequest->expects( $this->once() )
 			->method( 'getText' )
-			->with( $this->equalTo( 'action' ) )
-			->will( $this->returnValue( 'foo' ) );
+			->with( 'action' )
+			->willReturn( 'foo' );
 
 		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
 			->disableOriginalConstructor()
@@ -122,11 +119,11 @@ class MaintenanceTaskHandlerTest extends \PHPUnit_Framework_TestCase {
 
 		$taskHandler->expects( $this->once() )
 			->method( 'isTaskFor' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$taskHandler->expects( $this->once() )
 			->method( 'handleRequest' )
-			->with( $this->equalTo( $webRequest ) );
+			->with( $webRequest );
 
 		$instance = new MaintenanceTaskHandler(
 			$this->outputFormatter,

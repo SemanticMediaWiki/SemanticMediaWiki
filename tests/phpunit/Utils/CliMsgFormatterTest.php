@@ -2,34 +2,32 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\CliMsgFormatter;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @covers \SMW\Utils\CliMsgFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
+class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testHead() {
-
 		$instance = new CliMsgFormatter();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->head()
 		);
 	}
 
 	public function testWordwrap() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -39,7 +37,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProgress() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -49,7 +46,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProgressCompact() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -59,7 +55,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSection() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -69,10 +64,9 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoColsOverride() {
-
 		$instance = new CliMsgFormatter();
 
-		$op = ( version_compare( PHP_VERSION, '7.3', '<' ) ? "\r" : "\033[0G" );
+		$op = "\033[0G";
 
 		$this->assertEquals(
 			"{$op}Foo                                                                     Bar",
@@ -81,7 +75,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoLineOverride() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -91,7 +84,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTwoCols() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -101,7 +93,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOneCol() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -111,7 +102,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetLen() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -121,7 +111,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFirstColLen() {
-
 		$instance = new CliMsgFormatter();
 		$instance->setFirstColLen( 10 );
 		$instance->incrFirstColLen( 5 );
@@ -133,7 +122,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFirstCol() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -143,7 +131,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPositionCol() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(
@@ -170,7 +157,6 @@ class CliMsgFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSecondCol() {
-
 		$instance = new CliMsgFormatter();
 
 		$this->assertEquals(

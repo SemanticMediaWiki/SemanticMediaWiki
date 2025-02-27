@@ -8,7 +8,7 @@ use RuntimeException;
 use SMW\Utils\ErrorCodeFormatter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -31,12 +31,12 @@ class JsonContentsFileReader {
 	private $cache;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipCache = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $ttl = 604800; // 7 * 24 * 3600
 
@@ -46,7 +46,7 @@ class JsonContentsFileReader {
 	 * @param Cache|null $cache
 	 * @param string $languageFileDir
 	 */
-	public function __construct( Cache $cache = null, $languageFileDir = '' ) {
+	public function __construct( ?Cache $cache = null, $languageFileDir = '' ) {
 		$this->cache = $cache;
 		$this->languageFileDir = $languageFileDir;
 
@@ -76,7 +76,7 @@ class JsonContentsFileReader {
 	/**
 	 * @since 1.2.0
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getFileModificationTime( $languageCode ) {
 		return filemtime( $this->getLanguageFile( $languageCode ) );
@@ -86,12 +86,11 @@ class JsonContentsFileReader {
 	 * @since 2.5
 	 *
 	 * @param string $languageCode
-	 * @param boolean $readFromFile
+	 * @param bool $readFromFile
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canReadByLanguageCode( $languageCode ) {
-
 		$canReadByLanguageCode = '';
 
 		try {
@@ -110,7 +109,6 @@ class JsonContentsFileReader {
 	 * @param array $contents
 	 */
 	public function writeByLanguageCode( $languageCode, $contents ) {
-
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		file_put_contents(
@@ -123,13 +121,12 @@ class JsonContentsFileReader {
 	 * @since 2.5
 	 *
 	 * @param string $languageCode
-	 * @param boolean $readFromFile
+	 * @param bool $readFromFile
 	 *
 	 * @return array
 	 * @throws RuntimeException
 	 */
 	public function readByLanguageCode( $languageCode, $readFromFile = false ) {
-
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		if ( !$readFromFile && isset( self::$contents[$languageCode] ) ) {
@@ -157,7 +154,6 @@ class JsonContentsFileReader {
 	}
 
 	protected function readJSONFile( $languageCode, $cacheKey ) {
-
 		$contents = json_decode(
 			file_get_contents( $this->getLanguageFile( $languageCode ) ),
 			true
@@ -172,7 +168,6 @@ class JsonContentsFileReader {
 	}
 
 	private function getLanguageFile( $languageCode ) {
-
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {

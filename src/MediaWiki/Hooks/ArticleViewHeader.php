@@ -4,16 +4,15 @@ namespace SMW\MediaWiki\Hooks;
 
 use Html;
 use Page;
+use SMW\DependencyValidator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
-use SMW\OptionsAwareTrait;
-use SMW\DependencyValidator;
+use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\NamespaceExaminer;
-use SMW\Message;
+use SMW\OptionsAwareTrait;
 use SMW\Store;
-use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleViewHeader
@@ -21,7 +20,7 @@ use Title;
  * Note: This hook is not called on non-article pages (including edit pages) and
  * it is also not called prior to outputting the edit preview.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -50,7 +49,7 @@ class ArticleViewHeader implements HookListener {
 	 *
 	 * @param Store $store
 	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyLinksValidator
+	 * @param DependencyValidator $dependencyValidator
 	 */
 	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
 		$this->store = $store;
@@ -62,13 +61,12 @@ class ArticleViewHeader implements HookListener {
 	 * @since 3.0
 	 *
 	 * @param Page $page
-	 * @param boolean &$outputDone
-	 * @param boolean &$useParserCache
+	 * @param bool &$outputDone
+	 * @param bool &$useParserCache
 	 *
 	 * @return bool
 	 */
 	public function process( Page $page, &$outputDone, &$useParserCache ) {
-
 		$title = $page->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
@@ -76,11 +74,6 @@ class ArticleViewHeader implements HookListener {
 		}
 
 		$subject = DIWikiPage::newFromTitle( $title );
-
-		// Preload data most likely to be used during a request hereby providing
-		// a possibility to bundle relevant data objects early given that this
-		// hook runs before any other GET request
-		$this->store->getObjectIds()->preload( [ $subject ] );
 
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
@@ -101,7 +94,6 @@ class ArticleViewHeader implements HookListener {
 	}
 
 	private function updateCategoryTop( $title, $output ) {
-
 		$message = '';
 
 		$subject = DIWikiPage::newFromTitle(
@@ -134,6 +126,7 @@ class ArticleViewHeader implements HookListener {
 			);
 		}
 
+		$output->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
 		$output->addHTML( $message );
 
 		// No Message means `useParserCache`otherwise refresh the output to
@@ -142,14 +135,14 @@ class ArticleViewHeader implements HookListener {
 	}
 
 	private function message( $type, array $message ) {
-		return Html::rawElement(
-			'div',
-			[
-				'id' => $message[0],
-				'class' => 'plainlinks ' . ( $type !== '' ? 'smw-callout smw-callout-' . $type : '' )
-			],
-			Message::get( $message, Message::PARSE, Message::USER_LANGUAGE )
-		);
+		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
+		switch ( $type ) {
+			case 'error':
+				return Html::errorBox( $content );
+			case 'warning':
+				return Html::warningBox( $content );
+			default:
+				return Html::noticeBox( $content, '' );
+		}
 	}
-
 }

@@ -5,12 +5,12 @@ namespace SMW\Tests\Utils\Validators;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class TitleValidator extends \PHPUnit_Framework_Assert {
+class TitleValidator extends \PHPUnit\Framework\Assert {
 
 	/**
 	 * @since 2.1
@@ -27,7 +27,6 @@ class TitleValidator extends \PHPUnit_Framework_Assert {
 	}
 
 	private function assertTitleExists( $isExpected, $titles ) {
-
 		if ( !is_array( $titles ) ) {
 			$titles = [ $titles ];
 		}

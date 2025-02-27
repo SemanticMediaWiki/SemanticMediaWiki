@@ -3,21 +3,22 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\DataItemFactory;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleProtectComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
+class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -27,7 +28,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	private $dataItemFactory;
 	private $editInfo;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -55,7 +56,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
@@ -65,13 +66,12 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -83,7 +83,6 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnSelfInvokedReason() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -96,7 +95,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 		$instance->setLogger( $this->spyLogger );
 
 		$protections = [];
-		$reason = \SMW\Message::get( 'smw-edit-protection-auto-update' );
+		$reason = Message::get( 'smw-edit-protection-auto-update' );
 
 		$instance->process( $protections, $reason );
 
@@ -107,7 +106,6 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnMatchableEditProtectionToAddAnnotation() {
-
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -118,19 +116,19 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_SPECIAL ) );
+			->willReturn( NS_SPECIAL );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 9900 ) );
+			->willReturn( 9900 );
 
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ArticleProtectComplete(
 			$title,
@@ -157,7 +155,6 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcessOnUnmatchableEditProtectionToRemoveAnnotation() {
-
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_SPECIAL )
 		);
@@ -176,7 +173,7 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$parserOutput->expects( $this->once() )
 			->method( 'getExtensionData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -184,19 +181,19 @@ class ArticleProtectCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getLatestRevID' )
-			->will( $this->returnValue( 9901 ) );
+			->willReturn( 9901 );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_SPECIAL ) );
+			->willReturn( NS_SPECIAL );
 
 		$this->editInfo->expects( $this->once() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $parserOutput ) );
+			->willReturn( $parserOutput );
 
 		$instance = new ArticleProtectComplete(
 			$title,

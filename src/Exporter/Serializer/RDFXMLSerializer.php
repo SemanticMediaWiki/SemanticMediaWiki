@@ -2,17 +2,17 @@
 
 namespace SMW\Exporter\Serializer;
 
-use SMWExporter as Exporter;
-use SMWExpData as ExpData;
-use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
+use SMWExpData as ExpData;
+use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
  * RDF/XML.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.5.5
  *
  * @author Markus Krötzsch
@@ -111,7 +111,6 @@ class RDFXMLSerializer extends Serializer {
 	 * {@inheritDoc}
 	 */
 	public function serializeExpData( ExpData $expData ) {
-
 		$this->serializeNestedExpData( $expData, '' );
 		$this->serializeNamespaces();
 
@@ -125,7 +124,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function flushContent() : string {
+	public function flushContent(): string {
 		$result = parent::flushContent();
 
 		// must not be done before calling the parent method (which may declare
@@ -140,7 +139,6 @@ class RDFXMLSerializer extends Serializer {
 	 * {@inheritDoc}
 	 */
 	protected function serializeNamespace( $shortname, $uri ) {
-
 		if ( $this->namespaces_are_global ) {
 			$this->global_namespaces[$shortname] = true;
 			$this->pre_ns_buffer .= "\n\t";
@@ -173,7 +171,7 @@ class RDFXMLSerializer extends Serializer {
 		// else: blank node, no "rdf:about"
 		if (
 			$expData->getSubject() instanceof ExpResource &&
-		    !$expData->getSubject()->isBlankNode() ) {
+			!$expData->getSubject()->isBlankNode() ) {
 			$this->post_ns_buffer .= ' rdf:about="' . $expData->getSubject()->getUri() . '"';
 		}
 
@@ -232,7 +230,6 @@ class RDFXMLSerializer extends Serializer {
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 */
 	protected function serializeExpLiteral( ExpNsResource $expResourceProperty, ExpLiteral $expLiteral, $indent ) {
-
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName();
 
 		// https://www.w3.org/TR/rdf-syntax-grammar/#section-Syntax-languages
@@ -285,7 +282,7 @@ class RDFXMLSerializer extends Serializer {
 	 * assuming that an opening property tag is alerady there.
 	 *
 	 * @param $expResourceProperty ExpNsResource the property to use
-	 * @param $expResource array of (ExpResource or ExpData)
+	 * @param $collection array of (ExpResource or ExpData)
 	 * @param $indent string specifying a prefix for indentation (usually a sequence of tabs)
 	 * @param $isClassTypeProp boolean whether the resource must be declared as a class
 	 *
@@ -293,7 +290,6 @@ class RDFXMLSerializer extends Serializer {
 	 * @bug Individual resources are not serialised properly.
 	 */
 	protected function serializeExpCollection( ExpNsResource $expResourceProperty, array $collection, $indent, $isClassTypeProp ) {
-
 		$this->post_ns_buffer .= $indent . '<' . $expResourceProperty->getQName() . " rdf:parseType=\"Collection\">\n";
 
 		foreach ( $collection as $expElement ) {

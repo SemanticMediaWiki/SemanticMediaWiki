@@ -3,12 +3,12 @@
 namespace SMW\Schema;
 
 use Iterator;
+use IteratorAggregate;
 use JsonSerializable;
 use SMW\Utils\DotArray;
-use IteratorAggregate;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -43,9 +43,9 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	/**
 	 * @since 3.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	public function isEmpty() : bool {
+	public function isEmpty(): bool {
 		return $this->data === [];
 	}
 
@@ -54,7 +54,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @param string $key
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function has( $key ) {
 		return $this->get( $key, false ) !== false;
@@ -106,7 +106,6 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 * @return Iterator
 	 */
 	public function getIterator(): Iterator {
-
 		foreach ( $this->data as $key => $value ) {
 
 			if ( is_string( $value ) ) {

@@ -9,17 +9,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Localizer\LocalLanguage\JsonContentsFileReader
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
+class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			JsonContentsFileReader::class,
 			new JsonContentsFileReader()
@@ -30,11 +29,10 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testReadByLanguageCode( $languageCode ) {
-
 		$instance = new JsonContentsFileReader();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->readByLanguageCode( $languageCode )
 		);
 	}
@@ -43,41 +41,39 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testReadByLanguageCodeWithCache( $languageCode ) {
-
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'contains' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new JsonContentsFileReader( $cache );
 		$instance->clear();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->readByLanguageCode( $languageCode )
 		);
 	}
 
 	public function testReadByLanguageCodeToUseInMemoryCache() {
-
 		$instance = $this->getMockBuilder( JsonContentsFileReader::class )
 			->setMethods( [ 'readJSONFile', 'getFileModificationTime' ] )
 			->getMock();
 
 		$instance->expects( $this->once() )
 			->method( 'readJSONFile' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance->expects( $this->once() )
 			->method( 'getFileModificationTime' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance->readByLanguageCode( 'foo' );
 
@@ -86,25 +82,23 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReadByLanguageCodeIsForcedToRereadFromFile() {
-
 		$instance = $this->getMockBuilder( JsonContentsFileReader::class )
 			->setMethods( [ 'readJSONFile', 'getFileModificationTime' ] )
 			->getMock();
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'readJSONFile' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance->expects( $this->exactly( 2 ) )
 			->method( 'getFileModificationTime' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$instance->readByLanguageCode( 'bar' );
 		$instance->readByLanguageCode( 'bar', true );
 	}
 
 	public function testTryToReadInaccessibleFileByLanguageThrowsException() {
-
 		$instance = new JsonContentsFileReader();
 
 		$this->expectException( 'RuntimeException' );
@@ -119,9 +113,8 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataExtensionProvider
 	 */
 	public function WriteToFile( $topic, $extension ) {
-
 		$instance = new JsonContentsFileReader();
-		$list ='ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
+		$list = 'ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 
 		foreach ( explode( ',', $list ) as $lang ) {
 			$contents = $instance->readByLanguageCode( $lang, true );
@@ -140,17 +133,15 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testgetFileModificationTime( $languageCode ) {
-
 		$instance = new JsonContentsFileReader();
 
-		$this->assertInternalType(
-			'integer',
+		$this->assertIsInt(
+
 			$instance->getFileModificationTime( $languageCode )
 		);
 	}
 
 	public function languageCodeProvider() {
-
 		$provider[] = [
 			'en'
 		];
@@ -159,7 +150,6 @@ class JsonContentsFileReaderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataExtensionProvider() {
-
 		$provider[] = [
 			'dataTypeLabels',
 			[

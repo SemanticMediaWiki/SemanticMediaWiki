@@ -4,20 +4,20 @@ namespace SMW\Tests\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Tests\TestEnvironment;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Property\ChangePropagationNotifier
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
+class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 	protected $mockedStoreValues;
 	private $semanticData;
@@ -25,7 +25,7 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	private $store;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment(
@@ -46,7 +46,7 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		$this->serializerFactory->expects( $this->any() )
 			->method( 'newSemanticDataSerializer' )
-			->will( $this->returnValue( $semanticDataSerializer ) );
+			->willReturn( $semanticDataSerializer );
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -55,13 +55,12 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangePropagationNotifier::class,
 			new ChangePropagationNotifier( $this->store, $this->serializerFactory )
@@ -72,11 +71,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
 
 		$this->detectChanges(
@@ -92,11 +86,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = new DIWikiPage( __METHOD__, NS_CATEGORY );
 
 		$this->detectChanges(
@@ -109,7 +98,6 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function detectChanges( $subject, $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-
 		$this->mockedStoreValues = $mockedStoreValues;
 
 		$expectedToRun = $expected['job'] ? $this->atLeastOnce() : $this->never();
@@ -134,11 +122,11 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $semanticData ) );
+			->willReturn( $semanticData );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] ) );
+			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -146,11 +134,11 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->will( $this->returnValue( $subject ) );
+			->willReturn( $subject );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->will( $this->returnValue( $dataValues ) );
+			->willReturn( $dataValues );
 
 		$instance = new ChangePropagationNotifier(
 			$store,
@@ -168,9 +156,8 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function dataItemDataProvider() {
-
 		// Single
-		$subject  = [
+		$subject = [
 			DIWikiPage::newFromText( __METHOD__ )
 		];
 
@@ -182,17 +169,17 @@ class ChangePropagationNotifierTest extends \PHPUnit_Framework_TestCase {
 		];
 
 		return [
-			//  $mockedStoreValues, $dataValues, $settings,               $expected
-			[ $subjects, [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ [],   $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  [],   [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  [],   [ '_PVAL'          ], [ 'diff' => true,  'job' => true ] ],
-			[ $subjects, $subjects, [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
-			[ $subject,  $subject,  [ '_PVAL'          ], [ 'diff' => false, 'job' => false ] ],
-			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ $subject,  $subject,  [ '_PVAL', '_LIST' ], [ 'diff' => true,  'job' => true ] ],
-			[ [ new DIBlob( '>100') ],  [ new DIBlob( '&gt;100') ],  [ '_PVAL', '_PVAL' ], [ 'diff' => false,  'job' => false ] ]
+			// $mockedStoreValues, $dataValues, $settings,               $expected
+			[ $subjects, [], [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ [], $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, [], [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, [], [ '_PVAL' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subjects, $subjects, [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
+			[ $subject, $subject, [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
+			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ $subject, $subject, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
+			[ [ new DIBlob( '>100' ) ], [ new DIBlob( '&gt;100' ) ], [ '_PVAL', '_PVAL' ], [ 'diff' => false, 'job' => false ] ]
 		];
 	}
 

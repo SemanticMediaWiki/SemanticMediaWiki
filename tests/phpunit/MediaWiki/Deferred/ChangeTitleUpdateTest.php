@@ -9,17 +9,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Deferred\ChangeTitleUpdate
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
+class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 
@@ -36,14 +36,13 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->clearPendingDeferredUpdates();
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeTitleUpdate::class,
 			new ChangeTitleUpdate()
@@ -51,14 +50,13 @@ class ChangeTitleUpdateTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDoUpdate() {
-
 		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $nullJob ) );
+			->willReturn( $nullJob );
 
 		$oldTitle = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()

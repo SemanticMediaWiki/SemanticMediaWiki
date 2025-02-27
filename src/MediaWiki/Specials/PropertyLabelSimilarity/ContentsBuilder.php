@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Specials\PropertyLabelSimilarity;
 
 use Html;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Message;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -40,10 +40,9 @@ class ContentsBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param RequestOptions $requestOption
+	 * @param RequestOptions $requestOptions
 	 */
 	public function getHtml( RequestOptions $requestOptions ) {
-
 		$threshold = 90;
 		$type = '';
 
@@ -85,7 +84,6 @@ class ContentsBuilder {
 	}
 
 	private function getForm( $limit, $offset, $resultCount, $threshold, $type ) {
-
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
 		$lookupCount = $this->propertyLabelSimilarityLookup->getLookupCount();
 

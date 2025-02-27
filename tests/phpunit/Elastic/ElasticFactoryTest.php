@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic;
 
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Elastic\ElasticFactory;
 use SMW\Tests\TestEnvironment;
 
@@ -9,21 +10,21 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Elastic\ElasticFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
+class ElasticFactoryTest extends \PHPUnit\Framework\TestCase {
 
+	private MessageReporter $messageReporter;
 	private $store;
 	private $outputFormatter;
 	private $conditionBuilder;
 	private $connection;
 	private $testEnvironment;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
@@ -50,7 +51,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $options ) );
+			->willReturn( $options );
 
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
@@ -58,18 +59,17 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ElasticFactory::class,
 			new ElasticFactory()
@@ -77,7 +77,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConfig() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -87,7 +86,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConnectionProvider() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -97,7 +95,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructIndexer() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -107,7 +104,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructFileIndexer() {
-
 		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -121,7 +117,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRollover() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -131,7 +126,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructInstaller() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -141,7 +135,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructBulk() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -151,7 +144,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQueryEngine() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -161,14 +153,13 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRebuilder() {
-
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new ElasticFactory();
 
@@ -179,7 +170,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructUpdateEntityCollationComplete() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -189,7 +179,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructReplicationStatus() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -199,14 +188,13 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructReplicationCheck() {
-
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new ElasticFactory();
 
@@ -217,14 +205,13 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructInfoTaskHandler() {
-
 		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = new ElasticFactory();
 
@@ -235,7 +222,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConceptDescriptionInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -245,7 +231,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSomePropertyInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -255,7 +240,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSomeValueInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -265,7 +249,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructClassDescriptionInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -275,7 +258,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructNamespaceDescriptionInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -285,7 +267,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructValueDescriptionInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -295,7 +276,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConjunctionInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -305,7 +285,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructDisjunctionInterpreter() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertInstanceOf(
@@ -315,7 +294,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnEntityReferenceCleanUpComplete() {
-
 		$instance = new ElasticFactory();
 
 		$this->assertTrue(
@@ -324,7 +302,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnRegisterEventListeners() {
-
 		$instance = new ElasticFactory();
 
 		$eventListener = $this->getMockBuilder( '\Onoi\EventDispatcher\Listener\GenericCallbackEventListener' )
@@ -337,7 +314,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testOnInvalidateEntityCache_OnSubject() {
-
 		$instance = new ElasticFactory();
 
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
@@ -350,14 +326,13 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dispatchContext->expects( $this->once() )
 			->method( 'has' )
-			->with( $this->equalTo( 'subject' ) )
-			->will( $this->returnValue( $subject ) );
+			->with( 'subject' )
+			->willReturn( $subject );
 
 		$instance->onInvalidateEntityCache( $dispatchContext );
 	}
 
 	public function testOnInvalidateEntityCache_OnTitle() {
-
 		$instance = new ElasticFactory();
 
 		$title = $this->getMockBuilder( '\Title' )
@@ -366,11 +341,11 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$dispatchContext = $this->getMockBuilder( '\Onoi\EventDispatcher\DispatchContext' )
 			->disableOriginalConstructor()
@@ -378,13 +353,12 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$dispatchContext->expects( $this->once() )
 			->method( 'get' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$instance->onInvalidateEntityCache( $dispatchContext );
 	}
 
 	public function testOnAfterUpdateEntityCollationComplete() {
-
 		$updateEntityCollationComplete = $this->getMockBuilder( '\SMW\Elastic\Hooks\UpdateEntityCollationComplete' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -399,7 +373,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$instance = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
@@ -408,11 +382,11 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'newRebuilder' )
-			->will( $this->returnValue( $rebuilder ) );
+			->willReturn( $rebuilder );
 
 		$instance->expects( $this->atLeastOnce() )
 			->method( 'newUpdateEntityCollationComplete' )
-			->will( $this->returnValue( $updateEntityCollationComplete ) );
+			->willReturn( $updateEntityCollationComplete );
 
 		$instance->onAfterUpdateEntityCollationComplete(
 			$store,
@@ -421,7 +395,6 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function tesOnAfterUpdateEntityCollationComplete_SkipHook() {
-
 		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -432,7 +405,7 @@ class ElasticFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()

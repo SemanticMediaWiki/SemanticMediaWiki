@@ -35,7 +35,7 @@
 	 */
 	browse.prototype.setContext = function( context ) {
 		this.context = context;
-		this.options = context.data( 'options' );
+		this.options = context.data( 'mw-smw-browse-options' );
 
 		return this;
 	}
@@ -47,7 +47,7 @@
 	browse.prototype.requestHTML = function() {
 
 		var self = this,
-			subject = self.context.data( 'subject' );
+			subject = self.context.data( 'mw-smw-browse-subject' );
 
 		self.api.post( {
 			action: "smwbrowse",
@@ -61,7 +61,7 @@
 				type: 'html'
 			} )
 		} ).done( function( data ) {
-			self.context.find( '.smwb-emptysheet' ).replaceWith( data.query );
+			self.context.find( '.smw-browse-content' ).replaceWith( data.query );
 			self.triggerEvents();
 		} ).fail ( function( xhr, status, error ) {
 			self.reportError( xhr, status, error );
@@ -75,12 +75,9 @@
 	browse.prototype.doUpdate = function( opts  ) {
 
 		var self = this,
-			subject = self.context.data( 'subject' );
+			subject = self.context.data( 'mw-smw-browse-subject' );
 
 		subject = subject.split( "#" );
-
-		self.context.addClass( 'is-disabled' );
-		self.context.append( '<span id="smw-wait" class="smw-overlay-spinner large inline"></span>' );
 
 		self.api.post( {
 			action: "smwbrowse",
@@ -94,12 +91,9 @@
 				type: 'html'
 			} )
 		} ).done( function( data ) {
-			self.context.removeClass( 'is-disabled' );
-			self.context.find( '#smw-wait' ).remove();
-
-			self.context.find( '.smwb-form' ).remove();
-			self.context.find( '.smwb-modules' ).remove();
-			self.context.find( '.smwb-datasheet' ).replaceWith( data.query );
+			self.context.find( '.smw-browse-search' ).remove();
+			self.context.find( '.smw-browse-modules' ).remove();
+			self.context.find( '.smw-factbox' ).replaceWith( data.query );
 
 			self.triggerEvents();
 		} ).fail ( function( xhr, status, error ) {
@@ -135,7 +129,7 @@
 			text = '<b>' + status.error.code + '</b><br\>' + status.error.info.replace(/#/g, "<br\>#" );
 		}
 
-		this.context.find( '.smwb-status' ).append( text ).addClass( 'smw-callout smw-callout-error' );
+		this.context.find( '.smw-browse-content' ).prepend( text ).addClass( 'error' );
 	}
 
 	/**
@@ -145,14 +139,14 @@
 	browse.prototype.triggerEvents = function() {
 
 		var self = this;
-		var form = self.context.find( '.smwb-form' );
+		var form = self.context.find( '.smw-browse-search' );
 
 		form.trigger( 'smw.page.autocomplete' , {
 			'context': form
 		} );
 
 		mw.loader.load(
-			self.context.find( '.smwb-modules' ).data( 'modules' )
+			self.context.find( '.smw-browse-modules' ).data( 'modules' )
 		);
 
 		// Re-apply JS-component instances on new content
@@ -196,11 +190,14 @@
 			event.preventDefault();
 		} );
 
-		$( '.smwb-container' ).each( function() {
+		$( '.smw-browse' ).each( function() {
+			if ( !$( this )[0].dataset.mwSmwBrowseSubject ) {
+				return;
+			}
 			instance.setContext( $( this ) ).requestHTML();
 		} );
 
-		var form = $( this ).find( '.smwb-form' );
+		var form = $( this ).find( '.smw-browse-search' );
 
 		mw.loader.using( [ 'ext.smw.browse', 'ext.smw.browse.autocomplete' ] ).done( function () {
 			form.trigger( 'smw.page.autocomplete' , {

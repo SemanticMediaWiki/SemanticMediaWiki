@@ -7,7 +7,7 @@ use Title;
 /**
  * Utility class to create unified hash keys for a variety of objects
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -22,7 +22,6 @@ class HashBuilder {
 	 * @return string
 	 */
 	public static function createFromSemanticData( SemanticData $semanticData ) {
-
 		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
 
@@ -52,7 +51,6 @@ class HashBuilder {
 	 * @return string
 	 */
 	public static function createFromContent( $hashableContent, $prefix = '' ) {
-
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = [ $hashableContent ];
 		}
@@ -136,7 +134,7 @@ class HashBuilder {
 	 * @return Title|null
 	 */
 	public static function newTitleFromHash( $hash ) {
-		list( $title, $namespace, $interwiki, $fragement ) = explode( '#', $hash, 4 );
+		[ $title, $namespace, $interwiki, $fragement ] = explode( '#', $hash, 4 );
 		return Title::makeTitle( $namespace, $title, $fragement, $interwiki );
 	}
 
@@ -151,8 +149,7 @@ class HashBuilder {
 	 * @return DIWikiPage|null
 	 */
 	public static function newDiWikiPageFromHash( $hash ) {
-
-		list( $title, $namespace, $interwiki, $subobjectName ) = explode( '#', $hash, 4 );
+		[ $title, $namespace, $interwiki, $subobjectName ] = explode( '#', $hash, 4 );
 
 		// A leading underscore is an internal SMW convention to describe predefined
 		// properties and as such need to be transformed into a valid representation

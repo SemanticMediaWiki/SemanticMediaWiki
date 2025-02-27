@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -11,7 +11,7 @@ namespace SMW\Tests;
 trait PHPUnitCompat {
 
 	/**
-	 * @see PHPUnit_Framework_TestCase::setExpectedException
+	 * @see \PHPUnit\Framework\TestCase::setExpectedException
 	 */
 	public function setExpectedException( $name, $message = '', $code = null ) {
 		if ( is_callable( [ $this, 'expectException' ] ) ) {
@@ -35,8 +35,7 @@ trait PHPUnitCompat {
 	 * or assertStringContainsStringIgnoringCase() instead."
 	 */
 	public static function assertContains( $needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false ): void {
-
-		if ( is_callable( [ 'PHPUnit_Framework_TestCase', 'assertStringContainsString' ] ) ) {
+		if ( is_callable( [ '\PHPUnit\Framework\TestCase', 'assertStringContainsString' ] ) ) {
 			if ( is_array( $haystack ) ) {
 				$haystack = implode( ' ', $haystack );
 			}
@@ -47,13 +46,12 @@ trait PHPUnitCompat {
 	}
 
 	/**
-	 * "UUsing assertNotContains() with string haystacks is deprecated and will
+	 * "Using assertNotContains() with string haystacks is deprecated and will
 	 * not be supported in PHPUnit 9. Refactor your test to use assertStringNotContainsString()
 	 * or assertStringNotContainsStringIgnoringCase() instead."
 	 */
 	public static function assertNotContains( $needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false ): void {
-
-		if ( is_callable( [ 'PHPUnit_Framework_TestCase', 'assertStringNotContainsString' ] ) ) {
+		if ( is_callable( [ '\PHPUnit\Framework\TestCase', 'assertStringNotContainsString' ] ) ) {
 			if ( is_array( $haystack ) ) {
 				$haystack = implode( ' ', $haystack );
 			}
@@ -71,8 +69,7 @@ trait PHPUnitCompat {
 	 * instead."
 	 */
 	public static function assertInternalType( $expected, $actual, $message = '' ): void {
-
-		if ( is_callable( [ 'PHPUnit_Framework_TestCase', 'assertIsArray' ] ) ) {
+		if ( is_callable( [ '\PHPUnit\Framework\TestCase', 'assertIsArray' ] ) ) {
 			if ( $expected === 'array' ) {
 				parent::assertIsArray( $actual, $message );
 			}
@@ -104,5 +101,4 @@ trait PHPUnitCompat {
 			parent::assertInternalType( $expected, $actual, $message );
 		}
 	}
-
 }

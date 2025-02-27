@@ -1,20 +1,20 @@
 <?php
 namespace SMW\Tests\Query\ResultPrinters;
 
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\ResultPrinters\ListResultPrinter;
 
 /**
  * @covers \SMW\Query\ResultPrinters\ListResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Máté Szabó
  * @author Stephan Gambke
  */
-class ListResultPrinterTest extends \PHPUnit_Framework_TestCase {
+class ListResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @dataProvider allFormatsProvider

@@ -1,25 +1,25 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\SemanticData;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
-use SMW\Site;
 use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\ElementFactory;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 use SMW\Localizer\Localizer;
 use SMW\NamespaceUriFinder;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Site;
 use SMW\TypesRegistry;
+use SMWDIBlob as DIBlob;
 
 /**
  * SMWExporter is a class for converting internal page-based data (SemanticData) into
@@ -82,11 +82,11 @@ class SMWExporter {
 	 */
 	private static $dispatchingResourceBuilder = null;
 
-	static protected $m_exporturl = false;
-	static protected $m_ent_wiki = false;
-	static protected $m_ent_property = false;
-	static protected $m_ent_category = false;
-	static protected $m_ent_wikiurl = false;
+	protected static $m_exporturl = false;
+	protected static $m_ent_wiki = false;
+	protected static $m_ent_property = false;
+	protected static $m_ent_category = false;
+	protected static $m_ent_wikiurl = false;
 
 	/**
 	 * @since 2.0
@@ -94,7 +94,6 @@ class SMWExporter {
 	 * @return SMWExporter
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 
 			self::$instance = new self();
@@ -150,7 +149,7 @@ class SMWExporter {
 	/**
 	 * Make sure that necessary base URIs are initialised properly.
 	 */
-	static public function initBaseURIs() {
+	public static function initBaseURIs() {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
@@ -161,7 +160,7 @@ class SMWExporter {
 
 		$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver' );
 
-		if ( '' == $smwgNamespace ) {
+		if ( $smwgNamespace == '' ) {
 			$smwgNamespace = $resolver->getFullURL() . '/';
 		} elseif ( $smwgNamespace[0] == '.' ) {
 			$smwgNamespace = "http://" . substr( $smwgNamespace, 1 ) . $resolver->getLocalURL() . '/';
@@ -278,7 +277,6 @@ class SMWExporter {
 	 * @return SMWExpData
 	 */
 	public function makeExportDataForSubject( DIWikiPage $subject, $addStubData = false ) {
-
 		$wikiPageExpElement = $this->newExpElement( $subject );
 		$expData = new SMWExpData( $wikiPageExpElement );
 
@@ -328,12 +326,12 @@ class SMWExporter {
 				case SMW_NS_CONCEPT:
 					$maintype_pe = self::getSpecialNsResource( 'owl', 'Class' );
 					$label = $pageTitle;
-				break;
+					break;
 				case SMW_NS_PROPERTY:
 					$property = new DIProperty( $subject->getDBKey() );
 					$maintype_pe = self::getSpecialNsResource( 'owl', $this->getOWLPropertyType( $property ) );
 					$label = $pageTitle;
-				break;
+					break;
 				default:
 					$label = $prefixedSubjectTitle;
 					$maintype_pe = self::getSpecialNsResource( 'swivt', 'Subject' );
@@ -344,9 +342,9 @@ class SMWExporter {
 			if ( !$wikiPageExpElement->isBlankNode() ) {
 				$ed = new ExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'label' ), $ed );
-				$ed = new SMWExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
+				$ed = new ExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
-				$ed = new SMWExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
+				$ed = new ExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
 				$ed = new ExpLiteral( strval( $subject->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
@@ -374,7 +372,7 @@ class SMWExporter {
 					if ( $file !== false ) {
 						$expData->addPropertyObjectValue(
 							self::getSpecialNsResource( 'swivt', 'file' ),
-							new SMWExpResource( $file->getFullURL() )
+							new ExpResource( $file->getFullURL() )
 						);
 					}
 				}
@@ -389,12 +387,11 @@ class SMWExporter {
 	 * specified property data itme. This method is called when
 	 * constructing export data structures from SemanticData objects.
 	 *
-	 * @param $property SMWDIProperty
-	 * @param $dataItems array of SMWDataItem objects for the given property
-	 * @param $data SMWExpData to add the data to
+	 * @param DIProperty $property
+	 * @param array $dataItems of SMWDataItem objects for the given property
+	 * @param SMWExpData &$expData to add the data to
 	 */
-	static public function addPropertyValues( SMWDIProperty $property, array $dataItems, SMWExpData &$expData ) {
-
+	public static function addPropertyValues( DIProperty $property, array $dataItems, SMWExpData &$expData ) {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {
@@ -404,13 +401,13 @@ class SMWExporter {
 		} else { // pre-defined property, only exported if known
 			$diSubject = $expData->getSubject()->getDataItem();
 			// subject wikipage required for disambiguating special properties:
-			if ( is_null( $diSubject ) ||
-			     $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) {
+			if ( $diSubject === null ||
+				 $diSubject->getDIType() != SMWDataItem::TYPE_WIKIPAGE ) {
 				return;
 			}
 
 			$pe = self::getSpecialPropertyResource( $property->getKey(), $diSubject->getNamespace() );
-			if ( is_null( $pe ) ) {
+			if ( $pe === null ) {
 				return; // unknown special property, not exported
 			}
 			// have helper property ready before entering the for loop, even if not needed:
@@ -422,7 +419,7 @@ class SMWExporter {
 				// Basic namespace filtering to ensure that types match for redirects etc.
 				/// TODO: currently no full check for avoiding OWL DL illegal redirects is done (OWL property type ignored)
 				if ( $filterNamespace && !( $dataItem instanceof SMWDIUri ) &&
-				     ( !( $dataItem instanceof DIWikiPage ) ) ) {
+					 ( !( $dataItem instanceof DIWikiPage ) ) ) {
 					continue;
 				}
 
@@ -434,14 +431,14 @@ class SMWExporter {
 	/**
 	 * @see ExpResourceMapper::mapPropertyToResourceElement
 	 */
-	static public function getResourceElementForProperty( SMWDIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
+	public static function getResourceElementForProperty( DIProperty $diProperty, $helperProperty = false, $seekImportVocabulary = true ) {
 		return self::$expResourceMapper->mapPropertyToResourceElement( $diProperty, $helperProperty, $seekImportVocabulary );
 	}
 
 	/**
 	 * @see ExpResourceMapper::mapWikiPageToResourceElement
 	 */
-	static public function getResourceElementForWikiPage( DIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
+	public static function getResourceElementForWikiPage( DIWikiPage $diWikiPage, $markForAuxiliaryUsage = false ) {
 		return self::$expResourceMapper->mapWikiPageToResourceElement( $diWikiPage, $markForAuxiliaryUsage );
 	}
 
@@ -477,7 +474,7 @@ class SMWExporter {
 	 * @param $forNamespace integer the namespace of the page which has a value for this property
 	 * @return ExpNsResource|null
 	 */
-	static public function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
+	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
 		switch ( $propertyKey ) {
 			case '_INST':
 				return self::getSpecialNsResource( 'rdf', 'type' );
@@ -550,7 +547,7 @@ class SMWExporter {
 	 * @param $localName string (e.g. "type")
 	 * @return ExpNsResource
 	 */
-	static public function getSpecialNsResource( $namespaceId, $localName ) {
+	public static function getSpecialNsResource( $namespaceId, $localName ) {
 		$namespace = self::getNamespaceUri( $namespaceId );
 		if ( $namespace !== '' ) {
 			return new ExpNsResource( $localName, $namespace, $namespaceId );
@@ -573,9 +570,9 @@ class SMWExporter {
 	public function expandURI( $uri ) {
 		self::initBaseURIs();
 		$uri = str_replace( [ '&wiki;', '&wikiurl;', '&property;', '&category;', '&owl;', '&rdf;', '&rdfs;', '&swivt;', '&export;' ],
-		                    [ self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
-		                    self::$m_exporturl ],
-		                    $uri );
+							[ self::$m_ent_wiki, self::$m_ent_wikiurl, self::$m_ent_property, self::$m_ent_category, 'http://www.w3.org/2002/07/owl#', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'http://www.w3.org/2000/01/rdf-schema#', 'http://semantic-mediawiki.org/swivt/1.0#',
+							self::$m_exporturl ],
+							$uri );
 		return $uri;
 	}
 
@@ -593,7 +590,7 @@ class SMWExporter {
 	 * @param $shortName string id (prefix) of the namespace
 	 * @return string of the expanded URI
 	 */
-	static public function getNamespaceUri( $shortName ) {
+	public static function getNamespaceUri( $shortName ) {
 		self::initBaseURIs();
 
 		if ( ( $uri = NamespaceUriFinder::getUri( $shortName ) ) !== false ) {
@@ -602,34 +599,34 @@ class SMWExporter {
 
 		switch ( $shortName ) {
 			case 'wiki':
-			return self::$m_ent_wiki;
+				return self::$m_ent_wiki;
 			case 'wikiurl':
-			return self::$m_ent_wikiurl;
+				return self::$m_ent_wikiurl;
 			case 'property':
-			return self::$m_ent_property;
+				return self::$m_ent_property;
 			case 'category':
-			return self::$m_ent_category;
+				return self::$m_ent_category;
 			case 'export':
-			return self::$m_exporturl;
+				return self::$m_exporturl;
 			case 'owl':
-			return 'http://www.w3.org/2002/07/owl#';
+				return 'http://www.w3.org/2002/07/owl#';
 			case 'rdf':
-			return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+				return 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
 			case 'rdfs':
-			return 'http://www.w3.org/2000/01/rdf-schema#';
+				return 'http://www.w3.org/2000/01/rdf-schema#';
 			case 'swivt':
-			return 'http://semantic-mediawiki.org/swivt/1.0#';
+				return 'http://semantic-mediawiki.org/swivt/1.0#';
 			case 'xsd':
-			return 'http://www.w3.org/2001/XMLSchema#';
+				return 'http://www.w3.org/2001/XMLSchema#';
 			default:
-			return '';
+				return '';
 		}
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param SMWDataItem $dataItem;
+	 * @param SMWDataItem $dataItem
 	 *
 	 * @return ExpElement
 	 */
@@ -665,7 +662,6 @@ class SMWExporter {
 	 * @return ExpElement|null
 	 */
 	public function newAuxiliaryExpElement( SMWDataItem $dataItem ) {
-
 		if ( $dataItem->getDIType() == SMWDataItem::TYPE_TIME ) {
 			return new ExpLiteral( (string)$dataItem->getSortKey(), 'http://www.w3.org/2001/XMLSchema#double', '', $dataItem );
 		}
@@ -681,13 +677,13 @@ class SMWExporter {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function hasHelperExpElement( DIProperty $property ) {
+	public static function hasHelperExpElement( DIProperty $property ) {
 		return ( $property->findPropertyTypeID() === '_dat' || $property->findPropertyTypeID() === '_geo' ) || ( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
-	static protected function hasSpecialPropertyResource( DIProperty $property ) {
+	protected static function hasSpecialPropertyResource( DIProperty $property ) {
 		return $property->getKey() === '_SKEY' ||
 			$property->getKey() === '_INST' ||
 			$property->getKey() === '_MDAT' ||

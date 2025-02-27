@@ -8,42 +8,42 @@ use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\TableBuilder\TableBuilder;
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class TableBuilderIntegrationTest extends DatabaseTestCase {
+class TableBuilderIntegrationTest extends SMWIntegrationTestCase {
 
 	private $messageReporterFactory;
-	private $TableBuilder;
+	private $tableBuilder;
 	private $stringValidator;
 	private $tableName = 'rdbms_test';
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->messageReporterFactory = MessageReporterFactory::getInstance();
 
 		$this->tableBuilder = TableBuilder::factory(
-			$this->getStore()->getConnection( DB_MASTER )
+			$this->getStore()->getConnection( DB_PRIMARY )
 		);
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		parent::tearDown();
 	}
 
 	public function testCreateTable() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -68,7 +68,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateTableWithNewField() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -96,7 +95,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateTableWithNewFieldType() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -129,7 +127,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testCreateIndex() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -166,7 +163,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateIndex_ReplaceIndex() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -203,7 +199,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateIndex_RemoveIndexWithArrayNotation() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -238,7 +233,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testUpdateIndex_NoIndexChange() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -272,7 +266,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testDropTable() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(
@@ -295,7 +288,6 @@ class TableBuilderIntegrationTest extends DatabaseTestCase {
 	}
 
 	public function testTryToDropTableWhichNotExists() {
-
 		$messageReporter = $this->messageReporterFactory->newSpyMessageReporter();
 
 		$this->tableBuilder->setMessageReporter(

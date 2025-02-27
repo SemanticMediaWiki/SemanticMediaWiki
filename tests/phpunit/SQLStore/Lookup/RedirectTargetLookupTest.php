@@ -9,21 +9,20 @@ use SMW\SQLStore\Lookup\RedirectTargetLookup;
  * @covers \SMW\SQLStore\Lookup\RedirectTargetLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
+class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $idCacheManager;
 	private $cache;
 	private $connection;
 
-	protected function setUp() : void {
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+	protected function setUp(): void {
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,7 +33,7 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
 			->disableOriginalConstructor()
@@ -46,7 +45,6 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RedirectTargetLookup::class,
 			new RedirectTargetLookup( $this->store, $this->idCacheManager )
@@ -54,30 +52,29 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_FromHash() {
-
 		$rows = [
 			(object)[ 's_title' => 'Bar', 's_namespace' => 0, 'o_id' => 42 ]
 		];
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->cache->expects( $this->at( 0 ) )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ),
-				$this->equalTo( 'Bar#0##' ) );
+				'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
+				'Bar#0##' );
 
 		$this->cache->expects( $this->at( 1 ) )
 			->method( 'save' )
 			->with(
-				$this->equalTo( '7b6b944694382bfab461675f40a2bda7e71e68e3' ),
-				$this->equalTo( 'Foo#0##' ) );
+				'7b6b944694382bfab461675f40a2bda7e71e68e3',
+				'Foo#0##' );
 
 		$instance = new RedirectTargetLookup(
 			$this->store,
@@ -88,30 +85,29 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrepareCache_FromInstance() {
-
 		$rows = [
 			(object)[ 's_title' => 'Bar', 's_namespace' => 0, 'o_id' => 42 ]
 		];
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( $rows ) );
+			->willReturn( $rows );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->returnValue( $this->cache ) );
+			->willReturn( $this->cache );
 
 		$this->cache->expects( $this->at( 0 ) )
 			->method( 'save' )
 			->with(
-				$this->equalTo( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ),
-				$this->equalTo( 'Bar#0##' ) );
+				'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
+				'Bar#0##' );
 
 		$this->cache->expects( $this->at( 1 ) )
 			->method( 'save' )
 			->with(
-				$this->equalTo( '7b6b944694382bfab461675f40a2bda7e71e68e3' ),
-				$this->equalTo( 'Foo#0##' ) );
+				'7b6b944694382bfab461675f40a2bda7e71e68e3',
+				'Foo#0##' );
 
 		$instance = new RedirectTargetLookup(
 			$this->store,
@@ -122,19 +118,18 @@ class RedirectTargetLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindRedirectSource() {
-
 		$flag = RedirectTargetLookup::CACHE_ONLY;
 		$target = DIWikiPage::newFromText( 'Foo' );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->with( $this->equalTo( \SMW\SQLStore\EntityStore\IdCacheManager::REDIRECT_SOURCE ) )
-			->will( $this->returnValue( $this->cache ) );
+			->with( \SMW\SQLStore\EntityStore\IdCacheManager::REDIRECT_SOURCE )
+			->willReturn( $this->cache );
 
 		$this->cache->expects( $this->atLeastOnce() )
 			->method( 'fetch' )
-			->with( $this->equalTo( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' ) )
-			->will( $this->returnValue( 'Bar#0##' ) );
+			->with( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6' )
+			->willReturn( 'Bar#0##' );
 
 		$instance = new RedirectTargetLookup(
 			$this->store,

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
-use SMW\Tests\DatabaseTestCase;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -10,22 +10,21 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
  */
-class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
-
-	protected $destroyDatabaseTablesAfterRun = true;
+class RebuildPropertyStatisticsMaintenanceTest extends SMWIntegrationTestCase {
 
 	private $importedTitles = [];
 	private $runnerFactory;
 	private $titleValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->runnerFactory  = UtilityFactory::getInstance()->newRunnerFactory();
@@ -41,8 +40,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 		}
 	}
 
-	protected function tearDown() : void {
-
+	protected function tearDown(): void {
 		$pageDeleter = UtilityFactory::getInstance()->newPageDeleter();
 		$pageDeleter->doDeletePoolOfPages( $this->importedTitles );
 
@@ -50,7 +48,6 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 	}
 
 	public function testRebuildPropertyStatistics() {
-
 		$this->importedTitles = [
 			'Category:Lorem ipsum',
 			'Lorem ipsum',
@@ -70,7 +67,7 @@ class RebuildPropertyStatisticsMaintenanceTest extends DatabaseTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( 'SMW\Maintenance\RebuildPropertyStatistics' );
+		$maintenanceRunner = $this->runnerFactory->newMaintenanceRunner( '\SMW\Maintenance\rebuildPropertyStatistics' );
 		$maintenanceRunner->setQuiet()->run();
 	}
 

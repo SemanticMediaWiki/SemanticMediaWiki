@@ -9,15 +9,13 @@ use SMW\Services\ServicesFactory;
 use SMW\Store;
 use Title;
 use UnexpectedValueException;
-use User;
-use WikiPage;
 
 /**
  *
  * @group SMW
  * @group SMWExtension
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -57,7 +55,6 @@ class ByPageSemanticDataFinder {
 	 * @return SemanticData
 	 */
 	public function fetchIncomingDataFromStore() {
-
 		$requestOptions = new \SMWRequestOptions();
 		$requestOptions->sort = true;
 
@@ -104,7 +101,6 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function makeOutputFromPageRevision() {
-
 		$wikiPage = $this->getPage();
 		$revisionGuard = ServicesFactory::getInstance()->singleton( 'RevisionGuard' );
 		$revision = $revisionGuard->newRevisionFromPage( $wikiPage );
@@ -126,7 +122,6 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function getTitle() {
-
 		if ( $this->title instanceof Title ) {
 			return $this->title;
 		}
@@ -135,7 +130,6 @@ class ByPageSemanticDataFinder {
 	}
 
 	protected function getStore() {
-
 		if ( $this->store instanceof Store ) {
 			return $this->store;
 		}

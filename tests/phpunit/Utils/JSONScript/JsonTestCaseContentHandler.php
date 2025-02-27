@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -47,6 +47,8 @@ class JsonTestCaseContentHandler {
 	 * @var string
 	 */
 	private $testCaseLocation = '';
+
+	private LocalFileUpload $localFileUpload;
 
 	/**
 	 * @since 2.5
@@ -92,15 +94,14 @@ class JsonTestCaseContentHandler {
 	 * @since 2.5
 	 *
 	 * @param array $pages
-	 * @param integer $defaultNamespace
+	 * @param int $defaultNamespace
 	 */
 	public function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
-
 		foreach ( $pages as $page ) {
 
 			$skipOn = isset( $page['skip-on'] ) ? $page['skip-on'] : [];
 
-			if ( in_array( $this->skipOn, array_keys( $skipOn ) ) ) {
+			if ( array_key_exists( $this->skipOn, $skipOn ) ) {
 				continue;
 			}
 
@@ -118,10 +119,9 @@ class JsonTestCaseContentHandler {
 	 * @since 2.5
 	 *
 	 * @param array $page
-	 * @param integer $defaultNamespace
+	 * @param int $namespace
 	 */
 	public function createPage( array $page, $namespace ) {
-
 		$pageContentLanguage = isset( $page['contentlanguage'] ) ? $page['contentlanguage'] : '';
 
 		if ( isset( $page['message-cache'] ) && $page['message-cache'] === 'clear' ) {
@@ -146,7 +146,7 @@ class JsonTestCaseContentHandler {
 		} else {
 			$contents = $page['contents'];
 		}
-
+		// check this part - possible gives us error like Table doesn't exist
 		$this->pageCreator->createPage( $title, $contents, $pageContentLanguage );
 
 		$this->pages[] = $this->pageCreator->getPage();
@@ -179,7 +179,6 @@ class JsonTestCaseContentHandler {
 	}
 
 	private function doUploadFile( $title, array $contents ) {
-
 		$this->localFileUpload->doUploadCopyFromLocation(
 			$this->testCaseLocation . $contents['file'],
 			$title->getText(),

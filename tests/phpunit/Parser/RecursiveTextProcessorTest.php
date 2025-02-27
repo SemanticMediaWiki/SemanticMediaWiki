@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Parser\RecursiveTextProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
+class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,7 +23,7 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	private $parserOutput;
 	private $title;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->parser = $this->getMockBuilder( '\Parser' )
@@ -40,7 +40,7 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 
 		$this->parserOutput->expects( $this->any() )
 			->method( 'getHeadItems' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -48,7 +48,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RecursiveTextProcessor::class,
 			new RecursiveTextProcessor( $this->parser )
@@ -56,19 +55,18 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotation() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $this->parserOptions ) );
+			->willReturn( $this->parserOptions );
 
 		$this->parser->expects( $this->once() )
 			->method( 'replaceVariables' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnArgument( 0 ) );
+			->with( 'Foo' )
+			->willReturnArgument( 0 );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -81,28 +79,27 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotationWithAnnotationBlockToRemoveCategories() {
-
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'getExtensionData' )
-			->with(	$this->equalTo( \SMW\ParserData::ANNOTATION_BLOCK ) )
-			->will( $this->returnValue( [ '123' => true ] ) );
+			->with(	\SMW\ParserData::ANNOTATION_BLOCK )
+			->willReturn( [ '123' => true ] );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $this->parserOptions ) );
+			->willReturn( $this->parserOptions );
 
 		$this->parser->expects( $this->once() )
 			->method( 'replaceVariables' )
-			->with( $this->equalTo( 'Foo [[Category:Bar]][[Category:Test: Abc]]' ) )
-			->will( $this->returnArgument( 0 ) );
+			->with( 'Foo [[Category:Bar]][[Category:Test: Abc]]' )
+			->willReturnArgument( 0 );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -117,23 +114,22 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_NO_RecursiveAnnotationWithNoAnnotationBlockToRetainCategories() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $this->parserOptions ) );
+			->willReturn( $this->parserOptions );
 
 		$this->parser->expects( $this->once() )
 			->method( 'replaceVariables' )
-			->with( $this->equalTo( 'Foo [[Category:Bar]][[Category:Test: Abc]]' ) )
-			->will( $this->returnArgument( 0 ) );
+			->with( 'Foo [[Category:Bar]][[Category:Test: Abc]]' )
+			->willReturnArgument( 0 );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -148,19 +144,18 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_WITH_RecursiveAnnotation() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $this->parserOptions ) );
+			->willReturn( $this->parserOptions );
 
 		$this->parser->expects( $this->once() )
 			->method( 'recursivePreprocess' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnArgument( 0 ) );
+			->with( 'Foo' )
+			->willReturnArgument( 0 );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -175,7 +170,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_WITH_IncompleteParser() {
-
 		$instance = new RecursiveTextProcessor(
 			$this->parser
 		);
@@ -196,19 +190,18 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursiveTagParse() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $this->parserOptions ) );
+			->willReturn( $this->parserOptions );
 
 		$this->parser->expects( $this->once() )
 			->method( 'recursiveTagParse' )
-			->with( $this->equalTo( 'Foo' ) )
-			->will( $this->returnArgument( 0 ) );
+			->with( 'Foo' )
+			->willReturnArgument( 0 );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -221,11 +214,10 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursiveTagParse_WITH_IncompleteParser() {
-
 		$this->parser->expects( $this->once() )
 			->method( 'parse' )
-			->with( $this->equalTo( 'Foo__NOTOC__' ) )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->with( 'Foo__NOTOC__' )
+			->willReturn( $this->parserOutput );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -235,10 +227,9 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExpandTemplate() {
-
 		$this->parser->expects( $this->once() )
 			->method( 'preprocess' )
-			->with( $this->equalTo( '{{Foo}}' ) );
+			->with( '{{Foo}}' );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -248,14 +239,13 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursivePreprocess_ExceededRecursion() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOptions' )
-			->will( $this->returnValue( $this->parserOptions ) );
+			->willReturn( $this->parserOptions );
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -270,7 +260,6 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecursiveTagParse_ExceededRecursion() {
-
 		$instance = new RecursiveTextProcessor(
 			$this->parser
 		);
@@ -284,10 +273,15 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTranscludeAnnotationWithoutUniquidThrowsException() {
-
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
+
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -298,16 +292,21 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTranscludeAnnotation_FALSE() {
-
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'setExtensionData' )
 			->with(
-				$this->equalTo( \SMW\ParserData::ANNOTATION_BLOCK ),
-				$this->equalTo( [ '123' => true ] ) );
+				\SMW\ParserData::ANNOTATION_BLOCK,
+				[ '123' => true ] );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
+
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -318,21 +317,26 @@ class RecursiveTextProcessorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testReleaseAnnotationBlock() {
-
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'getExtensionData' )
-			->with(	$this->equalTo( \SMW\ParserData::ANNOTATION_BLOCK ) )
-			->will( $this->returnValue( [ '123' => true ] ) );
+			->with(	\SMW\ParserData::ANNOTATION_BLOCK )
+			->willReturn( [ '123' => true ] );
 
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'setExtensionData' )
 			->with(
-				$this->equalTo( \SMW\ParserData::ANNOTATION_BLOCK ),
-				$this->equalTo( false ) );
+				\SMW\ParserData::ANNOTATION_BLOCK,
+				false );
 
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->will( $this->returnValue( $this->parserOutput ) );
+			->willReturn( $this->parserOutput );
+
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser

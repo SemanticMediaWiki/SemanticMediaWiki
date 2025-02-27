@@ -14,18 +14,18 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @covers \SMW\Property\Annotators\CategoryPropertyAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
+class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -40,13 +40,12 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -66,7 +65,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoriesDataProvider
 	 */
 	public function testAddCategoriesAnnotation( array $parameters, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
@@ -104,7 +102,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider categoriesDataProvider
 	 */
 	public function testAddCategoriesWithParserDataUpdate( array $parameters, array $expected ) {
-
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
@@ -149,7 +146,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider hiddenCategoriesDataProvider
 	 */
 	public function testAddCategoriesWithHiddenCategories( array $parameters, array $expected ) {
-
 		$expectedPageLookup = $parameters['settings']['showHiddenCategories'] ? $this->never() : $this->atLeastOnce();
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -158,7 +154,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$wikiPage->expects( $expectedPageLookup )
 			->method( 'getHiddenCategories' )
-			->will( $this->returnValue( $parameters['hidCategories'] ) );
+			->willReturn( $parameters['hidCategories'] );
 
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
 			->disableOriginalConstructor()
@@ -166,7 +162,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$pageCreator->expects( $expectedPageLookup )
 			->method( 'createPage' )
-			->will( $this->returnValue( $wikiPage ) );
+			->willReturn( $wikiPage );
 
 		$semanticData = $this->semanticDataFactory
 			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
@@ -207,7 +203,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddCategoryOnInvalidRedirect() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
@@ -215,7 +210,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' )
-			->will( $this->returnValue( new DIWikiPage( 'Foo', NS_MAIN ) ) );
+			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
@@ -246,7 +241,6 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function categoriesDataProvider() {
-
 		$provider = [];
 
 		// Standard category
@@ -263,7 +257,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => [ 'Foo',  'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -281,7 +275,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Foo',  'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -292,18 +286,17 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 	 * @return array
 	 */
 	public function hiddenCategoriesDataProvider() {
-
 		$provider = [];
 
 		$hidCategory = MockTitle::buildMock( __METHOD__ );
 
 		$hidCategory->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_CATEGORY ) );
+			->willReturn( NS_CATEGORY );
 
 		$hidCategory->expects( $this->any() )
 			->method( 'getText' )
-			->will( $this->returnValue( 'Bar' ) );
+			->willReturn( 'Bar' );
 
 		// #0 Standard category, show hidden category
 		$provider[] = [
@@ -320,7 +313,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => [ 'Foo', 'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -339,7 +332,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_INST',
-				'propertyValues' => [ 'Foo' ],
+				'propertyValues' => [ 'Category:Foo' ],
 			]
 		];
 
@@ -358,7 +351,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Foo', 'Bar' ],
+				'propertyValues' => [ 'Category:Foo', 'Category:Bar' ],
 			]
 		];
 
@@ -377,7 +370,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit_Framework_TestCase {
 			[
 				'propertyCount'  => 1,
 				'propertyKeys'   => '_SUBC',
-				'propertyValues' => [ 'Foo' ],
+				'propertyValues' => [ 'Category:Foo' ],
 			]
 		];
 

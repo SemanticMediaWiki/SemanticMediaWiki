@@ -10,17 +10,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\ChangeOp\ChangeOp
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class ChangeOpTest extends \PHPUnit_Framework_TestCase {
+class ChangeOpTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ChangeOp::class,
 			new ChangeOp()
@@ -28,7 +27,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSerialize() {
-
 		$instance = new ChangeOp(
 			DIWikiPage::newFromText( __METHOD__ ),
 			[]
@@ -46,7 +44,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider diffDataProvider
 	 */
 	public function testDiff( $diff, $fixedPropertyRecord, $expectedOrdered, $expectedList ) {
-
 		$instance = new ChangeOp(
 			DIWikiPage::newFromText( __METHOD__ ),
 			$diff
@@ -57,8 +54,8 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 			$fixedPropertyRecord[1]
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getFixedPropertyRecords()
 		);
 
@@ -74,7 +71,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetTableChangeOps() {
-
 		$diff = [
 			0 => [
 				'insert' => [
@@ -117,14 +113,13 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 			$instance->getTableChangeOps( 'smw_di_number' )
 		);
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			$instance->getTableChangeOps()
 		);
 	}
 
 	public function testGetListOfChangedEntitiesByType() {
-
 		$diff = [
 			0 => [
 				'insert' => [
@@ -186,7 +181,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTryToGetTableChangeOpForSingleTable() {
-
 		$diff = [];
 
 		$instance = new ChangeOp(
@@ -200,7 +194,6 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetHash() {
-
 		$diff = [];
 
 		$instance = new ChangeOp(
@@ -208,14 +201,13 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 			$diff
 		);
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			$instance->getHash()
 		);
 	}
 
 	public function diffDataProvider() {
-
 		$provider[] = [
 			[],
 			[ 'foo', [] ],
@@ -250,7 +242,7 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 				'smw_fpt_mdat' =>
 				  [],
 				],
-			  ],
+				],
 			],
 			[
 			  'smw_fpt_mdat',
@@ -269,7 +261,7 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 					'o_sortkey' => '123',
 				  ],
 				],
-			  ],
+				],
 			  'smw_fpt_mdat' => [
 				'property' =>
 				[
@@ -283,7 +275,7 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 					'o_sortkey' => '2457250.8948958',
 				  ],
 				],
-			  ],
+				],
 			],
 			[
 			  0 => 61,
@@ -410,6 +402,5 @@ class ChangeOpTest extends \PHPUnit_Framework_TestCase {
 
 		return $provider;
 	}
-
 
 }

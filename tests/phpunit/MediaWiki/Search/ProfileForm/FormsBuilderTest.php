@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\FormsBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
+class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -23,8 +23,7 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 	private $webRequest;
 	private $formsFactory;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
 		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
@@ -37,7 +36,6 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FormsBuilder::class,
 			new FormsBuilder( $this->webRequest, $this->formsFactory )
@@ -45,7 +43,6 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBuildForm() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -60,15 +57,15 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$customForm->expects( $this->any() )
 			->method( 'getParameters' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->formsFactory->expects( $this->any() )
 			->method( 'newOpenForm' )
-			->will( $this->returnValue( $openForm ) );
+			->willReturn( $openForm );
 
 		$this->formsFactory->expects( $this->any() )
 			->method( 'newCustomForm' )
-			->will( $this->returnValue( $customForm ) );
+			->willReturn( $customForm );
 
 		$instance = new FormsBuilder(
 			$this->webRequest,
@@ -101,14 +98,17 @@ class FormsBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expected = [
 			'<button type="button" id="smw-search-forms" class="smw-selectmenu-button is-disabled".*',
 			'name="smw-form" value="".*',
-			'data-list="[{&quot;id&quot;:&quot;bar&quot;,&quot;name&quot;:&quot;Bar&quot;,&quot;desc&quot;:&quot;Bar&quot;},{&quot;id&quot;:&quot;foo&quot;,&quot;name&quot;:&quot;Foo&quot;,&quot;desc&quot;:&quot;Foo&quot;}]" data-nslist="[]">Form</button><input type="hidden" name="smw-form"/>'
+			'data-list="[{&quot;id&quot;:&quot;bar&quot;,&quot;name&quot;:&quot;Bar&quot;,&quot;desc&quot;:&quot;Bar&quot;},{&quot;id&quot;:&quot;foo&quot;,&quot;name&quot;:&quot;Foo&quot;,&quot;desc&quot;:&quot;Foo&quot;}]" data-nslist="[]">Form</button><input type="hidden" name="smw-form">'
 		];
+
+		$actual = $instance->buildFormList( $title );
+		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
+		$actual = str_replace( '/>', '>', $actual );
 
 		$this->stringValidator->assertThatStringContains(
 			$expected,
-			$instance->buildFormList( $title )
+			$actual
 		);
 	}
-
 
 }

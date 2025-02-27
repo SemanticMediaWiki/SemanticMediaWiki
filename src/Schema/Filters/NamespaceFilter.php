@@ -2,15 +2,13 @@
 
 namespace SMW\Schema\Filters;
 
-use SMW\Schema\SchemaList;
-use SMW\Schema\SchemaFilter;
 use SMW\Schema\ChainableFilter;
-use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
+use SMW\Schema\SchemaFilter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -20,7 +18,7 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $namespace;
 
@@ -38,12 +36,11 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() : string {
+	public function getName(): string {
 		return 'namespace';
 	}
 
 	private function match( Compartment $compartment ) {
-
 		$namespaces = $compartment->get( 'if.namespace' );
 
 		// In case the filter was marked as elective allows sets to remain in
@@ -70,7 +67,6 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	}
 
 	private function matchOneOf( array $namespaces ) {
-
 		if ( $this->namespace === null ) {
 			return false;
 		}

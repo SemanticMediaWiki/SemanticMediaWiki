@@ -11,7 +11,7 @@ use RuntimeException;
  * Convenience class with methods to generate a SQL query statement where value
  * quotes and name transformations are done automatically.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -31,27 +31,27 @@ class Query {
 	protected $type = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $table = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $fields = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $conditions = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	protected $options = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $joins = [];
 
@@ -61,12 +61,12 @@ class Query {
 	public $alias = '';
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	public $index = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $autoCommit = false;
 
@@ -87,7 +87,6 @@ class Query {
 	 * @throws InvalidArgumentException
 	 */
 	public function type( $type ) {
-
 		$type = strtoupper( $type );
 
 		if ( !in_array( $type, [ self::TYPE_SELECT ] ) ) {
@@ -109,7 +108,7 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $field
+	 * @param array ...$field
 	 */
 	public function field( ...$field ) {
 		$this->fields[] = $field;
@@ -118,10 +117,9 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasField( $field = '' ) {
-
 		if ( (string)$field === '' ) {
 			return $this->fields !== [];
 		}
@@ -132,7 +130,7 @@ class Query {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasCondition() {
 		return $this->conditions !== [];
@@ -143,11 +141,10 @@ class Query {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $table
+	 * @param array ...$table
 	 */
 	public function table( ...$table ) {
-
-		if ( strpos( $table[0], 'SELECT' ) !== false ) {
+		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {
 			$tableName = '(' . $table[0] . ')';
 		} else {
 			$tableName = $this->connection->tableName( $table[0] );
@@ -162,7 +159,6 @@ class Query {
 	 * @param string ...$join
 	 */
 	public function join( ...$join ) {
-
 		if ( strpos( $join[0], 'JOIN' ) === false ) {
 			throw new InvalidArgumentException( "A join type is missing!" );
 		}
@@ -267,7 +263,6 @@ class Query {
 	 * @param string|array $condition
 	 */
 	public function condition( $condition ) {
-
 		if ( $condition === '' ) {
 			return;
 		}
@@ -308,7 +303,6 @@ class Query {
 	 * @return string
 	 */
 	public function __toString() {
-
 		$params = [
 			'tables' => $this->table,
 			'fields' => $this->fields,
@@ -340,7 +334,6 @@ class Query {
 	 * @return string
 	 */
 	public function build() {
-
 		$statement = $this->sql();
 
 		$this->type = '';
@@ -363,11 +356,10 @@ class Query {
 	 * @return iterable
 	 */
 	public function execute( $fname ) {
-		return $this->connection->query( $this, $fname );
+		return $this->connection->readQuery( $this, $fname );
 	}
 
 	private function sql() {
-
 		$i = 0;
 		$sql = "";
 		$fields = [];

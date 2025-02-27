@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Api;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\StringCondition;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class PropertyListByApiRequest {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -48,7 +48,7 @@ class PropertyListByApiRequest {
 	private $meta = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $limit = 50;
 
@@ -63,7 +63,7 @@ class PropertyListByApiRequest {
 	private $languageCode = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $listOnly = false;
 
@@ -71,9 +71,9 @@ class PropertyListByApiRequest {
 	 * @since 2.4
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -81,7 +81,7 @@ class PropertyListByApiRequest {
 	/**
 	 * @since 2.4
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 */
 	public function setLimit( $limit ) {
 		$this->limit = (int)$limit;
@@ -90,7 +90,7 @@ class PropertyListByApiRequest {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $listOnly
+	 * @param bool $listOnly
 	 */
 	public function setListOnly( $listOnly ) {
 		$this->listOnly = (bool)$listOnly;
@@ -146,10 +146,9 @@ class PropertyListByApiRequest {
 	 *
 	 * @param string $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function findPropertyListBy( $property = '' ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->limit = $this->limit;
@@ -195,7 +194,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function doModifyRequestOptionsWith( $property, $requestOptions ) {
-
 		if ( $property === '' ) {
 			return $requestOptions;
 		}
@@ -235,7 +233,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function addPropertyToList( array $value ) {
-
 		if ( $value === [] || !$value[0] instanceof DIProperty ) {
 			return;
 		}
@@ -262,7 +259,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function findPropertyDescriptionBy( DIProperty $property ) {
-
 		$description = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$property,
 			$this->languageCode
@@ -278,7 +274,6 @@ class PropertyListByApiRequest {
 	}
 
 	private function matchPropertiesToPreferredLabelBy( $label ) {
-
 		$propertyLabelFinder = ApplicationFactory::getInstance()->getPropertyLabelFinder();
 
 		// Use the proximity search on a text field

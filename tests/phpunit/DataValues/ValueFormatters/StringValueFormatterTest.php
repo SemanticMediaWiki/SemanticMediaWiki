@@ -10,17 +10,16 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
+class StringValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			StringValueFormatter::class,
 			new StringValueFormatter()
@@ -28,7 +27,6 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-
 		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -41,7 +39,6 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testToUseCaptionOutput() {
-
 		$stringValue = new StringValue( '_txt' );
 		$stringValue->setCaption( 'ABC[<>]' );
 
@@ -62,7 +59,6 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider stringValueProvider
 	 */
 	public function testFormat( $stringUserValue, $type, $linker, $expected ) {
-
 		$stringValue = new StringValue( '_txt' );
 		$stringValue->setUserValue( $stringUserValue );
 
@@ -75,7 +71,6 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFormatWithReducedLength() {
-
 		// > 255 / Reduced length
 		$text = 'Lorem ipsum dolor sit amet consectetuer justo Nam quis lobortis vel. Sapien nulla enim Lorem enim pede ' .
 		'lorem nulla justo diam wisi. Libero Nam turpis neque leo scelerisque nec habitasse a lacus mattis. Accumsan ' .
@@ -91,17 +86,16 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 
 		$this->assertEquals(
 			$expected,
-			$instance->format(  $stringValue, [ StringValueFormatter::HTML_LONG ] )
+			$instance->format( $stringValue, [ StringValueFormatter::HTML_LONG ] )
 		);
 
 		$this->assertEquals(
 			$expected,
-			$instance->format(  $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
+			$instance->format( $stringValue, [ StringValueFormatter::WIKI_SHORT ] )
 		);
 	}
 
 	public function testTryToFormatOnMissingDataValueThrowsException() {
-
 		$instance = new StringValueFormatter();
 
 		$this->expectException( 'RuntimeException' );
@@ -109,7 +103,6 @@ class StringValueFormatterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function stringValueProvider() {
-
 		$provider[] = [
 			'foo',
 			StringValueFormatter::VALUE,

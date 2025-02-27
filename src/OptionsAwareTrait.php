@@ -2,10 +2,8 @@
 
 namespace SMW;
 
-use SMW\Options;
-
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -33,7 +31,6 @@ trait OptionsAwareTrait {
 	 * @param mixed $value
 	 */
 	public function setOption( $key, $value ) {
-
 		if ( $this->options === null ) {
 			$this->setOptions( [] );
 		}
@@ -50,7 +47,6 @@ trait OptionsAwareTrait {
 	 * @return mixed
 	 */
 	public function getOption( $key, $default = null ) {
-
 		if ( $this->options === null ) {
 			$this->setOptions( [] );
 		}
@@ -64,7 +60,7 @@ trait OptionsAwareTrait {
 	 * @param string $key
 	 * @param mixed $flag
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isFlagSet( $key, $flag ) {
 		return $this->options->isFlagSet( $key, $flag );

@@ -9,18 +9,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit_Framework_TestCase {
+class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -29,7 +29,6 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler::class,
 			new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler( $this->store )
@@ -37,18 +36,17 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandlerTest extends \PHPUnit
 	}
 
 	public function testGetHtml() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'selectRow' )
-			->will( $this->returnValue( (object)[ 'count' => 50000 ] ) );
+			->willReturn( (object)[ 'count' => 50000 ] );
 
 		$this->store->expects( $this->once() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler(
 			$this->store

@@ -2,30 +2,29 @@
 
 namespace SMW\Tests\Query;
 
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
-use SMW\Query\PrintRequest as PrintRequest;
-use SMWPropertyValue as PropertyValue;
+use SMW\Query\PrintRequest;
 
 /**
  * @covers SMW\Query\PrintRequest
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class PrintRequestTest extends \PHPUnit_Framework_TestCase {
+class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
-
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyValue->expects( $this->once() )
 			->method( 'isValid' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->assertInstanceOf(
 			'SMW\Query\PrintRequest',
@@ -34,7 +33,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSetLabel() {
-
 		$propertyValue = new PropertyValue( '__pro' );
 		$propertyValue->setDataItem( new DIProperty( 'Foo' ) );
 
@@ -45,14 +43,12 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 			$instance->getCanonicalLabel()
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->getLabel()
+		$this->assertNull(
+						$instance->getLabel()
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->getWikiText()
+		$this->assertNull(
+						$instance->getWikiText()
 		);
 
 		$instance->setLabel( 'Bar' );
@@ -77,7 +73,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider textProvider
 	 */
 	public function testFromText( $text, $showMode, $expectedLabel ) {
-
 		$instance = PrintRequest::newFromText( $text, $showMode );
 
 		$this->assertInstanceOf(
@@ -92,7 +87,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFromTextToReturnNullOnInvalidText() {
-
 		$instance = PrintRequest::newFromText( '--[[Foo' );
 
 		$this->assertNull(
@@ -101,7 +95,6 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRemoveParameter() {
-
 		$instance = PrintRequest::newFromText( 'Foo' );
 		$instance->setParameter( 'foo', 123 );
 
@@ -121,64 +114,63 @@ class PrintRequestTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function textProvider() {
-
-		#0
+		# 0
 		$provider[] = [
 			'Foo',
 			false,
 			'Foo'
 		];
 
-		#1
+		# 1
 		$provider[] = [
 			'Foo',
 			true,
 			''
 		];
 
-		#2
+		# 2
 		$provider[] = [
 			'Foo=Bar',
 			false,
 			'Bar'
 		];
 
-		#3
+		# 3
 		$provider[] = [
 			'Foo=Bar#123',
 			false,
 			'Bar#123'
 		];
 
-		#4
+		# 4
 		$provider[] = [
 			'Foo#123=Bar',
 			false,
 			'Bar'
 		];
 
-		#5
+		# 5
 		$provider[] = [
 			'Category=Foo',
 			false,
 			'Foo'
 		];
 
-		#6
+		# 6
 		$provider[] = [
 			'-Foo',
 			false,
 			'-Foo'
 		];
 
-		#7
+		# 7
 		$provider[] = [
 			'-Foo=Bar',
 			false,
 			'Bar'
 		];
 
-		#8, 1464
+		# 8, 1464
 		$provider[] = [
 			'Has boolean#<span style="color: green; font-size: 120%;">&#10003;</span>,<span style="color: #AA0000; font-size: 120%;">&#10005;</span>=Label on (&#10003;,&#10005;)',
 			false,

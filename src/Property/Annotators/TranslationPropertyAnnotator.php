@@ -2,12 +2,11 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\PropertyAnnotator;
-use SMW\DataModel\ContainerSemanticData;
+use SMW\Property\Annotator;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -27,10 +26,10 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param array|null $translation
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $translation ) {
+	public function __construct( Annotator $propertyAnnotator, $translation ) {
 		parent::__construct( $propertyAnnotator );
 		$this->translation = $translation;
 	}
@@ -45,7 +44,6 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	protected function addPropertyValues() {
-
 		// Expected identifiers, @see https://gerrit.wikimedia.org/r/387548
 		if ( !is_array( $this->translation ) || !isset( $this->predefinedPropertyList['_TRANS'] ) ) {
 			return;
@@ -100,7 +98,6 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function newContainerSemanticData( $languageCode ) {
-
 		$dataItem = $this->getSemanticData()->getSubject();
 		$subobjectName = 'trans.' . $languageCode;
 

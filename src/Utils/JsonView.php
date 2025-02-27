@@ -2,11 +2,11 @@
 
 namespace SMW\Utils;
 
-use SMW\Localizer\MessageLocalizerTrait;
 use Html;
+use SMW\Localizer\MessageLocalizerTrait;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -24,8 +24,7 @@ class JsonView {
 	 *
 	 * @return string
 	 */
-	public function create( string $id, string $data, int $level = 1 ) : string {
-
+	public function create( string $id, string $data, int $level = 1 ): string {
 		$placeholder = Html::rawElement(
 			'span',
 			[
@@ -44,7 +43,7 @@ class JsonView {
 				'class' => 'smw-schema-placeholder-message is-disabled',
 			],
 			$this->msg( 'smw-data-lookup-with-wait' ) .
-			"\n\n\n" .$this->msg( 'smw-preparing' ) . "\n"
+			"\n\n\n" . $this->msg( 'smw-preparing' ) . "\n"
 		);
 
 		return Html::rawElement(

@@ -4,14 +4,14 @@ namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Localizer\LocalMessageProvider;
 use SMW\MediaWiki\ManualEntryLogger;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\Store;
-use SMW\Localizer\LocalMessageProvider;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -35,7 +35,7 @@ class MaintenanceFactory {
 	 *
 	 * @return LocalMessageProvider
 	 */
-	public function newLocalMessageProvider( string $file, string $languageCode = 'en' ) : LocalMessageProvider {
+	public function newLocalMessageProvider( string $file, string $languageCode = 'en' ): LocalMessageProvider {
 		return new LocalMessageProvider( $file, $languageCode );
 	}
 
@@ -43,12 +43,11 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return DataRebuilder
 	 */
 	public function newDataRebuilder( Store $store, $reporterCallback = null ) {
-
 		$messageReporter = $this->newMessageReporter( $reporterCallback );
 
 		$dataRebuilder = new DataRebuilder(
@@ -67,12 +66,11 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return ConceptCacheRebuilder
 	 */
 	public function newConceptCacheRebuilder( Store $store, $reporterCallback = null ) {
-
 		$conceptCacheRebuilder = new ConceptCacheRebuilder(
 			$store,
 			ApplicationFactory::getInstance()->getSettings()
@@ -89,12 +87,11 @@ class MaintenanceFactory {
 	 * @since 2.2
 	 *
 	 * @param Store $store
-	 * @param Callable|null $reporterCallback
+	 * @param callable|null $reporterCallback
 	 *
 	 * @return PropertyStatisticsRebuilder
 	 */
 	public function newPropertyStatisticsRebuilder( Store $store, $reporterCallback = null ) {
-
 		$propertyStatisticsStore = new PropertyStatisticsStore(
 			$store->getConnection( 'mw.db' )
 		);
@@ -114,10 +111,10 @@ class MaintenanceFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @return RebuildPropertyStatistics
+	 * @return rebuildPropertyStatistics
 	 */
 	public function newRebuildPropertyStatistics() {
-		return new RebuildPropertyStatistics();
+		return new rebuildPropertyStatistics();
 	}
 
 	/**
@@ -126,7 +123,6 @@ class MaintenanceFactory {
 	 * @return DuplicateEntitiesDisposer
 	 */
 	public function newDuplicateEntitiesDisposer( Store $store, $reporterCallback = null ) {
-
 		$duplicateEntitiesDisposer = new DuplicateEntitiesDisposer(
 			$store,
 			ApplicationFactory::getInstance()->getCache()
@@ -147,7 +143,6 @@ class MaintenanceFactory {
 	 * @return MaintenanceLogger
 	 */
 	public function newMaintenanceLogger( $performer ) {
-
 		$maintenanceLogger = new MaintenanceLogger( $performer, new ManualEntryLogger() );
 		$maintenanceLogger->setMaxNameChars( $GLOBALS['wgMaxNameChars'] );
 
@@ -157,8 +152,7 @@ class MaintenanceFactory {
 	/**
 	 * @since 3.0
 	 */
-	public function newMessageReporter( $reporterCallback = null ) : MessageReporter {
-
+	public function newMessageReporter( $reporterCallback = null ): MessageReporter {
 		$messageReporter = MessageReporterFactory::getInstance()->newObservableMessageReporter();
 		$messageReporter->registerReporterCallback( $reporterCallback );
 
@@ -168,7 +162,7 @@ class MaintenanceFactory {
 	/**
 	 * @since 3.1
 	 */
-	public function newAutoRecovery( string $identifier ) : AutoRecovery {
+	public function newAutoRecovery( string $identifier ): AutoRecovery {
 		return new AutoRecovery( $identifier );
 	}
 

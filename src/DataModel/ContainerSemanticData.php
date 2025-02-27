@@ -22,7 +22,7 @@ use SMW\SemanticData;
  *
  * See also the documentation of SMWDIContainer.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -31,7 +31,7 @@ use SMW\SemanticData;
 class ContainerSemanticData extends SemanticData {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipAnonymousCheck = false;
 
@@ -41,10 +41,9 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 1.7
 	 *
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
-
 		$containerSemanticData = new ContainerSemanticData(
 			new DIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
 			$noDuplicates
@@ -91,14 +90,13 @@ class ContainerSemanticData extends SemanticData {
 	 * Check if the subject of this container is an anonymous object.
 	 * See the documenation of the class for details.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnonymousSubject() {
-
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
-		     $this->mSubject->getDBkey() == 'SMWInternalObject' &&
-		     $this->mSubject->getInterwiki() === '' &&
-		     $this->mSubject->getSubobjectName() === 'int' ) {
+			 $this->mSubject->getDBkey() == 'SMWInternalObject' &&
+			 $this->mSubject->getInterwiki() === '' &&
+			 $this->mSubject->getSubobjectName() === 'int' ) {
 			return true;
 		}
 
@@ -114,7 +112,6 @@ class ContainerSemanticData extends SemanticData {
 	 * @throws DataItemException
 	 */
 	public function getSubject() {
-
 		$error = "This container has been classified as anonymous and by trying to access" .
 		" its subject (that has not been given any) an exception is raised to inform about" .
 		" the incorrect usage. An anonymous container can only be used for a search pattern match.";
@@ -136,8 +133,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( SemanticData $semanticData = null ) {
-
+	public function copyDataFrom( ?SemanticData $semanticData = null ) {
 		if ( $semanticData === null ) {
 			return;
 		}

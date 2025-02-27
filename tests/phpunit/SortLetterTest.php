@@ -8,18 +8,17 @@ use SMW\SortLetter;
  * @covers \SMW\SortLetter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
  */
-class SortLetterTest extends \PHPUnit_Framework_TestCase {
+class SortLetterTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 	private $collator;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getWikiPageSortKey' ] )
@@ -31,7 +30,6 @@ class SortLetterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			SortLetter::class,
 			new SortLetter( $this->store, $this->collator )
@@ -39,22 +37,21 @@ class SortLetterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindFirstLetter() {
-
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$dataItem->expects( $this->any() )
 			->method( 'getDIType' )
-			->will( $this->returnValue( \SMWDataItem::TYPE_WIKIPAGE ) );
+			->willReturn( \SMWDataItem::TYPE_WIKIPAGE );
 
 		$this->store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$this->collator->expects( $this->once() )
 			->method( 'getFirstLetter' )
-			->will( $this->returnValue( 'F' ) );
+			->willReturn( 'F' );
 
 		$instance = new SortLetter(
 			$this->store,

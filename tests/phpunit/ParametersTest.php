@@ -8,17 +8,16 @@ use SMW\Parameters;
  * @covers \SMW\Parameters
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
  */
-class ParametersTest extends \PHPUnit_Framework_TestCase {
+class ParametersTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Parameters::class,
 			new Parameters()
@@ -26,7 +25,6 @@ class ParametersTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOption() {
-
 		$instance = new Parameters();
 
 		$this->assertFalse(
@@ -42,7 +40,6 @@ class ParametersTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnregisteredKeyThrowsException() {
-
 		$instance = new Parameters();
 
 		$this->expectException( 'InvalidArgumentException' );

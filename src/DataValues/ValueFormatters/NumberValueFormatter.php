@@ -8,7 +8,7 @@ use SMWDataValue as DataValue;
 use SMWNumberValue as NumberValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -30,7 +30,6 @@ class NumberValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function format( $type, $linker = null ) {
-
 		if ( !$this->dataValue instanceof NumberValue ) {
 			throw new RuntimeException( "The formatter is missing a valid NumberValue object" );
 		}
@@ -51,7 +50,6 @@ class NumberValueFormatter extends DataValueFormatter {
 	}
 
 	private function valueFormat() {
-
 		if ( !$this->dataValue->isValid() ) {
 			return 'error';
 		}
@@ -70,7 +68,6 @@ class NumberValueFormatter extends DataValueFormatter {
 	}
 
 	private function shortFormat( $linker = null ) {
-
 		$outformat = $this->dataValue->getOutputFormat();
 
 		if ( $linker === null || ( $linker === false ) || ( $outformat == '-' ) || ( $outformat == '-u' ) || ( $outformat == '-n' ) || !$this->dataValue->isValid() ) {
@@ -118,7 +115,6 @@ class NumberValueFormatter extends DataValueFormatter {
 	}
 
 	private function longFormat( $linker = null ) {
-
 		if ( !$this->dataValue->isValid() ) {
 			return $this->dataValue->getErrorText();
 		}

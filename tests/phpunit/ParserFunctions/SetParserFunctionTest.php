@@ -3,44 +3,43 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
-use SMW\ParameterFormatterFactory;
+use SMW\ParameterProcessorFactory;
 use SMW\ParserFunctions\SetParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SetParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -63,7 +62,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider setParserProvider
 	 */
 	public function testParse( array $params ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -75,11 +73,11 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$messageFormatter->expects( $this->once() )
 			->method( 'getHtml' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
@@ -91,9 +89,9 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$templateRenderer
 		);
 
-		$this->assertInternalType(
-			'array',
-			$instance->parse( ParameterFormatterFactory::newFromArray( $params ) )
+		$this->assertIsArray(
+
+			$instance->parse( ParameterProcessorFactory::newFromArray( $params ) )
 		);
 	}
 
@@ -101,7 +99,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider setParserProvider
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
-
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			Title::newFromText( __METHOD__ ),
 			new ParserOutput()
@@ -113,7 +110,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
 			->disableOriginalConstructor()
@@ -125,7 +122,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 			$templateRenderer
 		);
 
-		$instance->parse( ParameterFormatterFactory::newFromArray( $params ) );
+		$instance->parse( ParameterProcessorFactory::newFromArray( $params ) );
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
 			$expected,
@@ -134,7 +131,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testTemplateSupport() {
-
 		$params = [ 'Foo=bar', 'Foo=foobar', 'BarFoo=9001', 'template=FooTemplate' ];
 
 		$expected = [
@@ -155,7 +151,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 
 		$messageFormatter->expects( $this->any() )
 			->method( 'addFromArray' )
-			->will( $this->returnSelf() );
+			->willReturnSelf();
 
 		$templateRenderer = new WikitextTemplateRenderer();
 
@@ -166,7 +162,7 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$instance->parse(
-			ParameterFormatterFactory::newFromArray( $params )
+			ParameterProcessorFactory::newFromArray( $params )
 		);
 
 		$this->semanticDataValidator->assertThatPropertiesAreSet(
@@ -176,7 +172,6 @@ class SetParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function setParserProvider() {
-
 		// #0 Single data set
 		// {{#set:
 		// |Foo=bar

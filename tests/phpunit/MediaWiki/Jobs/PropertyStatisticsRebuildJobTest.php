@@ -10,16 +10,16 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
+class PropertyStatisticsRebuildJobTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$row = new \stdClass;
@@ -28,13 +28,13 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( new \FakeResultWrapper( [ $row ] ) ) );
+			->willReturn( new \Wikimedia\Rdbms\FakeResultWrapper( [ $row ] ) );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
@@ -42,22 +42,21 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$title = $this->getMockBuilder( 'Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -72,7 +71,6 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
 		$instance = new PropertyStatisticsRebuildJob(
@@ -86,7 +84,6 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function parametersProvider() {
-
 		$provider[] = [
 			[]
 		];

@@ -9,7 +9,7 @@ use SMW\Utils\Normalizer;
 use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -31,7 +31,6 @@ class StringValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function format( $dataValue, $options = null ) {
-
 		if ( !is_array( $options ) ) {
 			throw new RuntimeException( "Option is not an array!" );
 		}
@@ -73,7 +72,6 @@ class StringValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	protected function doFormat( $dataValue, $type, $linker ) {
-
 		$text = (string)$dataValue->getDataItem()->getString();
 		$length = mb_strlen( $text );
 
@@ -107,7 +105,6 @@ class StringValueFormatter extends DataValueFormatter {
 	}
 
 	private function getAbbreviatedText( $text, $length, $linker ) {
-
 		if ( $linker === false || $linker === null ) {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
 		} else {

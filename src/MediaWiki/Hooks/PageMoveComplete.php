@@ -5,9 +5,9 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\User\UserIdentity;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\HookListener;
+use SMW\NamespaceExaminer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * PageMoveComplete occurs whenever a request to move an article
@@ -18,7 +18,7 @@ use SMW\MediaWiki\HookListener;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/PageMoveComplete
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -51,7 +51,6 @@ class PageMoveComplete implements HookListener {
 		int $oldId,
 		int $newId
 	): bool {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Delete all data for a non-enabled target NS

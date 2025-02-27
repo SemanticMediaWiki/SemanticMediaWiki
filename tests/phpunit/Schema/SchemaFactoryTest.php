@@ -10,19 +10,19 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Schema\SchemaFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
+class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $jobQueue;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -39,13 +39,12 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 		$this->testEnvironment->registerObject( 'HookDispatcher', $hookDispatcher );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
@@ -55,7 +54,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSchemaValidator() {
-
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
@@ -65,7 +63,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSchemaFinder() {
-
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -84,7 +81,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructSchemaFilterFactory() {
-
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
@@ -94,7 +90,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaDefinition() {
-
 		$instance = new SchemaFactory(
 			[
 				'foo' => [ 'group' => 'f_group' ]
@@ -108,7 +103,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaDefinitionOnUnknownTypeThrowsException() {
-
 		$instance = new SchemaFactory();
 
 		$this->expectException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
@@ -116,7 +110,6 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewSchemaDefinitionOnNoTypeThrowsException() {
-
 		$instance = new SchemaFactory(
 			[
 				'foo' => [ 'group' => 'f_group' ]
@@ -128,8 +121,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob() {
-
-		$checkJobParameterCallback = function( $job ) {
+		$checkJobParameterCallback = static function ( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
 
@@ -152,8 +144,7 @@ class SchemaFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushChangePropagationDispatchJob_CastAsArray() {
-
-		$checkJobParameterCallback = function( $job ) {
+		$checkJobParameterCallback = static function ( $job ) {
 			return $job->getParameter( 'property_key' ) === 'FOO' && $job->hasParameter( 'schema_change_propagation' );
 		};
 

@@ -2,20 +2,20 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWExporter as Exporter;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -38,7 +38,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -58,7 +58,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 * {@inheritDoc}
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
@@ -96,7 +95,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function getConceptDescription( DIWikiPage $concept ) {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$value = $applicationFactory->getStore()->getSemanticData( $concept )->getPropertyValues(
@@ -119,7 +117,6 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	}
 
 	private function findCircularDescription( $concept, $description ) {
-
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

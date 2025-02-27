@@ -15,18 +15,18 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Query\Parser\LegacyParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class LegacyParserTest extends \PHPUnit_Framework_TestCase {
+class LegacyParserTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $descriptionFactory;
 	private $queryParser;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -45,13 +45,12 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$descriptionProcessor = $this->getMockBuilder( '\SMW\Query\Parser\DescriptionProcessor' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -64,12 +63,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// Legacy class match
-		$this->assertInstanceOf(
-			'\SMWQueryParser',
-			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
-		);
-
 		$this->assertInstanceOf(
 			'\SMW\Query\Parser',
 			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
@@ -77,7 +70,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCreateCondition() {
-
 		$this->assertEquals(
 			'[[Foo::Bar]]',
 			$this->queryParser->createCondition( 'Foo', 'Bar' )
@@ -90,7 +82,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPropertyWildardDescription() {
-
 		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newThingDescription()
@@ -103,7 +94,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNamespaceWildardDescription() {
-
 		$description = $this->descriptionFactory->newNamespaceDescription(
 			NS_MAIN
 		);
@@ -115,7 +105,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPageDescription() {
-
 		$description = $this->descriptionFactory->newValueDescription(
 			new DIWikiPage( 'Foo', NS_MAIN, '' )
 		);
@@ -127,7 +116,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPropertyNotEqualValueDescription() {
-
 		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
@@ -144,7 +132,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInversePropertyDescription() {
-
 		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
@@ -161,7 +148,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConjunctionForCategoryPropertyValueGreaterThanOrEqualLessThanOrEqual() {
-
 		$someGreaterThanOrEqualProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
@@ -192,7 +178,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testConjunctionForCategoryPropertyChainDescription() {
-
 		$someProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newSomeProperty(
@@ -224,7 +209,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisjunctionForCategoryPropertyChainDescription() {
-
 		$someProperty = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newSomeProperty(
@@ -256,7 +240,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisjunctionForCategoryChainDescription() {
-
 		$classFooDescription = $this->descriptionFactory->newClassDescription(
 			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
 		);
@@ -281,7 +264,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCombinedSubobjectPropertyChainDescription() {
-
 		$description = $this->descriptionFactory->newSomeProperty(
 			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newSomeProperty(
@@ -303,7 +285,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSubqueryDisjunction() {
-
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -324,7 +305,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNestedPropertyConjunction() {
-
 		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -351,7 +331,6 @@ class LegacyParserTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRestrictedDefaultNamespace() {
-
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 

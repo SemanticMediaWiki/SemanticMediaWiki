@@ -8,15 +8,14 @@ use SMW\Localizer\MessageLocalizerTrait;
  * @covers \SMW\Localizer\MessageLocalizerTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class MessageLocalizerTraitTest extends \PHPUnit_Framework_TestCase {
+class MessageLocalizerTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testMsg() {
-
 		$messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -24,9 +23,9 @@ class MessageLocalizerTraitTest extends \PHPUnit_Framework_TestCase {
 		$messageLocalizer->expects( $this->once() )
 			->method( 'msg' )
 			->with(
-				$this->equalTo( 'foo' ),
-				$this->equalTo( 'bar' ),
-				$this->equalTo( 42 ) );
+				'foo',
+				'bar',
+				42 );
 
 		$instance = $this->newMessageLocalizerClass();
 

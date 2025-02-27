@@ -1,7 +1,10 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Lam-ang"
+		]
 	},
+	"smw-categories": "Saray kategorya",
 	"smw-livepreview-loading": "Ilulugan…",
 	"smw-listingcontinuesabbrev": "tol."
 }

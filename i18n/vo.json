@@ -34,6 +34,7 @@
 	"smw_attributearticlecount": "{{PLURAL:$1|Pad $1 pajonon, kel gebon|Pads $1 pajonons, kels gebons}} patöfi at.",
 	"exportrdf": "Seveigön padis at RDF",
 	"properties": "Patöfs",
+	"smw-categories": "Klads",
 	"smw_properties_docu": "Patöfs sököl pagebons in vük.",
 	"smw_property_template": "$1 sota: $2 ($3)",
 	"smw_propertylackspage": "Patöfs valik sötons pabepenön su pad semik!",

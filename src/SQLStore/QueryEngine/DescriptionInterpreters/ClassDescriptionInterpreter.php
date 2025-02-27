@@ -3,15 +3,15 @@
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
-use SMW\Store;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -44,7 +44,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ClassDescription;
@@ -58,7 +58,6 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 * @return QuerySegment
 	 */
 	public function interpretDescription( Description $description ) {
-
 		$query = new QuerySegment();
 
 		$cqid = QuerySegment::$qnum;

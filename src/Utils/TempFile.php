@@ -5,7 +5,7 @@ namespace SMW\Utils;
 use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -19,7 +19,6 @@ class TempFile extends File {
 	 * @throws RuntimeException
 	 */
 	public function generate() {
-
 		$args = func_get_args();
 		$key = array_shift( $args );
 
@@ -41,7 +40,6 @@ class TempFile extends File {
 	 * @throws RuntimeException
 	 */
 	public function get( $file ) {
-
 		$tmpDir = [];
 		$path = '';
 

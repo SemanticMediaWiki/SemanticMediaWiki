@@ -2,24 +2,26 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\Installer;
 use SMW\Store;
 use SMW\StoreFactory;
-use Onoi\MessageReporter\MessageReporterFactory;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\Installer;
-use SMW\Setup;
-use SMW\Options;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once __DIR__ . '/../../../maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Sets up the storage backend currently selected in the "LocalSettings.php"
@@ -42,7 +44,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *                   recreated using this script (setup) followed by the use
  *                   of the rebuildhData.php script which may take some time.
  *
- * --backend         The backend to use, e.g. SMWSQLStore3.
+ * --backend         The backend to use, e.g. SMW\SQLStore\SQLStore.
  *
  * --skip-optimize   Skips the table optimization process.
  *
@@ -109,7 +111,7 @@ class setupStore extends \Maintenance {
 	 * @since 3.0
 	 */
 	public function getConnection() {
-		return $this->getDB( DB_MASTER );
+		return $this->getDB( DB_PRIMARY );
 	}
 
 	/**
@@ -118,7 +120,6 @@ class setupStore extends \Maintenance {
 	 * @since 2.0
 	 */
 	public function execute() {
-
 		if ( !Setup::isEnabled() ) {
 			$this->reportMessage( "\nYou need to have SMW enabled in order to run the maintenance script!\n" );
 			exit;
@@ -133,7 +134,7 @@ class setupStore extends \Maintenance {
 
 		// #2963 Use the Maintenance DB connection instead and the DB_ADMIN request
 		// to allow to use the admin user/pass, if set
-		$connectionManager->registerCallbackConnection( DB_MASTER, [ $this, 'getConnection' ] );
+		$connectionManager->registerCallbackConnection( DB_PRIMARY, [ $this, 'getConnection' ] );
 
 		$store->setConnectionManager(
 			$connectionManager
@@ -171,12 +172,11 @@ class setupStore extends \Maintenance {
 	}
 
 	protected function initMessageReporter() {
-
 		$messageReporterFactory = MessageReporterFactory::getInstance();
 
 		if ( $this->messageReporter === null && $this->getOption( 'quiet' ) ) {
 			$this->messageReporter = $messageReporterFactory->newNullMessageReporter();
-		} elseif( $this->messageReporter === null ) {
+		} elseif ( $this->messageReporter === null ) {
 			$this->messageReporter = $messageReporterFactory->newObservableMessageReporter();
 			$this->messageReporter->registerReporterCallback( [ $this, 'reportMessage' ] );
 		}
@@ -188,10 +188,10 @@ class setupStore extends \Maintenance {
 		global $smwgIP;
 
 		if ( !isset( $smwgIP ) ) {
-			$smwgIP = dirname( __FILE__ ) . '/../';
+			$smwgIP = __DIR__ . '/../';
 		}
 
-		require_once ( $smwgIP . 'includes/GlobalFunctions.php' );
+		require_once $smwgIP . 'includes/GlobalFunctions.php';
 	}
 
 	protected function getStore() {
@@ -210,7 +210,6 @@ class setupStore extends \Maintenance {
 	}
 
 	protected function dropStore( Store $store ) {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( !$this->hasDeletionVerification() ) {
@@ -232,10 +231,9 @@ class setupStore extends \Maintenance {
 	/**
 	 * @param string $storeName
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasDeletionVerification() {
-
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -273,5 +271,7 @@ class setupStore extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = setupStore::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

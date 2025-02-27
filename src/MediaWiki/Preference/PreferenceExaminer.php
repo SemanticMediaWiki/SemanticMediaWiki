@@ -6,7 +6,7 @@ use MediaWiki\User\UserOptionsLookup;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -28,7 +28,7 @@ class PreferenceExaminer {
 	 *
 	 * @param User|null $user
 	 */
-	public function __construct( User $user = null, UserOptionsLookup $userOptionsLookup = null ) {
+	public function __construct( ?User $user = null, ?UserOptionsLookup $userOptionsLookup = null ) {
 		$this->user = $user;
 		$this->userOptionsLookup = $userOptionsLookup;
 	}
@@ -45,12 +45,11 @@ class PreferenceExaminer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $right
+	 * @param string $key
 	 *
 	 * @return bool
 	 */
-	public function hasPreferenceOf( string $key ) : bool {
-
+	public function hasPreferenceOf( string $key ): bool {
 		if ( $this->user === null ) {
 			return false;
 		}

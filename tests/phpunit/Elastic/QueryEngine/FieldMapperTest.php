@@ -8,15 +8,14 @@ use SMW\Elastic\QueryEngine\FieldMapper;
  * @covers \SMW\Elastic\QueryEngine\FieldMapper
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class FieldMapperTest extends \PHPUnit_Framework_TestCase {
+class FieldMapperTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			FieldMapper::class,
 			new FieldMapper()
@@ -24,7 +23,6 @@ class FieldMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsPhrase() {
-
 		$this->assertTrue(
 			FieldMapper::isPhrase( '"Foo bar"' )
 		);
@@ -35,7 +33,6 @@ class FieldMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasWildcard() {
-
 		$this->assertTrue(
 			FieldMapper::hasWildcard( 'Foo*' )
 		);
@@ -49,7 +46,6 @@ class FieldMapperTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider aggregationsProvider
 	 */
 	public function testAggregations( $method, $params, $expected ) {
-
 		$instance = new FieldMapper();
 
 		$this->assertEquals(
@@ -59,7 +55,6 @@ class FieldMapperTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function aggregationsProvider() {
-
 		yield [
 			'aggs',
 			[ 'Foo', 'bar' ],

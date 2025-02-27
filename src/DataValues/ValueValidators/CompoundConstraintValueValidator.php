@@ -2,14 +2,14 @@
 
 namespace SMW\DataValues\ValueValidators;
 
-use RuntimeException;
 use Psr\Log\LoggerAwareTrait;
+use RuntimeException;
 use SMWDataValue as DataValue;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -19,12 +19,12 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $time = 0;
 	private $count = 0;
@@ -59,7 +59,6 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 	 * {@inheritDoc}
 	 */
 	public function validate( $dataValue ) {
-
 		$this->hasConstraintViolation = false;
 		$time = -microtime( true );
 

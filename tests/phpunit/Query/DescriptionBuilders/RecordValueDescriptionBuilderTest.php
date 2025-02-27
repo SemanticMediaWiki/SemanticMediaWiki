@@ -2,25 +2,24 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
-use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\DIProperty;
+use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
  */
-class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
+class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			RecordValueDescriptionBuilder::class,
 			new RecordValueDescriptionBuilder()
@@ -28,7 +27,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsBuilderForTimeValue() {
-
 		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -44,7 +42,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $propertyDataItems, $decription ) {
-
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -52,13 +49,13 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$recordValue->expects( $this->any() )
 			->method( 'getValuesFromString' )
 			->with( $this->stringContains( $value ) )
-			->will( $this->returnCallback( function( $value ) {
-				 return explode(';', $value );
-			} ) );
+			->willReturnCallback( static function ( $value ) {
+				 return explode( ';', $value );
+			} );
 
 		$recordValue->expects( $this->any() )
 			->method( 'getPropertyDataItems' )
-			->will( $this->returnValue( $propertyDataItems ) );
+			->willReturn( $propertyDataItems );
 
 		$instance = new RecordValueDescriptionBuilder();
 
@@ -69,18 +66,17 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidRecordValueReturnsThingDescription() {
-
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$recordValue->expects( $this->any() )
 			->method( 'isValid' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$recordValue->expects( $this->any() )
 			->method( 'getPropertyDataItems' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$instance = new RecordValueDescriptionBuilder();
 
@@ -91,7 +87,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-
 		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -103,7 +98,6 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function valueProvider() {
-
 		$provider[] = [
 			'Jan;1970',
 			[ new DIProperty( 'Foo' ) ],

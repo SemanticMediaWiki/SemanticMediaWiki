@@ -2,26 +2,30 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\User\UserOptionsLookup;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\BeforePageDisplay
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
+class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 	private $outputPage;
 	private $request;
 	private $skin;
 	private $title;
 
-	protected function setUp() : void {
+	private UserOptionsLookup $userOptionsLookup;
+	private TestEnvironment $testEnvironment;
 
+	protected function setUp(): void {
 		$this->title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -36,7 +40,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$requestContext->expects( $this->any() )
 			->method( 'getRequest' )
-			->will( $this->returnValue( $this->request ) );
+			->willReturn( $this->request );
 
 		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
 			->disableOriginalConstructor()
@@ -44,7 +48,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $this->title ) );
+			->willReturn( $this->title );
 
 		$this->skin = $this->getMockBuilder( '\Skin' )
 			->disableOriginalConstructor()
@@ -52,11 +56,19 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->skin->expects( $this->any() )
 			->method( 'getContext' )
-			->will( $this->returnValue( $requestContext ) );
+			->willReturn( $requestContext );
+
+		$this->userOptionsLookup = $this->createMock( UserOptionsLookup::class );
+		$this->testEnvironment = new TestEnvironment();
+		$this->testEnvironment->registerObject( 'UserOptionsLookup', $this->userOptionsLookup );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			BeforePageDisplay::class,
 			new BeforePageDisplay()
@@ -64,11 +76,10 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInformAboutExtensionAvailability() {
-
 		$this->title->expects( $this->once() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Version' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Version' )
+			->willReturn( true );
 
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' );
@@ -85,7 +96,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIgnoreInformAboutExtensionAvailability() {
-
 		$this->outputPage->expects( $this->never() )
 			->method( 'prependHTML' );
 
@@ -102,22 +112,21 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModules() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user->expects( $this->any() )
+		$this->userOptionsLookup->expects( $this->any() )
 			->method( 'getOption' )
-			->with( $this->equalTo( 'smw-prefs-general-options-suggester-textinput' ) )
-			->will( $this->returnValue( true ) );
+			->with( $user, 'smw-prefs-general-options-suggester-textinput' )
+			->willReturn( true );
 
-		$this->outputPage->expects( $this->exactly( 1 ) )
+		$this->outputPage->expects( $this->once() )
 			->method( 'addModules' );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new BeforePageDisplay();
 
@@ -125,7 +134,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPrependHTML_IncompleteTasks() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -135,7 +143,7 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new BeforePageDisplay();
 
@@ -149,27 +157,26 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testEmptyPrependHTML_IncompleteTasks_DisallowedSpecialPages() {
-
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->title->expects( $this->any() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->title->expects( $this->any() )
 			->method( 'isSpecial' )
-			->with( $this->equalTo( 'Userlogin' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'Userlogin' )
+			->willReturn( true );
 
 		$this->outputPage->expects( $this->once() )
 			->method( 'prependHTML' )
-			->with( $this->equalTo( '' ) );
+			->with( '' );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$instance = new BeforePageDisplay();
 
@@ -186,7 +193,6 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-
 		$expected = $expected['result'] ? $this->atLeastOnce() : $this->never();
 
 		$user = $this->getMockBuilder( '\User' )
@@ -199,16 +205,22 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getUser' )
-			->will( $this->returnValue( $user ) );
+			->willReturn( $user );
 
 		$this->outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $setup['title'] ) );
+			->willReturn( $setup['title'] );
 
 		$this->outputPage->expects( $expected )
 			->method( 'addLink' );
 
 		$instance = new BeforePageDisplay();
+
+		$instance->setOptions(
+			[
+				'smwgEnableExportRDFLink' => true
+			]
+		);
 
 		$this->assertTrue(
 			$instance->process( $this->outputPage, $this->skin )
@@ -216,19 +228,18 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleDataProvider() {
-
-		#0 Standard title
+		# 0 Standard title
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getPrefixedText' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$provider[] = [
 			[
@@ -239,14 +250,14 @@ class BeforePageDisplayTest extends \PHPUnit_Framework_TestCase {
 			]
 		];
 
-		#1 as SpecialPage
+		# 1 as SpecialPage
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isSpecialPage' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$provider[] = [
 			[

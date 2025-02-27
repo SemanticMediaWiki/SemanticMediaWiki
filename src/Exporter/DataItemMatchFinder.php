@@ -5,13 +5,13 @@ namespace SMW\Exporter;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -50,10 +50,15 @@ class DataItemMatchFinder {
 	 * @return DataItem|null
 	 */
 	public function matchExpElement( ExpElement $expElement ) {
-
 		$dataItem = null;
 
 		if ( !$expElement instanceof ExpResource ) {
+			return $dataItem;
+		}
+
+		$dataItem = $expElement->getDataItem();
+		if ( $dataItem !== null && $dataItem instanceof DIWikiPage ) {
+			// We already have a valid item
 			return $dataItem;
 		}
 
@@ -70,7 +75,6 @@ class DataItemMatchFinder {
 	}
 
 	private function matchToWikiNamespaceUri( $uri ) {
-
 		$dataItem = null;
 		$localName = substr( $uri, strlen( $this->wikiNamespace ) );
 
@@ -125,7 +129,6 @@ class DataItemMatchFinder {
 	}
 
 	private function matchToUnknownWikiNamespaceUri( $uri ) {
-
 		$dataItem = null;
 
 		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17
@@ -133,6 +136,14 @@ class DataItemMatchFinder {
 			return $dataItem;
 		}
 
+		/**
+		 * note: lookup rdfs:label as DBKey will fail in case a display title is used
+		 * ToDo: Use swivt:page (after removing / splitting at $wgArticlePath + namespace,
+		 * e. g. Category-3A) or rdfs:isDefinedBy (after removing /
+		 * splitting at Special:ExportRDF/ + namespace, e. g. Category-3A)
+		 * to get the page title from the full iri.
+		 * see: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5527
+		 */
 		$respositoryResult = $this->store->getConnection( 'sparql' )->select(
 			'?v1 ?v2',
 			"<$uri> rdfs:label ?v1 . <$uri> swivt:wikiNamespace ?v2",
@@ -167,7 +178,6 @@ class DataItemMatchFinder {
 	}
 
 	private function getFittingDBKey( $dbKey, $namespace ) {
-
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinks
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinkOverrides
 		if ( $GLOBALS['wgCapitalLinks'] || ( isset( $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) && $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) ) {

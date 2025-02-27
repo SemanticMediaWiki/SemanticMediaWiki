@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Connection\Query;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -17,7 +17,7 @@ use SMW\Tests\PHPUnitCompat;
  *
  * @author mwjames
  */
-class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
+class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,9 +25,8 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	private $connection;
 	private $iteratorFactory;
 
-	protected function setUp() : void {
-
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+	protected function setUp(): void {
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +37,7 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
 			->disableOriginalConstructor()
@@ -46,7 +45,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			DuplicateFinder::class,
 			new DuplicateFinder( $this->store, $this->iteratorFactory )
@@ -54,32 +52,31 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHasDuplicate() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'tableName' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$query = new \SMW\MediaWiki\Connection\Query( $connection );
 
-		$resultWrapper = $this->getMockBuilder( '\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->connection->expects( $this->atLeastOnce() )
-			->method( 'query' )
-			->will( $this->returnValue( $resultWrapper ) );
+			->method( 'readQuery' )
+			->willReturn( $resultWrapper );
 
 		$instance = new DuplicateFinder(
 			$this->store,
@@ -100,13 +97,12 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDuplicates_ID_Table() {
-
 		$row = new \stdClass;
 		$row->count = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
 		$row->smw_iw = '';
-		$row->smw_subobject ='';
+		$row->smw_subobject = '';
 
 		$expected = [
 			'count' => 42,
@@ -120,11 +116,11 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
-			->will( $this->returnValue( [ $row ] ) );
+			->method( 'readQuery' )
+			->willReturn( [ $row ] );
 
 		$instance = new DuplicateFinder(
 			$this->store,
@@ -150,7 +146,6 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDuplicates_REDI_Table() {
-
 		$row = new \stdClass;
 		$row->count = 42;
 		$row->s_title = 'Foo';
@@ -168,11 +163,11 @@ class DuplicateFinderTest extends \PHPUnit_Framework_TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'newQuery' )
-			->will( $this->returnValue( $query ) );
+			->willReturn( $query );
 
 		$this->connection->expects( $this->once() )
-			->method( 'query' )
-			->will( $this->returnValue( [ $row ] ) );
+			->method( 'readQuery' )
+			->willReturn( [ $row ] );
 
 		$instance = new DuplicateFinder(
 			$this->store,

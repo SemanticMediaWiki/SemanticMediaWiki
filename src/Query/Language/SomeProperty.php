@@ -12,7 +12,7 @@ use SMW\DIProperty;
  * properties in OWL. In conjunctive queries (OWL) and SPARQL (RDF), it is
  * represented by using variables in the object part of such properties.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -30,9 +30,12 @@ class SomeProperty extends Description {
 	protected $property;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	protected $hierarchyDepth;
+
+	public string $notConditionField;
+	public string $sourceChainMemberField;
 
 	/**
 	 * @since 1.6
@@ -48,10 +51,9 @@ class SomeProperty extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $hierarchyDepth
+	 * @param int $hierarchyDepth
 	 */
 	public function setHierarchyDepth( $hierarchyDepth ) {
-
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubpropertyDepth'];
 		}
@@ -62,7 +64,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 3.0
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getHierarchyDepth() {
 		return $this->hierarchyDepth;
@@ -75,7 +77,6 @@ class SomeProperty extends Description {
 	 * @return string
 	 */
 	public function getFingerprint() {
-
 		// Avoid a recursive tree
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
@@ -150,7 +151,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSingleton() {
 		return false;
@@ -159,7 +160,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		return 1 + $this->getDescription()->getSize();
@@ -168,7 +169,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDepth() {
 		return 1 + $this->getDescription()->getDepth();
@@ -177,7 +178,7 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryFeatures() {
 		return SMW_PROPERTY_QUERY | $this->description->getQueryFeatures();
@@ -189,7 +190,6 @@ class SomeProperty extends Description {
 	 * @return SomeProperty
 	 */
 	public function prune( &$maxsize, &$maxdepth, &$log ) {
-
 		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

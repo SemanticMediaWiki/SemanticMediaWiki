@@ -2,24 +2,23 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\UrlArgs;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\Utils\UrlArgs
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class UrlArgsTest extends \PHPUnit_Framework_TestCase {
+class UrlArgsTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testToString() {
-
 		$instance = new UrlArgs();
 
 		$instance->set( 'foo', 42 );
@@ -33,7 +32,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGet() {
-
 		$instance = new UrlArgs();
 
 		$instance->set( 'foo', 42 );
@@ -43,19 +41,16 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 			$instance->get( 'foo' )
 		);
 
-		$this->assertEquals(
-			null,
-			$instance->get( 42 )
+		$this->assertNull(
+						$instance->get( 42 )
 		);
 
-		$this->assertEquals(
-			false,
-			$instance->get( 42, false )
+		$this->assertFalse(
+						$instance->get( 42, false )
 		);
 	}
 
 	public function testDelete() {
-
 		$instance = new UrlArgs();
 
 		$instance->set( 'foo', 42 );
@@ -67,14 +62,12 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->delete( 'foo' );
 
-		$this->assertEquals(
-			null,
-			$instance->get( 'foo' )
+		$this->assertNull(
+						$instance->get( 'foo' )
 		);
 	}
 
 	public function testGetInt() {
-
 		$instance = new UrlArgs(
 			[
 				'Foo' => '42'
@@ -97,7 +90,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetArray() {
-
 		$instance = new UrlArgs(
 			[
 				'Foo' => '42'
@@ -116,7 +108,6 @@ class UrlArgsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testClone() {
-
 		$instance = new UrlArgs(
 			[
 				'Foo' => '42'

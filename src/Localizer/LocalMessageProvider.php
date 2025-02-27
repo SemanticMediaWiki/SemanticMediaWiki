@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\Exception\JSONFileParseException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -61,12 +61,11 @@ class LocalMessageProvider implements MessageLocalizer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string|array $args
+	 * @param string|array ...$args
 	 *
 	 * @return bool
 	 */
-	public function has( ...$args ) : bool {
-
+	public function has( ...$args ): bool {
 		$key = array_shift( $args );
 		$msgArgs = [];
 
@@ -87,12 +86,11 @@ class LocalMessageProvider implements MessageLocalizer {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string|array $args
+	 * @param string|array ...$args
 	 *
 	 * @return string
 	 */
-	public function msg( ...$args ) : string {
-
+	public function msg( ...$args ): string {
 		$key = array_shift( $args );
 		$msgArgs = [];
 
@@ -117,7 +115,6 @@ class LocalMessageProvider implements MessageLocalizer {
 	}
 
 	private function readJSONFile( $file ) {
-
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $file );
 
 		if ( !is_readable( $file ) ) {

@@ -3,25 +3,24 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use Maps\Semantic\ValueDescriptions\AreaDescription;
+use RuntimeException;
 use SMW\DataTypeRegistry;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Elastic\QueryEngine\ConditionBuilder;
+use SMW\DIWikiPage;
 use SMW\Elastic\QueryEngine\Condition;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMW\Query\Language\ValueDescription;
-use SMWDataItem as DataItem;
+use SMW\Utils\CharExaminer;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDIGeoCoord as DIGeoCoord;
 use SMWDInumber as DINumber;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
-use SMW\Utils\CharExaminer;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -57,7 +56,6 @@ class SomeValueInterpreter {
 	 * @throws RuntimeException
 	 */
 	public function interpretDescription( ValueDescription $description, array &$options ) {
-
 		if ( !isset( $options['property'] ) || !$options['property'] instanceof DIProperty ) {
 			throw new RuntimeException( "Missing a property" );
 		}
@@ -128,7 +126,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function page( DIWikiPage $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -263,12 +260,11 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIBlob $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
 	public function blob( DIBlob $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -339,12 +335,11 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIUri $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
 	public function uri( DIUri $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -393,12 +388,11 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param DIGeoCoord $dataItem
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
 	public function geo( DIGeoCoord $dataItem, array &$options ) {
-
 		$comparator = $options['comparator'];
 		$pid = $options['pid'];
 		$field = $options['field'];
@@ -443,12 +437,11 @@ class SomeValueInterpreter {
 	 * @since 3.0
 	 *
 	 * @param mixed $value
-	 * @param array $options
+	 * @param array &$options
 	 *
 	 * @return array
 	 */
 	public function plain( $value, array &$options ) {
-
 		if ( mb_strlen( $value ) > $this->conditionBuilder->getOption( 'maximum.value.length' ) ) {
 			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
 		}
@@ -482,7 +475,6 @@ class SomeValueInterpreter {
 	 * @return array
 	 */
 	public function inverse_property( $params, $options ) {
-
 		$termsLookup = $this->conditionBuilder->getTermsLookup();
 		$comparator = $options['comparator'];
 

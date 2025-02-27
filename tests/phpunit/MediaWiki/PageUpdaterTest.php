@@ -3,37 +3,36 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\PageUpdater;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\PageUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
  */
-class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
+class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $connection;
 	private $spyLogger;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setup();
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\MediaWiki\PageUpdater',
 			 new PageUpdater()
@@ -41,11 +40,10 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanUpdate() {
-
 		$instance = new PageUpdater();
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			 $instance->canUpdate()
 		);
 	}
@@ -54,14 +52,13 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurge( $purgeMethod, $titleMethod ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -73,14 +70,13 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisablePurgeHtmlCache() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->never() )
 			->method( 'touchLinks' );
@@ -93,14 +89,13 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFilterDuplicatePages() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->exactly( 2 ) )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( 'invalidateCache' );
@@ -116,14 +111,13 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurgeOnTransactionIdle( $purgeMethod, $titleMethod ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -141,18 +135,17 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @dataProvider purgeMethodProvider
 	 */
-	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection(  $purgeMethod, $titleMethod ) {
-
+	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection( $purgeMethod, $titleMethod ) {
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
-			->method(  $titleMethod );
+			->method( $titleMethod );
 
 		$instance = new PageUpdater();
 		$instance->addPage( $title );
@@ -168,9 +161,8 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurgeWillNotWaitOnTransactionIdleWhenCommandLineIsTrue( $purgeMethod, $titleMethod ) {
-
 		$this->connection->expects( $this->never() )
-			->method( 'onTransactionIdle' );
+			->method( 'onTransactionCommitOrIdle' );
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -178,7 +170,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->once() )
 			->method( $titleMethod );
@@ -194,14 +186,13 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddNullPage() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->never() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new PageUpdater();
 		$instance->addPage( null );
@@ -211,7 +202,6 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPushPendingWaitableUpdate( $purgeMethod, $titleMethod ) {
-
 		$transactionalCallableUpdate = $this->getMockBuilder( '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -221,7 +211,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$transactionalCallableUpdate->expects( $this->once() )
 			->method( 'setFingerprint' )
-			->with( $this->equalTo( 'Foobar' ) );
+			->with( 'Foobar' );
 
 		$transactionalCallableUpdate->expects( $this->once() )
 			->method( 'waitOnTransactionIdle' );
@@ -235,7 +225,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->once() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$instance = new PageUpdater(
 			$this->connection,
@@ -254,22 +244,22 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPurgeCacheAsPoolPurge() {
-
 		$row = new \stdClass;
 		$row->page_id = 42;
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$this->connection->expects( $this->once() )
 			->method( 'update' );
 
 		$this->connection->expects( $this->once() )
-			->method( 'onTransactionIdle' )
-			->will( $this->returnCallback( function( $callback ) {
-				return call_user_func( $callback ); }
-			) );
+			->method( 'onTransactionCommitOrIdle' )
+			->willReturnCallback( static function ( $callback ) {
+				return call_user_func( $callback );
+			}
+			);
 
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
@@ -277,7 +267,7 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 
 		$title->expects( $this->any() )
 			->method( 'getDBKey' )
-			->will( $this->returnValue( 'Foo' ) );
+			->willReturn( 'Foo' );
 
 		$title->expects( $this->never() )
 			->method( 'invalidateCache' );
@@ -291,21 +281,14 @@ class PageUpdaterTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function purgeMethodProvider() {
-
 		$provider[] = [
 			'doPurgeParserCache',
 			'invalidateCache'
 		];
 
-
 		$provider[] = [
 			'doPurgeHtmlCache',
 			'touchLinks'
-		];
-
-		$provider[] = [
-			'doPurgeWebCache',
-			'purgeSquid'
 		];
 
 		return $provider;

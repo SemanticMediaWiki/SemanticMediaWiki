@@ -8,24 +8,22 @@ use SMW\Utils\Stats;
  * @covers \SMW\Utils\Stats
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class StatsTest extends \PHPUnit_Framework_TestCase {
+class StatsTest extends \PHPUnit\Framework\TestCase {
 
 	private $cache;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Stats::class,
 			new Stats( $this->cache, 42 )
@@ -33,20 +31,19 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIncr() {
-
 		$container = [
 			'Foo.bar' => 10
 		];
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'Foo.bar' => 11 ] ) );
+				[ 'Foo.bar' => 11 ] );
 
 		$instance = new Stats(
 			$this->cache,
@@ -58,12 +55,11 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSet() {
-
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'Foo.bar' => 10 ] ) );
+				[ 'Foo.bar' => 10 ] );
 
 		$instance = new Stats(
 			$this->cache,
@@ -75,20 +71,19 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCalcMedian() {
-
 		$container = [
 			'Foo.bar' => 10
 		];
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$this->cache->expects( $this->once() )
 			->method( 'save' )
 			->with(
 				$this->anything(),
-				$this->equalTo( [ 'Foo.bar' => 7.5 ] ) );
+				[ 'Foo.bar' => 7.5 ] );
 
 		$instance = new Stats(
 			$this->cache,
@@ -100,7 +95,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStats_Simple() {
-
 		$container = [
 			'Foo' => 1,
 			'Bar' => 1
@@ -113,7 +107,7 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new Stats(
 			$this->cache,
@@ -127,7 +121,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStats_SimpleHierarchy() {
-
 		$container = [
 			'Foo.foobar' => 1,
 			'Bar' => 1
@@ -140,7 +133,7 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new Stats(
 			$this->cache,
@@ -154,7 +147,6 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testStats_ExtendedHierarchy() {
-
 		$container = [
 			'Foo.foobar' => 5,
 			'Bar' => 1,
@@ -168,7 +160,7 @@ class StatsTest extends \PHPUnit_Framework_TestCase {
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->will( $this->returnValue( $container ) );
+			->willReturn( $container );
 
 		$instance = new Stats(
 			$this->cache,

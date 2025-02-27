@@ -2,20 +2,20 @@
 
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\DIProperty;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
+class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -25,7 +25,7 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	private $property;
 	private $changeRecord;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -42,7 +42,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PropertyChangeListener::class,
 			new PropertyChangeListener( $this->store )
@@ -50,7 +49,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanTrigger() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -59,15 +57,14 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
-
 
 		$this->assertFalse(
 			$instance->canTrigger( 'bar' )
@@ -79,7 +76,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRecordAndMatch() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
@@ -88,11 +84,11 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSMWPropertyID' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$instance = new PropertyChangeListener( $this->store );
 		$instance->addListenerCallback( $property, [ $this, 'observeChange' ] );
@@ -122,17 +118,16 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunChangeListeners() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
-			->method( 'onTransactionIdle' );
+			->method( 'onTransactionCommitOrIdle' );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 
 		$instance = new PropertyChangeListener(
 			$this->store
@@ -142,7 +137,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoadListeners() {
-
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterPropertyChangeListeners' );
 
@@ -156,7 +150,6 @@ class PropertyChangeListenerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testMissedLoadListenersThrowsException() {
-
 		$instance = new PropertyChangeListener( $this->store );
 
 		$this->expectException( '\RuntimeException' );

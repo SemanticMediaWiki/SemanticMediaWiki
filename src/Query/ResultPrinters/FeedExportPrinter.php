@@ -10,9 +10,9 @@ use Sanitizer;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\ExportPrinter;
+use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
-use SMWQueryResult as QueryResult;
 use TextContent;
 use Title;
 use WikiPage;
@@ -28,7 +28,7 @@ use WikiPage;
 final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $httpHeader = true;
 
@@ -100,15 +100,13 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @param $mode
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
-
 		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
 			return \SMWQuery::MODE_INSTANCES;
 		}
 		return \SMWQuery::MODE_NONE;
-
 	}
 
 	/**
@@ -163,12 +161,11 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * Returns a string that is to be sent to the caller
 	 *
 	 * @param QueryResult $res
-	 * @param integer $outputMode
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		if ( $outputMode !== SMW_OUTPUT_FILE ) {
 			return $this->getFeedLink( $res, $outputMode );
 		}
@@ -229,7 +226,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return string
 	 */
 	protected function feedTitle() {
-
 		if ( $this->params['title'] === '' ) {
 			return $GLOBALS['wgSitename'];
 		}
@@ -245,7 +241,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return string
 	 */
 	protected function feedDescription() {
-
 		if ( $this->params['description'] !== '' ) {
 			return $this->msg( 'smw-label-feed-description', $this->params['description'], $this->params['type'] )->text();
 		}
@@ -261,7 +256,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return string
 	 */
 	protected function feedURL() {
-
 		if ( $GLOBALS['wgTitle'] instanceof Title ) {
 			return $GLOBALS['wgTitle']->getFullUrl();
 		}
@@ -279,14 +273,13 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return array
 	 */
 	protected function feedItem( array $row ) {
-
 		$rowItems = [];
 		$subject = false;
 
 		/**
 		 * Loop over all properties within a row
 		 *
-		 * @var \SMWResultArray $field
+		 * @var \SMW\Query\Result\ResultArray $field
 		 * @var \SMWDataValue $object
 		 */
 		foreach ( $row as $field ) {
@@ -333,7 +326,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return string
 	 */
 	protected function getPageContent( WikiPage $wikiPage ) {
-
 		if ( !in_array( $this->params['page'], [ 'abstract', 'full' ] ) ) {
 			return '';
 		}
@@ -362,7 +354,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return string
 	 */
 	protected function feedItemDescription( $items, $pageContent ) {
-
 		$text = FeedItem::stripComment( implode( '', $items ) ) . FeedItem::stripComment( $pageContent );
 
 		// Abstract of the first 200 chars
@@ -386,11 +377,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	private function newFeedItem( $title, $rowItems ) {
 		$mwServices = MediaWikiServices::getInstance();
-		if ( method_exists( $mwServices, 'getWikiPageFactory' ) ) {
-			$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
-		} else {
-			$wikiPage = WikiPage::newFromID( $title->getArticleID() );
-		}
+		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 
 		if ( $wikiPage !== null && $wikiPage->exists() ) {
 
@@ -423,8 +410,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		return $feedItem;
 	}
 
-	private function parse( Title $title = null, $text ) {
-
+	private function parse( ?Title $title, $text ) {
 		if ( $title === null ) {
 			return $text;
 		}
@@ -437,7 +423,6 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	}
 
 	private function getFeedLink( QueryResult $res, $outputMode ) {
-
 		// Can be viewed as HTML if requested, no more parsing needed
 		$this->isHTML = $outputMode == SMW_OUTPUT_HTML;
 

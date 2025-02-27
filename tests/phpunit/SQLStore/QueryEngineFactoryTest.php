@@ -8,32 +8,30 @@ use SMW\SQLStore\QueryEngineFactory;
  * @covers \SMW\SQLStore\QueryEngineFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
+class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $connection ) );
+			->willReturn( $connection );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			QueryEngineFactory::class,
 			new QueryEngineFactory( $this->store )
@@ -41,7 +39,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConditionBuilder() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -51,7 +48,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQuerySegmentListProcessor() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -61,7 +57,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructQueryEngine() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -71,7 +66,6 @@ class QueryEngineFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConceptQuerySegmentBuilder() {
-
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(

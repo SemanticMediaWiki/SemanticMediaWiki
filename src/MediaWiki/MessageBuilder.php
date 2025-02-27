@@ -4,8 +4,9 @@ namespace SMW\MediaWiki;
 
 use IContextSource;
 use Language;
-use MediaWiki\Navigation\PrevNextNavigationRenderer;
+use MediaWiki\Navigation\PagerNavigationBuilder;
 use Message;
+use RequestContext;
 use RuntimeException;
 use Title;
 
@@ -14,7 +15,7 @@ use Title;
  * components and decrease depdencency on the Language object with SMW's code
  * base
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
@@ -31,7 +32,7 @@ class MessageBuilder {
 	 *
 	 * @param Language|null $language
 	 */
-	public function __construct( Language $language = null ) {
+	public function __construct( ?Language $language = null ) {
 		$this->language = $language;
 	}
 
@@ -63,7 +64,7 @@ class MessageBuilder {
 	 * @since 2.1
 	 *
 	 * @param mixed $number
-	 * @param boolean $useForSpecialNumbers set to true for numbers like dates
+	 * @param bool $useForSpecialNumbers set to true for numbers like dates
 	 *
 	 * @return string
 	 */
@@ -89,21 +90,36 @@ class MessageBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param Title $title,
-	 * @param integer $offset,
-	 * @param integer $offset,
-	 * @param array $query,
-	 * @param boolean|null $isAtTheEnd
+	 * @param Title $title
+	 * @param int $limit
+	 * @param int $offset
+	 * @param array $query
+	 * @param bool|null $isAtTheEnd
 	 *
 	 * @return string
 	 */
 	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
-		if ( class_exists( 'MediaWiki\Navigation\PrevNextNavigationRenderer' ) ) {
-			$prevNext = new PrevNextNavigationRenderer( \RequestContext::getMain() );
-			return $prevNext->buildPrevNextNavigation( $title, $offset, $limit, $query, $isAtTheEnd );
-		} else {
-			return $this->getLanguage()->viewPrevNext( $title, $offset, $limit, $query, $isAtTheEnd );
+		$limit = (int)$limit;
+		$offset = (int)$offset;
+		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );
+		$navBuilder
+			->setPage( $title )
+			->setLinkQuery( [ 'limit' => $limit, 'offset' => $offset ] + $query )
+			->setLimitLinkQueryParam( 'limit' )
+			->setCurrentLimit( (int)$limit )
+			->setPrevTooltipMsg( 'prevn-title' )
+			->setNextTooltipMsg( 'nextn-title' )
+			->setLimitTooltipMsg( 'shown-title' );
+
+		if ( $offset > 0 ) {
+			$navBuilder->setPrevLinkQuery( [ 'offset' => (string)max( $offset - $limit, 0 ) ] );
 		}
+
+		if ( !$isAtTheEnd ) {
+			$navBuilder->setNextLinkQuery( [ 'offset' => (string)( $offset + $limit ) ] );
+		}
+
+		return $navBuilder->getHtml();
 	}
 
 	/**
@@ -114,7 +130,6 @@ class MessageBuilder {
 	 * @return Message
 	 */
 	public function getMessage( $key ) {
-
 		$params = func_get_args();
 		array_shift( $params );
 
@@ -128,7 +143,6 @@ class MessageBuilder {
 	}
 
 	private function getLanguage() {
-
 		if ( $this->language instanceof Language ) {
 			return $this->language;
 		}

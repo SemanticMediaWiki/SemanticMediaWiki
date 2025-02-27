@@ -3,15 +3,14 @@
 namespace SMW\Maintenance\DataRebuilder;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -51,7 +50,6 @@ class OutdatedDisposer {
 	 * @since 3.1
 	 */
 	public function run() {
-
 		$this->messageReporter->reportMessage(
 			"Removing outdated and invalid entities ...\n"
 		);
@@ -122,7 +120,6 @@ class OutdatedDisposer {
 	}
 
 	private function disposeOutdatedEntities( $resultIterator, $count ) {
-
 		$this->messageReporter->reportMessage( "\n" );
 		$chunkedIterator = $this->iteratorFactory->newChunkedIterator( $resultIterator, 200 );
 
@@ -149,7 +146,6 @@ class OutdatedDisposer {
 	}
 
 	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ) {
-
 		$this->messageReporter->reportMessage( "\n" );
 		$counter = 0;
 

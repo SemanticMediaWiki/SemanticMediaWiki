@@ -9,18 +9,18 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\PageFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class PageFactoryTest extends \PHPUnit_Framework_TestCase {
+class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->store = $this->getMockBuilder( '\SMW\Store' )
@@ -29,7 +29,6 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PageFactory::class,
 			new PageFactory( $this->store )
@@ -37,14 +36,13 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNewPageFromNotRegisteredNamespaceThrowsException() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new PageFactory( $this->store );
 
@@ -56,14 +54,17 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testNewPageFromTitle( $namespace, $expected ) {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
+
 		$title->expects( $this->atLeastOnce() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( $namespace ) );
+			->willReturn( $namespace );
 
 		$instance = new PageFactory( $this->store );
 
@@ -74,7 +75,6 @@ class PageFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function namespaceProvider() {
-
 		$provider[] = [
 			SMW_NS_PROPERTY,
 			'SMW\MediaWiki\Page\PropertyPage'

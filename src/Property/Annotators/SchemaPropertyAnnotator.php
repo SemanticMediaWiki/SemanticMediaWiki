@@ -3,11 +3,11 @@
 namespace SMW\Property\Annotators;
 
 use SMW\DIProperty;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use SMW\Schema\Schema;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -22,16 +22,15 @@ class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
-	 * @param Schema $schema
+	 * @param Annotator $propertyAnnotator
+	 * @param Schema|null $schema
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, Schema $schema = null ) {
+	public function __construct( Annotator $propertyAnnotator, ?Schema $schema = null ) {
 		parent::__construct( $propertyAnnotator );
 		$this->schema = $schema;
 	}
 
 	protected function addPropertyValues() {
-
 		if ( $this->schema === null ) {
 			return;
 		}

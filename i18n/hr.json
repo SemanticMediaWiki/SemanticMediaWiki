@@ -108,6 +108,7 @@
 	"smw_exportrdf_submit": "Izvezi",
 	"uriresolver": "URI razrješitelj",
 	"properties": "Svojstva",
+	"smw-categories": "Kategorije stranica",
 	"smw_properties_docu": "U wikiju se koriste sljedeća svojstva.",
 	"smw_property_template": "$1 tipa $2 ($3)",
 	"smw_propertylackspage": "Svako svojstvo mora biti opisano na svojoj stranici!",

@@ -8,15 +8,14 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
  * @covers \SMW\Query\Exception\ResultFormatNotFoundException
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class ResultFormatNotFoundExceptionTest extends \PHPUnit_Framework_TestCase {
+class ResultFormatNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$instance = new ResultFormatNotFoundException();
 
 		$this->assertInstanceof(

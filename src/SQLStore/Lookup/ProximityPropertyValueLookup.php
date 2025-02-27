@@ -2,18 +2,18 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\Store;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDITime as DITime;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -57,7 +57,6 @@ class ProximityPropertyValueLookup {
 	 * @return array
 	 */
 	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ) {
-
 		$options = [];
 		$list = [];
 
@@ -74,7 +73,7 @@ class ProximityPropertyValueLookup {
 		$query->type( 'SELECT' );
 		$query->table( $table );
 
-		list( $field, $diType ) = $this->getField( $property );
+		[ $field, $diType ] = $this->getField( $property );
 
 		// look ahead +1
 		$limit = $opts->getLimit() + 1;
@@ -119,7 +118,8 @@ class ProximityPropertyValueLookup {
 
 		$res = $connection->query(
 			$query,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_NONE
 		);
 
 		foreach ( $res as $row ) {
@@ -140,7 +140,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ) {
-
 		$connection = $this->store->getConnection( 'mw.db' );
 		$continueOffset = 0;
 		$res = [];
@@ -211,7 +210,8 @@ class ProximityPropertyValueLookup {
 
 		$res = $connection->query(
 			$query,
-			__METHOD__
+			__METHOD__,
+			ISQLPlatform::QUERY_CHANGE_NONE
 		);
 
 		$list = [];
@@ -224,7 +224,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function isFixedPropertyTable( $table ) {
-
 		$propertyTables = $this->store->getPropertyTables();
 
 		foreach ( $propertyTables as $propertyTable ) {
@@ -237,7 +236,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function getField( $property ) {
-
 		$typeId = $property->findPropertyTypeID();
 		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 
@@ -249,7 +247,6 @@ class ProximityPropertyValueLookup {
 	}
 
 	private function build_like( $query, $field, $search ) {
-
 		$conds = [
 			'%' . $search . '%',
 			'%' . ucfirst( $search ) . '%',

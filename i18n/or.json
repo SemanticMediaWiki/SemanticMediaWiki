@@ -36,6 +36,7 @@
 	"smw-paramdesc-offset": "ପ୍ରଥମ ପରିଣାମ ର ଅଙ୍କୁର",
 	"smw-paramdesc-headers": "ଶୀର୍ଷକ/ଗୁଣ ର ନାମ ଦର୍ଶାନ୍ତୁ",
 	"smw-paramdesc-mainlabel": "ମୁଖ୍ୟ ପୃଷ୍ଠା ର ନାମ ଦେବାପାଇଁ ନାମପଟି",
+	"smw-categories": "ଶ୍ରେଣୀସମୂହ",
 	"smw-unusedproperty-template": "$2 ର $1 ପ୍ରକାର",
 	"wantedproperties": "ଦରକାରୀ ଗୁଣସବୁ",
 	"smw-wantedproperty-template": "$1 ({{PLURAL:$2|ଇଉଜ|ଇଉଜ ଗୁଡିକ}})",
@@ -62,7 +63,7 @@
 	"smw_ask_show_embed": "ଅନ୍ତଃସ୍ଥାପିତ ସାଙ୍କେତିକ ଚିହ୍ନ ଦେଖାନ୍ତୁ",
 	"smw_ask_hide_embed": "ଅନ୍ତଃସ୍ଥାପିତ ସାଙ୍କେତିକ ଚିହ୍ନ ଲୁଚାନ୍ତୁ",
 	"browse": "ଉଇକି ଦେଖିବେ",
-	"smw-livepreview-loading": "ଖୋଲୁଅଛି...",
+	"smw-livepreview-loading": "ଖୋଲୁଛି...",
 	"smw-listingcontinuesabbrev": "ଆହୁରି ଅଛି..",
 	"smw-showingresults": "ତଳେ {{PLURAL:$1|'''ଗୋଟିଏ'''  ଫଳାଫଳ|'''$1'''ଟି ଫଳାଫଳ}} ଦେଖାଉଛୁ ଯାହା #'''$2'''ରେ ଆରମ୍ଭ ହୋଇଅଛି ।"
 }

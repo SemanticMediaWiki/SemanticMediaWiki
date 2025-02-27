@@ -9,12 +9,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Connection\OptionsBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
+class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -29,13 +29,12 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testMakeSelectOptions( $options ) {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'array',
+		$this->assertIsArray(
+
 			OptionsBuilder::makeSelectOptions( $connection, $options )
 		);
 	}
@@ -44,19 +43,17 @@ class OptionsBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testToString( $options ) {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertInternalType(
-			'string',
+		$this->assertIsString(
+
 			OptionsBuilder::toString( $options )
 		);
 	}
 
 	public function optionsProvider() {
-
 		$provider[] = [
 			[ 'FOR UPDATE' ]
 		];

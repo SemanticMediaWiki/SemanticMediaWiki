@@ -3,12 +3,13 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use SMWQuery as Query;
+use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -98,12 +99,11 @@ class QuerySegmentListProcessor {
 	 * so that it contains non-recursive description of a select to execute for getting
 	 * the actual result.
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @throws RuntimeException
 	 */
 	public function process( $id ) {
-
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = [];
 
@@ -116,23 +116,22 @@ class QuerySegmentListProcessor {
 	}
 
 	private function segment( QuerySegment &$query ) {
-
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // .
 				$this->table( $query );
-			break;
+				break;
 			case QuerySegment::Q_CONJUNCTION:
 				$this->conjunction( $query );
-			break;
+				break;
 			case QuerySegment::Q_DISJUNCTION:
 				$this->disjunction( $query );
-			break;
+				break;
 			case QuerySegment::Q_PROP_HIERARCHY:
 			case QuerySegment::Q_CLASS_HIERARCHY: // make a saturated hierarchy
 				$this->hierarchy( $query );
-			break;
+				break;
 			case QuerySegment::Q_VALUE:
-			break; // nothing to do
+				break; // nothing to do
 		}
 	}
 
@@ -140,20 +139,29 @@ class QuerySegmentListProcessor {
 	 * Resolves normal queries with possible conjunctive subconditions
 	 */
 	private function table( QuerySegment &$query ) {
-
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
+			$alias = $subQuery->alias;
 
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
 
 				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
 				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
+				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
+				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
 
 				if ( $subQuery->from ) {
 					$t = "($t $subQuery->from)";
+
+					$alias = 'nested' . $subQuery->alias;
+					$query->fromTables[$alias] = array_merge( $subQuery->fromTables, [ $subQuery->alias => $joinTable ] );
+					$query->joinConditions = array_merge( $query->joinConditions, $subQuery->joinConditions );
+				} else {
+					$query->fromTables[$alias] = $joinTable;
 				}
+				$query->joinConditions[$alias] = [ $joinType . ' JOIN', "$joinField$op=" . $subQuery->joinfield ];
 
 				$query->from .= " $joinType JOIN $t ON $joinField$op=" . $subQuery->joinfield;
 
@@ -165,7 +173,7 @@ class QuerySegmentListProcessor {
 				$condition = '';
 
 				if ( $subQuery->null === true ) {
-						$condition .= ( $condition ? ' OR ': '' ) . "$joinField IS NULL";
+						$condition .= ( $condition ? ' OR ' : '' ) . "$joinField IS NULL";
 				} else {
 					foreach ( $subQuery->joinfield as $value ) {
 						$op = $subQuery->not ? '!' : '';
@@ -179,17 +187,22 @@ class QuerySegmentListProcessor {
 
 				$query->where .= ( ( $query->where === '' || $subQuery->where === null ) ? '' : ' AND ' ) . $condition;
 				$query->from .= $subQuery->from;
+				$query->fromTables = array_merge( $query->fromTables, $subQuery->fromTables );
+				$query->joinConditions = array_merge( $query->joinConditions, $subQuery->joinConditions );
 			} else { // interpret empty joinfields as impossible condition (empty result)
 				$query->joinfield = ''; // make whole query false
 				$query->joinTable = '';
 				$query->where = '';
 				$query->from = '';
+				$query->fromTables = [];
+				$query->joinConditions = [];
 				break;
 			}
 
 			if ( $subQuery->where !== '' && $subQuery->where !== null ) {
 				if ( $subQuery->joinType === 'LEFT' || $subQuery->joinType == 'LEFT OUTER' ) {
 					$query->from .= ' AND (' . $subQuery->where . ')';
+					$query->joinConditions[$alias][1] .= ' AND (' . $subQuery->where . ')';
 				} else {
 					$query->where .= ( ( $query->where === '' ) ? '' : ' AND ' ) . '(' . $subQuery->where . ')';
 				}
@@ -230,7 +243,6 @@ class QuerySegmentListProcessor {
 	}
 
 	private function disjunction( QuerySegment &$query ) {
-
 		if ( $this->queryMode !== Query::MODE_NONE ) {
 			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
 		}
@@ -244,9 +256,9 @@ class QuerySegmentListProcessor {
 
 			if ( $subQuery->joinTable !== '' ) {
 				$sql = 'INSERT ' . 'IGNORE ' . 'INTO ' .
-				       $this->connection->tableName( $query->alias ) .
+					   $this->connection->tableName( $query->alias ) .
 					   " SELECT DISTINCT $subQuery->joinfield FROM " . $this->connection->tableName( $subQuery->joinTable ) .
-					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where":'' );
+					   " AS $subQuery->alias $subQuery->from" . ( $subQuery->where ? " WHERE $subQuery->where" : '' );
 			} elseif ( $subQuery->joinfield !== '' ) {
 				// NOTE: this works only for single "unconditional" values without further
 				// WHERE or FROM. The execution must take care of not creating any others.
@@ -269,7 +281,8 @@ class QuerySegmentListProcessor {
 				if ( $this->queryMode !== Query::MODE_NONE ) {
 					$this->connection->query(
 						$sql,
-						__METHOD__
+						__METHOD__,
+						ISQLPlatform::QUERY_CHANGE_ROWS
 					);
 				}
 			}
@@ -291,10 +304,9 @@ class QuerySegmentListProcessor {
 	 * Find subproperties or subcategories. This may require iterative computation,
 	 * and temporary tables are used in many cases.
 	 *
-	 * @param QuerySegment $query
+	 * @param QuerySegment &$query
 	 */
 	private function hierarchy( QuerySegment &$query ) {
-
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';
@@ -304,7 +316,7 @@ class QuerySegmentListProcessor {
 				break;
 		}
 
-		list( $smwtable, $depth ) = $this->hierarchyTempTableBuilder->getTableDefinitionByType(
+		[ $smwtable, $depth ] = $this->hierarchyTempTableBuilder->getTableDefinitionByType(
 			$type
 		);
 

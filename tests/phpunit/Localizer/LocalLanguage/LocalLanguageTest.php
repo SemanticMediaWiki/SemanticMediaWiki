@@ -2,23 +2,23 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\Localizer\LocalLanguage\LanguageContents;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @covers \SMW\Localizer\LocalLanguage
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
+class LocalLanguageTest extends \PHPUnit\Framework\TestCase {
 
 	private $languageContents;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->languageContents = $this->getMockBuilder( LanguageContents::class )
@@ -26,13 +26,12 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	public function tearDown() : void {
+	public function tearDown(): void {
 		LocalLanguage::clear();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			LocalLanguage::class,
 			new LocalLanguage( $this->languageContents )
@@ -47,7 +46,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetNamespaces() {
-
 		$contents = [
 			"SMW_NS_PROPERTY" => "Property"
 		];
@@ -55,9 +53,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'namespace.labels' ),
+				'namespace.labels',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -70,7 +68,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetNamespaceAliases() {
-
 		$contents = [
 			"Property" => "SMW_NS_PROPERTY"
 		];
@@ -78,9 +75,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'namespace.aliases' ),
+				'namespace.aliases',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -93,7 +90,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPreferredDateFormatByPrecisionOnMatchedPrecision() {
-
 		$contents = [
 			"SMW_PREC_YMDT" => "d m Y"
 		];
@@ -101,9 +97,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.precision' ),
+				'date.precision',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -116,7 +112,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPreferredDateFormatOnNotMatchablePrecision() {
-
 		$contents = [
 			"Foo" => "d m Y"
 		];
@@ -124,9 +119,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.precision' ),
+				'date.precision',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -139,7 +134,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDatatypeLabels() {
-
 		$contents = [
 			"Foo" => "Bar"
 		];
@@ -147,9 +141,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'datatype.labels' ),
+				'datatype.labels',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -162,14 +156,13 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindDatatypeByLabel() {
-
 		$contents = [
 			"Bar" => "_foo"
 		];
 
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -182,28 +175,20 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyIdByLabel() {
-
-		$this->languageContents->expects( $this->at( 0 ) )
+		$this->languageContents->expects( $this->exactly( 4 ) )
 			->method( 'get' )
-			->with(
-				$this->equalTo( 'property.labels' ),
-				$this->anything() )
-			->will( $this->returnValue( [ "_FOO" => "Foo" ] ) );
-
-		$this->languageContents->expects( $this->at( 1 )  )
-			->method( 'get' )
-			->with(
-				$this->equalTo( 'datatype.labels' ),
-				$this->anything() )
-			->will( $this->returnValue( [] ) );
-
-		$this->languageContents->expects( $this->at( 2 ) )
-			->method( 'get' )
-			->will( $this->returnValue( [] ) );
-
-		$this->languageContents->expects( $this->at( 3 ) )
-			->method( 'get' )
-			->will( $this->returnValue( [] ) );
+			->withConsecutive(
+				[ $this->equalTo( 'property.labels' ), $this->anything() ],
+				[ $this->equalTo( 'datatype.labels' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ "_FOO" => "Foo" ],
+				[],
+				[],
+				[]
+			);
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -215,8 +200,53 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		);
 	}
 
-	public function testGetPropertyLabelList() {
+	public function testGetPropertyIdByLabel_NoMatch() {
+		// inverse testing - Mocking the data to ensure that the label does not match any property ID.
+		$this->languageContents->expects( $this->exactly( 4 ) )
+			->method( 'get' )
+			->withConsecutive(
+				[ $this->equalTo( 'property.labels' ), $this->anything() ],
+				[ $this->equalTo( 'datatype.labels' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[ '_FOO' => 'Bar' ],
+				[],
+				[],
+				[]
+		);
 
+		$instance = new LocalLanguage( $this->languageContents );
+
+		// Check that the label 'Foo' does not match any property ID
+		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
+	}
+
+	public function testGetPropertyIdByLabel_AllSourcesEmpty() {
+		// inverse testing - Mocking the data to simulate empty arrays from all sources
+		$this->languageContents->expects( $this->exactly( 4 ) )
+			->method( 'get' )
+			->withConsecutive(
+				[ $this->equalTo( 'property.labels' ), $this->anything() ],
+				[ $this->equalTo( 'datatype.labels' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ],
+				[ $this->equalTo( 'property.aliases' ), $this->anything() ]
+			)
+			->willReturnOnConsecutiveCalls(
+				[],
+				[],
+				[],
+				[]
+		);
+
+		$instance = new LocalLanguage( $this->languageContents );
+
+		// Check that when all data sources are empty, no property ID is found
+		$this->assertNull( $instance->getPropertyIdByLabel( 'Foo' ) );
+	}
+
+	public function testGetPropertyLabelList() {
 		$propertyLabels = [
 			'_Foo'  => 'Bar',
 			'_Foo2' => 'Baar',
@@ -225,7 +255,7 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 
 		$this->languageContents->expects( $this->any() )
 			->method( 'get' )
-			->will( $this->onConsecutiveCalls( $propertyLabels, [], [], [] ) );
+			->willReturnOnConsecutiveCalls( $propertyLabels, [], [], [] );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -244,7 +274,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetDateFormats() {
-
 		$contents = [
 			[ 'SMW_Y' ],
 			[ 'SMW_MY', 'SMW_YM' ]
@@ -253,9 +282,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.format' ),
+				'date.format',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -268,7 +297,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testFindMonthNumberByLabelWithCaseInsensitiveSearch() {
-
 		$contents = [
 			[ 'January', 'Jan' ],
 			[ 'February', 'Feb' ],
@@ -278,9 +306,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.months' ),
+				'date.months',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents
@@ -293,7 +321,6 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetMonthLabelByNumber() {
-
 		$contents = [
 			[ 'January', 'Jan' ],
 			[ 'February', 'Feb' ],
@@ -303,9 +330,9 @@ class LocalLanguageTest extends \PHPUnit_Framework_TestCase {
 		$this->languageContents->expects( $this->atLeastOnce() )
 			->method( 'get' )
 			->with(
-				$this->equalTo( 'date.months' ),
+				'date.months',
 				$this->anything() )
-			->will( $this->returnValue( $contents ) );
+			->willReturn( $contents );
 
 		$instance = new LocalLanguage(
 			$this->languageContents

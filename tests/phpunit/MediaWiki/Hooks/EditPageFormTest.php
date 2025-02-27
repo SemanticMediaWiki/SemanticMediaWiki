@@ -3,19 +3,19 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\MediaWiki\Hooks\EditPageForm;
-use Title;
 use SMW\Tests\PHPUnitCompat;
+use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
  */
-class EditPageFormTest extends \PHPUnit_Framework_TestCase {
+class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -24,7 +24,7 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	private $preferenceExaminer;
 	private $messageLocalizer;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
@@ -45,7 +45,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			EditPageForm::class,
 			new EditPageForm( $this->namespaceExaminer, $this->permissionExaminer, $this->preferenceExaminer )
@@ -53,7 +52,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledHelp() {
-
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -76,15 +74,14 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDisabledOnUserPreference() {
-
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->preferenceExaminer->expects( $this->at( 0 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
-			->will( $this->returnValue( true ) );
+			->with( 'smw-prefs-general-options-disable-editpage-info' )
+			->willReturn( true );
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
@@ -115,20 +112,19 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testExtendEditFormPageTop( $title, $namespaces, $isSemanticEnabled, $expected ) {
-
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->preferenceExaminer->expects( $this->at( 0 ) )
 			->method( 'hasPreferenceOf' )
-			->with( $this->equalTo( 'smw-prefs-general-options-disable-editpage-info' ) )
-			->will( $this->returnValue( false ) );
+			->with( 'smw-prefs-general-options-disable-editpage-info' )
+			->willReturn( false );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
-			->with( $this->equalTo( $namespaces ) )
-			->will( $this->returnValue( $isSemanticEnabled ) );
+			->with( $namespaces )
+			->willReturn( $isSemanticEnabled );
 
 		$editPage = $this->getMockBuilder( '\EditPage' )
 			->disableOriginalConstructor()
@@ -136,7 +132,7 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 
 		$editPage->expects( $this->any() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$editPage->editFormPageTop = '';
 
@@ -165,7 +161,6 @@ class EditPageFormTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function titleProvider() {
-
 		$provider[] = [
 			Title::newFromText( 'Foo', SMW_NS_PROPERTY ),
 			SMW_NS_PROPERTY,

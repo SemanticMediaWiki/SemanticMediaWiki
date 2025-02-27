@@ -8,7 +8,7 @@ use SMW\Query\PrintRequest;
 /**
  * Abstract base class for all descriptions
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -29,6 +29,9 @@ abstract class Description {
 	 * @var string
 	 */
 	private $membership = '';
+
+	public bool $isPartOfDisjunction;
+	public bool $isNegation;
 
 	/**
 	 * Get the (possibly empty) array of all print requests that
@@ -82,7 +85,6 @@ abstract class Description {
 	 * @throws FingerprintNotFoundException
 	 */
 	public function getFingerprint() {
-
 		if ( $this->fingerprint !== null ) {
 			return $this->fingerprint;
 		}
@@ -125,7 +127,7 @@ abstract class Description {
 	 * The result should be a plain query string that SMW is able to parse,
 	 * without any kind of HTML escape sequences.
 	 *
-	 * @param boolean $asValue
+	 * @param bool $asValue
 	 *
 	 * @return string
 	 */
@@ -135,14 +137,14 @@ abstract class Description {
 	 * Return true if the description is required to encompass at most a single
 	 * result, independently of the knowledge base.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	abstract public function isSingleton();
 
 	/**
 	 * Compute the size of the description. Default is 1.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getSize() {
 		return 1;
@@ -151,7 +153,7 @@ abstract class Description {
 	/**
 	 * Compute the depth of the description. Default is 0.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getDepth() {
 		return 0;
@@ -178,7 +180,6 @@ abstract class Description {
 	 * changes!
 	 */
 	public function prune( &$maxsize, &$maxDepth, &$log ) {
-
 		if ( ( $maxsize < $this->getSize() ) || ( $maxDepth < $this->getDepth() ) ) {
 			$log[] = $this->getQueryString();
 
@@ -193,7 +194,6 @@ abstract class Description {
 
 		return $this;
 	}
-
 
 	/**
 	 * @since 3.0

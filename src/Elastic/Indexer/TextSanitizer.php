@@ -7,7 +7,7 @@ use SMW\Parser\LinksEncoder;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -22,8 +22,7 @@ class TextSanitizer {
 	 *
 	 * @return string
 	 */
-	public static function removeLinks( $text ) : string {
-
+	public static function removeLinks( $text ): string {
 		if ( $text === '' ) {
 			return $text;
 		}

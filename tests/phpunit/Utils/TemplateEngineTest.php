@@ -2,24 +2,23 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Utils\TemplateEngine;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Utils\TemplateEngine;
 
 /**
  * @covers \SMW\Utils\TemplateEngine
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
+class TemplateEngineTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testLoad_ThrowsException() {
-
 		$instance = new TemplateEngine();
 
 		$this->expectException( '\SMW\Exception\FileNotReadableException' );
@@ -27,7 +26,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCode_ThrowsException() {
-
 		$instance = new TemplateEngine();
 
 		$this->expectException( '\RuntimeException' );
@@ -35,8 +33,7 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testLoad() {
-
-		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance = new TemplateEngine( \SMW_PHPUNIT_DIR );
 		$instance->load( '/Fixtures/readable.file', 'Foo' );
 
 		$instance->compile( 'Foo', [] );
@@ -48,8 +45,7 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testBulkLoad() {
-
-		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance = new TemplateEngine( \SMW_PHPUNIT_DIR );
 		$instance->clearTemplates();
 
 		$instance->bulkLoad( [ '/Fixtures/readable.file' => 'Foo' ] );
@@ -62,8 +58,7 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testHtmlTidy() {
-
-		$instance = new TemplateEngine( SMW_PHPUNIT_DIR );
+		$instance = new TemplateEngine( \SMW_PHPUNIT_DIR );
 		$instance->clearTemplates();
 
 		$instance->setContents( __METHOD__, "{{foo}}<span>\n    </span>" );
@@ -84,7 +79,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider contentsProvider
 	 */
 	public function testCompileContents( $contents, $args, $expected ) {
-
 		$instance = new TemplateEngine();
 
 		$instance->setContents( __METHOD__, $contents );
@@ -97,7 +91,6 @@ class TemplateEngineTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function contentsProvider() {
-
 		yield [
 			'abc {{FOO}} 123',
 			[

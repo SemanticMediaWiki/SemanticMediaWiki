@@ -5,7 +5,7 @@ namespace SMW\Tests\Utils;
 use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -18,22 +18,16 @@ class GlobalsProvider {
 	private static $instance = null;
 
 	/**
-	 * @var array
-	 */
-	private $container = null;
-
-	/**
 	 * @since 1.9.1
 	 *
 	 * @return GlobalsProvider
 	 */
 	public static function getInstance() {
-
 		if ( self::$instance === null ) {
 			self::$instance = new self();
 		}
 
-		return self::$instance->setContainer( $GLOBALS );
+		return self::$instance;
 	}
 
 	/**
@@ -51,9 +45,8 @@ class GlobalsProvider {
 	 * @return mixed
 	 */
 	public function get( $key ) {
-
-		if ( is_string( $key ) && $this->contains( $key ) ) {
-			return $this->lookup( $key );
+		if ( isset( $GLOBALS[$key ] ) ) {
+			return $GLOBALS[$key];
 		}
 
 		throw new InvalidArgumentException( 'Configuration key is unkown' );
@@ -66,25 +59,11 @@ class GlobalsProvider {
 	 * @param mixed $value
 	 */
 	public function set( $key, $value ) {
-
 		if ( is_string( $key ) ) {
-			$this->container[$key] = $value;
+			$GLOBALS[$key] = $value;
 		}
 
 		return $this;
-	}
-
-	protected function setContainer( $container ) {
-		$this->container = $container;
-		return $this;
-	}
-
-	protected function contains( $key ) {
-		return isset( $this->container[$key] ) || array_key_exists( $key, $this->container );
-	}
-
-	protected function lookup( $key ) {
-		return $this->container[$key];
 	}
 
 }

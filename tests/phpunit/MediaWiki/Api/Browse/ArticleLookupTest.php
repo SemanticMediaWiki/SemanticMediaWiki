@@ -8,16 +8,15 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
  * @covers \SMW\MediaWiki\Api\Browse\ArticleLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
+class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,18 +34,17 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider articleSearchProvider
 	 */
 	public function testLookup( $search, $row, $condition, $expected ) {
-
 		$articleAugmentor = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ArticleAugmentor' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->will( $this->returnArgument( 0 ) );
+			->willReturnArgument( 0 );
 
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'select' )
@@ -54,7 +52,7 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 				$this->anyThing(),
 				$this->anyThing(),
 				$this->stringContains( $condition ) )
-			->will( $this->returnValue( [ $row ] ) );
+			->willReturn( [ $row ] );
 
 		$instance = new ArticleLookup(
 			$connection,
@@ -68,13 +66,12 @@ class ArticleLookupTest extends \PHPUnit_Framework_TestCase {
 		$res = $instance->lookup( $parameters );
 
 		$this->assertEquals(
-			$res['query'],
-			$expected
+			$expected,
+			$res['query']
 		);
 	}
 
 	public function articleSearchProvider() {
-
 		$row = new \stdClass;
 		$row->page_title = 'Foo';
 		$row->page_id = 42;

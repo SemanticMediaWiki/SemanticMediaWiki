@@ -5,28 +5,28 @@ namespace SMW\Tests\Elastic\Hooks;
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use FakeResultWrapper;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\Elastic\Hooks\UpdateEntityCollationComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
+class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
+	private TestEnvironment $testEnvironment;
 	private $store;
 	private $messageReporter;
 	private $rebuilder;
 	private $entityIdManager;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
@@ -35,7 +35,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,47 +45,45 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $this->entityIdManager ) );
+			->willReturn( $this->entityIdManager );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->will( $this->returnValue( $this->semanticData ) );
+			->willReturn( $semanticData );
 
 		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function( $type ) {
-
+		$callback = static function ( $type ) use ( $connection, $database ) {
 			if ( $type === 'mw.db' ) {
-				return $this->database;
-			};
+				return $database;
+			}
 
-			return $this->connection;
+			return $connection;
 		};
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnCallback( $callback ) );
+			->willReturnCallback( $callback );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceof(
 			UpdateEntityCollationComplete::class,
 			new UpdateEntityCollationComplete( $this->store )
@@ -93,7 +91,6 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRunUpdate() {
-
 		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -106,15 +103,15 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit_Framework_TestCase {
 
 		$this->rebuilder->expects( $this->any() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->rebuilder->expects( $this->any() )
 			->method( 'select' )
-			->will( $this->returnValue( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] ) );
+			->willReturn( [ new FakeResultWrapper( [ (object)$row ] ), 2 ] );
 
 		$this->entityIdManager->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->will( $this->returnValue( $dataItem ) );
+			->willReturn( $dataItem );
 
 		$instance = new UpdateEntityCollationComplete(
 			$this->store,

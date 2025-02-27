@@ -3,18 +3,17 @@
 namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
 use Html;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use SMW\Message;
-use Title;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -37,7 +36,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	private $refreshjob = null;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	public $isApiTask = true;
 
@@ -75,7 +74,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTask() : string {
+	public function getTask(): string {
 		return 'dispose';
 	}
 
@@ -84,7 +83,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( string $action ) : bool {
+	public function isTaskFor( string $action ): bool {
 		return $action === $this->getTask();
 	}
 
@@ -94,12 +93,11 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-
 		$subject = DIWikiPage::newFromTitle( \SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		// smw-admin-outdateddisposal
 		$this->htmlFormRenderer
-				->addHeader( 'h4', $this->msg( 'smw-admin-outdateddisposal-title' ) )
+				->addHeader( 'h3', $this->msg( 'smw-admin-outdateddisposal-title' ) )
 				->addParagraph(
 					$this->msg( 'smw-admin-outdateddisposal-intro', Message::PARSE ),
 					[
@@ -155,7 +153,6 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function handleRequest( WebRequest $webRequest ) {
-
 		if ( !$this->hasFeature( SMW_ADM_DISPOSAL ) || $this->hasPendingJob() || $this->isApiTask() ) {
 			return $this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 		}

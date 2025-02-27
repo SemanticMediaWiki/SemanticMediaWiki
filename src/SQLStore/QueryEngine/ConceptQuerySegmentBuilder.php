@@ -7,7 +7,7 @@ use SMW\Query\Parser as QueryParser;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -57,7 +57,6 @@ class ConceptQuerySegmentBuilder {
 	 * @return QuerySegment|null
 	 */
 	public function getQuerySegmentFrom( $conceptDescriptionText ) {
-
 		QuerySegment::$qnum = 0;
 
 		$conditionBuilder = $this->conditionBuilder;

@@ -2,38 +2,37 @@
 
 namespace SMW\Tests\Elastic\Jobs;
 
+use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Tests\TestEnvironment;
-use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Jobs\IndexerRecoveryJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
+class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
+	private TestEnvironment $testEnvironment;
 	private $connection;
 	private $title;
 	private $cache;
-	private $store;
+	private ElasticStore $store;
 	private $config;
 	private $jobQueue;
 	private $indexer;
-	private $elasticFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
-			->disableOriginalConstructor()
-			->getMock();
+		$this->store = $this->createMock( ElasticStore::class );
 
 		$this->config = $this->getMockBuilder( '\SMW\Elastic\Config' )
 			->disableOriginalConstructor()
@@ -63,24 +62,25 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
+		$elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticFactory->expects( $this->any() )
+		$elasticFactory->expects( $this->any() )
 			->method( 'newIndexer' )
-			->will( $this->returnValue( $this->indexer ) );
+			->willReturn( $this->indexer );
 
-		$this->testEnvironment->registerObject( 'ElasticFactory', $this->elasticFactory );
+		$this->store->expects( $this->any() )
+			->method( 'getElasticFactory' )
+			->willReturn( $elasticFactory );
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			IndexerRecoveryJob::class,
 			new IndexerRecoveryJob( $this->title )
@@ -88,7 +88,6 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAllowRetries() {
-
 		$instance = new IndexerRecoveryJob( $this->title );
 
 		$this->assertFalse(
@@ -97,48 +96,46 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRun_Create() {
-
 		$this->indexer->expects( $this->once() )
 			->method( 'create' );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( ( new \SMW\Options() ) ) );
+			->willReturn( ( new \SMW\Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
 		$instance = new IndexerRecoveryJob(
 			$this->title,
-			[ 'create' => 'Foo#0##']
+			[ 'create' => 'Foo#0##' ]
 		);
 
 		$instance->run();
 	}
 
 	public function testRun_Delete() {
-
 		$this->indexer->expects( $this->once() )
 			->method( 'delete' );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( ( new \SMW\Options() ) ) );
+			->willReturn( ( new \SMW\Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -151,18 +148,17 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRun_Index() {
-
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( ( new \SMW\Options() ) ) );
+			->willReturn( ( new \SMW\Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		$this->testEnvironment->registerObject( 'Store', $this->store );
 
@@ -172,30 +168,29 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IndexerRecoveryJob(
 			$this->title,
-			[ 'index' => 'Foo#0##']
+			[ 'index' => 'Foo#0##' ]
 		);
 
 		$instance->run();
 	}
 
 	public function testRun_Index_Retry() {
-
 		$this->config->expects( $this->atLeastOnce() )
 			->method( 'dotGet' )
 			->with( $this->stringContains( 'indexer.job.recovery.retries' ) )
-			->will( $this->returnValue( 5 ) );
+			->willReturn( 5 );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'ping' )
-			->will( $this->returnValue( false ) );
+			->willReturn( false );
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->will( $this->returnValue( $this->config ) );
+			->willReturn( $this->config );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $this->connection ) );
+			->willReturn( $this->connection );
 
 		// Check insert with next retry
 		$this->jobQueue->expects( $this->once() )
@@ -205,14 +200,13 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 
 		$instance = new IndexerRecoveryJob(
 			$this->title,
-			[ 'index' => 'Foo#0##']
+			[ 'index' => 'Foo#0##' ]
 		);
 
 		$instance->run();
 	}
 
 	public function testPushFromDocument() {
-
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'push' );
 
@@ -230,7 +224,6 @@ class IndexerRecoveryJobTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testPushFromParams() {
-
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'push' );
 

@@ -4,18 +4,17 @@ namespace SMW\MediaWiki\Deferred;
 
 use DeferrableUpdate;
 use DeferredUpdates;
-use Title;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
-use SMW\Enum;
+use Title;
 
 /**
  * Run a deferred update job for a changed title instance to re-parse the content
  * of those associated titles and make sure that its content (incl. any
  * self-reference) is correctly represented.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +37,7 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 * @param Title|null $oldTitle
 	 * @param Title|null $newTitle
 	 */
-	public function __construct( Title $oldTitle = null, Title $newTitle = null ) {
+	public function __construct( ?Title $oldTitle = null, ?Title $newTitle = null ) {
 		$this->oldTitle = $oldTitle;
 		$this->newTitle = $newTitle;
 	}
@@ -49,8 +48,7 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 * @param Title|null $oldTitle
 	 * @param Title|null $newTitle
 	 */
-	public static function addUpdate( Title $oldTitle = null, Title $newTitle = null ) {
-
+	public static function addUpdate( ?Title $oldTitle = null, ?Title $newTitle = null ) {
 		// Avoid deferring the update on CLI (and the DeferredUpdates::tryOpportunisticExecute)
 		// since we use a Job instance to carry out the change
 		if ( Site::isCommandLineMode() ) {
@@ -67,7 +65,6 @@ class ChangeTitleUpdate implements DeferrableUpdate {
 	 * @since 3.0
 	 */
 	public function doUpdate() {
-
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobFactory = $applicationFactory->newJobFactory();
 

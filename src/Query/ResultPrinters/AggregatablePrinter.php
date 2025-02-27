@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\Query\QueryResult;
 use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
 
 /**
  * Abstract class that supports the aggregation and distributive calculation
@@ -21,7 +21,7 @@ use SMWQueryResult as QueryResult;
  * * baz (1)
  * * ohi (1)
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -78,7 +78,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @param array $data label => value
 	 */
-	protected abstract function getFormatOutput( array $data );
+	abstract protected function getFormatOutput( array $data );
 
 	/**
 	 * Method gets called right before the result is returned
@@ -88,7 +88,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 */
-	protected function addResources() {}
+	protected function addResources() {
+	}
 
 	/**
 	 * @see ResultPrinter::getResultText
@@ -114,10 +115,9 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 *
 	 * @since 1.7
 	 *
-	 * @param array $data
+	 * @param array &$data
 	 */
 	protected function applyDistributionParams( array &$data ) {
-
 		if ( $this->params['distributionsort'] == 'asc' ) {
 			asort( $data, SORT_NUMERIC );
 		} elseif ( $this->params['distributionsort'] == 'desc' ) {
@@ -142,7 +142,6 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @return array label => value
 	 */
 	protected function getResults( QueryResult $queryResult, $outputMode ) {
-
 		if ( $this->params['distribution'] ) {
 			return $this->getDistributionResults( $queryResult, $outputMode );
 		}
@@ -164,8 +163,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
 		$values = [];
 
-		while ( /* array of SMWResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)
-			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // SMWResultArray for a sinlge property
+		while ( /* array of ResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)
+			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // ResultArray for a sinlge property
 				while ( ( /* SMWDataValue */ $dataValue = $row[$i]->getNextDataValue() ) !== false ) { // Data values
 
 					// Get the HTML for the tag content. Pages are linked, other stuff is just plaintext.
@@ -245,7 +244,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	 * @since 1.7
 	 *
 	 * @param DataItem $dataItem
-	 * @param array $values
+	 * @param array &$values
 	 * @param string $name
 	 */
 	protected function addNumbersForDataItem( DataItem $dataItem, array &$values, $name ) {

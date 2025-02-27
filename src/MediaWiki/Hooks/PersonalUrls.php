@@ -3,17 +3,17 @@
 namespace SMW\MediaWiki\Hooks;
 
 use SkinTemplate;
-use SMW\MediaWiki\JobQueue;
+use SMW\GroupPermissions;
 use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\GroupPermissions;
 use SMW\OptionsAwareTrait;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/PersonalUrls
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -65,7 +65,6 @@ class PersonalUrls implements HookListener {
 	 * @return true
 	 */
 	public function process( array &$personalUrls ) {
-
 		$watchlist = $this->getOption( 'smwgJobQueueWatchlist', [] );
 
 		if (
@@ -79,7 +78,6 @@ class PersonalUrls implements HookListener {
 	}
 
 	private function getJobQueueWatchlist( $watchlist, $personalUrls ) {
-
 		$queue = [];
 
 		foreach ( $watchlist as $job ) {
@@ -121,14 +119,13 @@ class PersonalUrls implements HookListener {
 
 	// https://stackoverflow.com/questions/1783089/array-splice-for-associative-arrays
 	private function splice( $array, $values, $offset ) {
-		return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, NULL, true );
+		return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, null, true );
 	}
 
 	private function humanReadable( $num, $decimals = 0 ) {
-
 		if ( $num < 1000 ) {
 			$num = number_format( $num );
-		} else if ( $num < 1000000) {
+		} elseif ( $num < 1000000 ) {
 			$num = number_format( $num / 1000, $decimals ) . 'K';
 		} else {
 			$num = number_format( $num / 1000000, $decimals ) . 'M';

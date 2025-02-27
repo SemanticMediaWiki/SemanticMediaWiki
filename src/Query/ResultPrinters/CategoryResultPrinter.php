@@ -2,18 +2,19 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Collator;
-use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-use SMW\Utils\HtmlColumns;
+use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Localizer;
+use SMW\Utils\HtmlColumns;
+use SMWDataItem as DataItem;
 
 /**
  * Print query results in alphabetic groups displayed in columns, a la the
  * standard Category pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author David Loomer
@@ -38,9 +39,13 @@ class CategoryResultPrinter extends ResultPrinter {
 	private $userParam;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $numColumns;
+
+	private HtmlColumns $htmlColumns;
+	private WikitextTemplateRenderer $templateRenderer;
+	private Collator $collator;
 
 	/**
 	 * @see ResultPrinter::getName
@@ -147,7 +152,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	 * {@inheritDoc}
 	 */
 	protected function getResultText( QueryResult $res, $outputMode ) {
-
 		$this->initServices();
 		$contents = $this->getContents( $res, $outputMode );
 
@@ -237,7 +241,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function first_letter( QueryResult $res, DataItem $dataItem ) {
-
 		$sortKey = $dataItem->getSortKey();
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
@@ -248,7 +251,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function row_to_contents( $row, &$first_col ) {
-
 		// has anything but the first column been printed?
 		$found_values = false;
 		$result = '';
@@ -295,7 +297,6 @@ class CategoryResultPrinter extends ResultPrinter {
 	}
 
 	private function row_to_template( $row, $res, &$first_col ) {
-
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
 

@@ -9,17 +9,17 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\MediaWiki\Api\Tasks\UpdateTask
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
+class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->testEnvironment = new TestEnvironment();
@@ -29,13 +29,12 @@ class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
 			->getMock();
 	}
 
-	protected function tearDown() : void {
+	protected function tearDown(): void {
 		$this->testEnvironment->tearDown();
 		parent::tearDown();
 	}
 
 	public function testCanConstruct() {
-
 		$instance = new UpdateTask( $this->jobFactory );
 
 		$this->assertInstanceOf(
@@ -45,7 +44,6 @@ class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testProcess() {
-
 		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -55,13 +53,13 @@ class UpdateTaskTest extends \PHPUnit_Framework_TestCase {
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->will( $this->returnValue( $updateJob ) );
+			->willReturn( $updateJob );
 
 		$instance = new UpdateTask(
 			$this->jobFactory
 		);
 
-		$instance->process( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ]);
+		$instance->process( [ 'subject' => 'Foo#0##', 'ref' => [ 'Bar' ] ] );
 	}
 
 }

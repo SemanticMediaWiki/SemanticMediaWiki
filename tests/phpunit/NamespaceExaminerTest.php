@@ -8,17 +8,16 @@ use SMW\NamespaceExaminer;
  * @covers \SMW\NamespaceExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
  */
-class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
+class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			NamespaceExaminer::class,
 			new NamespaceExaminer( [] )
@@ -26,14 +25,13 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInNamespace_Title() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );
@@ -50,14 +48,13 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInNamespace_DIWikiPage() {
-
 		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$subject->expects( $this->any() )
 			->method( 'getNamespace' )
-			->will( $this->returnValue( NS_MAIN ) );
+			->willReturn( NS_MAIN );
 
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );
@@ -74,7 +71,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsSemanticEnabled() {
-
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 		$instance->setValidNamespaces( [ NS_MAIN ] );
 
@@ -90,7 +86,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testNoNumberNamespaceThrowsException() {
-
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->expectException( 'InvalidArgumentException' );
@@ -101,7 +96,6 @@ class NamespaceExaminerTest extends \PHPUnit_Framework_TestCase {
 	 * Bug 51435; return false instead of an Exception
 	 */
 	public function testNoValidNamespaceException() {
-
 		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
 
 		$this->assertFalse(

@@ -8,15 +8,14 @@ use SMW\Utils\HmacSerializer;
  * @covers \SMW\Utils\HmacSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
  */
-class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
+class HmacSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testEncodeWithDifferentKey() {
-
 		$instance = new HmacSerializer();
 
 		$data = [ 'Foo' ];
@@ -28,14 +27,12 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUDecodeUsingAnObject() {
-
 		$this->assertFalse(
 			HmacSerializer::decode( $this )
 		);
 	}
 
 	public function testRoundtripEncodeDecode() {
-
 		$instance = new HmacSerializer();
 
 		$data = [ 'Foo' ];
@@ -47,7 +44,6 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundtripEncodeDecodeWithDifferentKey() {
-
 		$instance = new HmacSerializer();
 
 		$data = [ 'Foo' ];
@@ -68,7 +64,6 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeralizeWithDifferentKey() {
-
 		$data = [ 'Foo' ];
 
 		$this->assertNotSame(
@@ -78,14 +73,12 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUnseralizeUsingAnObject() {
-
 		$this->assertFalse(
 			HmacSerializer::unserialize( $this )
 		);
 	}
 
 	public function testRoundtripSerializeDeserialize() {
-
 		$instance = new HmacSerializer();
 
 		$data = [ 'Foo' ];
@@ -97,7 +90,6 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundtripCompressUncompress() {
-
 		$instance = new HmacSerializer();
 
 		$data = [ 'Foo' ];
@@ -109,7 +101,6 @@ class HmacSerializerTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testRoundtripSerializeDeserializeWithDifferentKey() {
-
 		$instance = new HmacSerializer();
 
 		$data = [ 'Foo' ];

@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\Tests\PHPUnitCompat;
@@ -12,12 +12,12 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\EntityStore\PrefetchItemLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
  */
-class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
+class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
@@ -26,8 +26,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	private $propertySubjectsLookup;
 	private $requestOptions;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -46,7 +45,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			PrefetchItemLookup::class,
 			new PrefetchItemLookup( $this->store, $this->semanticDataLookup, $this->propertySubjectsLookup )
@@ -54,7 +52,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues() {
-
 		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
@@ -75,7 +72,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$sequenceMap->expects( $this->atLeastOnce() )
 			->method( 'hasSequenceMap' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -83,7 +80,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$entityIdManager->expects( $this->atLeastOnce() )
 			->method( 'getSequenceMap' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$diHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
 			->disableOriginalConstructor()
@@ -91,7 +88,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$diHandler->expects( $this->atLeastOnce() )
 			->method( 'newFromDBKeys' )
-			->will( $this->onConsecutiveCalls( $expected[0], $expected[1], $expected[2] ) );
+			->willReturnOnConsecutiveCalls( $expected[0], $expected[1], $expected[2] );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -99,23 +96,23 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'smw_foo' => $propertyTableDef ] ) );
+			->willReturn( [ 'smw_foo' => $propertyTableDef ] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getDataItemHandlerForDIType' )
-			->will( $this->returnValue( $diHandler ) );
+			->willReturn( $diHandler );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'smw_foo' ) );
+			->willReturn( 'smw_foo' );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $entityIdManager ) );
+			->willReturn( $entityIdManager );
 
 		$this->semanticDataLookup->expects( $this->atLeastOnce() )
 			->method( 'prefetchDataFromTable' )
-			->will( $this->returnValue( [ 42 => [ 'Bar_1#0##', 'Bar_2#0##', 'Bar_3#0##' ] ] ) );
+			->willReturn( [ 42 => [ 'Bar_1#0##', 'Bar_2#0##', 'Bar_3#0##' ] ] );
 
 		$instance = new PrefetchItemLookup(
 			$this->store,
@@ -139,7 +136,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_InvertedProperty() {
-
 		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
@@ -150,7 +146,7 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -158,15 +154,15 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'smw_foo' => $propertyTableDef ] ) );
+			->willReturn( [ 'smw_foo' => $propertyTableDef ] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'smw_foo' ) );
+			->willReturn( 'smw_foo' );
 
 		$this->propertySubjectsLookup->expects( $this->atLeastOnce() )
 			->method( 'prefetchFromTable' )
-			->will( $this->returnValue( [ 42 => [ 'Bar#0##' ] ] ) );
+			->willReturn( [ 42 => [ 'Bar#0##' ] ] );
 
 		$instance = new PrefetchItemLookup(
 			$this->store,
@@ -185,7 +181,6 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testGetPropertyValues_InvertedProperty_HashIndex() {
-
 		$subjects = [
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
@@ -196,12 +191,12 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getDataItemById' )
-			->with( $this->equalTo( 42 ) )
-			->will( $this->returnValue( DIWikiPage::newFromText( 'ABC' ) ) );
+			->with( 42 )
+			->willReturn( DIWikiPage::newFromText( 'ABC' ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
-			->will( $this->returnValue( $idTable ) );
+			->willReturn( $idTable );
 
 		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
@@ -209,15 +204,15 @@ class PrefetchItemLookupTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getPropertyTables' )
-			->will( $this->returnValue( [ 'smw_foo' => $propertyTableDef ] ) );
+			->willReturn( [ 'smw_foo' => $propertyTableDef ] );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'findPropertyTableID' )
-			->will( $this->returnValue( 'smw_foo' ) );
+			->willReturn( 'smw_foo' );
 
 		$this->propertySubjectsLookup->expects( $this->atLeastOnce() )
 			->method( 'prefetchFromTable' )
-			->will( $this->returnValue( [ 42 => [ 'Bar#0##' ] ] ) );
+			->willReturn( [ 42 => [ 'Bar#0##' ] ] );
 
 		$instance = new PrefetchItemLookup(
 			$this->store,

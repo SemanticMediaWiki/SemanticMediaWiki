@@ -8,16 +8,16 @@ use SMW\SPARQLStore\SPARQLStoreFactory;
  * @covers \SMW\SPARQLStore\SPARQLStoreFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
  */
-class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
+class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $store;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
@@ -30,11 +30,10 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
-			->will( $this->returnValue( $repositoryConnection ) );
+			->willReturn( $repositoryConnection );
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\SPARQLStoreFactory',
 			new SPARQLStoreFactory( $this->store )
@@ -42,17 +41,15 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructBaseStore() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMWSQLStore3',
-			$instance->getBaseStore( 'SMWSQLStore3' )
+			'\SMW\SQLStore\SQLStore',
+			$instance->getBaseStore( '\SMW\SQLStore\SQLStore' )
 		);
 	}
 
 	public function testCanConstructMasterQueryEngine() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -62,7 +59,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructConnectionManager() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -72,7 +68,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructRepositoryRedirectLookup() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
@@ -82,7 +77,6 @@ class SPARQLStoreFactoryTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstructReplicationDataTruncator() {
-
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(

@@ -2,23 +2,27 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
+use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
-use SMW\Query\PrintRequest as PrintRequest;
+use SMW\Query\PrintRequest;
+use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
+use SMWDataItem as DataItem;
 use SMWQuery as Query;
-use SMWRequestOptions as RequestOptions;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author Denny Vrandecic
  * @author Daniel Herzig
  * @author Markus Kroetzsch
  * @author mwjames
+ * @reviewer thomas-topway-it for KM-A
  */
 class QueryResultLookup {
 
@@ -42,7 +46,6 @@ class QueryResultLookup {
 	 * @return array
 	 */
 	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( $pageRequestOptions->limit + 1 );
 		$requestOptions->setOffset( $pageRequestOptions->offset );
@@ -82,7 +85,6 @@ class QueryResultLookup {
 	 * first being the entity, and the second the value
 	 */
 	public function doQuery( PageRequestOptions $pageRequestOptions ) {
-
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = $pageRequestOptions->limit + 1;
 		$requestOptions->offset = $pageRequestOptions->offset;
@@ -114,14 +116,13 @@ class QueryResultLookup {
 	 * one.
 	 *
 	 * @param QueryOptions $pageRequestOptions
-	 * @param integer $count How many entities have the exact same value on the property?
-	 * @param integer $greater Should the values be bigger? Set false for smaller values.
+	 * @param int $count How many entities have the exact same value on the property?
+	 * @param int $greater Should the values be bigger? Set false for smaller values.
 	 *
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the
 	 * first being the entity, and the second the value
 	 */
 	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ) {
-
 		$comparator = $greater ? SMW_CMP_GRTR : SMW_CMP_LESS;
 		$sortOrder = $greater ? 'ASC' : 'DESC';
 
@@ -208,13 +209,50 @@ class QueryResultLookup {
 		);
 	}
 
-	private function doQueryForExactValue( PageRequestOptions $pageRequestOptions, RequestOptions $requestOptions ) {
+	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ) {
+		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$dataItem,
+			$DIProperty
+		);
+		$properties = $multiValue->getPropertyDataItems( $DIProperty );
 
+		// Property for the reference value
+		$DIPropertyReferenceValue = $properties[0];
+
+		// retrieve the dataitem for this property
+		// as is done in the method below (through
+		// pageRequestOptions). This avoids to
+		// create the correct dataItem manually
+		// despite some of the parameters below could
+		// be unnecessary
+		$requestOptions = [
+			'limit'    => $pageRequestOptions->limit,
+			'offset'   => $pageRequestOptions->offset,
+			'property' => $DIPropertyReferenceValue->getCanonicalLabel(),
+			'value'    => $pageRequestOptions->valueString,
+			'nearbySearchForType' => $pageRequestOptions->nearbySearch
+		];
+		$pageRequestOptions = new PageRequestOptions( '', $requestOptions );
+		$pageRequestOptions->initialize();
+
+		return [ $DIPropertyReferenceValue, $pageRequestOptions->value->getDataItem() ];
+	}
+
+	private function doQueryForExactValue( PageRequestOptions $pageRequestOptions, RequestOptions $requestOptions ) {
 		$pageRequestOptions->value->setOption( 'is.search', true );
 
+		$DIProperty = $pageRequestOptions->property->getDataItem();
+		$dataItem = $pageRequestOptions->value->getDataItem();
+
+		// override $DIProperty for reference datatype
+		// with the first multiValue property
+		if ( DataTypeRegistry::getInstance()->isRecordType( $DIProperty->findPropertyTypeID() ) ) {
+			[ $DIProperty, $dataItem ] = $this->destructureDIContainer( $DIProperty, $dataItem, $pageRequestOptions );
+		}
+
 		return $this->store->getPropertySubjects(
-			$pageRequestOptions->property->getDataItem(),
-			$pageRequestOptions->value->getDataItem(),
+			$DIProperty,
+			$dataItem,
 			$requestOptions
 		);
 	}

@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -13,30 +14,31 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Tests\PHPUnitCompat;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
+class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	private $stringBuilder;
 	private $descriptionInterpreterFactory;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
@@ -44,7 +46,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			ConditionBuilder::class,
 			new ConditionBuilder( $this->descriptionInterpreterFactory )
@@ -52,7 +53,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSingleProperty() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -70,9 +70,9 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -82,7 +82,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQuerySomeProperty_ForKnownSortPropertyKey() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -102,11 +101,11 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
-			->addString( '{ ?v1 swivt:wikiPageSortKey ?v1sk .'  )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( '{ ?v1 swivt:wikiPageSortKey ?v1sk .' )->addNewLine()
 			->addString( '}' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -116,7 +115,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQuerySomeProperty_ForUnknownSortPropertyKey() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -136,12 +134,12 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( '?result property:Bar ?v2 .'  )->addNewLine()
-			->addString( '{ ?v2 swivt:wikiPageSortKey ?v2sk .'  )->addNewLine()
+			->addString( '?result property:Bar ?v2 .' )->addNewLine()
+			->addString( '{ ?v2 swivt:wikiPageSortKey ?v2sk .' )->addNewLine()
 			->addString( '}' )->addNewLine()
-			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -151,7 +149,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQuerySomeProperty_ForEmptySortPropertyKey() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -171,10 +168,10 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( '?result swivt:wikiPageSortKey ?resultsk .'  )->addNewLine()
-			->addString( '?result property:Foo ?v1 .'  )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -184,7 +181,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQuerySomeProperty_OnInvalidSortKeyThrowsException() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -200,7 +196,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSinglePropertyWithValue() {
-
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
 			new DIProperty( 'Foo' )
@@ -217,8 +212,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedConditionString = $this->stringBuilder
 			->addString( '"SomePropertyValue" swivt:page ?url .' )->addNewLine()
-			->addString( ' OPTIONAL { "SomePropertyValue" swivt:redirectsTo ?o1 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o1 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { "SomePropertyValue" swivt:redirectsTo ?o1 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o1 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -228,7 +223,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSomePropertyWithValue() {
-
 		$property = new DIProperty( 'Foo' );
 
 		$description = new SomeProperty(
@@ -246,9 +240,9 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		);
 
 		$expectedConditionString = $this->stringBuilder
-			->addString( '?result property:Foo "SomePropertyBlobValue" .'  )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( '?result property:Foo "SomePropertyBlobValue" .' )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -258,7 +252,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSinglePageTypePropertyWithValueComparator() {
-
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -280,8 +273,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
 			->addString( 'FILTER( ?v1sk <= "SomePropertyPageValue" )' )->addNewLine()
 			->addString( '?v1 swivt:wikiPageSortKey ?v1sk .' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -291,7 +284,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSingleBlobTypePropertyWithNotLikeComparator() {
-
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
@@ -312,8 +304,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Foo ?v1 .' )->addNewLine()
 			->addString( 'FILTER( !regex( ?v1, "^SomePropertyBlobValue$", "s") )' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -323,11 +315,10 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSingleCategory() {
-
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY, '' );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription(
@@ -345,8 +336,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedConditionString = $this->stringBuilder
 			->addString( "{ ?result rdf:type $categoryName . }" )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o1 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o1 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o1 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o1 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -356,7 +347,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForSingleNamespace() {
-
 		$description = new NamespaceDescription( NS_HELP );
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -372,8 +362,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedConditionString = $this->stringBuilder
 			->addString( '{ ?result swivt:wikiNamespace "12"^^xsd:integer . }' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o1 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o1 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o1 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o1 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -383,7 +373,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForPropertyConjunction() {
-
 		$conjunction = new Conjunction( [
 			new SomeProperty(
 				new DIProperty( 'Foo' ), new ValueDescription( new DIBlob( 'SomePropertyValue' ) ) ),
@@ -403,8 +392,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Foo "SomePropertyValue" .' )->addNewLine()
 			->addString( '?result property:Bar ?v2 .' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -414,7 +403,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForPropertyConjunctionWithGreaterLessEqualFilter() {
-
 		$conjunction = new Conjunction( [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
@@ -438,8 +426,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( 'FILTER( ?v1 >= "1"^^xsd:double )' )->addNewLine()
 			->addString( '?result property:Bar ?v2 .' )->addNewLine()
 			->addString( 'FILTER( ?v2 <= "9"^^xsd:double )' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -449,7 +437,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForPropertyDisjunction() {
-
 		$conjunction = new Disjunction( [
 			new SomeProperty( new DIProperty( 'Foo' ), new ThingDescription() ),
 			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
@@ -470,8 +457,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '} UNION {' )->addNewLine()
 			->addString( '?result property:Bar ?v2 .' )->addNewLine()
 			->addString( '}' )
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 
 			->getString();
 
@@ -482,14 +469,13 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testQueryForPropertyDisjunctionWithLikeNotLikeFilter() {
-
 		$conjunction = new Disjunction( [
 			new SomeProperty(
 				new DIProperty( 'Foo' ),
 				new ValueDescription( new DIBlob( "AA*" ), null, SMW_CMP_LIKE ) ),
 			new SomeProperty(
 				new DIProperty( 'Bar' ),
-				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE )  )
+				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE ) )
 		] );
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -509,8 +495,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result property:Bar ?v2 .' )->addNewLine()
 			->addString( 'FILTER( !regex( ?v2, "^BB.$", "s") )' )->addNewLine()
 			->addString( '}' )
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -520,7 +506,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSingleDatePropertyWithGreaterEqualConstraint() {
-
 		$property = new DIProperty( 'SomeDateProperty' );
 		$property->setPropertyTypeId( '_dat' );
 
@@ -541,8 +526,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:SomeDateProperty-23aux ?v1 .' )->addNewLine()
 			->addString( 'FILTER( ?v1 >= "2440587.5423611"^^xsd:double )' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -552,7 +537,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSingleSubobjectBuildAsAuxiliaryProperty() {
-
 		$property = new DIProperty( '_SOBJ' );
 
 		$description = new SomeProperty(
@@ -571,8 +555,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:Has_subobject ?v1 .' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -585,7 +569,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * '[[HasSomeProperty::Foo||Bar]]'
 	 */
 	public function testSubqueryDisjunction() {
-
 		$property = new DIProperty( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
@@ -611,8 +594,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?result property:HasSomeProperty ?v1 .' )->addNewLine()
 			->addString( 'FILTER( ?v1 = wiki:Foo || ?v1 = wiki:Bar )' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -625,14 +608,13 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * '[[Born in::<q>[[Category:City]] [[Located in::Outback]]</q>]]'
 	 */
 	public function testNestedPropertyConjunction() {
-
 		$property = DIProperty::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$category = new DIWikiPage( 'City', NS_CATEGORY );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$conjunction = new Conjunction( [
@@ -666,8 +648,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( "{ ?v1 rdf:type $categoryName . }" )->addNewLine()
 			->addString( '?v1 property:Located_in wiki:Outback .' )->addNewLine()
 			->addString( '}' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -680,7 +662,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	 * '[[LocatedIn.MemberOf::Wonderland]]'
 	 */
 	public function testPropertyChain() {
-
 		$description = new SomeProperty(
 			DIProperty::newFromUserLabel( 'LocatedIn' ),
 			new SomeProperty(
@@ -705,8 +686,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result property:LocatedIn ?v1 .' )->addNewLine()
 			->addString( '{ ?v1 property:MemberOf wiki:Wonderland .' )->addNewLine()
 			->addString( '}' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -716,7 +697,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOrderByData_ForNonWikiPageType() {
-
 		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -731,7 +711,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testAddOrderByData_ForWikiPageType() {
-
 		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
@@ -755,17 +734,15 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testCanUseQFeature() {
-
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
-		$this->assertInternalType(
-			'boolean',
+		$this->assertIsBool(
+
 			$instance->isSetFlag( 'Foo' )
 		);
 	}
 
 	public function testTryToFindRedirectVariableForNonWpgDataItem() {
-
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$this->assertNull(
@@ -774,14 +751,13 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtendConditionUsingPropertyPathForWpgPropertyValueRedirect() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
@@ -790,7 +766,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$diWikiPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -807,13 +783,13 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->at( 0 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
-			->will( $this->returnValue( false ) );
+			->with( SMW_SPARQL_QF_NOCASE )
+			->willReturn( false );
 
 		$instance->expects( $this->at( 1 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
-			->will( $this->returnValue( true ) );
+			->with( SMW_SPARQL_QF_REDI )
+			->willReturn( true );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -825,8 +801,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( '?r2 ^swivt:redirectsTo wiki:Bar .' )->addNewLine()
 			->addString( '?result property:Foo ?r2 .' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o3 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o3 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o3 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -836,14 +812,13 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testExtendConditionUsingPropertyPathForWpgValueRedirect() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$title->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->will( $this->returnValue( true ) );
+			->willReturn( true );
 
 		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
@@ -852,7 +827,7 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$diWikiPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->will( $this->returnValue( $title ) );
+			->willReturn( $title );
 
 		$description = new ValueDescription( $diWikiPage, null );
 
@@ -863,13 +838,13 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 
 		$instance->expects( $this->at( 0 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_NOCASE ) )
-			->will( $this->returnValue( false ) );
+			->with( SMW_SPARQL_QF_NOCASE )
+			->willReturn( false );
 
 		$instance->expects( $this->at( 1 ) )
 			->method( 'isSetFlag' )
-			->with( $this->equalTo( SMW_SPARQL_QF_REDI ) )
-			->will( $this->returnValue( true ) );
+			->with( SMW_SPARQL_QF_REDI )
+			->willReturn( true );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -882,8 +857,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
 			->addString( '?r1 ^swivt:redirectsTo wiki:Bar .' )->addNewLine()
 			->addString( 'FILTER( ?result = ?r1 )' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(
@@ -893,7 +868,6 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSingletonLikeConditionForSolitaryWpgValue() {
-
 		$description = new ValueDescription(
 			new DIWikiPage( "Foo*", NS_MAIN ), null, SMW_CMP_LIKE
 		);
@@ -910,8 +884,8 @@ class ConditionBuilderTest extends \PHPUnit_Framework_TestCase {
 		$expectedConditionString = $this->stringBuilder
 			->addString( 'FILTER( regex( ?v1, "^Foo.*$", "s") )' )->addNewLine()
 			->addString( '?result swivt:wikiPageSortKey ?v1 .' )->addNewLine()
-			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .'  )->addNewLine()
-			->addString( ' FILTER ( !bound( ?o2 ) ) .'  )->addNewLine()
+			->addString( ' OPTIONAL { ?result swivt:redirectsTo ?o2 } .' )->addNewLine()
+			->addString( ' FILTER ( !bound( ?o2 ) ) .' )->addNewLine()
 			->getString();
 
 		$this->assertEquals(

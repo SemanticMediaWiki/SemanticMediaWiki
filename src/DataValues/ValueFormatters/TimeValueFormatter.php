@@ -4,13 +4,13 @@ namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
 use SMW\DataValues\Time\IntlTimeFormatter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDataValue as DataValue;
 use SMWDITime as DITime;
 use SMWTimeValue as TimeValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -35,7 +35,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * {@inheritDoc}
 	 */
 	public function format( $type, $linker = null ) {
-
 		if ( !$this->dataValue instanceof TimeValue ) {
 			throw new RuntimeException( "The formatter is missing a valid TimeValue object" );
 		}
@@ -70,7 +69,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @since 2.4
 	 *
-	 * @param boolean $mindefault determining whether values below the
+	 * @param bool $mindefault determining whether values below the
 	 * precision of our input should be completed with minimal or maximal
 	 * conceivable values
 	 *
@@ -162,7 +161,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	public function getMediaWikiDate() {
-
 		/**
 		 * @var DITime $dataItem
 		 */
@@ -221,7 +219,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	public function getCaptionFromDataItem( DITime $dataItem ) {
-
 		// If the language code is empty then the content language code is used
 		$lang = Localizer::getInstance()->getLang(
 			Localizer::getInstance()->getContentLanguage()
@@ -284,8 +281,8 @@ class TimeValueFormatter extends DataValueFormatter {
 		}
 
 		return sprintf( "%02d", $dataItem->getHour() ) . ':' .
-		       sprintf( "%02d", $dataItem->getMinute() ) . ':' .
-		       sprintf( "%02d", $dataItem->getSecond() );
+			   sprintf( "%02d", $dataItem->getMinute() ) . ':' .
+			   sprintf( "%02d", $dataItem->getSecond() );
 	}
 
 	/**
@@ -295,8 +292,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
-
+	public function getCaptionFromFreeFormat( ?DITime $dataItem = null ) {
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
@@ -331,8 +327,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getLocalizedFormat( DITime $dataItem = null ) {
-
+	public function getLocalizedFormat( ?DITime $dataItem = null ) {
 		if ( $dataItem === null ) {
 			return '';
 		}
@@ -390,7 +385,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	protected function getPreferredCaption() {
-
 		/**
 		 * @var DITime $dataItem
 		 */
@@ -438,7 +432,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	private function hintTimeCorrection( $hasTimeCorrection ) {
-
 		if ( $hasTimeCorrection ) {
 			return '&nbsp;' . \Html::rawElement( 'sup', [ 'title' => 'ISO: ' . $this->getISO8601Date() ], 'ᴸ' );
 		}
@@ -447,7 +440,6 @@ class TimeValueFormatter extends DataValueFormatter {
 	}
 
 	private function hintCalendarModel( DITime $dataItem ) {
-
 		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== DITime::CM_GREGORIAN ) {
 			return ' ' . \Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
 		}

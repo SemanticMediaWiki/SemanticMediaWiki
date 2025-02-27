@@ -1,7 +1,12 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"Ukhant Erdemt",
+			"Алия"
+		]
 	},
+	"smw-categories": "Әңгллмүд",
+	"browse": "Халхсиг үзх",
 	"smw-livepreview-loading": "Белднә...",
 	"smw-listingcontinuesabbrev": "(залһан)"
 }

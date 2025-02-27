@@ -2,7 +2,7 @@
 
 To use the `ElasticStore` (hereby Elasticsearch) as a drop-in replacement for the existing `SQLStore` based `QueryEngine` the following settings require some changes:
 
-- Set `$GLOBALS['smwgDefaultStore'] = 'SMWElasticStore';`
+- Set `$GLOBALS['smwgDefaultStore'] = 'SMW\Elastic\ElasticStore';`
 - Set `$GLOBALS['smwgElasticsearchEndpoints'] = [ ... ];` (see the [documentation][es:conf:hosts] for how to maintain inline or extended host parameters as it takes the same attributes as outlined in the official documentation, or see a [configuration example][conf:example])
 - Run `php setupStore.php` or `php update.php`
 - Rebuild the index using `php rebuildElasticIndex.php`

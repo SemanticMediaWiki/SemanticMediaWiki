@@ -8,24 +8,22 @@ use SMW\Elastic\Indexer\Bulk;
  * @covers \SMW\Elastic\Indexer\Bulk
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class BulkTest extends \PHPUnit_Framework_TestCase {
+class BulkTest extends \PHPUnit\Framework\TestCase {
 
 	private $client;
 
-	protected function setUp() : void {
-
+	protected function setUp(): void {
 		$this->client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-
 		$this->assertInstanceOf(
 			Bulk::class,
 			new Bulk( $this->client )
@@ -33,7 +31,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testJsonSerialize() {
-
 		$instance = new Bulk( $this->client );
 
 		$this->assertEquals(
@@ -43,7 +40,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIsEmpty() {
-
 		$instance = new Bulk( $this->client );
 		$instance->clear();
 
@@ -53,15 +49,14 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testDelete() {
-
 		$expected = [
-			'body' => [ [ 'delete' => [ '_id' => 42, '_head_foo' => '_head_bar'] ] ]
+			'body' => [ [ 'delete' => [ '_id' => 42, '_head_foo' => '_head_bar' ] ] ]
 		];
 
 		$this->client->expects( $this->once() )
 			->method( 'bulk' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( [ 'response' ] ) );
+			->with( $expected )
+			->willReturn( [ 'response' ] );
 
 		$instance = new Bulk( $this->client );
 
@@ -85,15 +80,14 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIndex() {
-
 		$expected = [
 			'body' => [ [ 'index' => [ '_id' => 42, '_head_foo' => '_head_bar' ] ], [ '_source' ] ]
 		];
 
 		$this->client->expects( $this->once() )
 			->method( 'bulk' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( [ 'response' ] ) );
+			->with( $expected )
+			->willReturn( [ 'response' ] );
 
 		$instance = new Bulk( $this->client );
 
@@ -112,7 +106,6 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testUpsert() {
-
 		$expected = [
 			'body' => [
 				[ 'update' => [ '_id' => 42, '_head_foo' => '_head_bar' ] ],
@@ -122,8 +115,8 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$this->client->expects( $this->once() )
 			->method( 'bulk' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( [ 'response' ] ) );
+			->with( $expected )
+			->willReturn( [ 'response' ] );
 
 		$instance = new Bulk( $this->client );
 
@@ -142,18 +135,17 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfuseDocument_Insert() {
-
 		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$subDocument->expects( $this->once() )
 			->method( 'getPriorityDeleteList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$subDocument->expects( $this->once() )
 			->method( 'getSubDocuments' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
@@ -161,24 +153,24 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$document->expects( $this->once() )
 			->method( 'getId' )
-			->will( $this->returnValue( 42 ) );
+			->willReturn( 42 );
 
 		$document->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( [ '_document_data' => 'abc' ] ) );
+			->willReturn( [ '_document_data' => 'abc' ] );
 
 		$document->expects( $this->once() )
 			->method( 'getPriorityDeleteList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$document->expects( $this->once() )
 			->method( 'getSubDocuments' )
-			->will( $this->returnValue( [ $subDocument ] ) );
+			->willReturn( [ $subDocument ] );
 
 		$document->expects( $this->any() )
 			->method( 'isType' )
-			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ]  )
-			->will( $this->onConsecutiveCalls( false, false, true ) );
+			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ] )
+			->willReturnOnConsecutiveCalls( false, false, true );
 
 		$expected = [
 			'body' => [
@@ -189,8 +181,8 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$this->client->expects( $this->once() )
 			->method( 'bulk' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( [ 'response' ] ) );
+			->with( $expected )
+			->willReturn( [ 'response' ] );
 
 		$instance = new Bulk( $this->client );
 
@@ -201,18 +193,17 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfuseDocument_Delete_Index() {
-
 		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$subDocument->expects( $this->once() )
 			->method( 'getPriorityDeleteList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$subDocument->expects( $this->once() )
 			->method( 'getSubDocuments' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
@@ -220,24 +211,24 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$document->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42, 1001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001 );
 
 		$document->expects( $this->once() )
 			->method( 'getData' )
-			->will( $this->returnValue( [ '_document_data' => 'abc' ] ) );
+			->willReturn( [ '_document_data' => 'abc' ] );
 
 		$document->expects( $this->once() )
 			->method( 'getPriorityDeleteList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$document->expects( $this->once() )
 			->method( 'getSubDocuments' )
-			->will( $this->returnValue( [ $subDocument ] ) );
+			->willReturn( [ $subDocument ] );
 
 		$document->expects( $this->any() )
 			->method( 'isType' )
-			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ]  )
-			->will( $this->onConsecutiveCalls( true, false, true ) );
+			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ] )
+			->willReturnOnConsecutiveCalls( true, false, true );
 
 		$expected = [
 			'body' => [
@@ -249,8 +240,8 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$this->client->expects( $this->once() )
 			->method( 'bulk' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( [ 'response' ] ) );
+			->with( $expected )
+			->willReturn( [ 'response' ] );
 
 		$instance = new Bulk( $this->client );
 
@@ -261,18 +252,17 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInfuseDocument_Delete_Upsert_Index() {
-
 		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$subDocument->expects( $this->once() )
 			->method( 'getPriorityDeleteList' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$subDocument->expects( $this->once() )
 			->method( 'getSubDocuments' )
-			->will( $this->returnValue( [] ) );
+			->willReturn( [] );
 
 		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
 			->disableOriginalConstructor()
@@ -280,24 +270,24 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$document->expects( $this->any() )
 			->method( 'getId' )
-			->will( $this->onConsecutiveCalls( 42, 1001, 9001 ) );
+			->willReturnOnConsecutiveCalls( 42, 1001, 9001 );
 
 		$document->expects( $this->any() )
 			->method( 'getData' )
-			->will( $this->onConsecutiveCalls( [ '_document_data_1' => '_1' ], [ '_document_data_2' => '_2' ] ) );
+			->willReturnOnConsecutiveCalls( [ '_document_data_1' => '_1' ], [ '_document_data_2' => '_2' ] );
 
 		$document->expects( $this->once() )
 			->method( 'getPriorityDeleteList' )
-			->will( $this->returnValue( [ 7001, 7002 ] ) );
+			->willReturn( [ 7001, 7002 ] );
 
 		$document->expects( $this->once() )
 			->method( 'getSubDocuments' )
-			->will( $this->returnValue( [ $subDocument ] ) );
+			->willReturn( [ $subDocument ] );
 
 		$document->expects( $this->any() )
 			->method( 'isType' )
-			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ]  )
-			->will( $this->onConsecutiveCalls( true, true, true ) );
+			->withConsecutive( [ 'type/delete' ], [ 'type/upsert' ], [ 'type/insert' ] )
+			->willReturnOnConsecutiveCalls( true, true, true );
 
 		$expected = [
 			'body' => [
@@ -313,8 +303,8 @@ class BulkTest extends \PHPUnit_Framework_TestCase {
 
 		$this->client->expects( $this->once() )
 			->method( 'bulk' )
-			->with( $this->equalTo( $expected ) )
-			->will( $this->returnValue( [ 'response' ] ) );
+			->with( $expected )
+			->willReturn( [ 'response' ] );
 
 		$instance = new Bulk( $this->client );
 

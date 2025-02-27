@@ -3,24 +3,22 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\SeekableIteratorTrait;
-use SMW\Iterators\DotSeekableIteratorTrait;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\SeekableIteratorTrait
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
  */
-class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
+class SeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
 	public function testIterate_Indexed() {
-
 		$container = [
 			1, 42, 1001
 		];
@@ -50,7 +48,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate_Associative() {
-
 		$container = [
 			'foo' => 1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -80,7 +77,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testIterate_Mixed() {
-
 		$container = [
 			1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -110,7 +106,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_Indexed() {
-
 		$container = [
 			1, 42, 1001
 		];
@@ -128,7 +123,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_Associative() {
-
 		$container = [
 			'foo' => 1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -146,7 +140,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testSeek_Mixed() {
-
 		$container = [
 			1, 'bar' => 42, 'foobar' => 1001
 		];
@@ -164,7 +157,6 @@ class SeekableIteratorTraitTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testInvalidSeekPositionThrowsException() {
-
 		$instance = $this->newSeekableIterator();
 
 		$this->expectException( 'OutOfBoundsException' );

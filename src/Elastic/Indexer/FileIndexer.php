@@ -5,18 +5,13 @@ namespace SMW\Elastic\Indexer;
 use File;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use RuntimeException;
-use SMW\EntityCache;
 use SMW\DIWikiPage;
-use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Indexer\Indexer;
-use SMW\Elastic\QueryEngine\FieldMapper;
-use SMW\Store;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMW\MediaWiki\RevisionGuardAwareTrait;
-use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
+use SMW\Elastic\Indexer\Attachment\FileHandler;
+use SMW\EntityCache;
+use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\Store;
 use Title;
 
 /**
@@ -25,7 +20,7 @@ use Title;
  * outside of a normal wiki content (i.e. the indexed data is only stored in
  * Elasticsearch).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -64,19 +59,19 @@ class FileIndexer {
 	private $origin = '';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $sha1Check = true;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $versions = [];
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param Indexer $indexer
+	 * @param Store $store
 	 * @param EntityCache $entityCache
 	 * @param FileHandler $fileHandler
 	 * @param FileAttachment $fileAttachment
@@ -100,7 +95,7 @@ class FileIndexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param [] $versions
+	 * @param $versions
 	 */
 	public function setVersions( array $versions ) {
 		$this->versions = $versions;
@@ -114,10 +109,7 @@ class FileIndexer {
 	 * @return string
 	 */
 	public function getIndexName( $type ) {
-
-		$index = $this->store->getConnection( 'elastic' )->getIndexNameByType(
-			$type
-		);
+		$index = $this->store->getConnection( 'elastic' )->getIndexName( $type );
 
 		// If the rebuilder has set a specific version, use it to avoid writing to
 		// the alias of the index when running a rebuild.
@@ -168,8 +160,7 @@ class FileIndexer {
 	 * @param DIWikiPage $dataItem
 	 * @param File|null $file
 	 */
-	public function index( DIWikiPage $dataItem, File $file = null ) {
-
+	public function index( DIWikiPage $dataItem, ?File $file = null ) {
 		$title = $dataItem->getTitle();
 
 		// Allow any third-party extension to modify the file used as base for
@@ -217,7 +208,7 @@ class FileIndexer {
 		];
 
 		$connection = $this->store->getConnection( 'elastic' );
-		$connection->ingest()->putPipeline( $params );
+		$connection->ingestPutPipeline( $params );
 
 		if ( $file === null ) {
 			$file = $this->findFile( $title );
@@ -238,7 +229,6 @@ class FileIndexer {
 
 		$params = [
 			'index' => $index,
-			'type'  => ElasticClient::TYPE_DATA,
 			'id'    => $id,
 		];
 

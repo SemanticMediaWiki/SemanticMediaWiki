@@ -3,21 +3,22 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
+class MediaWikiServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 
 	private $callbackContainerFactory;
 	private $servicesFileDir;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->callbackContainerFactory = new CallbackContainerFactory();
@@ -28,7 +29,6 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider servicesProvider
 	 */
 	public function testCanConstruct( $service, $parameters, $expected ) {
-
 		array_unshift( $parameters, $service );
 
 		$containerBuilder = $this->callbackContainerFactory->newCallbackContainerBuilder();
@@ -41,10 +41,12 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function servicesProvider() {
-
 		$title = $this->getMockBuilder( '\Title' )
 			->disableOriginalConstructor()
 			->getMock();
+		$title->expects( $this->any() )
+			->method( 'canExist' )
+			->willReturn( true );
 
 		$provider[] = [
 			'WikiPage',
@@ -55,7 +57,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit_Framework_TestCase {
 		$provider[] = [
 			'DBLoadBalancer',
 			[],
-			'\LoadBalancer'
+			ILoadBalancer::class
 		];
 
 /*

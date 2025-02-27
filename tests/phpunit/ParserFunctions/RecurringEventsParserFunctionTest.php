@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\ParserFunctions;
 
+use MediaWiki\MediaWikiServices;
 use ParserOutput;
-use ReflectionClass;
 use SMW\MessageFormatter;
 use SMW\ParserData;
-use SMW\RecurringEvents;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\ParserParameterProcessor;
+use SMW\RecurringEvents;
 use SMW\Subobject;
 use Title;
 
@@ -16,15 +16,14 @@ use Title;
  * @covers \SMW\ParserFunctions\RecurringEventsParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
  */
-class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
+class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-
 		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -50,17 +49,18 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider recurringEventsDataProvider
 	 */
 	public function testParse( array $params, array $expected ) {
-
 		$recurringEvents = new RecurringEvents();
 		$recurringEvents->setDefaultNumRecurringEvents( 100 );
 		$recurringEvents->setMaxNumRecurringEvents( 100 );
 
 		$title = Title::newFromText( __METHOD__ );
 
+		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+
 		$instance = new RecurringEventsParserFunction(
 			new ParserData( $title, new ParserOutput() ),
 			new Subobject( $title ),
-			new MessageFormatter( \Language::factory( 'en' ) ),
+			new MessageFormatter( $languageFactory->getLanguage( 'en' ) ),
 			$recurringEvents
 		);
 
@@ -77,7 +77,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function recurringEventsDataProvider() {
-
 		$provider = [];
 
 		// #0
@@ -182,7 +181,6 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 				'parameters' => []
 			]
 		];
-
 
 		// #3
 		// {{#set_recurring_event:property=Has date
@@ -322,7 +320,7 @@ class RecurringEventsParserFunctionTest extends \PHPUnit_Framework_TestCase {
 		// |include=March 16, 2010;March 23, 2010
 		// |exclude=January 18, 2010;January 25, 2010
 		// }}
-		$provider[]  = [
+		$provider[] = [
 			[
 				'_FooBar',
 				'property=Has date',

@@ -9,15 +9,14 @@ use SMW\MediaWiki\LocalTime;
  * @covers \SMW\MediaWiki\LocalTime
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
  */
-class LocalTimeTest extends \PHPUnit_Framework_TestCase {
+class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 
 	public function testNoModifiedLocalTime() {
-
 		$dateTime = LocalTime::getLocalizedTime(
 			new DateTime( '2017-08-01 10:00:00+00:00' )
 		);
@@ -28,7 +27,6 @@ class LocalTimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModifiedTimeWithPositiveLocalTimeOffset() {
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( 60 );
@@ -45,7 +43,6 @@ class LocalTimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModifiedTimeWithNegativeLocalTimeOffset() {
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( -60 );
@@ -62,7 +59,6 @@ class LocalTimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModifiedTimeWithUserTimeCorrection() {
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( 0 );
@@ -79,7 +75,6 @@ class LocalTimeTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	public function testModifiedTimeWithUserTimeCorrectionOnInvalidZone() {
-
 		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
 
 		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+125|Foo' );
