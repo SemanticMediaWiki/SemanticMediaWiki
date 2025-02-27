@@ -134,7 +134,7 @@ class SMWDIUri extends SMWDataItem {
 		// *** this could replace the block below, from '$escapeFrom'
 		// however that appears to be more consistent
 		// $serialization = str_replace( ' ', '%20', $serialization );
- 
+
 		// try to split "schema:rest"
 		$parts = explode( ':', $serialization, 2 );
 		$strict = true;
@@ -169,14 +169,13 @@ class SMWDIUri extends SMWDataItem {
 
 		$hierpart = ltrim( $hierpart, '/' );
 
-
 		// @see includes/datavalues/SMW_DV_URI.php -> parseUserValue()
 		// the following assumes that new SMWDIUri is constructed
 		// using the same format of SMWURIValue -> parseUserValue
 		$escapeFrom = [ '%3A', '%2F', '%23', '%40', '%3F', '%3D', '%26', '%25' ];
 		$escapeTo = [ ':', '/', '#', '@', '?', '=', '&', '%' ];
 
-		switch( $scheme ) {
+		switch ( $scheme ) {
 			case 'tel':
 				break;
 
