@@ -2512,7 +2512,7 @@ return ( static function () {
 		 */
 		'smwgDetectOutdatedData' => false,
 
-		##
+		# #
 		# Overwriting the following array, you can define for which slots
 		# the semantic links and annotations are to be evaluated. In other
 		# slots, annotations can be given but are silently ignored.

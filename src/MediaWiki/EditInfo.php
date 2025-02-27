@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use ParserOutput;
@@ -111,7 +110,6 @@ class EditInfo {
 	}
 
 	private function combineSlotOutput() {
-
 		foreach ( $this->extraSemanticSlots as $semanticSlot ) {
 			if ( !$this->revision->hasSlot( $semanticSlot ) || $semanticSlot === SlotRecord::MAIN ) {
 				continue;

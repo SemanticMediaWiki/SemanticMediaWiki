@@ -173,7 +173,7 @@ class ContentParser {
 				$this->getTitle(),
 				$revision
 			);
-		} catch( \MWUnknownContentModelException $e ) {
+		} catch ( \MWUnknownContentModelException $e ) {
 			return $this;
 		}
 
@@ -221,7 +221,6 @@ class ContentParser {
 	}
 
 	private function combineSlotOutput() {
-
 		$services = MediaWikiServices::getInstance();
 		$revision = $this->getRevision();
 
