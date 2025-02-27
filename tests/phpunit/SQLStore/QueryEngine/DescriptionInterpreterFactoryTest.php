@@ -25,7 +25,7 @@ class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

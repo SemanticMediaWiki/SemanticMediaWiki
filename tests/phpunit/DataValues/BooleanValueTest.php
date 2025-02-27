@@ -3,7 +3,7 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\BooleanValue;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Tests\PHPUnitCompat;
 
 /**

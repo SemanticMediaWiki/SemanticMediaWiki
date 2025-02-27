@@ -63,12 +63,6 @@ class LegacyParserTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		// Legacy class match
-		$this->assertInstanceOf(
-			'\SMWQueryParser',
-			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
-		);
-
 		$this->assertInstanceOf(
 			'\SMW\Query\Parser',
 			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )

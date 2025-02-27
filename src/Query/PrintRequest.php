@@ -4,12 +4,12 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use SMW\DataValues\PropertyChainValue;
-use SMW\Localizer;
+use SMW\DataValues\PropertyValue;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest\Deserializer;
 use SMW\Query\PrintRequest\Formatter;
 use SMW\Query\PrintRequest\Serializer;
 use SMWDataValue;
-use SMWPropertyValue as PropertyValue;
 use Title;
 
 /**
@@ -59,7 +59,7 @@ class PrintRequest {
 
 	protected $m_outputformat; // output format string for formatting results, if applicable
 
-	protected $m_hash = false; // cache your hash (currently useful since SMWQueryResult accesses the hash many times, might be dropped at some point)
+	protected $m_hash = false; // cache your hash (currently useful since QueryResult accesses the hash many times, might be dropped at some point)
 
 	protected $m_params = [];
 

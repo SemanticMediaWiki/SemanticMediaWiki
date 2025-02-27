@@ -3,7 +3,7 @@
 namespace SMW\Property\Annotators;
 
 use SMW\DIProperty;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,10 +21,10 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param string $defaultSort
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $defaultSort ) {
+	public function __construct( Annotator $propertyAnnotator, $defaultSort ) {
 		parent::__construct( $propertyAnnotator );
 		$this->defaultSort = $defaultSort;
 	}

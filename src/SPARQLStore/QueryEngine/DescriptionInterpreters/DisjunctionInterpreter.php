@@ -2,6 +2,9 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -11,10 +14,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWExpElement as ExpElement;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * @license GPL-2.0-or-later

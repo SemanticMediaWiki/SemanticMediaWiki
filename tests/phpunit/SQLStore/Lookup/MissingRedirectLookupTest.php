@@ -52,7 +52,7 @@ class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 			'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

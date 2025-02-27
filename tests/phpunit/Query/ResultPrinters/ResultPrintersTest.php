@@ -27,7 +27,7 @@ class ResultPrintersTest extends \PHPUnit\Framework\TestCase {
 		$instance = new $class( $format, $isInline );
 
 		$this->assertInstanceOf(
-			'\SMWIResultPrinter',
+			'\SMW\Query\ResultPrinter',
 			$instance
 		);
 	}

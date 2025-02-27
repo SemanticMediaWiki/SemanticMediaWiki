@@ -20,7 +20,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +79,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->willReturn( $propertyTableInfoFetcher );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +119,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

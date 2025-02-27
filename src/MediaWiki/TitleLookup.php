@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki;
 
 use RuntimeException;
+use SMW\MediaWiki\Connection\Database;
 use Title;
 
 /**

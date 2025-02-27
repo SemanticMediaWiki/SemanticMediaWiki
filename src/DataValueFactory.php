@@ -4,7 +4,9 @@ namespace SMW;
 
 use RuntimeException;
 use SMW\DataValues\PropertyValue;
+use SMW\Localizer\Localizer;
 use SMW\Services\DataValueServiceFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIError;
@@ -249,7 +251,7 @@ class DataValueFactory {
 	 * Create a value for a data item.
 	 *
 	 * @param $dataItem DataItem
-	 * @param null $property mixed null or SMWDIProperty property object for which this value is made
+	 * @param null $property mixed null or \SMW\DIProperty property object for which this value is made
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param DIWikiPage|null $contextPage
 	 *
@@ -280,11 +282,11 @@ class DataValueFactory {
 	}
 
 	/**
-	 * Create a value for the given property, provided as an SMWDIProperty
+	 * Create a value for the given property, provided as an DIProperty
 	 * object. If no value is given, an empty container is created, the
 	 * value of which can be set later on.
 	 *
-	 * @param $property SMWDIProperty property object for which this value is made
+	 * @param $property \SMW\DIProperty property object for which this value is made
 	 * @param $valueString mixed user value string, or false if unknown
 	 * @param $caption mixed user-defined caption, or false if none given
 	 * @param null $contextPage SMWDIWikiPage that provides a context for parsing the value string, or null

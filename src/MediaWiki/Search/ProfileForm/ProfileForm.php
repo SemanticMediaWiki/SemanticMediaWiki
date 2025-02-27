@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Schema\SchemaFactory;
 use SMW\Store;
@@ -351,7 +351,7 @@ class ProfileForm {
 		// TODO this information should come from the store and not being
 		// derived from a class! How should such characteristic be represented?
 		$features = [
-			'best' => is_a( $this->store, "SMWElasticStore" )
+			'best' => is_a( $this->store, "SMW\Elastic\ElasticStore" )
 		];
 
 		$form = $sortForm->makeFields( $features );

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ThingDescription;
 use SMW\Tests\PHPUnitCompat;
@@ -36,12 +36,6 @@ class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ClassDescription',
 			new ClassDescription( $class )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ClassDescription',
-			new \SMWClassDescription( $class )
 		);
 	}
 

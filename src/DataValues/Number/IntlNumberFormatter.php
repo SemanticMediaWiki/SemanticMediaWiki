@@ -3,7 +3,7 @@
 namespace SMW\DataValues\Number;
 
 use InvalidArgumentException;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Options;
 use SMWNumberValue as NumberValue;
 

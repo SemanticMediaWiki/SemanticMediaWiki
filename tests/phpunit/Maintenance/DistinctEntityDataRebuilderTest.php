@@ -40,7 +40,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +98,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( Title::newFromText( __METHOD__ ) );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -142,7 +142,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +155,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -186,7 +186,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = SMW_NS_PROPERTY;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -199,7 +199,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

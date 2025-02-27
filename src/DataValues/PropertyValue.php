@@ -8,7 +8,7 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
 use SMW\DIProperty;
 use SMW\Exception\DataItemException;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue;
 use SMWWikiPageValue;

@@ -5,7 +5,7 @@ namespace SMW\Tests;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
@@ -62,7 +62,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMWSemanticData',
+			'\SMW\SemanticData',
 			$instance
 		);
 	}
@@ -304,7 +304,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertNotInstanceOf(
-			'SMWContainerSemanticData',
+			'\SMW\DataModel\ContainerSemanticData',
 			$instance->getSubSemanticData()
 		);
 
@@ -317,7 +317,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $instance->getSubSemanticData() as $subSemanticData ) {
 
 			$this->assertInstanceOf(
-				'SMWContainerSemanticData',
+				'\SMW\DataModel\ContainerSemanticData',
 				$subSemanticData
 			);
 		}
@@ -340,7 +340,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $instance->getSubSemanticData() as $subSemanticData ) {
 
 			$this->assertInstanceOf(
-				'SMWContainerSemanticData',
+				'\SMW\DataModel\ContainerSemanticData',
 				$subSemanticData
 			);
 
@@ -353,7 +353,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$instance->removeSubSemanticData( $subobject->getSemanticData() );
 
 		$this->assertNotInstanceOf(
-			'SMWContainerSemanticData',
+			'\SMW\DataModel\ContainerSemanticData',
 			$instance->getSubSemanticData()
 		);
 	}
@@ -410,7 +410,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertNotEmpty( $instance->findSubSemanticData( $subobjectName ) );
 
 		$this->assertInstanceOf(
-			'SMWContainerSemanticData',
+			'\SMW\DataModel\ContainerSemanticData',
 			$instance->findSubSemanticData( $subobjectName )
 		);
 	}

@@ -1,6 +1,8 @@
 <?php
 
 use SMW\Exporter\Element;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Element\ExpResource;
 
 /**
  * SMWExpData is a class representing semantic data that is ready for easy
@@ -30,20 +32,20 @@ class SMWExpData implements Element {
 
 	/**
 	 * The subject of the data that we store.
-	 * @var SMWExpResource
+	 * @var ExpResource
 	 */
 	protected $m_subject;
 
 	/**
 	 * Array mapping property URIs to arrays their values, given as
-	 * SMWExpElement objects.
+	 * SMW\Exporter\Element\ExpElement objects.
 	 * @var array of array of SMWElement
 	 */
 	protected $m_children = [];
 
 	/**
-	 * Array mapping property URIs to arrays their SMWExpResource
-	 * @var array of SMWExpResource
+	 * Array mapping property URIs to arrays their ExpResource
+	 * @var array of ExpResource
 	 */
 	protected $m_edges = [];
 
@@ -53,10 +55,10 @@ class SMWExpData implements Element {
 	private $hash = null;
 
 	/**
-	 * Constructor. $subject is the SMWExpResource for the
+	 * Constructor. $subject is the ExpResource for the
 	 * subject about which this SMWExpData is.
 	 */
-	public function __construct( SMWExpResource $subject ) {
+	public function __construct( ExpResource $subject ) {
 		$this->dataItem = $subject->getDataItem();
 		$this->m_subject = $subject;
 	}
@@ -101,9 +103,9 @@ class SMWExpData implements Element {
 	}
 
 	/**
-	 * Turn an array of SMWExpElements into an RDF collection.
+	 * Turn an array of SMW\Exporter\Element\ExpElement into an RDF collection.
 	 *
-	 * @param $elements array of SMWExpElement
+	 * @param $elements array of SMW\Exporter\Element\ExpElement
 	 * @return SMWExpData
 	 */
 	public static function makeCollection( array $elements ) {
@@ -111,7 +113,7 @@ class SMWExpData implements Element {
 			return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' ) );
 		}
 
-		$result = new SMWExpData( new SMWExpResource( '' ) ); // bnode
+		$result = new SMWExpData( new ExpResource( '' ) ); // bnode
 
 		$result->addPropertyObjectValue(
 			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
@@ -134,7 +136,7 @@ class SMWExpData implements Element {
 	/**
 	 * Return subject to which the stored semantic annotation refer to.
 	 *
-	 * @return SMWExpResource
+	 * @return ExpResource
 	 */
 	public function getSubject() {
 		return $this->m_subject;
@@ -145,10 +147,10 @@ class SMWExpData implements Element {
 	 * duplicate elimination as this is usually done in SMWSemanticData
 	 * already (which is typically used to generate this object).
 	 *
-	 * @param SMWExpNsResource $property
+	 * @param ExpNsResource $property
 	 * @param Element $child
 	 */
-	public function addPropertyObjectValue( SMWExpNsResource $property, Element $child ) {
+	public function addPropertyObjectValue( ExpNsResource $property, Element $child ) {
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
@@ -160,22 +162,22 @@ class SMWExpData implements Element {
 	}
 
 	/**
-	 * Return the list of SMWExpResource objects for all properties for
+	 * Return the list of ExpResource objects for all properties for
 	 * which some values have been given.
 	 *
-	 * @return array of SMWExpResource
+	 * @return array of ExpResource
 	 */
 	public function getProperties() {
 		return $this->m_edges;
 	}
 
 	/**
-	 * Return the list of SMWExpElement values associated to some property
+	 * Return the list of SMW\Exporter\Element\ExpElement values associated to some property
 	 * (element).
 	 *
-	 * @return array of SMWExpElement
+	 * @return array of SMW\Exporter\Element\ExpElement
 	 */
-	public function getValues( SMWExpResource $property ) {
+	public function getValues( ExpResource $property ) {
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
 			return $this->m_children[$property->getUri()];
 		}
@@ -199,14 +201,14 @@ class SMWExpData implements Element {
 	/**
 	 * This function finds the main type (class) element of the subject
 	 * based on the current property assignments. It returns this type
-	 * element (SMWExpElement) and removes the according type assignement
+	 * element (SMW\Exporter\Element\ExpElement) and removes the according type assignement
 	 * from the data. If no type is assigned, the element for rdf:Resource
 	 * is returned.
 	 *
 	 * @note Under all normal conditions, the result will be an
-	 * SMWExpResource.
+	 * ExpResource.
 	 *
-	 * @return SMWExpElement
+	 * @return SMW\Exporter\Element\ExpElement
 	 */
 	public function extractMainType() {
 		$pe = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' );
@@ -224,13 +226,13 @@ class SMWExpData implements Element {
 
 	/**
 	 * Check if this element encodes an RDF list, and if yes return an
-	 * array of SMWExpElements corresponding to the collection elements in
+	 * array of SMW\Exporter\Element\ExpElement corresponding to the collection elements in
 	 * the specified order. Otherwise return false.
 	 * The method only returns lists that can be encoded using
 	 * parseType="Collection" in RDF/XML, i.e. only lists of non-literal
 	 * resources.
 	 *
-	 * @return mixed array of SMWExpElement (but not SMWExpLiteral) or false
+	 * @return mixed array of SMW\Exporter\Element\ExpElement (but not SMWExpLiteral) or false
 	 */
 	public function getCollection() {
 		$rdftypeUri  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )->getUri();
@@ -261,7 +263,7 @@ class SMWExpData implements Element {
 						array_unshift( $restlist, $first );
 						return $restlist;
 					}
-				} elseif ( ( $rest instanceof SMWExpResource ) &&
+				} elseif ( ( $rest instanceof ExpResource ) &&
 						   ( $rest->getUri() == $rdfnilUri ) ) {
 					return [ $first ];
 				} else {
@@ -279,9 +281,9 @@ class SMWExpData implements Element {
 
 	/**
 	 * Return an array of ternary arrays (subject predicate object) of
-	 * SMWExpElements that represents the flattened version of this data.
+	 * SMW\Exporter\Element\ExpElement that represents the flattened version of this data.
 	 *
-	 * @return array of array of SMWExpElement
+	 * @return array of array of SMW\Exporter\Element\ExpElement
 	 */
 	public function getTripleList( ?Element $subject = null ) {
 		global $smwgBnodeCount;
@@ -303,10 +305,10 @@ class SMWExpData implements Element {
 					$childSubject = $childElement;
 				}
 
-				if ( ( $childSubject instanceof SMWExpResource ) &&
+				if ( ( $childSubject instanceof ExpResource ) &&
 					 ( $childSubject->isBlankNode() ) ) { // bnode, rename ID to avoid unifying bnodes of different contexts
 					// TODO: should we really rename bnodes of the form "_id" here?
-					$childSubject = new SMWExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
+					$childSubject = new ExpResource( '_' . $smwgBnodeCount++, $childSubject->getDataItem() );
 				}
 
 				$result[] = [ $subject, $edge, $childSubject ];

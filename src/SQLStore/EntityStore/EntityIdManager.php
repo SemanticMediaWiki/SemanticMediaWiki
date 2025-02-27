@@ -502,7 +502,7 @@ class EntityIdManager {
 	}
 
 	/**
-	 * @note SMWSql3SmwIds::getSMWPageID has some issues with the cache as it returned
+	 * @note EntityIdManager::getSMWPageID has some issues with the cache as it returned
 	 * 0 even though an object was matchable, using this method is safer then trying
 	 * to encipher getSMWPageID related methods.
 	 *
@@ -1003,7 +1003,7 @@ class EntityIdManager {
 	}
 
 	/**
-	 * @deprecated since 3.0, use SMWSql3SmwIds::getDataItemsFromList
+	 * @deprecated since 3.0, use EntityIdManager::getDataItemsFromList
 	 */
 	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ) {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );

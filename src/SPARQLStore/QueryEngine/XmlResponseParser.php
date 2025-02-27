@@ -2,10 +2,10 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
 use SMW\SPARQLStore\Exception\XmlParserException;
 use SMW\SPARQLStore\HttpResponseParser;
-use SMWExpLiteral as ExpLiteral;
-use SMWExpResource as ExpResource;
 
 /**
  * Class for parsing SPARQL results in XML format
@@ -34,7 +34,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
 	 *
-	 * @var array of array of (SMWExpElement or null)
+	 * @var array of array of (\SMW\Exporter\Element\ExpElement or null)
 	 */
 	private $data;
 

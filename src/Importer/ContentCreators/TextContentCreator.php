@@ -7,7 +7,7 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RequestContext;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
 use User;

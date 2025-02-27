@@ -2,10 +2,16 @@
 
 namespace SMW\Tests\Exporter;
 
+use SMW\DataModel\ContainerSemanticData;
+use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\XsdValueMapper;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIBlob;
+use SMWDIBoolean;
+use SMWDINumber;
+use SMWDITime;
 
 /**
  * @covers \SMW\Exporter\XsdValueMapper
@@ -48,49 +54,49 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 	public function supportedDataItemProvider() {
 		# 0
 		$provider[] = [
-			new \SMWDINumber( 42 ),
+			new SMWDINumber( 42 ),
 			'42',
 			'double'
 		];
 
 		# 1
 		$provider[] = [
-			new \SMWDIBlob( 'Test' ),
+			new SMWDIBlob( 'Test' ),
 			'Test',
 			'string'
 		];
 
 		# 2
 		$provider[] = [
-			new \SMWDIBoolean( true ),
+			new SMWDIBoolean( true ),
 			'true',
 			'boolean'
 		];
 
 		# 3
 		$provider[] = [
-			new \SMWDITime( 1, '1970' ),
+			new SMWDITime( 1, '1970' ),
 			'1970',
 			'gYear'
 		];
 
 		# 4
 		$provider[] = [
-			new \SMWDITime( 1, '1970', '12' ),
+			new SMWDITime( 1, '1970', '12' ),
 			'1970-12',
 			'gYearMonth'
 		];
 
 		# 5
 		$provider[] = [
-			new \SMWDITime( 1, '1970', '12', '31' ),
+			new SMWDITime( 1, '1970', '12', '31' ),
 			'1970-12-31Z',
 			'date'
 		];
 
 		# 6
 		$provider[] = [
-			new \SMWDITime( 1, '1970', '12', '31', '12' ),
+			new SMWDITime( 1, '1970', '12', '31', '12' ),
 			'1970-12-31T12:00:00Z',
 			'dateTime'
 		];
@@ -120,7 +126,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 		# 2
 		$provider[] = [
-			new \SMWDIConcept( 'Foo', '', '', '', '' )
+			new DIConcept( 'Foo', '', '', '', '' )
 		];
 
 		# 3
@@ -130,7 +136,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 		# 4
 		$provider[] = [
-			new \SMWDIContainer( new \SMWContainerSemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ) )
+			new \SMWDIContainer( new ContainerSemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ) )
 		];
 
 		# 5
@@ -145,7 +151,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
 		# 7 Not a gregorian calendar model
 		$provider[] = [
-			new \SMWDITime( 2, '1970' )
+			new SMWDITime( 2, '1970' )
 		];
 
 		return $provider;

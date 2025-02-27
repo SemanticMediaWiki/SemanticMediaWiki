@@ -7,7 +7,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -38,7 +38,7 @@ class SchemaFinder {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -56,10 +56,10 @@ class SchemaFinder {
 	 * @since 3.1
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, PropertySpecificationLookup $propertySpecificationLookup, Cache $cache ) {
+	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup, Cache $cache ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->cache = $cache;

@@ -3,9 +3,9 @@
 namespace SMW\Tests;
 
 use SMW\Query\ResultPrinter;
+use SMW\Query\ResultPrinters\ListResultPrinter;
 use SMW\QueryPrinterFactory;
 use SMW\TableResultPrinter;
-use SMWListResultPrinter;
 
 /**
  * @covers \SMW\QueryPrinterFactory
@@ -47,17 +47,17 @@ class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$factory = new QueryPrinterFactory();
 
 		$factory->registerFormat( 'table', TableResultPrinter::class );
-		$factory->registerFormat( 'list', SMWListResultPrinter::class );
+		$factory->registerFormat( 'list', ListResultPrinter::class );
 
 		$this->assertContains( 'table', $factory->getFormats() );
 		$this->assertContains( 'list', $factory->getFormats() );
 		$this->assertCount( 2, $factory->getFormats() );
 
-		$factory->registerFormat( 'table', SMWListResultPrinter::class );
+		$factory->registerFormat( 'table', ListResultPrinter::class );
 
 		$printer = $factory->getPrinter( 'table' );
 
-		$this->assertInstanceOf( SMWListResultPrinter::class, $printer );
+		$this->assertInstanceOf( ListResultPrinter::class, $printer );
 	}
 
 	public function testRegisterAliases() {
@@ -101,7 +101,7 @@ class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->assertIsArray( $factory->getFormats() );
 
 		$factory->registerFormat( 'table', TableResultPrinter::class );
-		$factory->registerFormat( 'list', SMWListResultPrinter::class );
+		$factory->registerFormat( 'list', ListResultPrinter::class );
 
 		$factory->registerAliases( 'foo', [ 'bar' ] );
 		$factory->registerAliases( 'foo', [ 'baz' ] );

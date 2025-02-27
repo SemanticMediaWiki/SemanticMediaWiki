@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
 use SMW\DataValues\Time\IntlTimeFormatter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDataValue as DataValue;
 use SMWDITime as DITime;
 use SMWTimeValue as TimeValue;

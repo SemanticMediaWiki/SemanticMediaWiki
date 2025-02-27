@@ -3,9 +3,9 @@
 namespace SMW\Tests\Utils;
 
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Store;
-use SMWRequestOptions as RequestOptions;
 
 /**
  *

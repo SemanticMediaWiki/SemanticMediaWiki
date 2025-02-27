@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\Pager;
 use SMW\Utils\UrlArgs;

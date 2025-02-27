@@ -32,7 +32,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

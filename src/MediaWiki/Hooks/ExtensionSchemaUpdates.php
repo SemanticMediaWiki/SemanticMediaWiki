@@ -97,7 +97,8 @@ class ExtensionSchemaUpdates implements HookListener {
 		// will be passed to the callback. ..."
 		$this->updater->addExtensionUpdate(
 			[
-				'SMWStore::setupStore',
+
+				'\SMW\Store::setupStore',
 				[
 					'verbose' => $verbose,
 					'options' => $options

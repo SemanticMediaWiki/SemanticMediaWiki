@@ -69,7 +69,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	}
 
 	/**
-	 * @see PropertyAnnotator::check
+	 * @see \SMW\Property\Annotator::check
 	 *
 	 * {@inheritDoc}
 	 */

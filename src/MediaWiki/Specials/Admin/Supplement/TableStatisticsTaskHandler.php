@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
 use SMW\EntityCache;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
 use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Message;
 use SMW\Utils\HtmlTabs;
 use WebRequest;
 

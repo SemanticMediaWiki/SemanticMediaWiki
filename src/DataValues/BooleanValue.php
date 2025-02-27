@@ -3,8 +3,8 @@
 namespace SMW\DataValues;
 
 use Sanitizer;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBoolean as DIBoolean;

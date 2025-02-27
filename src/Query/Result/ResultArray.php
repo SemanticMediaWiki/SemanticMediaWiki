@@ -6,11 +6,11 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDataValue;
-use SMWQueryResult as QueryResult;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -111,7 +111,7 @@ class ResultArray {
 	}
 
 	/**
-	 * Get the SMWStore object that this result is based on.
+	 * Get the \SMW\Store object that this result is based on.
 	 *
 	 * @return Store
 	 */
@@ -121,7 +121,7 @@ class ResultArray {
 
 	/**
 	 * Returns the DIWikiPage object to which this ResultArray refers.
-	 * If you only care for those objects, consider using SMWQueryResult::getResults()
+	 * If you only care for those objects, consider using \SMW\Query\QueryResult::getResults()
 	 * directly.
 	 *
 	 * @return DIWikiPage

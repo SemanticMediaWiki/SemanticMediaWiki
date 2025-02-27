@@ -132,7 +132,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 			];
 		}
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

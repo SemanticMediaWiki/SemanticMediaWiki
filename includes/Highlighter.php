@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Html;
+use SMW\Localizer\Message;
 use SMWOutputs;
 
 /**

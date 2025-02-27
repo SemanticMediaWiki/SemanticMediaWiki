@@ -72,7 +72,7 @@ abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
 		$page->setContext( $this->makeRequestContext(
 			$request,
 			$user,
-			$this->getTitle( $page )
+			$page->getPageTitle()
 		) );
 
 		$out = $page->getOutput();
@@ -135,14 +135,4 @@ abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
 
 		return $context;
 	}
-
-	/**
-	 * Deprecated: Use of SpecialPage::getTitle was deprecated in MediaWiki 1.23
-	 *
-	 * @return Title
-	 */
-	private function getTitle( SpecialPage $page ) {
-		return method_exists( $page, 'getPageTitle' ) ? $page->getPageTitle() : $page->getTitle();
-	}
-
 }
