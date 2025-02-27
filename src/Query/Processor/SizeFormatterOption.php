@@ -58,19 +58,22 @@ class SizeFormatterOption implements PresentationLayerInterface {
 
 	private function formatLabel( $label, $param ): string {
 		if ( strpos( $label, '#' ) !== false ) {
-			if ( str_contains( $param, 'width=' ) ) {
-				$adjustedWidth = rtrim( explode( '=', $param )[1], 'px' );
-				$parts = explode( '#', $label );
-				return $parts[0] . '#' . $adjustedWidth . $parts[1];
-			}
+			$paramParts = explode( '=', $param );
+			if ( count( $paramParts ) >= 2 ) {
+				if ( str_contains( $param, 'width=' ) ) {
+					$adjustedWidth = rtrim( explode( '=', $param )[1], 'px' );
+					$parts = explode( '#', $label );
+					return $parts[0] . '#' . $adjustedWidth . $parts[1];
+				}
 
-			if ( str_contains( $param, 'height=' ) ) {
-				$adjustedHeight = explode( '=', $param )[1];
-				$adjustedWidth = rtrim( $label, 'px' );
-				return $adjustedWidth . 'x' . $adjustedHeight;
-			}
+				if ( str_contains( $param, 'height=' ) ) {
+					$adjustedHeight = explode( '=', $param )[1];
+					$adjustedWidth = rtrim( $label, 'px' );
+					return $adjustedWidth . 'x' . $adjustedHeight;
+				}
 
-			return $label . ';' . $param;
+				return $label . ';' . $param;
+			}
 		}
 
 		$labelToSave = $label . ' #' . $param;

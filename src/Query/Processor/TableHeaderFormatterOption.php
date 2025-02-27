@@ -59,10 +59,10 @@ class TableHeaderFormatterOption implements PresentationLayerInterface {
 		$partsLabel = explode( '=', $label );
 		$paramParts = explode( '=', $param );
 
-		if ( isset( $partsLabel[1] ) && $partsLabel[1] === '' && !strpos( $partsLabel[0], '#' ) ) {
+		if ( isset( $partsLabel[1] ) && $partsLabel[1] === '' && strpos( $partsLabel[0], '#' ) === false ) {
 			return str_replace( '=', '', $label . ' ' . '#' . $param );
 		} else {
-			if ( strpos( $label, '#' ) ) {
+			if ( strpos( $label, '#' ) !== false ) {
 				$parts = explode( '=', $label );
 				if ( count( $parts ) > 1 ) {
 					return $parts[0] . ';' . $param . '=' . $parts[1];
