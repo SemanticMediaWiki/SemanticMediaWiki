@@ -78,7 +78,6 @@ class ParamListProcessor {
 			'parameters' => []
 		];
 
-		// Call the new method to handle width and height parameters
 		foreach ( $parameters as $key => $value ) {
 			if ( !is_array( $value ) && ( str_contains( $value, '+width' ) || str_contains( $value, '+height' ) ) ) {
 				$this->handleWidthHeightParameters( $parameters );
@@ -121,20 +120,17 @@ class ParamListProcessor {
 			} elseif ( $param[0] == '?' ) {
 				$this->addPrintRequest( $name, $param, $previousPrintout, $serialization );
 			} elseif ( str_contains( $param, '+width=' ) || str_contains( $param, '+height=' ) ) {
-				// Create an instance of SizeFormatterOption
 				$sizeFormatter = new SizeFormatterOption();
-				$result = $sizeFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
+				$result = $sizeFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 			} elseif ( str_contains( $param, '+link=' ) ) {
-				// Create an instance of LinkFormatterOption
 				$linkFormatter = new LinkFormatterOption();
-				$result = $linkFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
+				$result = $linkFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 			} elseif ( str_contains( $param, '+thclass=' ) ) {
-				// Create an instance of TableHeaderFormatterOption
 				$headerFormatter = new TableHeaderFormatterOption();
-				$result = $headerFormatter->addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization );
+				$result = $headerFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=' ) && !str_contains( $param, '+thclass=' ) ) ) {
@@ -167,7 +163,6 @@ class ParamListProcessor {
 	 * so no return value is needed.
 	 *
 	 * @param array &$parameters The array of parameters to process.
-	 *                           This will be modified in place.
 	 */
 	private function handleWidthHeightParameters( array &$parameters ) {
 		$pendingWidth = null;
@@ -237,7 +232,9 @@ class ParamListProcessor {
 			}
 
 			foreach ( $request['params'] as $key => $value ) {
-				$printRequest->setParameter( $key, $value );
+				if ( ( $key != 'width' ) && ( $key != 'height' ) ) {
+					$printRequest->setParameter( $key, $value );
+				}
 			}
 
 			// get outputFormat for each ?property and update params like thclass and link
@@ -246,7 +243,6 @@ class ParamListProcessor {
 			if ( str_contains( $outputFormat, 'thclass' ) ) {
 				$outputFormat = str_replace( 'thclass', 'class=' . $request['params']['thclass'], $outputFormat );
 			}
-
 			if ( str_contains( $outputFormat, 'link' ) ) {
 				$outputFormat = str_replace( 'link', 'link=' . $request['params']['link'], $outputFormat );
 			}
