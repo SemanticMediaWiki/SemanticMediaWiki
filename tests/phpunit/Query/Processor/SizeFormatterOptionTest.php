@@ -5,13 +5,16 @@ namespace SMW\Tests\Query\Processor;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\SizeFormatterOption;
 
+/**
+ * @covers \SMW\Query\Processor\SizeFormatterOption
+ */
 class SizeFormatterOptionTest extends TestCase {
 	private const MAIN_IMAGE = 'Main Image';
 
 	/**
 	 * @dataProvider sizeParameterProvider
 	 */
-	public function testAddPrintRequestHandleParams( string $parameter, string $value, string $expectedLabel, array $expectedParams ) {
+	public function testGetPrintRequestWithOutputMarker( string $parameter, string $value, string $expectedLabel, array $expectedParams ) {
 		$formatter = new SizeFormatterOption();
 
 		$serialization = [
@@ -22,7 +25,7 @@ class SizeFormatterOptionTest extends TestCase {
 			],
 		];
 
-		$result = $formatter->addPrintRequestHandleParams(
+		$result = $formatter->getPrintRequestWithOutputMarker(
 			self::MAIN_IMAGE,
 			"+{$parameter}={$value}",
 			self::MAIN_IMAGE,
@@ -30,8 +33,8 @@ class SizeFormatterOptionTest extends TestCase {
 		);
 
 		$this->assertArrayHasKey( self::MAIN_IMAGE, $result['serialization']['printouts'] );
-		$this->assertEquals( $expectedLabel, $result['serialization']['printouts'][self::MAIN_IMAGE]['label'] );
-		$this->assertEquals( $expectedParams, $result['serialization']['printouts'][self::MAIN_IMAGE]['params'] );
+		$this->assertSame( $expectedLabel, $result['serialization']['printouts'][self::MAIN_IMAGE]['label'] );
+		$this->assertSame( $expectedParams, $result['serialization']['printouts'][self::MAIN_IMAGE]['params'] );
 	}
 
 	public function sizeParameterProvider(): array {

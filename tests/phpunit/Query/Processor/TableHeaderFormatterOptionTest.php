@@ -5,12 +5,15 @@ namespace SMW\Tests\Query\Processor;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\TableHeaderFormatterOption;
 
+/**
+ * @covers \SMW\Query\Processor\TableHeaderFormatterOption
+ */
 class TableHeaderFormatterOptionTest extends TestCase {
 
 	/**
-	 * Test the addPrintRequestHandleParams method
+	 * Test the getPrintRequestWithOutputMarker method
 	 */
-	public function testAddPrintRequestHandleParams() {
+	public function testGetPrintRequestWithOutputMarker() {
 		$formatter = new TableHeaderFormatterOption();
 
 		// Test case 1: Previous printout exists, with '#' in the label
@@ -21,7 +24,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->addPrintRequestHandleParams( 'Main Image', '+thclass=unsortable', 'Main Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( 'Main Image', '+thclass=unsortable', 'Main Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -31,7 +34,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expectedSerialization, $result['serialization'] );
+		$this->assertSame( $expectedSerialization, $result['serialization'] );
 
 		// Test case 2: Previous printout exists, without '#' in the label
 		$serialization = [
@@ -41,7 +44,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->addPrintRequestHandleParams( 'Job Title', '+thclass=unsortable', 'Job Title', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( 'Job Title', '+thclass=unsortable', 'Job Title', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -51,7 +54,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expectedSerialization, $result['serialization'] );
+		$this->assertSame( $expectedSerialization, $result['serialization'] );
 
 		// Test case 3: Previous printout exists, without '#' in the label, more then 3 params in query
 		$serialization = [
@@ -61,7 +64,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->addPrintRequestHandleParams( 'Image', '+thclass=unsortable', 'Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( 'Image', '+thclass=unsortable', 'Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -71,6 +74,6 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expectedSerialization, $result['serialization'] );
+		$this->assertSame( $expectedSerialization, $result['serialization'] );
 	}
 }

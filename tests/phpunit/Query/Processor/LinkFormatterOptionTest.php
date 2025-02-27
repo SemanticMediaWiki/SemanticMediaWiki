@@ -5,12 +5,15 @@ namespace SMW\Tests\Query\Processor;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\LinkFormatterOption;
 
+/**
+ * @covers \SMW\Query\Processor\LinkFormatterOption
+ */
 class LinkFormatterOptionTest extends TestCase {
 
 	/**
-	 * Test the addPrintRequestHandleParams method
+	 * Test the getPrintRequestWithOutputMarker method
 	 */
-	public function testAddPrintRequestHandleParamsWithHashInLabel() {
+	public function testGetPrintRequestWithOutputMarkerWithHashInLabel() {
 		$formatter = new LinkFormatterOption();
 
 		// Test case 1: Previous printout exists, with '#' in the label
@@ -21,7 +24,7 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->addPrintRequestHandleParams( 'Main Image', '+link=', 'Main Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( 'Main Image', '+link=', 'Main Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -31,13 +34,13 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expectedSerialization, $result['serialization'] );
+		$this->assertSame( $expectedSerialization, $result['serialization'] );
 	}
 
 	/**
-	 * Test the addPrintRequestHandleParams method
+	 * Test the getPrintRequestWithOutputMarker method
 	 */
-	public function testAddPrintRequestHandleParamsWithoutHashInLabel() {
+	public function testGetPrintRequestWithOutputMarkerWithoutHashInLabel() {
 		$formatter = new LinkFormatterOption();
 
 		// Test case 2: Previous printout exists, without '#' in the label
@@ -48,7 +51,7 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->addPrintRequestHandleParams( 'Job Title', '+link=', 'Job Title', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( 'Job Title', '+link=', 'Job Title', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -58,13 +61,13 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expectedSerialization, $result['serialization'] );
+		$this->assertSame( $expectedSerialization, $result['serialization'] );
 	}
 
 	/**
-	 * Test the addPrintRequestHandleParams method
+	 * Test the getPrintRequestWithOutputMarker method
 	 */
-	public function testAddPrintRequestHandleParamsWithMultipleParameters() {
+	public function testGetPrintRequestWithOutputMarkerWithMultipleParameters() {
 		$formatter = new LinkFormatterOption();
 
 		// Test case 3: Previous printout exists, without '#' in the label, more then 3 params in query
@@ -75,7 +78,7 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->addPrintRequestHandleParams( 'Image', '+link=', 'Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( 'Image', '+link=', 'Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -85,6 +88,6 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$this->assertEquals( $expectedSerialization, $result['serialization'] );
+		$this->assertSame( $expectedSerialization, $result['serialization'] );
 	}
 }
