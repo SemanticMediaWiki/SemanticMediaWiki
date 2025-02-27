@@ -60,13 +60,13 @@ class SizeFormatterOption implements PresentationLayerInterface {
 		if ( strpos( $label, '#' ) !== false ) {
 			$paramParts = explode( '=', $param );
 			if ( count( $paramParts ) >= 2 ) {
-				if ( str_contains( $param, 'width=' ) ) {
+				if ( strpos( $param, 'width=' ) !== false ) {
 					$adjustedWidth = rtrim( explode( '=', $param )[1], 'px' );
 					$parts = explode( '#', $label );
-					return $parts[0] . '#' . $adjustedWidth . $parts[1];
+					return ( isset( $parts[0] ) ? $parts[0] : '' ) . '#' . $adjustedWidth . ( isset( $parts[1] ) ? $parts[1] : '' );
 				}
 
-				if ( str_contains( $param, 'height=' ) ) {
+				if ( strpos( $param, 'height=' ) !== false ) {
 					$adjustedHeight = explode( '=', $param )[1];
 					$adjustedWidth = rtrim( $label, 'px' );
 					return $adjustedWidth . 'x' . $adjustedHeight;

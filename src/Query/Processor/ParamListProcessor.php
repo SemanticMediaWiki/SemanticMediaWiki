@@ -133,7 +133,8 @@ class ParamListProcessor {
 				$result = $headerFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
-			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=' ) && !str_contains( $param, '+thclass=' ) ) ) {
+			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=' ) && !str_contains( $param, '+thclass=' ) &&
+				!str_contains( $param, '+width=' ) && !str_contains( $param, '+height=' ) ) ) {
 				$this->addPrintRequestParameter( $name, $param, $previousPrintout, $serialization );
 			} else {
 				$this->addOtherParameters( $name, $param, $serialization, $showMode );
