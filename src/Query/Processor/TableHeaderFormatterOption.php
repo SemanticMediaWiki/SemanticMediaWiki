@@ -4,7 +4,7 @@ namespace SMW\Query\Processor;
 
 /**
  * The class supports formatter option to format table headers
- * Implements FormatterOptionsInterface for adding print requests
+ * Implements PresentationLayerInterface for adding print requests
  * and handling parameters.
  *
  * @license GNU GPL v2+
@@ -12,14 +12,14 @@ namespace SMW\Query\Processor;
  *
  * @author milic
  */
-class TableHeaderFormatterOption implements FormatterOptionsInterface {
+class TableHeaderFormatterOption implements PresentationLayerInterface {
 
 	const FORMAT_LEGACY = 'format.legacy';
 	const PRINT_THIS = 'print.this';
 
-	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
+	public function getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization ): array {
 		if ( $previousPrintout === null ) {
-			return;
+			return [];
 		}
 
 		if ( !empty( $param ) ) {
@@ -55,14 +55,7 @@ class TableHeaderFormatterOption implements FormatterOptionsInterface {
 		];
 	}
 
-	/**
-	 * Formats a label based on parameters and existing label content.
-	 *
-	 * @param string $label The existing label.
-	 * @param string $param The parameter to append.
-	 * @return string The formatted label.
-	 */
-	private function formatLabel( $label, $param ) {
+	private function formatLabel( $label, $param ): string {
 		$partsLabel = explode( '=', $label );
 		$paramParts = explode( '=', $param );
 

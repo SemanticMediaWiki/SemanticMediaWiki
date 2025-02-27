@@ -5,7 +5,7 @@ namespace SMW\Query\Processor;
 /**
  * The class supports formatter option in ask queries
  * to set links, e.g., ?Main Image=|+link=
- * Implements FormatterOptionsInterface for adding print requests
+ * Implements PresentationLayerInterface for adding print requests
  * and handling parameters.
  *
  * @license GNU GPL v2+
@@ -13,14 +13,14 @@ namespace SMW\Query\Processor;
  *
  * @author milic
  */
-class LinkFormatterOption implements FormatterOptionsInterface {
+class LinkFormatterOption implements PresentationLayerInterface {
 
 	const FORMAT_LEGACY = 'format.legacy';
 	const PRINT_THIS = 'print.this';
 
-	public function addPrintRequestHandleParams( $name, $param, $previousPrintout, $serialization ) {
+	public function getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization ): array {
 		if ( $previousPrintout === null ) {
-			return;
+			return [];
 		}
 
 		$param = substr( $param, 1 );
@@ -54,14 +54,7 @@ class LinkFormatterOption implements FormatterOptionsInterface {
 		];
 	}
 
-	/**
-	 * Formats a label based on parameters and existing label content.
-	 *
-	 * @param string $label The existing label.
-	 * @param string $param The parameter to append.
-	 * @return string The formatted label.
-	 */
-	private function formatLabel( $label, $param ) {
+	private function formatLabel( $label, $param ): string {
 		if ( str_contains( $label, '#' ) ) {
 			if ( str_contains( $label, '=' ) ) {
 				$parts = explode( '=', $label );
