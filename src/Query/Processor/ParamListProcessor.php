@@ -232,9 +232,7 @@ class ParamListProcessor {
 			}
 
 			foreach ( $request['params'] as $key => $value ) {
-				if ( ( $key != 'width' ) && ( $key != 'height' ) ) {
 					$printRequest->setParameter( $key, $value );
-				}
 			}
 
 			// get outputFormat for each ?property and update params like thclass and link
