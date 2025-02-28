@@ -9,8 +9,8 @@ use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\MediaWiki\LinkBatch;
+use SMW\Query\QueryResult;
 use SMW\SQLStore\SQLStore;
-use SMWQueryResult as QueryResult;
 
 /**
  * @license GPL-2.0-or-later

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
@@ -21,7 +21,7 @@ class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

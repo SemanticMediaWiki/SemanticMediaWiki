@@ -3,11 +3,11 @@
 namespace SMW\Exporter\ResourceBuilders;
 
 use SMW\DIProperty;
+use SMW\Exporter\Element\ExpLiteral;
 use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
-use SMWExpLiteral as ExpLiteral;
 
 /**
  * @private

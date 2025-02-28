@@ -19,7 +19,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -33,7 +33,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +58,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -82,7 +82,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +107,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -128,7 +128,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectAllOnMainNamespaceWithEmptyResult() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectAllRedirectPages() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -171,7 +171,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMaxIdForMainNamespace() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -192,7 +192,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testgetMaxIdForCategoryNamespace() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -215,7 +215,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectAllOnMissingNamespaceThrowsException() {
 		$this->expectException( 'RuntimeException' );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -226,7 +226,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectByRangeOnMissingNamespaceThrowsException() {
 		$this->expectException( 'RuntimeException' );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

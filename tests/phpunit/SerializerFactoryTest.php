@@ -118,7 +118,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

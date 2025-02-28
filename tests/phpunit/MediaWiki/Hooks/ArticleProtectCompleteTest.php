@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use SMW\DataItemFactory;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Tests\PHPUnitCompat;
@@ -94,7 +95,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 		$instance->setLogger( $this->spyLogger );
 
 		$protections = [];
-		$reason = \SMW\Message::get( 'smw-edit-protection-auto-update' );
+		$reason = Message::get( 'smw-edit-protection-auto-update' );
 
 		$instance->process( $protections, $reason );
 

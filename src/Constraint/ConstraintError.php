@@ -2,7 +2,7 @@
 
 namespace SMW\Constraint;
 
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\ProcessingError;
 
 /**

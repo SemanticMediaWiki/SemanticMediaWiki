@@ -25,7 +25,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	private $engineOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +50,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetQueryResultForDebugQueryMode() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +85,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetImmediateEmptyQueryResultForLimitLessThanOne() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -110,7 +110,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->setUnboundLimit( -1 );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}

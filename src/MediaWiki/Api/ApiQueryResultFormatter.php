@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use InvalidArgumentException;
 use SMW\ProcessingErrorMsgHandler;
-use SMWQueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * This class handles the Api related query result formatting
@@ -35,7 +35,7 @@ class ApiQueryResultFormatter {
 
 	/**
 	 *
-	 * @var SMWQueryResult
+	 * @var QueryResult
 	 */
 	protected $queryResult = null;
 
@@ -44,9 +44,9 @@ class ApiQueryResultFormatter {
 	/**
 	 * @since 1.9
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 */
-	public function __construct( SMWQueryResult $queryResult ) {
+	public function __construct( QueryResult $queryResult ) {
 		$this->queryResult = $queryResult;
 	}
 

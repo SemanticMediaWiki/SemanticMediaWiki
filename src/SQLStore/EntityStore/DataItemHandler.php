@@ -113,7 +113,7 @@ abstract class DataItemHandler {
 
 	/**
 	 * Return an array of additional indexes that should be provided for
-	 * the table using this DI handler. By default, SMWSQLStore3 will
+	 * the table using this DI handler. By default, \SMW\SQLStore\SQLStore will
 	 * already create indexes for all standard select operations, based
 	 * on the indexfield provided by getIndexField(). Hence, most handlers
 	 * do not need to define any indexes.

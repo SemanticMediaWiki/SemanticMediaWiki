@@ -6,13 +6,13 @@ use OutOfBoundsException;
 use Serializers\DispatchableSerializer;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
-use SMWResultArray;
 use Title;
 
 /**
- * Class for serializing SMWDataItem and SMWQueryResult objects to a context
+ * Class for serializing SMWDataItem and QueryResult objects to a context
  * independent object consisting of arrays and associative arrays, which can
  * be fed directly to json_encode, the MediaWiki API, and similar serializers.
  *
@@ -171,7 +171,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	}
 
 	/**
-	 * Get the serialization for a SMWQueryResult object.
+	 * Get the serialization for a QueryResult object.
 	 *
 	 * @since 1.7
 	 *
@@ -200,7 +200,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 			$result = [ 'printouts' => [] ];
 
 			foreach ( $queryResult->getPrintRequests() as $printRequest ) {
-				$resultArray = SMWResultArray::factory( $diWikiPage, $printRequest, $queryResult );
+				$resultArray = ResultArray::factory( $diWikiPage, $printRequest, $queryResult );
 
 				if ( $printRequest->getMode() === PrintRequest::PRINT_THIS ) {
 					$dataItems = $resultArray->getContent();

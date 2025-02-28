@@ -7,7 +7,7 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\PropertyRegistry;
 

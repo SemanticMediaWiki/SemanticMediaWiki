@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;

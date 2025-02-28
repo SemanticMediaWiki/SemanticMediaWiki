@@ -5,7 +5,7 @@ namespace SMW\Listener\EventListener\EventListeners;
 use Onoi\EventDispatcher\DispatchContext;
 use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,16 +20,16 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	const EVENT_ID = 'InvalidatePropertySpecificationLookupCache';
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 

@@ -6,7 +6,7 @@ use ExtensionRegistry;
 use SMW\DataTypeRegistry;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\Store;

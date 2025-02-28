@@ -37,7 +37,7 @@ class PageRequestOptionsTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$this->assertInstanceOf(
-			'SMWPropertyValue',
+			'\SMW\DataValues\PropertyValue',
 			$instance->property
 		);
 	}

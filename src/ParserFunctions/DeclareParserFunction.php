@@ -4,8 +4,8 @@ namespace SMW\ParserFunctions;
 
 use PPFrame;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\ParserData;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * Class that provides the {{#declare}} parser function

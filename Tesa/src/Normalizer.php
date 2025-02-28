@@ -42,11 +42,11 @@ class Normalizer {
 			$halfWidth = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
 			// http://php.net/manual/en/function.str-split.php, mb_str_split
-			$length = mb_strlen( $fullWidth, "UTF-8" );
+			$length = mb_strlen( $fullWidth, 'UTF-8' );
 			$full = [];
 
 			for ( $i = 0; $i < $length; $i += 1 ) {
-				$full[] = mb_substr( $fullWidth, $i, 1, "UTF-8" );
+				$full[] = mb_substr( $fullWidth, $i, 1, 'UTF-8' );
 			}
 
 			$half = str_split( $halfWidth );
@@ -63,7 +63,8 @@ class Normalizer {
 	 * @return string
 	 */
 	public static function toLowercase( $text ) {
-		return mb_strtolower( $text, mb_detect_encoding( $text ) );
+		$encoding = mb_detect_encoding( $text ) ?: 'UTF-8';
+		return mb_strtolower( $text, $encoding );
 	}
 
 	/**
@@ -79,7 +80,7 @@ class Normalizer {
 			return $text;
 		}
 
-		$encoding = mb_detect_encoding( $text );
+		$encoding = mb_detect_encoding( $text ) ?: 'UTF-8';
 		$lastWholeWordPosition = $length;
 
 		if ( strpos( $text, ' ' ) !== false ) {

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;

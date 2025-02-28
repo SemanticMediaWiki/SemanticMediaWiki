@@ -3,7 +3,7 @@
 namespace SMW\Tests\Property\Annotators;
 
 use SMW\DataItemFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\SemanticData;

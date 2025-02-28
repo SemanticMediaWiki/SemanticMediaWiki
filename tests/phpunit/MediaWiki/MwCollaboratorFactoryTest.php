@@ -23,7 +23,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->applicationFactory = $this->getMockBuilder( '\SMW\ApplicationFactory' )
+		$this->applicationFactory = $this->getMockBuilder( ApplicationFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use SMW\Exporter\Element\ExpLiteral;
+use SMW\Exporter\Element\ExpResource;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
-use SMWExpLiteral as ExpLiteral;
-use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\XmlResponseParser

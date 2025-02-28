@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value)
@@ -139,7 +139,7 @@ class DsvResultPrinter extends FileExportPrinter {
 
 			/**
 			 * Loop over their fields (properties).
-			 * @var SMWResultArray $field
+			 * @var \SMW\Query\Result\ResultArray $field
 			 */
 			foreach ( $row as $field ) {
 				$itemSegments = [];

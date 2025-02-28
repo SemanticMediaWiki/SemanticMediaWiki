@@ -3,7 +3,7 @@
 namespace SMW\DataValues;
 
 use Linker;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
  * To support value list via the NS_MEDIAWIKI namespace

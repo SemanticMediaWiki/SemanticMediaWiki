@@ -7,7 +7,7 @@ use MediaWiki\MediaWikiServices;
 use ParserOutput;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Message;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use Title;
 
 /**
@@ -37,10 +37,10 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param Title $title
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, Title $title ) {
+	public function __construct( Annotator $propertyAnnotator, Title $title ) {
 		parent::__construct( $propertyAnnotator );
 		$this->title = $title;
 	}

@@ -20,12 +20,6 @@ class ThingDescriptionTest extends \PHPUnit\Framework\TestCase {
 			'SMW\Query\Language\ThingDescription',
 			new ThingDescription()
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ThingDescription',
-			new \SMWThingDescription()
-		);
 	}
 
 	public function testCommonMethods() {

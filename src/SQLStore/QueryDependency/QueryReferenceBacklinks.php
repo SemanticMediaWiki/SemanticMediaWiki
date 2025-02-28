@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryDependency;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 

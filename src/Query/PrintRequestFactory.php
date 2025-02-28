@@ -3,8 +3,8 @@
 namespace SMW\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @license GPL-2.0-or-later

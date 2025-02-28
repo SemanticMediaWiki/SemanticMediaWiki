@@ -3,11 +3,11 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use Iterator;
-use SMWExpLiteral as ExpLiteral;
+use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * Class for accessing SPARQL query results in a unified form. The data is
- * structured in tabular form, with each cell containing some SMWExpElement.
+ * structured in tabular form, with each cell containing some \SMW\Exporter\Element\ExpElement.
  * Rows should always have the same number of columns, but the datatype of the
  * cells in each column may not be uniform throughout the result.
  *
@@ -41,7 +41,7 @@ class RepositoryResult implements Iterator {
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
 	 *
-	 * @var array of array of (SMWExpElement or null)
+	 * @var array of array of (\SMW\Exporter\Element\ExpElement or null)
 	 */
 	protected $data;
 
@@ -64,7 +64,7 @@ class RepositoryResult implements Iterator {
 	 * Initialise a result set from a result string in SPARQL XML format.
 	 *
 	 * @param $header array mapping SPARQL variable names to column indices
-	 * @param $data array of array of (SMWExpElement or null)
+	 * @param $data array of array of (\SMW\Exporter\Element\ExpElement or null)
 	 * @param $comments array of string comments if the result contained any
 	 * @param $errorCode integer an error code
 	 */
@@ -171,7 +171,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Return the current result row. Standard method of Iterator.
 	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
+	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
 	 */
 	#[\ReturnTypeWillChange]
 	public function current() {
@@ -182,7 +182,7 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
+	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
 	 */
 	#[\ReturnTypeWillChange]
 	public function next() {
@@ -193,7 +193,7 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (SMWExpElement or null), or false at end of data
+	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
 	 */
 	#[\ReturnTypeWillChange]
 	public function key() {

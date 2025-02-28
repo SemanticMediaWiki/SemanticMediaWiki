@@ -6,9 +6,10 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DeferredTransactionalCallableUpdate as DeferredUpdate;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 use WikiPage;
 

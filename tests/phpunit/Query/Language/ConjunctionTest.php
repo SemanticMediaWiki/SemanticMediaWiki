@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
@@ -24,12 +24,6 @@ class ConjunctionTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\Conjunction',
 			new Conjunction()
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
-			new \SMWConjunction()
 		);
 	}
 

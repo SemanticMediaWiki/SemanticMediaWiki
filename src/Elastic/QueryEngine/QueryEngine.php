@@ -8,12 +8,12 @@ use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Options;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\QueryResult;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * @license GPL-2.0-or-later

@@ -6,11 +6,11 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exception\DataItemException;
+use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 use SMW\StoreFactory;
 use SMWDataItem as DataItem;
-use SMWSemanticData as SemanticData;
 
 /**
  * This class provides a subclass of SemanticData that can store prefetched values
@@ -149,7 +149,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return array of SMWDIProperty objects
+	 * @return array of \SMW\DIProperty objects
 	 */
 	public function getProperties() {
 		$this->unstubProperties();
@@ -263,7 +263,7 @@ class StubSemanticData extends SemanticData {
 	 * change, all parts of SMW are prepared to handle mismatched data item
 	 * types anyway.
 	 *
-	 * @param $property SMWDIProperty
+	 * @param $property \SMW\DIProperty
 	 * @param $dataItem DataItem
 	 *
 	 * @since 1.8
@@ -352,7 +352,7 @@ class StubSemanticData extends SemanticData {
 	 * @since 1.8
 	 *
 	 * @param string $propertyKey
-	 * @param SMWDIProperty|null $diProperty if available
+	 * @param \SMW\DIProperty|null $diProperty if available
 	 *
 	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null

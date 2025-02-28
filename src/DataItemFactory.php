@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\DataModel\ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
 use SMWDIContainer as DIContainer;

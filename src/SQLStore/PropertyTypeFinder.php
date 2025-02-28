@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use RuntimeException;
 use SMW\DIProperty;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 
 /**
  * @private

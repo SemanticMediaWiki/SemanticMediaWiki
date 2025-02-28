@@ -2,8 +2,6 @@
 
 namespace SMW\Localizer;
 
-use SMW\Message;
-
 /**
  * @private
  *

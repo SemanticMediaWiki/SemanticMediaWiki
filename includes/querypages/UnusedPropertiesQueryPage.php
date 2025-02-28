@@ -104,7 +104,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * Format a result in the list of results as a string. We expect the
-	 * result to be an object of type SMWDIProperty (normally) or maybe
+	 * result to be an object of type DIProperty (normally) or maybe
 	 * SMWDIError (if something went wrong).
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
@@ -185,7 +185,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param SMWRequestOptions $requestOptions
-	 * @return array of SMWDIProperty|SMWDIError
+	 * @return array of \SMW\DIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );

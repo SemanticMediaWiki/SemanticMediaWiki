@@ -4,9 +4,9 @@ namespace SMW\Exporter\ResourceBuilders;
 
 use SMW\DataValueFactory;
 use SMW\DIProperty;
+use SMW\Exporter\Element\ExpLiteral;
 use SMWDataItem as DataItem;
 use SMWExpData as ExpData;
-use SMWExpLiteral as ExpLiteral;
 
 /**
  * @private

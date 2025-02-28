@@ -10,6 +10,7 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Options;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
@@ -239,7 +240,7 @@ class DistinctEntityDataRebuilder {
 			SMWQueryProcessor::getProcessedParams( [] )
 		);
 
-		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
+		$query->setUnboundLimit( $result instanceof QueryResult ? $result->getCountValue() : $result );
 
 		return $this->store->getQueryResult( $query )->getResults();
 	}

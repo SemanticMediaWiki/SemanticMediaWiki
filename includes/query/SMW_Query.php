@@ -1,7 +1,7 @@
 <?php
 
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryContext;
@@ -252,7 +252,7 @@ class SMWQuery implements QueryContext {
 		return $this->m_mainlabel;
 	}
 
-	public function setDescription( SMWDescription $description ) {
+	public function setDescription( Description $description ) {
 		$this->description = $description;
 		$this->queryString = false;
 

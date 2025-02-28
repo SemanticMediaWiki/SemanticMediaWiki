@@ -11,6 +11,7 @@ use SMW\DependencyContainer;
 use SMW\DIWikiPage;
 use SMW\Settings;
 use SMW\SimpleDependencyBuilder;
+use SMW\SQLStore\SQLStore;
 use SMW\StoreFactory;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
@@ -218,16 +219,16 @@ abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
 			$store = StoreFactory::getStore();
 		}
 
-		if ( !( $store instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable to SMWSQLStore3' );
+		if ( !( $store instanceof SQLStore ) ) {
+			$this->markTestSkipped( 'Test only applicable to SQLStore' );
 		}
 	}
 
 	protected function getStore() {
 		$store = StoreFactory::getStore();
 
-		if ( !( $store instanceof \SMWSQLStore3 ) ) {
-			$this->markTestSkipped( 'Test only applicable for SMWSQLStore3' );
+		if ( !( $store instanceof SQLStore ) ) {
+			$this->markTestSkipped( 'Test only applicable for SQLStore' );
 		}
 
 		return $store;

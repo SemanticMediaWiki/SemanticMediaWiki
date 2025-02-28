@@ -5,6 +5,7 @@ namespace SMW;
 use ParserOptions;
 use ParserOutput;
 use Psr\Log\LoggerAwareTrait;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
 use Title;
 

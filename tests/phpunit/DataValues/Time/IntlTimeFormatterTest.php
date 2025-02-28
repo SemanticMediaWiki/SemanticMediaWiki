@@ -3,7 +3,7 @@
 namespace SMW\Tests\DataValues\Time;
 
 use SMW\DataValues\Time\IntlTimeFormatter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDITime as DITime;
 
 /**

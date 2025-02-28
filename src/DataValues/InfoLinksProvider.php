@@ -4,9 +4,9 @@ namespace SMW\DataValues;
 
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Parser\InTextAnnotationParser;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
@@ -27,7 +27,7 @@ class InfoLinksProvider {
 	private $dataValue;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -74,9 +74,9 @@ class InfoLinksProvider {
 	 * @since 2.4
 	 *
 	 * @param DataValue $dataValue
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( DataValue $dataValue, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( DataValue $dataValue, SpecificationLookup $propertySpecificationLookup ) {
 		$this->dataValue = $dataValue;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}

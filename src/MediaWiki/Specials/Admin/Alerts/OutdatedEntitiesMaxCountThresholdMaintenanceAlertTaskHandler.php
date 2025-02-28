@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\Message;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 

@@ -4,14 +4,14 @@ namespace SMW\Query\ResultPrinters;
 
 use Html;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
+use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
 use SMWDataValue;
 use SMWDIBlob as DIBlob;
-use SMWQueryResult as QueryResult;
-use SMWResultArray as ResultArray;
 
 /**
  * Print query results in tables
@@ -118,7 +118,7 @@ class TableResultPrinter extends ResultPrinter {
 		// building headers
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
-			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
+			foreach ( $res->getPrintRequests() as $pr ) {
 				$attributes = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
 				$attributes['class'] = $columnClass;
@@ -214,7 +214,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray[] $subject
+	 * @param ResultArray[] $subject
 	 * @param int $outputMode
 	 * @param string[] $columnClasses
 	 *
@@ -239,7 +239,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray $resultArray
+	 * @param \ $resultArray
 	 * @param int $outputMode
 	 * @param string $columnClass
 	 *

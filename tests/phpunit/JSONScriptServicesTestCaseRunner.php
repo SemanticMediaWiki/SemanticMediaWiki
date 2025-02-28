@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use SMW\DataValueFactory;
+use SMW\Elastic\ElasticStore;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
@@ -155,7 +156,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		parent::getPermittedSettings();
 
 		$elasticsearchConfig = function ( $val ) {
-			if ( $this->getStore() instanceof \SMWElasticStore ) {
+			if ( $this->getStore() instanceof ElasticStore ) {
 				$config = $this->getStore()->getConnection( 'elastic' )->getConfig();
 
 				foreach ( $val as $key => $value ) {

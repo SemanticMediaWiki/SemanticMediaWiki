@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Search;
 
 use SearchEngine;
+use SMW\Query\QueryResult;
 use SMW\Store;
 use SMWQuery;
-use SMWQueryResult as QueryResult;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search
@@ -399,12 +399,6 @@ class ExtendedSearch {
 	private function searchFallbackSearchEngine( $term, $fulltext ) {
 		$this->fallbackSearchEngine->prefix = $this->prefix;
 		$this->fallbackSearchEngine->namespaces = $this->namespaces;
-
-		// #4022
-		// https://github.com/wikimedia/mediawiki/commit/a1731db5abba7323eada8c11db2340cf0ecc3670
-		if ( method_exists( $this->fallbackSearchEngine, 'transformSearchTerm' ) ) {
-			$term = $this->fallbackSearchEngine->transformSearchTerm( $term );
-		}
 
 		$term = $this->fallbackSearchEngine->replacePrefixes(
 			$term

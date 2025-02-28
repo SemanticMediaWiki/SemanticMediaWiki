@@ -32,7 +32,7 @@ class ConceptMapperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsMapperFor() {
-		$dataItem = $this->getMockBuilder( '\SMWDIConcept' )
+		$dataItem = $this->getMockBuilder( '\SMW\DIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
 

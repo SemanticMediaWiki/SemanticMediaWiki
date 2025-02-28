@@ -4,7 +4,6 @@ namespace SMW\MediaWiki;
 
 use IDBAccessObject;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
 use SMW\PageInfo;
@@ -179,14 +178,9 @@ class PageInfoProvider implements PageInfo {
 	}
 
 	public static function isProtected( Title $title, string $action = '' ) {
-		if ( method_exists( RestrictionStore::class, 'isProtected' ) ) {
-			return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
-				$title, $action
-			);
-		}
-
-		// MW < 1.37
-		return $title->isProtected( $action );
+		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
+			$title, $action
+		);
 	}
 
 }

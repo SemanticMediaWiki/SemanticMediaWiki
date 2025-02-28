@@ -5,7 +5,7 @@ namespace SMW\SQLStore\Lookup;
 use Exception;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
@@ -25,7 +25,7 @@ class PropertyLabelSimilarityLookup {
 	private $store;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -48,9 +48,9 @@ class PropertyLabelSimilarityLookup {
 	 * @since 2.5
 	 *
 	 * @param Store $store
-	 * @param PropertySpecificationLookup|null $propertySpecificationLookup
+	 * @param SpecificationLookup|null $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, ?PropertySpecificationLookup $propertySpecificationLookup = null ) {
+	public function __construct( Store $store, ?SpecificationLookup $propertySpecificationLookup = null ) {
 		$this->store = $store;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 

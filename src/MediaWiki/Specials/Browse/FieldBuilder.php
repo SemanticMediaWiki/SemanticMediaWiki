@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\Browse;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SpecialPage;
 
 /**

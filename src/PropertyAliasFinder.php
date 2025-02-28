@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Onoi\Cache\Cache;
+use SMW\Localizer\Message;
 
 /**
  * @license GNU GPL v2

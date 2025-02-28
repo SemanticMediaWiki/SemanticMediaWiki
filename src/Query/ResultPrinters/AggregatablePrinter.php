@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use SMW\Query\QueryResult;
 use SMWDataItem as DataItem;
-use SMWQueryResult as QueryResult;
 
 /**
  * Abstract class that supports the aggregation and distributive calculation
@@ -163,8 +163,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
 		$values = [];
 
-		while ( /* array of SMWResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)
-			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // SMWResultArray for a sinlge property
+		while ( /* array of ResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)
+			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // ResultArray for a sinlge property
 				while ( ( /* SMWDataValue */ $dataValue = $row[$i]->getNextDataValue() ) !== false ) { // Data values
 
 					// Get the HTML for the tag content. Pages are linked, other stuff is just plaintext.

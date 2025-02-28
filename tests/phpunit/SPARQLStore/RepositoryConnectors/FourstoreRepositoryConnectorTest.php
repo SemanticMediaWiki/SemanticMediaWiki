@@ -17,7 +17,6 @@ class FourstoreRepositoryConnectorTest extends ElementaryRepositoryConnectorTest
 
 	public function getRepositoryConnectors() {
 		return [
-			'SMWSparqlDatabase4Store',
 			FourstoreRepositoryConnector::class
 		];
 	}

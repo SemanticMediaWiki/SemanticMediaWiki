@@ -137,7 +137,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPropertyRestrictionExaminer() {
-		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\PropertyRestrictionExaminer' )
+		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\Property\RestrictionExaminer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

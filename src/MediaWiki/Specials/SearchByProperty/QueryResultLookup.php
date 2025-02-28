@@ -8,11 +8,11 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\PrintRequest;
+use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
-use SMWRequestOptions as RequestOptions;
 
 /**
  * @license GPL-2.0-or-later

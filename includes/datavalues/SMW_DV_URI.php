@@ -1,7 +1,7 @@
 <?php
 
 use SMW\Encoder;
-use SMW\Message;
+use SMW\Localizer\Message;
 
 /**
  * @ingroup SMWDataValues

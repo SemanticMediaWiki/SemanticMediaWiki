@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 

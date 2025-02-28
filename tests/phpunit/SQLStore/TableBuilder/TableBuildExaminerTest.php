@@ -89,7 +89,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckOnActivitiesPostCreationForID_TABLE() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

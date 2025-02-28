@@ -38,7 +38,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testFetchGroup_Empty() {
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +58,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'foo' => 'id' ] );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +70,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -122,7 +122,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -146,7 +146,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'dataItemFromDBKeys' )
 			->willReturn( DIWikiPage::newFromtext( 'Foobar' ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +158,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -210,7 +210,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyValueType( '_txt' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -234,7 +234,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'dataItemFromDBKeys' )
 			->willReturn( new \SMWDIBlob( 'test' ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -246,7 +246,7 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

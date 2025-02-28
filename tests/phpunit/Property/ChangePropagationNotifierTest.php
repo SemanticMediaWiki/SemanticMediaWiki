@@ -71,10 +71,6 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
 
 		$this->detectChanges(
@@ -90,10 +86,6 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = new DIWikiPage( __METHOD__, NS_CATEGORY );
 
 		$this->detectChanges(

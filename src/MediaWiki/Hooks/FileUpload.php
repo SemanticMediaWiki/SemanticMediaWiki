@@ -6,7 +6,7 @@ use File;
 use Hooks;
 use MediaWiki\HookContainer\HookContainer;
 use ParserOptions;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;

@@ -4,6 +4,8 @@ namespace SMW;
 
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
+use SMW\Localizer\Localizer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later

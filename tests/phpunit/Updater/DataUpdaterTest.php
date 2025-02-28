@@ -70,7 +70,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

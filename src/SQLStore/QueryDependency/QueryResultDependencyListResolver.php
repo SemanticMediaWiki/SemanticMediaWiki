@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
@@ -12,8 +13,8 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQueryResult as QueryResult;
 
 /**
  * @license GPL-2.0-or-later
@@ -245,7 +246,7 @@ class QueryResultDependencyListResolver {
 		foreach ( $printRequests as $printRequest ) {
 			$data = $printRequest->getData();
 
-			if ( $data instanceof \SMWPropertyValue ) {
+			if ( $data instanceof PropertyValue ) {
 				$subjects[] = $data->getDataItem()->getCanonicalDiWikiPage();
 			}
 

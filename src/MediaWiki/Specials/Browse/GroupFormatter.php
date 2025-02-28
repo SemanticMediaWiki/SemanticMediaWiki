@@ -4,8 +4,8 @@ namespace SMW\MediaWiki\Specials\Browse;
 
 use Html;
 use SMW\DIWikiPage;
-use SMW\Message;
-use SMW\PropertySpecificationLookup;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
 use SMWDataItem as DataItem;
 
@@ -30,7 +30,7 @@ class GroupFormatter {
 	const MESSAGE_GROUP_DESCRIPTION = 'smw-property-group-description-';
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -57,9 +57,9 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup, SchemaFinder $schemaFinder ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup, SchemaFinder $schemaFinder ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->schemaFinder = $schemaFinder;
 	}

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\File\LocalFileUpload;

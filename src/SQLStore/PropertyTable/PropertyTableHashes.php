@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\PropertyTable;
 
 use RuntimeException;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\SQLStore;
 

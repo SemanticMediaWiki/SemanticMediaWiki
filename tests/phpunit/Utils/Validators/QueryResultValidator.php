@@ -5,9 +5,9 @@ namespace SMW\Tests\Utils\Validators;
 use Closure;
 use RuntimeException;
 use SMW\DIWikiPage;
+use SMW\Query\QueryResult;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
-use SMWQueryResult as QueryResult;
 
 /**
  * @license GPL-2.0-or-later

@@ -26,7 +26,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

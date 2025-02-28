@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
 use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\NamespaceInfo;
-use SMW\Message;
 use SpecialSearch;
 use Xml;
 

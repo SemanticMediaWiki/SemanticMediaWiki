@@ -5,7 +5,7 @@ namespace SMW\Query\ResultPrinters;
 use SMW\MediaWiki\Template\Template;
 use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\MediaWiki\Template\TemplateSet;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * Exports data as file in a format that is defined by its invoked templates.

@@ -5,7 +5,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIProperty;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 

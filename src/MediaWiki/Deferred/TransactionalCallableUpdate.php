@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Site;
 
 /**

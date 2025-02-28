@@ -14,7 +14,7 @@ namespace SMW\Tests\Query\ResultPrinters;
 class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOutputAsFile_AccessSequence() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

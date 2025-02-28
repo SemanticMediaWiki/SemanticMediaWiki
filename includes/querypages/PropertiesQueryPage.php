@@ -89,7 +89,7 @@ class PropertiesQueryPage extends QueryPage {
 
 	/**
 	 * Format a result in the list of results as a string. We expect the
-	 * result to be an array with one object of type SMWDIProperty
+	 * result to be an array with one object of type DIProperty
 	 * (normally) or maybe SMWDIError (if something went wrong), followed
 	 * by a number (how often the property is used).
 	 *
@@ -265,7 +265,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param SMWRequestOptions $requestOptions
-	 * @return array of array( SMWDIProperty|SMWDIError, integer )
+	 * @return array of array( \SMW\DIProperty|SMWDIError, integer )
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );

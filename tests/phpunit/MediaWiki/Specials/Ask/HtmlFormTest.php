@@ -50,7 +50,7 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSortKeys' )
 			->willReturn( [] );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

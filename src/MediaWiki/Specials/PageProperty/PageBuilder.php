@@ -6,8 +6,8 @@ use Html;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\Message;
 use SMW\Options;
 use SMWInfolink as Infolink;
 

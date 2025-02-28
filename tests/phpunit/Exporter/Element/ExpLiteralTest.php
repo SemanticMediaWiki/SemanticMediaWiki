@@ -26,12 +26,6 @@ class ExpLiteralTest extends \PHPUnit\Framework\TestCase {
 			'\SMW\Exporter\Element\ExpLiteral',
 			new ExpLiteral( '', '', '', null )
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'\SMWExpLiteral',
-			new \SMWExpLiteral( '', '', '', null )
-		);
 	}
 
 	/**

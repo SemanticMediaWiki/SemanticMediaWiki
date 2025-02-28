@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;

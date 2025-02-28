@@ -2,7 +2,6 @@
 
 namespace SMW\Property;
 
-use SMW\PropertyAnnotator;
 use SMW\SemanticData;
 
 /**
@@ -29,7 +28,7 @@ interface Annotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return PropertyAnnotator
+	 * @return Annotator
 	 */
 	public function addAnnotation();
 

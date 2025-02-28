@@ -3,7 +3,7 @@
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
-use SMWResultArray;
+use SMW\Query\Result\ResultArray;
 
 /**
  * Class SimpleRowBuilder
@@ -18,7 +18,7 @@ class SimpleRowBuilder extends RowBuilder {
 	private $linker;
 
 	/**
-	 * @param \SMWResultArray[] $fields
+	 * @param ResultArray[] $fields
 	 *
 	 * @param int $rownum
 	 *
@@ -76,11 +76,11 @@ class SimpleRowBuilder extends RowBuilder {
 	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 *
 	 * @return string
 	 */
-	private function getFieldLabel( SMWResultArray $field ) {
+	private function getFieldLabel( ResultArray $field ) {
 		$showHeaders = $this->get( 'show-headers' );
 
 		if ( $showHeaders === SMW_HEADERS_HIDE || $field->getPrintRequest()->getLabel() === '' ) {

@@ -4,7 +4,7 @@ namespace SMW\DataValues\Number;
 
 use SMW\DIProperty;
 use SMW\EntityCache;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMWDIBlob as DIBlob;
 use SMWNumberValue as NumberValue;
 
@@ -23,7 +23,7 @@ use SMWNumberValue as NumberValue;
 class UnitConverter {
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -60,10 +60,10 @@ class UnitConverter {
 	/**
 	 * @since 2.4
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 * @param EntityCache $entityCache
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup, EntityCache $entityCache ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup, EntityCache $entityCache ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->entityCache = $entityCache;
 	}

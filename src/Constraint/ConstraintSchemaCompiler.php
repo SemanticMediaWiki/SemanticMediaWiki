@@ -3,8 +3,8 @@
 namespace SMW\Constraint;
 
 use SMW\DIProperty;
-use SMW\Message;
-use SMW\PropertySpecificationLookup;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
 
 /**
@@ -21,7 +21,7 @@ class ConstraintSchemaCompiler {
 	private $schemaFinder;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -29,9 +29,9 @@ class ConstraintSchemaCompiler {
 	 * @since 3.1
 	 *
 	 * @param SchemaFinder $schemaFinder
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SchemaFinder $schemaFinder, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( SchemaFinder $schemaFinder, SpecificationLookup $propertySpecificationLookup ) {
 		$this->schemaFinder = $schemaFinder;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}

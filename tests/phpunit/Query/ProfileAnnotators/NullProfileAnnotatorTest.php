@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
@@ -53,7 +53,7 @@ class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWContainerSemanticData',
+			'\SMW\DataModel\ContainerSemanticData',
 			$instance->getSemanticData()
 		);
 

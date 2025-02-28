@@ -3,8 +3,8 @@
 namespace SMW\DataValues;
 
 use Linker;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 
 /**
  * To support regular expressions in connection with the `Allows pattern`

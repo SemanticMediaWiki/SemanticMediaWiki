@@ -10,9 +10,9 @@ use Sanitizer;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\ExportPrinter;
+use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
-use SMWQueryResult as QueryResult;
 use TextContent;
 use Title;
 use WikiPage;
@@ -279,7 +279,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		/**
 		 * Loop over all properties within a row
 		 *
-		 * @var \SMWResultArray $field
+		 * @var \SMW\Query\Result\ResultArray $field
 		 * @var \SMWDataValue $object
 		 */
 		foreach ( $row as $field ) {
@@ -377,11 +377,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 	private function newFeedItem( $title, $rowItems ) {
 		$mwServices = MediaWikiServices::getInstance();
-		if ( method_exists( $mwServices, 'getWikiPageFactory' ) ) {
-			$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
-		} else {
-			$wikiPage = WikiPage::newFromID( $title->getArticleID() );
-		}
+		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 
 		if ( $wikiPage !== null && $wikiPage->exists() ) {
 

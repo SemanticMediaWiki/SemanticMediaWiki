@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use SMW\Exporter\Element\ExpResource;
 use SMWExpData as ExpData;
-use SMWExpResource as ExpResource;
 
 /**
  * @license GPL-2.0-or-later

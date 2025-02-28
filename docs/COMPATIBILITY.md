@@ -28,7 +28,7 @@ Increases of minimum requirements are indicated in bold.
 		<td>Future release</td>
 		<td>2025-02-22</td>
 		<td>2025-02-22</td>
-		<td><strong>8.0</strong> - 8.3</td>
+		<td><strong>8.1</strong> - 8.3</td>
 		<td><strong>1.39</strong> - 1.43</td>
 		<td></td>
 	</tr>

@@ -5,7 +5,7 @@ namespace SMW\Query\Language;
 use Exception;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 
 /**
  * Description of a single class as given by a wiki category, or of a

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -11,7 +12,6 @@ use SMW\Query\PrintRequest;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWExporter as Exporter;
-use SMWPropertyValue as PropertyValue;
 use SMWQuery as Query;
 
 /**

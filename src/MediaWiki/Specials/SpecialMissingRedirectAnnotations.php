@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials;
 use Html;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlColumns;
 use SpecialPage;

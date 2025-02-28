@@ -6,7 +6,7 @@ use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDataValue as DataValue;
 
 /**

@@ -44,7 +44,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testNewMappingIterator( $subject ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +86,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 			'Foo', 0, '', 'sort', '10000000001'
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -9,7 +9,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\Store;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\ValueDescription;
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::Store::AfterQueryResultLookupComplete', function( Store $store, QueryResult &$queryResult ) {
 

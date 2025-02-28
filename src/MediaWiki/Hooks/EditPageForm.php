@@ -6,11 +6,11 @@ use EditPage;
 use Html;
 use SMW\DIProperty;
 use SMW\GroupPermissions;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\Message;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 

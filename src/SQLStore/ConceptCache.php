@@ -7,7 +7,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use SMWSQLStore3;
 use SMWWikiPageValue;
 use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
@@ -21,7 +20,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class ConceptCache {
 
 	/**
-	 * @var SMWSQLStore3
+	 * @var SQLStore
 	 */
 	private $store;
 
@@ -38,10 +37,10 @@ class ConceptCache {
 	/**
 	 * @since 2.2
 	 *
-	 * @param SMWSQLStore3 $store
+	 * @param SQLStore $store
 	 * @param ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder
 	 */
-	public function __construct( SMWSQLStore3 $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
+	public function __construct( SQLStore $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
 		$this->store = $store;
 		$this->conceptQuerySegmentBuilder = $conceptQuerySegmentBuilder;
 	}
@@ -118,12 +117,12 @@ class ConceptCache {
 
 		// TODO: catch db exception
 		$db->delete(
-			SMWSQLStore3::CONCEPT_CACHE_TABLE,
+			SQLStore::CONCEPT_CACHE_TABLE,
 			[ 'o_id' => $cid ],
 			__METHOD__
 		);
 
-		$concCacheTableName = $db->tablename( SMWSQLStore3::CONCEPT_CACHE_TABLE );
+		$concCacheTableName = $db->tablename( SQLStore::CONCEPT_CACHE_TABLE );
 
 		// MySQL just uses INSERT IGNORE, no extra conditions
 		$where = $querySegment->where;
@@ -207,7 +206,7 @@ class ConceptCache {
 		$db = $this->store->getConnection();
 
 		$db->delete(
-			SMWSQLStore3::CONCEPT_CACHE_TABLE,
+			SQLStore::CONCEPT_CACHE_TABLE,
 			[ 'o_id' => $conceptId ],
 			__METHOD__
 		);

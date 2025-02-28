@@ -6,7 +6,7 @@ use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 

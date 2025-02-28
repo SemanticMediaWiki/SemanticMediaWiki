@@ -8,13 +8,13 @@ use Psr\Log\LoggerInterface;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Query\Excerpts;
+use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\Timer;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * The prefetcher only caches the subject list from a computed a query

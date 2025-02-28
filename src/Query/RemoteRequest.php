@@ -7,7 +7,7 @@ use Onoi\HttpRequest\CachedCurlRequest;
 use Onoi\HttpRequest\CurlRequest;
 use Onoi\HttpRequest\HttpRequest;
 use RuntimeException;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
 use SMW\Services\ServicesFactory as ApplicationFactory;

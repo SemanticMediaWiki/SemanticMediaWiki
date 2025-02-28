@@ -46,7 +46,7 @@ class QueryResult {
 	protected $mResults;
 
 	/**
-	 * Array of SMWPrintRequest objects, indexed by their natural hash keys
+	 * Array of \SMW\Query\PrintRequest objects, indexed by their natural hash keys
 	 *
 	 * @var PrintRequest[]
 	 */

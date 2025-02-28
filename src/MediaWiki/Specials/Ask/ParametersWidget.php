@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
 use ParamProcessor\ParamDefinition;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Utils\HtmlDivTable;
 use SMWQueryProcessor as QueryProcessor;
 use Title;

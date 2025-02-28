@@ -24,7 +24,7 @@ class RdfResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +36,7 @@ class RdfResultPrinterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ResultPrinter',
+			'\SMW\Query\ResultPrinters\ResultPrinter',
 			new RdfResultPrinter( 'rdf' )
 		);
 	}

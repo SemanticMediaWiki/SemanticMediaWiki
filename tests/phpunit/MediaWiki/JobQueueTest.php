@@ -139,10 +139,6 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLazyPush() {
-		if ( !method_exists( $this->jobQueueGroup, 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$fakeJob = $this->getMockBuilder( '\Job' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();

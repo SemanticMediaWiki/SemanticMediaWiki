@@ -55,7 +55,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasReachedExpensiveLimit' )
 			->willReturn( false );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,7 +169,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance->parse( $params );
 
 		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
-			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
+			$this->assertInstanceOf( '\SMW\DataModel\ContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,

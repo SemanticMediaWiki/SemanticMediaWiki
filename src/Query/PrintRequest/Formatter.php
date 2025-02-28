@@ -3,6 +3,7 @@
 namespace SMW\Query\PrintRequest;
 
 use Linker;
+use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use Title;
 
@@ -43,7 +44,7 @@ class Formatter {
 		$label = $printRequest->getLabel();
 
 		if ( \SMW\Parser\InTextAnnotationParser::hasPropertyLink( $label ) ) {
-			return \SMW\Message::get( [ 'smw-parse', $label ], \SMW\Message::PARSE );
+			return Message::get( [ 'smw-parse', $label ], Message::PARSE );
 		}
 
 		$label = htmlspecialchars( $printRequest->getLabel() );

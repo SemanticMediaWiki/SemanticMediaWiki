@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMWQueryResult as QueryResult;
+use SMW\Query\QueryResult;
 
 /**
  * Print links to JSON files representing query results.
@@ -150,7 +150,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			$item = [];
 			$subject = '';
 
-			foreach ( $row as /* SMWResultArray */ $field ) {
+			foreach ( $row as /* ResultArray */ $field ) {
 				$label = $field->getPrintRequest()->getLabel();
 
 				if ( $label === '' ) {

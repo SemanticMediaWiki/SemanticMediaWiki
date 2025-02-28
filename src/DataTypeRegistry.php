@@ -4,6 +4,7 @@ namespace SMW;
 
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
+use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMWDataItem as DataItem;
 

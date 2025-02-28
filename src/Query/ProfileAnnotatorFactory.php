@@ -2,6 +2,7 @@
 
 namespace SMW\Query;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
@@ -11,7 +12,6 @@ use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWQuery as Query;
 

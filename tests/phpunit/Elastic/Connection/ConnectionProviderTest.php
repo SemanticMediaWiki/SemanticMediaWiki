@@ -45,7 +45,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetConnection_MissingEndpointsThrowsException() {
 		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore'
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore'
 			]
 		);
 
@@ -86,7 +86,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
@@ -111,7 +111,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);

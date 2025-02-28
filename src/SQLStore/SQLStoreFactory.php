@@ -8,6 +8,7 @@ use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Collator;
+use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
@@ -57,7 +58,6 @@ use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMWRequestOptions as RequestOptions;
 
 /**
  * @license GPL-2.0-or-later

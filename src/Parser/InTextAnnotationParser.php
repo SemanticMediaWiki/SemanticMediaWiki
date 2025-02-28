@@ -3,7 +3,7 @@
 namespace SMW\Parser;
 
 use SMW\DataValueFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;

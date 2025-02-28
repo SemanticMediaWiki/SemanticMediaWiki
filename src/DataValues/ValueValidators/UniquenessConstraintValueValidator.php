@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\Constraint\Constraints\UniqueValueConstraint;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMWDataValue as DataValue;
 
 /**
@@ -29,7 +29,7 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	private $uniqueValueConstraint;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -42,9 +42,9 @@ class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 	 * @since 2.4
 	 *
 	 * @param UniqueValueConstraint $uniqueValueConstraint
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( UniqueValueConstraint $uniqueValueConstraint, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( UniqueValueConstraint $uniqueValueConstraint, SpecificationLookup $propertySpecificationLookup ) {
 		$this->uniqueValueConstraint = $uniqueValueConstraint;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}

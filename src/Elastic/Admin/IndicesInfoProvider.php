@@ -3,7 +3,7 @@
 namespace SMW\Elastic\Admin;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
 use WebRequest;

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use SMW\Query\QueryResult;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory
@@ -46,7 +46,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newQueryResult( null, $query )
 		);
 	}
@@ -67,7 +67,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrorCode' )
 			->willReturn( $errorCode );
 
-		$description = $this->getMockBuilder( '\SMWDescription' )
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -77,7 +77,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newQueryResult( $RepositoryResult, $query )
 		);
 
@@ -103,7 +103,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrorCode' )
 			->willReturn( $errorCode );
 
-		$description = $this->getMockBuilder( '\SMWDescription' )
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -113,7 +113,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newQueryResult( $RepositoryResult, $query )
 		);
 
@@ -131,7 +131,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$expElement = $this->getMockBuilder( '\SMWExpElement' )
+		$expElement = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -145,7 +145,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrorCode' )
 			->willReturn( $errorCode );
 
-		$description = $this->getMockBuilder( '\SMWDescription' )
+		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -155,7 +155,7 @@ class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryResultFactory( $store );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newQueryResult( $repositoryResult, $query )
 		);
 

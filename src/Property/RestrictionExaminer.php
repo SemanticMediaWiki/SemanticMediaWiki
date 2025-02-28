@@ -4,7 +4,7 @@ namespace SMW\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 use User;
 

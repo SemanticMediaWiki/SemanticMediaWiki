@@ -3,7 +3,7 @@
 namespace SMW\Property;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 
 /**
  * @license GPL-2.0-or-later

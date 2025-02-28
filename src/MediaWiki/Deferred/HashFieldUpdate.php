@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Deferred;
 use DeferrableUpdate;
 use DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\SQLStore\SQLStore;

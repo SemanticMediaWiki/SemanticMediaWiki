@@ -38,7 +38,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 			$this->mediaWikiNsContentReader
 		);
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

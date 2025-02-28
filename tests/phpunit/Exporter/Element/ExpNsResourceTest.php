@@ -26,12 +26,6 @@ class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
 			'\SMW\Exporter\Element\ExpNsResource',
 			new ExpNsResource( '', '', '', null )
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'\SMWExpNsResource',
-			new \SMWExpNsResource( '', '', '', null )
-		);
 	}
 
 	/**

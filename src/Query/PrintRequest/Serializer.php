@@ -2,7 +2,7 @@
 
 namespace SMW\Query\PrintRequest;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 
 /**

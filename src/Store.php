@@ -7,15 +7,14 @@ use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
+use SMW\Query\QueryResult;
 use SMW\Services\Exception\ServiceNotFoundException;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
 use SMWDataItem as DataItem;
 use SMWQuery;
-use SMWQueryResult;
-use SMWRequestOptions;
-use SMWSemanticData;
 use Title;
 
 /**
@@ -73,7 +72,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param $subject mixed SMWDIWikiPage or null
 	 * @param $property DIProperty
-	 * @param null $requestoptions SMWRequestOptions
+	 * @param null $requestoptions RequestOptions
 	 *
 	 * @return array of DataItem
 	 */
@@ -98,7 +97,7 @@ abstract class Store implements QueryEngine {
 	 * @see EntityLookup::getProperties
 	 *
 	 * @param DIWikiPage $subject denoting the subject
-	 * @param SMWRequestOptions|null $requestOptions optionally defining further options
+	 * @param RequestOptions|null $requestOptions optionally defining further options
 	 *
 	 * @return DataItem
 	 */
@@ -268,7 +267,7 @@ abstract class Store implements QueryEngine {
 	 * @param DIWikiPage $di
 	 */
 	public function clearData( DIWikiPage $di ) {
-		$this->updateData( new SMWSemanticData( $di ) );
+		$this->updateData( new SemanticData( $di ) );
 	}
 
 	/**
@@ -290,14 +289,14 @@ abstract class Store implements QueryEngine {
 	 * hooks; keep the current signature to adhere semver for the 2.* branch
 	 *
 	 * Execute the provided query and return the result as an
-	 * SMWQueryResult if the query was a usual instance retrieval query. In
+	 * QueryResult if the query was a usual instance retrieval query. In
 	 * the case that the query asked for a plain string (querymode
 	 * MODE_COUNT or MODE_DEBUG) a plain wiki and HTML-compatible string is
 	 * returned.
 	 *
 	 * @param SMWQuery $query
 	 *
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
 	abstract public function getQueryResult( SMWQuery $query );
 
@@ -308,7 +307,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param SMWQuery $query
 	 *
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
 	protected function fetchQueryResult( SMWQuery $query ) {
 	}
@@ -327,7 +326,7 @@ abstract class Store implements QueryEngine {
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
-	 * @param SMWRequestOptions|null $requestoptions
+	 * @param RequestOptions|null $requestoptions
 	 *
 	 * @return ListLookup
 	 */
@@ -345,7 +344,7 @@ abstract class Store implements QueryEngine {
 	 * results requested (otherwise callers might assume that there are no
 	 * further results to ask for).
 	 *
-	 * @param SMWRequestOptions|null $requestoptions
+	 * @param RequestOptions|null $requestoptions
 	 *
 	 * @return array of DIProperty|SMWDIError
 	 */
@@ -357,7 +356,7 @@ abstract class Store implements QueryEngine {
 	 * accessing the set of all existing pages can extend this list to all
 	 * properties that are used but do not have a type assigned to them.
 	 *
-	 * @param SMWRequestOptions|null $requestoptions
+	 * @param RequestOptions|null $requestoptions
 	 *
 	 * @return array of array( DIProperty, int )
 	 */

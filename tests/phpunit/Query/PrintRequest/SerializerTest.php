@@ -4,7 +4,7 @@ namespace SMW\Tests\Query\PrintRequest;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequest\Serializer;
 

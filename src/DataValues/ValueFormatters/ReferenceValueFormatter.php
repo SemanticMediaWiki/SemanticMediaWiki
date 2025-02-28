@@ -5,13 +5,13 @@ namespace SMW\DataValues\ValueFormatters;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DataValues\ExternalIdentifierValue;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMWDataValue as DataValue;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * @license GPL-2.0-or-later

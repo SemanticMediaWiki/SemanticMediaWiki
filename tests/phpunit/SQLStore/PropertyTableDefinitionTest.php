@@ -35,7 +35,7 @@ class PropertyTableDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertIsArray(
 
-			$instance->getFields( StoreFactory::getStore( 'SMWSQLStore3' ) )
+			$instance->getFields( StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ) )
 		);
 
 		$this->assertEquals(

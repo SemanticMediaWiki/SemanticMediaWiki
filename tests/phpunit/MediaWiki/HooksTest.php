@@ -1575,7 +1575,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callSMWSQLStorAfterDataUpdateComplete( $instance ) {
 		$handler = 'SMW::SQLStore::AfterDataUpdateComplete';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

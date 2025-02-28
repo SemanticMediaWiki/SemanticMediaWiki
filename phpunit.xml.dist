@@ -62,7 +62,6 @@
             <directory>tests/phpunit/Updater</directory>
             <directory>tests/phpunit/Utils</directory>
             <file>tests/phpunit/CacheFactoryTest.php</file>
-            <file>tests/phpunit/ClassAliasTest.php</file>
             <file>tests/phpunit/ConstraintFactoryTest.php</file>
             <file>tests/phpunit/DataItemFactoryTest.php</file>
             <file>tests/phpunit/DataTypeRegistryTest.php</file>

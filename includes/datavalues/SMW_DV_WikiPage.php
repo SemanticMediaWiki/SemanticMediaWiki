@@ -1,8 +1,9 @@
 <?php
 
-use SMW\Localizer;
+use SMW\DIWikiPage;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Pipetrick;
-use SMW\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Image;
 
@@ -157,15 +158,15 @@ class SMWWikiPageValue extends SMWDataValue {
 			// T:P0427 If the user value says `ab c*` then make sure to use this one
 			// instead of the transformed DBKey which would be `Ab c*`
 			if ( $title !== null && $title->getNamespace() === NS_MAIN && $this->getOption( 'isCapitalLinks' ) === false ) {
-				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
+				return $this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
 			// If we know that it is a wikipage in a query context and the wiki
 			// requires `isCapitalLinks` then use the standard transformation so
 			// they appear as standard links even though the user input was `abc`.
 			// T:P0902 (`[[Help:]]`)
 			} elseif ( $title !== null ) {
-				return $this->m_dataitem = SMWDIWikiPage::newFromTitle( $title );
+				return $this->m_dataitem = DIWikiPage::newFromTitle( $title );
 			} elseif ( !$localizer->getNsIndex( substr( $value, 0, -1 ) ) ) {
-				return $this->m_dataitem = new SMWDIWikiPage( $value, NS_MAIN );
+				return $this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
 			}
 		}
 
@@ -196,7 +197,7 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 			$this->m_prefixedtext = '';
 			$this->m_id = -1; // unset id
-			$this->m_dataitem = SMWDIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
+			$this->m_dataitem = DIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
 		}
 	}
 
@@ -759,7 +760,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	/**
 	 * Find the sortkey for this object.
 	 *
-	 * @deprecated Use SMWStore::getWikiPageSortKey(). Will vanish before SMW 1.7
+	 * @deprecated Use \SMW\Store::getWikiPageSortKey(). Will vanish before SMW 1.7
 	 *
 	 * @return string sortkey
 	 */

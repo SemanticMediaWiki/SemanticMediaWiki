@@ -88,19 +88,4 @@ $autoloader->addClassMap( [
 	'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' => __DIR__ . '/phpunit/Integration/JSONScript/JSONScriptTestCaseRunnerTest.php'
 ] );
 
-// 4.0
-class_alias( '\SMW\Tests\QueryPrinterRegistryTestCase', '\SMW\Test\QueryPrinterRegistryTestCase' );
-
-// 3.2
-class_alias( '\SMW\Tests\JSONScriptTestCaseRunner', 'SMW\Tests\JsonTestCaseScriptRunner' );
-class_alias( '\SMW\Tests\JSONScriptServicesTestCaseRunner', 'SMW\Tests\LightweightJsonTestCaseScriptRunner' );
-class_alias( '\SMW\Tests\JSONScriptServicesTestCaseRunner', 'SMW\Tests\ExtendedJsonTestCaseScriptRunner' );
-
-// 3.1
-class_alias( '\SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler', 'SMW\Tests\JsonTestCaseFileHandler' );
-class_alias( '\SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler', 'SMW\Tests\JsonTestCaseContentHandler' );
-
-// 3.0
-class_alias( '\SMW\Tests\DatabaseTestCase', '\SMW\Tests\MwDBaseUnitTestCase' );
-
 return $autoloader;

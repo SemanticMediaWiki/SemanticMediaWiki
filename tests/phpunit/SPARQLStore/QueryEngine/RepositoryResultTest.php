@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use SMW\Exporter\Element\ExpLiteral;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\Tests\PHPUnitCompat;
-use SMWExpLiteral as ExpLiteral;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\RepositoryResult

@@ -200,7 +200,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckQueryTask() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

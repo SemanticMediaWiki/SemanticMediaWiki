@@ -39,7 +39,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryToken' )
 			->willReturn( $queryToken );
 
-		$this->queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
@@ -148,7 +148,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryToken' )
 			->willReturn( $queryToken );
 
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
@@ -202,7 +202,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryToken' )
 			->willReturn( $queryToken );
 
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -267,7 +267,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult = $this->getMockBuilder( 'SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

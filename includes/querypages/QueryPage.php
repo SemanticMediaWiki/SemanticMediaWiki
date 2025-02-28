@@ -4,8 +4,6 @@ namespace SMW;
 
 use Html;
 use SMW\MediaWiki\MessageBuilder;
-use SMWRequestOptions;
-use SMWStringCondition;
 use Xml;
 
 /**
@@ -187,13 +185,13 @@ abstract class QueryPage extends \QueryPage {
 		$out  = $this->getOutput();
 		$sk   = $this->getSkin();
 
-		$options = new SMWRequestOptions();
+		$options = new RequestOptions();
 		$options->limit = $limit;
 		$options->offset = $offset;
 		$options->sort = true;
 
 		if ( $property ) {
-			$options->addStringCondition( $property, SMWStringCondition::STRCOND_MID );
+			$options->addStringCondition( $property, StringCondition::STRCOND_MID );
 		}
 
 		if ( ( $filter = $this->getRequest()->getVal( 'filter' ) ) === 'unapprove' ) {

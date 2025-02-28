@@ -26,7 +26,7 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

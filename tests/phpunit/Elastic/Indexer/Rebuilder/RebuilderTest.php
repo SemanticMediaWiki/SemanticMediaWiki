@@ -63,7 +63,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelect() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

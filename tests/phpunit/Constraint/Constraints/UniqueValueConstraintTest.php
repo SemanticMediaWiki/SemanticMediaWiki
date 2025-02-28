@@ -45,7 +45,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 			->with( 'EntityUniquenessLookup' )
 			->willReturn( $this->entityUniquenessLookup );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

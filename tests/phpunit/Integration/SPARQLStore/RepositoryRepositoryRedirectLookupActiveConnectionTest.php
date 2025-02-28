@@ -5,11 +5,11 @@ namespace SMW\Tests\Integration\SPARQLStore;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\SPARQLStore;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
 /**

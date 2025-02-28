@@ -5,10 +5,10 @@ namespace SMW\SQLStore\Lookup;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMWDIError as DIError;
-use SMWRequestOptions as RequestOptions;
 
 /**
  * @license GPL-2.0-or-later

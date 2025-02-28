@@ -28,9 +28,8 @@ class ExpElementTest extends \PHPUnit\Framework\TestCase {
 			$instance
 		);
 
-		// Legacy
 		$this->assertInstanceOf(
-			'\SMWExpElement',
+			'\SMW\Exporter\Element\ExpElement',
 			$instance
 		);
 	}

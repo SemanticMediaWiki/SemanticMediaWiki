@@ -5,11 +5,11 @@ namespace SMW\Deserializers;
 use Deserializers\Deserializer;
 use OutOfBoundsException;
 use RuntimeException;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMWContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDIContainer as DIContainer;
 use SMWErrorValue as ErrorValue;
@@ -127,7 +127,7 @@ class SemanticDataDeserializer implements Deserializer {
 			$dataItem = $this->doDeserializeSubSemanticData(
 				$data,
 				$value['item'],
-				new SMWContainerSemanticData( $dataItem )
+				new ContainerSemanticData( $dataItem )
 			);
 
 		}

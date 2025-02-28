@@ -2,7 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 
 /**
  * @license GPL-2.0-or-later
@@ -30,11 +30,11 @@ class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.4
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param string|false $displayTitle
 	 * @param string $defaultSort
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, $displayTitle = false, $defaultSort = '' ) {
+	public function __construct( Annotator $propertyAnnotator, $displayTitle = false, $defaultSort = '' ) {
 		parent::__construct( $propertyAnnotator );
 		$this->displayTitle = $displayTitle;
 		$this->defaultSort = $defaultSort;

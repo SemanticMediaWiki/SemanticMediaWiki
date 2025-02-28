@@ -13,6 +13,7 @@ use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFu
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunc;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
 
 /**

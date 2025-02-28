@@ -87,13 +87,8 @@ class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddWikiText() {
-		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
-			$this->outputPage->expects( $this->once() )
-				->method( 'addWikiTextAsInterface' );
-		} else {
-			$this->outputPage->expects( $this->once() )
-				->method( 'addWikiText' );
-		}
+		$this->outputPage->expects( $this->once() )
+			->method( 'addWikiTextAsInterface' );
 
 		$instance = new OutputFormatter( $this->outputPage );
 		$instance->addWikiText( 'Foo' );

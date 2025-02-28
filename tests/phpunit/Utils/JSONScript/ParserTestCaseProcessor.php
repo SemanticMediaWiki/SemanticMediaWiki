@@ -7,6 +7,7 @@ use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
@@ -80,7 +81,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		$this->stringValidator = $stringValidator;
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
 		$this->superUser = UtilityFactory::getInstance()->newMockSuperUser();
-		$this->serializerFactory = \SMW\ApplicationFactory::getInstance()->newSerializerFactory();
+		$this->serializerFactory = ApplicationFactory::getInstance()->newSerializerFactory();
 	}
 
 	/**

@@ -49,13 +49,6 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 			'SMW\MediaWiki\Jobs\RefreshJob',
 			new RefreshJob( $title )
 		);
-
-		// FIXME Delete SMWRefreshJob assertion after all
-		// references to SMWRefreshJob have been removed
-		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\RefreshJob',
-			new \SMWRefreshJob( $title )
-		);
 	}
 
 	/**

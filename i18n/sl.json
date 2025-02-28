@@ -711,7 +711,7 @@
 	"smw-query-condition-empty": "Opis poizvedbe ima prazen pogoj.",
 	"smw-types-list": "Seznam podatkovnih tipov",
 	"smw-types-default": "»$1« je vgrajen podatkovni tip.",
-	"smw-types-help": "Dodatne informacije in primere lahko najdete na tej [https://www.semantic-mediawiki.org/wiki/Help:Type_ $1 strani pomoči].",
+	"smw-types-help": "Dodatne informacije in primere so na voljo na tej [https://www.semantic-mediawiki.org/wiki/Help:Type_ $1 strani pomoči].",
 	"smw-type-anu": "»$1« je različica podatkovnega tipa [[Special:Types/URL|URL]] in se večinoma uporablja za deklaracijo izvoza ''owl:AnnotationProperty''.",
 	"smw-type-boo": "»$1« je osnovni podatkovni tip za opis vrednosti true/false.",
 	"smw-type-cod": "»$1« je različica podatkovnega tipa [[Specia:Types/Text|Text]], ki se uporablja za tehnična besedila poljubne dolžine, kot je izvorna koda.",

@@ -10,8 +10,9 @@
 
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DIProperty;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\DIWikiPage;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\Options;
 use SMW\ProcessingError;
 use SMW\Query\QueryComparator;
@@ -113,7 +114,7 @@ abstract class SMWDataValue {
 	 * parse user values such as "#subsection" which only make sense when
 	 * used on a certain page.
 	 *
-	 * @var SMWDIWikiPage
+	 * @var DIWikiPage
 	 */
 	protected $m_contextPage = null;
 
@@ -309,9 +310,9 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWDIWikiPage|null $contextPage
+	 * @param DIWikiPage|null $contextPage
 	 */
-	public function setContextPage( ?SMWDIWikiPage $contextPage = null ) {
+	public function setContextPage( ?DIWikiPage $contextPage = null ) {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(

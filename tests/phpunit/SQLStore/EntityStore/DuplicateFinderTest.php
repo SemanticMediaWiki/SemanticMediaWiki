@@ -26,7 +26,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +52,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasDuplicate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -63,7 +63,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testfetchListForInvalidTableThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +100,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->o_hash = 42;
 		$row->count = 1001;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,7 +108,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

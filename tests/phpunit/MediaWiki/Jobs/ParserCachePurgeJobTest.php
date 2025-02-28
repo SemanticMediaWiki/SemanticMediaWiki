@@ -52,11 +52,9 @@ class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 		$page->expects( $this->once() )
 			->method( 'doPurge' );
 
-		if ( method_exists( $page, 'updateParserCache' ) ) {
-			$page->expects( $this->once() )
-				->method( 'updateParserCache' )
-				->with( $this->callback( $updateParserCacheCallback ) );
-		}
+		$page->expects( $this->once() )
+			->method( 'updateParserCache' )
+			->with( $this->callback( $updateParserCacheCallback ) );
 
 		$instance = $this->getMockBuilder( ParserCachePurgeJob::class )
 			->setConstructorArgs( [ $title, $parameters ] )

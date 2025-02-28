@@ -63,7 +63,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$instance->setHttpVersionTo( CURL_HTTP_VERSION_NONE );
 
 		$this->assertInstanceOf(
-			'\SMWSparqlDatabase',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 			$instance->getConnection()
 		);
 
@@ -98,12 +98,6 @@ class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 			'\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector',
 			$instance->getConnection()
 		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'\SMWSparqlDatabaseVirtuoso',
-			$instance->getConnection()
-		);
 	}
 
 	public function testGet4StoreConnection() {
@@ -111,12 +105,6 @@ class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertInstanceOf(
 			'\SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector',
-			$instance->getConnection()
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'\SMWSparqlDatabase4Store',
 			$instance->getConnection()
 		);
 	}
@@ -148,7 +136,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new RepositoryConnectionProvider( 'foo' );
 
 		$this->assertInstanceOf(
-			'\SMWSparqlDatabase',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -162,7 +150,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new RepositoryConnectionProvider();
 
 		$this->assertInstanceOf(
-			'\SMWSparqlDatabase',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 			$instance->getConnection()
 		);
 	}
@@ -176,7 +164,7 @@ class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new RepositoryConnectionProvider();
 
 		$this->assertInstanceOf(
-			'\SMWSparqlDatabase',
+			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 			$instance->getConnection()
 		);
 	}

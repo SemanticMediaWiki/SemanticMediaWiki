@@ -386,7 +386,7 @@ class SemanticData implements JsonUnserializable {
 			return $this->hash;
 		}
 
-		return $this->hash = Hash::createFromSemanticData( $this );
+		return $this->hash = HashBuilder::createFromSemanticData( $this );
 	}
 
 	/**

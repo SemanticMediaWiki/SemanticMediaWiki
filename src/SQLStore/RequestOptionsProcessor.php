@@ -3,10 +3,10 @@
 namespace SMW\SQLStore;
 
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
 use SMW\Store;
+use SMW\StringCondition;
 use SMWDIBlob as DIBlob;
-use SMWRequestOptions as RequestOptions;
-use SMWStringCondition as StringCondition;
 
 /**
  * @license GPL-2.0-or-later

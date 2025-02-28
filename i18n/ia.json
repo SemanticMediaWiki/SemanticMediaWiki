@@ -496,7 +496,7 @@
 	"smw-admin-operational-statistics": "Iste pagina contine statisticas operational colligite in o ab functiones de Semantic MediaWiki. Un lista extendite de statisticas specific de wikis pote esser trovate [[Special:Statistics|<b>hic</b>]].",
 	"smw_adminlinks_datastructure": "Structura de datos",
 	"smw_adminlinks_displayingdata": "Monstrar datos",
-	"smw_adminlinks_inlinequerieshelp": "Adjuta sur consultas incorporate",
+	"smw_adminlinks_inlinequerieshelp": "Adjuta sur consultas integrate",
 	"smw-page-indicator-usage-count": "[https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count Numero de usos] estimate: {{PLURAL:$2|'''$2'''}}",
 	"smw-property-indicator-type-info": "Proprietate definite per le {{PLURAL:$1|usator|systema}}",
 	"smw-property-indicator-last-count-update": "Numero estimate de usos\nUltime actualisation: $1",

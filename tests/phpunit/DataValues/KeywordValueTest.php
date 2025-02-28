@@ -5,7 +5,7 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\KeywordValue;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
@@ -33,7 +33,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( PropertySpecificationLookup::class )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

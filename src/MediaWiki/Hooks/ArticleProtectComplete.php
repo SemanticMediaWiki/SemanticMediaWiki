@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Hooks;
 
 use PSr\Log\LoggerAwareTrait;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\HookListener;
-use SMW\Message;
 use SMW\OptionsAwareTrait;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Services\ServicesFactory as ApplicationFactory;

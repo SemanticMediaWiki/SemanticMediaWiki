@@ -3,9 +3,9 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\Query\ExportPrinter;
+use SMW\Query\QueryResult;
 use SMWQuery;
 use SMWQueryProcessor;
-use SMWQueryResult;
 
 /**
  * Base class for file export result printers
@@ -45,10 +45,10 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 * @param array $params
 	 */
-	public function outputAsFile( SMWQueryResult $queryResult, array $params ) {
+	public function outputAsFile( QueryResult $queryResult, array $params ) {
 		$result = $this->getFileResult( $queryResult, $params );
 
 		$this->httpHeader(
@@ -76,11 +76,11 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 *
 	 * @return string|bool
 	 */
-	public function getFileName( SMWQueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ) {
 		return false;
 	}
 

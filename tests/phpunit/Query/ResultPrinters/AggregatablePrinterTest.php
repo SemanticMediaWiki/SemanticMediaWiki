@@ -3,12 +3,12 @@
 namespace SMW\Tests\Query\ResultPrinters;
 
 use ReflectionClass;
+use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWDataItem;
 use SMWDINumber;
-use SMWQueryResult;
 
 /**
  * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
@@ -32,7 +32,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +48,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ResultPrinter',
+			'\SMW\Query\ResultPrinters\ResultPrinter',
 			$this->aggregatablePrinter
 		);
 	}
@@ -57,7 +57,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider errorMessageProvider
 	 */
 	public function testGetResultTextErrorMessage( $setup, $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getErrors', 'getNext', 'addErrors' ] )
 			->getMock();
@@ -233,7 +233,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @return SMWQueryResult
+	 * @return QueryResult
 	 */
 	private function buildMockQueryResult( $setup ) {
 		$printRequests = [];
@@ -283,7 +283,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 				->method( 'getDataItem' )
 				->willReturn( $dataItem );
 
-			$resultArray = $this->getMockBuilder( '\SMWResultArray' )
+			$resultArray = $this->getMockBuilder( '\SMW\Query\Result\ResultArray' )
 				->disableOriginalConstructor()
 				->setMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
 				->getMock();
@@ -307,7 +307,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 			$resultArrays[] = $resultArray;
 		}
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

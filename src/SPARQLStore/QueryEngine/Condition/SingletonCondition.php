@@ -2,7 +2,7 @@
 
 namespace SMW\SPARQLStore\QueryEngine\Condition;
 
-use SMWExpElement;
+use SMW\Exporter\Element\ExpElement;
 
 /**
  * A SPARQL condition that can match only a single element, or nothing at all.
@@ -28,7 +28,7 @@ class SingletonCondition extends Condition {
 	/**
 	 * The single element that this condition may possibly match.
 	 *
-	 * @var SMWExpElement
+	 * @var ExpElement
 	 */
 	public $matchElement;
 
@@ -40,7 +40,7 @@ class SingletonCondition extends Condition {
 	 */
 	public $isSafe;
 
-	public function __construct( SMWExpElement $matchElement, $condition = '', $isSafe = false, $namespaces = [] ) {
+	public function __construct( ExpElement $matchElement, $condition = '', $isSafe = false, $namespaces = [] ) {
 		$this->matchElement = $matchElement;
 		$this->condition  = $condition;
 		$this->isSafe     = $isSafe;

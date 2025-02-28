@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\Admin;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\HtmlTabs;
 use WebRequest;

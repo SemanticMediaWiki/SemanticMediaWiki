@@ -130,7 +130,7 @@ final class ApiRequestParameterFormatter {
 	}
 
 	/**
-	 * Format printout and returns a SMWPrintRequest object
+	 * Format printout and returns a PrintRequest object
 	 *
 	 * @since 1.9
 	 *

@@ -143,10 +143,6 @@ class JobQueue {
 	 * @param Job|Job[] $jobs
 	 */
 	public function lazyPush( $jobs ) {
-		if ( !method_exists( $this->jobQueueGroup, 'lazyPush' ) ) {
-			return $this->push( $jobs );
-		}
-
 		$this->jobQueueGroup->lazyPush( $jobs );
 	}
 

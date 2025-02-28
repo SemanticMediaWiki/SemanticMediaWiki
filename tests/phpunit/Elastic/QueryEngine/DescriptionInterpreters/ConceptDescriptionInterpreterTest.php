@@ -94,7 +94,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$concept = $this->getMockBuilder( '\SMWDIConcept' )
+		$concept = $this->getMockBuilder( '\SMW\DIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
 

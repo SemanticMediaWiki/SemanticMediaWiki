@@ -16,10 +16,7 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 
 	public function getRepositoryConnectors() {
-		// Legacy and should be removed once obsolete
-		return [
-			'SMWSparqlDatabase'
-		];
+		return [];
 	}
 
 	/**
@@ -132,11 +129,10 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
 
 			switch ( $repositoryConnector ) {
-				case '\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector':
+				case 'SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector':
 					$expectedPostField = '&default-graph-uri=' . $encodedDefaultGraph . '&output=xml';
 					break;
-				case 'SMWSparqlDatabase4Store':
-				case '\SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector':
+				case 'SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector':
 					$expectedPostField = "&restricted=1" . '&default-graph-uri=' . $encodedDefaultGraph;
 					break;
 				default:
@@ -156,7 +152,6 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $this->getRepositoryConnectors() as $repositoryConnector ) {
 
 			switch ( $repositoryConnector ) {
-				case 'SMWSparqlDatabaseVirtuoso':
 				case 'SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector':
 					$expectedPostField = 'query=';
 					break;

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use SMW\ParserParameterFormatter;
+use SMW\ParserParameterProcessor;
 use SMW\RecurringEvents;
 
 /**
@@ -29,7 +29,7 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 */
 	public function testGetErrors( array $params, array $expected ) {
-		$parameters = new ParserParameterFormatter( $params );
+		$parameters = new ParserParameterProcessor( $params );
 
 		$instance = new RecurringEvents();
 		$instance->parse( $parameters->toArray() );
@@ -45,7 +45,7 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 */
 	public function testGetProperty( array $params, array $expected ) {
-		$parameters = new ParserParameterFormatter( $params );
+		$parameters = new ParserParameterProcessor( $params );
 
 		$instance = new RecurringEvents();
 		$instance->parse( $parameters->toArray() );
@@ -62,7 +62,7 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 */
 	public function testGetParameters( array $params, array $expected ) {
-		$parameters = new ParserParameterFormatter( $params );
+		$parameters = new ParserParameterProcessor( $params );
 
 		$instance = new RecurringEvents();
 		$instance->parse( $parameters->toArray() );
@@ -79,7 +79,7 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 */
 	public function testGetDates( array $params, array $expected ) {
-		$parameters = new ParserParameterFormatter( $params );
+		$parameters = new ParserParameterProcessor( $params );
 
 		$instance = new RecurringEvents();
 		$instance->parse( $parameters->toArray() );
@@ -119,7 +119,7 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 	 * @since 1.
 	 */
 	public function testMassInsert( array $params, array $expected ) {
-		$parameters = new ParserParameterFormatter( $params );
+		$parameters = new ParserParameterProcessor( $params );
 
 		$instance = new RecurringEvents();
 		$instance->parse( $parameters->toArray() );

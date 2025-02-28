@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;
 

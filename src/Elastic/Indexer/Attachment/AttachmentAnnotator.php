@@ -3,9 +3,9 @@
 namespace SMW\Elastic\Indexer\Attachment;
 
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
-use SMW\PropertyAnnotator;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\Property\Annotator;
 use SMWDIContainer as DIContainer;
 use SMWDITime as DITime;
 
@@ -15,7 +15,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class AttachmentAnnotator implements PropertyAnnotator {
+class AttachmentAnnotator implements Annotator {
 
 	/**
 	 * @var ContainerSemanticData
@@ -57,7 +57,7 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::getSemanticData
+	 * @see Annotator::getSemanticData
 	 * @since 3.0
 	 *
 	 * @return SemanticData
@@ -67,10 +67,10 @@ class AttachmentAnnotator implements PropertyAnnotator {
 	}
 
 	/**
-	 * @see PropertyAnnotator::addAnnotation
+	 * @see Annotator::addAnnotation
 	 * @since 3.0
 	 *
-	 * @return PropertyAnnotator
+	 * @return Annotator
 	 */
 	public function addAnnotation() {
 		$dataItemFactory = new DataItemFactory();

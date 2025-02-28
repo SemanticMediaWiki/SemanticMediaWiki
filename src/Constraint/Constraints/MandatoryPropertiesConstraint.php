@@ -5,7 +5,7 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\SemanticData;
 use SMWDataValue as DataValue;
 
