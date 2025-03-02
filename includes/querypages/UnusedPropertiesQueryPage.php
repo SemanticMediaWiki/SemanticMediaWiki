@@ -5,6 +5,7 @@ namespace SMW;
 use Html;
 use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\RequestOptions;
 use SMWDIError;
 
 /**
@@ -184,8 +185,8 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	/**
 	 * Get the list of results.
 	 *
-	 * @param SMWRequestOptions $requestOptions
-	 * @return array of \SMW\DIProperty|SMWDIError
+	 * @param RequestOptions $requestOptions
+	 * @return array of DIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );
