@@ -3,6 +3,7 @@
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
+use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
@@ -142,13 +143,13 @@ class SMWPageLister {
 	 * than the limit will be created, and the results may have to be
 	 * reversed in order if $until is nonempty.
 	 *
-	 * @param $description SMWDescription main query description
+	 * @param $description Description main query description
 	 * @param $limit integer
 	 * @param $from string can be empty if no from condition is desired
 	 * @param $until string can be empty if no until condition is desired
 	 * @return SMWQuery
 	 */
-	public static function getQuery( SMWDescription $description, $limit, $from, $until ) {
+	public static function getQuery( Description $description, $limit, $from, $until ) {
 		if ( $from !== '' ) {
 			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
