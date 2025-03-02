@@ -9,6 +9,7 @@ use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Serializer\Serializer;
+use SMW\Query\Language\ConceptDescription;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
 use SMW\SemanticData;
@@ -275,7 +276,7 @@ class SMWExportController {
 						}
 					}
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
-					$desc = new SMWConceptDescription( $diWikiPage );
+					$desc = new ConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
