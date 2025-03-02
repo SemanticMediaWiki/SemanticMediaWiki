@@ -202,7 +202,7 @@ class SemanticMediaWiki {
 	 * @since 4.0
 	 */
 	public static function setupAliases(): void {
-		foreach( self::getClassAliasMap() as $class => $canon ) {
+		foreach ( self::getClassAliasMap() as $class => $canon ) {
 			class_alias( $canon, $class );
 		}
 	}
