@@ -473,4 +473,4 @@ class ElasticStore extends SQLStore {
 
 }
 
-class_alias( ElasticStore::class, 'SMWElasticStore' ); 
+class_alias( ElasticStore::class, 'SMWElasticStore' );

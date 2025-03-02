@@ -3,7 +3,6 @@
 namespace SMW;
 
 use Html;
-use SMW\RequestOptions;
 use Title;
 
 /**

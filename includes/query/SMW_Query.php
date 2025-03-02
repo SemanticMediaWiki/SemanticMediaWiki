@@ -7,7 +7,6 @@ use SMW\Query\PrintRequest;
 use SMW\Query\QueryContext;
 use SMW\Query\QueryStringifier;
 use SMW\Query\QueryToken;
-use SMW\RequestOptions;
 
 /**
  * This file contains the class for representing queries in SMW, each

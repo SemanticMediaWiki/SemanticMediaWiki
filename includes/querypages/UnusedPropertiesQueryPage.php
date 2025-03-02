@@ -5,7 +5,6 @@ namespace SMW;
 use Html;
 use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
-use SMW\RequestOptions;
 use SMWDIError;
 
 /**
