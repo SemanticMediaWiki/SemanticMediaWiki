@@ -3,6 +3,7 @@
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
+use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
@@ -154,12 +155,12 @@ class SMWPageLister {
 		if ( $from !== '' ) {
 			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
-			$queryDescription = new SMWConjunction( [ $description, $fromDescription ] );
+			$queryDescription = new Conjunction( [ $description, $fromDescription ] );
 			$order = 'ASC';
 		} elseif ( $until !== '' ) {
 			$diWikiPage = new DIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$untilDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
-			$queryDescription = new SMWConjunction( [ $description, $untilDescription ] );
+			$queryDescription = new Conjunction( [ $description, $untilDescription ] );
 			$order = 'DESC';
 		} else {
 			$queryDescription = $description;
