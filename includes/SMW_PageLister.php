@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
@@ -33,7 +34,7 @@ class SMWPageLister {
 	/**
 	 * Constructor
 	 *
-	 * @param $diWikiPages array of SMWDIWikiPage
+	 * @param $diWikiPages array of DIWikiPage
 	 * @param $diProperty mixed \SMW\DIProperty that the wikipages are values of, or null
 	 * @param $limit integer maximal amount of items to display
 	 * @param $from string if the results were selected starting from this string
@@ -149,12 +150,12 @@ class SMWPageLister {
 	 */
 	public static function getQuery( SMWDescription $description, $limit, $from, $until ) {
 		if ( $from !== '' ) {
-			$diWikiPage = new SMWDIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
+			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
 			$queryDescription = new SMWConjunction( [ $description, $fromDescription ] );
 			$order = 'ASC';
 		} elseif ( $until !== '' ) {
-			$diWikiPage = new SMWDIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
+			$diWikiPage = new DIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$untilDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
 			$queryDescription = new SMWConjunction( [ $description, $untilDescription ] );
 			$order = 'DESC';
@@ -200,12 +201,12 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Format a list of SMWDIWikiPage objects chunked by letter in a three-column
+	 * Format a list of DIWikiPage objects chunked by letter in a three-column
 	 * list, ordered vertically.
 	 *
 	 * @param $start integer
 	 * @param $end integer
-	 * @param $diWikiPages array of SMWDIWikiPage
+	 * @param $diWikiPages array of DIWikiPage
 	 * @param $diProperty \SMW\DIProperty that the wikipages are values of, or null
 	 *
 	 * @return string
