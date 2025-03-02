@@ -5,8 +5,6 @@ namespace SMW\Query\Processor;
 /**
  * The class supports size formatter option in ask queries
  * example ?Main Image=|width=+30px or ?Main Image=|height=+30px
- * Implements PresentationLayerInterface for adding print requests
- * and handling parameters.
  *
  *
  * @license GNU GPL v2+
@@ -14,12 +12,12 @@ namespace SMW\Query\Processor;
  *
  * @author milic
  */
-class SizeFormatterOption implements PresentationLayerInterface {
+class SizeFormatterOption {
 
 	const FORMAT_LEGACY = 'format.legacy';
 	const PRINT_THIS = 'print.this';
 
-	public function getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization ): array {
+	public function getPrintRequestWithOutputMarker( string $param, string $previousPrintout, array $serialization ): array {
 		if ( $previousPrintout === null ) {
 			return [];
 		}

@@ -24,7 +24,7 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( 'Main Image', '+link=', 'Main Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( '+link=', 'Main Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -51,7 +51,7 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( 'Job Title', '+link=', 'Job Title', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( '+link=', 'Job Title', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -78,7 +78,7 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( 'Image', '+link=', 'Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( '+link=', 'Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [

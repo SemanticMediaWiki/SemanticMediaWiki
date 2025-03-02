@@ -121,16 +121,16 @@ class ParamListProcessor {
 				$this->addPrintRequest( $name, $param, $previousPrintout, $serialization );
 			} elseif ( str_contains( $param, '+width=' ) || str_contains( $param, '+height=' ) ) {
 				$sizeFormatter = new SizeFormatterOption();
-				$result = $sizeFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
+				$result = $sizeFormatter->getPrintRequestWithOutputMarker( $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 			} elseif ( str_contains( $param, '+link=' ) ) {
 				$linkFormatter = new LinkFormatterOption();
-				$result = $linkFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
+				$result = $linkFormatter->getPrintRequestWithOutputMarker( $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 			} elseif ( str_contains( $param, '+thclass=' ) ) {
 				$headerFormatter = new TableHeaderFormatterOption();
-				$result = $headerFormatter->getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization );
+				$result = $headerFormatter->getPrintRequestWithOutputMarker( $param, $previousPrintout, $serialization );
 				$serialization = $result[ 'serialization' ];
 				$labelPreviousPrintout = $serialization[ 'printouts' ][ $previousPrintout ][ 'label' ];
 			} elseif ( $param[0] == '+' && ( !str_contains( $param, '+link=' ) && !str_contains( $param, '+thclass=' ) &&

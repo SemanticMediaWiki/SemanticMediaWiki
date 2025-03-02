@@ -5,20 +5,18 @@ namespace SMW\Query\Processor;
 /**
  * The class supports formatter option in ask queries
  * to set links, e.g., ?Main Image=|+link=
- * Implements PresentationLayerInterface for adding print requests
- * and handling parameters.
  *
  * @license GNU GPL v2+
  * @since 5.0.0
  *
  * @author milic
  */
-class LinkFormatterOption implements PresentationLayerInterface {
+class LinkFormatterOption {
 
 	const FORMAT_LEGACY = 'format.legacy';
 	const PRINT_THIS = 'print.this';
 
-	public function getPrintRequestWithOutputMarker( $name, $param, $previousPrintout, $serialization ): array {
+	public function getPrintRequestWithOutputMarker( string $param, string $previousPrintout, array $serialization ): array {
 		if ( $previousPrintout === null ) {
 			return [];
 		}

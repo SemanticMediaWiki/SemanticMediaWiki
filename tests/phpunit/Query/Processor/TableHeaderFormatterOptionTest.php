@@ -24,7 +24,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( 'Main Image', '+thclass=unsortable', 'Main Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( '+thclass=unsortable', 'Main Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -44,7 +44,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( 'Job Title', '+thclass=unsortable', 'Job Title', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( '+thclass=unsortable', 'Job Title', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
@@ -64,7 +64,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( 'Image', '+thclass=unsortable', 'Image', $serialization );
+		$result = $formatter->getPrintRequestWithOutputMarker( '+thclass=unsortable', 'Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [

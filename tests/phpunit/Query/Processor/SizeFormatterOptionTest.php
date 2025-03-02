@@ -26,7 +26,6 @@ class SizeFormatterOptionTest extends TestCase {
 		];
 
 		$result = $formatter->getPrintRequestWithOutputMarker(
-			self::MAIN_IMAGE,
 			"+{$parameter}={$value}",
 			self::MAIN_IMAGE,
 			$serialization
