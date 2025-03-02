@@ -4,6 +4,7 @@ use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\Description;
+use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
@@ -152,12 +153,12 @@ class SMWPageLister {
 	public static function getQuery( Description $description, $limit, $from, $until ) {
 		if ( $from !== '' ) {
 			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
-			$fromDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
+			$fromDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
 			$queryDescription = new SMWConjunction( [ $description, $fromDescription ] );
 			$order = 'ASC';
 		} elseif ( $until !== '' ) {
 			$diWikiPage = new DIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
-			$untilDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
+			$untilDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
 			$queryDescription = new SMWConjunction( [ $description, $untilDescription ] );
 			$order = 'DESC';
 		} else {
