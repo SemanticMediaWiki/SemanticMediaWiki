@@ -8,7 +8,7 @@ use SMW\DIProperty;
 use SMW\Query\PrintRequest;
 use SMW\Store;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
+use SMW\Query\Parser as QueryParser;
 
 /**
  * @group semantic-mediawiki-benchmark
