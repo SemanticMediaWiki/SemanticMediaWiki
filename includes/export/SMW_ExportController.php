@@ -3,6 +3,7 @@
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\DataItemException;
 use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
@@ -599,7 +600,7 @@ class SMWExportController {
 				$this->serializePage( $diPage, 0 );
 				$this->flush();
 				$linkCache->clear();
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				// strange data, who knows, not our DB table, keep calm and carry on
 			}
 		}
