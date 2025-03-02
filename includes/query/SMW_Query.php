@@ -7,6 +7,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\QueryContext;
 use SMW\Query\QueryStringifier;
 use SMW\Query\QueryToken;
+use SMW\RequestOptions;
 
 /**
  * This file contains the class for representing queries in SMW, each
@@ -29,7 +30,7 @@ use SMW\Query\QueryToken;
  * changes in the query description.
  *
  * Most additional query parameters (limit, sort, ascending, ...) are
- * interpreted as in SMWRequestOptions (though the latter contains some
+ * interpreted as in RequestOptions (though the latter contains some
  * additional settings).
  * @ingroup SMWQuery
  */
