@@ -3,6 +3,7 @@
 namespace SMW;
 
 use Html;
+use SMW\RequestOptions;
 use Title;
 
 /**
@@ -178,8 +179,8 @@ class WantedPropertiesQueryPage extends QueryPage {
 	/**
 	 * Get the list of results.
 	 *
-	 * @param SMWRequestOptions $requestOptions
-	 * @return array of \SMW\DIProperty|SMWDIError
+	 * @param RequestOptions $requestOptions
+	 * @return array of DIProperty|SMWDIError
 	 */
 	function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );
