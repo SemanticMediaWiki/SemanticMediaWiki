@@ -3,7 +3,7 @@
 namespace SMW\Tests;
 
 use ReflectionClass;
-use SMW\ResultPrinter;
+use SMW\Query\ResultPrinters\ResultPrinter;
 
 /**
  * Class contains methods to access data in connection with the QueryPrinter
