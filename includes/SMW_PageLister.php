@@ -1,7 +1,11 @@
 <?php
 
 use SMW\DataValueFactory;
+use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
@@ -33,7 +37,7 @@ class SMWPageLister {
 	/**
 	 * Constructor
 	 *
-	 * @param $diWikiPages array of SMWDIWikiPage
+	 * @param $diWikiPages array of DIWikiPage
 	 * @param $diProperty mixed \SMW\DIProperty that the wikipages are values of, or null
 	 * @param $limit integer maximal amount of items to display
 	 * @param $from string if the results were selected starting from this string
@@ -141,22 +145,22 @@ class SMWPageLister {
 	 * than the limit will be created, and the results may have to be
 	 * reversed in order if $until is nonempty.
 	 *
-	 * @param $description SMWDescription main query description
+	 * @param $description Description main query description
 	 * @param $limit integer
 	 * @param $from string can be empty if no from condition is desired
 	 * @param $until string can be empty if no until condition is desired
 	 * @return SMWQuery
 	 */
-	public static function getQuery( SMWDescription $description, $limit, $from, $until ) {
+	public static function getQuery( Description $description, $limit, $from, $until ) {
 		if ( $from !== '' ) {
-			$diWikiPage = new SMWDIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
-			$fromDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
-			$queryDescription = new SMWConjunction( [ $description, $fromDescription ] );
+			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
+			$fromDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
+			$queryDescription = new Conjunction( [ $description, $fromDescription ] );
 			$order = 'ASC';
 		} elseif ( $until !== '' ) {
-			$diWikiPage = new SMWDIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
-			$untilDescription = new SMWValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
-			$queryDescription = new SMWConjunction( [ $description, $untilDescription ] );
+			$diWikiPage = new DIWikiPage( $until, NS_MAIN, '' ); // make a dummy wiki page as boundary
+			$untilDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_LESS ); // do not include boundary in this case
+			$queryDescription = new Conjunction( [ $description, $untilDescription ] );
 			$order = 'DESC';
 		} else {
 			$queryDescription = $description;
@@ -200,12 +204,12 @@ class SMWPageLister {
 	}
 
 	/**
-	 * Format a list of SMWDIWikiPage objects chunked by letter in a three-column
+	 * Format a list of DIWikiPage objects chunked by letter in a three-column
 	 * list, ordered vertically.
 	 *
 	 * @param $start integer
 	 * @param $end integer
-	 * @param $diWikiPages array of SMWDIWikiPage
+	 * @param $diWikiPages array of DIWikiPage
 	 * @param $diProperty \SMW\DIProperty that the wikipages are values of, or null
 	 *
 	 * @return string

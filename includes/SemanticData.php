@@ -4,12 +4,12 @@ namespace SMW;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataModel\SequenceMap;
 use SMW\DataModel\SubSemanticData;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
-use SMWContainerSemanticData;
 use SMWDataItem;
 use SMWDataValue;
 use SMWDIContainer;
@@ -847,7 +847,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return SMWContainerSemanticData|null
+	 * @return ContainerSemanticData|null
 	 */
 	public function findSubSemanticData( $subobjectName ) {
 		return $this->subSemanticData->findSubSemanticData( $subobjectName );
