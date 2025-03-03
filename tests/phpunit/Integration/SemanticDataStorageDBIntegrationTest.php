@@ -294,8 +294,8 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 		$target = $testPages[1];
 
 		// Make sure pages actually exist before testing
-		$this->assertTrue($redirect->getTitle()->exists(), 'Redirect page should exist');
-		$this->assertTrue($target->getTitle()->exists(), 'Target page should exist');
+		$this->assertTrue( $redirect->getTitle()->exists(), 'Redirect page should exist' );
+		$this->assertTrue( $target->getTitle()->exists(), 'Target page should exist' );
 
 		$this->assertEmpty(
 			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )
@@ -329,7 +329,7 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 
 		// Only add pages to subjects in the verification test
 		// so they're not deleted after the prepare test
-		return [$redirect, $target];
+		return [ $redirect, $target ];
 	}
 
 }
