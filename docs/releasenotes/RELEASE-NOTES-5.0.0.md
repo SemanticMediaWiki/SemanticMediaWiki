@@ -137,7 +137,6 @@ The following class aliases were removed as they were deprecated:
 * SMW\RecurringEventsParserFunction
 * SMW\SQLStore\TableDefinition
 * SMWContainerSemanticData
-* SMWElasticStore
 
 SMWSearch alias was kept.
 
