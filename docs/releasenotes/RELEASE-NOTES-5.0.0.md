@@ -50,6 +50,96 @@ Some user interface changes are deployed to make user facing front-end component
   The param 'dataFile' and 'checkSum' have been dropped in ChangePropagationDispatchJob. No longer is a temp file created, instead the contents is supplied
   in the 'data' param.
 
+- [#6044](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6044) Remove deprecated class alias
+
+The following class aliases were removed as they were deprecated:
+
+* \SMW\Localizer
+* \SMW\Message
+* \SMW\Lang\Lang
+* \SMWSerializer
+* \SMWTurtleSerializer
+* \SMWRDFXMLSerializer
+* SMWRDFResultPrinter
+* SMWEmbeddedResultPrinter
+* SMWDSVResultPrinter
+* SMWAggregatablePrinter
+* SMW\PropertyAnnotator
+* SMW\PropertySpecificationLookup
+* SMW\PropertyRestrictionExaminer
+* SMWResultArray
+* SMWQueryResult
+* \SMW\ApplicationFactory
+* \SMWSql3SmwIds
+* SMW\DeferredCallableUpdate
+* SMW\DeferredTransactionalCallableUpdate
+* SMW\InTextAnnotationParser
+* SMW\UrlEncoder
+* SMW\QueryResultPrinter
+* SMWIResultPrinter
+* SMW\ExportPrinter
+* SMW\ResultPrinter
+* SMWResultPrinter
+* SMW\FileExportPrinter
+* SMW\ListResultPrinter
+* SMWQueryParser
+* SMW\SQLStore\CompositePropertyTableDiffIterator
+* SMW\DBConnectionProvider
+* SMWPropertyValue
+* SMWStringValue
+* \SMW\MediaWiki\Database
+* SMWDIString
+* SMWStore
+* SMWUpdateJob
+* SMWRefreshJob
+* SMWSemanticData
+* SMWDIWikiPage
+* SMWDIProperty
+* SMWDISerializer
+* SMWDataValueFactory
+* SMWDataItemException
+* SMWSQLStore3Table
+* SMWDIConcept
+* SMWTableResultPrinter
+* SMWExportPrinter
+* SMWCategoryResultPrinter
+* SMWListResultPrinter
+* SMWSparqlStore
+* SMWSparqlDatabase4Store
+* SMWSparqlDatabaseVirtuoso
+* SMWSparqlDatabase
+* SMWSQLStore3
+* SMWDescription
+* SMWThingDescription
+* SMWClassDescription
+* SMWConceptDescription
+* SMWNamespaceDescription
+* SMWValueDescription
+* SMWConjunction
+* SMWDisjunction
+* SMWSomeProperty
+* SMWPrintRequest
+* SMW\SQLStore\PropertiesCollector
+* SMW\SQLStore\UnusedPropertiesCollector
+* SMWExpElement
+* SMWExpResource
+* SMWExpNsResource
+* SMWExpLiteral
+* SMWSQLStore3QueryEngine
+* SMW\ParserParameterFormatter
+* SMW\ParameterFormatterFactory
+* SMWRequestOptions
+* SMWStringCondition
+* SMW\Hash
+* SMWBoolValue
+* SMW\FormatFactory
+* SMW\SubobjectParserFunction
+* SMW\RecurringEventsParserFunction
+* SMW\SQLStore\TableDefinition
+* SMWContainerSemanticData
+
+SMWSearch alias was kept.
+
 ## Upgrading
 
 Be advised that the [SMWSearch](https://www.semantic-mediawiki.org/wiki/Help:SMWSearch) feature (and so the [SEARCH_FORM_SCHEMA](https://www.semantic-mediawiki.org/wiki/Help:Schema/Type/SEARCH_FORM_SCHEMA) feature) is not working yet. See issue [#5782](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5782). If you use those features, change the MediaWiki [$wgSearchType](https://www.mediawiki.org/wiki/Manual:$wgSearchType) parameter to something other than `SMWSearch`.

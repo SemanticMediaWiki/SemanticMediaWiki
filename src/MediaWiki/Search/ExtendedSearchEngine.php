@@ -342,3 +342,5 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 }
+
+class_alias( ExtendedSearchEngine::class, 'SMWSearch' );
