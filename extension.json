@@ -31,8 +31,7 @@
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
 	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "includes/SemanticMediaWiki.php",
-		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php"
+		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

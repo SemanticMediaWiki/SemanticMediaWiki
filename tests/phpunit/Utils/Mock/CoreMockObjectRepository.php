@@ -600,7 +600,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
-		$queryDescription = $this->getMockBuilder( '\SMWDescription' )
+		$queryDescription = $this->getMockBuilder( '\SMW\Query\Language\Description' )
 			->setMethods( $methods )
 			->getMock();
 

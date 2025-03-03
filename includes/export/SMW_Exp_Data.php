@@ -1,6 +1,7 @@
 <?php
 
 use SMW\Exporter\Element;
+use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 
@@ -232,7 +233,7 @@ class SMWExpData implements Element {
 	 * parseType="Collection" in RDF/XML, i.e. only lists of non-literal
 	 * resources.
 	 *
-	 * @return mixed array of SMW\Exporter\Element\ExpElement (but not SMWExpLiteral) or false
+	 * @return mixed array of SMW\Exporter\Element\ExpElement (but not ExpLiteral) or false
 	 */
 	public function getCollection() {
 		$rdftypeUri  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )->getUri();
@@ -246,7 +247,7 @@ class SMWExpData implements Element {
 			 ( count( $this->m_children[$rdftypeUri] ) == 1 ) &&
 			 ( array_key_exists( $rdffirstUri, $this->m_children ) ) &&
 			 ( count( $this->m_children[$rdffirstUri] ) == 1 ) &&
-			 !( end( $this->m_children[$rdffirstUri] ) instanceof SMWExpLiteral ) &&
+			 !( end( $this->m_children[$rdffirstUri] ) instanceof ExpLiteral ) &&
 			 // (parseType collection in RDF not possible with literals :-/)
 			 ( array_key_exists( $rdfrestUri, $this->m_children ) ) &&
 			 ( count( $this->m_children[$rdfrestUri] ) == 1 ) ) {

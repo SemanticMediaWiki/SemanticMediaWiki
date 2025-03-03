@@ -12,8 +12,8 @@ use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
 use SMW\DataValues\ValueParsers\ValueParser;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
-use SMW\PropertyRestrictionExaminer;
-use SMW\PropertySpecificationLookup;
+use SMW\Property\RestrictionExaminer;
+use SMW\Property\SpecificationLookup;
 use SMWDataValue as DataValue;
 use SMWNumberValue as NumberValue;
 use SMWTimeValue as TimeValue;
@@ -159,7 +159,7 @@ class DataValueServiceFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return PropertySpecificationLookup
+	 * @return SpecificationLookup
 	 */
 	public function getPropertySpecificationLookup() {
 		return $this->containerBuilder->singleton( 'PropertySpecificationLookup' );
@@ -177,7 +177,7 @@ class DataValueServiceFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @return PropertyRestrictionExaminer
+	 * @return RestrictionExaminer
 	 */
 	public function getPropertyRestrictionExaminer() {
 		$propertyRestrictionExaminer = $this->containerBuilder->singleton( 'PropertyRestrictionExaminer' );

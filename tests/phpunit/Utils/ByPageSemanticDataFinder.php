@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils;
 
 use ParserOutput;
 use SMW\ParserData;
+use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory;
 use SMW\Store;
@@ -55,7 +56,7 @@ class ByPageSemanticDataFinder {
 	 * @return SemanticData
 	 */
 	public function fetchIncomingDataFromStore() {
-		$requestOptions = new \SMWRequestOptions();
+		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 
 		$subject = $this->getPageData()->getSubject();

@@ -29,7 +29,7 @@ use SMW\Query\QueryToken;
  * changes in the query description.
  *
  * Most additional query parameters (limit, sort, ascending, ...) are
- * interpreted as in SMWRequestOptions (though the latter contains some
+ * interpreted as in RequestOptions (though the latter contains some
  * additional settings).
  * @ingroup SMWQuery
  */
