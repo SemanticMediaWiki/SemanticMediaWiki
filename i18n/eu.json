@@ -3,6 +3,7 @@
 		"authors": [
 			"Amaia",
 			"An13sa",
+			"Atzerritik",
 			"EukeneFL",
 			"Fitoschido",
 			"Joseba",
@@ -26,7 +27,7 @@
 	"smw-factbox-facts-derived-help": "Arau batetik edo beste arrazoimen teknika baten laguntzaz eratorritako ekintzak erakusten ditu.",
 	"smw_isspecprop": "Propietate hau wiki honetan propietate berezia da.",
 	"smw-concept-cache-header": "Katxearen erabilera",
-	"smw-concept-no-cache": "Ez da go katxerik.",
+	"smw-concept-no-cache": "Ez dago katxerik.",
 	"smw_concept_description": "\"$1\" kontzeptuaren deskribapena",
 	"smw_multiple_concepts": "Kontzeptu orri bakoitzak kontzeptu definizio bat bakarrik izan dezake.",
 	"smw_concept_cache_miss": "\"$1\" kontzeptua ezin da momentu honetan erabili, wiki ezarpenek konexiorik gabe konputatzea eskatzen dutelako. \nDenbora pasa ahala arazoak badiau, eskatu zure guneko administratzaileari kontzeptu hau erabilgarri jartzeko.",
