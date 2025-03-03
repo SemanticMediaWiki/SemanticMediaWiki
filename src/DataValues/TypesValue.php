@@ -3,9 +3,9 @@
 namespace SMW\DataValues;
 
 use SMW\DataTypeRegistry;
+use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
 use SMWDataItem as DataItem;
-use SMWDataItemException as DataItemException;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
 use Title;

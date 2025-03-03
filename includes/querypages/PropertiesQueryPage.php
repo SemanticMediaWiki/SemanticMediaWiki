@@ -9,7 +9,6 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMWDIError;
-use SMWRequestOptions;
 use Title;
 
 /**
@@ -264,7 +263,7 @@ class PropertiesQueryPage extends QueryPage {
 	/**
 	 * Get the list of results.
 	 *
-	 * @param SMWRequestOptions $requestOptions
+	 * @param RequestOptions $requestOptions
 	 * @return array of array( \SMW\DIProperty|SMWDIError, integer )
 	 */
 	function getResults( $requestOptions ) {

@@ -1,6 +1,7 @@
 <?php
 
 use SMW\Encoder;
+use SMW\Exception\DataItemException;
 use SMW\Localizer\Message;
 
 /**
@@ -190,7 +191,7 @@ class SMWURIValue extends SMWDataValue {
 		// Now create the URI data item:
 		try {
 			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT ) );
-		} catch ( SMWDataItemException $e ) {
+		} catch ( DataItemException $e ) {
 			$this->addErrorMsg( [ 'smw_baduri', $this->m_wikitext ] );
 		}
 	}
