@@ -272,17 +272,9 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	 * Issue 622/619
 	 */
 	public function testPrepareToFetchCorrectSemanticDataFromInternalCache() {
-		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
-
-		$this->pageCreator
-			->createPage( $redirect->getTitle() )
-			->doEdit( '#REDIRECT [[Foo-C]]' );
-
-		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
-
-		$this->pageCreator
-			->createPage( $target->getTitle() )
-			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+		$testPages = $this->createTestPages();
+		$redirect = $testPages[0];
+		$target = $testPages[1];
 
 		$this->assertEmpty(
 			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )
@@ -297,8 +289,13 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 	 * @depends testPrepareToFetchCorrectSemanticDataFromInternalCache
 	 */
 	public function testVerifyToFetchCorrectSemanticDataFromInternalCache() {
-		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
-		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
+		$testPages = $this->createTestPages();
+		$redirect = $testPages[0];
+		$target = $testPages[1];
+
+		// Make sure pages actually exist before testing
+		$this->assertTrue($redirect->getTitle()->exists(), 'Redirect page should exist');
+		$this->assertTrue($target->getTitle()->exists(), 'Target page should exist');
 
 		$this->assertEmpty(
 			$this->getStore()->getSemanticData( $redirect )->findSubSemanticData( 'test' )
@@ -312,6 +309,27 @@ class SemanticDataStorageDBIntegrationTest extends SMWIntegrationTestCase {
 			$redirect,
 			$target
 		];
+	}
+
+	/**
+	 * Create test pages for the tests
+	 *
+	 * @return array
+	 */
+	private function createTestPages() {
+		$redirect = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-A' ) );
+		$this->pageCreator
+			->createPage( $redirect->getTitle() )
+			->doEdit( '#REDIRECT [[Foo-C]]' );
+
+		$target = DIWikiPage::newFromTitle( Title::newFromText( 'Foo-C' ) );
+		$this->pageCreator
+			->createPage( $target->getTitle() )
+			->doEdit( '{{#subobject:test|HasSomePageProperty=Foo-A}}' );
+
+		// Only add pages to subjects in the verification test
+		// so they're not deleted after the prepare test
+		return [$redirect, $target];
 	}
 
 }
