@@ -41,6 +41,7 @@ Some user interface changes are deployed to make user facing front-end component
 
 ## New features and enhancements
 
+* Support additional formatting options on the `table`/`broadtable` result format (`|+width=`, `|+height=`, `|+link=` and `|+thclass=`) ([#5739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5739))
 * Allow RDF link in the head element to be disabled ([#5776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5776))
 
 ## Breaking changes
