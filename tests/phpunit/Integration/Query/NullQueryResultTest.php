@@ -2,19 +2,19 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWQuery as Query;
 
 /**
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class NullQueryResultTest extends \PHPUnit\Framework\TestCase {
 		$description = $query->getDescription();
 
 		$namespacesDisjunction = new Disjunction(
-			array_map( function ( $ns ) {
+			array_map( static function ( $ns ) {
 				return new NamespaceDescription( $ns );
 			}, [ NS_MAIN ] )
 		);
@@ -50,7 +50,7 @@ class NullQueryResultTest extends \PHPUnit\Framework\TestCase {
 		$query->setDescription( $description );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			ApplicationFactory::getInstance()->getStore()->getQueryResult( $query )
 		);
 	}

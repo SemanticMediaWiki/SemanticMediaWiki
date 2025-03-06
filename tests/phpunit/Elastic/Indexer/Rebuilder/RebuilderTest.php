@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelect() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

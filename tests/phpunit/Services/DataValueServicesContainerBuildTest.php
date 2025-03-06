@@ -7,6 +7,7 @@ use SMW\ConstraintFactory;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
@@ -25,13 +26,12 @@ use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
 use SMW\Store;
 use SMWNumberValue as NumberValue;
-use SMWPropertyValue as PropertyValue;
 use SMWTimeValue as TimeValue;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -59,7 +59,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -192,11 +192,11 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 			TimeValueFormatter::class
 		];
 
-		$provider[] = array(
+		$provider[] = [
 			'UnitConverter',
 			[],
 			'\SMW\DataValues\Number\UnitConverter'
-		);
+		];
 
 		return $provider;
 	}

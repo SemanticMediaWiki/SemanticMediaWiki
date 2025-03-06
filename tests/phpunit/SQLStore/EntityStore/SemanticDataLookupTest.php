@@ -4,17 +4,17 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIBlob as DIBlob;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SemanticDataLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -44,7 +44,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->willReturn( $this->dataItemHandler );
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -263,7 +263,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->willReturnCallback( function ( $value ) { return "'$value'";
+			->willReturnCallback( static function ( $value ) { return "'$value'";
 			} );
 
 		$this->connection->expects( $this->once() )
@@ -324,7 +324,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->willReturnCallback( function ( $value ) { return "'$value'";
+			->willReturnCallback( static function ( $value ) { return "'$value'";
 			} );
 
 		$this->connection->expects( $this->once() )
@@ -376,7 +376,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->willReturnCallback( function ( $value ) { return "'$value'";
+			->willReturnCallback( static function ( $value ) { return "'$value'";
 			} );
 
 		$this->connection->expects( $this->once() )
@@ -483,7 +483,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->willReturnCallback( function ( $value ) { return "'$value'";
+			->willReturnCallback( static function ( $value ) { return "'$value'";
 			} );
 
 		$this->connection->expects( $this->once() )
@@ -554,7 +554,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'addQuotes' )
-			->willReturnCallback( function ( $value ) { return "'$value'";
+			->willReturnCallback( static function ( $value ) { return "'$value'";
 			} );
 
 		$this->connection->expects( $this->atLeastOnce() )

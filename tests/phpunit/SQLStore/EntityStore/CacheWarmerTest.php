@@ -3,15 +3,15 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
-use SMW\SQLStore\EntityStore\CacheWarmer;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\CacheWarmer;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CacheWarmer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -63,7 +63,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +135,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +172,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 		$this->idCacheManager->expects( $this->never() )
 			->method( 'setCache' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

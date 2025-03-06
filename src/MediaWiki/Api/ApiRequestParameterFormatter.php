@@ -9,7 +9,7 @@ use SMW\Query\PrintRequest;
 /**
  * This class handles Api related request parameter formatting
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -130,7 +130,7 @@ final class ApiRequestParameterFormatter {
 	}
 
 	/**
-	 * Format printout and returns a SMWPrintRequest object
+	 * Format printout and returns a PrintRequest object
 	 *
 	 * @since 1.9
 	 *

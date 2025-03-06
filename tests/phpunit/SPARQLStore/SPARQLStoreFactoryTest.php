@@ -8,7 +8,7 @@ use SMW\SPARQLStore\SPARQLStoreFactory;
  * @covers \SMW\SPARQLStore\SPARQLStoreFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -44,8 +44,8 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMWSQLStore3',
-			$instance->getBaseStore( 'SMWSQLStore3' )
+			'\SMW\SQLStore\SQLStore',
+			$instance->getBaseStore( '\SMW\SQLStore\SQLStore' )
 		);
 	}
 

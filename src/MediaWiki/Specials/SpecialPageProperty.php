@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataValueFactory;
 use SMW\DataModel\SequenceMap;
+use SMW\DataValueFactory;
 use SMW\Encoder;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
 use SMW\RequestOptions;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
 use SpecialPage;
 
@@ -18,7 +18,7 @@ use SpecialPage;
  *
  * This is typically used for overflow results from other dynamic output pages.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.4
  *
  * @author Denny Vrandecic
@@ -74,7 +74,7 @@ class SpecialPageProperty extends SpecialPage {
 		);
 
 		$this->addHelpLink(
-			wfMessage( 'smw-special-pageproperty-helplink' )->escaped(),
+			$this->msg( 'smw-special-pageproperty-helplink' )->escaped(),
 			true
 		);
 
@@ -131,7 +131,7 @@ class SpecialPageProperty extends SpecialPage {
 		// No property given, no results
 		if ( $propname === '' ) {
 			$html .= $pageBuilder->buildForm();
-			$html .= wfMessage( 'smw_result_noresults' )->text();
+			$html .= $this->msg( 'smw_result_noresults' )->text();
 		} else {
 
 			$requestOptions = new RequestOptions();
@@ -158,7 +158,7 @@ class SpecialPageProperty extends SpecialPage {
 		}
 
 		$output = $this->getOutput();
-		$output->setPagetitle( wfMessage( 'pageproperty' )->text() );
+		$output->setPagetitle( $this->msg( 'pageproperty' )->text() );
 
 		$output->addModuleStyles( 'ext.smw.special.styles' );
 		$output->addModules( 'ext.smw.tooltip' );

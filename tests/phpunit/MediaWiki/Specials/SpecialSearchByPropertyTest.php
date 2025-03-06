@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -11,7 +11,7 @@ use Title;
  * @covers \SMW\MediaWiki\Specials\SpecialSearchByProperty
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

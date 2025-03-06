@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
@@ -14,7 +13,7 @@ use Title;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.1
  *
  * @author mwjames
@@ -88,7 +87,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		$index = 1; // pass-by-reference
 
 		$this->getStore()->refreshData( $index, 1, false, true )->rebuild( $index );
-		parent::runJobs( [ 'numJobs' => 1 ], [ 'type' => 'smw.update' ] );
+		$this->assertJob( 'smw.update' );
 	}
 
 	/**
@@ -146,7 +145,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		return $provider;
 	}
 
-	protected function assertJob( $type, Job &$job = null ) {
+	protected function assertJob( $type, ?Job &$job = null ) {
 		if ( $job === null ) {
 			$job = $this->jobQueueRunner->pop_type( $type );
 		}

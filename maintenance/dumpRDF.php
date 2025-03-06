@@ -2,20 +2,20 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Maintenance\MaintenanceCheck;
-use Onoi\MessageReporter\MessageReporter;
-use Onoi\MessageReporter\CallbackMessageReporter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once '/www/wwwroot/MediaWiki/maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Usage:
@@ -41,7 +41,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *                    https://en.wikipedia.org. This is sometimes necessary because
  *                    server name detection may fail in command line scripts.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -218,5 +218,7 @@ class dumpRDF extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = dumpRDF::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

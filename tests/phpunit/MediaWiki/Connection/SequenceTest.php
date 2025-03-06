@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Connection\Sequence
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -21,7 +21,7 @@ class SequenceTest extends \PHPUnit\Framework\TestCase {
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -66,7 +66,7 @@ class SequenceTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) { return $callback();
+			->willReturnCallback( static function ( $callback ) { return $callback();
 			} );
 
 		$this->connection->expects( $this->once() )

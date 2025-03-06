@@ -3,7 +3,7 @@
 use SMW\Exception\DataItemException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class SMWDIGeoCoord extends SMWDataItem {
@@ -106,7 +106,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 	public function getCoordinateSet() {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
-		if ( !is_null( $this->altitude ) ) {
+		if ( $this->altitude !== null ) {
 			$coords['alt'] = $this->altitude;
 		}
 

@@ -1,0 +1,237 @@
+/*!
+ * This file is part of the Semantic MediaWiki Extension
+ * @see https://semantic-mediawiki.org/
+ *
+ * @section LICENSE
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
+ *
+ * @since 3.0
+ *
+ * @file
+ * @ingroup SMW
+ *
+ * @licence GNU GPL v2+
+ * @author mwjames
+ */
+
+@import '../tokens.less';
+
+/**
+ * Special:Admin
+ */
+.smw-admin-deprecation-notice-docu-section {
+	padding: 0.8rem;
+	background-color: #fcf8e3;
+	border-color: #faf2cc;
+	color: #8a6d3b;
+}
+
+.smw-admin-deprecation-notice-section-legend {
+	color: #999;
+}
+
+.smw-admin-deprecation fieldset,
+.smw-pending-task fieldset {
+	border-top: 1px solid #9E9E9E;
+	margin: 0 0 5px 0;
+	border-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	padding-bottom: 0px;
+}
+
+.smw-admin-deprecation fieldset.smw-admin-deprecation-notice-section-legend {
+	border-top: 1px solid #ddd;
+}
+
+.smw-admin-deprecation-section,
+.smw-admin-deprecation-notice-section-legend {
+	padding-left: 10px;
+}
+
+.smw-admin-deprecation h4 {
+	margin-top: 0px !important;
+	padding-top: 0px !important;
+	line-height: 2.2 !important;
+}
+
+.smw-admin-deprecation fieldset legend,
+.smw-pending-task fieldset legend {
+	font-weight: bold;
+	font-size: 16px !important;
+	margin-left: 10px;
+}
+
+.smw-admin-alerts-section-legend {
+	color: #999;
+}
+
+.smw-admin-alerts-section-legend p {
+	color: #222;
+}
+
+.smw-admin-alerts fieldset {
+	border-top: 1px solid #9E9E9E;
+	margin: 0 0 5px 0;
+	border-bottom: 0px;
+	border-left: 0px;
+	border-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+}
+
+.smw-admin-alerts fieldset.smw-admin-alerts-section-legend {
+	border-top: 1px solid #ddd;
+}
+
+.smw-admin-alerts-section-legend-info {
+	color: #ffb20f;
+}
+
+.smw-admin-alerts-section-legend-info p {
+	color: #222;
+}
+
+.smw-admin-alerts fieldset.smw-admin-alerts-section-legend-info {
+	border-top: 1px solid #ffb20f;
+}
+
+.smw-admin-alerts fieldset legend {
+	font-weight: bold;
+	font-size: 16px !important;
+	margin-left: 14px;
+}
+
+.smw-admin-hr {
+	margin-top:20px;
+	background-color: #ddd;
+}
+
+.smw-admin-deprecation-notice-section {
+	margin-left: -10px;
+}
+
+.smw-admin-deprecation-notice-section-explanation {
+	font-size:12px;
+	font-style: italic;
+}
+
+.smw-special-filter{
+	padding: 5px 0px 0px 0px;
+}
+
+.smw-special-filter-button {
+	position: relative;
+	padding: 6px 14px;
+	color: #586069;
+	border: 1px solid #e1e4e8;
+	border-radius: 3px;
+}
+
+.smw-special-filter-button:hover {
+	background-color: #f6f8fa;
+}
+
+.smw-special-filter-button a, .smw-special-filter-button a:hover, .smw-special-filter-button a:focus, .smw-special-filter-button a:active, .smw-special-filter-button a:visited {
+	font-weight: 300;
+	line-height: 20px;
+	text-decoration: none;
+	color: #586069;
+}
+
+.smw-json-placeholder {
+    opacity:0.5;
+    position: relative;
+}
+
+.client-nojs .smw-json-placeholder {
+    opacity: 1;
+}
+
+.client-nojs .smw-json-placeholder-message {
+    display: none;
+}
+
+.smw-json-data {
+    display: none;
+}
+
+.client-nojs .smw-json-data {
+    display: block;
+}
+
+/**
+ * Tabbed admin
+ */
+.smw-admin #tab-general:checked ~ #tab-content-general,
+.smw-admin #tab-supplement:checked ~ #tab-content-supplement,
+.smw-admin #tab-maintenance:checked ~ #tab-content-maintenance,
+.smw-admin #tab-registry:checked ~ #tab-content-registry,
+.smw-admin #tab-alerts:checked ~ #tab-content-alerts,
+.smw-admin #tab-notices:checked ~ #tab-content-notices {
+	display: block;
+}
+
+.smw-icon-alert {
+	background-image: url( ../assets/smw-icon-alert.svg );
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.smw-admin section {
+	padding-top: 5px !important;
+}
+
+// TODO: Handle color in tab component instead
+.smw-admin input.nav-tab:checked + label.nav-label {
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical orange;
+}
+
+// TODO: Handle color in tab component instead
+.smw-admin input.nav-tab:checked + label.nav-label.smw-tab-warning {
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-destructive;
+}
+
+// TODO: Handle color in tab component instead
+.smw-admin input.nav-tab:checked + label.nav-label.smw-tab-notice {
+	color: @color-emphasized;
+	box-shadow: @box-shadow-inset-medium-vertical @color-warning;
+}
+
+.client-nojs .smw-admin-supplementary-duplookup-content:after {
+	content: "JavaScript has been disabled but is required for the request!";
+	color: red;
+	position: absolute;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: #ddd;
+	width: 100%;
+	text-align: center;
+	padding: 10px 0 10px 0;
+}
+
+/**
+ * Responsive settings
+ */
+@media screen and (max-width: 800px) {
+	.smw-special-pageproperty-input {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+}

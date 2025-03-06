@@ -128,6 +128,6 @@ For a page called "Foo" that contains <code>[[Has property::Bar]]</code>, <code>
 ```
 
 ### QueryResultSerializer
-Implements the SerializerInterface for the SMWQueryResult object.
+Implements the SerializerInterface for the \SMW\Query\QueryResult object.
 
 [serialization]: [https://github.com/wikimedia/mediawiki-extensions-Serialization]

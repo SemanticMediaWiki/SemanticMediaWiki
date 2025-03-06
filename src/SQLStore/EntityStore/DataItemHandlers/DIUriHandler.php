@@ -11,7 +11,7 @@ use SMWDIUri as DIUri;
 /**
  * This class implements Store access to Uri data items.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.8
  *
  * @author Nischay Nahata
@@ -90,7 +90,8 @@ class DIUriHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getWhereConds( DataItem $dataItem ) {
-		return [ 'o_serialized' => rawurldecode( $dataItem->getSerialization() ) ];
+		$serialization = rawurldecode( $dataItem->getSerialization() );
+		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
 	}
 
 	/**
@@ -109,7 +110,7 @@ class DIUriHandler extends DataItemHandler {
 
 		return [
 			'o_blob' => $text,
-			'o_serialized' => $serialization,
+			'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ),
 		];
 	}
 

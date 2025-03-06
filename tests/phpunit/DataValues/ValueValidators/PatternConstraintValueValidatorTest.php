@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\DataValues\ValueValidators\PatternConstraintValueValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class PatternConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 			$this->mediaWikiNsContentReader
 		);
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

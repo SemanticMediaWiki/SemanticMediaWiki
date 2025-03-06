@@ -2,20 +2,17 @@
 
 namespace SMW\Elastic;
 
-use Hooks;
 use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\Options;
 use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
-use SMW\Options;
-use Title;
-use SMW\SetupFile;
 use SMW\Utils\CliMsgFormatter;
-use SMW\Elastic\Jobs\FileIngestJob;
-use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\Elastic\Indexer\Indexer;
+use SMWQuery as Query;
+use Title;
 
 /**
  * @private
@@ -31,7 +28,7 @@ use SMW\Elastic\Indexer\Indexer;
  *
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/src/Elastic/README.md
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -133,10 +130,10 @@ class ElasticStore extends SQLStore {
 	 * @see SQLStore::changeTitle
 	 * @since 3.0
 	 *
-	 * @param Title $oldtitle
-	 * @param Title $newtitle
-	 * @param integer $pageid
-	 * @param integer $redirid
+	 * @param Title $oldTitle
+	 * @param Title $newTitle
+	 * @param int $pageId
+	 * @param int $redirectId
 	 */
 	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
 		$status = parent::changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
@@ -343,8 +340,8 @@ class ElasticStore extends SQLStore {
 
 			// Remove REBUILD_INDEX_RUN_COMPLETE with 3.3+
 
-			if ( $setupFile->get( ElasticStore::REBUILD_INDEX_RUN_COMPLETE ) !== null ) {
-				$setupFile->remove( ElasticStore::REBUILD_INDEX_RUN_COMPLETE );
+			if ( $setupFile->get( self::REBUILD_INDEX_RUN_COMPLETE ) !== null ) {
+				$setupFile->remove( self::REBUILD_INDEX_RUN_COMPLETE );
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
 			} elseif ( $setupFile->get( 'elasticsearch' ) === null ) {
 				$setupFile->set( [ 'elasticsearch' => [ 'latest_version' => $version ] ] );
@@ -369,7 +366,7 @@ class ElasticStore extends SQLStore {
 			);
 
 			$this->messageReporter->reportMessage(
-				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWElasticStore' )
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMW\Elastic\ElasticStore' )
 			);
 
 			$this->messageReporter->reportMessage( "\nChecking indices ...\n" );
@@ -402,11 +399,11 @@ class ElasticStore extends SQLStore {
 		$setupFile = $installer->newSetupFile();
 
 		$setupFile->remove(
-			ElasticStore::REBUILD_INDEX_RUN_COMPLETE
+			self::REBUILD_INDEX_RUN_COMPLETE
 		);
 
 		$setupFile->removeIncompleteTask(
-			ElasticStore::REBUILD_INDEX_RUN_INCOMPLETE
+			self::REBUILD_INDEX_RUN_INCOMPLETE
 		);
 
 		$setupFile->remove( 'elasticsearch' );
@@ -418,7 +415,7 @@ class ElasticStore extends SQLStore {
 			);
 
 			$this->messageReporter->reportMessage(
-				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMWElasticStore' )
+				"\n" . $cliMsgFormatter->twoCols( "Query engine:", 'SMW\Elastic\ElasticStore' )
 			);
 
 			$this->messageReporter->reportMessage( "\nDropped index ...\n" );
@@ -475,3 +472,5 @@ class ElasticStore extends SQLStore {
 	}
 
 }
+
+class_alias( ElasticStore::class, 'SMWElasticStore' );

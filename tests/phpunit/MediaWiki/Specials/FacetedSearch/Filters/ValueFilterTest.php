@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -162,4 +162,3 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 }
-

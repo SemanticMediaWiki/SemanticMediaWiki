@@ -2,11 +2,11 @@
 
 namespace SMW\Parser;
 
-use SMW\SemanticData;
 use SMW\DataValueFactory;
-use SMWDataItem as DataItem;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
+use SMWDataItem as DataItem;
 
 /**
  * To allow for an in-memory processing of existing SemanticData references during
@@ -16,7 +16,7 @@ use SMW\DIWikiPage;
  *
  * https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/3901
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class AnnotationProcessor {
 	private $dataValueFactory;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $canAnnotate = true;
 
@@ -44,7 +44,7 @@ class AnnotationProcessor {
 	 * @param SemanticData $semanticData
 	 * @param DataValueFactory|null $dataValueFactory
 	 */
-	public function __construct( SemanticData $semanticData, DataValueFactory $dataValueFactory = null ) {
+	public function __construct( SemanticData $semanticData, ?DataValueFactory $dataValueFactory = null ) {
 		$this->semanticData = $semanticData;
 		$this->dataValueFactory = $dataValueFactory;
 
@@ -58,7 +58,7 @@ class AnnotationProcessor {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $canAnnotate
+	 * @param bool $canAnnotate
 	 */
 	public function setCanAnnotate( $canAnnotate ) {
 		$this->canAnnotate = $canAnnotate;
@@ -67,7 +67,7 @@ class AnnotationProcessor {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canAnnotate() {
 		return $this->canAnnotate;
@@ -94,7 +94,7 @@ class AnnotationProcessor {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByText( $propertyName, $valueString, $caption = false, DIWikiPage $contextPage = null ) {
+	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
 		return $this->dataValueFactory->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 
@@ -103,7 +103,7 @@ class AnnotationProcessor {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, DIProperty $property = null, $caption = false, $contextPage = null ) {
+	public function newDataValueByItem( DataItem $dataItem, ?DIProperty $property = null, $caption = false, $contextPage = null ) {
 		return $this->dataValueFactory->newDataValueByItem( $dataItem, $property, $caption, $contextPage );
 	}
 

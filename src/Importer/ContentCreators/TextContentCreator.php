@@ -7,14 +7,13 @@ use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RequestContext;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -64,10 +63,6 @@ class TextContentCreator implements ContentCreator {
 	 * @param ImportContents $importContents
 	 */
 	public function create( ImportContents $importContents ) {
-		if ( !class_exists( 'ContentHandler' ) ) {
-			return $this->messageReporter->reportMessage( "\nContentHandler doesn't exist therefore importing is not possible.\n" );
-		}
-
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$indent = '   ...';

@@ -22,7 +22,7 @@ use SMWQuery as Query;
  * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -84,7 +84,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$query->setUnboundLimit( 0 );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,7 +124,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( $subject );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -177,7 +177,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 	 * @dataProvider queryProvider
 	 */
 	public function testgetDependencyListFrom( $query, $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -225,7 +225,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getEntityList' )
 			->willReturn( [ $subject ] );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -262,7 +262,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( $subject );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -319,7 +319,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( $subject );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

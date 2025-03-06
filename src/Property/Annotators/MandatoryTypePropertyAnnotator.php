@@ -7,7 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DIProperty;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -25,14 +25,14 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	const ENFORCED_PARENTTYPE_INHERITANCE = 'mandatorytype.propertyannotator.subproperty.parent.type.inheritance';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $subpropertyParentTypeInheritance = false;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $subpropertyParentTypeInheritance
+	 * @param bool $subpropertyParentTypeInheritance
 	 */
 	public function setSubpropertyParentTypeInheritance( $subpropertyParentTypeInheritance ) {
 		$this->subpropertyParentTypeInheritance = (bool)$subpropertyParentTypeInheritance;
@@ -121,7 +121,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 		$property = new DIProperty( '_TYPE' );
 
-		list( $ns, $type ) = explode( ':', $importValue->getTermType(), 2 );
+		[ $ns, $type ] = explode( ':', $importValue->getTermType(), 2 );
 
 		$typeId = DataTypeRegistry::getInstance()->findTypeId( $type );
 

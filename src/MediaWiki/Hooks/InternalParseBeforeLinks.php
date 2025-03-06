@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Parser\InTextAnnotationParser;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use StripState;
 
 /**
@@ -30,7 +30,7 @@ use StripState;
  *
  * @ingroup FunctionHook
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -52,7 +52,7 @@ class InternalParseBeforeLinks implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param Parser $parser
+	 * @param Parser &$parser
 	 * @param StripState $stripState
 	 */
 	public function __construct( Parser &$parser, $stripState ) {
@@ -63,7 +63,7 @@ class InternalParseBeforeLinks implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param string $text
+	 * @param string &$text
 	 *
 	 * @return true
 	 */

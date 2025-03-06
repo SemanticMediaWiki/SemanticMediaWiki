@@ -6,15 +6,15 @@ use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Subobject;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
-use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use SMW\Message;
-use SpecialPage;
 use Html;
+use SMW\Localizer\Message;
+use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
+use SpecialPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

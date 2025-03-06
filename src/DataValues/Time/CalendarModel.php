@@ -9,7 +9,7 @@ namespace SMW\DataValues\Time;
  * For dates on or before 4 October 1582, the Julian calendar is used; for dates
  * on or after 15 October 1582, the Gregorian calendar is used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

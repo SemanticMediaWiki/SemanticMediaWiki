@@ -22,7 +22,7 @@ use SMW\SemanticData;
  *
  * See also the documentation of SMWDIContainer.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -31,7 +31,7 @@ use SMW\SemanticData;
 class ContainerSemanticData extends SemanticData {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipAnonymousCheck = false;
 
@@ -41,7 +41,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 1.7
 	 *
-	 * @param boolean $noDuplicates stating if duplicate data should be avoided
+	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
 	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
 		$containerSemanticData = new ContainerSemanticData(
@@ -90,7 +90,7 @@ class ContainerSemanticData extends SemanticData {
 	 * Check if the subject of this container is an anonymous object.
 	 * See the documenation of the class for details.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasAnonymousSubject() {
 		if ( $this->mSubject->getNamespace() == NS_SPECIAL &&
@@ -126,14 +126,14 @@ class ContainerSemanticData extends SemanticData {
 	/**
 	 * Change the object to become an exact copy of the given
 	 * SemanticData object. This is used to make other types of
-	 * SemanticData into an SMWContainerSemanticData. To copy objects of
+	 * SemanticData into an ContainerSemanticData. To copy objects of
 	 * the same type, PHP clone() should be used.
 	 *
 	 * @since 1.7
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( SemanticData $semanticData = null ) {
+	public function copyDataFrom( ?SemanticData $semanticData = null ) {
 		if ( $semanticData === null ) {
 			return;
 		}

@@ -8,18 +8,18 @@ use Language;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\UserOptionsLookup;
 use RequestContext;
-use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\DIWikiPage;
-use SMW\Site;
-use SMW\NamespaceManager;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\LocalTime;
 use SMW\MediaWiki\NamespaceInfo;
+use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
+use SMW\Site;
 use Title;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -114,7 +114,7 @@ class Localizer {
 	 *
 	 * @param User|null $user
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLocalTimeOffsetPreference( $user = null ) {
 		if ( !$user instanceof User ) {
@@ -213,7 +213,7 @@ class Localizer {
 	/**
 	 * @since 2.4
 	 *
-	 * @param Language|string $languageCode
+	 * @param Language|string $language
 	 *
 	 * @return LocalLanguage
 	 */
@@ -234,7 +234,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
@@ -245,7 +245,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 *
 	 * @return string
 	 */
@@ -264,7 +264,7 @@ class Localizer {
 	 *
 	 * @param string $namespaceName
 	 *
-	 * @return integer|boolean
+	 * @return int|bool
 	 */
 	public function getNsIndex( $namespaceName ) {
 		return $this->contentLanguage->getNsIndex( str_replace( ' ', '_', $namespaceName ) );
@@ -293,7 +293,7 @@ class Localizer {
 	 *
 	 * @param string $languageCode
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public static function isKnownLanguageTag( $languageCode ) {
 		$languageCode = mb_strtolower( $languageCode );
@@ -312,11 +312,6 @@ class Localizer {
 	 * @return string
 	 */
 	public static function asBCP47FormattedLanguageCode( $languageCode ) {
-		if ( !is_callable( [ '\LanguageCode', 'bcp47' ] ) ) {
-			// Backwards compatibility: remove once MW 1.30 is no
-			// longer supported (#3179)
-			return wfBCP47( $languageCode );
-		}
 		return \LanguageCode::bcp47( $languageCode );
 	}
 
@@ -335,7 +330,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
+	 * @param int $index
 	 * @param string $text
 	 *
 	 * @return string
@@ -347,7 +342,7 @@ class Localizer {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $ns
+	 * @param int $index
 	 * @param string $url
 	 *
 	 * @return string

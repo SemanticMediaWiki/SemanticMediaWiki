@@ -10,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\TableBuilder\TableSchemaManager
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -23,7 +23,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

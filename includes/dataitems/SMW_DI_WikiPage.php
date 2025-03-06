@@ -26,7 +26,7 @@ class DIWikiPage extends SMWDataItem {
 
 	/**
 	 * MediaWiki namespace integer.
-	 * @var integer
+	 * @var int
 	 */
 	protected $m_namespace;
 
@@ -59,7 +59,7 @@ class DIWikiPage extends SMWDataItem {
 	private $pageLanguage = null;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $id = 0;
 
@@ -74,7 +74,7 @@ class DIWikiPage extends SMWDataItem {
 	 * careful and since errors here do not have major consequences.
 	 *
 	 * @param string $dbkey
-	 * @param integer $namespace
+	 * @param int $namespace
 	 * @param string $interwiki
 	 * @param string $subobjectname
 	 */
@@ -87,7 +87,7 @@ class DIWikiPage extends SMWDataItem {
 
 		// Check for a potential fragment such as Foo#Bar, Bar#_49c8ab
 		if ( strpos( $dbkey, '#' ) !== false ) {
-			list( $dbkey, $subobjectname ) = explode( '#', $dbkey );
+			[ $dbkey, $subobjectname ] = explode( '#', $dbkey );
 		}
 
 		$this->m_dbkey = str_replace( ' ', '_', $dbkey );
@@ -121,7 +121,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param string $prefix
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSubEntityOf( string $prefix ): bool {
 		if (
@@ -139,7 +139,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param int $namespace
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace( int $namespace ): bool {
 		return $this->m_dbkey !== '' && $this->m_namespace === $namespace;
@@ -219,7 +219,7 @@ class DIWikiPage extends SMWDataItem {
 	/**
 	 * @since  2.5
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function setId( $id ) {
 		$this->id = (int)$id;

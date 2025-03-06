@@ -6,16 +6,16 @@ use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\StringValue;
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -49,7 +49,7 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConstraintValueValidator' )
 			->willReturn( $constraintValueValidator );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 

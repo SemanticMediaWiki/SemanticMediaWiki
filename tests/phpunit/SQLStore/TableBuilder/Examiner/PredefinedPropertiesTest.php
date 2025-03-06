@@ -3,14 +3,14 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyInterwiki' )
 			->willReturn( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +106,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +158,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->never() )
 			->method( 'getPropertyInterwiki' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

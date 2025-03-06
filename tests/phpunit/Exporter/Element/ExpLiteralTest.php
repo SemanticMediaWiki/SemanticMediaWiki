@@ -5,14 +5,14 @@ namespace SMW\Tests\Exporter\Element;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWDataItem as DataItem;
 use SMW\Tests\PHPUnitCompat;
+use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpLiteral
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -25,12 +25,6 @@ class ExpLiteralTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'\SMW\Exporter\Element\ExpLiteral',
 			new ExpLiteral( '', '', '', null )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'\SMWExpLiteral',
-			new \SMWExpLiteral( '', '', '', null )
 		);
 	}
 

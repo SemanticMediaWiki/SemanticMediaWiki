@@ -7,7 +7,7 @@ use SMW\Query\ProfileAnnotator;
 use SMWDINumber as DINumber;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -15,7 +15,7 @@ use SMWDINumber as DINumber;
 class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $duration;
 
@@ -23,7 +23,7 @@ class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 	 * @since 1.9
 	 *
 	 * @param ProfileAnnotator $profileAnnotator
-	 * @param integer $duration
+	 * @param int $duration
 	 */
 	public function __construct( ProfileAnnotator $profileAnnotator, $duration ) {
 		parent::__construct( $profileAnnotator );

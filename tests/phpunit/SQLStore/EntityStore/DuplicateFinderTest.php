@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
-use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\DIWikiPage;
-use SMW\MediaWiki\Connection\Query;
 use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -26,7 +26,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +52,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasDuplicate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

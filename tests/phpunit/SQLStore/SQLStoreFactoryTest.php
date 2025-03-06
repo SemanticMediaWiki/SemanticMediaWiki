@@ -3,17 +3,16 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\MediaWiki\Deferred\CallableUpdate;
-use SMW\Options;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\Tests\TestEnvironment;
-use SMWSQLStore3;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreFactory
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -28,7 +27,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +46,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructUpdater() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'\SMW\SQLStore\SQLStoreUpdater',
@@ -56,7 +55,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSlaveQueryEngine() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'\SMW\QueryEngine',
@@ -65,7 +64,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructMasterQueryEngine() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'\SMW\QueryEngine',
@@ -74,7 +73,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructMasterConceptCache() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ConceptCache',
@@ -83,7 +82,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSlaveConceptCache() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\ConceptCache',
@@ -92,10 +91,10 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructEntityIdManager() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
-			'SMWSql3SmwIds',
+			'SMW\SQLStore\EntityStore\EntityIdManager',
 			$instance->newEntityIdManager()
 		);
 
@@ -106,7 +105,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructUsageStatisticsCachedListLookup() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
@@ -115,7 +114,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyUsageCachedListLookup() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
@@ -124,7 +123,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructUnusedPropertyCachedListLookup() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
@@ -133,7 +132,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructUndeclaredPropertyCachedListLookup() {
-		$instance = new SQLStoreFactory( new SMWSQLStore3() );
+		$instance = new SQLStoreFactory( new SQLStore() );
 
 		$this->assertInstanceOf(
 			'SMW\SQLStore\Lookup\CachedListLookup',
@@ -243,7 +242,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyStatisticsStore() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -298,7 +297,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSequenceMapFinder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -452,7 +451,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableIdReferenceDisposer() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -469,7 +468,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableHashes() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -526,7 +525,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTypeFinder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -570,7 +569,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -587,7 +586,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructPropertyTableInfoFetcher() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -640,7 +639,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructEntityIdFinder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -661,7 +660,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructRedirectUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -714,7 +713,7 @@ class SQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructAuxiliaryFields() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

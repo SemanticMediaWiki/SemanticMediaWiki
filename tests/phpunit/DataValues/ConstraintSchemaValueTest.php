@@ -3,18 +3,17 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
-use SMW\DataValueFactory;
 use SMW\DataValues\ConstraintSchemaValue;
-use SMW\PropertySpecificationLookup;
 use SMW\DIWikiPage;
-use SMW\Tests\TestEnvironment;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ConstraintSchemaValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -33,7 +32,7 @@ class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( PropertySpecificationLookup::class )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

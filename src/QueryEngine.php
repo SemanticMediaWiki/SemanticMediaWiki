@@ -2,15 +2,15 @@
 
 namespace SMW;
 
+use SMW\Query\QueryResult;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * Interface for query answering that depend on concrete implementations to
  * provide the filtering and matching process for specific conditions against a
  * select back-end.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

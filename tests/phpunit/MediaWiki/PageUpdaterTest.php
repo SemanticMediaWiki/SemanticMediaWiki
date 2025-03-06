@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\PageUpdater;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\PageUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.1
  *
  * @author mwjames
@@ -27,7 +27,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -256,7 +256,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);

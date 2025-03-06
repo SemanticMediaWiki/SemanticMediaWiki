@@ -2,15 +2,14 @@
 
 namespace SMW\Elastic;
 
+use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
-use SMW\Elastic\Connection\Client as ElasticClient;
-use SMW\Elastic\Connection\DummyClient;
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -23,7 +22,7 @@ class Hooks {
 	private $elasticFactory;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $handlers = [];
 
@@ -39,7 +38,7 @@ class Hooks {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHandlers(): array {
 		return [

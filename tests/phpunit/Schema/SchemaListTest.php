@@ -2,16 +2,15 @@
 
 namespace SMW\Tests\Schema;
 
-use SMW\DIWikiPage;
-use SMW\Schema\SchemaList;
 use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaList;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\SchemaList
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

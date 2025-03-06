@@ -2,15 +2,15 @@
 
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -79,7 +79,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 * @param $objectName string Turtle name of marking object/value
 	 * @param $extraNamespaces array (associative) of namespaceId => namespaceUri
 	 *
-	 * @return boolean stating whether the operations succeeded
+	 * @return bool stating whether the operations succeeded
 	 */
 	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", [], $extraNamespaces );
@@ -108,7 +108,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @param $payload string Turtle serialization of data to send
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doHttpPost( $payload ) {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {

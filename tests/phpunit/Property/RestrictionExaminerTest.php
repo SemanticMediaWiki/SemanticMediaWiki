@@ -10,7 +10,7 @@ use SMW\Property\RestrictionExaminer;
  * @covers \SMW\Property\RestrictionExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -30,12 +30,6 @@ class RestrictionExaminerTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			RestrictionExaminer::class,
-			new RestrictionExaminer()
-		);
-
-		// @ legavy
-		$this->assertInstanceOf(
-			'\SMW\PropertyRestrictionExaminer',
 			new RestrictionExaminer()
 		);
 	}

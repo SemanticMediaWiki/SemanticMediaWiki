@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\PropertiesLookup;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -11,7 +10,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \SMW\SQLStore\EntityStore\PropertiesLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -53,7 +52,7 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'execute' )
 			->willReturn( $resultWrapper );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +106,7 @@ class PropertiesLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'execute' )
 			->willReturn( $resultWrapper );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

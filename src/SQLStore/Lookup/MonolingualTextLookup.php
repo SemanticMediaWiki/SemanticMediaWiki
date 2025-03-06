@@ -2,19 +2,18 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\Store;
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\SQLStore\SQLStore;
-use SMW\Message;
+use InvalidArgumentException;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
-use InvalidArgumentException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -32,7 +31,7 @@ class MonolingualTextLookup {
 	private $caller = '';
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private static $lookupCache = [];
 
@@ -147,7 +146,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function newDataValue( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
 		$res = $this->fetchFromTable( $subject, $property, $languageCode );
@@ -195,7 +194,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function fetchFromTable( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
 		/**

@@ -2,25 +2,24 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\FilterFactory;
+use SMW\MediaWiki\Specials\FacetedSearch\HtmlBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
+use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
+use SMW\Services\ServicesFactory;
 use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 use SpecialPage;
-use Html;
-use SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor;
-use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
-use SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\Profile;
-use SMW\MediaWiki\Specials\FacetedSearch\HtmlBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
-use SMW\MediaWiki\Specials\FacetedSearch\FilterFactory;
-use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use SMW\MediaWiki\Hooks\GetPreferences;
-use SMW\Services\ServicesFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @since 3.2
  * @author mwjames

@@ -3,16 +3,14 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\DataItemFactory;
-use SMW\Tests\TestEnvironment;
+use SMW\Localizer\Message;
 use SMWDIBlob as DIBlob;
-use SMW\Message;
 
 /**
  * @covers \SMW\Constraint\ConstraintSchemaCompiler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -29,7 +27,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

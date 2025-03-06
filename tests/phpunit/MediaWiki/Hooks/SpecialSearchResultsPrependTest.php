@@ -8,7 +8,7 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
  * @covers \SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -49,7 +49,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw-prefs-general-options-suggester-textinput' )
 			->willReturn( true );
 
-		$search = $this->getMockBuilder( '\SMWSearch' )
+		$search = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +93,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw-prefs-general-options-disable-search-info' )
 			->willReturn( true );
 
-		$search = $this->getMockBuilder( '\SMWSearch' )
+		$search = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
 			->getMock();
 

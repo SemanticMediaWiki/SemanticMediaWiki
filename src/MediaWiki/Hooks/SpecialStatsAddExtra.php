@@ -2,18 +2,17 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\DataTypeRegistry;
-use SMW\Store;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
+use SMW\Store;
 
 /**
  * Add extra statistic at the end of Special:Statistics
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialStatsAddExtra
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -39,7 +38,7 @@ class SpecialStatsAddExtra implements HookListener {
 	private $language;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $dataTypeLabels = [];
 

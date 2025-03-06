@@ -2,14 +2,14 @@
 
 namespace SMW\Tests;
 
+use SMW\DIConcept;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpResource;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
-use SMWDIConcept as DIConcept;
 use SMWDINumber as DINumber;
 use SMWExporter as Exporter;
-use SMWExpResource as ExpResource;
 
 /**
  * @covers \SMWExporter
@@ -19,7 +19,7 @@ use SMWExpResource as ExpResource;
  * @group SMWExtension
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class SMWExporterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWExpNsResource',
+			'\SMW\Exporter\Element\ExpNsResource',
 			$expData->getSubject()
 		);
 	}
@@ -72,10 +72,10 @@ class SMWExporterTest extends \PHPUnit\Framework\TestCase {
 
 	public function dataItemExpElementProvider() {
 		// #0 (bug 56643)
-		$provider[] = [ new DINumber( 9001 ), 'SMWExpElement' ];
+		$provider[] = [ new DINumber( 9001 ), '\SMW\Exporter\Element\ExpElement' ];
 
-		$provider[] = [ new DIBlob( 'foo' ), 'SMWExpElement' ];
-		$provider[] = [ new DIBoolean( true ), 'SMWExpElement' ];
+		$provider[] = [ new DIBlob( 'foo' ), '\SMW\Exporter\Element\ExpElement' ];
+		$provider[] = [ new DIBoolean( true ), '\SMW\Exporter\Element\ExpElement' ];
 
 		$provider[] = [ new DIConcept( 'Foo', '', '', '', '' ), 'SMWExpData' ];
 

@@ -5,17 +5,17 @@ namespace SMW\Tests\Integration\Query;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\StringCondition;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
-use SMWQuery as Query;
-use SMWDIBlob as DIBlob;
+use SMW\StringCondition;
 use SMW\Tests\SMWIntegrationTestCase;
+use SMWDIBlob as DIBlob;
 
 /**
  * @group semantic-mediawiki
+ * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

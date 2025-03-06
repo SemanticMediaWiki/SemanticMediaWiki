@@ -3,15 +3,15 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\DIWikiPage;
-use SMW\SQLStore\SQLStoreUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreUpdater;
 use Title;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -172,7 +172,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -231,7 +231,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -287,7 +287,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -339,7 +339,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -384,7 +384,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [ 0 ] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -454,7 +454,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 				'' )
 			->willReturn( [ 0 ] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

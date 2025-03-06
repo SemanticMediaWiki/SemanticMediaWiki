@@ -2,20 +2,17 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use Onoi\Cache\Cache;
-use SMW\Store;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\DIWikiPage;
 use SMW\EntityCache;
-use Html;
-use SMW\Utils\TemplateEngine;
-use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
+use SMW\Store;
+use SMW\Utils\TemplateEngine;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -51,7 +48,7 @@ class ReplicationCheck {
 	private $templateEngine;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $errorTitle = '';
 
@@ -66,7 +63,7 @@ class ReplicationCheck {
 	private $severityType = self::SEVERITY_TYPE_ERROR;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $cacheTTL = 3600;
 
@@ -101,7 +98,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getReplicationFailures() {
 		return $this->entityCache->fetch( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
@@ -119,7 +116,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $title
+	 * @param DIWikiPage|Title $subject
 	 */
 	public function deleteReplicationTrail( $subject ) {
 		if ( $subject instanceof \Title ) {
@@ -139,7 +136,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $cacheTTL
+	 * @param int $cacheTTL
 	 */
 	public function setCacheTTL( $cacheTTL ) {
 		$this->cacheTTL = $cacheTTL > 0 ? $cacheTTL : 3600;

@@ -4,14 +4,14 @@ namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIUri as DIUri;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -3,28 +3,25 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Hooks;
-use PHPUnit\TextUI\RuntimeException;
-use SMW\Schema\Exception\SchemaTypeNotFoundException;
-use SMW\Schema\SchemaFactory;
-use User;
-use Xml;
-use SMW\Utils\Logo;
-use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
-use SMW\OptionsAwareTrait;
-use SMW\Schema\Compartment;
-use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
+use SMW\MediaWiki\HookListener;
+use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile as FacetedSearchProfile;
+use SMW\OptionsAwareTrait;
+use SMW\Schema\Exception\SchemaTypeNotFoundException;
+use SMW\Schema\SchemaFactory;
+use SMW\Utils\Logo;
+use User;
 
 /**
  * Hook: GetPreferences adds user preference
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/GetPreferences
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

@@ -3,11 +3,11 @@
 namespace SMW\Tests\Integration\Query;
 
 use SMW\DIProperty;
+use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMwConjunction as Conjunction;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
@@ -21,9 +21,10 @@ use SMWQuery as Query;
  * @group semantic-mediawiki-query
  *
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

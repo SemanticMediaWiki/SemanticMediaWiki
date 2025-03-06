@@ -10,7 +10,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\RedirectUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -154,7 +154,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->never() )
 			->method( 'deleteRedirect' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -221,7 +221,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPageID' )
 			->willReturn( 5 );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

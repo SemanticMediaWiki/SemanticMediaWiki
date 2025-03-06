@@ -4,7 +4,7 @@ namespace SMW\Tests\Query\PrintRequest;
 
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequest\Serializer;
 
@@ -12,7 +12,7 @@ use SMW\Query\PrintRequest\Serializer;
  * @covers SMW\Query\PrintRequest\Serializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

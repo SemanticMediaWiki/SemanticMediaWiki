@@ -2,18 +2,17 @@
 
 namespace SMW\ParserFunctions;
 
-use Parser;
 use PPFrame;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\ParserData;
-use SMWPropertyValue as PropertyValue;
 
 /**
  * Class that provides the {{#declare}} parser function
  *
  * @see http://semantic-mediawiki.org/wiki/Help:Argument_declaration_in_templates
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.5.3
  *
  * @author Markus Krötzsch

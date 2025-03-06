@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -13,18 +14,19 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
-use SMW\Tests\PHPUnitCompat;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -315,8 +317,8 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testQueryForSingleCategory() {
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY, '' );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription(
@@ -611,8 +613,8 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$category = new DIWikiPage( 'City', NS_CATEGORY );
 
-		$categoryName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$conjunction = new Conjunction( [

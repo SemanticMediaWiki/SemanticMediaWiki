@@ -3,13 +3,14 @@
 namespace SMW\Tests\SQLStore\ChangeOp;
 
 use SMW\DIWikiPage;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeDiff
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -158,7 +159,7 @@ class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 
 	public function FetchFromCache() {
 		$changeDiff = ChangeDiff::fetch(
-			\SMW\ApplicationFactory::getInstance()->getCache(),
+			ApplicationFactory::getInstance()->getCache(),
 			DIWikiPage::newFromText( 'DifferentSort' )
 		);
 

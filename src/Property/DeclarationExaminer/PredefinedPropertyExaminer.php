@@ -3,16 +3,16 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use ExtensionRegistry;
-use SMW\DIProperty;
-use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
-use SMW\DataValues\TypesValue;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\TypesValue;
+use SMW\DIProperty;
+use SMW\Localizer\Message;
+use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\PropertyRegistry;
-use SMW\Message;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

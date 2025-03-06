@@ -5,16 +5,16 @@ namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\SQLStore\QueryEngine\ConditionBuilder;
-use SMWDIBlob as DIBlob;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use SMWDIBlob as DIBlob;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author Markus Krötzsch
@@ -59,7 +59,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canInterpretDescription( Description $description ) {
 		return $description instanceof ValueDescription;

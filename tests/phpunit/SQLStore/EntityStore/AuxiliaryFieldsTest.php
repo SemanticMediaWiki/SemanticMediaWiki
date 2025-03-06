@@ -3,17 +3,16 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\Cache;
+use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
-use Onoi\Cache\FixedInMemoryLruCache;
 use SMW\Utils\HmacSerializer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\AuxiliaryFields
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -25,7 +24,7 @@ class AuxiliaryFieldsTest extends \PHPUnit\Framework\TestCase {
 	private Cache $cache;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

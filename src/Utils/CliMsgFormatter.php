@@ -3,7 +3,7 @@
 namespace SMW\Utils;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class CliMsgFormatter {
 	const MAX_LEN = 75;
 
 	/**
-	 * @var integer|null
+	 * @var int|null
 	 */
 	private $firstColLen = null;
 
@@ -56,7 +56,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -67,7 +67,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -78,7 +78,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $string
+	 * @param string $text
 	 *
 	 * @return string
 	 */
@@ -89,23 +89,36 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $i
-	 * @param integer $total
+	 * @param int $i
+	 * @param int $total
 	 *
 	 * @return string
 	 */
 	public function progress( int $i, int $total ): string {
-		return min( 100, round( ( $i / $total ) * 100 ) ) . " %";
+		return $this->calculateProgress( $i, $total ) . " %";
+	}
+
+	/**
+	 * @codeCoverageIgnore
+	 */
+	private function calculateProgress( int $i, int $total ): int {
+		$value = 100;
+
+		if ( $i >= 0 && $total > 0 ) {
+			$value = min( 100, round( ( $i / $total ) * 100 ) );
+		}
+
+		return $value;
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $i
-	 * @param integer $total
-	 * @param integer|null $current
-	 * @param integer|null $last
-	 * @param integer|null $remainingTime
+	 * @param int $i
+	 * @param int $total
+	 * @param int|null $current
+	 * @param int|null $last
+	 * @param int|null $remainingTime
 	 *
 	 * @return string
 	 */
@@ -118,7 +131,7 @@ class CliMsgFormatter {
 			$last = $total;
 		}
 
-		$progress = min( 100, round( ( $i / $total ) * 100 ) );
+		$progress = $this->calculateProgress( $i, $total );
 
 		if ( $remainingTime === null ) {
 			return sprintf( "%s / %s (%3.0f%%)", $current, $last, $progress );
@@ -139,8 +152,8 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $i
-	 * @param integer $total
+	 * @param int $i
+	 * @param int $total
 	 *
 	 * @return string
 	 */
@@ -185,7 +198,7 @@ class CliMsgFormatter {
 	 *
 	 * @param string $firstCol
 	 * @param string $secondCol
-	 * @param integer $indentLen
+	 * @param int $indentLen
 	 * @param string $placeHolder
 	 *
 	 * @return string
@@ -226,7 +239,7 @@ class CliMsgFormatter {
 	 *
 	 * @param string $firstCol
 	 * @param string $secondCol
-	 * @param integer $indentLen
+	 * @param int $indentLen
 	 * @param string $placeHolder
 	 *
 	 * @return string
@@ -257,8 +270,8 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param string $value
-	 * @param integer $seconds
+	 * @param string $message
+	 * @param int $seconds
 	 */
 	public function countDown( string $message, int $seconds ) {
 		if ( $seconds < 1 ) {
@@ -286,7 +299,7 @@ class CliMsgFormatter {
 	 * @since 3.2
 	 *
 	 * @param string $oneCol
-	 * @param integer $indentLen
+	 * @param int $indentLen
 	 *
 	 * @return string
 	 */
@@ -302,9 +315,9 @@ class CliMsgFormatter {
 	 * @since 3.2
 	 *
 	 * @param string $key
-	 * @param integer $indentLen
+	 * @param int $indentLen
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getLen( string $key, int $indentLen = 0 ): int {
 		if ( $indentLen > 0 ) {
@@ -317,7 +330,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $firstColLen
+	 * @param int $firstColLen
 	 */
 	public function setFirstColLen( int $firstColLen ) {
 		$this->firstColLen = $firstColLen;
@@ -326,7 +339,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $len
+	 * @param int $len
 	 */
 	public function incrFirstColLen( int $len ) {
 		$this->firstColLen += $len;
@@ -335,7 +348,7 @@ class CliMsgFormatter {
 	/**
 	 * @since 3.2
 	 *
-	 * @return integer|null
+	 * @return int|null
 	 */
 	public function getFirstColLen(): ?int {
 		return $this->firstColLen;
@@ -345,8 +358,8 @@ class CliMsgFormatter {
 	 * @since 3.2
 	 *
 	 * @param string $firstCol
-	 * @param integer $indentLen
-	 * @param integer $expectedSecondColLen
+	 * @param int $indentLen
+	 * @param int $expectedSecondColLen
 	 *
 	 * @return string
 	 */

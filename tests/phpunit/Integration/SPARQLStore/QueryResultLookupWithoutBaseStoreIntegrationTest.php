@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Query\Language\NamespaceDescription as NamespaceDescription;
-use SMW\Query\Language\SomeProperty as SomeProperty;
-use SMW\Query\Language\ThingDescription as ThingDescription;
-use SMW\Query\Language\ValueDescription as ValueDescription;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\Subobject;
 use SMW\Tests\Utils\SemanticDataFactory;
@@ -20,7 +20,7 @@ use SMWQuery as Query;
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

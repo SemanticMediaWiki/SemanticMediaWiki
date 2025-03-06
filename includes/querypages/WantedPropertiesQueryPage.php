@@ -10,7 +10,7 @@ use Title;
  *
  * @ingroup QueryPage
  *
- * @licence GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -60,7 +60,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isExpensive() {
 		return false; /// disables caching for now
@@ -68,7 +68,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @codeCoverageIgnore
-	 * @return boolean
+	 * @return bool
 	 */
 	function isSyndicated() {
 		return false; ///TODO: why not?
@@ -143,7 +143,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @param $skin
-	 * @param array $result First item is SMWDIProperty, second item is int
+	 * @param array $result First item is DIProperty, second item is int
 	 *
 	 * @return string
 	 */
@@ -178,11 +178,11 @@ class WantedPropertiesQueryPage extends QueryPage {
 	/**
 	 * Get the list of results.
 	 *
-	 * @param SMWRequestOptions $requestOptions
-	 * @return array of SMWDIProperty|SMWDIError
+	 * @param RequestOptions $requestOptions
+	 * @return array of DIProperty|SMWDIError
 	 */
-	function getResults( $requestoptions ) {
-		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestoptions );
+	function getResults( $requestOptions ) {
+		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}
 }

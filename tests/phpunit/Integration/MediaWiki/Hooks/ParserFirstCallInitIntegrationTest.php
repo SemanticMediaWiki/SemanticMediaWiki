@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use SMW\Tests\TestEnvironment;
 use Title;
 
 /**
@@ -12,7 +11,7 @@ use Title;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -33,7 +32,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +85,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
-			->willReturnCallback( function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
+			->willReturnCallback( static function ( $service ) use( $singleEntityQueryLookup, $monolingualTextLookup ) {
 				if ( $service === 'SingleEntityQueryLookup' ) {
 					return $singleEntityQueryLookup;
 				}

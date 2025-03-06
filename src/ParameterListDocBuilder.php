@@ -7,7 +7,7 @@ use ParamProcessor\ParamDefinition;
 /**
  * @since 2.4
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ParameterListDocBuilder {
@@ -61,7 +61,7 @@ class ParameterListDocBuilder {
 	/**
 	 * @param ParamDefinition[] $paramDefinitions
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function containsAliases( array $paramDefinitions ) {
 		foreach ( $paramDefinitions as $parameter ) {
@@ -77,7 +77,7 @@ class ParameterListDocBuilder {
 	 * Returns the wikitext for a table row describing a single parameter.
 	 *
 	 * @param ParamDefinition $parameter
-	 * @param boolean $hasAliases
+	 * @param bool $hasAliases
 	 *
 	 * @return string
 	 */

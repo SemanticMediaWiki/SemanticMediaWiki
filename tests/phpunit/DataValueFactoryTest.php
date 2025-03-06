@@ -12,7 +12,7 @@ use SMWDataItem;
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$test->expects( $this->once() )
 			->method( 'doRun' );
 
-		$callback = function () use( $test ) {
+		$callback = static function () use( $test ) {
 			return $test;
 		};
 
@@ -112,7 +112,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === [] ) {
-			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
+			$this->assertInstanceOf( '\SMW\DIProperty', $dataValue->getProperty() );
 			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
 			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
@@ -145,7 +145,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === [] ) {
-			$this->assertInstanceOf( 'SMWDIProperty', $dataValue->getProperty() );
+			$this->assertInstanceOf( '\SMW\DIProperty', $dataValue->getProperty() );
 			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
 			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
@@ -222,7 +222,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWPropertyValue',
+			'\SMW\DataValues\PropertyValue',
 			$dataValue
 		);
 
@@ -240,7 +240,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWPropertyValue',
+			'\SMW\DataValues\PropertyValue',
 			$dataValue
 		);
 
@@ -338,13 +338,13 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function typeIdValueDataProvider() {
 		return [
-			[ '_txt', 'Bar', 'Bar', 'SMWStringValue' ], // #0
-			[ '_txt', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWStringValue' ], // #1
-			[ '_txt', '9001', '9001', 'SMWStringValue' ], // #2
-			[ '_txt', 1001, '1001', 'SMWStringValue' ], // #3
-			[ '_txt', '-%&$*', '-%&$*', 'SMWStringValue' ], // #4
-			[ '_txt', '_Bar', '_Bar', 'SMWStringValue' ], // #5
-			[ '_txt', 'bar', 'bar', 'SMWStringValue' ], // #6
+			[ '_txt', 'Bar', 'Bar', '\SMW\DataValues\StringValue' ], // #0
+			[ '_txt', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', '\SMW\DataValues\StringValue' ], // #1
+			[ '_txt', '9001', '9001', '\SMW\DataValues\StringValue' ], // #2
+			[ '_txt', 1001, '1001', '\SMW\DataValues\StringValue' ], // #3
+			[ '_txt', '-%&$*', '-%&$*', '\SMW\DataValues\StringValue' ], // #4
+			[ '_txt', '_Bar', '_Bar', '\SMW\DataValues\StringValue' ], // #5
+			[ '_txt', 'bar', 'bar', '\SMW\DataValues\StringValue' ], // #6
 			[ '-_txt', 'Bar', 'Bar', 'SMWErrorValue' ], // #7
 
 			[ '_wpg', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #8
@@ -374,7 +374,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 			[ 'Foo', '_Bar', 'Bar', 'SMWDataValue' ], // #5
 			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
 			[ '-Foo', 'Bar', '', 'SMWErrorValue' ], // #7
-			[ '_Foo', 'Bar', '', 'SMWPropertyValue' ], // #8
+			[ '_Foo', 'Bar', '', '\SMW\DataValues\PropertyValue' ], // #8
 		];
 	}
 
@@ -392,10 +392,10 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
 			[ '-Foo', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #7
 
-			// Will fail with "must be an instance of SMWDIProperty, instance of SMWDIError give"
+			// Will fail with "must be an instance of \SMW\DIProperty, instance of SMWDIError give"
 			// as propertyDI isn't checked therefore addPropertyValue() should be
 			// used as it will return a proper object
-			// array( '_Foo' , 'Bar'          , ''             , 'SMWDIProperty' ), // #8
+			// array( '_Foo' , 'Bar'          , ''             , '\SMW\DIProperty' ), // #8
 		];
 	}
 

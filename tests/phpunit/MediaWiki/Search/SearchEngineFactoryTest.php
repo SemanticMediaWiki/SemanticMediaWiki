@@ -3,15 +3,14 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\SearchEngineFactory;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use SMWQuery;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchEngineFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author Stephan Gambke
@@ -22,13 +21,20 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	private $testEnvironment;
 	private $connection;
+	private $param;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->param = '\Wikimedia\Rdbms\IConnectionProvider';
+		} else {
+			$this->param = '\Wikimedia\Rdbms\Database';
+		}
+
+		$this->connection = $this->getMockBuilder( $this->param )
+		->disableOriginalConstructor()
+		->getMockForAbstractClass();
 	}
 
 	protected function tearDown(): void {
@@ -59,19 +65,23 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testNewDefaultFallbackSearchEngineForNullFallbackSearchType() {
 		$searchEngine = 'SearchDatabase';
 
-		if ( class_exists( 'SearchEngine' ) ) {
+		$reflection = new \ReflectionClass( 'SearchEngine' );
 
-			$reflection = new \ReflectionClass( 'SearchEngine' );
-
-			if ( $reflection->isInstantiable() ) {
-				$searchEngine = 'SearchEngine';
-			}
+		if ( $reflection->isInstantiable() ) {
+			$searchEngine = 'SearchEngine';
 		}
 
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
-			->getMockForAbstractClass();
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+				->disableOriginalConstructor()
+				->setMethods( [ 'getSearchEngine' ] )
+				->getMockForAbstractClass();
+		} else {
+			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+				->disableOriginalConstructor()
+				->setMethods( [ 'getSearchEngine' ] )
+				->getMockForAbstractClass();
+		}
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
@@ -101,7 +111,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$callback = function () use( $fallbackSearchEngine ) {
+		$callback = static function () use( $fallbackSearchEngine ) {
 			return $fallbackSearchEngine;
 		};
 
@@ -116,7 +126,7 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
-		$callback = function () {
+		$callback = static function () {
 			return new \stdClass;
 		};
 
@@ -129,6 +139,9 @@ class SearchEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewFallbackSearchEngine_ConstructFromString() {
+		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
+			$this->markTestSkipped( 'Check assertions for MW 1.41 and higher versions.' );
+		}
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', '\SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase' );
 
 		$searchEngineFactory = new SearchEngineFactory();

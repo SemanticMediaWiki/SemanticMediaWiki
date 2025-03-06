@@ -14,7 +14,7 @@ use Title;
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -377,11 +377,6 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->with(
 				$this->stringContains( 'smw-limitreport-Foo' ),
 				$this->stringContains( 'Bar' ) );
-
-		// FIXME 1.22+
-		if ( !method_exists( $parserOutput, 'setLimitReportData' ) ) {
-			$this->markTestSkipped( 'LimitReportData is not available.' );
-		}
 
 		$instance = new ParserData( $title, $parserOutput );
 		$instance->addLimitReport( 'Foo', 'Bar' );

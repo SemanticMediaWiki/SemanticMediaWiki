@@ -4,16 +4,16 @@ namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
-use Title;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
+use Title;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -48,7 +48,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -248,7 +248,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( Title::newFromText( __METHOD__ ) );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -287,7 +287,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -300,7 +300,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -326,7 +326,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = SMW_NS_PROPERTY;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -339,7 +339,7 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

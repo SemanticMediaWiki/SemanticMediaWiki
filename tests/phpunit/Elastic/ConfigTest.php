@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Config
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -37,7 +37,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 
 	public function testIsDefaultStore_True() {
 		$instance = new Config(
-			[ Config::DEFAULT_STORE => 'SMWElasticStore' ]
+			[ Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore' ]
 		);
 
 		$this->assertTrue(

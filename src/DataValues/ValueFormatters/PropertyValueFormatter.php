@@ -3,16 +3,16 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Highlighter;
-use SMW\Localizer;
-use SMW\Message;
-use SMWDataValue as DataValue;
 use SMW\DataValues\PropertyValue;
-use SMW\PropertySpecificationLookup;
+use SMW\Highlighter;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMWDataValue as DataValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -20,16 +20,16 @@ use SMW\PropertySpecificationLookup;
 class PropertyValueFormatter extends DataValueFormatter {
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
 

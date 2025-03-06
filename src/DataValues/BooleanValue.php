@@ -3,8 +3,8 @@
 namespace SMW\DataValues;
 
 use Sanitizer;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBoolean as DIBoolean;
@@ -12,7 +12,7 @@ use SMWDIBoolean as DIBoolean;
 /**
  * This datavalue implements the handling of Boolean datavalues.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Markus Krötzsch
@@ -61,7 +61,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_BOOLEAN ) {
@@ -101,14 +101,10 @@ class BooleanValue extends DataValue {
 			$this->falseCaption = '&nbsp;';
 		} else { // format "truelabel, falselabel" (hopefully)
 			$captions = explode( ',', $formatstring, 2 );
-			if ( count( $captions ) == 2 ) { // note: escaping needed to be safe; MW-sanitising would be an alternative
-				if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-					$this->trueCaption = \Sanitizer::removeSomeTags( trim( $captions[0] ) );
-					$this->falseCaption = \Sanitizer::removeSomeTags( trim( $captions[1] ) );
-				} else {
-					$this->trueCaption = \Sanitizer::removeHTMLtags( trim( $captions[0] ) );
-					$this->falseCaption = \Sanitizer::removeHTMLtags( trim( $captions[1] ) );
-				}
+			if ( count( $captions ) == 2 ) {
+				// note: escaping needed to be safe; MW-sanitising would be an alternative
+				$this->trueCaption = Sanitizer::removeSomeTags( trim( $captions[0] ) );
+				$this->falseCaption = Sanitizer::removeSomeTags( trim( $captions[1] ) );
 			} // else: no format that is recognised, ignore
 		}
 
@@ -162,7 +158,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @since 1.6
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function getBoolean() {
 		return !$this->isValid() ? false : $this->m_dataitem->getBoolean();

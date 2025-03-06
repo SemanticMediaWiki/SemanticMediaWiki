@@ -4,13 +4,13 @@ namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
 use SMW\DataValues\Time\IntlTimeFormatter;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMWDataValue as DataValue;
 use SMWDITime as DITime;
 use SMWTimeValue as TimeValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -69,7 +69,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @since 2.4
 	 *
-	 * @param boolean $mindefault determining whether values below the
+	 * @param bool $mindefault determining whether values below the
 	 * precision of our input should be completed with minimal or maximal
 	 * conceivable values
 	 *
@@ -292,7 +292,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getCaptionFromFreeFormat( DITime $dataItem = null ) {
+	public function getCaptionFromFreeFormat( ?DITime $dataItem = null ) {
 		$language = Localizer::getInstance()->getLanguage(
 			$this->dataValue->getOption( DataValue::OPT_USER_LANGUAGE )
 		);
@@ -327,7 +327,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getLocalizedFormat( DITime $dataItem = null ) {
+	public function getLocalizedFormat( ?DITime $dataItem = null ) {
 		if ( $dataItem === null ) {
 			return '';
 		}

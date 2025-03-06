@@ -2,13 +2,13 @@
 
 namespace SMW\Constraint;
 
-use SMW\PropertySpecificationLookup;
-use SMW\Schema\SchemaFinder;
 use SMW\DIProperty;
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
+use SMW\Schema\SchemaFinder;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -21,16 +21,17 @@ class ConstraintSchemaCompiler {
 	private $schemaFinder;
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SchemaFinder $schemaFinder
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SchemaFinder $schemaFinder, PropertySpecificationLookup $propertySpecificationLookup ) {
+	public function __construct( SchemaFinder $schemaFinder, SpecificationLookup $propertySpecificationLookup ) {
 		$this->schemaFinder = $schemaFinder;
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 	}
@@ -55,7 +56,7 @@ class ConstraintSchemaCompiler {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function compileConstraintSchema( DIProperty $property ) {
 		$constraintSchema = [];
@@ -149,7 +150,7 @@ class ConstraintSchemaCompiler {
 				continue;
 			}
 
-			list( $reference, $regex ) = explode( '|', $part, 2 );
+			[ $reference, $regex ] = explode( '|', $part, 2 );
 
 			if ( $reference === $allowed_pattern ) {
 				$pattern = $regex;

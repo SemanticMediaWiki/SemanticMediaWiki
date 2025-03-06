@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Edit\PreparedEdit;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use ParserOutput;
@@ -16,7 +17,7 @@ use WikiPage;
  * @covers \SMW\MediaWiki\EditInfo
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.0
  *
  * @author mwjames
@@ -63,9 +64,13 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$editInfo = (object)[];
-		$editInfo->output = new ParserOutput();
-		$editInfo->output->setExtensionData( ParserData::DATA_ID, $semanticData );
+		$output = new ParserOutput();
+		$output->setExtensionData( ParserData::DATA_ID, $semanticData );
+
+		$editInfo = $this->createMock( PreparedEdit::class );
+		$editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->willReturn( $output );
 
 		$wikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
@@ -121,8 +126,10 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 			  ->willReturn( true );
 
 		# 0 No parserOutput object
-		$editInfo = (object)[];
-		$editInfo->output = null;
+		$editInfo = $this->createMock( PreparedEdit::class );
+		$editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->willReturn( null );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->setConstructorArgs( [ $title ] )
@@ -142,8 +149,12 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 			null
 		];
 
-		$editInfo = (object)[];
-		$editInfo->output = new ParserOutput();
+		$output = new ParserOutput();
+
+		$editInfo = $this->createMock( PreparedEdit::class );
+		$editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->willReturn( $output );
 
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
 			->setConstructorArgs( [ $title ] )
@@ -160,27 +171,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 				'revision' => $this->newRevisionStub(),
 				'user' => $user
 			],
-			$editInfo->output
-		];
-
-		$editInfo = (object)[];
-
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
-			->setConstructorArgs( [ $title ] )
-			->getMock();
-
-		$wikiPage->expects( $this->any() )
-			->method( 'prepareContentForEdit' )
-			->willReturn( $editInfo );
-
-		$provider[] = [
-			[
-				'editInfo' => $editInfo,
-				'wikiPage' => $wikiPage,
-				'revision' => $this->newRevisionStub(),
-				'user' => $user
-			],
-			null
+			$editInfo->getOutput()
 		];
 
 		return $provider;
@@ -212,10 +203,6 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newContentStub() {
-		if ( !class_exists( 'ContentHandler' ) ) {
-			return null;
-		}
-
 		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
 			->disableOriginalConstructor()
 			->getMock();

@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Services\DataValueServiceFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -137,7 +137,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPropertyRestrictionExaminer() {
-		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\PropertyRestrictionExaminer' )
+		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\Property\RestrictionExaminer' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

@@ -6,7 +6,7 @@ use SMW\ProcessingErrorMsgHandler;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -74,11 +74,11 @@ class DebugFormatter {
 	 * contexts.
 	 *
 	 * @param $entries array of name => value of informative entries to display
-	 * @param $query SMWQuery or null, if given add basic data about this query as well
+	 * @param null $query SMWQuery or null, if given add basic data about this query as well
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $entries, Query $query = null ) {
+	public function buildHTML( array $entries, ?Query $query = null ) {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();
@@ -125,7 +125,7 @@ class DebugFormatter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array $rows
+	 * @param iterable $res
 	 *
 	 * @return string
 	 */
@@ -261,7 +261,7 @@ class DebugFormatter {
 		$matches = [];
 		$i = 0;
 
-		$sql = preg_replace_callback( '/NOT IN .*\)/', function ( $m ) use ( &$matches, &$i ) {
+		$sql = preg_replace_callback( '/NOT IN .*\)/', static function ( $m ) use ( &$matches, &$i ) {
 			$i++;
 
 			$string = str_replace( [ 'AND ((' ], [ "AND (<br>   (" ], $m[0] );

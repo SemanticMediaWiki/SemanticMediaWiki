@@ -3,15 +3,15 @@
 namespace SMW\Tests\Elastic\Jobs;
 
 use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\Tests\TestEnvironment;
-use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Jobs\IndexerRecoveryJob
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

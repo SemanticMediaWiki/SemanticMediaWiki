@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
-use SMW\Elastic\Indexer\FileIndexer;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
@@ -12,7 +12,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\Elastic\Indexer\FileIndexer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

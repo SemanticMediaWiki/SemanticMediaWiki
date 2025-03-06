@@ -3,15 +3,12 @@
 namespace SMW\Tests\SQLStore\PropertyTable;
 
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
-use SMW\StoreFactory;
-use SMWDataItem;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTable\PropertyTableHashes
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -23,7 +20,7 @@ class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
 	private $cache;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

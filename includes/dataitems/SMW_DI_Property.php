@@ -2,12 +2,14 @@
 
 namespace SMW;
 
-use RuntimeException;
 use MediaWiki\Json\JsonUnserializer;
+use RuntimeException;
 use SMW\Exception\DataItemException;
 use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Localizer\Localizer;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem;
 use SMWDIUri;
 
@@ -59,7 +61,7 @@ class DIProperty extends SMWDataItem {
 
 	/**
 	 * Whether to take the inverse of this property or not.
-	 * @var boolean
+	 * @var bool
 	 */
 	private $m_inverse;
 
@@ -484,7 +486,7 @@ class DIProperty extends SMWDataItem {
 	 * Note that this function only gives access to the registry data that
 	 * DIProperty stores, but does not do further parsing of user input.
 	 *
-	 * To process wiki input, SMWPropertyValue should be used.
+	 * To process wiki input, PropertyValue should be used.
 	 *
 	 * @since 1.6
 	 *

@@ -2,17 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use WebRequest;
-use SMW\Utils\UrlArgs;
-use Html;
-use Title;
 use SMW\DIProperty;
-use SMW\Store;
-use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\PrefetchItemLookup;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -35,7 +31,7 @@ class TreeBuilder {
 	private $store;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $nodes;
 
@@ -73,10 +69,10 @@ class TreeBuilder {
 	/**
 	 * @since 3.2
 	 *
-	 * @param array $categories
+	 * @param array $subjects
 	 * @param string $type
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getHierarchyList( array $subjects, string $type ): array {
 		if ( $subjects === [] ) {
@@ -176,7 +172,7 @@ class TreeBuilder {
 		foreach ( $this->nodes as $key => $node ) {
 			if ( $node->hasNode( $id ) ) {
 				return true;
-			};
+			}
 		}
 
 		return false;
@@ -190,7 +186,7 @@ class TreeBuilder {
 		foreach ( $this->nodes as $key => $node ) {
 			if ( $node->hasNode( $id ) ) {
 				return $node->getNode( $id );
-			};
+			}
 		}
 	}
 
@@ -228,7 +224,7 @@ class TreeBuilder {
 				foreach ( $this->children as $key => $child ) {
 					if ( $child->hasNode( $id ) ) {
 						return true;
-					};
+					}
 				}
 
 				return false;
@@ -242,7 +238,7 @@ class TreeBuilder {
 				foreach ( $this->children as $key => $child ) {
 					if ( $child->hasNode( $id ) ) {
 						return $child->getNode( $id );
-					};
+					}
 				}
 			}
 

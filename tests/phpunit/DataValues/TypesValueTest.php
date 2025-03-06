@@ -3,13 +3,12 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\TypesValue;
-use SMW\DataValues\ValueParsers\TypesValueParser;
 
 /**
  * @covers \SMW\DataValues\TypesValue
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

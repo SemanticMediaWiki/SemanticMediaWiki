@@ -5,17 +5,17 @@ namespace SMW\Deserializers;
 use Deserializers\Deserializer;
 use OutOfBoundsException;
 use RuntimeException;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMWContainerSemanticData;
 use SMWDataItem as DataItem;
 use SMWDIContainer as DIContainer;
 use SMWErrorValue as ErrorValue;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -127,7 +127,7 @@ class SemanticDataDeserializer implements Deserializer {
 			$dataItem = $this->doDeserializeSubSemanticData(
 				$data,
 				$value['item'],
-				new SMWContainerSemanticData( $dataItem )
+				new ContainerSemanticData( $dataItem )
 			);
 
 		}
@@ -179,7 +179,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 * the serialization and the deserialization (e.g for when the
 	 * serialization object is stored in cache, DB etc.)
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function getDataItemId( DIProperty $property ) {
 		if ( !isset( $this->dataItemTypeIdCache[$property->getKey()] ) ) {

@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
-use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\DIProperty;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -118,7 +118,7 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunChangeListeners() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

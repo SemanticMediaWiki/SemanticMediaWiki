@@ -14,7 +14,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -5,11 +5,11 @@ namespace SMW\Tests\Parser;
 use ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
-use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use Title;
 
@@ -17,7 +17,7 @@ use Title;
  * @covers \SMW\Parser\InTextAnnotationParser
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -110,7 +110,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$magicWordsFinder = \SMW\ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
+		$magicWordsFinder = ApplicationFactory::getInstance()->create( 'MagicWordsFinder', $parserData->getOutput() );
 
 		$instance = new InTextAnnotationParser(
 			$parserData,

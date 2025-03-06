@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
@@ -33,7 +33,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -111,7 +111,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_id = 42;
 		$row->usage_count = $expectedCount;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -123,7 +123,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -160,7 +160,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_id = 42;
 		$row->usage_count = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

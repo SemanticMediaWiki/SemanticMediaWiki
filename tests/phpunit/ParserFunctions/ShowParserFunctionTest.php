@@ -3,18 +3,18 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\ShowParserFunction
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -55,7 +55,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasReachedExpensiveLimit' )
 			->willReturn( false );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,7 +169,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance->parse( $params );
 
 		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
-			$this->assertInstanceOf( 'SMWContainerSemanticData', $containerSemanticData );
+			$this->assertInstanceOf( '\SMW\DataModel\ContainerSemanticData', $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,

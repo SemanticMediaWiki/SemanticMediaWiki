@@ -3,14 +3,14 @@
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
 use Html;
-use SMW\Message;
-use WebRequest;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames

@@ -7,7 +7,7 @@ use SMWDataValue as DataValue;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -15,7 +15,7 @@ use SMWDataValue as DataValue;
 class PropertySpecificationConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 

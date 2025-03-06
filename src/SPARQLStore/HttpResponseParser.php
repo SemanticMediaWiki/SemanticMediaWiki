@@ -6,7 +6,7 @@ namespace SMW\SPARQLStore;
  * Provides an interface for which responses from a http client (repositor
  * connection) are parsed into a unified format
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames

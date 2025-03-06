@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use PSr\Log\LoggerAwareTrait;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\HookListener;
-use PSr\Log\LoggerAwareTrait;
-use SMW\Message;
 use SMW\OptionsAwareTrait;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use Title;
 
 /**
@@ -16,7 +16,7 @@ use Title;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleProtectComplete
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

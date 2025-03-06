@@ -9,15 +9,16 @@ use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Utils\CliMsgFormatter;
 use SMW\Options;
+use SMW\Query\QueryResult;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
+use SMW\Utils\CliMsgFormatter;
 use SMWQueryProcessor;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -55,7 +56,7 @@ class DistinctEntityDataRebuilder {
 	private $filters = [];
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $rebuildCount = 0;
 
@@ -74,7 +75,7 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param MessageReporter $reporter
+	 * @param Options $options
 	 */
 	public function setOptions( Options $options ) {
 		$this->options = $options;
@@ -110,7 +111,7 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @since 2.4
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doRebuild() {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
@@ -239,7 +240,7 @@ class DistinctEntityDataRebuilder {
 			SMWQueryProcessor::getProcessedParams( [] )
 		);
 
-		$query->setUnboundLimit( $result instanceof \SMWQueryResult ? $result->getCountValue() : $result );
+		$query->setUnboundLimit( $result instanceof QueryResult ? $result->getCountValue() : $result );
 
 		return $this->store->getQueryResult( $query )->getResults();
 	}

@@ -13,7 +13,7 @@ use SMW\Tests\PHPUnitCompat;
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -75,7 +75,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +118,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			$store
 		);
 
-		list( $rows, $textItems, $propertyList, $fixedPropertyList ) = $instance->mapToRows(
+		[ $rows, $textItems, $propertyList, $fixedPropertyList ] = $instance->mapToRows(
 			42,
 			$semanticData
 		);
@@ -147,7 +147,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -4,15 +4,15 @@ namespace SMW\Tests\Property;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMWDIBlob as DIBlob;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Tests\TestEnvironment;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Property\ChangePropagationNotifier
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -71,10 +71,6 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
 
 		$this->detectChanges(
@@ -90,10 +86,6 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-		if ( !method_exists( 'JobQueueGroup', 'lazyPush' ) ) {
-			$this->markTestSkipped( 'JobQueueGroup::lazyPush is not supported.' );
-		}
-
 		$subject = new DIWikiPage( __METHOD__, NS_CATEGORY );
 
 		$this->detectChanges(
@@ -165,7 +157,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 	public function dataItemDataProvider() {
 		// Single
-		$subject  = [
+		$subject = [
 			DIWikiPage::newFromText( __METHOD__ )
 		];
 

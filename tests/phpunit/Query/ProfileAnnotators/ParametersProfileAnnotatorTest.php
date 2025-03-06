@@ -2,18 +2,18 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\ParametersProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

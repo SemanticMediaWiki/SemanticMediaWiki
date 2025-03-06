@@ -2,12 +2,12 @@
 
 namespace SMW\Schema;
 
-use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use JsonSerializable;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class SchemaTypes implements JsonSerializable {
 	/**
 	 * Default types
 	 *
-	 * @var []
+	 * @var
 	 */
 	private static $defaultTypes = [
 		'LINK_FORMAT_SCHEMA' => [
@@ -148,7 +148,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string $type
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getType( string $type ): array {
 		return $this->schemaTypes[$type] ?? [];
@@ -159,7 +159,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string|null $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRegisteredType( ?string $type ): bool {
 		return isset( $this->schemaTypes[$type] );
@@ -168,7 +168,7 @@ class SchemaTypes implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getRegisteredTypes(): array {
 		return array_keys( $this->schemaTypes );
@@ -179,7 +179,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param string $group
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getRegisteredTypesByGroup( string $group ): array {
 		$registeredTypes = [];

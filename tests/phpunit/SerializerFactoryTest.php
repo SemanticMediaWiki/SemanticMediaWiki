@@ -3,13 +3,12 @@
 namespace SMW\Tests;
 
 use SMW\SerializerFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SerializerFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -119,7 +118,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

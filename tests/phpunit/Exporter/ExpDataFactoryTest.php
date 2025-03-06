@@ -2,16 +2,13 @@
 
 namespace SMW\Tests\Exporter;
 
-use SMW\DIWikiPage;
 use SMW\Exporter\ExpDataFactory;
-use SMW\Tests\TestEnvironment;
-use SMW\Serializers\ExpDataSerializer;
 
 /**
  * @covers \SMW\Exporter\ExpDataFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

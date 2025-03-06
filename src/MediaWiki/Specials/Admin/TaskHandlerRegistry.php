@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use SMW\Store;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
+use SMW\Store;
 use User;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since  3.2
  *
  * @author mwjames
@@ -27,7 +27,7 @@ class TaskHandlerRegistry {
 	private $outputFormatter;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $taskHandlers = [];
 
@@ -81,7 +81,7 @@ class TaskHandlerRegistry {
 	/**
 	 * @since 3.2
 	 *
-	 * @param integer $featureSet
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ) {
 		$this->featureSet = $featureSet;
@@ -90,7 +90,7 @@ class TaskHandlerRegistry {
 	/**
 	 * @since 3.2
 	 *
-	 * @return string $type;
+	 * @param string $type
 	 *
 	 * @return TaskHandler[]
 	 */

@@ -11,7 +11,7 @@ use SMW\Exporter\Element\ExpResource;
  * @covers \SMW\Exporter\Element\ExpElement
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -28,9 +28,8 @@ class ExpElementTest extends \PHPUnit\Framework\TestCase {
 			$instance
 		);
 
-		// Legacy
 		$this->assertInstanceOf(
-			'\SMWExpElement',
+			'\SMW\Exporter\Element\ExpElement',
 			$instance
 		);
 	}

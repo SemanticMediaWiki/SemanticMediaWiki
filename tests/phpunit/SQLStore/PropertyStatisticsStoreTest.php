@@ -2,12 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
-use SMW\MediaWiki\Database;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
-use Wikimedia\Rdbms\DBQueryError;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @covers \SMW\SQLStore\PropertyStatisticsStore
@@ -16,7 +15,7 @@ use Wikimedia\Rdbms\DBQueryError;
  * @group medium
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -32,7 +31,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 	 * "MWException: The value to add must be a positive integer" therefore
 	 * return true if this test runs on Windows
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function isWinOS() {
 		return strtoupper( substr( PHP_OS, 0, 3 ) ) === 'WIN';
@@ -191,7 +190,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);
@@ -241,21 +240,25 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 		$instance->addToUsageCounts( $additions );
 	}
 
-	public function testInsertUsageCountWithArrayValue() {
+	public function testUpsertWithInsertUsageCountWithArrayValue() {
 		$tableName = 'Foo';
 
 		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
-			->method( 'insert' )
+			->method( 'upsert' )
 			->with(
 				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
-				$this->equalTo(
-					[
-						'usage_count' => 1,
-						'null_count'  => 9999,
-						'p_id' => 42
-					] ),
+				[
+					'usage_count' => 1,
+					'null_count'  => 9999,
+					'p_id' => 42
+				],
+				[ [ 'p_id' ] ],
+				[
+					'usage_count' => 1,
+					'null_count' => 9999,
+				],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -282,8 +285,8 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 						'null_count = null_count + 9999'
 					] ),
 				[
-						'p_id' => 42
-					],
+					'p_id' => 42
+				],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(
@@ -293,49 +296,24 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 		$instance->addToUsageCounts( [ 42 => [ 'usage' => 1, 'null' => 9999 ] ] );
 	}
 
-	public function testSetUsageCountWithArrayValue() {
-		$connection = $this->createMock( Database::class );
-
-		$connection->expects( $this->once() )
-			->method( 'update' )
-			->with(
-				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
-				$this->equalTo(
-					[
-						'usage_count' => 1,
-						'null_count' => 9999
-					] ),
-				[
-						'p_id' => 42
-					],
-				$this->anything() );
-
-		$instance = new PropertyStatisticsStore(
-			$connection
-		);
-
-		$instance->setUsageCount( 42, [ 1, 9999 ] );
-	}
-
 	public function testUpsertOnInsertUsageCount() {
-		$error = $this->createMock( DBQueryError::class );
-
 		$connection = $this->createMock( Database::class );
 
 		$connection->expects( $this->once() )
-			->method( 'insert' )
-			->willThrowException( $error );
-
-		$connection->expects( $this->once() )
-			->method( 'update' )
+			->method( 'upsert' )
 			->with(
 				$this->stringContains( SQLStore::PROPERTY_STATISTICS_TABLE ),
 				$this->equalTo(
 					[
 						'usage_count' => 12,
-						'null_count' => 0
+						'null_count' => 0,
+						'p_id' => 42
 					] ),
-				[ 'p_id' => 42 ],
+				[ [ 'p_id' ] ],
+				[
+					'usage_count' => 12,
+					'null_count' => 0,
+				],
 				$this->anything() );
 
 		$instance = new PropertyStatisticsStore(

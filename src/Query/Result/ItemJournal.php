@@ -13,7 +13,7 @@ use SMWDataItem;
  * QueryResult) to find related "column" entities (those related to a
  * printrequest).
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -65,7 +65,7 @@ class ItemJournal {
 	 *
 	 * @param DIProperty|null $property
 	 */
-	public function recordProperty( DIProperty $property = null ) {
+	public function recordProperty( ?DIProperty $property = null ) {
 		if ( $property !== null ) {
 			$this->properties[$property->getKey()] = $property;
 		}

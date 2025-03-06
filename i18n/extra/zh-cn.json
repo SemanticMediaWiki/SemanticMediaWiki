@@ -8,85 +8,181 @@
             "SMW_NS_PROPERTY": "属性",
             "SMW_NS_PROPERTY_TALK": "属性讨论",
             "SMW_NS_CONCEPT": "概念",
-            "SMW_NS_CONCEPT_TALK": "概念讨论"
+            "SMW_NS_CONCEPT_TALK": "概念讨论",
+            "SMW_NS_SCHEMA": "SMW/模式",
+            "SMW_NS_SCHEMA_TALK": "SMW/模式讨论"
         },
         "aliases": []
     },
     "datatype": {
         "labels": {
-            "_wpg": "页面型",
-            "_txt": "文本型",
-            "_cod": "代码型",
-            "_boo": "布尔型",
-            "_num": "数值型",
-            "_geo": "地理坐标型",
-            "_tem": "温度型",
-            "_dat": "日期型",
-            "_ema": "电子邮件地址型",
-            "_uri": "URL型",
-            "_anu": "注释URI型",
-            "_tel": "电话号码型",
-            "_rec": "记录型",
-            "_qty": "数量型",
-            "_mlt_rec": "Monolingual text",
-            "_eid": "External identifier",
-            "_ref_rec": "Reference"
+            "_wpg": "页面",
+            "_txt": "文本",
+            "_cod": "代码",
+            "_boo": "布尔",
+            "_num": "数字",
+            "_geo": "地理坐标",
+            "_tem": "温度",
+            "_dat": "日期",
+            "_ema": "电子邮件",
+            "_uri": "URL",
+            "_anu": "注释URI",
+            "_tel": "电话号码",
+            "_rec": "记录",
+            "_qty": "数量",
+            "_mlt_rec": "单语言文本",
+            "_eid": "外部标识符",
+            "_keyw": "关键词",
+            "_ref_rec": "参考"
         },
         "aliases": {
-            "浮点型": "_num",
-            "整数型": "_num",
-            "枚举型": "_txt",
-            "字符串型": "_txt",
-            "Float": "_num",
-            "Integer": "_num",
-            "Enumeration": "_txt",
-            "URI": "_uri"
+            "网址": "_uri",
+            "URI": "_uri",
+            "文字": "_txt",
+            "枚举": "_txt",
+            "字符串": "_txt",
+            "数": "_num",
+            "数目": "_num",
+            "浮点数": "_num",
+            "整数": "_num",
+            "地理多边形": "_gpo",
+            "量": "_qty",
+            "物理量": "_qty",
+            "手机号码": "_tel",
+            "参考资料": "_ref_rec",
+            "参考文献": "_ref_rec"
         }
     },
     "property": {
         "labels": {
-            "_TYPE": "具有类型",
-            "_URI": "等价URI",
-            "_SUBP": "是……的子属性",
-            "_SUBC": "是……的子分类",
+            "_TYPE": "有类型",
+            "_URI": "等同物URI",
+            "_SUBP": "父属性",
+            "_SUBC": "父分类",
             "_UNIT": "显示单位",
             "_IMPO": "导入自",
-            "_CONV": "对应于",
+            "_CONV": "相当于",
             "_SERV": "提供服务",
-            "_PVAL": "允许取值",
+            "_PVAL": "允许值",
             "_MDAT": "修改日期",
             "_CDAT": "创建日期",
-            "_NEWP": "是一个新页面",
-            "_LEDT": "最后编者为",
-            "_ERRP": "具有……的不当取值",
-            "_LIST": "具有字段",
-            "_SOBJ": "具有子对象",
-            "_ASK": "具有查询",
+            "_NEWP": "是新页面",
+            "_LEDT": "最后编者是",
+            "_ERRP": "有不当值的属性",
+            "_LIST": "有字段",
+            "_SOBJ": "有子对象",
+            "_ASK": "有查询",
             "_ASKST": "查询字符串",
             "_ASKFO": "查询格式",
             "_ASKSI": "查询大小",
             "_ASKDE": "查询深度",
-            "_ASKDU": "查询持续时间",
+            "_ASKDU": "查询时长",
+            "_ASKSC": "查询来源",
+            "_ASKPA": "查询参数",
+            "_ASKCO": "查询状态",
             "_MEDIA": "媒体类型",
             "_MIME": "MIME类型",
-            "_ERRC": "Has processing error",
-            "_ERRT": "Has processing error text",
-            "_PREC": "Display precision of",
-            "_LCODE": "Language code",
-            "_TEXT": "Text",
-            "_PDESC": "Has property description",
-            "_PVAP": "Allows pattern",
-            "_DTITLE": "Display title of",
-            "_PVUC": "Has uniqueness constraint",
-            "_PEID": "External identifier",
-            "_PEFU": "External formatter uri",
-            "_ASKSC": "Query source"
+            "_ERRC": "处理错误",
+            "_ERRT": "处理错误消息",
+            "_ERR_TYPE": "处理错误类型",
+            "_PREC": "显示精度",
+            "_LCODE": "语言代码",
+            "_TEXT": "文本",
+            "_PDESC": "属性描述",
+            "_PVAP": "允许样板",
+            "_PVALI": "允许值列表",
+            "_DTITLE": "显示标题",
+            "_PVUC": "有唯一性约束",
+            "_PEID": "外部标识符",
+            "_PEFU": "外部格式化URI",
+            "_PPLB": "首选属性标签",
+            "_EDIP": "受编辑保护",
+            "_CHGPRO": "更改传播",
+            "_PPGR": "是属性组合",
+            "_SCHEMA_DESC": "模式描述",
+            "_SCHEMA_TAG": "模式标签",
+            "_SCHEMA_TYPE": "模式类型",
+            "_SCHEMA_DEF": "模式定义",
+            "_SCHEMA_LINK": "模式链接",
+            "_FORMAT_SCHEMA": "格式化模式",
+            "_CONSTRAINT_SCHEMA": "约束模式",
+            "_PROFILE_SCHEMA": "配置文件模式",
+            "_ATTCH_LINK": "附件链接",
+            "_FILE_ATTCH": "文件附件",
+            "_CONT_TYPE": "内容类型",
+            "_CONT_AUTHOR": "内容作者",
+            "_CONT_LEN": "内容长度",
+            "_CONT_LANG": "内容语言",
+            "_CONT_TITLE": "内容标题",
+            "_CONT_DATE": "内容日期",
+            "_CONT_KEYW": "内容关键词",
+            "_TRANS": "翻译",
+            "_TRANS_SOURCE": "翻译源",
+            "_TRANS_GROUP": "翻译组"
         },
         "aliases": {
-            "显示计量单位": "_UNIT"
+            "父属性是": "_SUBP",
+            "作为子属性": "_SUBP",
+            "父分类是": "_SUBC",
+            "作为子分类": "_SUBC",
+            "有允许值列表": "_PVALI",
+            "最后编辑者是": "_LEDT",
+            "有查询字符串": "_ASKST",
+            "有查询格式": "_ASKFO",
+            "有查询大小": "_ASKSI",
+            "有查询深度": "_ASKDE",
+            "有查询时长": "_ASKDU",
+            "有查询来源": "_ASKSC",
+            "有查询参数": "_ASKPA",
+            "有查询状态": "_ASKCO",
+            "有查询状态代码": "_ASKCO",
+            "有媒体类型": "_MEDIA",
+            "有MIME类型": "_MIME",
+            "有处理错误": "_ERRC",
+            "有处理错误文本": "_ERRT",
+            "有处理错误消息": "_ERRT",
+            "有处理错误类型": "_ERR_TYPE",
+            "显示精度是": "_PREC",
+            "小数位数": "_PREC",
+            "文字": "_TEXT",
+            "有属性描述": "_PDESC",
+            "有允许样板": "_PVAP",
+            "有显示标题": "_DTITLE",
+            "显示标题是": "_DTITLE",
+            "唯一性约束": "_PVUC",
+            "是功能属性": "_PVUC",
+            "外部格式化URL": "_PEFU",
+            "有首选属性标签": "_PPLB",
+            "属性组合": "_PPGR",
+            "属性约束模式": "_CONSTRAINT_SCHEMA",
+            "属性配置文件模式": "_PROFILE_SCHEMA",
+            "有文件附件": "_FILE_ATTCH",
+            "有翻译":"_TRANS"
         }
     },
     "date": {
+        "precision": {
+            "SMW_PREC_Y": "Y年",
+            "SMW_PREC_YM": "Y年n月",
+            "SMW_PREC_YMD": "Y年n月j日",
+            "SMW_PREC_YMDT": "Y年n月j日 H:i:s",
+            "SMW_PREC_YMDTZ": "Y年n月j日 H:i:s T"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ],
         "months": [
             [
                 "1月",
@@ -139,53 +235,32 @@
         ],
         "days": [
             [
-                "Monday",
-                "Mon"
+                "星期一",
+                "一"
             ],
             [
-                "Tuesday",
-                "Tue"
+                "星期二",
+                "二"
             ],
             [
-                "Wednesday",
-                "Wed"
+                "星期三",
+                "三"
             ],
             [
-                "Thursday",
-                "Thu"
+                "星期四",
+                "四"
             ],
             [
-                "Friday",
-                "Fri"
+                "星期五",
+                "五"
             ],
             [
-                "Saturday",
-                "Sat"
+                "星期六",
+                "六"
             ],
             [
-                "Sunday",
-                "Sun"
-            ]
-        ],
-        "precision": {
-            "SMW_PREC_Y": "Y年",
-            "SMW_PREC_YM": "Y年n月",
-            "SMW_PREC_YMD": "Y年n月j日 (D)",
-            "SMW_PREC_YMDT": "Y年n月j日 (D) H:i:s"
-        },
-        "format": [
-            [
-                "SMW_Y"
-            ],
-            [
-                "SMW_MY",
-                "SMW_YM"
-            ],
-            [
-                "SMW_MDY",
-                "SMW_DMY",
-                "SMW_YMD",
-                "SMW_YDM"
+                "星期日",
+                "日"
             ]
         ]
     }

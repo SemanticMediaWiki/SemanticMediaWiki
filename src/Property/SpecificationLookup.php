@@ -2,25 +2,21 @@
 
 namespace SMW\Property;
 
-use MediaWiki\MediaWikiServices;
 use RuntimeException;
-use SMW\Query\DescriptionFactory;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWQuery as Query;
-use SMW\Store;
-use SMW\EntityCache;
+use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Message;
-use SMW\DataValueFactory;
+use SMW\EntityCache;
+use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
+use SMW\Store;
+use SMWDIBoolean as DIBoolean;
 
 /**
  * This class should be accessed via ApplicationFactory::getPropertySpecificationLookup
  * to ensure a singleton instance.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -52,328 +48,9 @@ class SpecificationLookup {
 	private $languageCode = 'en';
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $skipCache = false;
-
-	/**
-	 * @var array
-	 */
-	private $languagesFallbackInverse = [
-		'ru' => [
-			'ab',
-			'av',
-			'ba',
-			'ce',
-			'crh-cyrl',
-			'cv',
-			'inh',
-			'koi',
-			'krc',
-			'kv',
-			'lbe',
-			'lez',
-			'mhr',
-			'mrj',
-			'myv',
-			'os',
-			'rue',
-			'sah',
-			'tt',
-			'tt-cyrl',
-			'udm',
-			'uk',
-			'xal'
-		],
-		'id' => [
-			'ace',
-			'bjn',
-			'bug',
-			'jv',
-			'map-bms',
-			'min',
-			'su'
-		],
-		'sq' => [
-			'aln'
-		],
-		'gsw' => [
-			'als'
-		],
-		'de' => [
-			'als',
-			'bar',
-			'de-at',
-			'de-ch',
-			'de-formal',
-			'dsb',
-			'frr',
-			'gsw',
-			'hsb',
-			'ksh',
-			'lb',
-			'nds',
-			'pdc',
-			'pdt',
-			'pfl',
-			'sli',
-			'stq',
-			'vmf'
-		],
-		'es' => [
-			'an',
-			'arn',
-			'ay',
-			'cbk-zam',
-			'gn',
-			'lad',
-			'nah',
-			'qu',
-			'qug'
-		],
-		'hi' => [
-			'anp',
-			'mai',
-			'sa'
-		],
-		'ar' => [
-			'arz'
-		],
-		'sgs' => [
-			'bat-smg'
-		],
-		'lt' => [
-			'bat-smg',
-			'sgs'
-		],
-		'fa' => [
-			'bcc',
-			'bqi',
-			'glk',
-			'mzn'
-		],
-		'be-tarask' => [
-			'be-x-old'
-		],
-		'bho' => [
-			'bh'
-		],
-		'fr' => [
-			'bm',
-			'ff',
-			'frc',
-			'frp',
-			'ht',
-			'ln',
-			'mg',
-			'pcd',
-			'sg',
-			'ty',
-			'wa',
-			'wo'
-		],
-		'bn' => [
-			'bpy'
-		],
-		'crh-latn' => [
-			'crh'
-		],
-		'pl' => [
-			'csb',
-			'szl'
-		],
-		'ms' => [
-			'dtp'
-		],
-		'it' => [
-			'egl',
-			'eml',
-			'fur',
-			'lij',
-			'lmo',
-			'nap',
-			'pms',
-			'rgn',
-			'scn',
-			'vec'
-		],
-		'fi' => [
-			'fit',
-			'vot'
-		],
-		'vro' => [
-			'fiu-vro'
-		],
-		'et' => [
-			'fiu-vro',
-			'liv',
-			'vep',
-			'vro'
-		],
-		'tr' => [
-			'gag',
-			'kiu',
-			'lzz'
-		],
-		'gan-hant' => [
-			'gan'
-		],
-		'zh-hant' => [
-			'gan',
-			'gan-hant',
-			'zh-hk',
-			'zh-mo',
-			'zh-tw'
-		],
-		'zh-hans' => [
-			'gan',
-			'gan-hans',
-			'gan-hant',
-			'ii',
-			'wuu',
-			'za',
-			'zh',
-			'zh-cn',
-			'zh-hant',
-			'zh-hk',
-			'zh-mo',
-			'zh-my',
-			'zh-sg',
-			'zh-tw'
-		],
-		'pt' => [
-			'gl',
-			'mwl',
-			'pt-br'
-		],
-		'hif-latn' => [
-			'hif'
-		],
-		'zh-cn' => [
-			'ii'
-		],
-		'ike-cans' => [
-			'iu'
-		],
-		'da' => [
-			'jut',
-			'kl'
-		],
-		'kk-latn' => [
-			'kaa',
-			'kk-tr'
-		],
-		'kk-cyrl' => [
-			'kaa',
-			'kk',
-			'kk-arab',
-			'kk-latn',
-			'kk-cn',
-			'kk-kz',
-			'kk-tr'
-		],
-		'kbd-cyrl' => [
-			'kbd'
-		],
-		'ur' => [
-			'khw'
-		],
-		'kk-arab' => [
-			'kk-cn'
-		],
-		'ko' => [
-			'ko-kp'
-		],
-		'ks-arab' => [
-			'ks'
-		],
-		'ku-latn' => [
-			'ku'
-		],
-		'ckb' => [
-			'ku-arab'
-		],
-		'nl' => [
-			'li',
-			'nds-nl',
-			'nl-informal',
-			'srn',
-			'vls',
-			'zea'
-		],
-		'lv' => [
-			'ltg'
-		],
-		'jv' => [
-			'map-bms'
-		],
-		'ro' => [
-			'mo',
-			'rmy',
-			'ruq',
-			'ruq-latn'
-		],
-		'nb' => [
-			'no'
-		],
-		'pt-br' => [
-			'pt'
-		],
-		'qu' => [
-			'qug'
-		],
-		'rup' => [
-			'roa-rup'
-		],
-		'uk' => [
-			'rue'
-		],
-		'ruq-latn' => [
-			'ruq'
-		],
-		'mk' => [
-			'ruq-cyrl'
-		],
-		'sr-ec' => [
-			'sr'
-		],
-		'sr-cyrl' => [
-			'sr'
-		],
-		'kn' => [
-			'tcy'
-		],
-		'tg-cyrl' => [
-			'tg'
-		],
-		'tt-cyrl' => [
-			'tt'
-		],
-		'ug-arab' => [
-			'ug'
-		],
-		'ka' => [
-			'xmf'
-		],
-		'he' => [
-			'yi'
-		],
-		'lzh' => [
-			'zh-classical'
-		],
-		'nan' => [
-			'zh-min-nan'
-		],
-		'zh-hk' => [
-			'zh-mo'
-		],
-		'zh-sg' => [
-			'zh-my'
-		],
-		'yue' => [
-			'zh-yue'
-		]
-	];
 
 	/**
 	 * @since 2.4
@@ -389,7 +66,7 @@ class SpecificationLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $skipCache
+	 * @param bool $skipCache
 	 */
 	public function skipCache( $skipCache = true ) {
 		$this->skipCache = $skipCache;
@@ -431,7 +108,7 @@ class SpecificationLookup {
 	 * @param DIProperty|DIWikiPage $source
 	 * @param DIProperty $target
 	 *
-	 * @return []|DataItem[]
+	 * @return ]|DataItem[
 	 */
 	public function getSpecification( $source, DIProperty $target ) {
 		if ( $source instanceof DIProperty ) {
@@ -517,7 +194,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasUniquenessConstraint( DIProperty $property ) {
 		$hasUniquenessConstraint = false;
@@ -637,7 +314,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return integer|false
+	 * @return int|false
 	 */
 	public function getDisplayPrecision( DIProperty $property ) {
 		$displayPrecision = false;
@@ -738,46 +415,14 @@ class SpecificationLookup {
 	}
 
 	/**
-	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
-	 *
-	 * @param MonolingualTextLookup $monolingualTextLookup
 	 * @param DIWikiPage $subject
 	 * @param DIProperty $property
-	 * @param string &$languageCode
-	 * @return DataValue|null
+	 * @param string $languageCode
+	 *
+	 * @return string
 	 */
-	private function tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, &$languageCode ) {
-		$getDataValue = static function ( $value ) use ( $monolingualTextLookup, $subject, $property, &$languageCode ) {
-			 $dataValue = $monolingualTextLookup->newDataValue(
-				$subject,
-				$property,
-				$value
-			);
-			if ( $dataValue ) {
-				$languageCode = $value;
-			}
-			return $dataValue;
-		};
-
-		if ( array_key_exists( $languageCode, $this->languagesFallbackInverse ) ) {
-			foreach ( $this->languagesFallbackInverse[$languageCode] as $value ) {
-				$dataValue = $getDataValue( $value );
-				if ( $dataValue ) {
-					return $dataValue;
-				}
-			}
-		}
-
-		$languageFalldown = MediaWikiServices::getInstance()->getLanguageFallback()->getFirst( $languageCode );
-
-		// when $languageCode is 'en' $languageFalldown is null
-		if ( $languageFalldown === null ) {
-			return null;
-		}
-		return $getDataValue( $languageFalldown );
-	}
-
 	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
+		// @TODO move in the constructor ?
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
 		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
@@ -788,8 +433,6 @@ class SpecificationLookup {
 			return '';
 		}
 
-		$monolingualTextLookup->setCaller( __METHOD__ );
-
 		$dataValue = $monolingualTextLookup->newDataValue(
 			$subject,
 			$property,
@@ -797,8 +440,10 @@ class SpecificationLookup {
 		);
 
 		if ( $dataValue === null ) {
+			$languageFalldownAndInverse = new LanguageFalldownAndInverse( $monolingualTextLookup, $subject, $property, $languageCode );
+
 			// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
-			$dataValue = $this->tryOutFalldownAndInverse( $monolingualTextLookup, $subject, $property, $languageCode );
+			[ $dataValue, $languageCode ] = $languageFalldownAndInverse->tryout();
 
 			if ( $dataValue === null ) {
 				return '';

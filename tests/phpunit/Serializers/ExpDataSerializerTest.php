@@ -5,15 +5,15 @@ namespace SMW\Tests\Serializers;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
+use SMW\Tests\PHPUnitCompat;
 use SMWDIBlob as DIBlob;
 use SMWExpData as ExpData;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Serializers\ExpDataSerializer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames

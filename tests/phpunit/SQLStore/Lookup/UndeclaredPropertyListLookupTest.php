@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use RuntimeException;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
@@ -12,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
@@ -29,7 +28,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,11 +125,11 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_title = 'Foo';
 		$row->count = 42;
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,11 +181,11 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_title = '-Foo';
 		$row->count = 42;
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -229,7 +228,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testfetchListForFixedPropertyTable() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -237,7 +236,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

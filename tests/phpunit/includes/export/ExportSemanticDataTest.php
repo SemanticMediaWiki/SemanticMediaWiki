@@ -5,12 +5,12 @@ namespace SMW\Tests\Export;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\Subobject;
 use SMW\Tests\Utils\Fixtures\FixturesProvider;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\ExportDataValidator;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
 
 /**
@@ -21,7 +21,7 @@ use SMWExporter as Exporter;
  * @group SMWExtension
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

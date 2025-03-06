@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore;
 
-use Hooks;
 use MediaWiki\MediaWikiServices;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
@@ -11,7 +10,7 @@ use SMW\PropertyRegistry;
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -29,7 +28,7 @@ class PropertyTableDefinitionBuilder {
 	private $propertyTypeFinder;
 
 	/**
-	 * @var TableDefinition[]
+	 * @var PropertyTableDefinition[]
 	 */
 	protected $propertyTables = [];
 
@@ -50,7 +49,7 @@ class PropertyTableDefinitionBuilder {
 	/**
 	 * @since 1.9
 	 *
-	 * @param array $diType
+	 * @param array $diTypes
 	 * @param array $specialProperties
 	 * @param array $userDefinedFixedProperties
 	 */
@@ -60,7 +59,7 @@ class PropertyTableDefinitionBuilder {
 		$this->addTableDefinitionForFixedProperties(
 			$specialProperties,
 			[],
-			TableDefinition::TYPE_CORE
+			PropertyTableDefinition::TYPE_CORE
 		);
 
 		$customFixedProperties = [];
@@ -73,7 +72,7 @@ class PropertyTableDefinitionBuilder {
 		$this->addTableDefinitionForFixedProperties(
 			$customFixedProperties,
 			$fixedPropertyTablePrefix,
-			TableDefinition::TYPE_CUSTOM
+			PropertyTableDefinition::TYPE_CUSTOM
 		);
 
 		$this->addRedirectTableDefinition();
@@ -114,7 +113,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @since 1.9
 	 *
-	 * @return TableDefinition[]
+	 * @return PropertyTableDefinition[]
 	 */
 	public function getTableDefinitions() {
 		return $this->propertyTables;
@@ -129,10 +128,10 @@ class PropertyTableDefinitionBuilder {
 	 * @param $tableName
 	 * @param $fixedProperty
 	 *
-	 * @return TableDefinition
+	 * @return PropertyTableDefinition
 	 */
 	public function newTableDefinition( $diType, $tableName, $fixedProperty = false ) {
-		return new TableDefinition( $diType, $tableName, $fixedProperty );
+		return new PropertyTableDefinition( $diType, $tableName, $fixedProperty );
 	}
 
 	/**
@@ -177,7 +176,7 @@ class PropertyTableDefinitionBuilder {
 	 */
 	private function addTableDefinitionForDiTypes( array $diTypes ) {
 		foreach ( $diTypes as $tableDIType => $tableName ) {
-			$this->addPropertyTable( $tableDIType, $tableName, false, TableDefinition::TYPE_CORE );
+			$this->addPropertyTable( $tableDIType, $tableName, false, PropertyTableDefinition::TYPE_CORE );
 		}
 	}
 
@@ -234,7 +233,7 @@ class PropertyTableDefinitionBuilder {
 
 			$tableName = $this->createHashedTableNameFrom( $propertyKey );
 
-			$this->addPropertyTable( $diType, $tableName, $propertyKey, TableDefinition::TYPE_CORE );
+			$this->addPropertyTable( $diType, $tableName, $propertyKey, PropertyTableDefinition::TYPE_CORE );
 		}
 	}
 

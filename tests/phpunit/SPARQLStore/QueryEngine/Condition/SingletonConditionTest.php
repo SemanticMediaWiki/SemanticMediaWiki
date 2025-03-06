@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$expElement = $this->getMockBuilder( '\SMWExpElement' )
+		$expElement = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +30,7 @@ class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCommonMethods() {
-		$expElement = $this->getMockBuilder( '\SMWExpElement' )
+		$expElement = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
 			->disableOriginalConstructor()
 			->getMock();
 

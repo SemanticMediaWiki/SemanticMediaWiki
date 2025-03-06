@@ -10,7 +10,7 @@ use StubUserLang;
  * Class implementing message output formatting
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class MessageFormatter {
 	/** @var string */
 	protected $separator = ' <!--br-->';
 
-	/** @var boolean */
+	/** @var bool */
 	protected $escape = true;
 
 	/** @var Language|StubUserLang */
@@ -153,7 +153,7 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $escape
+	 * @param bool $escape
 	 *
 	 * @return MessageFormatter
 	 */
@@ -179,7 +179,7 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function exists() {
 		return $this->messages !== [];
@@ -238,8 +238,7 @@ class MessageFormatter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param boolean $escape
-	 * @param boolean $html
+	 * @param bool $html
 	 *
 	 * @return string
 	 */

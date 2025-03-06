@@ -5,13 +5,13 @@ namespace SMW\Exporter;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -143,7 +143,7 @@ class DataItemMatchFinder {
 		 * splitting at Special:ExportRDF/ + namespace, e. g. Category-3A)
 		 * to get the page title from the full iri.
 		 * see: https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5527
-		*/
+		 */
 		$respositoryResult = $this->store->getConnection( 'sparql' )->select(
 			'?v1 ?v2',
 			"<$uri> rdfs:label ?v1 . <$uri> swivt:wikiNamespace ?v2",

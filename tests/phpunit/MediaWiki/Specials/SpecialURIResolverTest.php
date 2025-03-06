@@ -3,15 +3,15 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use SMW\MediaWiki\Specials\SpecialURIResolver;
+use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Title;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialURIResolver
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

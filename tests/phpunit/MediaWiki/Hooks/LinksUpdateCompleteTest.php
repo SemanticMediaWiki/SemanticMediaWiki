@@ -7,13 +7,12 @@ use ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
 use Title;
-use TitleValue;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

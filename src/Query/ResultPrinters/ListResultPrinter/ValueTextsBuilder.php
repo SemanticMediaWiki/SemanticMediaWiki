@@ -4,14 +4,14 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use Linker;
 use Sanitizer;
-use SMWDataValue;
-use SMWResultArray;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
+use SMWDataValue;
 
 /**
  * Class ValueTextsBuilder
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Stephan Gambke
@@ -28,24 +28,24 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	public function getValuesText( SMWResultArray $field, $column = 0 ) {
+	public function getValuesText( ResultArray $field, $column = 0 ) {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
-		return join( $this->get( 'valuesep' ), $valueTexts );
+		return implode( $this->get( 'valuesep' ), $valueTexts );
 	}
 
 	/**
-	 * @param SMWResultArray $field
+	 * @param ResultArray $field
 	 * @param int $column
 	 *
 	 * @return string[]
 	 */
-	private function getValueTexts( SMWResultArray $field, $column ) {
+	private function getValueTexts( ResultArray $field, $column ) {
 		$valueTexts = [];
 
 		$field->reset();
@@ -117,15 +117,9 @@ class ValueTextsBuilder {
 			return $text;
 		}
 
-		if ( method_exists( Sanitizer::class, 'removeSomeTags' ) ) {
-			return Sanitizer::removeSomeTags(
-				$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
-			);
-		} else {
-			return Sanitizer::removeHTMLtags(
-				$text, null, [], [], [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ]
-			);
-		}
+		return Sanitizer::removeSomeTags(
+			$text, [ 'removeTags' => [ 'table', 'tr', 'th', 'td', 'dl', 'dd', 'ul', 'li', 'ol' ] ]
+		);
 	}
 
 	/**

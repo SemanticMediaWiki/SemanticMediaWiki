@@ -3,14 +3,13 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\DIWikiPage;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\TraversalPropertyLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -47,7 +46,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +105,7 @@ class TraversalPropertyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

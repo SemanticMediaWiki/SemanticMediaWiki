@@ -6,19 +6,19 @@ use RuntimeException;
 use SMW\Exporter\Element;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
  * of these queries to obtain suitable QueryResult objects.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author Markus Krötzsch
@@ -81,7 +81,7 @@ class QueryEngine implements QueryEngineInterface {
 
 	/**
 	 * @since  2.0
-	 * @param  Query $query
+	 * @param Query $query
 	 *
 	 * @return QueryResult|string
 	 */

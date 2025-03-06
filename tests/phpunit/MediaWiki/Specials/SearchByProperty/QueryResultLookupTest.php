@@ -10,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -82,7 +82,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,17 +2,16 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Indexer;
-use SMW\Services\ServicesContainer;
-use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Elastic\Indexer\Indexer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

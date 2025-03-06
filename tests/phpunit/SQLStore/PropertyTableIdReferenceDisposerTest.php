@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\PropertyTableIdReferenceDisposer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -97,7 +97,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTryToRemoveOutdatedEntryFromIDTable() {
-		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +105,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +141,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCleanUpTableEntriesFor() {
-		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\TableDefinition' )
+		$tableDefinition = $connection = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -181,7 +181,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructOutdatedEntitiesResultIterator() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -208,7 +208,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -238,7 +238,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -265,13 +265,13 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCleanUpOnTransactionIdle() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return call_user_func( $callback );
 			}
 			);
@@ -316,13 +316,13 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
-			->willReturnCallback( function ( $callback ) {
+			->willReturnCallback( static function ( $callback ) {
 				return $callback();
 			} );
 
@@ -374,7 +374,7 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

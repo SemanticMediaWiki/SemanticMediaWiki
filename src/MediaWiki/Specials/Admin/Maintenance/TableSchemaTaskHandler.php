@@ -5,14 +5,14 @@ namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 use Html;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Store;
 use WebRequest;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -88,7 +88,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 			->setName( 'buildtables' )
 			->setMethod( 'get' )
 			->addHiddenField( 'action', $this->getTask() )
-			->addHeader( 'h3', $this->msg( 'smw-admin-db' ) )
+			->addHeader( 'h2', $this->msg( 'smw-admin-db' ) )
 			->addParagraph( $this->msg( 'smw-admin-dbdocu' ) );
 
 		$this->htmlFormRenderer

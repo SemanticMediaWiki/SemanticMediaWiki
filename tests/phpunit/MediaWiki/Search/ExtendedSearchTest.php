@@ -10,7 +10,7 @@ use SMWQuery;
  * @covers \SMW\MediaWiki\Search\ExtendedSearch
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Stephan Gambke
@@ -24,7 +24,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( 'SMW\Store' )
+		$this->store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -153,7 +153,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -171,7 +171,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getQueryResult' )
-			->willReturnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
+			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} );
 
@@ -249,7 +249,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQuery' )
 			->willReturn( $query );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -267,7 +267,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->exactly( 3 ) )
 			->method( 'getQueryResult' )
-			->willReturnCallback( function ( SMWQuery $query ) use ( $queryResult ) {
+			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
 				return $query->querymode === \SMWQuery::MODE_COUNT ? 9001 : $queryResult;
 			} );
 

@@ -3,17 +3,17 @@
 namespace SMW\Tests\Property\DeclarationExaminer;
 
 use ExtensionRegistry;
-use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\SemanticData;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

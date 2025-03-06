@@ -11,7 +11,7 @@ use SMW\Tests\TestEnvironment;
  * @covers SMW\Query\DescriptionFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -257,7 +257,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDescriptionFromMonolingualTextValue() {
-		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -314,7 +314,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDescriptionFromMonolingualTextValueWithProperty() {
-		$containerSemanticData = $this->getMockBuilder( '\SMWContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use ALTree;
-use ALSection;
 use ALItem;
 use ALRow;
+use ALSection;
+use ALTree;
 use SMW\MediaWiki\HookListener;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

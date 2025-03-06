@@ -2,16 +2,15 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
-use SMW\DIWikiPage;
-use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use Onoi\EventDispatcher\DispatchContext;
+use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

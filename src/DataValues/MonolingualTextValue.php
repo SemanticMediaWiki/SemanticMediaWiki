@@ -2,14 +2,14 @@
 
 namespace SMW\DataValues;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Localizer;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\Localizer\Localizer;
+use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
@@ -29,7 +29,7 @@ use SMWDIContainer as DIContainer;
  * External output representation depends on the context (wiki, html)
  * whether the language code is omitted or not.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -82,7 +82,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @param $userValue
+	 * @param $text
 	 * @param string $languageCode
 	 *
 	 * @return string
@@ -103,7 +103,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 * @param string $userValue
 	 */
 	protected function parseUserValue( $userValue ) {
-		list( $text, $languageCode ) = $this->getValuesFromString( $userValue );
+		[ $text, $languageCode ] = $this->getValuesFromString( $userValue );
 
 		$languageCodeValue = $this->newLanguageCodeValue( $languageCode );
 
@@ -178,7 +178,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param DataItem $dataItem
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {

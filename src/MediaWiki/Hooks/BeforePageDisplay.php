@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Html;
 use OutputPage;
 use Skin;
-use SpecialPage;
-use Title;
-use SMW\Message;
-use Html;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory;
+use SpecialPage;
+use Title;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -18,7 +18,7 @@ use SMW\Services\ServicesFactory;
  *
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -58,7 +58,7 @@ class BeforePageDisplay implements HookListener {
 	 * @param OutputPage $outputPage
 	 * @param Skin $skin
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function process( OutputPage $outputPage, Skin $skin ) {
 		$title = $outputPage->getTitle();
@@ -70,6 +70,7 @@ class BeforePageDisplay implements HookListener {
 		}
 
 		if ( $this->getOption( 'incomplete_tasks', [] ) !== [] ) {
+			$outputPage->addModuleStyles( [ 'mediawiki.codex.messagebox.styles' ] );
 			$outputPage->prependHTML( $this->createIncompleteSetupTaskNotification( $title ) );
 		}
 

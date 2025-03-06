@@ -9,7 +9,7 @@ use SMW\StringCondition;
  * @covers \SMW\QueryFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -110,7 +110,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->newQueryResult( $store, $query )
 		);
 	}

@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -84,7 +84,7 @@ class ErrorWidget {
 	 *
 	 * @return string
 	 */
-	public static function queryError( Query $query = null ) {
+	public static function queryError( ?Query $query = null ) {
 		if ( $query === null || !is_array( $query->getErrors() ) || $query->getErrors() === [] ) {
 			return '';
 		}

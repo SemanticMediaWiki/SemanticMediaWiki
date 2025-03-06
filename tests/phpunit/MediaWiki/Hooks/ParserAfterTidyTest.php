@@ -2,9 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataItemFactory;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 use Title;
@@ -13,7 +12,7 @@ use Title;
  * @covers \SMW\MediaWiki\Hooks\ParserAfterTidy
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -219,7 +218,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput->setExtensionData( 'smw-semanticdata-status', $parameters['data-status'] );
 		$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
 
-		$text   = '';
+		$text = '';
 
 		$instance = new ParserAfterTidy(
 			$parser,
@@ -244,14 +243,6 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$parserOutput->expects( $this->any() )
-			->method( 'getCategoryLinks' )
-			->willReturn( [] );
-
-		$parserOutput->expects( $this->any() )
-			->method( 'getCategories' )
-			->willReturn( [] );
 
 		$parserOutput->expects( $this->any() )
 			->method( 'getImages' )
@@ -455,10 +446,6 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$title = MockTitle::buildMock( __METHOD__ );
-
-		$title->expects( $this->any() )
-			->method( 'getRestrictions' )
-			->willReturn( [] );
 
 		$title->expects( $this->any() )
 			->method( 'inNamespace' )

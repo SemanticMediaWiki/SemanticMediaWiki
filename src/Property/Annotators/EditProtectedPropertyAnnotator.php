@@ -7,11 +7,11 @@ use MediaWiki\MediaWikiServices;
 use ParserOutput;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Message;
-use SMW\PropertyAnnotator;
+use SMW\Property\Annotator;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -30,17 +30,17 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	private $title;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $editProtectionRight = false;
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param PropertyAnnotator $propertyAnnotator
+	 * @param Annotator $propertyAnnotator
 	 * @param Title $title
 	 */
-	public function __construct( PropertyAnnotator $propertyAnnotator, Title $title ) {
+	public function __construct( Annotator $propertyAnnotator, Title $title ) {
 		parent::__construct( $propertyAnnotator );
 		$this->title = $title;
 	}
@@ -48,7 +48,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string|boolean $editProtectionRight
+	 * @param string|bool $editProtectionRight
 	 */
 	public function setEditProtectionRight( $editProtectionRight ) {
 		$this->editProtectionRight = $editProtectionRight;

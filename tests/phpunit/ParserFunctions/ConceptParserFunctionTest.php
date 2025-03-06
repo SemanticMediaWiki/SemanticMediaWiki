@@ -3,8 +3,8 @@
 namespace SMW\Tests\ParserFunctions;
 
 use ParserOutput;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\ParserFunctions\ConceptParserFunction;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -13,7 +13,7 @@ use Title;
  * @group semantic-mediawiki
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author mwjames

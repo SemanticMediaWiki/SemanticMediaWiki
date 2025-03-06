@@ -1,12 +1,12 @@
 <?php
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\AbstractMultiValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use SMWContainerSemanticData as ContainerSemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
 use SMWDIContainer as DIContainer;
 
@@ -142,8 +142,8 @@ class SMWRecordValue extends AbstractMultiValue {
 
 	/**
 	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataitem DataItem
-	 * @return boolean
+	 * @param $dataItem DataItem
+	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
@@ -296,15 +296,15 @@ class SMWRecordValue extends AbstractMultiValue {
 	protected function makeValueOutputText( $type, SMWDataValue $dataValue, $linker ) {
 		switch ( $type ) {
 			case 0:
-			return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getShortWikiText( $linker );
 			case 1:
-			return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getShortHTMLText( $linker );
 			case 2:
-			return $dataValue->getShortWikiText( $linker );
+				return $dataValue->getShortWikiText( $linker );
 			case 3:
-			return $dataValue->getShortHTMLText( $linker );
+				return $dataValue->getShortHTMLText( $linker );
 			case 4:
-			return str_replace( ";", "\;", $dataValue->getWikiValue() );
+				return str_replace( ";", "\;", $dataValue->getWikiValue() );
 		}
 	}
 

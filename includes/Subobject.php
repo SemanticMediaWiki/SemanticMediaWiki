@@ -3,8 +3,8 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\Exception\SubSemanticDataException;
-use SMWContainerSemanticData;
 use SMWDataValue;
 use SMWDIContainer;
 use Title;
@@ -12,7 +12,7 @@ use Title;
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class Subobject {
 	 protected $title;
 
 	/**
-	 * @var SMWContainerSemanticData
+	 * @var ContainerSemanticData
 	 */
 	 protected $semanticData;
 
@@ -116,7 +116,7 @@ class Subobject {
 			$identifier
 		);
 
-		$this->semanticData = new SMWContainerSemanticData( $subWikiPage );
+		$this->semanticData = new ContainerSemanticData( $subWikiPage );
 
 		return $this;
 	}
@@ -133,10 +133,10 @@ class Subobject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SMWContainerSemanticData
+	 * @return ContainerSemanticData
 	 */
 	public function getSemanticData() {
-		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
+		if ( !( $this->semanticData instanceof ContainerSemanticData ) ) {
 			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}
 
@@ -173,7 +173,7 @@ class Subobject {
 	 * @throws SubSemanticDataException
 	 */
 	public function addDataValue( SMWDataValue $dataValue ) {
-		if ( !( $this->semanticData instanceof SMWContainerSemanticData ) ) {
+		if ( !( $this->semanticData instanceof ContainerSemanticData ) ) {
 			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}
 

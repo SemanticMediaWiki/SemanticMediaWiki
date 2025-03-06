@@ -6,7 +6,7 @@ namespace SMW\Tests\Integration\JSONScript;
  * Build contents from a selected folder and replaces the content of the
  * README.md from where the script was started.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -16,8 +16,8 @@ class ReadmeContentsBuilder {
 	/**
 	 * @var string
 	 */
-	CONST REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
-	CONST REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
+	const REPLACE_START_MARKER = '<!-- Begin of generated contents by readmeContentsBuilder.php -->';
+	const REPLACE_END_MARKER = '<!-- End of generated contents by readmeContentsBuilder.php -->';
 
 	/**
 	 * @var array

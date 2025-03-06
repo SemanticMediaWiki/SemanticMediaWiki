@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Iterators;
 
-use RuntimeException;
 use SMW\Iterators\AppendIterator;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Iterators\AppendIterator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

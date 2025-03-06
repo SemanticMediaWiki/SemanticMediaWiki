@@ -11,7 +11,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \SMW\Elastic\Hooks\UpdateEntityCollationComplete
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -59,14 +59,14 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$callback = static function ( $type ) use ( $connection, $database ) {
 			if ( $type === 'mw.db' ) {
 				return $database;
-			};
+			}
 
 			return $connection;
 		};

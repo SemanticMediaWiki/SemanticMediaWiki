@@ -2,6 +2,7 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -10,10 +11,9 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -36,7 +36,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -59,7 +59,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
-		list( $condition, $namespaces ) = $this->mapCategoriesToConditionElements(
+		[ $condition, $namespaces ] = $this->mapCategoriesToConditionElements(
 			$description->getCategories(),
 			$description->getHierarchyDepth(),
 			$joinVariable

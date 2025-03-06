@@ -3,20 +3,20 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Options;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\QueryResult;
 use SMW\Query\ScoreSet;
 use SMW\QueryEngine as IQueryEngine;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMW\DIProperty;
 use SMWQuery as Query;
-use SMWQueryResult as QueryResult;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -72,7 +72,7 @@ class QueryEngine implements IQueryEngine {
 	 * @param ConditionBuilder $conditionBuilder
 	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, Options $options = null ) {
+	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ?Options $options = null ) {
 		$this->store = $store;
 		$this->options = $options;
 
@@ -129,7 +129,7 @@ class QueryEngine implements IQueryEngine {
 			'info' => []
 		];
 
-		list( $sort, $sortFields, $isRandom, $isConstantScore ) = $this->sortBuilder->makeSortField(
+		[ $sort, $sortFields, $isRandom, $isConstantScore ] = $this->sortBuilder->makeSortField(
 			$query
 		);
 
@@ -201,13 +201,13 @@ class QueryEngine implements IQueryEngine {
 		switch ( $query->querymode ) {
 			case Query::MODE_DEBUG:
 				$result = $this->newDebugQueryResult( $params );
-			break;
+				break;
 			case Query::MODE_COUNT:
 				$result = $this->newCountQueryResult( $query, $params );
-			break;
+				break;
 			default:
 				$result = $this->newInstanceQueryResult( $query, $params );
-			break;
+				break;
 		}
 
 		return $result;
@@ -274,7 +274,7 @@ class QueryEngine implements IQueryEngine {
 		$scoreSet = new ScoreSet();
 		$excerpts = new Excerpts();
 
-		list( $res, $errors ) = $connection->search( $params );
+		[ $res, $errors ] = $connection->search( $params );
 
 		$searchResult = new SearchResult( $res );
 

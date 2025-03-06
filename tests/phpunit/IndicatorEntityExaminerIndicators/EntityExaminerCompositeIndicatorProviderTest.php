@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
-use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\DIWikiPage;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

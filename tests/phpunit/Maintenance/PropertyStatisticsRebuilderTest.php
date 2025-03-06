@@ -9,7 +9,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @covers \SMW\Maintenance\PropertyStatisticsRebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -57,7 +57,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTableFields' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +74,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturnOnConsecutiveCalls( $uRow, $nRow );
 
-		$store = $this->getMockBuilder( '\SMWSQLStore3' )
+		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use RuntimeException;
-use Title;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Tests\PHPUnitCompat;
 
@@ -11,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\TitleLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -21,7 +19,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +33,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +58,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +82,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +107,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -130,7 +128,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectAllOnMainNamespaceWithEmptyResult() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -151,7 +149,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectAllRedirectPages() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -173,7 +171,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMaxIdForMainNamespace() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -194,7 +192,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testgetMaxIdForCategoryNamespace() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -217,7 +215,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectAllOnMissingNamespaceThrowsException() {
 		$this->expectException( 'RuntimeException' );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -228,7 +226,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectByRangeOnMissingNamespaceThrowsException() {
 		$this->expectException( 'RuntimeException' );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

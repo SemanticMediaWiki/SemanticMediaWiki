@@ -117,7 +117,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
 			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
-			if ( is_null( $smwConnectingPropertyName ) ) {
+			if ( $smwConnectingPropertyName === null ) {
 				continue;
 			}
 			$pagesToGenerate[] = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
@@ -183,9 +183,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 
 		$prop_array = [];
 		$hasExistingValues = false;
-		if ( !is_null( $psTemplate ) ) {
+		if ( $psTemplate !== null ) {
 			$prop_array = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );
-			if ( !is_null( $prop_array ) ) {
+			if ( $prop_array !== null ) {
 				$hasExistingValues = true;
 			}
 		}
@@ -205,9 +205,9 @@ class SMWPageSchemas extends PSExtensionHandler {
 
 		$prop_array = [];
 		$hasExistingValues = false;
-		if ( !is_null( $psTemplateField ) ) {
+		if ( $psTemplateField !== null ) {
 			$prop_array = $psTemplateField->getObject( 'semanticmediawiki_Property' );
-			if ( !is_null( $prop_array ) ) {
+			if ( $prop_array !== null ) {
 				$hasExistingValues = true;
 			}
 		}
@@ -227,7 +227,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$propertyDropdownAttrs = [
 			'id' => 'property_dropdown',
 			'name' => 'smw_property_type_num',
-			'value' => $propType
+			'value' => $propType ?? ''
 		];
 		$html_text .= "Type: " . Xml::tags( 'select', $propertyDropdownAttrs, $select_body ) . "</p>\n";
 
@@ -245,7 +245,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			'size' => 80
 		];
 		$allowedValues = PageSchemas::getValueFromObject( $prop_array, 'allowed_values' );
-		if ( is_null( $allowedValues ) ) {
+		if ( $allowedValues === null ) {
 			$allowed_val_string = '';
 		} else {
 			$allowed_val_string = implode( ', ', $allowedValues );
@@ -271,7 +271,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
 			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
-			if ( is_null( $smwConnectingPropertyName ) ) {
+			if ( $smwConnectingPropertyName === null ) {
 				continue;
 			}
 			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
@@ -303,7 +303,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Creates the text for a property page.
 	 */
-	static public function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
+	public static function createPropertyText( $propertyType, $allowedValues, $linkedForm = null ) {
 		$smwgContLang = smwfContLang();
 
 		$propLabels = $smwgContLang->getPropertyLabels();
@@ -333,7 +333,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Returns either the "connecting property", or a field property, based
 	 * on the XML passed from the Page Schemas extension.
-	*/
+	 */
 	public static function createPageSchemasObject( $tagName, $xml ) {
 		if ( $tagName == "semanticmediawiki_ConnectingProperty" ) {
 			foreach ( $xml->children() as $tag => $child ) {

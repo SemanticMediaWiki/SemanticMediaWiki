@@ -11,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.2
  *
  * @author mwjames
@@ -33,7 +33,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -110,7 +110,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -157,7 +157,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -180,7 +180,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$requestOptions = $this->getMockBuilder( '\SMWRequestOptions' )
+		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
 			->disableOriginalConstructor()
 			->getMock();
 

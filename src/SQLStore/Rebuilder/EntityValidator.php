@@ -2,15 +2,15 @@
 
 namespace SMW\SQLStore\Rebuilder;
 
-use SMW\SQLStore\SQLStore;
-use SMW\NamespaceExaminer;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
+use SMW\NamespaceExaminer;
+use SMW\SQLStore\SQLStore;
 use Title;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -87,7 +87,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isSemanticEnabled( $row ) {
 		return $this->namespaceExaminer->isSemanticEnabled( (int)$row->smw_namespace );
@@ -98,7 +98,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inNamespace( $row ) {
 		if ( $this->namespaces === false ) {
@@ -113,7 +113,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isProperty( $row ) {
 		return $row->smw_namespace === SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '';
@@ -124,7 +124,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isOutdated( $row ) {
 		return $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW;
@@ -135,7 +135,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRedirect( $row ) {
 		return $row->smw_iw == SMW_SQL3_SMWREDIIW;
@@ -147,7 +147,7 @@ class EntityValidator {
 	 * @param $title
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDetachedSubobject( $title, $row ) {
 		if ( $row->smw_subobject === '' ) {
@@ -170,7 +170,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isDetachedQueryRef( $row ) {
 		if ( $row->smw_subobject === '' || $row->smw_proptable_hash !== null ) {
@@ -187,7 +187,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isPlainObjectValue( $row ) {
 		// A rogue title should never happen
@@ -210,7 +210,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasPropertyInvalidCharacter( $row ) {
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
@@ -231,7 +231,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isRetiredProperty( $row ) {
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
@@ -259,7 +259,7 @@ class EntityValidator {
 	 *
 	 * @param $row
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function findDuplicates( $row ) {
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -293,7 +293,7 @@ class EntityValidator {
 	 * @param Title $title
 	 * @param $row
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasLatestRevID( Title $title, $row = false ) {
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );

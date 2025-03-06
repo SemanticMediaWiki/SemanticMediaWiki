@@ -3,17 +3,17 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\DIProperty;
+use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
-use SMW\MediaWiki\Connection\Query;
 use SMW\Tests\PHPUnitCompat;
-use \Wikimedia\Rdbms\FakeResultWrapper;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ProximityPropertyValueLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +119,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

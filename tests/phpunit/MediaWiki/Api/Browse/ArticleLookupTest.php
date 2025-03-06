@@ -8,7 +8,7 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
  * @covers \SMW\MediaWiki\Api\Browse\ArticleLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -16,7 +16,7 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
 class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +38,7 @@ class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

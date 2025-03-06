@@ -2,19 +2,19 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
-use SMW\Tests\TestEnvironment;
-use SMWContainerSemanticData as ContainerSemanticData;
-use SMWDIContainer as DIContainer;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
+use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

@@ -3,17 +3,17 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataItemFactory;
+use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use SMW\DataValues\PropertyValue;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\PropertyValueFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\PropertySpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +71,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-		$propertyValue = $this->getMockBuilder( '\SMWPropertyValue' )
+		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,17 +2,15 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
-use SMW\DIProperty;
-use SMW\RequestOptions;
-use SMW\SQLStore\SQLStore;
-use SMW\Store;
-use SMW\DataTypeRegistry;
-use SMWDataItem as DataItem;
-use SMW\MediaWiki\LinkBatch;
-use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\DataModel\SequenceMap;
-use RuntimeException;
+use SMW\DataTypeRegistry;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Exception\DataItemException;
+use SMW\MediaWiki\LinkBatch;
+use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\Store;
 
 /**
  * Prefetch values for a list of known subjects to a specific property to avoid
@@ -26,7 +24,7 @@ use RuntimeException;
  * class to match the correct DataItem representation for a specific subject in
  * list of subjects.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -69,10 +67,10 @@ class PrefetchItemLookup {
 	 * @param Store $store
 	 * @param CachingSemanticDataLookup $semanticDataLookup
 	 * @param PropertySubjectsLookup $propertySubjectsLookup
-	 * @param LinkBatch|null $LinkBatch
+	 * @param LinkBatch|null $linkBatch
 	 * @param SequenceMap|null $sequenceMap
 	 */
-	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, LinkBatch $linkBatch = null, SequenceMap $sequenceMap = null ) {
+	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, ?LinkBatch $linkBatch = null, ?SequenceMap $sequenceMap = null ) {
 		$this->store = $store;
 		$this->semanticDataLookup = $semanticDataLookup;
 		$this->propertySubjectsLookup = $propertySubjectsLookup;
@@ -97,7 +95,7 @@ class PrefetchItemLookup {
 	 * @param DIProperty $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
 		$this->linkBatch->setCaller( __METHOD__ );
@@ -304,7 +302,7 @@ class PrefetchItemLookup {
 
 			try {
 				$dataItem = $diHandler->newFromDBKeys( $dbkeys );
-			} catch ( \SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				// maybe type assignment changed since data was stored;
 				// don't worry, but we can only drop the data here
 				continue;

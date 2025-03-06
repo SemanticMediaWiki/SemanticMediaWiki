@@ -8,7 +8,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
  * @covers \SMW\Maintenance\DuplicateEntitiesDisposer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -38,7 +38,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

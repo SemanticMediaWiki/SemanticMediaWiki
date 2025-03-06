@@ -3,14 +3,13 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use Html;
-use SMW\Store;
-use SMW\Message;
-use SMW\SQLStore\SQLStore;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
-use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames

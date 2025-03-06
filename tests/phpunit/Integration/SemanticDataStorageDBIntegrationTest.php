@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Subobject;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
@@ -24,7 +24,7 @@ use Title;
  *
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

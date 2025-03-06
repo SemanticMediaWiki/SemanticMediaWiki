@@ -8,7 +8,7 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
  * @covers \SMW\SQLStore\QueryEngine\FulltextSearchTableFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -24,7 +24,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructValueMatchConditionBuilderOnUnknownConnectionType() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +41,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructValueMatchConditionBuilderOnMySQLConnectionType() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +80,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSearchTableUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +97,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructTextChangeUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -114,7 +114,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSearchTableRebuilder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -4,7 +4,6 @@ namespace SMW\ParserFunctions;
 
 use ParamProcessor\ProcessedParam;
 use Parser;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
@@ -12,6 +11,7 @@ use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Query\Deferred;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
@@ -21,7 +21,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @see http://www.semantic-mediawiki.org/wiki/Help:Ask
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Markus Krötzsch
@@ -67,17 +67,17 @@ class AskParserFunction {
 	private $expensiveFuncExecutionWatcher;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $curtailmentMode = false;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $context = QueryProcessor::INLINE_QUERY;
 
@@ -144,7 +144,7 @@ class AskParserFunction {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $curtailmentMode
+	 * @param bool $curtailmentMode
 	 */
 	public function setCurtailmentMode( $curtailmentMode ) {
 		$this->curtailmentMode = (bool)$curtailmentMode;
@@ -184,7 +184,7 @@ class AskParserFunction {
 		$GLOBALS['smwgIQRunningNumber']++;
 		$result = '';
 
-		list( $functionParams, $extraKeys ) = $this->prepareFunctionParameters(
+		[ $functionParams, $extraKeys ] = $this->prepareFunctionParameters(
 			$functionParams
 		);
 
@@ -254,7 +254,7 @@ class AskParserFunction {
 
 			// Skip the first (being the condition) and other marked
 			// printrequests
-			if ( $key == 0 || ( $value !== '' && $value[0] === '?' ) ) {
+			if ( $key == 0 || ( $value !== '' && ( $value[0] === '?' || $value[0] === '+' ) ) ) {
 				continue;
 			}
 
@@ -291,7 +291,7 @@ class AskParserFunction {
 			$contextPage = null;
 		}
 
-		list( $query, $this->params ) = QueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $this->params ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$functionParams,
 			SMW_OUTPUT_WIKI,
 			$this->context,

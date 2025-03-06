@@ -4,6 +4,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -15,12 +16,13 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDITime as DITime;
+use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -295,8 +297,8 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 
-		$propertyValueName = \SMWTurtleSerializer::getTurtleNameForExpElement(
-			\SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
+			SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(

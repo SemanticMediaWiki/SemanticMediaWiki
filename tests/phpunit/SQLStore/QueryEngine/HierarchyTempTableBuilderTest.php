@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
-use RuntimeException;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -23,7 +22,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	private $temporaryTableBuilder;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

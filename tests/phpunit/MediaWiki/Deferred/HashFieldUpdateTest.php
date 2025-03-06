@@ -4,13 +4,12 @@ namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\Tests\TestEnvironment;
-use SMW\Site;
 
 /**
  * @covers \SMW\MediaWiki\Deferred\HashFieldUpdate
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -27,7 +26,7 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

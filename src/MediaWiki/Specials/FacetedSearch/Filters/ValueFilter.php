@@ -2,22 +2,17 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
+use SMW\DataTypeRegistry;
+use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundException;
-use SMW\Utils\UrlArgs;
-use SMW\Utils\TemplateEngine;
 use SMW\Schema\SchemaFinder;
-use SMW\Schema\SchemaList;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\DataTypeRegistry;
-use SMW\DataValueFactory;
+use SMW\Utils\TemplateEngine;
+use SMW\Utils\UrlArgs;
 use SMWDataItem as DataItem;
-use Title;
-use Html;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.2
  *
  * @author mwjames
@@ -47,7 +42,7 @@ class ValueFilter {
 	private $urlArgs;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $params;
 
@@ -182,10 +177,8 @@ class ValueFilter {
 		switch ( $type ) {
 			case DataItem::TYPE_NUMBER:
 				return 'TYPE_NUMBER';
-				break;
 			default:
 				return '';
-				break;
 		}
 	}
 

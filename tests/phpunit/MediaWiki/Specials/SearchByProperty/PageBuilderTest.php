@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
@@ -14,7 +14,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\PageBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -125,7 +125,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessage' )
 			->willReturn( $message );
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

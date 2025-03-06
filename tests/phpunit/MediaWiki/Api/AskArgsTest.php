@@ -2,16 +2,16 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Api\AskArgs;
-use SMW\Tests\Utils\MwApiFactory;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\AskArgs
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -132,7 +132,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 			];
 		}
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,15 +2,15 @@
 
 namespace SMW\Tests;
 
-use DeferredUpdates;
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
@@ -113,14 +113,14 @@ class TestEnvironment {
 	 */
 	public function resetMediaWikiService( $name ) {
 		try {
-			\MediaWiki\MediaWikiServices::getInstance()->resetServiceForTesting( $name );
+			MediaWikiServices::getInstance()->resetServiceForTesting( $name );
 		} catch ( \Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
 
 		if ( $name === 'MainWANObjectCache' ) {
-			\MediaWiki\MediaWikiServices::getInstance()->getMainWANObjectCache()->clearProcessCache();
+			MediaWikiServices::getInstance()->getMainWANObjectCache()->clearProcessCache();
 		}
 
 		return $this;
@@ -133,14 +133,10 @@ class TestEnvironment {
 	 * @param callable $service
 	 */
 	public function redefineMediaWikiService( $name, callable $service ) {
-		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) ) {
-			return null;
-		}
-
 		$this->resetMediaWikiService( $name );
 
 		try {
-			\MediaWiki\MediaWikiServices::getInstance()->redefineService( $name, $service );
+			MediaWikiServices::getInstance()->redefineService( $name, $service );
 		} catch ( \Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
@@ -155,7 +151,7 @@ class TestEnvironment {
 			throw new \RuntimeException( "Your are trying to change the `DomainPrefix` while not being in test!" );
 		}
 
-		$lbFactory = \MediaWiki\MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
+		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 
 		$lbFactory->setLocalDomainPrefix( $prefix );
 
@@ -167,23 +163,14 @@ class TestEnvironment {
 	 * @since 3.2
 	 */
 	public static function overrideUserPermissions( $user, $permissions = [] ) {
-		if ( !class_exists( '\MediaWiki\MediaWikiServices' ) || !method_exists( \MediaWiki\MediaWikiServices::getInstance(), 'getPermissionManager' ) ) {
-			return;
-		}
-
-		$permissionManager = \MediaWiki\MediaWikiServices::getInstance()->getPermissionManager();
-
-		if ( !method_exists( $permissionManager, 'overrideUserRightsForTesting' ) ) {
-			return;
-		}
-
+		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
 		$permissionManager->overrideUserRightsForTesting( $user, $permissions );
 	}
 
 	public function resetDBLoadBalancer() {
 		try {
 			// Get the MediaWiki service container
-			$services = \MediaWiki\MediaWikiServices::getInstance();
+			$services = MediaWikiServices::getInstance();
 
 			// Check if DBLoadBalancer is available
 			if ( $services->has( 'DBLoadBalancer' ) ) {
@@ -293,8 +280,8 @@ class TestEnvironment {
 	/**
 	 * @since 2.5
 	 *
-	 * @param integer $index
-	 * @param string $url
+	 * @param int $index
+	 * @param string $text
 	 *
 	 * @return string
 	 */

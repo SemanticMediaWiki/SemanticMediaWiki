@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
@@ -16,7 +16,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

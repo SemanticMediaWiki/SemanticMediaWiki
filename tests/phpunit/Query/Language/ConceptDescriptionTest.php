@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use SMW\DIWikiPage;
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\ThingDescription;
 
@@ -11,7 +11,7 @@ use SMW\Query\Language\ThingDescription;
  * @covers \SMW\Query\Language\ConceptDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -26,12 +26,6 @@ class ConceptDescriptionTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ConceptDescription',
 			new ConceptDescription( $concept )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ConceptDescription',
-			new \SMWConceptDescription( $concept )
 		);
 	}
 

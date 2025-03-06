@@ -3,17 +3,17 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\SemanticData;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
-use SMWExpNsResource as ExpNsResource;
-use SMWExporter as Exporter;
 use SMW\Tests\PHPUnitCompat;
+use SMWExporter as Exporter;
 
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames

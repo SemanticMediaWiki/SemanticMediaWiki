@@ -8,7 +8,7 @@ use SMW\Tests\Utils\UtilityFactory;
  * @group semantic-mediawiki
  * @group system-test
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -68,7 +68,7 @@ class LocalLanguageFileIntegrityTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function i18nFileProvider() {
-		return array_filter( $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] ), function ( $args ) {
+		return array_filter( $this->findFilesIn( $GLOBALS['smwgExtraneousLanguageFileDir'] ), static function ( $args ) {
 			$file = $args[0];
 			$jsonFileReader = UtilityFactory::getInstance()->newJsonFileReader( $file );
 			$contents = $jsonFileReader->read();

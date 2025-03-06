@@ -2,21 +2,21 @@
 
 namespace SMW\Query;
 
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
+use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
-use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
-use SMWContainerSemanticData as ContainerSemanticData;
 use SMWDIContainer as DIContainer;
 use SMWQuery as Query;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames

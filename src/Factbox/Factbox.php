@@ -4,24 +4,24 @@ namespace SMW\Factbox;
 
 use Html;
 use MediaWiki\MediaWikiServices;
-use Title;
 use SMW\DataValueFactory;
-use SMW\DisplayTitleFinder;
 use SMW\DIProperty;
+use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
-use SMW\Localizer;
-use SMW\Message;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\Message;
 use SMW\ParserData;
 use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMWInfolink;
 use TemplateParser;
+use Title;
 
 /**
  * Class handling the "Factbox" content rendering
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -49,12 +49,12 @@ class Factbox {
 	private $dataValueFactory;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $featureSet = 0;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $isVisible = false;
 
@@ -93,7 +93,7 @@ class Factbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $featureSet
+	 * @param int $featureSet
 	 */
 	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
@@ -190,7 +190,8 @@ class Factbox {
 	/**
 	 * @since 3.0
 	 *
-	 * @param string $rendered
+	 * @param string $list
+	 * @param string $attachment
 	 * @param string $derived
 	 */
 	public static function tabs( $list, $attachment = '', $derived = '' ): string {
@@ -277,7 +278,7 @@ class Factbox {
 	/**
 	 * Returns required resource modules
 	 *
-	 * @todo: figure out a way to load this module only when attachments exist
+	 * @todo figure out a way to load this module only when attachments exist
 	 * @since 1.9
 	 */
 	public static function getModules(): array {

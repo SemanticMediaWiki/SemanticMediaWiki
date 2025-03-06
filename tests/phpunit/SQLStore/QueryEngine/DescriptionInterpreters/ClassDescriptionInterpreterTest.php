@@ -12,7 +12,7 @@ use SMW\Tests\TestEnvironment;
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -56,7 +56,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPageID' )
 			->willReturn( $pageId );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

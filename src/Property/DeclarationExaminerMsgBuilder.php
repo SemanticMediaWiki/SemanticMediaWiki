@@ -2,11 +2,11 @@
 
 namespace SMW\Property;
 
-use SMW\Message;
 use Html;
+use SMW\Localizer\Message;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

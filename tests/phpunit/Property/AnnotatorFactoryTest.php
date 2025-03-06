@@ -8,7 +8,7 @@ use SMW\Property\AnnotatorFactory;
  * @covers \SMW\Property\AnnotatorFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -36,7 +36,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewRedirectPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +53,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewPredefinedPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +70,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSortKeyPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +83,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewTranslationPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +96,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewCategoryPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +109,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructMandatoryTypePropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -122,7 +122,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructSchemaPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +135,7 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructAttachmentLinkPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\PropertyAnnotator' )
+		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
 			->disableOriginalConstructor()
 			->getMock();
 

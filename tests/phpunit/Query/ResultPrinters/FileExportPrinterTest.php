@@ -6,7 +6,7 @@ namespace SMW\Tests\Query\ResultPrinters;
  * @covers \SMW\Query\ResultPrinters\FileExportPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -14,7 +14,7 @@ namespace SMW\Tests\Query\ResultPrinters;
 class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testOutputAsFile_AccessSequence() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

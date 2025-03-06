@@ -3,14 +3,15 @@
 namespace SMW\Tests\Integration;
 
 use RuntimeException;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
+use SMW\Query\QueryResult;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -79,7 +80,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 				->willReturn( $client );
 
 		} else {
-			$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+			$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -128,7 +129,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 		$store->expects( $this->once() )
 			->method( 'fetchQueryResult' );
 
-		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupComplete', function ( $store, $query, &$queryResult ) {
+		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupComplete', static function ( $store, $query, &$queryResult ) {
 			$queryResult = 'Foo';
 			return true;
 		} );
@@ -154,7 +155,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 		$store->expects( $this->never() )
 			->method( 'fetchQueryResult' );
 
-		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupComplete', function ( $store, $query, &$queryResult ) {
+		$this->mwHooksHandler->register( 'SMW::Store::BeforeQueryResultLookupComplete', static function ( $store, $query, &$queryResult ) {
 			$queryResult = 'Foo';
 
 			// Return false to suppress additional calls to fetchQueryResult
@@ -171,7 +172,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 	 * @dataProvider storeClassProvider
 	 */
 	public function testRegisteredStoreAfterQueryResultLookupComplete( $storeClass ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,9 +188,9 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->method( 'fetchQueryResult' )
 			->willReturn( $queryResult );
 
-		$this->mwHooksHandler->register( 'SMW::Store::AfterQueryResultLookupComplete', function ( $store, &$queryResult ) {
-			if ( !$queryResult instanceof \SMWQueryResult ) {
-				throw new RuntimeException( 'Expected a SMWQueryResult instance' );
+		$this->mwHooksHandler->register( 'SMW::Store::AfterQueryResultLookupComplete', static function ( $store, &$queryResult ) {
+			if ( !$queryResult instanceof QueryResult ) {
+				throw new RuntimeException( 'Expected a QueryResult instance' );
 			}
 
 			return true;
@@ -211,7 +212,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			]
 		);
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -254,7 +255,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$this->mwHooksHandler->register( 'SMW::Factbox::BeforeContentGeneration', function ( &$text, $semanticData ) {
+		$this->mwHooksHandler->register( 'SMW::Factbox::BeforeContentGeneration', static function ( &$text, $semanticData ) {
 			$text = $semanticData->getSubject()->getTitle()->getText();
 			return false;
 		} );
@@ -290,7 +291,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredSQLStoreBeforeChangeTitleComplete() {
 		// To make this work with SPARQLStore, need to inject the basestore
-		$storeClass = '\SMWSQLStore3';
+		$storeClass = '\SMW\SQLStore\SQLStore';
 
 		$title = \Title::newFromText( __METHOD__ );
 
@@ -348,7 +349,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 		$null = 0;
 
 		$reachedTheBeforeChangeTitleCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', function () use ( &$reachedTheBeforeChangeTitleCompleteHook ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeChangeTitleComplete', static function () use ( &$reachedTheBeforeChangeTitleCompleteHook ) {
 			$reachedTheBeforeChangeTitleCompleteHook = true;
 		} );
 
@@ -359,7 +360,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredSQLStoreBeforeDeleteSubjectComplete() {
 		// To make this work with SPARQLStore, need to inject the basestore
-		$storeClass = '\SMWSQLStore3';
+		$storeClass = '\SMW\SQLStore\SQLStore';
 
 		$title = \Title::newFromText( __METHOD__ );
 
@@ -384,7 +385,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->willReturn( [] );
 
 		$reachedTheBeforeDeleteSubjectCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', function () use ( &$reachedTheBeforeDeleteSubjectCompleteHook ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::BeforeDeleteSubjectComplete', static function () use ( &$reachedTheBeforeDeleteSubjectCompleteHook ) {
 			$reachedTheBeforeDeleteSubjectCompleteHook = true;
 		} );
 
@@ -397,7 +398,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 	public function testRegisteredSQLStoreAfterDeleteSubjectComplete() {
 		// To make this work with SPARQLStore, need to inject the basestore
-		$storeClass = '\SMWSQLStore3';
+		$storeClass = '\SMW\SQLStore\SQLStore';
 
 		$title = \Title::newFromText( __METHOD__ );
 
@@ -422,7 +423,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->willReturn( [] );
 
 		$reachedTheAfterDeleteSubjectCompleteHook = false;
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDeleteSubjectComplete', function () use ( &$reachedTheAfterDeleteSubjectCompleteHook ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDeleteSubjectComplete', static function () use ( &$reachedTheAfterDeleteSubjectCompleteHook ) {
 			$reachedTheAfterDeleteSubjectCompleteHook = true;
 		} );
 
@@ -492,7 +493,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$hookDispatcher->expects( $this->once() )
 			->method( 'onBeforeMagicWordsFinder' )
-			->willReturnCallback( function ( &$magicWords ) {
+			->willReturnCallback( static function ( &$magicWords ) {
 				$magicWords = [ 'Foo' ];
 			} );
 
@@ -510,7 +511,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			->setMethods( null )
 			->getMock();
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', function ( &$customFixedProperties, &$fixedPropertyTablePrefix ) {
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AddCustomFixedPropertyTables', static function ( &$customFixedProperties, &$fixedPropertyTablePrefix ) {
 			// Standard table prefix
 			$customFixedProperties['Foo'] = '_Bar';
 
@@ -553,7 +554,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$store->setLogger( $this->spyLogger );
 
-		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', function ( $store, $semanticData, $changeOp ) use ( $test ){
+		$this->mwHooksHandler->register( 'SMW::SQLStore::AfterDataUpdateComplete', static function ( $store, $semanticData, $changeOp ) use ( $test ){
 			$test->is( $changeOp->getChangedEntityIdSummaryList() );
 
 			return true;
@@ -565,7 +566,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 	}
 
 	public function storeClassProvider() {
-		$provider[] = [ '\SMWSQLStore3' ];
+		$provider[] = [ '\SMW\SQLStore\SQLStore' ];
 		$provider[] = [ '\SMW\SPARQLStore\SPARQLStore' ];
 
 		return $provider;

@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Parser\RecursiveTextProcessor
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -277,6 +277,12 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
 
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
+
 		$instance = new RecursiveTextProcessor(
 			$this->parser
 		);
@@ -295,6 +301,12 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
+
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser
@@ -319,6 +331,12 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 		$this->parser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
 			->willReturn( $this->parserOutput );
+
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			$this->parser->expects( $this->atLeastOnce() )
+				->method( 'getOptions' )
+				->willReturn( $this->parserOptions );
+		}
 
 		$instance = new RecursiveTextProcessor(
 			$this->parser

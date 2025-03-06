@@ -9,7 +9,7 @@ use SMWOutputs;
  * unused properties
  *
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   1.9
  *
  * @author Markus Krötzsch
@@ -46,7 +46,7 @@ class SpecialUnusedProperties extends SpecialPage {
 		$page = new UnusedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
 
-		list( $limit, $offset ) = $this->getLimitOffset();
+		[ $limit, $offset ] = $this->getLimitOffset();
 		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
 
 		// Ensure locally collected output data is pushed to the output!

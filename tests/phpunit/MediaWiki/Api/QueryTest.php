@@ -4,14 +4,14 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use ReflectionClass;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\Utils\MwApiFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Query
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -66,7 +66,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		$getQueryResult->setAccessible( true );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$getQueryResult->invoke( $instance, $query )
 		);
 	}
@@ -84,7 +84,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 			'meta' => [ 'count' => 5, 'offset' => 5 ]
 		];
 
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

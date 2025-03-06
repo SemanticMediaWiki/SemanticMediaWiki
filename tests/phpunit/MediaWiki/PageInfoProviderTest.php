@@ -9,7 +9,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @covers \SMW\MediaWiki\PageInfoProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames

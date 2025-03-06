@@ -3,14 +3,14 @@
 namespace SMW\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
-use SMW\Message;
+use SMW\Localizer\Message;
+use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\ListResultPrinter\ListResultBuilder;
-use SMWQueryResult;
 
 /**
  * Print query results in lists.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author Markus Krötzsch
  */
@@ -49,12 +49,12 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @see ResultPrinter::getResultText
 	 *
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 * @param $outputMode
 	 *
 	 * @return string
 	 */
-	protected function getResultText( SMWQueryResult $queryResult, $outputMode ) {
+	protected function getResultText( QueryResult $queryResult, $outputMode ) {
 		$builder = $this->getBuilder( $queryResult );
 
 		$this->hasTemplates = $this->hasTemplates();
@@ -69,11 +69,11 @@ class ListResultPrinter extends ResultPrinter {
 	}
 
 	/**
-	 * @param SMWQueryResult $queryResult
+	 * @param QueryResult $queryResult
 	 *
 	 * @return ListResultBuilder
 	 */
-	private function getBuilder( SMWQueryResult $queryResult ) {
+	private function getBuilder( QueryResult $queryResult ) {
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker, $GLOBALS['smwgPlainList'] );
 
 		$builder->set( $this->params );
@@ -103,12 +103,12 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.9
 	 *
-	 * @param SMWQueryResult $res
-	 * @param integer $outputMode
+	 * @param QueryResult $res
+	 * @param int $outputMode
 	 *
 	 * @return string
 	 */
-	private function getFurtherResultsText( SMWQueryResult $res, $outputMode ) {
+	private function getFurtherResultsText( QueryResult $res, $outputMode ) {
 		if ( $this->linkFurtherResults( $res ) ) {
 
 			$link = $this->getFurtherResultsLink( $res, $outputMode );
@@ -122,7 +122,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function supportsRecursiveAnnotation() {
 		return true;

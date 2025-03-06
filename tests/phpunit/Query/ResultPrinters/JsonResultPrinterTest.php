@@ -2,16 +2,15 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
-use ReflectionClass;
 use SMW\Query\ResultPrinters\JsonResultPrinter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Query\ResultPrinters\JsonResultPrinter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -28,7 +27,7 @@ class JsonResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
 
-		$this->queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -40,7 +39,7 @@ class JsonResultPrinterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ResultPrinter',
+			'\SMW\Query\ResultPrinters\ResultPrinter',
 			new JsonResultPrinter( 'json' )
 		);
 	}

@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Api;
 
 use ApiBase;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * Browse a subject api module
@@ -18,7 +18,7 @@ use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
  *
  * @ingroup Api
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -84,13 +84,7 @@ class BrowseBySubject extends ApiBase {
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
 		} catch ( \Exception $e ) {
-
-			// 1.29+
-			if ( method_exists( $this, 'dieWithError' ) ) {
-				$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
-			} else {
-				$this->dieUsage( $e->getMessage(), 'redirect-target-unresolvable' );
-			}
+			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		}
 
 		$dataItem = new DIWikiPage(

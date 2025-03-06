@@ -2,18 +2,17 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use SMW\DataItemFactory;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
-use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\Query\DescriptionFactory;
-use SMW\DataItemFactory;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

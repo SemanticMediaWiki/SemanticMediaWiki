@@ -3,6 +3,7 @@
 namespace SMW\Tests\Exporter;
 
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\Exporter\ElementFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -10,7 +11,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Exporter\ElementFactory
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.2
  *
  * @author mwjames
@@ -46,7 +47,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 		$dataItemFactory = new DataItemFactory();
 		$instance = new ElementFactory();
 
-		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, function ( $datatem ) {
+		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, static function ( $datatem ) {
 			return new \stdclass;
 		} );
 
@@ -84,7 +85,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		# 5
 		$provider[] = [
-			$dataItemFactory->newDIContainer( new \SMWContainerSemanticData( $dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) )
+			$dataItemFactory->newDIContainer( new ContainerSemanticData( $dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) ) )
 		];
 
 		# 6

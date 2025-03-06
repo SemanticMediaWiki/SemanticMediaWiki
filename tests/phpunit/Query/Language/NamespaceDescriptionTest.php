@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
-use SMW\Localizer;
+use SMW\Localizer\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 
@@ -10,7 +10,7 @@ use SMW\Query\Language\ThingDescription;
  * @covers \SMW\Query\Language\NamespaceDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -23,12 +23,6 @@ class NamespaceDescriptionTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\NamespaceDescription',
 			new NamespaceDescription( $namespace )
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\NamespaceDescription',
-			new \SMWNamespaceDescription( $namespace )
 		);
 	}
 

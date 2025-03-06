@@ -1,6 +1,6 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "5.0.0-alpha",
+	"version": "5.0.0-beta",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
@@ -22,14 +22,18 @@
 		]
 	},
 	"AutoloadNamespaces": {
-		"SMW\\": "src/"
+		"SMW\\": "src/",
+		"SMW\\Maintenance": "maintenance/",
+		"Onoi\\Tesa\\": "Tesa/src/"
 	},
 	"Hooks": {
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
 	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
+		"SemanticMediaWiki": "includes/SemanticMediaWiki.php",
+		"SMWElasticStore": "src/Elastic/ElasticStore.php",
+		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

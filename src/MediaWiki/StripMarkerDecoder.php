@@ -6,7 +6,7 @@ use Parser;
 use StripState;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class StripMarkerDecoder {
 	private $stripState;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isSupported = false;
 
@@ -35,7 +35,7 @@ class StripMarkerDecoder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $decoderState
+	 * @param bool $isSupported
 	 */
 	public function isSupported( $isSupported ) {
 		$this->isSupported = $isSupported;
@@ -44,7 +44,7 @@ class StripMarkerDecoder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canUse() {
 		return $this->isSupported;
@@ -55,7 +55,7 @@ class StripMarkerDecoder {
 	 *
 	 * @param string $text
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasStripMarker( $text ) {
 		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
@@ -66,7 +66,7 @@ class StripMarkerDecoder {
 	 *
 	 * @param string $value
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function decode( $value ) {
 		$hasStripMarker = false;

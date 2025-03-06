@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
+use Html;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\Localizer\Message;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlColumns;
-use SMW\Message;
-use Html;
 use SpecialPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

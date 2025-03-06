@@ -4,15 +4,14 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
-use Title;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\BrowseBySubject
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -197,30 +196,30 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 		$out = ob_get_clean();
 
 		$this->stringValidator->assertThatStringContains(
-			'"query":"<div\n\tclass=\"smw-browse\"\n\t\n\t\n>\n\t\n\t\n\t<div class=\"smw-browse-content\">\n\t\t<div class=\"smw-factbox\">\n\t<div class=\"smw-factbox-header\">',
+			'"query":"<div\n\tclass=\"smw-browse\"\n\t\n\t\n>\n\t\n\t\n\t<div class=\"smw-browse-content\">\n\t\t<div class=\"smw-factbox\">\n\t<div class=\"smw-factbox-header mw-sticky-header-element\">',
 			$out
 		);
 	}
 
 	public function assertToContainArrayKeys( $setup, $result ) {
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'error', 'array', function ( $r ) { return $r['error'];
+			$setup, $result, 'error', 'array', static function ( $r ) { return $r['error'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'result', 'array', function ( $r ) { return $r['query'];
+			$setup, $result, 'result', 'array', static function ( $r ) { return $r['query'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'subject', 'string', function ( $r ) { return $r['query']['subject'];
+			$setup, $result, 'subject', 'string', static function ( $r ) { return $r['query']['subject'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'data', 'array', function ( $r ) { return $r['query']['data'];
+			$setup, $result, 'data', 'array', static function ( $r ) { return $r['query']['data'];
 			} );
 
 		$this->assertInternalArrayStructure(
-			$setup, $result, 'sobj', 'array', function ( $r ) { return $r['query']['sobj'];
+			$setup, $result, 'sobj', 'array', static function ( $r ) { return $r['query']['sobj'];
 			} );
 	}
 

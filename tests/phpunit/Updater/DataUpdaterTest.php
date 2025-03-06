@@ -7,15 +7,15 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
 use SMW\SemanticData;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataUpdater
  * @group semantic-mediawiki
  * @group Database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -70,7 +70,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

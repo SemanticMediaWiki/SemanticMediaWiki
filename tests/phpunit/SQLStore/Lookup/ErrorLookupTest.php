@@ -2,15 +2,15 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
-use SMW\SQLStore\Lookup\ErrorLookup;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\ErrorLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ErrorLookup
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames
@@ -22,7 +22,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

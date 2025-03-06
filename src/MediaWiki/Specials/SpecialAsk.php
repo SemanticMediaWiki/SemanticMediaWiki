@@ -4,36 +4,36 @@ namespace SMW\MediaWiki\Specials;
 
 use Html;
 use ParamProcessor\Param;
-use SMW\Query\QuerySourceFactory;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
+use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\MediaWiki\Specials\Ask\HtmlForm;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\QuerySourceFactory;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Services\ServicesFactory;
 use SMW\Utils\HtmlModal;
+use SMW\Utils\UrlArgs;
 use SMWInfolink as Infolink;
 use SMWOutputs;
 use SMWQuery;
 use SMWQueryProcessor as QueryProcessor;
-use SMW\Query\QueryResult;
 use SpecialPage;
-use SMW\Utils\UrlArgs;
-use SMW\Services\ServicesFactory;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
  * queries outside of articles.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -65,12 +65,12 @@ class SpecialAsk extends SpecialPage {
 	private $printouts = [];
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isEditMode = false;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $isBorrowedMode = false;
 
@@ -87,7 +87,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @see SpecialPage::doesWrites
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function doesWrites() {
 		return true;
@@ -170,9 +170,9 @@ class SpecialAsk extends SpecialPage {
 		$out->addHTML( HelpWidget::html() );
 
 		if ( $request->getCheck( 'bHelp' ) ) {
-			$helpLink = wfMessage( $request->getVal( 'bHelp' ) )->escaped();
+			$helpLink = $this->msg( $request->getVal( 'bHelp' ) )->escaped();
 		} else {
-			$helpLink = wfMessage( 'smw_ask_doculink' )->escaped();
+			$helpLink = $this->msg( 'smw_ask_doculink' )->escaped();
 		}
 
 		$this->addHelpLink( $helpLink, true );
@@ -196,7 +196,8 @@ class SpecialAsk extends SpecialPage {
 			'ext.smw.styles',
 			'ext.smw.ask.styles',
 			'ext.smw.page.styles',
-			'ext.smw.table.styles'
+			'ext.smw.table.styles',
+			'mediawiki.codex.messagebox.styles'
 		] );
 
 		$out->addModuleStyles(
@@ -334,7 +335,7 @@ class SpecialAsk extends SpecialPage {
 		if ( $this->queryString ) {
 			$this->getOutput()->setHTMLtitle( $this->queryString );
 		} else {
-			$this->getOutput()->setHTMLtitle( wfMessage( 'ask' )->text() );
+			$this->getOutput()->setHTMLtitle( $this->msg( 'ask' )->text() );
 		}
 
 		$urlArgs->set( 'offset', $this->parameters['offset'] );
@@ -583,13 +584,13 @@ class SpecialAsk extends SpecialPage {
 
 		$searchInfoText = '';
 
-		if ( $borrowedMessage !== null && wfMessage( $borrowedMessage )->exists() ) {
+		if ( $borrowedMessage !== null && $this->msg( $borrowedMessage )->exists() ) {
 			$html = html::rawElement(
 				'p',
 				[
 					'class' => 'plainlinks'
 				],
-				wfMessage( $borrowedMessage, $this->queryString )->parse()
+				$this->msg( $borrowedMessage, $this->queryString )->parse()
 			);
 		}
 
@@ -599,8 +600,8 @@ class SpecialAsk extends SpecialPage {
 			$borrowedTitle = $this->parameters['btitle'];
 		}
 
-		if ( $borrowedTitle !== null && wfMessage( $borrowedTitle )->exists() ) {
-			$this->getOutput()->setPageTitle( wfMessage( $borrowedTitle )->text() );
+		if ( $borrowedTitle !== null && $this->msg( $borrowedTitle )->exists() ) {
+			$this->getOutput()->setPageTitle( $this->msg( $borrowedTitle )->text() );
 		}
 	}
 

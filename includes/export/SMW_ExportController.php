@@ -1,16 +1,19 @@
 <?php
 
 use MediaWiki\MediaWikiServices;
-use SMW\Exporter\Serializer\Serializer;
-use SMW\Exporter\ExpDataFactory;
-use SMW\Exporter\Controller\Queue;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\DataItemException;
+use SMW\Exporter\Controller\Queue;
+use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
+use SMW\Exporter\ExpDataFactory;
+use SMW\Exporter\Serializer\Serializer;
+use SMW\Query\Language\ConceptDescription;
 use SMW\Query\PrintRequest;
+use SMW\RequestOptions;
 use SMW\SemanticData;
-use SMW\Site;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * File holding the SMWExportController class that provides basic functions for
@@ -96,7 +99,7 @@ class SMWExportController {
 
 	/**
 	 * Enable or disable inclusion of backlinks into the output.
-	 * @param boolean $enable
+	 * @param bool $enable
 	 */
 	public function enableBacklinks( $enable ) {
 		$this->add_backlinks = $enable;
@@ -109,7 +112,7 @@ class SMWExportController {
 	 * @param string $outfilename URL of the file that output should be written
 	 * to, or empty string for writing to the standard output.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function prepareSerialization( $outfilename = '' ) {
 		$this->serializer->clear();
@@ -138,10 +141,10 @@ class SMWExportController {
 	 * depth of -1 encodes "infinite" depth, i.e. a complete recursive
 	 * serialisation without limit.
 	 *
-	 * @param SMWDIWikiPage $diWikiPage specifying the page to be exported
-	 * @param integer $recursiondepth specifying the depth of recursion
+	 * @param DIWikiPage $diWikiPage specifying the page to be exported
+	 * @param int $recursiondepth specifying the depth of recursion
 	 */
-	protected function serializePage( SMWDIWikiPage $diWikiPage, $recursiondepth = 1 ) {
+	protected function serializePage( DIWikiPage $diWikiPage, $recursiondepth = 1 ) {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
@@ -232,7 +235,7 @@ class SMWExportController {
 				foreach ( $inprops as $inprop ) {
 					$propWikiPage = $inprop->getCanonicalDiWikiPage();
 
-					if ( !is_null( $propWikiPage ) ) {
+					if ( $propWikiPage !== null ) {
 						$this->queue->add( $propWikiPage, 0 ); // no real recursion along properties
 					}
 
@@ -242,7 +245,7 @@ class SMWExportController {
 						if ( !$this->queue->isDone( $inSub, $subrecdepth ) ) {
 							$semdata = $this->getSemanticData( $inSub, true );
 
-							if ( !$semdata instanceof SMWSemanticData ) {
+							if ( !$semdata instanceof SemanticData ) {
 								continue;
 							}
 
@@ -254,7 +257,7 @@ class SMWExportController {
 				}
 
 				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
-					$options = new SMWRequestOptions();
+					$options = new RequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
 					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMW\DIProperty( '_INST' ), $diWikiPage, $options );
 					$pinst = new SMW\DIProperty( '_INST' );
@@ -263,7 +266,7 @@ class SMWExportController {
 						if ( $this->queue->isNotDone( $instance ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
 
-							if ( !$semdata instanceof SMWSemanticData ) {
+							if ( !$semdata instanceof SemanticData ) {
 								continue;
 							}
 
@@ -273,7 +276,7 @@ class SMWExportController {
 						}
 					}
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
-					$desc = new SMWConceptDescription( $diWikiPage );
+					$desc = new ConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
@@ -318,7 +321,7 @@ class SMWExportController {
 	 * and we do not want to modify the store's result which may be used for
 	 * caching purposes elsewhere.
 	 */
-	protected function getSemanticData( SMWDIWikiPage $diWikiPage, $core_props_only ) {
+	protected function getSemanticData( DIWikiPage $diWikiPage, $core_props_only ) {
 		// Issue 619
 		// Resolve the redirect target and return a container with information
 		// about the redirect
@@ -348,7 +351,7 @@ class SMWExportController {
 
 		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? [ '__spu', '__typ', '__imp' ] : false ); // advise store to retrieve only core things
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
-			$result = new SMWSemanticData( $diWikiPage );
+			$result = new SemanticData( $diWikiPage );
 			foreach ( [ '_URI', '_TYPE', '_IMPO' ] as $propid ) {
 				$prop = new SMW\DIProperty( $propid );
 				$values = $semdata->getPropertyValues( $prop );
@@ -370,7 +373,7 @@ class SMWExportController {
 	protected function flush( $force = false ) {
 		if ( !$force && ( $this->delay_flush > 0 ) ) {
 			$this->delay_flush -= 1;
-		} elseif ( !is_null( $this->outputfile ) ) {
+		} elseif ( $this->outputfile !== null ) {
 			fwrite( $this->outputfile, $this->serializer->flushContent() );
 		} else {
 			ob_start();
@@ -389,7 +392,7 @@ class SMWExportController {
 	 * names (strings with namespace identifiers).
 	 *
 	 * @param array $pages list of page names to export
-	 * @param integer $recursion determines how pages are exported recursively:
+	 * @param int $recursion determines how pages are exported recursively:
 	 * "0" means that referenced resources are only declared briefly, "1" means
 	 * that all referenced resources are also exported recursively (propbably
 	 * retrieving the whole wiki).
@@ -410,7 +413,7 @@ class SMWExportController {
 		// transform pages into queued short titles
 		foreach ( $pages as $page ) {
 			$title = Title::newFromText( $page );
-			if ( null === $title ) {
+			if ( $title === null ) {
 				continue; // invalid title name given
 			}
 			if ( $revisiondate !== '' ) { // filter page list by revision date
@@ -420,7 +423,7 @@ class SMWExportController {
 				}
 			}
 
-			$diPage = SMWDIWikiPage::newFromTitle( $title );
+			$diPage = DIWikiPage::newFromTitle( $title );
 			$this->queue->add( $diPage, ( $recursion == 1 ? -1 : 1 ) );
 		}
 
@@ -451,9 +454,9 @@ class SMWExportController {
 	 *
 	 * @param string $outfile the output file URI, or false if printing to stdout
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
-	 * @param integer $delay number of microseconds for which to sleep during
+	 * @param int $delay number of microseconds for which to sleep during
 	 * export to reduce server load in long-running operations
-	 * @param integer $delayeach number of pages to process between two sleeps
+	 * @param int $delayeach number of pages to process between two sleeps
 	 */
 	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ) {
 		if ( !$this->prepareSerialization( $outfile ) ) {
@@ -470,9 +473,9 @@ class SMWExportController {
 	 * @since  2.0
 	 *
 	 * @param mixed $ns_restriction namespace restriction, see fitsNsRestriction()
-	 * @param integer $delay number of microseconds for which to sleep during
+	 * @param int $delay number of microseconds for which to sleep during
 	 * export to reduce server load in long-running operations
-	 * @param integer $delayeach number of pages to process between two sleeps
+	 * @param int $delayeach number of pages to process between two sleeps
 	 */
 	public function printAllToOutput( $ns_restriction, $delay, $delayeach ) {
 		$this->prepareSerialization();
@@ -480,25 +483,43 @@ class SMWExportController {
 	}
 
 	/**
+	 * Get a handle for performing database read operations.
+	 *
+	 * This is pretty much wfGetDB() in disguise with support for MW 1.39+
+	 * _without_ triggering WMF CI warnings/errors.
+	 *
+	 * @see https://phabricator.wikimedia.org/T273239
+	 *
+	 * @return \Wikimedia\Rdbms\IDatabase|\Wikimedia\Rdbms\IReadableDatabase
+	 */
+	public static function getDBHandle() {
+		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
+			return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
+		} else {
+			return MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_REPLICA );
+		}
+	}
+
+	/**
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = self::getDBHandle();
 
 		$this->delay_flush = 10;
 
 		$this->serializer->startSerialization();
 		$this->serializer->serializeExpData( $this->expDataFactory->newOntologyExpData( '' ) );
 
-		$end = $db->selectField( 'page', 'max(page_id)', false, __METHOD__ );
+		$end = $dbr->selectField( 'page', 'max(page_id)', false, __METHOD__ );
 		$a_count = 0; // DEBUG
 		$d_count = 0; // DEBUG
 		$delaycount = $delayeach;
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
 			$title = Title::newFromID( $id );
-			if ( is_null( $title ) || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
+			if ( $title === null || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
 				continue;
 			}
 			if ( !self::fitsNsRestriction( $ns_restriction, $title->getNamespace() ) ) {
@@ -506,7 +527,7 @@ class SMWExportController {
 			}
 			$a_count += 1; // DEBUG
 
-			$diPage = SMWDIWikiPage::newFromTitle( $title );
+			$diPage = DIWikiPage::newFromTitle( $title );
 			$this->queue->add( $diPage, 1 );
 
 			while ( $this->queue->count() > 0 ) {
@@ -544,14 +565,14 @@ class SMWExportController {
 	 * Print basic definitions a list of pages ordered by their page id.
 	 * Offset and limit refer to the count of existing pages, not to the
 	 * page id.
-	 * @param integer $offset the number of the first (existing) page to
+	 * @param int $offset the number of the first (existing) page to
 	 * serialize a declaration for
-	 * @param integer $limit the number of pages to serialize
+	 * @param int $limit the number of pages to serialize
 	 */
 	public function printPageList( $offset = 0, $limit = 30 ) {
 		global $smwgNamespacesWithSemanticLinks;
 
-		$db = wfGetDB( DB_REPLICA );
+		$dbr = self::getDBHandle();
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
@@ -565,10 +586,10 @@ class SMWExportController {
 				if ( $query !== '' ) {
 					$query .= ' OR ';
 				}
-				$query .= 'page_namespace = ' . $db->addQuotes( $ns );
+				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
-		$res = $db->select( $db->tableName( 'page' ),
+		$res = $dbr->select( $dbr->tableName( 'page' ),
 							'page_id,page_title,page_namespace', $query,
 							'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
 		$foundpages = false;
@@ -576,11 +597,11 @@ class SMWExportController {
 		foreach ( $res as $row ) {
 			$foundpages = true;
 			try {
-				$diPage = new SMWDIWikiPage( $row->page_title, $row->page_namespace, '' );
+				$diPage = new DIWikiPage( $row->page_title, $row->page_namespace, '' );
 				$this->serializePage( $diPage, 0 );
 				$this->flush();
 				$linkCache->clear();
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				// strange data, who knows, not our DB table, keep calm and carry on
 			}
 		}
@@ -592,10 +613,10 @@ class SMWExportController {
 				$nexturl = SMWExporter::getInstance()->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
 			}
 
-			$expData = new SMWExpData( new SMWExpResource( $nexturl ) );
+			$expData = new SMWExpData( new ExpResource( $nexturl ) );
 			$ed = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
 			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ), $ed );
-			$ed = new SMWExpData( new SMWExpResource( $nexturl ) );
+			$ed = new SMWExpData( new ExpResource( $nexturl ) );
 			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
 			$this->serializer->serializeExpData( $expData );
 		}
@@ -630,9 +651,9 @@ class SMWExportController {
 	 * @param $res mixed encoding the restriction as described above
 	 * @param $ns integer the namespace constant to be checked
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
-	static public function fitsNsRestriction( $res, $ns ) {
+	public static function fitsNsRestriction( $res, $ns ) {
 		if ( $res === false ) {
 			return true;
 		}

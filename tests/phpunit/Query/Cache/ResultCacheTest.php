@@ -2,18 +2,18 @@
 
 namespace SMW\Tests\Query\Cache;
 
-use SMW\Query\Cache\ResultCache;
-use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
-use SMW\Query\Cache\CacheStats;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use SMW\DIWikiPage;
+use SMW\Query\Cache\CacheStats;
+use SMW\Query\Cache\ResultCache;
+use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Cache\ResultCache
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames

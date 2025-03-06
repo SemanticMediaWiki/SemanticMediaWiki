@@ -3,13 +3,13 @@
 namespace SMW\Query\ResultPrinters;
 
 use Sanitizer;
+use SMW\Query\QueryResult;
 use SMW\Utils\Csv;
-use SMWQueryResult as QueryResult;
 
 /**
  * CSV export support
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author Nathan R. Yergler
@@ -150,7 +150,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 		while ( $row = $res->getNext() ) {
 			$row_items = [];
 
-			foreach ( $row as /* SMWResultArray */ $field ) {
+			foreach ( $row as /* ResultArray */ $field ) {
 				$growing = [];
 
 				while ( ( $object = $field->getNextDataValue() ) !== false ) {

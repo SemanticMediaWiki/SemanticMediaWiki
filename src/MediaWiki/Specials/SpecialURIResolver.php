@@ -10,7 +10,7 @@ use Title;
  * Resolve (redirect) pretty URIs (or "short URIs") to the equivalent full MediaWiki
  * representation.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.0
  *
  * @author Denny Vrandecic
@@ -46,7 +46,7 @@ class SpecialURIResolver extends SpecialPage {
 				$this->setHeaders();
 				$out->addHTML(
 					'<p>' .
-						wfMessage( 'smw_uri_doc', 'https://www.w3.org/2001/tag/issues.html#httpRange-14' )->parse() .
+						$this->msg( 'smw_uri_doc', 'https://www.w3.org/2001/tag/issues.html#httpRange-14' )->parse() .
 					'</p>'
 				);
 			}

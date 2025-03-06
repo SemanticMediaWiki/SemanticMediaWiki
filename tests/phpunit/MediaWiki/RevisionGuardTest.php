@@ -3,14 +3,13 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\RevisionGuard;
-use SMW\DIWikiPage;
 use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\RevisionGuard
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames

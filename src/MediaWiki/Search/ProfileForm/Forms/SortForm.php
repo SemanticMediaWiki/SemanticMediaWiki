@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use Html;
+use SMW\Localizer\Message;
 use WebRequest;
-use SMW\Message;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -27,7 +27,7 @@ class SortForm {
 	private $field;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $parameters = [];
 
@@ -44,7 +44,7 @@ class SortForm {
 	/**
 	 * @since 3.0
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getParameters() {
 		return $this->parameters;

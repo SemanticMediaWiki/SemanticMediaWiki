@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use Html;
-use SMW\Message;
-use SMWInfolink as Infolink;
+use SMW\Localizer\Message;
 use SMW\Utils\UrlArgs;
+use SMWInfolink as Infolink;
 use Title;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   2.5
  *
  * @author mwjames
@@ -47,7 +47,7 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -194,7 +194,7 @@ class LinksWidget {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $isEmpty
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -237,9 +237,9 @@ class LinksWidget {
 	 * @since 2.5
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
-	 * @param boolean $hideForm
-	 * @param boolean $isEmpty
+	 * @param UrlArgs $urlArgs
+	 * @param bool $hideForm
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -268,8 +268,8 @@ class LinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
-	 * @param boolean $isEmpty
+	 * @param UrlArgs $urlArgs
+	 * @param bool $isEmpty
 	 *
 	 * @return string
 	 */
@@ -313,8 +313,8 @@ class LinksWidget {
 	 * @since 3.0
 	 *
 	 * @param Title $title
-	 * @param string $urlTail
-	 * @param boolean $isFromCache
+	 * @param UrlArgs $urlArgs
+	 * @param bool $isFromCache
 	 *
 	 * @return string
 	 */
@@ -354,7 +354,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function clipboardLink( Infolink $infolink = null ) {
+	public static function clipboardLink( ?Infolink $infolink = null ) {
 		if ( $infolink === null ) {
 			return '';
 		}

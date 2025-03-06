@@ -9,7 +9,7 @@ use WikiFilePage;
 use WikiPage;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -34,7 +34,7 @@ class TitleFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
 	 * @return Title|null
 	 */

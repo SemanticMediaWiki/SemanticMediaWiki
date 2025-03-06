@@ -3,10 +3,10 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\MediaWikiServices;
-use SMWQueryResult as QueryResult;
-use Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\Query\QueryResult;
+use Title;
 
 /**
  * Printer for embedded data.
@@ -17,7 +17,7 @@ use SMW\DIWikiPage;
  * the headings for the page titles. If "titlestyle" is not specified, a <h1> tag is
  * used.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.7
  *
  * @author Fernando Correia
@@ -116,17 +116,23 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		$headend = '';
 
 		switch ( $this->params['embedformat'] ) {
-			case 'h1': case 'h2': case 'h3': case 'h4': case 'h5': case 'h6':
-									$headstart = '<' . $this->params['embedformat'] . '>';
-									$headend = '</' . $this->params['embedformat'] . ">\n";
-			break;
-			case 'ul': case 'ol':
-					$result .= '<' . $this->params['embedformat'] . '>';
-					$footer = '</' . $this->params['embedformat'] . '>';
-					$embstart = '<li>';
-					$headend = "<br />\n";
-					$embend = "</li>\n";
-			break;
+			case 'h1':
+			case 'h2':
+			case 'h3':
+			case 'h4':
+			case 'h5':
+			case 'h6':
+							$headstart = '<' . $this->params['embedformat'] . '>';
+							$headend = '</' . $this->params['embedformat'] . ">\n";
+				break;
+			case 'ul':
+			case 'ol':
+				$result .= '<' . $this->params['embedformat'] . '>';
+				$footer = '</' . $this->params['embedformat'] . '>';
+				$embstart = '<li>';
+				$headend = "<br />\n";
+				$embend = "</li>\n";
+				break;
 		}
 
 		$dataValueFactory = DataValueFactory::getInstance();

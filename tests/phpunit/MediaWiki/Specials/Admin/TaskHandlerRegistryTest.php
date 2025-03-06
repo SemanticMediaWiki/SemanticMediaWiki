@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
-use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
-use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
-use SMW\Tests\TestEnvironment;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames

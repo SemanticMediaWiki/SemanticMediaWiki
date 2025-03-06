@@ -2,18 +2,17 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\TermsLookup;
 use SMW\Query\DescriptionFactory;
 use SMW\Store;
-use SMW\Tests\TestEnvironmentTrait;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -95,7 +94,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$concept = $this->getMockBuilder( '\SMWDIConcept' )
+		$concept = $this->getMockBuilder( '\SMW\DIConcept' )
 			->disableOriginalConstructor()
 			->getMock();
 

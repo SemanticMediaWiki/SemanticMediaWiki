@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Preference;
 
+use MediaWiki\User\UserOptionsLookup;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\Tests\PHPUnitCompat;
 
@@ -9,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Preference\PreferenceExaminer
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.2
  *
  * @author mwjames
@@ -36,17 +37,16 @@ class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasPreferenceOf() {
-		$this->user->expects( $this->any() )
+		$userOptionsLookup = $this->createMock( UserOptionsLookup::class );
+
+		$userOptionsLookup->expects( $this->any() )
 			->method( 'getOption' )
-			->with( 'foo' )
+			->with( $this->user, 'foo', false )
 			->willReturn( false );
 
-		$instance = new PreferenceExaminer();
-
-		$instance->setUser( $this->user );
+		$instance = new PreferenceExaminer( $this->user, $userOptionsLookup );
 
 		$this->assertIsBool(
-
 			$instance->hasPreferenceOf( 'foo' )
 		);
 	}

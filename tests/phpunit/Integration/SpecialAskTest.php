@@ -4,13 +4,13 @@ namespace SMW\Tests\Integration;
 
 use DOMDocument;
 use SMW\MediaWiki\Specials\SpecialAsk;
-use SMW\Tests\TestEnvironment;
 use SMW\SPARQLStore\RepositoryConnectionProvider;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author Stephan Gambke
@@ -118,11 +118,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 		global $wgOut, $wgRequest;
 
 		foreach ( $params as $key => $value ) {
-			if ( method_exists( $wgRequest, 'unsetVal' ) ) {
-				$wgRequest->unsetVal( $key );
-			} else {
-				$wgRequest->setVal( $key, null );
-			}
+			$wgRequest->unsetVal( $key );
 		}
 		foreach ( $this->oldRequestValues as $key => $value ) {
 			$wgRequest->setVal( $key, $value );

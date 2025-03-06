@@ -3,21 +3,20 @@
 namespace SMW\Query\ResultPrinters;
 
 use Html;
-use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMW\DIWikiPage;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
+use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
 use SMWDataValue;
 use SMWDIBlob as DIBlob;
-use SMWQueryResult as QueryResult;
-use SMWResultArray as ResultArray;
 
 /**
  * Print query results in tables
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author Markus Krötzsch
@@ -119,10 +118,34 @@ class TableResultPrinter extends ResultPrinter {
 		// building headers
 		if ( $this->mShowHeaders != SMW_HEADERS_HIDE ) {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
-			foreach ( $res->getPrintRequests() as /* SMWPrintRequest */ $pr ) {
+			foreach ( $res->getPrintRequests() as $pr ) {
 				$attributes = [];
+				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				$attributes['class'] = $columnClass;
+				// check outputFormat for thclass option use
+				// if outputFormat has class defined as an option, take the value which class holds and set it as class attribute
+				// example outputFormat = 40px;class=unsortable
+				$outputFormat = $pr->getOutputFormat();
+				if ( str_contains( $outputFormat, 'class=' ) ) {
+					if ( str_contains( $outputFormat, ';' ) ) {
+						$parts = explode( ';', $outputFormat );
+						foreach ( $parts as $part ) {
+							if ( str_contains( $part, 'class=' ) ) {
+								$headerFormatSplitted = explode( '=', $part );
+								if ( count( $headerFormatSplitted ) >= 2 ) {
+									$attributes['class'] = htmlspecialchars( $headerFormatSplitted[1], ENT_QUOTES );
+								} else {
+									continue;
+								}
+							}
+						}
+					} elseif ( str_contains( $outputFormat, 'class=' ) ) {
+						$parts = explode( '=', $outputFormat );
+						$attributes['class'] = $parts[1];
+					}
+				} else {
+					$attributes['class'] = $columnClass;
+				}
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;
@@ -215,7 +238,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray[] $subject
+	 * @param ResultArray[] $subject
 	 * @param int $outputMode
 	 * @param string[] $columnClasses
 	 *
@@ -240,7 +263,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWResultArray $resultArray
+	 * @param \ $resultArray
 	 * @param int $outputMode
 	 * @param string $columnClass
 	 *
@@ -318,7 +341,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @param SMWDataValue[] $dataValues
 	 * @param $outputMode
-	 * @param boolean $isSubject
+	 * @param bool $isSubject
 	 *
 	 * @return string
 	 */

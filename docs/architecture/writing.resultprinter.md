@@ -159,7 +159,7 @@ This is an example from the [`DsvResultPrinter.php`](https://github.com/Semantic
 
 			/**
 			 * Loop over their fields (properties).
-			 * @var SMWResultArray $field
+			 * @var \SMW\Query\Result\ResultArray $field
 			 */
 			foreach ( $row as $field ) {
 				$itemSegments = [];

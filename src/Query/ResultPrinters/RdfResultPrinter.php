@@ -2,16 +2,15 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\Query\PrintRequest;
 use SMW\DIProperty;
-use SMWExporter as Exporter;
-use SMWQueryResult as QueryResult;
 use SMW\Exporter\ExporterFactory;
+use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
 
 /**
  * Printer class for generating RDF output
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.6
  *
  * @author Markus Krötzsch
@@ -140,16 +139,16 @@ class RdfResultPrinter extends FileExportPrinter {
 			switch ( $printRequest->getMode() ) {
 				case PrintRequest::PRINT_PROP:
 					$property = $printRequest->getData()->getDataItem();
-				break;
+					break;
 				case PrintRequest::PRINT_CATS:
 					$property = new DIProperty( '_TYPE' );
-				break;
+					break;
 				case PrintRequest::PRINT_CCAT:
 					// not serialised right now
-				break;
+					break;
 				case PrintRequest::PRINT_THIS:
 					// ignored here (object is always included in export)
-				break;
+					break;
 			}
 
 			if ( $property !== null ) {

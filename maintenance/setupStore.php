@@ -2,24 +2,26 @@
 
 namespace SMW\Maintenance;
 
+use Onoi\MessageReporter\MessageReporter;
+use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\Options;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Setup;
+use SMW\SQLStore\Installer;
 use SMW\Store;
 use SMW\StoreFactory;
-use Onoi\MessageReporter\MessageReporterFactory;
-use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\Installer;
-use SMW\Setup;
-use SMW\Options;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * Load the required class
  */
+// @codeCoverageIgnoreStart
 if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
 	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
 } else {
 	require_once '/www/wwwroot/MediaWiki/maintenance/Maintenance.php';
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * Sets up the storage backend currently selected in the "LocalSettings.php"
@@ -42,7 +44,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *                   recreated using this script (setup) followed by the use
  *                   of the rebuildhData.php script which may take some time.
  *
- * --backend         The backend to use, e.g. SMWSQLStore3.
+ * --backend         The backend to use, e.g. SMW\SQLStore\SQLStore.
  *
  * --skip-optimize   Skips the table optimization process.
  *
@@ -186,10 +188,10 @@ class setupStore extends \Maintenance {
 		global $smwgIP;
 
 		if ( !isset( $smwgIP ) ) {
-			$smwgIP = dirname( __FILE__ ) . '/../';
+			$smwgIP = __DIR__ . '/../';
 		}
 
-		require_once ( $smwgIP . 'includes/GlobalFunctions.php' );
+		require_once $smwgIP . 'includes/GlobalFunctions.php';
 	}
 
 	protected function getStore() {
@@ -229,7 +231,7 @@ class setupStore extends \Maintenance {
 	/**
 	 * @param string $storeName
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function hasDeletionVerification() {
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -269,5 +271,7 @@ class setupStore extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = setupStore::class;
-require_once ( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

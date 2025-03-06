@@ -10,7 +10,7 @@ use SMW\Tests\JSONScriptServicesTestCaseRunner;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -52,13 +52,13 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 	 */
 	protected function getDependencyDefinitions() {
 		return [
-			'Maps' => function ( $val, &$reason ) {
+			'Maps' => static function ( $val, &$reason ) {
 				if ( !ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 					$reason = "Dependency: Maps (or Semantic Maps) as requirement for the test is not available!";
 					return false;
 				}
 
-				list( $compare, $requiredVersion ) = explode( ' ', $val );
+				[ $compare, $requiredVersion ] = explode( ' ', $val );
 				$version = ExtensionRegistry::getInstance()->getAllThings()['Maps']['version'];
 
 				if ( !version_compare( $version, $requiredVersion, $compare ) ) {
@@ -68,7 +68,7 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 
 				return true;
 			},
-			'ext-intl' => function ( $val, &$reason ) {
+			'ext-intl' => static function ( $val, &$reason ) {
 				if ( !extension_loaded( 'intl' ) ) {
 					$reason = "Dependency: ext-intl (PHP extension, ICU collation) as requirement for the test is not available!";
 					return false;
@@ -76,13 +76,13 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 
 				return true;
 			},
-			'ICU' => function ( $val, &$reason ) {
+			'ICU' => static function ( $val, &$reason ) {
 				if ( !extension_loaded( 'intl' ) ) {
 					$reason = "Dependency: ext-intl (PHP extension, ICU collation) as requirement for the test is not available!";
 					return false;
 				}
 
-				list( $compare, $requiredVersion ) = explode( ' ', $val );
+				[ $compare, $requiredVersion ] = explode( ' ', $val );
 				$version = INTL_ICU_VERSION;
 
 				if ( !version_compare( $version, $requiredVersion, $compare ) ) {
@@ -96,5 +96,3 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 	}
 
 }
-
-class_alias( JSONScriptTestCaseRunnerTest::class, 'SMW\Tests\Integration\JSONScript\JsonTestCaseScriptRunnerTest' );

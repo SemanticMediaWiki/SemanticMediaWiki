@@ -2,29 +2,26 @@
 
 namespace SMW\SQLStore;
 
-use Hooks;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
+use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
-use SMW\SQLStore\TableBuilder\TableSchemaManager;
-use SMW\SQLStore\TableBuilder\TableBuildExaminer;
-use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\SQLStore\Installer\TableOptimizer;
-use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Options;
-use SMW\Site;
-use SMW\TypesRegistry;
+use SMW\Setup;
 use SMW\SetupFile;
+use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
 use SMW\Utils\Timer;
-use SMW\Setup;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -138,7 +135,7 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Options|boolean $verbose
+	 * @param Options|bool $verbose
 	 */
 	public function install( $verbose = true ) {
 		if ( $verbose instanceof Options ) {
@@ -172,7 +169,7 @@ class Installer implements MessageReporter {
 		);
 
 		$this->messageReporter->reportMessage(
-			"\n" . $this->cliMsgFormatter->twoCols( 'Storage engine:', 'SMWSQLStore3' )
+			"\n" . $this->cliMsgFormatter->twoCols( 'Storage engine:', 'SQLStore' )
 		);
 
 		$this->messageReporter->reportMessage(
@@ -291,7 +288,7 @@ class Installer implements MessageReporter {
 	/**
 	 * @since 2.5
 	 *
-	 * @param boolean $verbose
+	 * @param bool $verbose
 	 */
 	public function uninstall( $verbose = true ) {
 		$this->cliMsgFormatter = new CliMsgFormatter();

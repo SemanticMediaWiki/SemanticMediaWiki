@@ -2,16 +2,14 @@
 
 namespace SMW\Tests\SQLStore\Rebuilder;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\Rebuilder\Rebuilder
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.3
  *
  * @author mwjames
@@ -101,7 +99,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newFromIDs' )
 			->willReturn( [] );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -185,7 +183,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

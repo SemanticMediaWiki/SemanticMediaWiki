@@ -14,9 +14,10 @@ use Title;
  * @group SMWExtension
  * @group semantic-mediawiki-import
  * @group mediawiki-database
+ * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  *
  * @author mwjames
@@ -145,7 +146,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 			$expectedSomeProperties,
 			$this->maintenanceRunner->setOptions( [
 				'p' => true,
-				'b' => 'SMWSparqlStore' ] )->run()
+				'b' => '\SMW\SPARQLStore\SPARQLStore:' ] )->run()
 		);
 	}
 
@@ -154,7 +155,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 			$expectedSomeProperties,
 			$this->maintenanceRunner->setOptions( [
 				'query' => '[[Has Url::+]]',
-				'b' => 'SMWSparqlStore' ] )->run()
+				'b' => '\SMW\SPARQLStore\SPARQLStore:' ] )->run()
 		);
 	}
 

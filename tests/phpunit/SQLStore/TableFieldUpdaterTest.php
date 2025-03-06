@@ -8,7 +8,7 @@ use SMW\SQLStore\TableFieldUpdater;
  * @covers \SMW\SQLStore\TableFieldUpdater
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -35,7 +35,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSortKey' )
 			->willReturn( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +67,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateRevField() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +98,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateTouchedField() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +129,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateIwField() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

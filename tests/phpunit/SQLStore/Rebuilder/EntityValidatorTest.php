@@ -3,16 +3,14 @@
 namespace SMW\Tests\SQLStore\Rebuilder;
 
 use SMW\NamespaceExaminer;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\EntityValidator;
-use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\SQLStore\Rebuilder\EntityValidator
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames

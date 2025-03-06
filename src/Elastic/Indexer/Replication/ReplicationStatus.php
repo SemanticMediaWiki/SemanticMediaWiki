@@ -2,15 +2,14 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use RuntimeException;
+use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
 use SMWDITime as DITime;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use RuntimeException;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -32,7 +31,7 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param ElasticClient $elasticClient
+	 * @param ElasticClient $connection
 	 */
 	public function __construct( ElasticClient $connection ) {
 		$this->connection = $connection;
@@ -62,9 +61,9 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	private function exists( $id ) {
 		$params = [
@@ -80,7 +79,7 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return []
+	 * @return
 	 */
 	private function modification_date_associated_revision( $id ) {
 		$params = [
@@ -118,7 +117,7 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return boolean|DITime
+	 * @return bool|DITime
 	 * @throws RuntimeException
 	 */
 	public function getModificationDate( $id ) {
@@ -152,9 +151,9 @@ class ReplicationStatus {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	public function getAssociatedRev( $id ) {
 		$params = [
@@ -217,7 +216,7 @@ class ReplicationStatus {
 			'body'  => $body
 		];
 
-		list( $res, $errors ) = $this->connection->search( $params );
+		[ $res, $errors ] = $this->connection->search( $params );
 		$time = null;
 
 		foreach ( $res as $result ) {

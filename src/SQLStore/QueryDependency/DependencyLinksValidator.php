@@ -3,13 +3,13 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -24,12 +24,12 @@ class DependencyLinksValidator {
 	private $store;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $checkDependencies = false;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $checkedDependencies = [];
 
@@ -45,7 +45,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param boolean $checkDependencies
+	 * @param bool $checkDependencies
 	 */
 	public function setCheckDependencies( $checkDependencies ) {
 		$this->checkDependencies = (bool)$checkDependencies;
@@ -54,7 +54,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function canCheckDependencies() {
 		return $this->checkDependencies;
@@ -63,7 +63,7 @@ class DependencyLinksValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getCheckedDependencies() {
 		return $this->checkedDependencies;
@@ -88,7 +88,7 @@ class DependencyLinksValidator {
 	 *
 	 * @param DIWikiPage $subject
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasArchaicDependencies( DIWikiPage $subject ) {
 		$this->checkedDependencies = [];

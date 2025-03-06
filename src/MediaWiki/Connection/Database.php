@@ -19,7 +19,7 @@ use Wikimedia\ScopedCallback;
  * interface are likely therefore this class should not be used other than by
  * SMW itself.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -53,12 +53,12 @@ class Database {
 	private $transactionHandler;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $flags = 0;
 
 	/**
-	 * @var integer
+	 * @var int
 	 */
 	private $insertId = null;
 
@@ -83,7 +83,7 @@ class Database {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function releaseConnection() {
 		$this->connRef->releaseConnections();
@@ -92,7 +92,7 @@ class Database {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
 		return true;
@@ -112,7 +112,7 @@ class Database {
 	 *
 	 * @param string $type
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isType( $type ) {
 		if ( $this->type === '' ) {
@@ -168,7 +168,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param integer $ts
+	 * @param int $ts
 	 *
 	 * @return string
 	 */
@@ -181,7 +181,7 @@ class Database {
 	 *
 	 * @since 3.0
 	 *
-	 * @param string $prefix
+	 * @param string|null $prefix
 	 *
 	 * @return string
 	 */
@@ -219,6 +219,7 @@ class Database {
 	 * @param string $tableName
 	 * @param $fields
 	 * @param array|string $conditions
+	 * @param string $fname
 	 * @param array $options
 	 * @param array $joinConditions
 	 *
@@ -416,6 +417,24 @@ class Database {
 	}
 
 	/**
+	 * @see IDatabase::conditional
+	 *
+	 * @since 5.0
+	 */
+	public function conditional( $cond, $caseTrueExpression, $caseFalseExpression ) {
+		return $this->connRef->getConnection( 'read' )->conditional( $cond, $caseTrueExpression, $caseFalseExpression );
+	}
+
+	/**
+	 * @see IDatabase::expr
+	 *
+	 * @since 5.0
+	 */
+	public function expr( string $field, string $op, $value ) {
+		return $this->connRef->getConnection( 'read' )->expr( $field, $op, $value );
+	}
+
+	/**
 	 * @see IDatabase::affectedRows
 	 *
 	 * @since 1.9
@@ -465,7 +484,7 @@ class Database {
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
-		return $this->insertId = is_null( $row[0] ) ? null : (int)$row[0];
+		return $this->insertId = $row[0] === null ? null : (int)$row[0];
 	}
 
 	/**
@@ -620,7 +639,7 @@ class Database {
 	 * @param string|null $prefix
 	 * @param string $fname
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function listTables( $prefix = null, $fname = __METHOD__ ) {
 		return $this->connRef->getConnection( 'read' )->listTables( $prefix, $fname );
@@ -708,7 +727,7 @@ class Database {
 	 *
 	 * @param string $fname
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function inSectionTransaction( $fname = __METHOD__ ) {
 		return $this->transactionHandler->inSectionTransaction( $fname );
@@ -754,7 +773,7 @@ class Database {
 	public function onTransactionResolution( callable $callback, $fname = __METHOD__ ) {
 		$connection = $this->connRef->getConnection( 'write' );
 
-		if ( method_exists( $connection, 'onTransactionResolution' ) && $connection->trxLevel() ) {
+		if ( $connection->trxLevel() ) {
 			$connection->onTransactionResolution( $callback, $fname );
 		}
 	}
@@ -766,13 +785,7 @@ class Database {
 	 */
 	public function onTransactionCommitOrIdle( callable $callback ) {
 		$connection = $this->connRef->getConnection( 'write' );
-
-		// https://gerrit.wikimedia.org/r/#/c/mediawiki/core/+/432036/
-		if ( method_exists( $connection, 'onTransactionCommitOrIdle' ) ) {
-			$connection->onTransactionCommitOrIdle( $callback );
-		} else {
-			$connection->onTransactionCommitOrIdle( $callback );
-		}
+		$connection->onTransactionCommitOrIdle( $callback );
 	}
 
 	/**
@@ -804,5 +817,4 @@ class Database {
 
 		return $text;
 	}
-
 }

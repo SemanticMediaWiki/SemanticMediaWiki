@@ -2,8 +2,6 @@
 
 namespace SMW\Tests\Utils\Runners;
 
-use Job;
-use JobQueueGroup;
 use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
@@ -15,7 +13,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseConnectionProvider;
  * @group SMW
  * @group SMWExtension
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9.2
  */
 class JobQueueRunner {
@@ -36,7 +34,7 @@ class JobQueueRunner {
 	 * @param string|null $type
 	 * @param ConnectionProvider|null $connectionProvider
 	 */
-	public function __construct( $type = null, ConnectionProvider $connectionProvider = null ) {
+	public function __construct( $type = null, ?ConnectionProvider $connectionProvider = null ) {
 		$this->type = $type;
 		$this->connectionProvider = $connectionProvider;
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();

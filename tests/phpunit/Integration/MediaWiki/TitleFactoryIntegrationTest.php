@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use SMW\MediaWiki\TitleFactory;
-use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use Title;
 
@@ -12,9 +12,10 @@ use Title;
  * @covers \SMW\MediaWiki\TitleFactory
  * @group SMW
  * @group semantic-mediawiki-integration
+ * @group Database
  * @group mediawiki-database
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 4.1.2
  *
  * @author octfx

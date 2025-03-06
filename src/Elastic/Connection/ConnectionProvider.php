@@ -3,16 +3,16 @@
 namespace SMW\Elastic\Connection;
 
 use Elasticsearch\ClientBuilder;
-use SMW\Elastic\Exception\ClientBuilderNotFoundException;
-use SMW\Elastic\Exception\MissingEndpointConfigException;
+use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
 use SMW\Elastic\Config;
-use Psr\Log\LoggerAwareTrait;
+use SMW\Elastic\Exception\ClientBuilderNotFoundException;
+use SMW\Elastic\Exception\MissingEndpointConfigException;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames

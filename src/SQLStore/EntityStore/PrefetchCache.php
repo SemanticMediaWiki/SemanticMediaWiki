@@ -2,15 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\SQLStore\SQLStore;
-use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
-use SMWDataItem as DataItem;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\RequestOptions;
-use SMW\DataTypeRegistry;
-use RuntimeException;
-use SMW\MediaWiki\LinkBatch;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GNU GPL v2
@@ -31,12 +26,12 @@ class PrefetchCache {
 	private $prefetchItemLookup;
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $cache = [];
 
 	/**
-	 * @var []
+	 * @var
 	 */
 	private $lookupCache = [];
 
@@ -56,7 +51,7 @@ class PrefetchCache {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isCached( DIProperty $property ) {
 		return isset( $this->cache[$property->getKey()] );
@@ -141,7 +136,7 @@ class PrefetchCache {
 	 * @param DIProperty $property
 	 * @param RequestOptions $requestOptions
 	 *
-	 * @return []
+	 * @return
 	 */
 	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
 		$key = $this->makeCacheKey( $property, $requestOptions );

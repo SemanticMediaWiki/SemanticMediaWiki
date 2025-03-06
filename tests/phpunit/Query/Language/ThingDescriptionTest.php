@@ -8,7 +8,7 @@ use SMW\Query\Language\ThingDescription;
  * @covers \SMW\Query\Language\ThingDescription
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author mwjames
@@ -19,12 +19,6 @@ class ThingDescriptionTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf(
 			'SMW\Query\Language\ThingDescription',
 			new ThingDescription()
-		);
-
-		// Legacy
-		$this->assertInstanceOf(
-			'SMW\Query\Language\ThingDescription',
-			new \SMWThingDescription()
 		);
 	}
 

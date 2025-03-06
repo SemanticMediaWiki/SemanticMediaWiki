@@ -4,14 +4,14 @@ namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIBlob as DIBlob;
 use SMW\Tests\PHPUnitCompat;
+use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -25,7 +25,7 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Database' )
+		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
 

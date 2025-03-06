@@ -16,7 +16,7 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( "This file is part of the Semantic MediaWiki extension. It is not a valid entry point.\n" );
 }
 
-return ( function () {
+return ( static function () {
 	SemanticMediaWiki::setupDefines();
 	$smwgIP = dirname( __DIR__ ) . '/';
 	return [
@@ -193,10 +193,10 @@ return ( function () {
 
 		###
 		# Configure SPARQL database connection for Semantic MediaWiki. This is used
-		# when SPARQL-based features are enabled, e.g. when using SMWSparqlStore as
+		# when SPARQL-based features are enabled, e.g. when using SPARQLStore as
 		# the $smwgDefaultStore.
 		#
-		# The default class SMWSparqlDatabase works with many databases that support
+		# The default class GenericRepositoryConnector works with many databases that support
 		# SPARQL and SPARQL Update. Three different endpoints (service URLs) are given
 		# - query (reading queries like SELECT)
 		# - update (SPARQL Update queries), and
@@ -205,7 +205,7 @@ return ( function () {
 		# The query endpoint is necessary, but the update and data endpoints can be
 		# omitted if not supported.
 		#
-		# This will lead to reduced functionality (e.g. the SMWSparqlStore will not
+		# This will lead to reduced functionality (e.g. the SPARQLStore will not
 		# work if Update is not available). The data endpoint is always optional, but
 		# in some SPARQL databases this method is more efficient than update.
 		#
@@ -247,7 +247,7 @@ return ( function () {
 		#
 		# In case `$smwgSparqlRepositoryConnector` is maintained with 'custom',
 		# the `$smwgSparqlCustomConnector` is expected to contain a custom class
-		# implementing the ncessary interface (see `SMWSparqlDatabase`).
+		# implementing the necessary interface (see `GenericRepositoryConnector`).
 		#
 		# `$smwgSparqlCustomConnector` is only used for the definition of a custom
 		# connector.
@@ -263,14 +263,14 @@ return ( function () {
 		#
 		# In case `$smwgSparqlRepositoryConnector` is maintained with 'custom',
 		# the `$smwgSparqlCustomConnector` is expected to contain a custom class
-		# implementing the ncessary interface (see `SMWSparqlDatabase`).
+		# implementing the necessary interface (see `GenericRepositoryConnector`).
 		#
 		# `$smwgSparqlCustomConnector` is only used for the definition of a custom
 		# connector.
 		#
 		# @since 2.0
 		##
-		'smwgSparqlCustomConnector' => 'SMWSparqlDatabase',
+		'smwgSparqlCustomConnector' => '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
 		# #
 
 		##

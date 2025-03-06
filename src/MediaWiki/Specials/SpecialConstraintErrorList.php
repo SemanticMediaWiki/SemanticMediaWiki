@@ -9,7 +9,7 @@ use SpecialPage;
  * Convenience special page that just redirects to Special:Ask with a preset
  * of necessary parameters to query the constraint error list.
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -40,7 +40,7 @@ class SpecialConstraintErrorList extends SpecialPage {
 	/**
 	 * @since 3.1
 	 *
-	 * @param integer $limit
+	 * @param int $limit
 	 *
 	 * @return string
 	 */

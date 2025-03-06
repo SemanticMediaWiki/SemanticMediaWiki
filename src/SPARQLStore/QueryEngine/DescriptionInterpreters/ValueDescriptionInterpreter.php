@@ -3,6 +3,9 @@
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\DIWikiPage;
+use SMW\Exporter\Element\ExpElement;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
@@ -12,13 +15,10 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
-use SMWExpElement as ExpElement;
-use SMWExpNsResource as ExpNsResource;
 use SMWExporter as Exporter;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.1
  *
  * @author Markus Krötzsch
@@ -41,7 +41,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder = null ) {
+	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
 		$this->conditionBuilder = $conditionBuilder;
 		$this->exporter = Exporter::getInstance();
 	}
@@ -69,25 +69,34 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$property = $description->getProperty();
 
 		switch ( $description->getComparator() ) {
-			case SMW_CMP_EQ:   $comparator = '=';
-			break;
-			case SMW_CMP_LESS: $comparator = '<';
-			break;
-			case SMW_CMP_GRTR: $comparator = '>';
-			break;
-			case SMW_CMP_LEQ:  $comparator = '<=';
-			break;
-			case SMW_CMP_GEQ:  $comparator = '>=';
-			break;
-			case SMW_CMP_NEQ:  $comparator = '!=';
-			break;
-			case SMW_CMP_PRIM_LIKE;
-			case SMW_CMP_LIKE: $comparator = 'regex';
-			break;
-			case SMW_CMP_PRIM_NLKE;
-			case SMW_CMP_NLKE: $comparator = '!regex';
-			break;
-			default: $comparator = ''; // unkown, unsupported
+			case SMW_CMP_EQ:
+				$comparator = '=';
+				break;
+			case SMW_CMP_LESS:
+				$comparator = '<';
+				break;
+			case SMW_CMP_GRTR:
+				$comparator = '>';
+				break;
+			case SMW_CMP_LEQ:
+				$comparator = '<=';
+				break;
+			case SMW_CMP_GEQ:
+				$comparator = '>=';
+				break;
+			case SMW_CMP_NEQ:
+				$comparator = '!=';
+				break;
+			case SMW_CMP_PRIM_LIKE:
+			case SMW_CMP_LIKE:
+				$comparator = 'regex';
+				break;
+			case SMW_CMP_PRIM_NLKE:
+			case SMW_CMP_NLKE:
+				$comparator = '!regex';
+				break;
+			default:
+				$comparator = ''; // unkown, unsupported
 		}
 
 		if ( $comparator === '' ) {
@@ -213,7 +222,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 			$expElement = $this->exporter->newExpElement( new DIBlob( $dataItem->getSortKey() ) );
 		} else {
 			$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
-			if ( is_null( $expElement ) ) {
+			if ( $expElement === null ) {
 				$expElement = $this->exporter->newExpElement( $dataItem );
 			}
 		}

@@ -4,15 +4,15 @@ namespace SMW\MediaWiki\Specials\Browse;
 
 use Html;
 use SMW\DIWikiPage;
-use SMW\Message;
-use SMW\PropertySpecificationLookup;
+use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
 use SMWDataItem as DataItem;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.0
  *
  * @author mwjames
@@ -30,7 +30,7 @@ class GroupFormatter {
 	const MESSAGE_GROUP_DESCRIPTION = 'smw-property-group-description-';
 
 	/**
-	 * @var PropertySpecificationLookup
+	 * @var SpecificationLookup
 	 */
 	private $propertySpecificationLookup;
 
@@ -40,7 +40,7 @@ class GroupFormatter {
 	private $schemaFinder;
 
 	/**
-	 * @var boolean
+	 * @var bool
 	 */
 	private $showGroup = true;
 
@@ -57,9 +57,9 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param PropertySpecificationLookup $propertySpecificationLookup
+	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( PropertySpecificationLookup $propertySpecificationLookup, SchemaFinder $schemaFinder ) {
+	public function __construct( SpecificationLookup $propertySpecificationLookup, SchemaFinder $schemaFinder ) {
 		$this->propertySpecificationLookup = $propertySpecificationLookup;
 		$this->schemaFinder = $schemaFinder;
 	}
@@ -67,7 +67,7 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean $showGroup
+	 * @param bool $showGroup
 	 */
 	public function showGroup( $showGroup ) {
 		$this->showGroup = $showGroup;
@@ -76,7 +76,7 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function isLastGroup( $group ) {
 		return $this->lastGroup === $group;
@@ -85,7 +85,7 @@ class GroupFormatter {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasGroups() {
 		return $this->groupLinks !== [];

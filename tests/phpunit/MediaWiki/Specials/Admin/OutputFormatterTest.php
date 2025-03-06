@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\Tests\TestEnvironment;
 use SMW\Tests\PHPUnitCompat;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\OutputFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
@@ -87,13 +87,8 @@ class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddWikiText() {
-		if ( method_exists( $this->outputPage, 'addWikiTextAsInterface' ) ) {
-			$this->outputPage->expects( $this->once() )
-				->method( 'addWikiTextAsInterface' );
-		} else {
-			$this->outputPage->expects( $this->once() )
-				->method( 'addWikiText' );
-		}
+		$this->outputPage->expects( $this->once() )
+			->method( 'addWikiTextAsInterface' );
 
 		$instance = new OutputFormatter( $this->outputPage );
 		$instance->addWikiText( 'Foo' );

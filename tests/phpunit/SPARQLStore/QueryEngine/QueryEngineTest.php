@@ -5,14 +5,14 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-use SMWQuery as Query;
 use SMW\Tests\PHPUnitCompat;
+use SMWQuery as Query;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryEngine
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 2.0
  *
  * @author mwjames
@@ -69,7 +69,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->addErrors( [ 'Foo' ] );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 
@@ -116,7 +116,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query = new Query( $description );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 
@@ -155,7 +155,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->querymode = Query::MODE_NONE;
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 
@@ -247,7 +247,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->querymode = Query::MODE_DEBUG;
 
 		$this->assertNotInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 
@@ -304,7 +304,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->querymode = Query::MODE_COUNT;
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -357,7 +357,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->querymode = Query::MODE_INSTANCES;
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -395,7 +395,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->setUnboundLimit( -1 );
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -456,7 +456,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->querymode = Query::MODE_INSTANCES;
 
 		$this->assertInstanceOf(
-			'\SMWQueryResult',
+			'\SMW\Query\QueryResult',
 			$instance->getQueryResult( $query )
 		);
 	}

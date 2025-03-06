@@ -2,18 +2,19 @@
 
 namespace SMW\Tests;
 
-use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataValueFactory;
+use SMW\Elastic\ElasticStore;
 use SMW\Listener\EventListener\EventHandler;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
-use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
-use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
-use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\ApiTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
+use SMW\Tests\Utils\JSONScript\ParserHtmlTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\ParserTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
+use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
+use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
 
 /**
  * It is provided for external extensions that seek a simple way of creating tests
@@ -23,7 +24,7 @@ use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
  * @group Database
  * @group medium
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -155,7 +156,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		parent::getPermittedSettings();
 
 		$elasticsearchConfig = function ( $val ) {
-			if ( $this->getStore() instanceof \SMWElasticStore ) {
+			if ( $this->getStore() instanceof ElasticStore ) {
 				$config = $this->getStore()->getConnection( 'elastic' )->getConfig();
 
 				foreach ( $val as $key => $value ) {

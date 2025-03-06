@@ -3,13 +3,12 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\IndicatorRegistry;
-use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\MediaWiki\IndicatorRegistry
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since   3.1
  *
  * @author mwjames

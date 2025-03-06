@@ -3,23 +3,20 @@
 namespace SMW\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\SQLStore\SQLStore;
-use SMW\DIWikiPage;
 use SMW\DIProperty;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
+use SMW\SQLStore\SQLStore;
 use Title;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 
-if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
-	require_once getenv( 'MW_INSTALL_PATH' ) . '/maintenance/Maintenance.php';
-} else {
-	require_once '/www/wwwroot/MediaWiki/maintenance/Maintenance.php';
-}
+// @codeCoverageIgnoreStart
+require_once $basePath . '/maintenance/Maintenance.php';
+// @codeCoverageIgnoreEnd
 
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.1
  *
  * @author mwjames
@@ -183,5 +180,7 @@ class updateQueryDependencies extends \Maintenance {
 
 }
 
+// @codeCoverageIgnoreStart
 $maintClass = updateQueryDependencies::class;
-require_once( RUN_MAINTENANCE_IF_MAIN );
+require_once RUN_MAINTENANCE_IF_MAIN;
+// @codeCoverageIgnoreEnd

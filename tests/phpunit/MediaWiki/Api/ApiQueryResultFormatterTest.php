@@ -9,7 +9,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 1.9
  *
  * @author mwjames
@@ -19,7 +19,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +30,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidSetIndexedTagNameThrowsException() {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +54,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider resultDataProvider
 	 */
 	public function testResultFormat( array $parameters, array $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +92,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider errorDataProvider
 	 */
 	public function testErrorFormat( array $parameters, array $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMWQueryResult' )
+		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
 			->getMock();
 

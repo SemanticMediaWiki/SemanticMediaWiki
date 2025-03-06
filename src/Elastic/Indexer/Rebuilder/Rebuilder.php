@@ -5,19 +5,19 @@ namespace SMW\Elastic\Indexer\Rebuilder;
 use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Elastic\Connection\Client as ElasticClient;
+use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Installer;
 use SMW\SemanticData;
-use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\SQLStore\SQLStore;
-use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 
 /**
  * @private
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -86,7 +86,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function ping() {
 		return $this->client->ping();
@@ -138,7 +138,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function rollover() {
 		if ( $this->versions === [] ) {
@@ -198,7 +198,7 @@ class Rebuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	public function hasIndices() {
 		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
@@ -245,7 +245,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 */
 	public function delete( $id ) {
 		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
@@ -269,7 +269,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer $id
+	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
 	public function rebuild( $id, SemanticData $semanticData ) {

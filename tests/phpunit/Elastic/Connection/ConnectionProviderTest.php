@@ -3,10 +3,10 @@
 namespace SMW\Tests\Elastic\Connection;
 
 use Psr\Log\LoggerInterface;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
-use SMW\Elastic\Connection\Client;
-use SMW\Elastic\Config;
 use SMW\Elastic\Connection\LockManager;
 use SMW\Tests\PHPUnitCompat;
 
@@ -14,7 +14,7 @@ use SMW\Tests\PHPUnitCompat;
  * @covers \SMW\Elastic\Connection\ConnectionProvider
  * @group semantic-mediawiki
  *
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -45,7 +45,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 	public function testGetConnection_MissingEndpointsThrowsException() {
 		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore'
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore'
 			]
 		);
 
@@ -86,7 +86,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
@@ -111,7 +111,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 
 		$config = new Config(
 			[
-				Config::DEFAULT_STORE => 'SMWElasticStore',
+				Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore',
 				Config::ELASTIC_ENDPOINTS => [ 'foo' ]
 			]
 		);
