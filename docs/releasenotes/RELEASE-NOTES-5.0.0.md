@@ -5,14 +5,13 @@ Released on TBD.
 ## Summary
 
 This release mainly brings support for recent versions of MediaWiki and PHP.
-Anyone using MediaWiki 1.41 or above, or PHP 8.1 or above, is recommended to upgrade.
+Upgrading is recommended for anyone using MediaWiki 1.41 or later.
 
 ## Compatibility
 
-* Improved compatibility with MediaWiki 1.42
-* Improved compatibility with MediaWiki 1.43
-* Improved compatibility with PHP 8.1 and above
+* Added support for MediaWiki 1.42 and 1.43
 * Dropped support for MediaWiki older than 1.39
+* Improved compatibility with PHP 8.3 and above
 * Dropped support for PHP older than 8.1
 
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
@@ -21,7 +20,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ### User interface changes
 
-Some user interface changes are deployed to make user facing front-end components more intutive and mobile-friendly by using [Codex](https://doc.wikimedia.org/codex/main/) from Wikimedia Foundation:
+Some user interface changes are deployed to make user-facing front-end components more intuitive and 
+mobile-friendly by using [Codex](https://doc.wikimedia.org/codex/main/) from Wikimedia Foundation:
 
 * Start using Codex Design tokens and improve various styles ([#5786](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5786))
 * Rewrite Special:Browse and its factbox ([#5788](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5788))
@@ -147,14 +147,14 @@ Be advised that the [SMWSearch](https://www.semantic-mediawiki.org/wiki/Help:SMW
 
 If you use the [ElasticStore](https://www.semantic-mediawiki.org/wiki/Help:ElasticStore) or the [SPARQLStore](https://www.semantic-mediawiki.org/wiki/Help:SPARQLStore) feature, make sure you have the `$smwgDefaultStore` set to `SMW\Elastic\ElasticStore` or `SMW\SPARQLStore\SPARQLStore` (the aliases `SMWElasticStore` and `SMWSparqlStore` were removed).
 
-There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do so in order to make [table optimizations](https://www.semantic-mediawiki.org/wiki/Database/Table_optimization) on the database).
+There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do so to make [table optimizations](https://www.semantic-mediawiki.org/wiki/Database/Table_optimization) on the database).
 
 
 ## Contributors
 
 * translatewiki.net
 * paladox
-* alistair3149
+* alistair3149 ([Professional Wiki](https://professional.wiki/))
 * Marko Ilic ([gesinn.it](https://gesinn.it))
 * Sébastien Beyou
 * Alexander Gesinn ([gesinn.it](https://gesinn.it))
