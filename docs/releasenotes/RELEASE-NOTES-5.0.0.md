@@ -43,6 +43,8 @@ mobile-friendly by using [Codex](https://doc.wikimedia.org/codex/main/) from Wik
 
 * Support additional formatting options on the `table`/`broadtable` result format (`|+width=`, `|+height=`, `|+link=` and `|+thclass=`) ([#5739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5739))
 * Allow RDF link in the head element to be disabled ([#5776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5776))
+* Update Schema.org vocabulary from version 14 to 28 ([Commit cc5a1db](https://github.com/SemanticMediaWiki/SemanticMediaWiki/commit/cc5a1db96f78d5509950707c20648aa20e524481)), fix in Skos vocabulary ([Commit 7740dd6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/commit/7740dd615f4063607b0e6121641ad853160b9c30))
+
 
 ## Breaking changes
 
@@ -156,16 +158,17 @@ There is no need to run the "update.php" maintenance script or any of the rebuil
 * paladox
 * alistair3149 ([Professional Wiki](https://professional.wiki/))
 * Marko Ilic ([gesinn.it](https://gesinn.it))
-* Sébastien Beyou
+* Sébastien Beyou ([Wiki Valley](https://wiki-valley.com))
 * Alexander Gesinn ([gesinn.it](https://gesinn.it))
 * Jeroen De Dauw ([Professional Wiki](https://professional.wiki/))
 * Karsten Hoffmeyer ([Professional Wiki](https://professional.wiki/))
-* Robert Vogel
+* Robert Vogel ([Hallo Welt!](https://hallowelt.com/))
 * Simon Stier
-* Yvar
+* Yvar ([ArchiXL](https://www.archixl.nl))
 * Alexander Mashin
 * Ferdinand Bachmann
-* Youri vd Bogert
+* Youri vd Bogert ([ArchiXL](https://www.archixl.nl))
 * dependabot[bot]
-* thomas-topway-it
+* thomas-topway-it ([KM-A](https://km-a.net/))
 * jaideraf
+* Bernhard Krabina ([KM-A](https://km-a.net/))
