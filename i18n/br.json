@@ -185,7 +185,7 @@
 	"smw_smwadmin_datarefreshstopconfirm": "Ya, {{GENDER:$1|sur}} on.",
 	"smw-admin-support": "Kaout skoazell",
 	"smw-admin-supportdocu": "Dafar a bep seurt a c'hallfe ho skoazellañ ma vez kudennoù :",
-	"smw-admin-smwhomepage": "Emañ teul titouriñ klok implijerien Semantic MediaWiki e <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
+	"smw-admin-smwhomepage": "Emañ teuliad implijer klok Semantic MediaWiki e <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-admin-bugsreport": "An drein a c'hall bezañ danevellet da <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues\">GitHub</a>.",
 	"smw-admin-questions": "Ma chom goulennoù ganeoc'h pe kinnigoù, kemerit perzh er gaoz war <a href=\"http://sourceforge.net/mailarchive/forum.php?forum_name=semediawiki-user\">forom implijerien Semantic MediaWiki</a>.",
 	"smw-admin-supplementary-settings-title": "Arventennoù hag ardremmezañ",
