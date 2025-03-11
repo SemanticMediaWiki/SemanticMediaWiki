@@ -20,10 +20,8 @@ browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive i
 
 ## Requirements
 
-Semantic MediaWiki requires MediaWiki and its dependencies, such as PHP.
-
-Supported MediaWiki, PHP, and database versions depend on the version of Semantic MediaWiki.
-See the [compatibility matrix](docs/COMPATIBILITY.md) for details.
+Semantic MediaWiki requires MediaWiki and its dependencies, such as PHP. For supported versions,
+see the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Installation
 
