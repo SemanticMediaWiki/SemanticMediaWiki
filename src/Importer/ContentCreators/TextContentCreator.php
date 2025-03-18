@@ -75,9 +75,9 @@ class TextContentCreator implements ContentCreator {
 			);
 		}
 
-		$title = $this->titleFactory->newFromText(
-			$name,
-			$importContents->getNamespace()
+		$title = $this->titleFactory->makeTitleSafe(
+			$importContents->getNamespace(),
+			$name
 		);
 
 		if ( $title === null ) {
