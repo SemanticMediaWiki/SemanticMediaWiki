@@ -101,7 +101,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( $status );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'newFromText' )
+			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -171,7 +171,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( $status );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'newFromText' )
+			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -219,7 +219,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( self::getDoEditContentMethod() );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'newFromText' )
+			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -302,7 +302,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( $user );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'newFromText' )
+			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -377,7 +377,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( null );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
-			->method( 'newFromText' )
+			->method( 'makeTitleSafe' )
 			->willReturn( $title );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )

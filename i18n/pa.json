@@ -41,6 +41,8 @@
 	"types": "ਕਿਸਮਾਂ",
 	"smw-statistics-query-inline-legacy": "{{PLURAL:$1|ਪੁੱਛਗਿੱਛ|ਪੁੱਛਗਿੱਛਾਂ}}",
 	"smw-statistics-query-size": "ਪੁੱਛਗਿੱਛ ਦਾ ਆਕਾਰ",
+	"smw_ask_ascorder": "ਚੜ੍ਹਦੀ ਤਰਤੀਬ ਵਿੱਚ",
+	"smw_ask_descorder": "ਲਹਿੰਦੀ ਤਰਤੀਬ ਵਿੱਚ",
 	"smw-ask-order-rand": "ਬੇਤਰਤੀਬ",
 	"smw_ask_submit": "ਨਤੀਜੇ ਲੱਭੋ",
 	"smw_ask_editquery": "ਪੁੱਛਗਿੱਛ ਸੋਧੋ",
