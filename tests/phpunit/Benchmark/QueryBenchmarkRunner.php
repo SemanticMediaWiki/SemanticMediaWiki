@@ -5,10 +5,10 @@ namespace SMW\Tests\Benchmark;
 use RuntimeException;
 use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
+use SMW\Query\Parser as QueryParser;
 use SMW\Query\PrintRequest;
 use SMW\Store;
 use SMWQuery as Query;
-use SMWQueryParser as QueryParser;
 
 /**
  * @group semantic-mediawiki-benchmark

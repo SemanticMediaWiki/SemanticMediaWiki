@@ -6,6 +6,7 @@ use SMW\DataModel\SequenceMap;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\DataItemException;
 use SMW\MediaWiki\LinkBatch;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
@@ -301,7 +302,7 @@ class PrefetchItemLookup {
 
 			try {
 				$dataItem = $diHandler->newFromDBKeys( $dbkeys );
-			} catch ( \SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				// maybe type assignment changed since data was stored;
 				// don't worry, but we can only drop the data here
 				continue;

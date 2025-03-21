@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Parser;
@@ -237,7 +238,7 @@ class LegacyParser implements Parser {
 	}
 
 	/**
-	 * Compute an SMWDescription from a query string. Returns whatever descriptions could be
+	 * Compute an Description from a query string. Returns whatever descriptions could be
 	 * wrestled from the given string (the most general result being SMWThingDescription if
 	 * no meaningful condition was extracted).
 	 *
@@ -282,7 +283,7 @@ class LegacyParser implements Parser {
 	}
 
 	/**
-	 * Compute an SMWDescription for current part of a query, which should
+	 * Compute an Description for current part of a query, which should
 	 * be a standalone query (the main query or a subquery enclosed within
 	 * "\<q\>...\</q\>". Recursively calls similar methods and returns NULL upon error.
 	 *
@@ -408,7 +409,7 @@ class LegacyParser implements Parser {
 	}
 
 	/**
-	 * Compute an SMWDescription for current part of a query, which should
+	 * Compute an Description for current part of a query, which should
 	 * be the content of "[[ ... ]]". Returns NULL upon error.
 	 *
 	 * Parameters $setNS has the same use as in getSubqueryDescription().

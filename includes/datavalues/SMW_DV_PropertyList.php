@@ -1,6 +1,7 @@
 <?php
 
 use SMW\DIProperty;
+use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
 
 /**
@@ -53,7 +54,7 @@ class SMWPropertyListValue extends SMWDataValue {
 
 			try {
 				$diProperty = SMW\DIProperty::newFromUserLabel( $propertyName );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				$diProperty = new SMW\DIProperty( 'Error' );
 				$this->addErrorMsg( [ 'smw_noproperty', $propertyName ] );
 			}
@@ -85,7 +86,7 @@ class SMWPropertyListValue extends SMWDataValue {
 
 			try {
 				$property = new SMW\DIProperty( $propertyKey );
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				$property = new SMW\DIProperty( 'Error' );
 				$this->addErrorMsg( [ 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ] );
 			}

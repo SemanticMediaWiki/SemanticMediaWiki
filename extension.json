@@ -1,6 +1,6 @@
 {
 	"name": "SemanticMediaWiki",
-	"version": "5.0.0-beta",
+	"version": "5.0.0",
 	"author": [
 		"[https://korrekt.org Markus Krötzsch]",
 		"[https://EntropyWins.wtf/mediawiki Jeroen De Dauw]",
@@ -32,6 +32,7 @@
 	},
 	"AutoloadClasses": {
 		"SemanticMediaWiki": "includes/SemanticMediaWiki.php",
+		"SMWElasticStore": "src/Elastic/ElasticStore.php",
 		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
