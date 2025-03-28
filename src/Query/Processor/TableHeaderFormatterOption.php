@@ -81,10 +81,10 @@ class TableHeaderFormatterOption {
 				if ( count( $parts ) === 1 ) {
 					return str_replace( '=', '', $labelToSave );
 				} else {
-					if ($partsLabel[0] !== '') {
-						return $labelToSave =$partsLabel[0] . ' #'. $paramParts[0] . '=' . $partsLabel[1];
+					if ( $partsLabel[0] !== '' ) {
+						return $labelToSave = $partsLabel[0] . ' #' . $paramParts[0] . '=' . $partsLabel[1];
 					} else {
-						return $labelToSave = '#'. $paramParts[0] . $label;
+						return $labelToSave = '#' . $paramParts[0] . $label;
 					}
 				}
 			}

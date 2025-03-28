@@ -187,12 +187,12 @@ class ParamListProcessor {
 			// After processing the ?parameter, append width and height if pending
 			if ( $lastFieldIndex !== null && ( $pendingWidth || $pendingHeight ) ) {
 				if ( $pendingWidth ) {
-					if ($heightExists !== null) {
+					if ( $heightExists !== null ) {
 						array_splice( $parameters, $lastFieldIndex, 0, $pendingWidth );
 					} else {
 						array_splice( $parameters, $lastFieldIndex + 1, 0, $pendingWidth );
 					}
-					
+
 					$pendingWidth = null;
 					$lastFieldIndex++;
 				}

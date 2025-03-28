@@ -27,7 +27,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 					'label' => 'Main Image #40px=',
 					'params' => [
 						'width' => '40px'
-					], 
+					],
 					'mainLabel' => 'Main Image='
 				],
 			],
@@ -38,10 +38,9 @@ class TableHeaderFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Main Image' => [
 					'label' => 'Main Image #40px;thclass=',
-					'params' => [ 
+					'params' => [
 						'width' => '40px',
-						'thclass' => 'unsortable' 
-					],
+						'thclass' => 'unsortable' ],
 					'mainLabel' => 'Main Image='
 				],
 			],
@@ -62,9 +61,8 @@ class TableHeaderFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Job Title' => [
 					'label' => 'Job Title #thclass=Job Title',
-					'params' => [ 
-						'thclass' => 'unsortable' 
-					],
+					'params' => [
+						'thclass' => 'unsortable' ],
 					'mainLabel' => ''
 				],
 			],

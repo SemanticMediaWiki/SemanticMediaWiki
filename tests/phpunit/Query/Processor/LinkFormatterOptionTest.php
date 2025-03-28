@@ -25,7 +25,7 @@ class LinkFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Main Image' => [
 					'label' => 'Main Image #40px=',
-					'params' => ['width' => '40px'],
+					'params' => [ 'width' => '40px' ],
 					'mainLabel' => 'Main Image='
 				],
 			],
@@ -36,10 +36,9 @@ class LinkFormatterOptionTest extends TestCase {
 			'printouts' => [
 				'Main Image' => [
 					'label' => 'Main Image #40px;link=',
-					'params' => [ 
+					'params' => [
 						'width' => '40px',
-						'link' => '' 
-					],
+						'link' => '' ],
 					'mainLabel' => 'Main Image='
 				],
 			],

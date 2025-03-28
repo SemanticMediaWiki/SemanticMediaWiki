@@ -32,9 +32,9 @@ class SizeFormatterOptionTest extends TestCase {
 			$this->serialization
 		);
 
-		$this->assertArrayHasKey(self::MAIN_IMAGE, $result['serialization']['printouts']);
-		$this->assertSame('Main Image #30px', $result['serialization']['printouts'][self::MAIN_IMAGE]['label']);
-		$this->assertSame(['width' => '30px'], $result['serialization']['printouts'][self::MAIN_IMAGE]['params']);
+		$this->assertArrayHasKey( self::MAIN_IMAGE, $result[ 'serialization' ][ 'printouts' ] );
+		$this->assertSame( 'Main Image #30px', $result[ 'serialization' ][ 'printouts' ][ self::MAIN_IMAGE ][ 'label' ] );
+		$this->assertSame( [ 'width' => '30px' ], $result[ 'serialization' ][ 'printouts' ][ self::MAIN_IMAGE ][ 'params' ] );
 
 		$result = $this->formatter->getPrintRequestWithOutputMarker(
 			"+height=60px",
@@ -42,9 +42,9 @@ class SizeFormatterOptionTest extends TestCase {
 			$result['serialization']
 		);
 
-		$this->assertArrayHasKey(self::MAIN_IMAGE, $result['serialization']['printouts']);
-		$this->assertSame('Main Image #30x60px', $result['serialization']['printouts'][self::MAIN_IMAGE]['label']);
-		$this->assertSame(['width' => '30px', 'height' => '60px'], $result['serialization']['printouts'][self::MAIN_IMAGE]['params']);
+		$this->assertArrayHasKey( self::MAIN_IMAGE, $result[ 'serialization' ][ 'printouts' ] );
+		$this->assertSame( 'Main Image #30x60px', $result[ 'serialization' ][ 'printouts' ][ self::MAIN_IMAGE ][ 'label' ] );
+		$this->assertSame( [ 'width' => '30px', 'height' => '60px' ], $result[ 'serialization' ][ 'printouts' ][ self::MAIN_IMAGE ][ 'params' ] );
 	}
 
 	/**

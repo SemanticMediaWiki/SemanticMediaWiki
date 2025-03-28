@@ -79,17 +79,17 @@ class SizeFormatterOption {
 				if ( strpos( $param, 'height=' ) !== false ) {
 					$splittedLabel = explode( '=', $label );
 					$adjustedHeight = explode( '=', $param )[1];
-					
-					if ( count( $splittedLabel ) > 1  ) {
+
+					if ( count( $splittedLabel ) > 1 ) {
 						$parts = explode( '=', $label );
-						if ( strpos( $mainLabel, '=' )) {
+						if ( strpos( $mainLabel, '=' ) ) {
 							$firstPart = rtrim( $parts[0], 'px' );
 							return rtrim( $parts[0], 'px' ) . 'x' . $adjustedHeight . '=' . $parts[1];
 						}
 					} else {
 						$parts = explode( '#', $label );
 						$adjustedWidth = rtrim( $parts[1], 'px' );
-						if ( strpos( $mainLabel, '=' )) {
+						if ( strpos( $mainLabel, '=' ) ) {
 							return $parts[0] . '#' . $adjustedWidth . 'x' . $adjustedHeight . '=';
 						}
 					}
@@ -98,33 +98,33 @@ class SizeFormatterOption {
 
 				return $label . ';' . $param;
 			}
-		} else { 
+		} else {
 			$labelToSave = $label . ' ' . '#' . $param;
 			if ( count( $partsLabel ) === 1 ) {
 				$splitLabel = explode( '#', $labelToSave, 2 );
-					if ( !strpos( $splitLabel[0], '=' )) {
-						if ( strpos( $paramParts[0], 'height' ) !== false ) {
-							return $labelToSave = $partsLabel[0] . ' #x'. $paramParts[1];
-						}
-						return $labelToSave = $splitLabel[0] . '#' . $paramParts[1];
+				if ( !strpos( $splitLabel[0], '=' ) ) {
+					if ( strpos( $paramParts[0], 'height' ) !== false ) {
+						return $labelToSave = $partsLabel[0] . ' #x' . $paramParts[1];
 					}
+					return $labelToSave = $splitLabel[0] . '#' . $paramParts[1];
+				}
 			} else {
 				$parts = explode( '=', $labelToSave );
 				if ( count( $parts ) === 1 ) {
 					return str_replace( '=', '', $labelToSave );
 				} else {
-					if ($partsLabel[0] !== '' && count( $parts ) >= 2) {
+					if ( $partsLabel[0] !== '' && count( $parts ) >= 2 ) {
 						if ( strpos( $paramParts[0], 'height' ) !== false ) {
-							return $labelToSave = $partsLabel[0] . ' #x'. $paramParts[1] . '=' . $partsLabel[1];
+							return $labelToSave = $partsLabel[0] . ' #x' . $paramParts[1] . '=' . $partsLabel[1];
 						}
-						return $labelToSave = $partsLabel[0] . ' #'. $paramParts[1] . '=' . $partsLabel[1];
-					} else if ( count( $partsLabel ) === 1 ) {
+						return $labelToSave = $partsLabel[0] . ' #' . $paramParts[1] . '=' . $partsLabel[1];
+					} elseif ( count( $partsLabel ) === 1 ) {
 						$splitLabel = explode( '#', $labelToSave, 2 );
-						if ( !strpos( $splitLabel[0], '=' )) {
+						if ( !strpos( $splitLabel[0], '=' ) ) {
 							return $labelToSave = $splitLabel[0] . '+' . '#' . $splitLabel[1];
 						}
 					} else {
-						return $labelToSave = '#'. $paramParts[1] . $label;
+						return $labelToSave = '#' . $paramParts[1] . $label;
 					}
 				}
 			}
