@@ -209,7 +209,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => 'Foobar #link',
-						'params'  => [ 'link' => '' ]
+						'params'  => [ 'link' => '' ],
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],
@@ -232,7 +233,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => 'Foobar #link;thclass',
 						'params'  => [ 'link' => '',
-									  'thclass' => 'unsortable' ]
+									  'thclass' => 'unsortable' ],
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],
@@ -255,7 +257,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #30px;link;thclass",
-						'params'  => [ 'width' => '30px', 'link' => '', 'thclass' => 'unsortable' ]
+						'params'  => [ 'width' => '30px', 'link' => '', 'thclass' => 'unsortable' ],
+						'mainLabel' => 'Foobar'
 					]
 				],
 				'parameters' => [],
@@ -279,7 +282,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #30x50px;link;thclass",
-						'params'  => [ 'width' => '30px', 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ]
+						'params'  => [ 'width' => '30px', 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ],
+						'mainLabel' => 'Foobar'
 					]
 				],
 				'parameters' => [],
@@ -301,7 +305,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #x50px;link;thclass",
-						'params'  => [ 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ]
+						'params'  => [ 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ],
+						'mainLabel' => 'Foobar'
 					]
 				],
 				'parameters' => [],
@@ -324,7 +329,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #90x100px;link;thclass",
-						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ]
+						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ],
+						'mainLabel' => 'Foobar'
 					]
 				],
 				'parameters' => [],
@@ -347,7 +353,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #90x100px;thclass;link",
-						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ]
+						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ],
+						'mainLabel' => 'Foobar'
 					]
 				],
 				'parameters' => [],
