@@ -22,3 +22,7 @@ This is only for those that have installed SMW via Git.
 
 * Step 1: do a `git pull` in the SemanticMediaWiki directory
 * Step 2: run `composer update --no-dev --optimize-autoloader` in the MediaWiki directory
+
+## Changes
+
+* Fix title handling for pages with namespace-like prefixes
