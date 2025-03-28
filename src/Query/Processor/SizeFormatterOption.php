@@ -45,7 +45,7 @@ class SizeFormatterOption {
 			}
 
 			// Use helper method to format label.
-			$labelToSave = $this->formatLabel( $label, $param );
+			$labelToSave = $this->formatLabel( $label, $param, $mainLabel );
 
 			// Save the label and additional params in serialization.
 			$serialization['printouts'][$previousPrintout] = [
@@ -64,7 +64,7 @@ class SizeFormatterOption {
 		];
 	}
 
-	private function formatLabel( $label, $param ): string {
+	private function formatLabel( $label, $param, $mainLabel ): string {
 		$partsLabel = explode( '=', $label );
 		$paramParts = explode( '=', $param );
 
@@ -76,12 +76,23 @@ class SizeFormatterOption {
 					$parts = explode( '#', $label );
 					return ( isset( $parts[0] ) ? $parts[0] : '' ) . '#' . $adjustedWidth . 'x' . ( isset( $parts[1] ) ? $parts[1] : '' );
 				}
-
 				if ( strpos( $param, 'height=' ) !== false ) {
-					$label = str_replace( "=","", $label );
-					$parts = explode( '#', $label );
+					$splittedLabel = explode( '=', $label );
 					$adjustedHeight = explode( '=', $param )[1];
-					$adjustedWidth = rtrim( $parts[1], 'px' );
+					
+					if ( count( $splittedLabel ) > 1  ) {
+						$parts = explode( '=', $label );
+						if ( strpos( $mainLabel, '=' )) {
+							$firstPart = rtrim( $parts[0], 'px' );
+							return rtrim( $parts[0], 'px' ) . 'x' . $adjustedHeight . '=' . $parts[1];
+						}
+					} else {
+						$parts = explode( '#', $label );
+						$adjustedWidth = rtrim( $parts[1], 'px' );
+						if ( strpos( $mainLabel, '=' )) {
+							return $parts[0] . '#' . $adjustedWidth . 'x' . $adjustedHeight . '=';
+						}
+					}
 					return $parts[0] . '#' . $adjustedWidth . 'x' . $adjustedHeight;
 				}
 
@@ -92,6 +103,9 @@ class SizeFormatterOption {
 			if ( count( $partsLabel ) === 1 ) {
 				$splitLabel = explode( '#', $labelToSave, 2 );
 					if ( !strpos( $splitLabel[0], '=' )) {
+						if ( strpos( $paramParts[0], 'height' ) !== false ) {
+							return $labelToSave = $partsLabel[0] . ' #x'. $paramParts[1];
+						}
 						return $labelToSave = $splitLabel[0] . '#' . $paramParts[1];
 					}
 			} else {

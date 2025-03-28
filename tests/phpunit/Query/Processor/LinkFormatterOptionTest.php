@@ -10,27 +10,37 @@ use SMW\Query\Processor\LinkFormatterOption;
  */
 class LinkFormatterOptionTest extends TestCase {
 
+	private $formatter;
+
+	protected function setUp(): void {
+		$this->formatter = new LinkFormatterOption();
+	}
+
 	/**
 	 * Test the getPrintRequestWithOutputMarker method
 	 */
 	public function testGetPrintRequestWithOutputMarkerWithHashInLabel() {
-		$formatter = new LinkFormatterOption();
-
 		// Test case 1: Previous printout exists, with '#' in the label
 		$serialization = [
 			'printouts' => [
 				'Main Image' => [
-					'label' => 'Main Image #40px'
+					'label' => 'Main Image #40px=',
+					'params' => ['width' => '40px'],
+					'mainLabel' => 'Main Image='
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( '+link=', 'Main Image', $serialization );
+		$result = $this->formatter->getPrintRequestWithOutputMarker( '+link=', 'Main Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
 				'Main Image' => [
-					'label' => 'Main Image #40px;link',
-					'params' => [ 'link' => '' ]
+					'label' => 'Main Image #40px;link=',
+					'params' => [ 
+						'width' => '40px',
+						'link' => '' 
+					],
+					'mainLabel' => 'Main Image='
 				],
 			],
 		];
@@ -41,8 +51,6 @@ class LinkFormatterOptionTest extends TestCase {
 	 * Test the getPrintRequestWithOutputMarker method
 	 */
 	public function testGetPrintRequestWithOutputMarkerWithoutHashInLabel() {
-		$formatter = new LinkFormatterOption();
-
 		// Test case 2: Previous printout exists, without '#' in the label
 		$serialization = [
 			'printouts' => [
@@ -51,13 +59,14 @@ class LinkFormatterOptionTest extends TestCase {
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( '+link=', 'Job Title', $serialization );
+		$result = $this->formatter->getPrintRequestWithOutputMarker( '+link=', 'Job Title', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
 				'Job Title' => [
 					'label' => 'Job Title #link',
-					'params' => [ 'link' => '' ]
+					'params' => [ 'link' => '' ],
+					'mainLabel' => ''
 				],
 			],
 		];
@@ -68,23 +77,33 @@ class LinkFormatterOptionTest extends TestCase {
 	 * Test the getPrintRequestWithOutputMarker method
 	 */
 	public function testGetPrintRequestWithOutputMarkerWithMultipleParameters() {
-		$formatter = new LinkFormatterOption();
-
 		// Test case 3: Previous printout exists, without '#' in the label, more then 3 params in query
 		$serialization = [
 			'printouts' => [
 				'Image' => [
-					'label' => 'Image #40x50px;classunsortable'
+					'label' => 'Main Image #120x120px;thclass=',
+					'params' => [
+						'width' => '120px',
+						'height' => '120px',
+						'thclass' => 'unsortable'
+					],
+					'mainLabel' => 'Main Image='
 				],
 			],
 		];
-		$result = $formatter->getPrintRequestWithOutputMarker( '+link=', 'Image', $serialization );
+		$result = $this->formatter->getPrintRequestWithOutputMarker( '+link=', 'Image', $serialization );
 
 		$expectedSerialization = [
 			'printouts' => [
 				'Image' => [
-					'label' => 'Image #40x50px;classunsortable;link',
-					'params' => [ 'link' => '' ]
+					'label' => 'Main Image #120x120px;thclass;link=',
+					'params' => [
+						'width' => '120px',
+						'height' => '120px',
+						'thclass' => 'unsortable',
+						'link' => ''
+					],
+					'mainLabel' => 'Main Image='
 				],
 			],
 		];

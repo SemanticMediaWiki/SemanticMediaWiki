@@ -169,6 +169,7 @@ class ParamListProcessor {
 		$pendingWidth = null;
 		$pendingHeight = null;
 		$lastFieldIndex = null;
+		$heightExists = null;
 
 		foreach ( $parameters as $index => &$param ) {
 			// Check for width and height definitions
@@ -186,12 +187,18 @@ class ParamListProcessor {
 			// After processing the ?parameter, append width and height if pending
 			if ( $lastFieldIndex !== null && ( $pendingWidth || $pendingHeight ) ) {
 				if ( $pendingWidth ) {
-					array_splice( $parameters, $lastFieldIndex + 1, 0, $pendingWidth );
+					if ($heightExists !== null) {
+						array_splice( $parameters, $lastFieldIndex, 0, $pendingWidth );
+					} else {
+						array_splice( $parameters, $lastFieldIndex + 1, 0, $pendingWidth );
+					}
+					
 					$pendingWidth = null;
 					$lastFieldIndex++;
 				}
 				if ( $pendingHeight ) {
 					array_splice( $parameters, $lastFieldIndex + 1, 0, $pendingHeight );
+					$heightExists = $pendingHeight;
 					$pendingHeight = null;
 					$lastFieldIndex++;
 				}
