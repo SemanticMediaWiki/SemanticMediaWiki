@@ -100,6 +100,9 @@ class SizeFormatterOption {
 					return str_replace( '=', '', $labelToSave );
 				} else {
 					if ($partsLabel[0] !== '' && count( $parts ) >= 2) {
+						if ( strpos( $paramParts[0], 'height' ) !== false ) {
+							return $labelToSave = $partsLabel[0] . ' #x'. $paramParts[1] . '=' . $partsLabel[1];
+						}
 						return $labelToSave = $partsLabel[0] . ' #'. $paramParts[1] . '=' . $partsLabel[1];
 					} else if ( count( $partsLabel ) === 1 ) {
 						$splitLabel = explode( '#', $labelToSave, 2 );
