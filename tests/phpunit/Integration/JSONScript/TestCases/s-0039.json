@@ -20,10 +20,10 @@
 	"tests": [
 		{
 			"type": "special",
-			"about": "#0 (display image in table with width and thclass parameters)",
+			"about": "#0 (display image in table with width and thclass parameters and label for header is empty)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=|+width=75px|+thclass=unsortable",
+				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file= |+width=75px |+thclass=unsortable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -31,18 +31,39 @@
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "th class=\"unsortable\"",
                     "class=\"unsortable\"",
-                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<a href=\"/index.php/File:S0039.png\"",
+                    "width=\"75\""
+				],
+				"not-contain": [
+					"<td class=\"Has-file smwtype_wpg\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 (display image in table with width and thclass parameters and label for header has custom value)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=TestValue |+width=75px |+thclass=unsortable",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable broadtable\"",
+                    "th class=\"unsortable\"",
+                    "class=\"unsortable\"",
+					"TestValue",
                     "<a href=\"/index.php/File:S0039.png\"",
                     "width=\"75\""
 				]
 			}
 		},
-        {
+		{
 			"type": "special",
-			"about": "#1 (display image in table with height)",
+			"about": "#2 (display image in table with height with default label for header name)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=|+height=95px",
+				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file |+height=95px",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -57,18 +78,18 @@
                 ]
 			}
 		},
-        {
+		{
 			"type": "special",
-			"about": "#2 (display image in table with width and link=)",
+			"about": "#3 (display image in table with width and link=)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=|+width=30px|+link=",
+				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=TestLabel |+width=30px |+link=",
 				"request-parameters": []
 			},
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
-                    "<td class=\"Has-file smwtype_wpg\"",
+                    "TestLabel",
                     "<img alt=\"S0039.png\"",
                     "width=\"30\""
 				],
@@ -80,7 +101,7 @@
 		},
         {
 			"type": "special",
-			"about": "#3 (display image in table with 90px - using old syntax for image size)",
+			"about": "#4 (display image in table with 90px - using old syntax for image size)",
 			"special-page": {
 				"page": "Ask",
 				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file#90px",
@@ -93,6 +114,29 @@
                     "<a href=\"/index.php/File:S0039.png\"",
                     "width=\"90\""
 				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#5 (display image in table with width, height, link= and align=center)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file|+width=30px|+link=|+height=30px|+align=center",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable broadtable\"",
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<img alt=\"S0039.png\"",
+                    "text-align:center",
+					"height=\"30\"",
+					"width=\"30\""
+				],
+                "not-contain": [
+                    "class=\"unsortable\"",
+                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:S0039.png\""
+                ]
 			}
 		}
 	],
