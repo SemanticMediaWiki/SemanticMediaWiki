@@ -240,7 +240,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertSame(
 			'_num',
-			$this->dataTypeRegistry->findTypeByLabelAndLanguage( '数值型', 'zh-Hans' )
+			$this->dataTypeRegistry->findTypeByLabelAndLanguage( '数字', 'zh-Hans' )
 		);
 
 		$this->assertSame(

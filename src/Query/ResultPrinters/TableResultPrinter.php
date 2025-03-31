@@ -120,8 +120,32 @@ class TableResultPrinter extends ResultPrinter {
 			$isPlain = $this->mShowHeaders == SMW_HEADERS_PLAIN;
 			foreach ( $res->getPrintRequests() as $pr ) {
 				$attributes = [];
+				$parameters = [];
 				$columnClass = str_replace( [ ' ', '_' ], '-', strip_tags( $pr->getText( SMW_OUTPUT_WIKI ) ) );
-				$attributes['class'] = $columnClass;
+				// check outputFormat for thclass option use
+				// if outputFormat has class defined as an option, take the value which class holds and set it as class attribute
+				// example outputFormat = 40px;class=unsortable
+				$outputFormat = $pr->getOutputFormat();
+				if ( str_contains( $outputFormat, 'class=' ) ) {
+					if ( str_contains( $outputFormat, ';' ) ) {
+						$parts = explode( ';', $outputFormat );
+						foreach ( $parts as $part ) {
+							if ( str_contains( $part, 'class=' ) ) {
+								$headerFormatSplitted = explode( '=', $part );
+								if ( count( $headerFormatSplitted ) >= 2 ) {
+									$attributes['class'] = htmlspecialchars( $headerFormatSplitted[1], ENT_QUOTES );
+								} else {
+									continue;
+								}
+							}
+						}
+					} elseif ( str_contains( $outputFormat, 'class=' ) ) {
+						$parts = explode( '=', $outputFormat );
+						$attributes['class'] = $parts[1];
+					}
+				} else {
+					$attributes['class'] = $columnClass;
+				}
 				// Also add this to the array of classes, for
 				// use in displaying each row.
 				$columnClasses[] = $columnClass;

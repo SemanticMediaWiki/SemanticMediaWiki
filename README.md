@@ -1,9 +1,10 @@
 # Semantic MediaWiki
 
 [![CI](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/main.yml/badge.svg)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/main.yml)
-![Latest Stable Version](https://img.shields.io/packagist/v/mediawiki/semantic-media-wiki.svg)
-![Total Download Count](https://img.shields.io/packagist/dt/mediawiki/semantic-media-wiki.svg)
+[![Latest Stable Version](https://poser.pugx.org/mediawiki/semantic-media-wiki/v/stable)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
+[![Download count](https://poser.pugx.org/mediawiki/semantic-media-wiki/downloads)](https://packagist.org/packages/mediawiki/semantic-media-wiki)
 [![codecov](https://codecov.io/gh/SemanticMediaWiki/SemanticMediaWiki/graph/badge.svg?token=yl1GVLwRwo)](https://codecov.io/gh/SemanticMediaWiki/SemanticMediaWiki)
+[![License](https://poser.pugx.org/mediawiki/semantic-media-wiki/license)](COPYING)
 
 **Semantic MediaWiki** (a.k.a. SMW) is a free, open-source extension to [MediaWiki](https://www.semantic-mediawiki.org/wiki/MediaWiki) – the wiki software that
 powers Wikipedia – that lets you store and query data within the wiki's pages.
@@ -20,10 +21,8 @@ browse the [wiki](https://www.semantic-mediawiki.org) for a more comprehensive i
 
 ## Requirements
 
-Semantic MediaWiki requires MediaWiki and its dependencies, such as PHP.
-
-Supported MediaWiki, PHP, and database versions depend on the version of Semantic MediaWiki.
-See the [compatibility matrix](docs/COMPATIBILITY.md) for details.
+Semantic MediaWiki requires MediaWiki and its dependencies, such as PHP. For supported versions,
+see the [compatibility matrix](docs/COMPATIBILITY.md).
 
 ## Installation
 

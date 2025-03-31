@@ -23,7 +23,7 @@ create one and add the following content to it:
 ```
 {
 	"require": {
-			"mediawiki/semantic-media-wiki": "^4.2.0"
+			"mediawiki/semantic-media-wiki": "^5.0.0"
 		}
 }
 ```
@@ -31,7 +31,7 @@ create one and add the following content to it:
 If you already have a "composer.local.json" file add the following line to the end of the "require"
 section in your file:
 
-	"mediawiki/semantic-media-wiki": "^4.2.0"
+	"mediawiki/semantic-media-wiki": "^5.0.0"
 
 Remember to add a comma to the end of the preceding line in this section.
 
@@ -110,8 +110,8 @@ If you would like to install a development version or release candidate then rep
 "Installation with Composer" section with the following line
 
 * master: `"mediawiki/semantic-media-wiki": "dev-master"`
-* legacy branch: `"mediawiki/semantic-media-wiki": "~3.2.0@dev"`
-* release candidate: `"mediawiki/semantic-media-wiki": "~3.2@rc"`
+* legacy branch: `"mediawiki/semantic-media-wiki": "~5.0.0@dev"`
+* release candidate: `"mediawiki/semantic-media-wiki": "~5.0@rc"`
 
 ## More instructions
 

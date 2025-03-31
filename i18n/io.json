@@ -45,6 +45,7 @@
 	"smw-format-datatable-next": "Sequanta",
 	"smw-format-datatable-previous": "Antea",
 	"smw-format-datatable-toolbar-export": "Exportacar",
+	"smw-property-page-filter-note": "La [https://www.semantic-mediawiki.org/wiki/Help:Property_page/Filter sercho-filtrilo] posibligas inkluzar [https://www.semantic-mediawiki.org/wiki/Help:Query_expressions inquesto-frazi], exemple <code>~</code> o <code>!</code>. L'[https://www.semantic-mediawiki.org/wiki/Query_engine inquesto-utensilo selektita] anke povas suportar mayuskuli/minuskuli (''case insensitive matching'') od altra kurta frazi, exemple:\n\n* <code>in:</code> rezulto DEVAS kontenar la frazo, exemple '<code>in:Foo</code>'\n\n* <code>not:</code> rezulto NE DEVAS kontenar la frazo, exemple '<code>not:Bar</code>'",
 	"smw-property-reserved-category": "Kategorio",
 	"smw-loading": "Ol kargesas…",
 	"smw-fetching": "Surveyanta…",

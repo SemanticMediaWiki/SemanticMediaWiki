@@ -55,7 +55,7 @@ class RequestOptions {
 	/**
 	 * A numerical offset. The first $offset results are skipped.
 	 * Note that this does not imply a defined order of results
-	 * (see SMWRequestOptions->$sort below).
+	 * (see RequestOptions->$sort below).
 	 */
 	public $offset = 0;
 
@@ -74,7 +74,7 @@ class RequestOptions {
 	public $sort = false;
 
 	/**
-	 * If SMWRequestOptions->$sort is true, this parameter defines whether
+	 * If RequestOptions->$sort is true, this parameter defines whether
 	 * the results are ordered in ascending or descending order.
 	 */
 	public $ascending = true;

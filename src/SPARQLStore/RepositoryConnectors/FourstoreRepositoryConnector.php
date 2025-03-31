@@ -2,10 +2,10 @@
 
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
+use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
-use SMWTurtleSerializer as TurtleSerializer;
 
 /**
  * Specific modifications of the SPARQL database implementation for 4Store.

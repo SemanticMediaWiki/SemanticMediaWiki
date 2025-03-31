@@ -165,7 +165,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @param Store $store
 	 * @param array $data array of SMWDataItem objects
-	 * @param SMWRequestOptions|null $requestOptions
+	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return SMWDataItem[]
 	 */

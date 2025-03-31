@@ -51,14 +51,12 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"skip-on": {
-				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
-			},
 			"subject": "Example/P0705/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"class=\"image\"><img alt=\"P0705.png\"",
-					"300px-P0705.png\" .*width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\""
+					"href=\"/index.php/File:P0705.png\"",
+					"300px-P0705.png",
+					"width=\"300\" height=\"300\""
 				],
 				"not-contain": [
 					"P0705.png\" width=\"480\" height=\"480\""
@@ -68,18 +66,14 @@
 		{
 			"type": "parser",
 			"about": "#1 with options",
-			"skip-on": {
-				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
-			},
 			"subject": "Example/P0705/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"300px-P0705.png\" .*width=\"300\" height=\"300\" style=\"vertical-align: text-top\" class=\"thumbborder\"",
-					"class=\"image\"><img alt=\"P0705.png\"",
-					"120px-P0705.png\" .*width=\"120\" height=\"120\" class=\"thumbimage\"",
-					"<b>123</b>",
-					"class=\"thumb tright\"",
-					"<div class=\"thumbcaption\"><div class=\"magnify\">",
+					"300px-P0705.png",
+					"width=\"300\" height=\"300\"",
+					"120px-P0705.png\"",
+					"width=\"120\" height=\"120\"",
+					"123",
 					"Extra"
 				]
 			}
@@ -87,23 +81,17 @@
 		{
 			"type": "parser",
 			"about": "#2 (subobject is displayed as normal link and not with an image reference)",
-			"skip-on": {
-				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
-			},
 			"subject": "Example/P0705/Q.3",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-subobject-entity\"><a href=.*P0705.png#Test\" title=.*P0705.png\">P0705.png#Test</a></span>",
-					"<a href=.*P0705.png\" class=\"image\"><img alt=\"P0705.png\" .*class=\"thumbborder\" .*</a>"
+					"<a href=.*P0705.png\""
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#3 (#noimage)",
-			"skip-on": {
-				"mediawiki": [ ">1.39", "MediaWiki changed the HTML Tidy" ]
-			},
 			"subject": "Example/P0705/Q.4",
 			"assert-output": {
 				"to-contain": [
