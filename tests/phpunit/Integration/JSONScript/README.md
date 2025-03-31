@@ -6,12 +6,25 @@ JSONScript is an abstraction from the PHPUnit layer and a best practice approach
 
 The `JSON` format was selected to lower the barrier of understanding of what is being tested by using wikitext with a schema like structure to provide an abstraction and hide testing specific PHP language elements.
 
+## How to update List of tests
+
+The `readmeContentsBuilder.php` script can be used to update the list of available test cases, including their descriptions.
+
+To use this script, navigate to the following directory in your project:
+- `extensions/SemanticMediaWiki/tests/phpunit/Integration/JSONScript/`
+
+Once there, run the script using PHP with the following command:
+- `php ReadmeContentsBuilder.php`
+
+The script will automatically fetch the test cases, update the `README.md` file, and ensure that the list of tests is up to date with any changes made in the test case files.
+It will also generate the descriptions for each test based on the contents of the corresponding JSON files.
+
 <!-- Begin of generated contents by readmeContentsBuilder.php -->
 
 ## List of tests
 
-- Files: 334 (includes 1470 tests)
-- Last update: 2020-05-09
+- Files: 337 (includes 1459 tests)
+- Last update: 2025-03-31
 
 ### A
 * [a-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0001.json) Test API `action=smwbrowse`
@@ -150,6 +163,7 @@ The `JSON` format was selected to lower the barrier of understanding of what is 
 * [p-0462.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0462.json) Test `#subobject` and error handling
 * [p-0463.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0463.json) Test removal of entity references
 * [p-0464.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0464.json) Test output of the `ISO` formatter with `#show` for `_dat` datatype (#4373)
+* [p-0465.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0465.json) Test output of the `ISO-P` formatter with `#show` (#5309)
 * [p-0467.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0467.json) Test use case for lookup prefetch cache strategy in connection with printrequest chain filtering
 * [p-0501.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0501.json) Test `#concept` on predefined property (`wgContLang=en`, `wgLang=es`)
 * [p-0502.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/p-0502.json) Test in-text annotation allows value list (#2295, `wgContLang=en`, `wgLang=en`)
@@ -295,6 +309,7 @@ The `JSON` format was selected to lower the barrier of understanding of what is 
 * [q-1205.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1205.json) Test `[[Has subobject::!]]` / `[[Has subobject::!+]]` (ES only)
 * [q-1206.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1206.json) Test `cjk.best.effort.proximity.match` (ES only)
 * [q-1300.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1300.json) Test `_geo` (requires Maps)
+* [q-1301.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/q-1301.json) imported-from query (@see issues/4971)
 
 ### R
 * [r-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/r-0001.json) Test RDF output for `_txt`/`_wpg`/`_dat` (#881)
@@ -358,6 +373,7 @@ The `JSON` format was selected to lower the barrier of understanding of what is 
 * [s-0036.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0036.json) Test `format=csv` output via `Special:Ask` for display units (`wgContLang=en`, `wgLang=en`)
 * [s-0037.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0037.json) Test `format=json` output via `Special:Ask` to check limit, default limit, `smwgQMaxInlineLimit` type (#2474, #4172)
 * [s-0038.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0038.json) Test output via `Special:Ask` to verify limit, offset
+* [s-0039.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/s-0039.json) Test `Special:Ask` output `#ask` (#4348)
 
 <!-- End of generated contents by readmeContentsBuilder.php -->
 
