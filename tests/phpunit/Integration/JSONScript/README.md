@@ -23,14 +23,15 @@ It will also generate the descriptions for each test based on the contents of th
 
 ## List of tests
 
-- Files: 337 (includes 1459 tests)
+- Files: 338 (includes 1460 tests)
 - Last update: 2025-03-31
 
 ### A
-* [a-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0001.json) Test API `action=smwbrowse`
-* [a-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0002.json) Test API `action=ask` and `action=askargs` with `api_version` 2 + 3
-* [a-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0003.json) Test API `action=smwbrowse`, `browse=pvalue`
-* [a-0004.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/a-0004.json) Test API `action=smwbrowse` + `type=property` with limit/offset, sort
+* [api-ask-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/api-ask-0001.json) Test API `action=ask` with `api_version` 2 + 3
+* [api-askargs-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/api-askargs-0001.json) Test API `action=askargs` with `api_version` 2 + 3
+* [api-smwbrowse-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/api-smwbrowse-0001.json) Test API `action=smwbrowse`
+* [api-smwbrowse-0002.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/api-smwbrowse-0002.json) Test API `action=smwbrowse`, `browse=pvalue`
+* [api-smwbrowse-0003.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/api-smwbrowse-0003.json) Test API `action=smwbrowse` + `type=property` with limit/offset, sort
 
 ### F
 * [f-0001.json](https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/TestCases/f-0001.json) Test `format=debug` output
