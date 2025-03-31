@@ -224,7 +224,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertEquals(
 			[
-				'foo'    => 'Bar,foobar',
+				'foo' => "Bar,foobar",
 				'format' => 'broadtable',
 				'offset' => null,
 				'limit'  => null

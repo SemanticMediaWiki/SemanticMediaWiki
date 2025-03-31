@@ -126,7 +126,7 @@ class ContainerSemanticData extends SemanticData {
 	/**
 	 * Change the object to become an exact copy of the given
 	 * SemanticData object. This is used to make other types of
-	 * SemanticData into an SMWContainerSemanticData. To copy objects of
+	 * SemanticData into an ContainerSemanticData. To copy objects of
 	 * the same type, PHP clone() should be used.
 	 *
 	 * @since 1.7

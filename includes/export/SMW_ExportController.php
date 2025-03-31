@@ -3,11 +3,13 @@
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\DataItemException;
 use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Serializer\Serializer;
+use SMW\Query\Language\ConceptDescription;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
 use SMW\SemanticData;
@@ -274,7 +276,7 @@ class SMWExportController {
 						}
 					}
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
-					$desc = new SMWConceptDescription( $diWikiPage );
+					$desc = new ConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
@@ -599,7 +601,7 @@ class SMWExportController {
 				$this->serializePage( $diPage, 0 );
 				$this->flush();
 				$linkCache->clear();
-			} catch ( SMWDataItemException $e ) {
+			} catch ( DataItemException $e ) {
 				// strange data, who knows, not our DB table, keep calm and carry on
 			}
 		}
