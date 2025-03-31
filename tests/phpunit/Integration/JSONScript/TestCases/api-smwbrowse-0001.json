@@ -33,32 +33,32 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0001/1",
+			"page": "Api-smwbrowse-0001/1",
 			"contents": "[[API text property::text 1]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0001/2",
+			"page": "Api-smwbrowse-0001/2",
 			"contents": "[[API text property::text 2]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0001/3",
+			"page": "Api-smwbrowse-0001/3",
 			"contents": "[[API page property::page 1]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0001/4",
+			"page": "Api-smwbrowse-0001/4",
 			"contents": "[[API page property::page 2]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0001/5",
+			"page": "Api-smwbrowse-0001/5",
 			"contents": "[[API date property::1 Jan 1970]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0001/6",
+			"page": "Api-smwbrowse-0001/6",
 			"contents": "[[API date property::2 Jan 1971]]"
 		}
 	],
@@ -201,7 +201,7 @@
 					"action": "smwbrowse",
 					"format": "json",
 					"browse": "subject",
-					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 }"
+					"params": "{ \"subject\": \"Api-smwbrowse-0001/1\" , \"ns\": 0 }"
 				}
 			},
 			"assert-output": {
@@ -221,7 +221,7 @@
 					"action": "smwbrowse",
 					"format": "json",
 					"browse": "subject",
-					"params": "{ \"subject\": \"A0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": { \"lang\" : \"en\" } }"
+					"params": "{ \"subject\": \"Api-smwbrowse-0001/1\" , \"ns\": 0 , \"type\": \"html\", \"options\": { \"lang\" : \"en\" } }"
 				}
 			},
 			"assert-output": {

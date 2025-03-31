@@ -1,5 +1,5 @@
 {
-	"description": "Test API `action=ask` and `action=askargs` with `api_version` 2 + 3",
+	"description": "Test API `action=askargs` with `api_version` 2 + 3",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -12,48 +12,14 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Example/A0002/1",
+			"page": "Example/Api-askargs-0001/1",
 			"contents": "[[API test page::123]]"
 		}
 	],
 	"tests": [
 		{
 			"type": "api",
-			"about": "#0 `ask` version 2",
-			"api": {
-				"parameters": {
-					"action": "ask",
-					"format": "json",
-					"query": "[[API test page::123]] |?API test page",
-					"api_version": "2"
-				}
-			},
-			"assert-output": {
-				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0002.0.json"
-				}
-			}
-		},
-		{
-			"type": "api",
-			"about": "#1 `ask` version 3",
-			"api": {
-				"parameters": {
-					"action": "ask",
-					"format": "json",
-					"query": "[[API test page::123]] |?API test page",
-					"api_version": "3"
-				}
-			},
-			"assert-output": {
-				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0002.1.json"
-				}
-			}
-		},
-		{
-			"type": "api",
-			"about": "#2 `askargs` version 2",
+			"about": "#0 `askargs` version 2",
 			"api": {
 				"parameters": {
 					"action": "askargs",
@@ -61,29 +27,29 @@
 					"conditions": "API test page::123",
 					"printouts": "API test page",
 					"api_version": "2"
-				}
-			},
-			"assert-output": {
-				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0002.2.json"
-				}
-			}
-		},
-		{
-			"type": "api",
-			"about": "#3 `askargs` version 3",
-			"api": {
-				"parameters": {
-					"action": "askargs",
-					"format": "json",
-					"conditions": "API test page::123",
-					"printouts": "API test page",
-					"api_version": "3"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
 					"contents-file" : "/../Fixtures/res.a-0002.3.json"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#1 `askargs` version 3",
+			"api": {
+				"parameters": {
+					"action": "askargs",
+					"format": "json",
+					"conditions": "API test page::123",
+					"printouts": "API test page",
+					"api_version": "3"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.a-0002.4.json"
 				}
 			}
 		}
