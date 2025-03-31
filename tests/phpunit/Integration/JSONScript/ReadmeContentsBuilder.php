@@ -57,7 +57,7 @@ class ReadmeContentsBuilder {
 		$list = '';
 
 		$files = $this->findFilesFor( $path, 'json' );
-		ksort($files);
+		ksort( $files );
 
 		foreach ( $files as $key => $location ) {
 			if ( $previousFirstKey !== $key[0] ) {
