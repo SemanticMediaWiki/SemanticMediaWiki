@@ -63,12 +63,11 @@ class TableHeaderFormatterOption {
 			return str_replace( '=', '', $label . ' ' . '#' . $param );
 		} else {
 			if ( strpos( $label, '#' ) !== false ) {
-				$parts = explode( '=', $label );
-				if ( count( $parts ) > 1 ) {
-					if ( $parts[1] !== '' ) {
-						return $parts[0] . ';' . $paramParts[0] . '=' . $parts[1];
+				if ( count( $partsLabel ) > 1 ) {
+					if ( $partsLabel[1] !== '' ) {
+						return $partsLabel[0] . ';' . $paramParts[0] . '=' . $partsLabel[1];
 					}
-					return $parts[0] . ';' . $paramParts[0] . '=';
+					return $partsLabel[0] . ';' . $paramParts[0] . '=';
 				} else {
 					if ( str_contains( $mainLabel, '=' ) ) {
 						return $label . ';' . $paramParts[0] . '=';

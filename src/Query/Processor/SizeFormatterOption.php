@@ -69,7 +69,6 @@ class SizeFormatterOption {
 		$paramParts = explode( '=', $param );
 
 		if ( strpos( $label, '#' ) !== false ) {
-			$paramParts = explode( '=', $param );
 			if ( count( $paramParts ) >= 2 ) {
 				if ( strpos( $param, 'width=' ) !== false ) {
 					$adjustedWidth = rtrim( explode( '=', $param )[1], 'px' );
@@ -77,14 +76,12 @@ class SizeFormatterOption {
 					return ( isset( $parts[0] ) ? $parts[0] : '' ) . '#' . $adjustedWidth . 'x' . ( isset( $parts[1] ) ? $parts[1] : '' );
 				}
 				if ( strpos( $param, 'height=' ) !== false ) {
-					$splittedLabel = explode( '=', $label );
 					$adjustedHeight = explode( '=', $param )[1];
 
-					if ( count( $splittedLabel ) > 1 ) {
-						$parts = explode( '=', $label );
+					if ( count( $partsLabel ) > 1 ) {
 						if ( strpos( $mainLabel, '=' ) ) {
-							$firstPart = rtrim( $parts[0], 'px' );
-							return rtrim( $parts[0], 'px' ) . 'x' . $adjustedHeight . '=' . $parts[1];
+							$firstPart = rtrim( $partsLabel[0], 'px' );
+							return rtrim( $partsLabel[0], 'px' ) . 'x' . $adjustedHeight . '=' . $partsLabel[1];
 						}
 					} else {
 						$parts = explode( '#', $label );

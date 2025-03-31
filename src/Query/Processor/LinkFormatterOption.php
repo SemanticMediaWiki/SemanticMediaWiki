@@ -55,10 +55,11 @@ class LinkFormatterOption {
 	}
 
 	private function formatLabel( $label, $param, $mainLabel ): string {
+		$parts = explode( '=', $label );
+
 		if ( str_contains( $label, '#' ) ) {
 			if ( str_contains( $label, '=' ) && strpos( $mainLabel, '=' ) !== false ) {
 				$param = str_replace( "=", "", $param );
-				$parts = explode( '=', $label );
 				return $parts[0] . ';' . $param . '=' . $parts[1];
 			}
 			if ( strpos( $mainLabel, '=' ) !== true ) {
@@ -67,7 +68,6 @@ class LinkFormatterOption {
 			}
 		}
 		if ( str_contains( $label, '=' ) ) {
-			$parts = explode( '=', $label );
 			return $parts[0] !== ''
 				? $parts[0] . '#' . $param . $parts[1]
 				: str_replace( '=', '', $label . ' #' . $param );
