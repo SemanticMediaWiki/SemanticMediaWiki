@@ -71,7 +71,7 @@
 					"action": "smwbrowse",
 					"format": "json",
 					"browse": "property",
-					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test\", \"description\": true, \"prefLabel\": true }"
+					"params": "{ \"limit\": 10, \"offset\": 0, \"search\": \"API test property\", \"description\": true, \"prefLabel\": true }"
 				}
 			},
 			"assert-output": {
