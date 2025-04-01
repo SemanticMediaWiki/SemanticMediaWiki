@@ -1,0 +1,72 @@
+{
+	"description": "Test API `action=askargs` with `api_version` 2 + 3",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API test page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "API test text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/Api-askargs-0001/1",
+			"contents": "[[API test page::123]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "api",
+			"about": "#0 `askargs` version 2",
+			"api": {
+				"parameters": {
+					"action": "askargs",
+					"format": "json",
+					"conditions": "API test page::123",
+					"printouts": "API test page",
+					"api_version": "2"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.api-askargs-0002.3.json"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#1 `askargs` version 3",
+			"api": {
+				"parameters": {
+					"action": "askargs",
+					"format": "json",
+					"conditions": "API test page::123",
+					"printouts": "API test page",
+					"api_version": "3"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.api-askargs-0002.4.json"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"SMW_NS_CONCEPT": true,
+			"NS_CATEGORY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
