@@ -76,7 +76,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.0.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.0.txt"
 				}
 			}
 		},
@@ -93,7 +93,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.1.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.1.txt"
 				}
 			}
 		},
@@ -110,7 +110,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.2.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.2.txt"
 				}
 			}
 		},
@@ -132,7 +132,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.3.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.3.txt"
 				}
 			}
 		},
@@ -152,7 +152,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.4.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.4.txt"
 				}
 			}
 		},
@@ -169,7 +169,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.5.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.5.txt"
 				}
 			}
 		},
@@ -189,7 +189,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/a-0001.6.txt"
+					"contents-file" : "/../Fixtures/api-smwbrowse-0001.6.txt"
 				}
 			}
 		},
@@ -206,7 +206,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0001.7.txt"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.7.txt"
 				}
 			}
 		},
@@ -226,7 +226,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0001.8.txt"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.8.txt"
 				}
 			}
 		},
@@ -243,7 +243,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0001.9.txt"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.9.txt"
 				}
 			}
 		},
@@ -260,7 +260,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0001.10.txt"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.10.txt"
 				}
 			}
 		},
@@ -277,7 +277,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0001.11.txt"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.11.txt"
 				}
 			}
 		}

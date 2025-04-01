@@ -31,7 +31,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0002.3.json"
+					"contents-file" : "/../Fixtures/res.api-askargs-0002.3.json"
 				}
 			}
 		},
@@ -49,7 +49,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0002.4.json"
+					"contents-file" : "/../Fixtures/res.api-askargs-0002.4.json"
 				}
 			}
 		}

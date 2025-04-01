@@ -46,7 +46,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0004.1.json"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0004.1.json"
 				}
 			}
 		},
@@ -63,7 +63,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0004.2.json"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0004.2.json"
 				}
 			}
 		},
@@ -80,7 +80,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.a-0004.3.json"
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0004.3.json"
 				}
 			}
 		}
