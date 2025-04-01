@@ -7,7 +7,7 @@
 			"contents": "[[Has type::Text]] [[Has preferred property label::Label with spaces@es]]"
 		},
 		{
-			"page": "Example/S0013/1",
+			"page": "Example/SB0004/1",
 			"contents": "[[SomeProperty::abc]]"
 		}
 	],
@@ -17,7 +17,7 @@
 			"about": "#0 verify preferred label display",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0013/1",
+				"query-parameters": "Example/SB0004/1",
 				"request-parameters": {
 					"output": "legacy",
 					"lang": "es"

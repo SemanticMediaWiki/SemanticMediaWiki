@@ -2,8 +2,8 @@
 	"description": "Test `Special:Browse` output category (`wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
-			"page": "Example/S0023/1",
-			"contents": "[[Category:S0023]]"
+			"page": "Example/SB0006/1",
+			"contents": "[[Category:SB0006]]"
 		}
 	],
 	"tests": [
@@ -12,7 +12,7 @@
 			"about": "#0 (category singular display)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0023/1",
+				"query-parameters": "Example/SB0006/1",
 				"request-parameters": {
 					"output": "legacy"
 				}
@@ -20,7 +20,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-factbox-property-name\"><a href=.*>Category</a></div>",
-					"<div class=\"smw-factbox-property-values\"><span class=\"smw-factbox-value\"><a href=.*>S0023</a></span>"
+					"<div class=\"smw-factbox-property-values\"><span class=\"smw-factbox-value\"><a href=.*>SB0006</a></span>"
 				]
 			}
 		}

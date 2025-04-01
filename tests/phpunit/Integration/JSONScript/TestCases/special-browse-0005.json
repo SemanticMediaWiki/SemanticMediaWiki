@@ -7,20 +7,20 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"page": "Example/S0014/L'oéal",
-			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+			"page": "Example/SB0005/L'oéal",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:SB0005]]"
 		},
 		{
-			"page": "Example/S0014/%Some@%",
-			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+			"page": "Example/SB0005/%Some@%",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:SB0005]]"
 		},
 		{
-			"page": "Example/S0014/ABC(-3-)",
-			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+			"page": "Example/SB0005/ABC(-3-)",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:SB0005]]"
 		},
 		{
-			"page": "Example/S0014/\"Some\"&*^-25-20-2D",
-			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:S0014]]"
+			"page": "Example/SB0005/\"Some\"&*^-25-20-2D",
+			"contents": "[[Has page::{{FULLPAGENAME}}]] [[Category:SB0005]]"
 		}
 	],
 	"tests": [
@@ -29,16 +29,16 @@
 			"about": "#0",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0014/L'oéal",
+				"query-parameters": "Example/SB0005/L'oéal",
 				"request-parameters": {
 					"output": "legacy"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0014-2FL%27o%C3%A9al",
-					"title=\"Example/S0014/L&#039;oéal\">Example/S0014/L'oéal</a>",
-					"Example-2FS0014-2FL&#039;oéal"
+					"Example-2FSB0005-2FL%27o%C3%A9al",
+					"title=\"Example/SB0005/L&#039;oéal\">Example/SB0005/L'oéal</a>",
+					"Example-2FSB0005-2FL&#039;oéal"
 				]
 			}
 		},
@@ -50,14 +50,14 @@
 				"query-parameters": "",
 				"request-parameters": {
 					"output": "legacy",
-					"article" : "Example/S0014/L'oéal"
+					"article" : "Example/SB0005/L'oéal"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0014-2FL%27o%C3%A9al",
-					"title=\"Example/S0014/L&#039;oéal\">Example/S0014/L'oéal</a>",
-					"Example-2FS0014-2FL&#039;oéal"
+					"Example-2FSB0005-2FL%27o%C3%A9al",
+					"title=\"Example/SB0005/L&#039;oéal\">Example/SB0005/L'oéal</a>",
+					"Example-2FSB0005-2FL&#039;oéal"
 				]
 			}
 		},
@@ -66,15 +66,15 @@
 			"about": "#2",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0014/%Some@%",
+				"query-parameters": "Example/SB0005/%Some@%",
 				"request-parameters": {
 					"output": "legacy"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/S0014/%Some@%\">Example/S0014/%Some@%</a>",
-					"Example-2FS0014-2F-25Some@-25"
+					"title=\"Example/SB0005/%Some@%\">Example/SB0005/%Some@%</a>",
+					"Example-2FSB0005-2F-25Some@-25"
 				]
 			}
 		},
@@ -86,13 +86,13 @@
 				"query-parameters": "",
 				"request-parameters": {
 					"output": "legacy",
-					"article" : "Example/S0014/%Some@%"
+					"article" : "Example/SB0005/%Some@%"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/S0014/%Some@%\">Example/S0014/%Some@%</a>",
-					"Example-2FS0014-2F-25Some@-25"
+					"title=\"Example/SB0005/%Some@%\">Example/SB0005/%Some@%</a>",
+					"Example-2FSB0005-2F-25Some@-25"
 				]
 			}
 		},
@@ -101,15 +101,15 @@
 			"about": "#4",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0014/ABC(-3-)",
+				"query-parameters": "Example/SB0005/ABC(-3-)",
 				"request-parameters": {
 					"output": "legacy"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/S0014/ABC(-3-)\">Example/S0014/ABC(-3-)</a>",
-					"Example-2FS0014-2FABC(-2D3-2D)"
+					"title=\"Example/SB0005/ABC(-3-)\">Example/SB0005/ABC(-3-)</a>",
+					"Example-2FSB0005-2FABC(-2D3-2D)"
 				]
 			}
 		},
@@ -121,13 +121,13 @@
 				"query-parameters": "",
 				"request-parameters": {
 					"output": "legacy",
-					"article" : "Example/S0014/ABC(-3-)"
+					"article" : "Example/SB0005/ABC(-3-)"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/S0014/ABC(-3-)\">Example/S0014/ABC(-3-)</a>",
-					"Example-2FS0014-2FABC(-2D3-2D)"
+					"title=\"Example/SB0005/ABC(-3-)\">Example/SB0005/ABC(-3-)</a>",
+					"Example-2FSB0005-2FABC(-2D3-2D)"
 				]
 			}
 		},
@@ -136,16 +136,16 @@
 			"about": "#6",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0014/\"Some\"&*^-25-20-2D",
+				"query-parameters": "Example/SB0005/\"Some\"&*^-25-20-2D",
 				"request-parameters": {
 					"output": "legacy"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
-					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&amp;*^-25-20-2D</a>",
-					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
+					"Example/SB0005/%22Some%22%26*%5E-25-20-2D",
+					"title=\"Example/SB0005/&quot;Some&quot;&amp;*^-25-20-2D\">Example/SB0005/\"Some\"&amp;*^-25-20-2D</a>",
+					"Example-2FSB0005-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
 				]
 			}
 		},
@@ -157,14 +157,14 @@
 				"query-parameters": "",
 				"request-parameters": {
 					"output": "legacy",
-					"article": "Example/S0014/\"Some\"&*^-25-20-2D"
+					"article": "Example/SB0005/\"Some\"&*^-25-20-2D"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example/S0014/%22Some%22%26*%5E-25-20-2D",
-					"title=\"Example/S0014/&quot;Some&quot;&amp;*^-25-20-2D\">Example/S0014/\"Some\"&amp;*^-25-20-2D</a>",
-					"Example-2FS0014-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
+					"Example/SB0005/%22Some%22%26*%5E-25-20-2D",
+					"title=\"Example/SB0005/&quot;Some&quot;&amp;*^-25-20-2D\">Example/SB0005/\"Some\"&amp;*^-25-20-2D</a>",
+					"Example-2FSB0005-2F&quot;Some&quot;-26*^-2D25-2D20-2D2D"
 				]
 			}
 		}

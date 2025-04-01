@@ -12,20 +12,20 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Example/S0028/1",
+			"page": "Example/SB0008/1",
 			"contents": "[[Has text::S1]], [[Has text::S2]], [[Has text::S3]], [[Has text::S4]], [[Has text::S5]], [[Has text::S6]]"
 		},
 		{
-			"page": "Example/S0028/2",
-			"contents": "[[Has page::Example/S0028/5]]"
+			"page": "Example/SB0008/2",
+			"contents": "[[Has page::Example/SB0008/5]]"
 		},
 		{
-			"page": "Example/S0028/3",
-			"contents": "[[Has page::Example/S0028/5]]"
+			"page": "Example/SB0008/3",
+			"contents": "[[Has page::Example/SB0008/5]]"
 		},
 		{
-			"page": "Example/S0028/4",
-			"contents": "[[Has page::Example/S0028/5]]"
+			"page": "Example/SB0008/4",
+			"contents": "[[Has page::Example/SB0008/5]]"
 		}
 	],
 	"tests": [
@@ -34,7 +34,7 @@
 			"about": "#0 (limited outgoing value list)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0028/1",
+				"query-parameters": "Example/SB0008/1",
 				"request-parameters": {
 					"output": "legacy",
 					"valuelistlimit-out": 5
@@ -58,7 +58,7 @@
 			"about": "#1 (limited incoming value list)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0028/5",
+				"query-parameters": "Example/SB0008/5",
 				"request-parameters": {
 					"output": "legacy",
 					"valuelistlimit-in": 3
@@ -66,11 +66,11 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-factbox-value\"><a href=\".*/Example/S0028/2\"",
-					"<span class=\"smw-factbox-value\"><a href=\".*/Example/S0028/3\""
+					"<span class=\"smw-factbox-value\"><a href=\".*/Example/SB0008/2\"",
+					"<span class=\"smw-factbox-value\"><a href=\".*/Example/SB0008/3\""
 				],
 				"not-contain": [
-					"<span class=\"smw-factbox-value\"><a href=\".*/Example/S0028/4\""
+					"<span class=\"smw-factbox-value\"><a href=\".*/Example/SB0008/4\""
 				]
 			}
 		}

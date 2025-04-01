@@ -27,23 +27,23 @@
 			"contents": "[[Has type::URL]]"
 		},
 		{
-			"page": "Example/S0008/1",
-			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has boolean::true]] [[Category:S0008]]"
+			"page": "Example/SB0003/1",
+			"contents": "[[Has date::12 Jan 1991 8:56]] [[Has boolean::true]] [[Category:SB0003]]"
 		},
 		{
-			"page": "Example/S0008/2",
-			"contents": "[[Has number::0.00000000000012]] [[Has number::72.769482308]] [[Has number::1.334e-13]] [[Category:S0008]]"
+			"page": "Example/SB0003/2",
+			"contents": "[[Has number::0.00000000000012]] [[Has number::72.769482308]] [[Has number::1.334e-13]] [[Category:SB0003]]"
 		},
 		{
-			"page": "Example/S0008/3 (Hydrogen-1 atom)",
-			"contents": "[[Has atomic mass unit::1.007825 u]] [[Category:S0008]]"
+			"page": "Example/SB0003/3 (Hydrogen-1 atom)",
+			"contents": "[[Has atomic mass unit::1.007825 u]] [[Category:SB0003]]"
 		},
 		{
-			"page": "Example/S0008/4",
+			"page": "Example/SB0003/4",
 			"contents": "{{#subobject:ABC::DEF|Has number=123}}"
 		},
 		{
-			"page": "Example/S0008/5",
+			"page": "Example/SB0003/5",
 			"contents": "[[Has url::http://example.org/some1::23:334/::56]]"
 		}
 	],
@@ -53,7 +53,7 @@
 			"about": "#0",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0008/1",
+				"query-parameters": "Example/SB0003/1",
 				"request-parameters": {
 					"output": "legacy"
 				}
@@ -71,7 +71,7 @@
 			"about": "#1 (numbers)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0008/2",
+				"query-parameters": "Example/SB0003/2",
 				"request-parameters": {
 					"output": "legacy"
 				}
@@ -92,7 +92,7 @@
 			"about": "#2 (quantity)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0008/3 (Hydrogen-1 atom)",
+				"query-parameters": "Example/SB0003/3 (Hydrogen-1 atom)",
 				"request-parameters": {
 					"output": "legacy"
 				}
@@ -109,7 +109,7 @@
 			"about": "#3 named subobject contains ::",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": ":Example-2FS0008-2F4-23ABC::DEF",
+				"query-parameters": ":Example-2FSB0003-2F4-23ABC::DEF",
 				"request-parameters": {
 					"output": "legacy"
 				}
@@ -126,7 +126,7 @@
 			"about": "#4 url contains :: (encoded with -3A)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0008/5",
+				"query-parameters": "Example/SB0003/5",
 				"request-parameters": {
 					"output": "legacy"
 				}

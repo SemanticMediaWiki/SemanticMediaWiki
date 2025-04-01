@@ -7,8 +7,8 @@
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"page": "Example/S0004/1",
-			"contents": "[[Has date::12 Jan 1991 8:56]] [[Category:S0004]]"
+			"page": "Example/SB0001/1",
+			"contents": "[[Has date::12 Jan 1991 8:56]] [[Category:SB0001]]"
 		}
 	],
 	"tests": [
@@ -17,7 +17,7 @@
 			"about": "#0 (output is localized, info link is in accordance with content lang.)",
 			"special-page": {
 				"page": "Browse",
-				"query-parameters": "Example/S0004/1",
+				"query-parameters": "Example/SB0001/1",
 				"request-parameters": {
 					"output": "legacy"
 				}
