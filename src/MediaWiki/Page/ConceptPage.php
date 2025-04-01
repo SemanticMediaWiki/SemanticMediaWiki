@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Page;
 
 use Html;
 use SMW\DIConcept;
-use SMW\Message;
+use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
