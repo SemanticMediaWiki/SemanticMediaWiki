@@ -2,7 +2,7 @@
 	"description": "Test output of `Special:WantedProperties` on unapproved property (`wgContLang=en`, `wgLang=en`, `smwgCreateProtectionRight`)",
 	"setup": [
 		{
-			"page": "Example/S0019/1",
+			"page": "Example/SW0002/1",
 			"contents": "[[SomeWantedProperty::123]]"
 		}
 	],

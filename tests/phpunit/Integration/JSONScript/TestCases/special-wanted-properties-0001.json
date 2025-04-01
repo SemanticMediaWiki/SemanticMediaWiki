@@ -2,15 +2,15 @@
 	"description": "Test output of `Special:WantedProperties` (`wgContLang=en`, `wgLang=en`, skip-on sqlite)",
 	"setup": [
 		{
-			"page": "Example/S0006/1",
+			"page": "Example/SW0001/1",
 			"contents": "[[Has property without type::123]]"
 		},
 		{
-			"page": "Example/S0006/2",
+			"page": "Example/SW0001/2",
 			"contents": "[[Has property without type::456]]"
 		},
 		{
-			"page": "Example/S0006/3",
+			"page": "Example/SW0001/3",
 			"contents": "[[Has property without type::789]]"
 		}
 	],
