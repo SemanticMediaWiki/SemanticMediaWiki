@@ -7,11 +7,11 @@
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"page": "Example/S0010/1",
+			"page": "Example/Special-search-by-property-0002/1",
 			"contents": "[[Has date::1 Jan 1970]]"
 		},
 		{
-			"page": "Example/S0010/2",
+			"page": "Example/Special-search-by-property-0002/2",
 			"contents": "[[Has date::2 Dec 2100 12:12:12]]"
 		}
 	],

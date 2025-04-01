@@ -22,63 +22,63 @@
 			"contents": "[[Has type::Telephone number]]"
 		},
 		{
-			"page": "Example/S0002/1",
-			"contents": "[[Has text::S0002]]"
+			"page": "Example/S0001/1",
+			"contents": "[[Has text::S0001]]"
 		},
 		{
-			"page": "Example/S0002/2",
+			"page": "Example/S0001/2",
 			"contents": "[[Has text::foo bar]]"
 		},
 		{
-			"page": "Example/S0002/3",
+			"page": "Example/S0001/3",
 			"contents": "[[Has number::3.555567]]"
 		},
 		{
-			"page": "Example/S0002/4",
+			"page": "Example/S0001/4",
 			"contents": "[[Has number::1.2e-13]]"
 		},
 		{
-			"page": "Example/S0002/5",
+			"page": "Example/S0001/5",
 			"contents": "[[Has telephone number::+1-201-555-0123]]"
 		},
 		{
-			"page": "Example/S0002/6",
+			"page": "Example/S0001/6",
 			"contents": "[[Has text::foo-bar]]"
 		},
 		{
-			"page": "Example/S0002/7",
+			"page": "Example/S0001/7",
 			"contents": "[[Has text::foo-123#&^*%<1?=/->\"']]"
 		},
 		{
-			"page": "Example/S0002/8",
+			"page": "Example/S0001/8",
 			"contents": "[[Has text::foo-123_abc']]"
 		},
 		{
-			"page": "Example/S0002/9",
+			"page": "Example/S0001/9",
 			"contents": "[[Has number::-20]]"
 		},
 		{
-			"page": "Example/S0002/10",
+			"page": "Example/S0001/10",
 			"contents": "[[Has number::-25]]"
 		},
 		{
-			"page": "Example/S0002/11",
+			"page": "Example/S0001/11",
 			"contents": "[[Has text::AA-2000]]"
 		},
 		{
-			"page": "Example/S0002/12",
+			"page": "Example/S0001/12",
 			"contents": "[[Has text::AA-20-2D00]]"
 		},
 		{
-			"page": "Example/S0002/13",
+			"page": "Example/S0001/13",
 			"contents": "[[Has text::AA-20-2500]]"
 		},
 		{
-			"page": "Example/S0002/14",
+			"page": "Example/S0001/14",
 			"contents": "[[Has text::AA-2000 with_&]]"
 		},
 		{
-			"page": "Example/S0002/15",
+			"page": "Example/S0001/15",
 			"contents": "[[P-20-25::-25]]"
 		}
 	],
@@ -95,8 +95,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<li>S0002&#160;&#160;",
-					"title=\"Special:SearchByProperty/:Has-20text/S0002\">+</a></span>"
+					"<li>S0001&#160;&#160;",
+					"title=\"Special:SearchByProperty/:Has-20text/S0001\">+</a></span>"
 				]
 			}
 		},
@@ -113,7 +113,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F2",
+					"Example-2FS0001-2F2",
 					"<small>(foo bar)</small>"
 				]
 			}
@@ -131,7 +131,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F2",
+					"Example-2FS0001-2F2",
 					"<small>(foo bar)</small>"
 				]
 			}
@@ -149,7 +149,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F3",
+					"Example-2FS0001-2F3",
 					"<small>(3.556)</small>"
 				],
 				"not-contain": [
@@ -170,7 +170,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F4",
+					"Example-2FS0001-2F4",
 					"<small>(1.2e-13)</small>"
 				]
 			}
@@ -188,7 +188,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F4",
+					"Example-2FS0001-2F4",
 					"<small>(1.2e-13)</small>"
 				]
 			}
@@ -206,7 +206,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F5",
+					"Example-2FS0001-2F5",
 					"+1-201-555-0123"
 				]
 			}
@@ -224,7 +224,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F5",
+					"Example-2FS0001-2F5",
 					"+1-201-555-0123"
 				]
 			}
@@ -259,7 +259,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F6",
+					"Example-2FS0001-2F6",
 					"foo-bar"
 				]
 			}
@@ -280,7 +280,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F6",
+					"Example-2FS0001-2F6",
 					"foo-bar"
 				]
 			}
@@ -298,7 +298,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F7",
+					"Example-2FS0001-2F7",
 					"foo-123#&amp;^*%&lt;1?=/-&gt;\"'"
 				]
 			}
@@ -316,7 +316,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F8",
+					"Example-2FS0001-2F8",
 					"<small>(foo-123_abc')</small>"
 				]
 			}
@@ -334,7 +334,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F9",
+					"Example-2FS0001-2F9",
 					"<small>(-20)</small>",
 					"value=\"-20\""
 				]
@@ -350,7 +350,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F9",
+					"Example-2FS0001-2F9",
 					"<small>(-20)</small>",
 					"value=\"-20\""
 				]
@@ -369,7 +369,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F10",
+					"Example-2FS0001-2F10",
 					"<small>(-25)</small>",
 					"value=\"-25\""
 				]
@@ -385,7 +385,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F10",
+					"Example-2FS0001-2F10",
 					"<small>(-25)</small>",
 					"value=\"-25\""
 				]
@@ -404,7 +404,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F11",
+					"Example-2FS0001-2F11",
 					"<small>(AA-2000)</small>",
 					"value=\"AA-2000\""
 				]
@@ -420,7 +420,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F11",
+					"Example-2FS0001-2F11",
 					"<small>(AA-2000)</small>",
 					"value=\"AA-2000\""
 				]
@@ -439,7 +439,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F12",
+					"Example-2FS0001-2F12",
 					"<small>(AA-20-2D00)</small>",
 					"value=\"AA-20-2D00\""
 				]
@@ -455,7 +455,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F12",
+					"Example-2FS0001-2F12",
 					"<small>(AA-20-2D00)</small>",
 					"value=\"AA-20-2D00\""
 				]
@@ -474,7 +474,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F13",
+					"Example-2FS0001-2F13",
 					"<small>(AA-20-2500)</small>",
 					"value=\"AA-20-2500\""
 				]
@@ -490,7 +490,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F13",
+					"Example-2FS0001-2F13",
 					"<small>(AA-20-2500)</small>",
 					"value=\"AA-20-2500\""
 				]
@@ -509,7 +509,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F14",
+					"Example-2FS0001-2F14",
 					"<small>(AA-2000 with_&amp;)</small>",
 					"value=\"AA-2000 with_&amp;\""
 				]
@@ -525,7 +525,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F14",
+					"Example-2FS0001-2F14",
 					"<small>(AA-2000 with_&amp;)</small>",
 					"value=\"AA-2000 with_&amp;\""
 				]
@@ -544,7 +544,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F15",
+					"Example-2FS0001-2F15",
 					"<small>(-25)</small>",
 					"value=\"P-20-25\"",
 					"value=\"-25\""
@@ -561,7 +561,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example-2FS0002-2F15",
+					"Example-2FS0001-2F15",
 					"<small>(-25)</small>",
 					"value=\"P-20-25\"",
 					"value=\"-25\""
