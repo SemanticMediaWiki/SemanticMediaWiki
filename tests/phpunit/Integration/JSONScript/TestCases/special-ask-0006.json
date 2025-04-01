@@ -8,8 +8,8 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0018/1",
-			"contents": "[[Has page::123]] [[Category:S0018]]"
+			"page": "Example/SA0006/1",
+			"contents": "[[Has page::123]] [[Category:SA0006]]"
 		}
 	],
 	"tests": [
@@ -32,12 +32,12 @@
 			"about": "#1 (@see #3542, `format= table`)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0018-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3D-20table",
+				"query-parameters": "-5B-5BCategory:SA0006-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3D-20table",
 				"request-parameters": {}
 			},
 			"assert-output": {
 				"to-contain": [
-					"{{#ask: [[Category:S0018]]",
+					"{{#ask: [[Category:SA0006]]",
 					" |?Has page",
 					" |format=table",
 					" |limit=50",
@@ -54,12 +54,12 @@
 			"about": "#2 (`format=TABLE`)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0018-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3DTABLE",
+				"query-parameters": "-5B-5BCategory:SA0006-5D-5D/-3FHas-20page/mainlabel%3D/offset%3D0/format%3DTABLE",
 				"request-parameters": {}
 			},
 			"assert-output": {
 				"to-contain": [
-					"{{#ask: [[Category:S0018]]",
+					"{{#ask: [[Category:SA0006]]",
 					" |?Has page",
 					" |format=table",
 					" |limit=50",

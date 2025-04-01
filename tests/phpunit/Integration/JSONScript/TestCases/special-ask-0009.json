@@ -13,23 +13,23 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0022/1",
-			"contents": "[[Has text::Some example]] [[Category:S0022]]"
+			"page": "Example/SA0009/1",
+			"contents": "[[Has text::Some example]] [[Category:SA0009]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0022/2",
-			"contents": "[[Has number::123]] [[Has number::345]] [[Category:S0022]]"
+			"page": "Example/SA0009/2",
+			"contents": "[[Has number::123]] [[Has number::345]] [[Category:SA0009]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0022/3",
-			"contents": "[[Has text::ABC]] [[Has number::123]] [[Category:S0022]]"
+			"page": "Example/SA0009/3",
+			"contents": "[[Has text::ABC]] [[Has number::123]] [[Category:SA0009]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0022/4",
-			"contents": "[[Has text::DEF]] [[Has number::123]] [[Category:S0022]]"
+			"page": "Example/SA0009/4",
+			"contents": "[[Has text::DEF]] [[Has number::123]] [[Category:SA0009]]"
 		}
 	],
 	"tests": [
@@ -46,13 +46,13 @@
 						"mainlabel": "",
 						"format": "csv"
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has text|+order=asc|?Has number|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.0.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.0.csv"
 				}
 			}
 		},
@@ -70,13 +70,13 @@
 						"headers": "hide",
 						"format": "csv"
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has text|+order=asc|?Has number|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.1.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.1.csv"
 				}
 			}
 		},
@@ -93,13 +93,13 @@
 						"mainlabel": "-",
 						"format": "csv"
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.2.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.2.csv"
 				}
 			}
 		},
@@ -117,13 +117,13 @@
 						"format": "csv",
 						"merge": true
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.3.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.3.csv"
 				}
 			}
 		},
@@ -142,13 +142,13 @@
 						"valuesep": ";",
 						"format": "csv"
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has text|+order=asc|?Has number|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.4.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.4.csv"
 				}
 			}
 		},
@@ -166,13 +166,13 @@
 						"sep": "|",
 						"valuesep": "+"
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.5.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.5.csv"
 				}
 			}
 		},
@@ -191,13 +191,13 @@
 						"valuesep": ";",
 						"merge": true
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.6.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.6.csv"
 				}
 			}
 		},
@@ -217,13 +217,13 @@
 						"valuesep": ";",
 						"merge": true
 					},
-					"q": "[[Category:S0022]]",
+					"q": "[[Category:SA0009]]",
 					"po": "?Has number|+order=asc|?Has text|+order=asc"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0022.7.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0009.7.csv"
 				}
 			}
 		}

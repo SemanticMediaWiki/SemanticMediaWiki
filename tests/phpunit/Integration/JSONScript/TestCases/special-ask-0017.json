@@ -13,13 +13,13 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0036/1",
-			"contents": "[[Has quantity::10]] [[Category:S0036]]"
+			"page": "Example/SA0017/1",
+			"contents": "[[Has quantity::10]] [[Category:SA0017]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0036/2",
-			"contents": "[[Has temperature::10 °C]] [[Category:S0036]]"
+			"page": "Example/SA0017/2",
+			"contents": "[[Has temperature::10 °C]] [[Category:SA0017]]"
 		}
 	],
 	"tests": [
@@ -32,13 +32,13 @@
 					"p": {
 						"format": "csv"
 					},
-					"q": "[[Category:S0036]]",
+					"q": "[[Category:SA0017]]",
 					"po": "?Has quantity"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0036.0.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0017.0.csv"
 				}
 			}
 		},
@@ -51,13 +51,13 @@
 					"p": {
 						"format": "csv"
 					},
-					"q": "[[Category:S0036]]",
+					"q": "[[Category:SA0017]]",
 					"po": "?Has quantity#-n"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0036.1.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0017.1.csv"
 				}
 			}
 		},
@@ -70,13 +70,13 @@
 					"p": {
 						"format": "csv"
 					},
-					"q": "[[Category:S0036]]",
+					"q": "[[Category:SA0017]]",
 					"po": "?Has temperature"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0036.2.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0017.2.csv"
 				}
 			}
 		},
@@ -89,13 +89,13 @@
 					"p": {
 						"format": "csv"
 					},
-					"q": "[[Category:S0036]]",
+					"q": "[[Category:SA0017]]",
 					"po": "?Has temperature#-n"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0036.3.csv"
+					"contents-file" : "/../Fixtures/res.special-ask-0017.3.csv"
 				}
 			}
 		}

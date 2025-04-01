@@ -7,12 +7,12 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Example/S0021/1",
-			"contents": "[[Has extra text::S0021]]"
+			"page": "Example/SA0008/1",
+			"contents": "[[Has extra text::SA0008]]"
 		},
 		{
-			"page": "Example/S0021/2",
-			"contents": "[[Has extra text::S0021]]"
+			"page": "Example/SA0008/2",
+			"contents": "[[Has extra text::SA0008]]"
 		}
 	],
 	"tests": [
@@ -28,15 +28,15 @@
 						"headers": "",
 						"format": "table"
 					},
-					"q": "[[Has extra text::S0021]]",
+					"q": "[[Has extra text::SA0008]]",
 					"po": "?Has extra text=Modified <i>label</i> for text"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
 					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\"><a href=.* title=\"Property:Has extra text\">Modified <i>label</i> for text</a></th></thead>",
-					"<a href=.* title=\"Example/S0021/1\">Example/S0021/1</a>",
-					"<a href=.* title=\"Example/S0021/2\">Example/S0021/2</a>"
+					"<a href=.* title=\"Example/SA0008/1\">Example/SA0008/1</a>",
+					"<a href=.* title=\"Example/SA0008/2\">Example/SA0008/2</a>"
 				]
 			}
 		},
@@ -52,15 +52,15 @@
 						"headers": "plain",
 						"format": "table"
 					},
-					"q": "[[Has extra text::S0021]]",
+					"q": "[[Has extra text::SA0008]]",
 					"po": "?Has extra text=Modified <i>label</i> for text"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
 					"<thead><th>&nbsp;</th><th class=\"Modified-label-for-text\">Modified <i>label</i> for text</th></thead>",
-					"<a href=.* title=\"Example/S0021/1\">Example/S0021/1</a>",
-					"<a href=.* title=\"Example/S0021/2\">Example/S0021/2</a>"
+					"<a href=.* title=\"Example/SA0008/1\">Example/SA0008/1</a>",
+					"<a href=.* title=\"Example/SA0008/2\">Example/SA0008/2</a>"
 				]
 			}
 		}

@@ -8,11 +8,11 @@
 		},
 		{
 			"namespace": "NS_FILE",
-			"page": "S0012.png",
+			"page": "SA0003.png",
 			"contents": {
 				"upload": {
 					"file" : "/../Fixtures/image-upload-480.png",
-					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:S0012]]"
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:SA0003]]"
 				}
 			}
 		}
@@ -23,7 +23,7 @@
 			"about": "#0 (display image in table with 50px|thumb|123)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0012-5D-5D/-3FHas-20file#50px;thumb;123/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
+				"query-parameters": "-5B-5BCategory:SA0003-5D-5D/-3FHas-20file#50px;thumb;123/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
 				"request-parameters": []
 			},
 			"assert-output": {

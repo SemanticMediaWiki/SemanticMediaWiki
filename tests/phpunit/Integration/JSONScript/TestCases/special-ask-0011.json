@@ -15,29 +15,29 @@
 			"namespace": "NS_TEMPLATE",
 			"page": "BEACON (named)",
 			"contents": {
-				"import-from": "/../Fixtures/s-0025-beacon-named-template-args.txt"
+				"import-from": "/../Fixtures/special-ask-0011-beacon-named-template-args.txt"
 			}
 		},
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "BEACON (numeric)",
 			"contents": {
-				"import-from": "/../Fixtures/s-0025-beacon-numeric-template-args.txt"
+				"import-from": "/../Fixtures/special-ask-0011-beacon-numeric-template-args.txt"
 			}
 		},
 		{
 			"namespace": "NS_TEMPLATE",
 			"page": "BEACON-INTRO",
 			"contents": {
-				"import-from": "/../Fixtures/s-0025-beacon-intro.txt"
+				"import-from": "/../Fixtures/special-ask-0011-beacon-intro.txt"
 			}
 		},
 		{
-			"page": "Example/S0025/1",
+			"page": "Example/SA0011/1",
 			"contents": "[[Has name::John Doe]] [[Has GND::123456789]]"
 		},
 		{
-			"page": "Example/S0025/2",
+			"page": "Example/SA0011/2",
 			"contents": "[[Has name::Jane Doe]] [[Has GND::987654321]]"
 		}
 	],
@@ -64,7 +64,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0025.0.txt"
+					"contents-file" : "/../Fixtures/res.special-ask-0011.0.txt"
 				}
 			}
 		},
@@ -90,7 +90,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0025.0.txt"
+					"contents-file" : "/../Fixtures/res.special-ask-0011.0.txt"
 				}
 			}
 		},
@@ -116,7 +116,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0025.1.txt"
+					"contents-file" : "/../Fixtures/res.special-ask-0011.1.txt"
 				}
 			}
 		},
@@ -142,7 +142,7 @@
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0025.2.txt"
+					"contents-file" : "/../Fixtures/res.special-ask-0011.2.txt"
 				}
 			}
 		}

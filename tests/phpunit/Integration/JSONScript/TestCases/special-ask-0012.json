@@ -7,8 +7,8 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"page": "Example/S0029/1",
-			"contents": "[[Has page extra::123]] [[Category:S0029]]"
+			"page": "Example/SA0012/1",
+			"contents": "[[Has page extra::123]] [[Category:SA0012]]"
 		}
 	],
 	"tests": [
@@ -17,7 +17,7 @@
 			"about": "#0 (?#, empty mainlabel)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23/mainlabel%3D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23/mainlabel%3D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -25,7 +25,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th>&nbsp;</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/S0029/1\" title=\"Example/S0029/1\">Example/S0029/1</a></td>"
+					"<td class=\"smwtype_wpg\"><a href=.*Example/SA0012/1\" title=\"Example/SA0012/1\">Example/SA0012/1</a></td>"
 				]
 			}
 		},
@@ -34,7 +34,7 @@
 			"about": "#0.1 (?, empty mainlabel)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F/mainlabel%3D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F/mainlabel%3D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -42,7 +42,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th>&nbsp;</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/S0029/1\" title=\"Example/S0029/1\">Example/S0029/1</a></td>"
+					"<td class=\"smwtype_wpg\"><a href=.*Example/SA0012/1\" title=\"Example/SA0012/1\">Example/SA0012/1</a></td>"
 				]
 			}
 		},
@@ -51,7 +51,7 @@
 			"about": "#1 (?#, mainlabel=-, output the same as in #0)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23/mainlabel%3D-2D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23/mainlabel%3D-2D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -59,7 +59,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th>&nbsp;</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/S0029/1\" title=\"Example/S0029/1\">Example/S0029/1</a></td>"
+					"<td class=\"smwtype_wpg\"><a href=.*Example/SA0012/1\" title=\"Example/SA0012/1\">Example/SA0012/1</a></td>"
 				]
 			}
 		},
@@ -68,7 +68,7 @@
 			"about": "#2 (?#, mainlabel=FOO, ?# takes precedence over mainlabel, same output as in #0)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23/mainlabel%3DFOO/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23/mainlabel%3DFOO/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -76,7 +76,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th>&nbsp;</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/S0029/1\" title=\"Example/S0029/1\">Example/S0029/1</a></td>"
+					"<td class=\"smwtype_wpg\"><a href=.*Example/SA0012/1\" title=\"Example/SA0012/1\">Example/SA0012/1</a></td>"
 				]
 			}
 		},
@@ -85,7 +85,7 @@
 			"about": "#3 (?#- forces plain output, empty mainlabel)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23-2D/mainlabel%3D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23-2D/mainlabel%3D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -93,7 +93,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th>&nbsp;</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"smwtype_wpg\">Example/S0029/1</td>"
+					"<td class=\"smwtype_wpg\">Example/SA0012/1</td>"
 				]
 			}
 		},
@@ -102,7 +102,7 @@
 			"about": "#4 (?#=Foo, empty mainlabel)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23%3DFoo/mainlabel%3D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23%3DFoo/mainlabel%3D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -110,7 +110,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th class=\"Foo\">Foo</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"Foo smwtype_wpg\"><a href=.*Example/S0029/1\" title=\"Example/S0029/1\">Example/S0029/1</a></td>"
+					"<td class=\"Foo smwtype_wpg\"><a href=.*Example/SA0012/1\" title=\"Example/SA0012/1\">Example/SA0012/1</a></td>"
 				]
 			}
 		},
@@ -119,7 +119,7 @@
 			"about": "#4.1 (?=Foo, empty mainlabel)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F%3DFoo/mainlabel%3D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F%3DFoo/mainlabel%3D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -127,7 +127,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th class=\"Foo\">Foo</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"Foo smwtype_wpg\"><a href=.*Example/S0029/1\" title=\"Example/S0029/1\">Example/S0029/1</a></td>"
+					"<td class=\"Foo smwtype_wpg\"><a href=.*Example/SA0012/1\" title=\"Example/SA0012/1\">Example/SA0012/1</a></td>"
 				]
 			}
 		},
@@ -136,7 +136,7 @@
 			"about": "#5 (?#=Foo#- forces plain output, empty mainlabel)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23%3DFoo-23-2D/mainlabel%3D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23%3DFoo-23-2D/mainlabel%3D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -144,7 +144,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th class=\"Foo\">Foo</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"Foo smwtype_wpg\">Example/S0029/1</td>"
+					"<td class=\"Foo smwtype_wpg\">Example/SA0012/1</td>"
 				]
 			}
 		},
@@ -153,7 +153,7 @@
 			"about": "#6 (?#=Foo#- forces plain output, mainlabel=-, same output as in #5)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0029-5D-5D/-3FHas-20page-20extra/-3F-23%3DFoo-23-2D/mainlabel%3D-2D/offset%3D0/format%3Dtable",
+				"query-parameters": "-5B-5BCategory:SA0012-5D-5D/-3FHas-20page-20extra/-3F-23%3DFoo-23-2D/mainlabel%3D-2D/offset%3D0/format%3Dtable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -161,7 +161,7 @@
 					"<table class=\"sortable wikitable smwtable\">",
 					"<a href=.*Property:Has_page_extra\" title=\"Property:Has page extra\">Has page extra</a></th><th class=\"Foo\">Foo</th>",
 					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"Has-page-extra smwtype_wpg\" data-sort-value=\"123\">",
-					"<td class=\"Foo smwtype_wpg\">Example/S0029/1</td>"
+					"<td class=\"Foo smwtype_wpg\">Example/SA0012/1</td>"
 				]
 			}
 		}

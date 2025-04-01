@@ -1,23 +1,23 @@
 {
-	"description": "Test `format=dsv` output via `Special:Ask`",
+	"description": "Test `format=embedded` output via `Special:Ask`",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has page exra",
+			"page": "Has page",
 			"contents": "[[Has type::Page]]"
 		},
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has text extra",
+			"page": "Has text",
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Test:S0035/1",
-			"contents": "Has page: [[Has page extra::Test:S0035/2]] [[Category:S0035]]"
+			"page": "Test:SA0015/1",
+			"contents": "Has page: [[Has page::Test:SA0015/2]] [[Category:SA0015]]"
 		},
 		{
-			"page": "Test:S0035/2",
-			"contents": "Has text: [[Has text extra::S0035]] [[Category:S0035]]"
+			"page": "Test:SA0015/2",
+			"contents": "Has text: [[Has text::SA0015]] [[Category:SA0015]]"
 		}
 	],
 	"tests": [
@@ -32,17 +32,17 @@
 						"limit": "10",
 						"offset": "0",
 						"mainlabel": "",
-						"format": "dsv"
+						"format": "embedded"
 					},
-					"q": "[[Category:S0035]]",
-					"po": "?Has page extra|?Has text extra"
+					"q": "[[Category:SA0015]]"
 				}
 			},
 			"assert-output": {
 				"to-contain": [
-					":Has page extra:Has text extra",
-					"Test\\:S0035/1:Test\\:S0035/2:",
-					"Test\\:S0035/2::S0035"
+					"<h1>.*Test:SA0015.2F1.*</h1>",
+					"Has page: <a class=\".*selflink\">Test:SA0015/2</a>",
+					"<h1>.*Test:SA0015/2.*</h1>",
+					"<b>Test:SA0015/2</b>"
 				]
 			}
 		}

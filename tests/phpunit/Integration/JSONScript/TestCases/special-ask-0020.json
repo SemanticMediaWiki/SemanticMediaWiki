@@ -8,11 +8,11 @@
 		},
 		{
 			"namespace": "NS_FILE",
-			"page": "S0039.png",
+			"page": "SA0020.png",
 			"contents": {
 				"upload": {
 					"file" : "/../Fixtures/image-upload-480.png",
-					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:S0039]]"
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:SA0020]]"
 				}
 			}
 		}
@@ -23,7 +23,7 @@
 			"about": "#0 (display image in table with width and thclass parameters)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=|+width=75px|+thclass=unsortable",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file=|+width=75px|+thclass=unsortable",
 				"request-parameters": []
 			},
 			"assert-output": {
@@ -32,7 +32,7 @@
                     "th class=\"unsortable\"",
                     "class=\"unsortable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<a href=\"/index.php/File:S0039.png\"",
+                    "<a href=\"/index.php/File:SA0020.png\"",
                     "width=\"75\""
 				]
 			}
@@ -42,14 +42,14 @@
 			"about": "#1 (display image in table with height)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=|+height=95px",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file=|+height=95px",
 				"request-parameters": []
 			},
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<a href=\"/index.php/File:S0039.png\"",
+                    "<a href=\"/index.php/File:SA0020.png\"",
                     "height=\"95\""
 				],
                 "not-contain": [
@@ -62,19 +62,19 @@
 			"about": "#2 (display image in table with width and link=)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file=|+width=30px|+link=",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file=|+width=30px|+link=",
 				"request-parameters": []
 			},
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<img alt=\"S0039.png\"",
+                    "<img alt=\"SA0020.png\"",
                     "width=\"30\""
 				],
                 "not-contain": [
                     "class=\"unsortable\"",
-                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:S0039.png\""
+                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:SA0020.png\""
                 ]
 			}
 		},
@@ -83,14 +83,14 @@
 			"about": "#3 (display image in table with 90px - using old syntax for image size)",
 			"special-page": {
 				"page": "Ask",
-				"query-parameters": "-5B-5BCategory:S0039-5D-5D/-3FHas-20file#90px",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file#90px",
 				"request-parameters": []
 			},
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<a href=\"/index.php/File:S0039.png\"",
+                    "<a href=\"/index.php/File:SA0020.png\"",
                     "width=\"90\""
 				]
 			}

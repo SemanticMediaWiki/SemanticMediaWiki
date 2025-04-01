@@ -8,23 +8,23 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "S0037/1",
-			"contents": "[[Has number::11]] [[Category:S0037]]"
+			"page": "SA0018/1",
+			"contents": "[[Has number::11]] [[Category:SA0018]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "S0037/1",
-			"contents": "[[Has number::11]] [[Category:S0037]]"
+			"page": "SA0018/1",
+			"contents": "[[Has number::11]] [[Category:SA0018]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "S0037/2",
-			"contents": "[[Has number::42]] [[Category:S0037]]"
+			"page": "SA0018/2",
+			"contents": "[[Has number::42]] [[Category:SA0018]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "S0037/3",
-			"contents": "[[Has number::1001]] [[Category:S0037]]"
+			"page": "SA0018/3",
+			"contents": "[[Has number::1001]] [[Category:SA0018]]"
 		}
 	],
 	"tests": [
@@ -44,13 +44,13 @@
 						"unescape": true,
 						"format": "json"
 					},
-					"q": "[[Category:S0037]]",
+					"q": "[[Category:SA0018]]",
 					"po": "?Has number"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/res.s-0037-0.json"
+					"contents-file" : "/../Fixtures/res.special-ask-0018-0.json"
 				}
 			}
 		}

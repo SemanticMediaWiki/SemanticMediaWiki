@@ -13,13 +13,13 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0020/1",
-			"contents": "[[Has text::Some example]] [[Category:S0020]]"
+			"page": "Example/SA0007/1",
+			"contents": "[[Has text::Some example]] [[Category:SA0007]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Example/S0020/2",
-			"contents": "[[Has number::123]] [[Has number::345]] [[Category:S0020]]"
+			"page": "Example/SA0007/2",
+			"contents": "[[Has number::123]] [[Has number::345]] [[Category:SA0007]]"
 		}
 	],
 	"tests": [
@@ -38,13 +38,13 @@
 						"unescape": true,
 						"format": "json"
 					},
-					"q": "[[Category:S0020]]",
+					"q": "[[Category:SA0007]]",
 					"po": "?Has text|?Has number"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/s-0020.0.txt"
+					"contents-file" : "/../Fixtures/special-ask-0007.0.txt"
 				}
 			}
 		},
@@ -64,13 +64,13 @@
 						"unescape": true,
 						"format": "json"
 					},
-					"q": "[[Category:S0020]]",
+					"q": "[[Category:SA0007]]",
 					"po": "?Has text|?Has number"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/s-0020.1.txt"
+					"contents-file" : "/../Fixtures/special-ask-0007.1.txt"
 				}
 			}
 		},
@@ -90,13 +90,13 @@
 						"unescape": true,
 						"format": "json"
 					},
-					"q": "[[Category:S0020]]",
+					"q": "[[Category:SA0007]]",
 					"po": "?Has text|?Has number"
 				}
 			},
 			"assert-output": {
 				"to-contain": {
-					"contents-file" : "/../Fixtures/s-0020.2.txt"
+					"contents-file" : "/../Fixtures/special-ask-0007.2.txt"
 				}
 			}
 		}

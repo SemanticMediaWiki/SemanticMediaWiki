@@ -13,8 +13,8 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "S0032/1",
-			"contents": "[[Ref prop::123;S0032/2]] [[Category:S0032]]"
+			"page": "SA0014/1",
+			"contents": "[[Ref prop::123;SA0014/2]] [[Category:SA0014]]"
 		}
 	],
 	"tests": [
@@ -33,7 +33,7 @@
 						"unescape": true,
 						"format": "json"
 					},
-					"q": "[[Category:S0032]]",
+					"q": "[[Category:SA0014]]",
 					"po": "?Ref prop.Field prop"
 				}
 			},
