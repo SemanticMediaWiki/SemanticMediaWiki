@@ -7,7 +7,7 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Example/S0009/1",
+			"page": "Example/SS0001/1",
 			"contents": "[[Has text::Some text to search]]"
 		}
 	],
@@ -15,7 +15,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/S0009/1",
+			"subject": "Example/SS0001/1",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -44,7 +44,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<ul class='mw-search-results'>",
-					"Example/S0009/1"
+					"Example/SS0001/1"
 				]
 			}
 		}

@@ -3,12 +3,12 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_CONCEPT",
-			"page": "S0030/1",
+			"page": "SC0001/1",
 			"contents": "{{#concept: [[ConceptTest::+]] |Concept with no results}}"
 		},
 		{
-			"page": "S0030/2",
-			"contents": "{{#ask: [[Concept:S0030/Unknown]] }}"
+			"page": "SC0001/2",
+			"contents": "{{#ask: [[Concept:SC0001/Unknown]] }}"
 		}
 	],
 	"tests": [
@@ -22,10 +22,10 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<a href=\".*Concept:S0030/1\" title=\"Concept:S0030/1\">Concept:S0030/1</a>"
+					"<a href=\".*Concept:SC0001/1\" title=\"Concept:SC0001/1\">Concept:SC0001/1</a>"
 				],
 				"not-contain": [
-					"Concept:S0030/Unknown"
+					"Concept:SC0001/Unknown"
 				]
 			}
 		}
