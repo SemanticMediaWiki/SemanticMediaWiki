@@ -13,17 +13,17 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0003/1",
+			"page": "Api-smwbrowse-0002/1",
 			"contents": "[[Has text::123]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0003/2",
+			"page": "Api-smwbrowse-0002/2",
 			"contents": "[[Has text::1234]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "A0003/3",
+			"page": "Api-smwbrowse-0002/3",
 			"contents": "[[Has text extra::12345]]"
 		}
 	],
