@@ -26,8 +26,15 @@ class LinkFormatterOption {
 			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
 			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
 			$mainLabel = $serialization['printouts'][$previousPrintout]['mainLabel'] ?? '';
-
 			$partsParam = explode( '=', $param, 2 );
+
+			if ( str_contains( $label, '=' ) ) {
+				if ( str_contains( $label, 'px' ) ) {
+					$mainLabel = $serialization['printouts'][$previousPrintout]['mainLabel'] ?? '';
+				} else {
+					$mainLabel = $label;
+				}
+			}
 
 			if ( !empty( $params ) ) {
 				$params['link'] = $partsParam[1];
@@ -62,7 +69,7 @@ class LinkFormatterOption {
 				$param = str_replace( "=", "", $param );
 				return $parts[0] . ';' . $param . '=' . $parts[1];
 			}
-			if ( strpos( $mainLabel, '=' ) !== true ) {
+			if ( str_contains( $mainLabel, '=' ) ) {
 				$param = str_replace( "=", "", $param );
 				return $label . ';' . $param;
 			}
@@ -71,6 +78,12 @@ class LinkFormatterOption {
 			return $parts[0] !== ''
 				? $parts[0] . '#' . $param . $parts[1]
 				: str_replace( '=', '', $label . ' #' . $param );
+		}
+		if ( $mainLabel === '' ) {
+			if ( str_contains( $label, '#' ) ) {
+				return $label . ';' . str_replace( '=', '', $param );
+			}
+			return $label . ' #' . str_replace( '=', '', $param );
 		}
 
 		return str_replace( '=', '', $label . ' #' . $param );

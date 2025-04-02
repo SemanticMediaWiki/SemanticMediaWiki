@@ -22,21 +22,21 @@ class SizeFormatterOption {
 			return [];
 		}
 
+		$mainLabel = '';
 		if ( !empty( $param ) ) {
 			$param = substr( $param, 1 );
 
 			$parts = explode( '=', $param, 2 );
 			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
+			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
 
-			if ( strpos( $label, '=' ) !== true ) {
+			if ( str_contains( $label, '=' ) ) {
 				if ( str_contains( $label, 'px' ) ) {
 					$mainLabel = $serialization['printouts'][$previousPrintout]['mainLabel'] ?? '';
 				} else {
 					$mainLabel = $label;
 				}
 			}
-
-			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
 
 			if ( !empty( $params ) ) {
 				$params[ $parts[0] ] = $parts[1];
@@ -79,14 +79,14 @@ class SizeFormatterOption {
 					$adjustedHeight = explode( '=', $param )[1];
 
 					if ( count( $partsLabel ) > 1 ) {
-						if ( strpos( $mainLabel, '=' ) ) {
+						if ( strpos( $mainLabel, '=' ) !== false ) {
 							$firstPart = rtrim( $partsLabel[0], 'px' );
 							return rtrim( $partsLabel[0], 'px' ) . 'x' . $adjustedHeight . '=' . $partsLabel[1];
 						}
 					} else {
 						$parts = explode( '#', $label );
 						$adjustedWidth = rtrim( $parts[1], 'px' );
-						if ( strpos( $mainLabel, '=' ) ) {
+						if ( strpos( $mainLabel, '=' ) !== false ) {
 							return $parts[0] . '#' . $adjustedWidth . 'x' . $adjustedHeight . '=';
 						}
 					}

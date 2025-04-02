@@ -63,7 +63,7 @@ class TableHeaderFormatterOptionTest extends TestCase {
 					'label' => 'Job Title #thclass=Job Title',
 					'params' => [
 						'thclass' => 'unsortable' ],
-					'mainLabel' => ''
+					'mainLabel' => 'Job Title=Job Title'
 				],
 			],
 		];

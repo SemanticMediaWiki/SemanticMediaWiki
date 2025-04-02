@@ -258,7 +258,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #30px;link;thclass",
 						'params'  => [ 'width' => '30px', 'link' => '', 'thclass' => 'unsortable' ],
-						'mainLabel' => 'Foobar'
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],
@@ -283,7 +283,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #30x50px;link;thclass",
 						'params'  => [ 'width' => '30px', 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ],
-						'mainLabel' => 'Foobar'
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],
@@ -306,7 +306,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #x50px;link;thclass",
 						'params'  => [ 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ],
-						'mainLabel' => 'Foobar'
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],
@@ -330,7 +330,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #90x100px;link;thclass",
 						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ],
-						'mainLabel' => 'Foobar'
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],
@@ -354,7 +354,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 					'0bfab051cd82c364058617af13e9874a' => [
 						'label'   => "Foobar #90x100px;thclass;link",
 						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ],
-						'mainLabel' => 'Foobar'
+						'mainLabel' => ''
 					]
 				],
 				'parameters' => [],

@@ -26,8 +26,15 @@ class TableHeaderFormatterOption {
 
 			$label = $serialization['printouts'][$previousPrintout]['label'] ?? '';
 			$params = $serialization['printouts'][$previousPrintout]['params'] ?? '';
-
 			$mainLabel = $serialization['printouts'][$previousPrintout]['mainLabel'] ?? '';
+
+			if ( str_contains( $label, '=' ) ) {
+				if ( str_contains( $label, 'px' ) ) {
+					$mainLabel = $serialization['printouts'][$previousPrintout]['mainLabel'] ?? '';
+				} else {
+					$mainLabel = $label;
+				}
+			}
 
 			if ( !empty( $params ) ) {
 				$params['thclass'] = $partsParam[1];
@@ -60,6 +67,12 @@ class TableHeaderFormatterOption {
 		$paramParts = explode( '=', $param );
 
 		if ( isset( $partsLabel[1] ) && $partsLabel[1] === '' && strpos( $partsLabel[0], '#' ) === false ) {
+			if ( count( $partsLabel ) > 1 ) {
+				if ( $partsLabel[1] !== '' ) {
+					return str_replace( '=', '', $label ) . ' ' . '#' . $paramParts[0] . '=' . $partsLabel[1];
+				}
+				return str_replace( '=', '', $label ) . ' ' . '#' . $paramParts[0] . '=';
+			}
 			return str_replace( '=', '', $label . ' ' . '#' . $param );
 		} else {
 			if ( strpos( $label, '#' ) !== false ) {
@@ -80,6 +93,9 @@ class TableHeaderFormatterOption {
 				if ( count( $parts ) === 1 ) {
 					return str_replace( '=', '', $labelToSave );
 				} else {
+					if ( count( $partsLabel ) === 1 ) {
+						return $labelToSave = $partsLabel[0] . ' #' . $paramParts[0];
+					}
 					if ( $partsLabel[0] !== '' ) {
 						return $labelToSave = $partsLabel[0] . ' #' . $paramParts[0] . '=' . $partsLabel[1];
 					} else {

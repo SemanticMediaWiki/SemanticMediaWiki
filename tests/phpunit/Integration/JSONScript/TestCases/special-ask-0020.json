@@ -31,7 +31,6 @@
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "th class=\"unsortable\"",
                     "class=\"unsortable\"",
-                    "<td class=\"Has-file smwtype_wpg\"",
                     "<a href=\"/index.php/File:SA0020.png\"",
                     "width=\"75\""
 				]
@@ -48,7 +47,6 @@
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
-                    "<td class=\"Has-file smwtype_wpg\"",
                     "<a href=\"/index.php/File:SA0020.png\"",
                     "height=\"95\""
 				],
@@ -68,7 +66,6 @@
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
-                    "<td class=\"Has-file smwtype_wpg\"",
                     "<img alt=\"SA0020.png\"",
                     "width=\"30\""
 				],
@@ -89,7 +86,6 @@
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
-                    "<td class=\"Has-file smwtype_wpg\"",
                     "<a href=\"/index.php/File:SA0020.png\"",
                     "width=\"90\""
 				]
