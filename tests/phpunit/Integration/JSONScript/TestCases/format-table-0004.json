@@ -7,15 +7,15 @@
 			"contents": "[[Has type::Quantity]], [[Display units::€,£,¥]] [[Corresponds to::€ 1]] [[Corresponds to::1.06 US, US$, $]] [[Corresponds to::0.70 British Pound,GBP,£]] [[Corresponds to::¥,JPY,Japanese Yen 114.2121]]"
 		},
 		{
-			"page": "Example/F0204/1",
+			"page": "Example/FT0004/1",
 			"contents": "[[Currency::12 €]] [[Currency::¥ 500]] [[Currency::2 £]]"
 		},
 		{
-			"page": "Example/F0204/2",
+			"page": "Example/FT0004/2",
 			"contents": "[[Currency::€ 20]] [[Currency::2000 JPY]] [[Currency::0.5 GBP]]"
 		},
 		{
-			"page": "Example/F0204/3",
+			"page": "Example/FT0004/3",
 			"contents": "{{#ask: [[Currency::+]] |?Currency |format=table |headers=plain }}"
 		}
 	],
@@ -23,7 +23,7 @@
 		{
 			"type": "format",
 			"about": "#0 output with different positional preference",
-			"subject": "Example/F0204/3",
+			"subject": "Example/FT0004/3",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwtext\">€&#160;12</span><span class=\"smwttcontent\">8.4&#160;£ &lt;br /&gt;¥&#160;1,370.545 &lt;br /&gt;</span></span>",
