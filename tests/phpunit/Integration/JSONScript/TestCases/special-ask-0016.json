@@ -1,0 +1,67 @@
+{
+	"description": "Test `format=dsv` output via `Special:Ask`",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page exra",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text extra",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Test:SA0016/1",
+			"contents": "Has page: [[Has page extra::Test:SA0016/2]] [[Category:SA0016]]"
+		},
+		{
+			"page": "Test:SA0016/2",
+			"contents": "Has text: [[Has text extra::SA0016]] [[Category:SA0016]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"format": "dsv"
+					},
+					"q": "[[Category:SA0016]]",
+					"po": "?Has page extra|?Has text extra"
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					":Has page extra:Has text extra",
+					"Test\\:SA0016/1:Test\\:SA0016/2:",
+					"Test\\:SA0016/2::SA0016"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
