@@ -1,0 +1,128 @@
+{
+	"description": "Test `Special:Ask` output `#ask` (#4348)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has caption",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "SA0020.png",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/image-upload-480.png",
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:SA0020]]"
+				}
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (display image in table with width and thclass parameters)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file=|+width=75px|+thclass=unsortable",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable broadtable\"",
+                    "th class=\"unsortable\"",
+                    "class=\"unsortable\"",
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<a href=\"/index.php/File:SA0020.png\"",
+                    "width=\"75\""
+				]
+			}
+		},
+        {
+			"type": "special",
+			"about": "#1 (display image in table with height)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file=|+height=95px",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable broadtable\"",
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<a href=\"/index.php/File:SA0020.png\"",
+                    "height=\"95\""
+				],
+                "not-contain": [
+                    "class=\"unsortable\""
+                ]
+			}
+		},
+        {
+			"type": "special",
+			"about": "#2 (display image in table with width and link=)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file=|+width=30px|+link=",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable broadtable\"",
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<img alt=\"SA0020.png\"",
+                    "width=\"30\""
+				],
+                "not-contain": [
+                    "class=\"unsortable\"",
+                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:SA0020.png\""
+                ]
+			}
+		},
+        {
+			"type": "special",
+			"about": "#3 (display image in table with 90px - using old syntax for image size)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0020-5D-5D/-3FHas-20file#90px",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"sortable wikitable smwtable broadtable\"",
+                    "<td class=\"Has-file smwtype_wpg\"",
+                    "<a href=\"/index.php/File:SA0020.png\"",
+                    "width=\"90\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_FILE": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with thumb output when 'ja' is used as sitelanguage." ]
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
