@@ -1,0 +1,83 @@
+{
+	"description": "Test `format=embedded` with template transclution",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "HasSomePageProperty",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "TmplFE0002",
+			"contents": "<includeonly>[[Category:FE0002]]</includeonly>"
+		},
+		{
+			"page": "Example/FE0002/1",
+			"contents": "[[Category:FE0002]]"
+		},
+		{
+			"page": "Example/FE0002/2",
+			"contents": "{{TmplFE0002}} [[Category:FE0002/1]]"
+		},
+		{
+			"page": "Example/FE0002/3",
+			"contents": "{{#ask:[[Category:FE0002]] [[Category:FE0002/1]] |format=embedded }} [[Category:FE0002/3]]"
+		},
+		{
+			"page": "Example/FE0002/Q.1",
+			"contents": "{{#ask:[[Category:FE0002]] |format=embedded }}"
+		},
+		{
+			"page": "Example/FE0002/Q.2",
+			"contents": "{{#ask:[[Category:FE0002/3]] |format=embedded }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 only those with [[Category:FE0002]] (exludes Example/FE0002/3 as no class was imported)",
+			"subject": "Example/FE0002/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F1\"><a href=.* title=\"Example/FE0002/1\">Example/FE0002/1</a></span>",
+					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F2\"><a href=.* title=\"Example/FE0002/2\">Example/FE0002/2</a></span>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 only those reachable via [[Category:FE0002/3]] ",
+			"subject": "Example/FE0002/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F3\"><a href=.* title=\"Example/FE0002/3\">Example/FE0002/3</a></span>",
+					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F2\"><a href=.* title=\"Example/FE0002/2\">Example/FE0002/2</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgQueryResultCacheType": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

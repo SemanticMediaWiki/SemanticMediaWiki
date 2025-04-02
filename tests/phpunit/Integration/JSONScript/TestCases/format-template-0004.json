@@ -18,29 +18,29 @@
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "Example/F0802/Cite publication/result format",
+			"page": "Example/FT0004/Cite publication/result format",
 			"contents": "<includeonly><div>{{{Author|}}}, <span>‘[[{{{Page|}}}|{{{Title|}}}]]’</span></div></includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "Example/F0802/Cite publication",
-			"contents": "<includeonly>{{#ask: [[{{{1|}}}]] |?=Page |?Has publication author=Author |?Has publication title=Title |format=template |template=Example/F0802/Cite publication/result format|named args=yes |link=none }}</includeonly>"
+			"page": "Example/FT0004/Cite publication",
+			"contents": "<includeonly>{{#ask: [[{{{1|}}}]] |?=Page |?Has publication author=Author |?Has publication title=Title |format=template |template=Example/FT0004/Cite publication/result format|named args=yes |link=none }}</includeonly>"
 		},
 		{
 			"do-purge": true,
-			"page": "Example/F0802/A",
+			"page": "Example/FT0004/A",
 			"contents": "{{#set: |Has publication title=Mitteilungen aus irischen Handschriften. V. Aus Egerton 1782. <em>Dūan in chōicat cest inn</em>|Has publication author=Meyer (Kuno)}}"
 		},
 		{
-			"page": "Example/F0802/B",
-			"contents": "{{#set: |Has text=Extra text by #set: {{Example/F0802/Cite publication|Example/F0802/A }} }} {{#ask: [[Example/F0802/B]] |?Has text=Text |link=none }}"
+			"page": "Example/FT0004/B",
+			"contents": "{{#set: |Has text=Extra text by #set: {{Example/FT0004/Cite publication|Example/FT0004/A }} }} {{#ask: [[Example/FT0004/B]] |?Has text=Text |link=none }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/F0802/B",
+			"subject": "Example/FT0004/B",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -56,7 +56,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/F0802/A\">Mitteilungen aus irischen Handschriften. V. Aus Egerton 1782. <em>Dūan in chōicat cest inn</em></a>’</span></div>",
+					"title=\"Example/FT0004/A\">Mitteilungen aus irischen Handschriften. V. Aus Egerton 1782. <em>Dūan in chōicat cest inn</em></a>’</span></div>",
 					"<td class=\"Text smwtype_txt\">Extra text by #set: <div>Meyer (Kuno), <span>‘"
 				]
 			}

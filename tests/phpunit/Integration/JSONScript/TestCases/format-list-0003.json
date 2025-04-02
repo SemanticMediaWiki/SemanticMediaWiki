@@ -12,12 +12,12 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "f-0403/Data",
+			"page": "fl-0003/Data",
 			"contents": "[[Version::VeryVersion]]"
 		},
 		{
-			"page": "f-0403/Test-1",
-			"contents": "{{#ask: [[f-0403/Data]] |?Version |format=list }}"
+			"page": "fl-0003/Test-1",
+			"contents": "{{#ask: [[fl-0003/Data]] |?Version |format=list }}"
 		}
 
 	],
@@ -25,7 +25,7 @@
 		{
 			"type": "parser",
 			"about": "#0 format=list outputs plain list",
-			"subject": "f-0403/Test-1",
+			"subject": "fl-0003/Test-1",
 			"assert-output": {
 				"to-contain": [
 						"VeryVersion"

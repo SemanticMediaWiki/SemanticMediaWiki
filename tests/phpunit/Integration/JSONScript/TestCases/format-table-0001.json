@@ -25,7 +25,7 @@
 			"contents": "[[Category:BoolProjects]] [[Has success state::false]] [[Has project name::Two]]"
 		},
 		{
-			"page": "Example/F0201/1",
+			"page": "Example/FT0001/1",
 			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#x|?Has project name|limit=10|format=table |link=none|headers=plain}}"
 		},
 		{
@@ -37,27 +37,27 @@
 			"contents": "{{#ask: [[Category:BoolProjects]]|?Has success state#success,failure=Status|limit=10|format=table}}"
 		},
 		{
-			"page": "Example/F0201/3",
-			"contents": "{{#subobject: |Has boolean=true |@category=F0201 }}{{#subobject: |Has boolean=false |@category=F0201 }}"
+			"page": "Example/FT0001/3",
+			"contents": "{{#subobject: |Has boolean=true |@category=FT0001 }}{{#subobject: |Has boolean=false |@category=FT0001 }}"
 		},
 		{
-			"page": "Example/F0201/3a",
-			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#✓,✕ }}"
+			"page": "Example/FT0001/3a",
+			"contents": "{{#ask: [[Category:FT0001]] |?Has boolean#✓,✕ }}"
 		},
 		{
-			"page": "Example/F0201/3b",
-			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#○,× }}"
+			"page": "Example/FT0001/3b",
+			"contents": "{{#ask: [[Category:FT0001]] |?Has boolean#○,× }}"
 		},
 		{
-			"page": "Example/F0201/3c",
-			"contents": "{{#ask: [[Category:F0201]] |?Has boolean#<span style=\"color: green; font-size: 120%;\">&#10003;</span>,<span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span>=Label on (&#10003;,&#10005;) }}"
+			"page": "Example/FT0001/3c",
+			"contents": "{{#ask: [[Category:FT0001]] |?Has boolean#<span style=\"color: green; font-size: 120%;\">&#10003;</span>,<span style=\"color: #AA0000; font-size: 120%;\">&#10005;</span>=Label on (&#10003;,&#10005;) }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "format",
 			"about": "#0 Check format#x output, see #896",
-			"subject": "Example/F0201/1",
+			"subject": "Example/FT0001/1",
 			"assert-output": {
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable\">",
@@ -98,7 +98,7 @@
 		{
 			"type": "format",
 			"about": "#3",
-			"subject": "Example/F0201/3a",
+			"subject": "Example/FT0001/3a",
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">✓</td>",
@@ -109,7 +109,7 @@
 		{
 			"type": "format",
 			"about": "#4",
-			"subject": "Example/F0201/3b",
+			"subject": "Example/FT0001/3b",
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Has-boolean smwtype_boo\" data-sort-value=\"1\">○</td>",
@@ -120,7 +120,7 @@
 		{
 			"type": "format",
 			"about": "#5",
-			"subject": "Example/F0201/3c",
+			"subject": "Example/FT0001/3c",
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Label-on-(&amp;#10003;,&amp;#10005;) smwtype_boo\" data-sort-value=\"1\"><span style=\"color: green; font-size: 120%;\">✓</span></td>",
