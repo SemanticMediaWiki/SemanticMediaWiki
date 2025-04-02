@@ -99,7 +99,7 @@ class SizeFormatterOption {
 			$labelToSave = $label . ' ' . '#' . $param;
 			if ( count( $partsLabel ) === 1 ) {
 				$splitLabel = explode( '#', $labelToSave, 2 );
-				if ( !strpos( $splitLabel[0], '=' ) ) {
+				if ( !str_contains( $splitLabel[0], '=' ) ) {
 					if ( strpos( $paramParts[0], 'height' ) !== false ) {
 						return $labelToSave = $partsLabel[0] . ' #x' . $paramParts[1];
 					}
@@ -117,7 +117,7 @@ class SizeFormatterOption {
 						return $labelToSave = $partsLabel[0] . ' #' . $paramParts[1] . '=' . $partsLabel[1];
 					} elseif ( count( $partsLabel ) === 1 ) {
 						$splitLabel = explode( '#', $labelToSave, 2 );
-						if ( !strpos( $splitLabel[0], '=' ) ) {
+						if ( !str_contains( $splitLabel[0], '=' ) ) {
 							return $labelToSave = $splitLabel[0] . '+' . '#' . $splitLabel[1];
 						}
 					} else {
