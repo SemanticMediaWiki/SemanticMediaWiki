@@ -54,7 +54,7 @@ class ChangePropagationUpdateJob extends Job {
 
 		$updateJob = new UpdateJob(
 			$this->getTitle(),
-			$this->params + [ 'origin' => 'ChangePropagationUpdateJob' ]
+			array_merge( $this->params, [ 'origin' => 'ChangePropagationUpdateJob' ] )
 		);
 
 		$updateJob->run();
