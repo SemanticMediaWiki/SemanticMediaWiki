@@ -1,0 +1,130 @@
+{
+	"description": "Test `Special:Ask` output for `format=rdf`/`format=json`/DISPLAYTITLE (#1453, #1619, `wgRestrictDisplayTitle`, `wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has boolean",
+			"contents": "[[Has type::Boolean]]"
+		},
+		{
+			"page": "Example/SA0001/1",
+			"contents": "[[Has boolean::true]] [[Category:SA0001]]"
+		},
+		{
+			"page": "Example/SA0001/2",
+			"contents": "{{DISPLAYTITLE:FOO-SA0001}} [[Category:SA0001]]"
+		},
+		{
+			"page": "Example/SA0001/Q1",
+			"contents": "{{#ask: [[Category:SA0001]] |?Category |?Has boolean=Text |link=none |format=rdf }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/SA0001/Q1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK"
+					],
+					"propertyValues": []
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"-5B-5BCategory:SA0001-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=rdf/link=none\">RDF</a>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0001-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=rdf/link=none",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<rdfs:label>Example/SA0001/1</rdfs:label>",
+					"<property:Has_boolean rdf:datatype=\"http://www.w3.org/2001/XMLSchema#boolean\">true</property:Has_boolean>",
+					"<swivt:type rdf:resource=\"http://example.org/id/Category-3ASA0001\"/>"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0001-5D-5D/-3FCategory/-3FHas-20boolean=Text/mainlabel=/limit=100/offset=0/format=json/unescape=true/prettyprint=true/link=none",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"\"fulltext\": \"Category:SA0001\"",
+					"\"fulltext\": \"Example/SA0001/1\"",
+					"\"key\": \"Has_boolean\""
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#3 (link=subject)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0001-5D-5D/mainlabel=/offset=0/format=table/link=subject",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"FOO-SA0001"
+				]
+			}
+		},
+		{
+			"type": "special",
+			"about": "#4 (link=none)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0001-5D-5D/mainlabel=/offset=0/format=table/link=none",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/SA0001/2"
+				],
+				"not-contain": [
+					"FOO-SA0001"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"wgRestrictDisplayTitle": false,
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with <swivt:type rdf:resource=\"http://example.org/id/Category-3ASA0001\"/> when 'ja' is used as sitelanguage." ]
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
