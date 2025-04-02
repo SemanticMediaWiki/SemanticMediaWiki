@@ -8,27 +8,27 @@
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "Template/F0805_show_text",
+			"page": "Template/FT0006_show_text",
 			"contents": "<includeonly>{{{Has text}}}</includeonly>"
 		},
 		{
-			"page": "Example/F0805/1",
+			"page": "Example/FT0006/1",
 			"contents": "[[Has text::123]]"
 		},
 		{
-			"page": "Example/F0805/Q.1",
-			"contents": "{{#show: Example/F0805/1 |?Has text |format=template |named args=yes |template=Template/F0805_show_text }}"
+			"page": "Example/FT0006/Q.1",
+			"contents": "{{#show: Example/FT0006/1 |?Has text |format=template |named args=yes |template=Template/FT0006_show_text }}"
 		},
 		{
-			"page": "Example/F0805/Q.2",
-			"contents": "{{#show: Example/F0805/1 |?Has text |format=plainlist |named args=yes |template=Template/F0805_show_text }}"
+			"page": "Example/FT0006/Q.2",
+			"contents": "{{#show: Example/FT0006/1 |?Has text |format=plainlist |named args=yes |template=Template/FT0006_show_text }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 (#show, `format=template` to support template parameters)",
-			"subject": "Example/F0805/Q.1",
+			"subject": "Example/FT0006/Q.1",
 			"assert-output": {
 				"to-contain": [
 					"123"
@@ -38,7 +38,7 @@
 		{
 			"type": "parser",
 			"about": "#1 (#show, `format=plainlist` to support template parameters)",
-			"subject": "Example/F0805/Q.2",
+			"subject": "Example/FT0006/Q.2",
 			"assert-output": {
 				"to-contain": [
 					"123"

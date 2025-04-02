@@ -1,0 +1,169 @@
+{
+	"description": "Test `format=template` with `sep`/`named args`/`template arguments` (#972, #2022, #2567)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0005/Sep",
+			"contents": "<includeonly>{{{Has text}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0005/Numbered",
+			"contents": "<includeonly>{{{1}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0005/Named",
+			"contents": "<includeonly>{{{Has text}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0005/NamedWithMainlabel",
+			"contents": "<includeonly>{{{main}}}{{{Has text}}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0005/Legacy",
+			"contents": "<includeonly>{{{?Has text}}}</includeonly>"
+		},
+		{
+			"page": "Example/FT0005/1",
+			"contents": "{{#subobject: |@category=FT0005 |Has text=123 |Has text=456 }} {{#subobject: |@category=FT0005 |Has text=abc }}"
+		},
+		{
+			"page": "Example/FT0005/2",
+			"contents": "[[Category:FT0005]][[Has text::foo\n=bar]]"
+		},
+		{
+			"page": "Example/FT0005/Q.1",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.3",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Legacy |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.4",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Named |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.5",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/NamedWithMainlabel |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.6",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Numbered |mainlabel=main |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.7",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Numbered |mainlabel=- |named args=no |link=none |sep= &#32;&bull;&#32; |valuesep= &#32;&bull;&#32; <nowiki/>|sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.8",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Sep |mainlabel=main |named args=yes |link=none |sep= &#32;&bull;&#32; |sort=Has text |order=asc }}"
+		},
+		{
+			"page": "Example/FT0005/Q.9",
+			"contents": "{{#ask: [[Category:FT0005]] |?Has text|+order=asc |format=template |template=Example/FT0005/Sep |named args=yes |sort=Has text |order=asc }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/FT0005/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (template contains ?... )",
+			"subject": "Example/FT0005/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"{{{?Has text}}}&#32;&#8226;&#32;{{{?Has text}}}"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (`named` selected)",
+			"subject": "Example/FT0005/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (`named` selected with mainlabel)",
+			"subject": "Example/FT0005/Q.5",
+			"assert-output": {
+				"to-contain": [
+					"Example/FT0005/1#_57b41b7f74c90a8047e5af6641be8d91123&#32;&#8226;&#32; 456&#32;&#8226;&#32;Example/FT0005/1#_e2d6bd098226ee9db95df8697f3547fbabc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (`numbered` selected)",
+			"subject": "Example/FT0005/Q.6",
+			"assert-output": {
+				"to-contain": [
+					"Example/FT0005/1#_57b41b7f74c90a8047e5af6641be8d91&#32;&#8226;&#32;Example/FT0005/1#_e2d6bd098226ee9db95df8697f3547fb"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 (`numbered` selected, without mainlabel)",
+			"subject": "Example/FT0005/Q.7",
+			"assert-output": {
+				"to-contain": [
+					"123&#32;&#8226;&#32; 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 (`valuesep` parameter omitted)",
+			"subject": "Example/FT0005/Q.8",
+			"assert-output": {
+				"to-contain": [
+					"123, 456&#32;&#8226;&#32;abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 (#2567)",
+			"subject": "Example/FT0005/Q.9",
+			"assert-output": {
+				"to-contain": [
+					"123, 456abcfoo\n=bar"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

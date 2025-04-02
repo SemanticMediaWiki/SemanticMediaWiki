@@ -27,7 +27,7 @@
 			"contents": "[[Has page property::DEF]]"
 		},
 		{
-			"page": "Example/0401",
+			"page": "Example/0001",
 			"contents": "{{#ask:[[Has page property::ABC]] |format=list}}"
 		}
 	],
@@ -35,7 +35,7 @@
 		{
 			"type": "parser-html",
 			"about": "#0 Basic List format (structure)",
-			"subject": "Example/0401",
+			"subject": "Example/0001",
 			"assert-output": {
 				"to-be-valid-html": true,
 				"to-contain": [
@@ -46,7 +46,7 @@
 		{
 			"type": "parser",
 			"about": "#1 Basic List format (order)",
-			"subject": "Example/0401",
+			"subject": "Example/0001",
 			"assert-output": {
 				"to-contain": [
 					"Bar.*Baz.*Foo.*Quok"

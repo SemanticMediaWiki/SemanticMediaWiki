@@ -8,40 +8,40 @@
 		},
 		{
 			"page": "b9/3",
-			"contents": "[[Has page::b9]] [[Category:F0306-1]]"
+			"contents": "[[Has page::b9]] [[Category:FC0006-1]]"
 		},
 		{
 			"page": "b1000/3",
-			"contents": "[[Has page::b1000]] [[Category:F0306-1]]"
+			"contents": "[[Has page::b1000]] [[Category:FC0006-1]]"
 		},
 		{
-			"page": "Example/F0306/1",
+			"page": "Example/FC0006/1",
 			"contents": {
 				"import-from": "/../Fixtures/numeric-sorting.txt"
 			}
 		},
 		{
-			"page": "Example/F0306/Q.1.1",
-			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort= |order=asc |link=none }}"
+			"page": "Example/FC0006/Q.1.1",
+			"contents": "{{#ask: [[Category:FC0006-1]] |?Has page |format=category |sort= |order=asc |link=none }}"
 		},
 		{
-			"page": "Example/F0306/Q.1.2",
-			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort= |order=desc |link=none }}"
+			"page": "Example/FC0006/Q.1.2",
+			"contents": "{{#ask: [[Category:FC0006-1]] |?Has page |format=category |sort= |order=desc |link=none }}"
 		},
 		{
-			"page": "Example/F0306/Q.1.3",
-			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort=Has page |order=asc |link=none }}"
+			"page": "Example/FC0006/Q.1.3",
+			"contents": "{{#ask: [[Category:FC0006-1]] |?Has page |format=category |sort=Has page |order=asc |link=none }}"
 		},
 		{
-			"page": "Example/F0306/Q.1.4",
-			"contents": "{{#ask: [[Category:F0306-1]] |?Has page |format=category |sort=Has page |order=desc |link=none }}"
+			"page": "Example/FC0006/Q.1.4",
+			"contents": "{{#ask: [[Category:FC0006-1]] |?Has page |format=category |sort=Has page |order=desc |link=none }}"
 		},
 		{
-			"page": "Example/F0306/Q.2.1",
+			"page": "Example/FC0006/Q.2.1",
 			"contents": "{{#ask: [[Category:Numeric sorting example]] |?Has page |format=category |sort=Has page |order=asc |link=none |mainlabel=- |headers=hide }}"
 		},
 		{
-			"page": "Example/F0306/Q.2.2",
+			"page": "Example/FC0006/Q.2.2",
 			"contents": "{{#ask: [[Category:Numeric sorting example]] |?Has page |format=category |sort=Has page |order=desc |link=none |mainlabel=- |headers=hide }}"
 		}
 	],
@@ -53,7 +53,7 @@
 				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
 				"virtuoso": "No results on Virtuoso maybe due to numeric setting"
 			},
-			"subject": "Example/F0306/Q.1.1",
+			"subject": "Example/FC0006/Q.1.1",
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
@@ -66,7 +66,7 @@
 			"skip-on":{
 				"elastic": [ "not", "Only relevant when used in connection with ES" ]
 			},
-			"subject": "Example/F0306/Q.1.1",
+			"subject": "Example/FC0006/Q.1.1",
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-column-header\">B</div><ul><li>B9.*<li>B1000"
@@ -81,7 +81,7 @@
 				"postgres": "PostgreSQL `numeric` collation generates a different order when compared with MySQL, SQLite.",
 				"virtuoso": "No results on Virtuoso maybe due to numeric setting"
 			},
-			"subject": "Example/F0306/Q.1.2",
+			"subject": "Example/FC0006/Q.1.2",
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
@@ -94,7 +94,7 @@
 			"skip-except":{
 				"elastic": "Only relevant when used in connection with ES"
 			},
-			"subject": "Example/F0306/Q.1.2",
+			"subject": "Example/FC0006/Q.1.2",
 			"assert-output": {
 				"to-contain": [
 					"<div class=\"smw-column-header\">B</div><ul><li>B1000.*<li>B9"
@@ -104,7 +104,7 @@
 		{
 			"type": "format",
 			"about": "#2 Has page, asc (different to f-0305, f-0304)",
-			"subject": "Example/F0306/Q.1.3",
+			"subject": "Example/FC0006/Q.1.3",
 			"skip-on": {
 				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03"
 			},
@@ -117,7 +117,7 @@
 		{
 			"type": "format",
 			"about": "#2.elastic Has page, asc (different to f-0305, f-0304)",
-			"subject": "Example/F0306/Q.1.3",
+			"subject": "Example/FC0006/Q.1.3",
 			"skip-except":{
 				"elastic": "Only relevant when used in connection with ES"
 			},
@@ -130,7 +130,7 @@
 		{
 			"type": "format",
 			"about": "#3 Has page, desc (different to f-0305, f-0304)",
-			"subject": "Example/F0306/Q.1.4",
+			"subject": "Example/FC0006/Q.1.4",
 			"skip-on": {
 				"elastic": "Different sorting behaviour on sortkey value like B01000/03, B09/03",
 				"hhvm-*": "HHVM (or SQLite) shows opposite B9, B1000"
@@ -144,7 +144,7 @@
 		{
 			"type": "format",
 			"about": "#3.elastic Has page, desc (different to f-0305, f-0304)",
-			"subject": "Example/F0306/Q.1.4",
+			"subject": "Example/FC0006/Q.1.4",
 			"skip-except": {
 				"elastic": "Only relevant when used in connection with ES"
 			},
@@ -157,7 +157,7 @@
 		{
 			"type": "format",
 			"about": "#4 Has page, asc, imported content",
-			"subject": "Example/F0306/Q.2.1",
+			"subject": "Example/FC0006/Q.2.1",
 			"skip-on": {
 				"elastic": "Different sorting behaviour, natural",
 				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output.",
@@ -172,7 +172,7 @@
 		{
 			"type": "format",
 			"about": "#4.elastic Has page, asc, imported content",
-			"subject": "Example/F0306/Q.2.1",
+			"subject": "Example/FC0006/Q.2.1",
 			"skip-except": {
 				"elastic": "Only relevant when used in connection with ES"
 			},
@@ -185,7 +185,7 @@
 		{
 			"type": "format",
 			"about": "#5 Has page, desc, imported content",
-			"subject": "Example/F0306/Q.2.2",
+			"subject": "Example/FC0006/Q.2.2",
 			"skip-on": {
 				"elastic": "Different sorting behaviour, natural",
 				"postgres": "PostgreSQL `numeric` collation generates a different order (natural, An-2, An-218, An-22, An-225, An-24, An-3) when compared with the MySQL output.",
@@ -200,7 +200,7 @@
 		{
 			"type": "format",
 			"about": "#5.elastic Has page, desc, imported content",
-			"subject": "Example/F0306/Q.2.2",
+			"subject": "Example/FC0006/Q.2.2",
 			"skip-except": {
 				"elastic": "Only relevant when used in connection with ES"
 			},

@@ -12,15 +12,15 @@
 			"contents": "[[Property description::Some description@en]]"
 		},
 		{
-			"page": "Example/F0206/1/1",
+			"page": "Example/FT0006/1/1",
 			"contents": "[[Has number::1001]]"
 		},
 		{
-			"page": "Example/F0206/1a",
-			"contents": "{{#ask: [[~Example/F0206/1/*]] |?Has number |format=table }}"
+			"page": "Example/FT0006/1a",
+			"contents": "{{#ask: [[~Example/FT0006/1/*]] |?Has number |format=table }}"
 		},
 		{
-			"page": "F0206/Q2",
+			"page": "FT0006/Q2",
 			"contents": "{{#ask: [[Property:Modification date]] |?Property description |format=table }}"
 		}
 	],
@@ -28,7 +28,7 @@
 		{
 			"type": "format",
 			"about": "#0",
-			"subject": "Example/F0206/1a",
+			"subject": "Example/FT0006/1a",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smwttcontent\">A number to display ....</span>",
@@ -39,7 +39,7 @@
 		{
 			"type": "format",
 			"about": "#1",
-			"subject": "F0206/Q2",
+			"subject": "FT0006/Q2",
 			"assert-output": {
 				"to-contain": [
 					"<a href=\".*Property:Modification_date\" title=\"Property:Modification date\">Modification date</a>",

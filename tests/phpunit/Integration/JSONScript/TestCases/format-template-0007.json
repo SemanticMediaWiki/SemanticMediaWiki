@@ -8,32 +8,32 @@
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "Template/F0806ByNumber",
+			"page": "Template/FT0007ByNumber",
 			"contents": "<includeonly>{{{1}}}, {{{2}}}</includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "Template/F0806ByPreferredPropLabel",
+			"page": "Template/FT0007ByPreferredPropLabel",
 			"contents": "<includeonly>{{{Some text}}}</includeonly>"
 		},
 		{
-			"page": "Example/F0806/1",
+			"page": "Example/FT0007/1",
 			"contents": "[[Some text::123]]"
 		},
 		{
-			"page": "Example/F0806/Q.1",
-			"contents": "{{#ask: [[Some text::123]] |?Some text |format=template |template=Template/F0806ByNumber }}"
+			"page": "Example/FT0007/Q.1",
+			"contents": "{{#ask: [[Some text::123]] |?Some text |format=template |template=Template/FT0007ByNumber }}"
 		},
 		{
-			"page": "Example/F0806/Q.2",
-			"contents": "{{#ask: [[Some text::123]] |?Some text |format=template |template=Template/F0806ByPreferredPropLabel |named args=yes }}"
+			"page": "Example/FT0007/Q.2",
+			"contents": "{{#ask: [[Some text::123]] |?Some text |format=template |template=Template/FT0007ByPreferredPropLabel |named args=yes }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 (#ask, `format=template` default)",
-			"subject": "Example/F0806/Q.1",
+			"subject": "Example/FT0007/Q.1",
 			"assert-output": {
 				"to-contain": [
 					"123"
@@ -43,7 +43,7 @@
 		{
 			"type": "parser",
 			"about": "#1 (#ask, `format=template`, `named args`, use canonical label instead of preferred label)",
-			"subject": "Example/F0806/Q.2",
+			"subject": "Example/FT0007/Q.2",
 			"assert-output": {
 				"to-contain": [
 					"123"
