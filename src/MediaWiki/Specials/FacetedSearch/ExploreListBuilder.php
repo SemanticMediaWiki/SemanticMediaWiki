@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
 use Html;
+use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Message;
 use SMW\Utils\UrlArgs;
 use Title;
 
