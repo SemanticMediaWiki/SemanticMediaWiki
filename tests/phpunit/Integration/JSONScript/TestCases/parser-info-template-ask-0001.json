@@ -1,5 +1,5 @@
 {
-	"description": "Test `#info`, `#ask` template output (#2347, `wgContLang=en`, `wgLang=en`)",
+	"description": "Test `#info` with template output containing `#ask` (#2347, `wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
@@ -13,56 +13,56 @@
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "P0108.Ask.Output",
+			"page": "PT0001.Ask.Output",
 			"contents": "<includeonly>{{{1}}} {{{2}}}</includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "P0108.Ask",
-			"contents": "<includeonly>{{#ask: [[Has page::P0108]] |?Has page |limit=1 |format=template |link=none |template=P0108.Ask.Output }}</includeonly>"
+			"page": "PT0001.Ask",
+			"contents": "<includeonly>{{#ask: [[Has page::PT0001]] |?Has page |limit=1 |format=template |link=none |template=PT0001.Ask.Output }}</includeonly>"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
-			"page": "P0108",
-			"contents": "{{#info: message={{P0108.Ask}} }}"
+			"page": "PT0001",
+			"contents": "{{#info: message={{PT0001.Ask}} }}"
 		},
 		{
-			"page": "Test/P0108/1",
-			"contents": "[[Has page::P0108]]"
+			"page": "Test/PT0001/1",
+			"contents": "[[Has page::PT0001]]"
 		},
 		{
-			"page": "Test/P0108/2",
-			"contents": "{{P0108}}"
+			"page": "Test/PT0001/2",
+			"contents": "{{PT0001}}"
 		},
 		{
-			"page": "Test/P0108/3",
+			"page": "Test/PT0001/3",
 			"contents": "{{#set: Has text=Text with an [[Has page::annotation]] }}"
 		},
 		{
-			"page": "Test/P0108/4",
-			"contents": "{{#info: message={{#show: Test/P0108/3 |?Has text }} }}"
+			"page": "Test/PT0001/4",
+			"contents": "{{#info: message={{#show: Test/PT0001/3 |?Has text }} }}"
 		},
 		{
-			"page": "Test/P0108/5",
-			"contents": "{{#info: {{#show: Test/P0108/3 |?Has text }} }}"
+			"page": "Test/PT0001/5",
+			"contents": "{{#info: {{#show: Test/PT0001/3 |?Has text }} }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 #info with template generate output including encoded (&#91;) on/off marker",
-			"subject": "Test/P0108/2",
+			"subject": "Test/PT0001/2",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Test/P0108/1 P0108\">",
-					"<span class=\"smwttcontent\">Test/P0108/1 P0108</span>"
+					"title=\"Test/PT0001/1 PT0001\">",
+					"<span class=\"smwttcontent\">Test/PT0001/1 PT0001</span>"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1 $info + #show (no annotation is leaked via a text element)",
-			"subject": "Test/P0108/4",
+			"subject": "Test/PT0001/4",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -83,7 +83,7 @@
 		{
 			"type": "parser",
 			"about": "#2 $info + #show (no annotation is leaked via a text element)",
-			"subject": "Test/P0108/5",
+			"subject": "Test/PT0001/5",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,

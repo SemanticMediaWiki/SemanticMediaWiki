@@ -5,14 +5,14 @@
 			"namespace": "SMW_NS_SCHEMA",
 			"page": "Constraint:ShapeConstraint/MaxCardinality",
 			"contents": {
-				"import-from": "/../Fixtures/p-1110-constraint-shape-constraint-max-cardinality.json"
+				"import-from": "/../Fixtures/parser-schema-constraint-shape-constraint-max-cardinality.json"
 			}
 		},
 		{
 			"namespace": "SMW_NS_SCHEMA",
 			"page": "Constraint:ShapeConstraint/PropertyType",
 			"contents": {
-				"import-from": "/../Fixtures/p-1110-constraint-shape-constraint-property-type.json"
+				"import-from": "/../Fixtures/parser-schema-constraint-shape-constraint-property-type.json"
 			}
 		},
 		{

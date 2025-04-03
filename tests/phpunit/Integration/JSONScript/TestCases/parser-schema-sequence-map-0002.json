@@ -5,7 +5,7 @@
 			"namespace": "SMW_NS_SCHEMA",
 			"page": "Profile:AnnotationSequenceMap",
 			"contents": {
-				"import-from": "/../Fixtures/p-1120-annotation-sequence-map.json"
+				"import-from": "/../Fixtures/parser-schema-annotation-sequence-map.json"
 			}
 		},
 		{

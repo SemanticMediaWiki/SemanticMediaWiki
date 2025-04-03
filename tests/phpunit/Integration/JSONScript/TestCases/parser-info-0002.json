@@ -2,11 +2,11 @@
 	"description": "Test `#info`, `#ask`/`#show` with error output (`wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
-			"page": "P0109/1",
-			"contents": "Info: {{#info: message=Test some error {{#show: [[P0109/2]] |?Has text }} }}"
+			"page": "PI0002/1",
+			"contents": "Info: {{#info: message=Test some error {{#show: [[PI0002/2]] |?Has text }} }}"
 		},
 		{
-			"page": "P0109/2",
+			"page": "PI0002/2",
 			"contents": "Info: {{#info: message=Test some <span style='color:red;'>error</span> }}"
 		}
 	],
@@ -14,7 +14,7 @@
 		{
 			"type": "parser",
 			"about": "#0 switch #info to error display, inner `smw-highlighter` is removed",
-			"subject": "P0109/1",
+			"subject": "PI0002/1",
 			"assert-output": {
 				"n-sequence": true,
 				"to-contain": [
@@ -26,7 +26,7 @@
 		{
 			"type": "parser",
 			"about": "#1 inner <span> remains",
-			"subject": "P0109/2",
+			"subject": "PI0002/2",
 			"assert-output": {
 				"n-sequence": true,
 				"to-contain": [

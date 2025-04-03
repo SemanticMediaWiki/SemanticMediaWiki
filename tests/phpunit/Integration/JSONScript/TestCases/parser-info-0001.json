@@ -3,27 +3,27 @@
 	"setup": [
 		{
 			"message-cache": "clear",
-			"page": "P0106/Warning",
+			"page": "PI0001/Warning",
 			"contents": "{{#info: an warning text | warning }}"
 		},
 		{
 			"message-cache": "clear",
-			"page": "P0106/Error",
+			"page": "PI0001/Error",
 			"contents": "{{#info: an error text | error }}"
 		},
 		{
 			"message-cache": "clear",
-			"page": "P0106/Note",
+			"page": "PI0001/Note",
 			"contents": "{{#info: an info note | note }}"
 		},
 		{
 			"message-cache": "clear",
-			"page": "P0106/Numeric_value",
+			"page": "PI0001/Numeric_value",
 			"contents": "{{#info: 1 }}"
 		},
 		{
 			"message-cache": "clear",
-			"page": "P0106/maxwidth_theme",
+			"page": "PI0001/maxwidth_theme",
 			"contents": "{{#info: some text |max-width=300 |theme=square-border}}"
 		}
 	],
@@ -31,7 +31,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "P0106/Warning",
+			"subject": "PI0001/Warning",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\" data-title=\"Warning\" title=\"an warning text\">",
@@ -43,7 +43,7 @@
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "P0106/Error",
+			"subject": "PI0001/Error",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"5\" data-state=\"inline\" data-title=\"Error\" title=\"an error text\">",
@@ -55,7 +55,7 @@
 		{
 			"type": "parser",
 			"about": "#2",
-			"subject": "P0106/Note",
+			"subject": "PI0001/Note",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"8\" data-state=\"inline\" data-title=\"Note\" title=\"an info note\">",
@@ -67,7 +67,7 @@
 		{
 			"type": "parser",
 			"about": "#3",
-			"subject": "P0106/Numeric_value",
+			"subject": "PI0001/Numeric_value",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"1\">",
@@ -79,7 +79,7 @@
 		{
 			"type": "parser",
 			"about": "#4 (adding max-width, theme parameters)",
-			"subject": "P0106/maxwidth_theme",
+			"subject": "PI0001/maxwidth_theme",
 			"assert-output": {
 				"to-contain": [
 					"<span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"some text\" data-maxwidth=\"300\" data-tooltipclass=\"square-border\">",
