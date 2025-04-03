@@ -7,11 +7,11 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"page": "Example/P1005/A",
+			"page": "Example/PP0005/A",
 			"contents": "[[Has page test::Sort]] {{DEFAULTSORT:XXX}}"
 		},
 		{
-			"page": "Example/P1005/B",
+			"page": "Example/PP0005/B",
 			"contents": "[[Has page test::Sort]] {{DEFAULTSORT:AAA}}"
 		}
 	],
@@ -28,8 +28,8 @@
 					}
 				},
 				"to-contain": [
-					"<div class=\"smw-table-cell header-title\"><div id=\"A\">A</div>.*<div class=\"smw-table-cell smwpropname\" data-list-index=\"0\"><a href=\".*/Example/P1005/B\" title=\"Example/P1005/B\">Example/P1005/B</a>",
-					"<div class=\"smw-table-cell header-title\"><div id=\"X\">X</div>.*<div class=\"smw-table-cell smwpropname\" data-list-index=\"1\"><a href=\".*/Example/P1005/A\" title=\"Example/P1005/A\">Example/P1005/A</a>"
+					"<div class=\"smw-table-cell header-title\"><div id=\"A\">A</div>.*<div class=\"smw-table-cell smwpropname\" data-list-index=\"0\"><a href=\".*/Example/PP0005/B\" title=\"Example/PP0005/B\">Example/PP0005/B</a>",
+					"<div class=\"smw-table-cell header-title\"><div id=\"X\">X</div>.*<div class=\"smw-table-cell smwpropname\" data-list-index=\"1\"><a href=\".*/Example/PP0005/A\" title=\"Example/PP0005/A\">Example/PP0005/A</a>"
 				]
 			}
 		}

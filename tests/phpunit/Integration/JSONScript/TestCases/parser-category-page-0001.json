@@ -3,7 +3,7 @@
 	"setup": [
 		{
 			"namespace": "NS_MAIN",
-			"page": "P1012",
+			"page": "PP0001",
 			"contents": "test"
 		},
 		{
@@ -13,8 +13,8 @@
 		},
 		{
 			"namespace": "NS_CATEGORY",
-			"page": "P1012",
-			"contents": "[[Has page::P1012]]"
+			"page": "PP0001",
+			"contents": "[[Has page::PP0001]]"
 		}
 	],
 	"tests": [
@@ -22,13 +22,13 @@
 			"type": "parser",
 			"about": "#0",
 			"namespace": "NS_CATEGORY",
-			"subject": "P1012",
+			"subject": "PP0001",
 			"assert-output": {
 				"onPageView": {
 					"parameters": {}
 				},
 				"to-contain": [
-					"<p><a href=\".*/P1012\" title=\"P1012\">P1012</a>"
+					"<p><a href=\".*/PP0001\" title=\"PP0001\">PP0001</a>"
 				]
 			}
 		}

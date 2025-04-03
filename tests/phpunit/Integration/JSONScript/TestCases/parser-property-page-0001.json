@@ -3,13 +3,13 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "P1011",
+			"page": "PP0001",
 			"contents": "[[Has type::Number]]"
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "P1011/1",
-			"contents": "[[P1011::1]] [[P1011::2]] [[P1011::3]] [[P1011::4]] [[P1011::5]]"
+			"page": "PP0001/1",
+			"contents": "[[PP0001::1]] [[PP0001::2]] [[PP0001::3]] [[PP0001::4]] [[PP0001::5]]"
 		}
 	],
 	"tests": [
@@ -17,16 +17,16 @@
 			"type": "parser",
 			"about": "#0 (ensure only one `…` appears when more than 3 (see `smwgMaxPropertyValues`) annotations are available)",
 			"namespace": "SMW_NS_PROPERTY",
-			"subject": "P1011",
+			"subject": "PP0001",
 			"assert-output": {
 				"onPageView": {
 					"parameters": {}
 				},
 				"to-contain": [
-					"<a href=\".*/P1011-2F1::P1011\" title=\".*/P1011-2F1::P1011\">…</a></div>"
+					"<a href=\".*/PP0001-2F1::PP0001\" title=\".*/PP0001-2F1::PP0001\">…</a></div>"
 				],
 				"not-contain": [
-					"<a href=\".*/P1011-2F1::P1011\" title=\".*/P1011-2F1::P1011\">…</a>, <a href=\".*/P1011-2F1::P1011\" title=\".*/P1011-2F1::P1011\">…</a></div>"
+					"<a href=\".*/PP0001-2F1::PP0001\" title=\".*/PP0001-2F1::PP0001\">…</a>, <a href=\".*/PP0001-2F1::PP0001\" title=\".*/PP0001-2F1::PP0001\">…</a></div>"
 				]
 			}
 		}

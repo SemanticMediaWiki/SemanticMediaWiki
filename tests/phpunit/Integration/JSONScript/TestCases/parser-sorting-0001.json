@@ -7,27 +7,27 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"page": "Example/P1007/1",
-			"contents": "[[knows page::Example/P1007/Ref 3]]"
+			"page": "Example/PS0001/1",
+			"contents": "[[knows page::Example/PS0001/Ref 3]]"
 		},
 		{
-			"page": "Example/P1007/2",
-			"contents": "[[knows page::Example/P1007/Ref 2]]"
+			"page": "Example/PS0001/2",
+			"contents": "[[knows page::Example/PS0001/Ref 2]]"
 		},
 		{
-			"page": "Example/P1007/3",
-			"contents": "[[knows page::Example/P1007/Ref 1]]"
+			"page": "Example/PS0001/3",
+			"contents": "[[knows page::Example/PS0001/Ref 1]]"
 		},
 		{
-			"page": "Example/P1007/Ref 1",
+			"page": "Example/PS0001/Ref 1",
 			"contents": "SomeContent"
 		},
 		{
-			"page": "Example/P1007/Ref 3",
+			"page": "Example/PS0001/Ref 3",
 			"contents": "SomeContent"
 		},
 		{
-			"page": "Example/P1007/Test",
+			"page": "Example/PS0001/Test",
 			"contents": "{{#ask:[[knows page::+]]|?knows page |sort=knows page|format=plainlist}}"
 		}
 	],
@@ -35,9 +35,9 @@
 		{
 			"type": "parser",
 			"about": "#0 (verify pages referencing non-existent pages are included in the result)",
-			"subject": "Example/P1007/Test",
+			"subject": "Example/PS0001/Test",
 			"assert-output": {
-				"to-contain": "Example/P1007/3.*Example/P1007/2.*Example/P1007/1"
+				"to-contain": "Example/PS0001/3.*Example/PS0001/2.*Example/PS0001/1"
 			}
 		}
 	],

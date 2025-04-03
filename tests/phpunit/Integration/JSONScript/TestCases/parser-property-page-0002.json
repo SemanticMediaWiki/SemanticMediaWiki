@@ -3,13 +3,13 @@
 	"setup": [
 		{
 			"namespace": "NS_CATEGORY",
-			"page": "P1009",
+			"page": "PP0002",
 			"contents": ""
 		},
 		{
 			"namespace": "NS_CATEGORY",
-			"page": "P1009/1",
-			"contents": "[[Category:P1009]]"
+			"page": "PP0002/1",
+			"contents": "[[Category:PP0002]]"
 		}
 	],
 	"beforeTest": {
@@ -24,7 +24,7 @@
 			"type": "parser",
 			"about": "#0 (using predefined property, forced type URL)",
 			"namespace": "NS_CATEGORY",
-			"subject": "P1009/1",
+			"subject": "PP0002/1",
 			"store": {
 				"clear-cache": true
 			},
@@ -50,7 +50,7 @@
 					"parameters": {}
 				},
 				"to-contain": [
-					"<span class=\"smwbrowse\"><a href=\".*Special:Browse/:Category:P1009\" title=\"Special:Browse/:Category:P1009\">+</a></span>"
+					"<span class=\"smwbrowse\"><a href=\".*Special:Browse/:Category:PP0002\" title=\"Special:Browse/:Category:PP0002\">+</a></span>"
 				]
 			}
 		}
