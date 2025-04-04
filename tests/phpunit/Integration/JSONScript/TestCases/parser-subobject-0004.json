@@ -1,0 +1,108 @@
+{
+	"description": "Test #subobject with assigned sortkey, default order etc.",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"page": "Example/PS0004/1",
+			"contents": "{{#subobject: foo |Has text=foo }} {{#subobject: bar |Has text=bar }} {{#subobject: baz |Has text=baz }}"
+		},
+		{
+			"page": "Example/PS0004/2",
+			"contents": "{{#subobject: baz |Has text=baz }} {{#subobject: foo |Has text=foo }} {{#subobject: bar |Has text=bar }}"
+		},
+		{
+			"page": "Example/PS0004/Q.1",
+			"contents": "{{#ask: [[-Has subobject::Example/PS0004/1]] |?Has text }}"
+		},
+		{
+			"page": "Example/PS0004/Q.2",
+			"contents": "{{#ask: [[-Has subobject::Example/PS0004/2]] |?Has text }}"
+		},
+		{
+			"page": "Example/PS0004/3",
+			"contents": "{{#subobject: foo |Has text=foo }} {{#subobject: bar |Has text=bar |@sortkey=zzz }} {{#subobject: baz |Has text=baz }}"
+		},
+		{
+			"page": "Example/PS0004/4",
+			"contents": "{{#subobject: baz |Has text=baz }} {{#subobject: foo |Has text=foo }} {{#subobject: bar |Has text=bar|@sortkey=zzz }}"
+		},
+		{
+			"page": "Example/PS0004/Q.3",
+			"contents": "{{#ask: [[-Has subobject::Example/PS0004/3]] |?Has text }}"
+		},
+		{
+			"page": "Example/PS0004/Q.4",
+			"contents": "{{#ask: [[-Has subobject::Example/PS0004/4]] |?Has text }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (default order without explicit sortkey)",
+			"subject": "Example/PS0004/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" .*Example/PS0004/1#bar\" title=\"Example/PS0004/1\">Example/PS0004/1#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/PS0004/1#baz\" title=\"Example/PS0004/1\">Example/PS0004/1#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/PS0004/1#foo\" title=\"Example/PS0004/1\">Example/PS0004/1#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 same as #0 (default order without explicit sortkey, order independent from the page position)",
+			"subject": "Example/PS0004/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" .*Example/PS0004/2#bar\" title=\"Example/PS0004/2\">Example/PS0004/2#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/PS0004/2#baz\" title=\"Example/PS0004/2\">Example/PS0004/2#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/PS0004/2#foo\" title=\"Example/PS0004/2\">Example/PS0004/2#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (with explicit sortkey)",
+			"subject": "Example/PS0004/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" .*Example/PS0004/3#baz\" title=\"Example/PS0004/3\">Example/PS0004/3#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/PS0004/3#foo\" title=\"Example/PS0004/3\">Example/PS0004/3#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/PS0004/3#bar\" title=\"Example/PS0004/3\">Example/PS0004/3#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 same as #2 (with explicit sortkey, order independent from the page position)",
+			"subject": "Example/PS0004/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" .*Example/PS0004/4#baz\" title=\"Example/PS0004/4\">Example/PS0004/4#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/PS0004/4#foo\" title=\"Example/PS0004/4\">Example/PS0004/4#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/PS0004/4#bar\" title=\"Example/PS0004/4\">Example/PS0004/4#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

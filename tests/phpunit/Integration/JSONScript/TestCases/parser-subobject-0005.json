@@ -7,7 +7,7 @@
 			"contents": "[[Has type::Number]]"
 		},
 		{
-			"page": "Example/P0462/1",
+			"page": "Example/PS0005/1",
 			"contents": "{{#subobject: Has number=abc}}{{#subobject: Has number=abcd|Has number=abc}} {{#subobject:Test |Has number=abcd|Has number=abc}}"
 		}
 	],
@@ -15,7 +15,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d",
+			"subject": "Example/PS0005/1#_ERR94964c120bceb578838ce0b62394aa2d",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -34,7 +34,7 @@
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "Example/P0462/1#_ERR4744c471aa3515bcba21a12a9b387f78",
+			"subject": "Example/PS0005/1#_ERR4744c471aa3515bcba21a12a9b387f78",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -53,7 +53,7 @@
 		{
 			"type": "parser",
 			"about": "#2",
-			"subject": "Example/P0462/1#_c71be766a73df58730d12de08322a103",
+			"subject": "Example/PS0005/1#_c71be766a73df58730d12de08322a103",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -63,7 +63,7 @@
 						"_ERRC"
 					],
 					"propertyValues": [
-						"Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d"
+						"Example/PS0005/1#_ERR94964c120bceb578838ce0b62394aa2d"
 					]
 				}
 			}
@@ -71,7 +71,7 @@
 		{
 			"type": "parser",
 			"about": "#3",
-			"subject": "Example/P0462/1#_8e3bf5d37464a8fe3a6b0fd220e47d2c",
+			"subject": "Example/PS0005/1#_8e3bf5d37464a8fe3a6b0fd220e47d2c",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -81,8 +81,8 @@
 						"_ERRC"
 					],
 					"propertyValues": [
-						"Example/P0462/1#_ERR4744c471aa3515bcba21a12a9b387f78",
-						"Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d"
+						"Example/PS0005/1#_ERR4744c471aa3515bcba21a12a9b387f78",
+						"Example/PS0005/1#_ERR94964c120bceb578838ce0b62394aa2d"
 					]
 				}
 			}
@@ -90,7 +90,7 @@
 		{
 			"type": "parser",
 			"about": "#4",
-			"subject": "Example/P0462/1#Test",
+			"subject": "Example/PS0005/1#Test",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -100,8 +100,8 @@
 						"_ERRC"
 					],
 					"propertyValues": [
-						"Example/P0462/1#_ERR4744c471aa3515bcba21a12a9b387f78",
-						"Example/P0462/1#_ERR94964c120bceb578838ce0b62394aa2d"
+						"Example/PS0005/1#_ERR4744c471aa3515bcba21a12a9b387f78",
+						"Example/PS0005/1#_ERR94964c120bceb578838ce0b62394aa2d"
 					]
 				}
 			}
