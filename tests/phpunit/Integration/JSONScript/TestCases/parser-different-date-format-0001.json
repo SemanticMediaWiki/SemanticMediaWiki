@@ -12,19 +12,19 @@
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"page": "Example/P1004/1",
-			"contents": "[[Has date::1 Jan 1970]] [[Has date 2::2 Jan 2000]] [[Category:P1004]]"
+			"page": "Example/PD0001/1",
+			"contents": "[[Has date::1 Jan 1970]] [[Has date 2::2 Jan 2000]] [[Category:PD0001]]"
 		},
 		{
-			"page": "Example/P1004/Q.1",
-			"contents": "{{#ask: [[Category:P1004]] |?Modification date |?Has date |?Has date 2 |?Has date#ISO |limit=10 }}"
+			"page": "Example/PD0001/Q.1",
+			"contents": "{{#ask: [[Category:PD0001]] |?Modification date |?Has date |?Has date 2 |?Has date#ISO |limit=10 }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 (all `_dat` (Has date 2) -> JD, `_MDAT` (Modification date) -> ISO, First `Has date` -> MEDIAWIKI, Second `Has date` overrides default with ISO)",
-			"subject": "Example/P1004/Q.1",
+			"subject": "Example/PD0001/Q.1",
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Modification-date smwtype_dat\" data-sort-value=.*T.*</td>",

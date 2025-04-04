@@ -4,29 +4,29 @@
 		{
 			"page": "Page0 (parenthesis)",
 			"namespace": "NS_MAIN",
-			"contents": "[[Category:P0921]]"
+			"contents": "[[Category:PA0001]]"
 		},
 		{
 			"page": "Yours, Mine and Ours (1968 film)",
 			"namespace": "NS_MAIN",
-			"contents": "[[Category:P0921]] [[Has page::Il Buono, il Brutto, il Cattivo]]"
+			"contents": "[[Category:PA0001]] [[Has page::Il Buono, il Brutto, il Cattivo]]"
 		},
 		{
-			"page": "P0921/Q.1",
+			"page": "PA0001/Q.1",
 			"namespace": "NS_MAIN",
-			"contents": "{{#ask: [[Category:P0921]] }}"
+			"contents": "{{#ask: [[Category:PA0001]] }}"
 		},
 		{
-			"page": "P0921/Q.2",
+			"page": "PA0001/Q.2",
 			"namespace": "NS_MAIN",
-			"contents": "{{#ask: [[Category:P0921]] |?Has page }}"
+			"contents": "{{#ask: [[Category:PA0001]] |?Has page }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 (parenthetical page titles stripped as per pipe trick)",
-			"subject": "P0921/Q.1",
+			"subject": "PA0001/Q.1",
 			"assert-output": {
 				"to-contain": [
 					">Page0<"
@@ -39,7 +39,7 @@
 		{
 			"type": "parser",
 			"about": "#1 (pipe trick on subject and printout)",
-			"subject": "P0921/Q.2",
+			"subject": "PA0001/Q.2",
 			"assert-output": {
 				"to-contain": [
 					">Yours, Mine and Ours<",
