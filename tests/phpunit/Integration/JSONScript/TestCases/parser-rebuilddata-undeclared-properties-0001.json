@@ -7,13 +7,13 @@
 			"contents": "[[Has type::Number]]"
 		},
 		{
-			"page": "Test/P0207",
-			"contents": "{{#set:Has number=12}} {{#set:Undeclared property=abc}} [[Undeclared prop::P0207]]"
+			"page": "Test/PR0001",
+			"contents": "{{#set:Has number=12}} {{#set:Undeclared property=abc}} [[Undeclared prop::PR0001]]"
 		},
 		{
 			"namespace": "NS_HELP",
-			"page": "Test/P0207/1",
-			"contents": "{{:Test/P0207}}"
+			"page": "Test/PR0001/1",
+			"contents": "{{:Test/PR0001}}"
 		}
 	],
 	"beforeTest": {
@@ -25,7 +25,7 @@
 		{
 			"type": "parser",
 			"about": "#0 Rebuild + clear cache to verify that the disposer (#1216) didn't remove undeclared properties that still contain references",
-			"subject": "Test/P0207",
+			"subject": "Test/PR0001",
 			"store": {
 				"clear-cache": true
 			},
@@ -44,7 +44,7 @@
 					"propertyValues": [
 						12,
 						"Abc",
-						"P0207"
+						"PR0001"
 					]
 				}
 			}
@@ -53,7 +53,7 @@
 			"type": "parser",
 			"about": "#1 embedded page on disabled namespace",
 			"namespace": "NS_HELP",
-			"subject": "Test/P0207/1",
+			"subject": "Test/PR0001/1",
 			"store": {
 				"clear-cache": true
 			},
@@ -65,7 +65,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<a href=\".* title=\"P0207.*\">P0207</a>"
+					"<a href=\".* title=\"PR0001.*\">PR0001</a>"
 				]
 			}
 		}

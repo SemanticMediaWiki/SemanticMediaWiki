@@ -7,23 +7,23 @@
 			"contents": ""
 		},
 		{
-			"page": "P0213/1",
+			"page": "PS0001/1",
 			"contents": "{{#show:[[Display title of::page_with_display_title]]}}"
 		},
 		{
-			"page": "P0213/2",
+			"page": "PS0001/2",
 			"contents": "{{#show:[[]][[]]}}"
 		},
 		{
-			"page": "P0213/3",
+			"page": "PS0001/3",
 			"contents": "{{#show:[[Display title of::page_with_display_title]][[]]]}}"
 		},
 		{
-			"page": "P0213/4",
+			"page": "PS0001/4",
 			"contents": "{{#show:[[Display title of::page_with_display_title]][[Display title of::page_with_display_title]]}}"
 		},
 		{
-			"page": "P0213/5",
+			"page": "PS0001/5",
 			"contents": "{{#show:sdf[[]]asdasd[[]]asd}}"
 		}
 	],
@@ -31,7 +31,7 @@
 		{
 			"type": "parser",
 			"about": "#0, #4349 use case 1, produces an error message",
-			"subject": "P0213/1",
+			"subject": "PS0001/1",
 			"assert-output": {
 				"to-contain": [
 					"The part &quot;&#93;&#93;&quot; of the query was not understood.Results might not be as expected."
@@ -41,7 +41,7 @@
 		{
 			"type": "parser",
 			"about": "#1, #4349 use case 2, produces an error message",
-			"subject": "P0213/2",
+			"subject": "PS0001/2",
 			"assert-output": {
 				"to-contain": [
 					"The symbol &quot;&amp;#91;&amp;#91;&quot; was used in a place where it is not useful."
@@ -51,7 +51,7 @@
 		{
 			"type": "parser",
 			"about": "#2, #4349 use case 3, produces an error message",
-			"subject": "P0213/3",
+			"subject": "PS0001/3",
 			"assert-output": {
 				"to-contain": [
 					"The symbol &quot;&amp;#91;&amp;#91;&quot; was used in a place where it is not useful."
@@ -61,7 +61,7 @@
 		{
 			"type": "parser",
 			"about": "#3, #4349 use case 4, produces an error message",
-			"subject": "P0213/4",
+			"subject": "PS0001/4",
 			"assert-output": {
 				"to-contain": [
 					"The symbol &quot;&amp;#91;&amp;#91;&quot; was used in a place where it is not useful."
@@ -71,7 +71,7 @@
 		{
 			"type": "parser",
 			"about": "#4, #4349 use case 5, produces an error message",
-			"subject": "P0213/5",
+			"subject": "PS0001/5",
 			"assert-output": {
 				"to-contain": [
 					"The symbol &quot;&amp;#91;&amp;#91;&quot; was used in a place where it is not useful."
