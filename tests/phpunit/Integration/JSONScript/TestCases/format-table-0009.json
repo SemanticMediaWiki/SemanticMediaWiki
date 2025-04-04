@@ -1,0 +1,50 @@
+{
+	"description": "Test `format=table` on `_tem`/ `_num` with `LOCAL@...` output (#1591, `wgContLang=es`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has temperature",
+			"contents": "[[Has type::Temperature]]"
+		},
+		{
+			"page": "Example/FT0009/1",
+			"contents": "{{#subobject: |Has temperature = 3,928 K |@category=FT0009}}{{#subobject: |Has temperature = 113,928 K |@category=FT0009 }}{{#subobject: |Has temperature = 5413,928 K |@category=FT0009 }}{{#subobject: |Has temperature = 44413,928 K |@category=FT0009 }}"
+		},
+		{
+			"page": "Example/FT0009/Q1.1",
+			"contents": "{{#ask: [[Category:FT0009]] |?Has temperature |?Has temperature#LOCL@fr=fr }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 different lang formatting (en for user lang + fr) rules don't interfere with each other",
+			"subject": "Example/FT0009/Q1.1",
+			"assert-output": {
+				"to-contain": [
+					"<span class=\"smwtext\">5,413.928&#160;K</span><span class=\"smwttcontent\">5,140.778&#160;°C &lt;br /&gt;9,285.4&#160;°F &lt;br /&gt;9,745.07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">5&#160;413,928&#160;K</span><span class=\"smwttcontent\">5&#160;140,778&#160;°C &lt;br /&gt;9&#160;285,4&#160;°F &lt;br /&gt;9&#160;745,07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">44,413.928&#160;K</span><span class=\"smwttcontent\">44,140.778&#160;°C &lt;br /&gt;79,485.4&#160;°F &lt;br /&gt;79,945.07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">44&#160;413,928&#160;K</span><span class=\"smwttcontent\">44&#160;140,778&#160;°C &lt;br /&gt;79&#160;485,4&#160;°F &lt;br /&gt;79&#160;945,07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">3.928&#160;K</span><span class=\"smwttcontent\">-269.222&#160;°C &lt;br /&gt;-452.6&#160;°F &lt;br /&gt;7.07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">3,928&#160;K</span><span class=\"smwttcontent\">-269,222&#160;°C &lt;br /&gt;-452,6&#160;°F &lt;br /&gt;7,07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">113.928&#160;K</span><span class=\"smwttcontent\">-159.222&#160;°C &lt;br /&gt;-254.6&#160;°F &lt;br /&gt;205.07&#160;°R &lt;br /&gt;",
+					"<span class=\"smwtext\">113,928&#160;K</span><span class=\"smwttcontent\">-159,222&#160;°C &lt;br /&gt;-254,6&#160;°F &lt;br /&gt;205,07&#160;°R &lt;br /&gt;"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "es",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

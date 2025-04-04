@@ -1,0 +1,93 @@
+{
+	"description": "Test `format=table` with DEFAULTSORT and subject,property sorting",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Is performer",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "FT0012/A",
+			"contents": "[[Category:FT0012]] {{DEFAULTSORT:FT0012/A}} [[Is performer::August]]"
+		},
+		{
+			"page": "FT0012/AB",
+			"contents": "[[Category:FT0012]] {{DEFAULTSORT:FT0012/A}} [[Is performer::September]]"
+		},
+		{
+			"page": "FT0012/Q.1",
+			"contents": "{{#ask: [[Category:FT0012]] |sort=,Is performer |order=asc,asc |format=table}}"
+		},
+		{
+			"page": "FT0012/Q.2",
+			"contents": "{{#ask: [[Category:FT0012]] |sort=,Is performer |order=asc,desc |format=table}}"
+		},
+		{
+			"page": "FT0012/Q.3",
+			"contents": "{{#ask: [[Category:FT0012]] |sort=,Is performer |order=desc,asc |format=table}}"
+		},
+		{
+			"page": "FT0012/Q.4",
+			"contents": "{{#ask: [[Category:FT0012]] |sort=,Is performer |order=desc,desc |format=table}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "format",
+			"about": "#0 ( ,Is performer | asc,asc)",
+			"subject": "FT0012/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#1 ( ,Is performer | asc,desc)",
+			"subject": "FT0012/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#2 ( ,Is performer | desc,asc)",
+			"subject": "FT0012/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>"
+				]
+			}
+		},
+		{
+			"type": "format",
+			"about": "#3 ( ,Is performer | desc,desc)",
+			"subject": "FT0012/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/AB\">FT0012/AB</a></td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"FT0012/A\">FT0012/A</a></td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

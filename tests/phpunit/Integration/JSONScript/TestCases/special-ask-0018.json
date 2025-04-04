@@ -1,0 +1,71 @@
+{
+	"description": "Test `format=json` output via `Special:Ask` to check limit, default limit, `smwgQMaxInlineLimit` type (#2474, #4172)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "SA0018/1",
+			"contents": "[[Has number::11]] [[Category:SA0018]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "SA0018/2",
+			"contents": "[[Has number::42]] [[Category:SA0018]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "SA0018/3",
+			"contents": "[[Has number::1001]] [[Category:SA0018]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0",
+			"description": "Verifies that a local or global limitation is applied before any default limit therefore it is expected that only one result item is generated (due to smwgQMaxInlineLimit=1) while the parameter definition in the `JsonResultPrinter` sets a default limit of 100 (@see setDefault).",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"link": "none",
+						"limit": "10",
+						"offset": "0",
+						"mainlabel": "",
+						"prettyprint": false,
+						"unescape": true,
+						"format": "json"
+					},
+					"q": "[[Category:SA0018]]",
+					"po": "?Has number"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.special-ask-0018-0.json"
+				}
+			}
+		}
+	],
+	"settings": {
+		"smwgQMaxInlineLimit": 1,
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

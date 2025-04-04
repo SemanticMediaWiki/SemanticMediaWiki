@@ -1,0 +1,42 @@
+{
+	"description": "Test `smwgPlainList` configuration parameter (#4367)",
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": true
+	},
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Version",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "fl-0003/Data",
+			"contents": "[[Version::VeryVersion]]"
+		},
+		{
+			"page": "fl-0003/Test-1",
+			"contents": "{{#ask: [[fl-0003/Data]] |?Version |format=list }}"
+		}
+
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 format=list outputs plain list",
+			"subject": "fl-0003/Test-1",
+			"assert-output": {
+				"to-contain": [
+						"VeryVersion"
+				],
+				"not-contain": [
+					"<span class=\"smw-format list-format"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPlainList": true
+	}
+}

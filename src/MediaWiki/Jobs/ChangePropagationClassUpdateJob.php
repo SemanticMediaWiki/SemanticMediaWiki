@@ -27,9 +27,10 @@ class ChangePropagationClassUpdateJob extends ChangePropagationUpdateJob {
 	 * @param array $params job parameters
 	 */
 	public function __construct( Title $title, $params = [] ) {
-		$params = $params + [
-			'origin' => 'ChangePropagationClassUpdateJob'
-		];
+		$params = array_merge(
+			$params,
+			[ 'origin' => 'ChangePropagationClassUpdateJob' ]
+		);
 
 		parent::__construct( $title, $params, self::JOB_COMMAND );
 	}

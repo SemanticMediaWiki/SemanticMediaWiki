@@ -1,0 +1,67 @@
+{
+	"description": "Test `Special:Ask` output `#ask` image/upload (#2009, `wgContLang=en`, `wgLang=en`, `wgEnableUploads`, `wgFileExtensions`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has caption",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "NS_FILE",
+			"page": "SA0003.png",
+			"contents": {
+				"upload": {
+					"file" : "/../Fixtures/image-upload-480.png",
+					"text" : "[[Has file::{{FULLPAGENAME}}]] [[Has caption::Test file]] [[Category:SA0003]]"
+				}
+			}
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 (display image in table with 50px|thumb|123)",
+			"special-page": {
+				"page": "Ask",
+				"query-parameters": "-5B-5BCategory:SA0003-5D-5D/-3FHas-20file#50px;thumb;123/mainlabel=-/offset=0/format=broadtable/link=all/headers=show",
+				"request-parameters": []
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-file smwtype_wpg\"",
+					"123",
+					"width=\"50\""
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgEnableUploads": true,
+		"wgFileExtensions": [
+			"png"
+		],
+		"wgDefaultUserOptions": {
+			"thumbsize": 5
+		},
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespace": "http://example.org/id/",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_FILE": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with thumb output when 'ja' is used as sitelanguage." ]
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -5,8 +5,8 @@ namespace SMW\Property\Annotators;
 use Html;
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
+use SMW\Localizer\Message;
 use SMW\MediaWiki\PageInfoProvider;
-use SMW\Message;
 use SMW\Property\Annotator;
 use Title;
 

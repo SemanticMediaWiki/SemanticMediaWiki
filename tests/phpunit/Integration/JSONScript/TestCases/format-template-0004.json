@@ -1,0 +1,78 @@
+{
+	"description": "Test `format=template` [[SMW::on/off]] regression using `named args=yes` (#1453, skip-on 1.19)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has publication title",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has publication author",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0004/Cite publication/result format",
+			"contents": "<includeonly><div>{{{Author|}}}, <span>‘[[{{{Page|}}}|{{{Title|}}}]]’</span></div></includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/FT0004/Cite publication",
+			"contents": "<includeonly>{{#ask: [[{{{1|}}}]] |?=Page |?Has publication author=Author |?Has publication title=Title |format=template |template=Example/FT0004/Cite publication/result format|named args=yes |link=none }}</includeonly>"
+		},
+		{
+			"do-purge": true,
+			"page": "Example/FT0004/A",
+			"contents": "{{#set: |Has publication title=Mitteilungen aus irischen Handschriften. V. Aus Egerton 1782. <em>Dūan in chōicat cest inn</em>|Has publication author=Meyer (Kuno)}}"
+		},
+		{
+			"page": "Example/FT0004/B",
+			"contents": "{{#set: |Has text=Extra text by #set: {{Example/FT0004/Cite publication|Example/FT0004/A }} }} {{#ask: [[Example/FT0004/B]] |?Has text=Text |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/FT0004/B",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_SKEY",
+						"_ASK",
+						"Has_text"
+					],
+					"propertyValues": []
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"title=\"Example/FT0004/A\">Mitteilungen aus irischen Handschriften. V. Aus Egerton 1782. <em>Dūan in chōicat cest inn</em></a>’</span></div>",
+					"<td class=\"Text smwtype_txt\">Extra text by #set: <div>Meyer (Kuno), <span>‘"
+				]
+			}
+		}
+	],
+	"settings": {
+		"smwgPageSpecialProperties": [ "_MDAT" ],
+		"smwgQueryResultCacheType": false,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
