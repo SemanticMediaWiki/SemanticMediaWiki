@@ -7,43 +7,43 @@
 			"contents": "[[Has type::Number]]"
 		},
 		{
-			"page": "Example/P0208/1",
+			"page": "Example/PS0001/1",
 			"contents": "{{#set:Has number=10000;2000;300;40;0;0.1;0.01;0.001;0.0001;0.02;0.003;0.0004;0.00005;4,297.31 e7|+sep=; }}"
 		},
 		{
-			"page": "Example/P0208/2",
+			"page": "Example/PS0001/2",
 			"contents": "{{#set:Has number=.1;.01;.001;.00001;4.0e-4;.2e-5;.3e5|+sep=; }}"
 		},
 		{
-			"page": "Example/P0208/3",
+			"page": "Example/PS0001/3",
 			"contents": "{{#set:Has number=-.1;-0.2;-.2e-5;-.3e5|+sep=; }}"
 		},
 		{
-			"page": "Example/P0208/1/1",
-			"contents": "{{#ask: [[Example/P0208/1]] |?Has number |format=table }}"
+			"page": "Example/PS0001/1/1",
+			"contents": "{{#ask: [[Example/PS0001/1]] |?Has number |format=table }}"
 		},
 		{
-			"page": "Example/P0208/1/2",
-			"contents": "{{#ask: [[Example/P0208/1]] |?Has number# |format=table }}"
+			"page": "Example/PS0001/1/2",
+			"contents": "{{#ask: [[Example/PS0001/1]] |?Has number# |format=table }}"
 		},
 		{
-			"page": "Example/P0208/2/1",
-			"contents": "{{#ask: [[Example/P0208/2]] |?Has number |format=table }}"
+			"page": "Example/PS0001/2/1",
+			"contents": "{{#ask: [[Example/PS0001/2]] |?Has number |format=table }}"
 		},
 		{
-			"page": "Example/P0208/2/2",
-			"contents": "{{#ask: [[Example/P0208/2]] |?Has number# |format=table }}"
+			"page": "Example/PS0001/2/2",
+			"contents": "{{#ask: [[Example/PS0001/2]] |?Has number# |format=table }}"
 		},
 		{
-			"page": "Example/P0208/3/1",
-			"contents": "{{#ask: [[Example/P0208/3]] |?Has number |format=table }}"
+			"page": "Example/PS0001/3/1",
+			"contents": "{{#ask: [[Example/PS0001/3]] |?Has number |format=table }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0208/1",
+			"subject": "Example/PS0001/1",
 			"store": {
 				"clear-cache": true
 			},
@@ -78,7 +78,7 @@
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "Example/P0208/2",
+			"subject": "Example/PS0001/2",
 			"store": {
 				"clear-cache": true
 			},
@@ -106,7 +106,7 @@
 		{
 			"type": "parser",
 			"about": "#2 #ask number output",
-			"subject": "Example/P0208/1/1",
+			"subject": "Example/PS0001/1/1",
 			"assert-output": {
 				"to-contain": [
 					"2,000",
@@ -129,7 +129,7 @@
 		{
 			"type": "parser",
 			"about": "#3 #ask plain number output",
-			"subject": "Example/P0208/1/2",
+			"subject": "Example/PS0001/1/2",
 			"assert-output": {
 				"to-contain": [
 					"2000",
@@ -152,7 +152,7 @@
 		{
 			"type": "parser",
 			"about": "#4 #ask number output (non leading zero)",
-			"subject": "Example/P0208/2/1",
+			"subject": "Example/PS0001/2/1",
 			"assert-output": {
 				"to-contain": [
 					"0.1",
@@ -168,7 +168,7 @@
 		{
 			"type": "parser",
 			"about": "#5 #ask plain number output (non leading zero)",
-			"subject": "Example/P0208/2/2",
+			"subject": "Example/PS0001/2/2",
 			"assert-output": {
 				"to-contain": [
 					"0.1",
@@ -184,7 +184,7 @@
 		{
 			"type": "parser",
 			"about": "#6 on negative use",
-			"subject": "Example/P0208/3",
+			"subject": "Example/PS0001/3",
 			"store": {
 				"clear-cache": true
 			},
@@ -209,7 +209,7 @@
 		{
 			"type": "parser",
 			"about": "#7 #ask on negative number output",
-			"subject": "Example/P0208/3/1",
+			"subject": "Example/PS0001/3/1",
 			"assert-output": {
 				"to-contain": [
 					"-30,000",

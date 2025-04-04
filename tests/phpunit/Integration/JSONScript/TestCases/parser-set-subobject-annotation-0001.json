@@ -7,21 +7,21 @@
 			"contents": "[[Has type::Date]]"
 		},
 		{
-			"page": "Example/P0211/1",
+			"page": "Example/PSS0001/1",
 			"contents": {
-				"import-from": "/../Fixtures/p-0211.1.txt"
+				"import-from": "/../Fixtures/parser-set-subobject-annotation-0001.1.txt"
 			}
 		},
 		{
-			"page": "Example/P0211/2",
+			"page": "Example/PSS0001/2",
 			"contents": {
-				"import-from": "/../Fixtures/p-0211.2.txt"
+				"import-from": "/../Fixtures/parser-set-subobject-annotation-0001.2.txt"
 			}
 		},
 		{
-			"page": "Example/P0211/3",
+			"page": "Example/PSS0001/3",
 			"contents": {
-				"import-from": "/../Fixtures/p-0211.3.txt"
+				"import-from": "/../Fixtures/parser-set-subobject-annotation-0001.3.txt"
 			}
 		}
 	],
@@ -29,7 +29,7 @@
 		{
 			"type": "parser",
 			"about": "#0 #subobject",
-			"subject": "Example/P0211/1",
+			"subject": "Example/PSS0001/1",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -45,7 +45,7 @@
 		{
 			"type": "parser",
 			"about": "#1 #set",
-			"subject": "Example/P0211/2",
+			"subject": "Example/PSS0001/2",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -68,7 +68,7 @@
 		{
 			"type": "parser",
 			"about": "#3 #set depth issue",
-			"subject": "Example/P0211/3",
+			"subject": "Example/PSS0001/3",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
