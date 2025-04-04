@@ -3,33 +3,33 @@
 	"setup": [
 		{
 			"namespace": "NS_CATEGORY",
-			"page": "Example/P0915",
-			"contents": "#REDIRECT [[Example/P0915/1]]"
+			"page": "Example/PR0001",
+			"contents": "#REDIRECT [[Example/PR0001/1]]"
 		},
 		{
 			"namespace": "NS_CATEGORY",
-			"page": "Example/P0915/SubCat",
-			"contents": "[[Category:Example/P0915]]"
+			"page": "Example/PR0001/SubCat",
+			"contents": "[[Category:Example/PR0001]]"
 		},
 		{
 			"namespace": "NS_CATEGORY",
-			"page": "Example/P0915/ValidCat",
-			"contents": "#REDIRECT [[:Category:Example/P0915/ValidCat2]]"
+			"page": "Example/PR0001/ValidCat",
+			"contents": "#REDIRECT [[:Category:Example/PR0001/ValidCat2]]"
 		},
 		{
-			"page": "Example/P0915/1",
-			"contents": "[[Category:Example/P0915]]"
+			"page": "Example/PR0001/1",
+			"contents": "[[Category:Example/PR0001]]"
 		},
 		{
-			"page": "Example/P0915/2",
-			"contents": "[[Category:Example/P0915/ValidCat]]"
+			"page": "Example/PR0001/2",
+			"contents": "[[Category:Example/PR0001/ValidCat]]"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 track category with invalid (NS_MAIN) redirect target",
-			"subject": "Example/P0915/1",
+			"subject": "Example/PR0001/1",
 			"store": {
 				"clear-cache": true
 			},
@@ -54,7 +54,7 @@
 			"type": "parser",
 			"about": "#1 track sub-category",
 			"namespace": "NS_CATEGORY",
-			"subject": "Example/P0915/SubCat",
+			"subject": "Example/PR0001/SubCat",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -70,7 +70,7 @@
 		{
 			"type": "parser",
 			"about": "#2 valid cat redirect, dsiplay the redirect target",
-			"subject": "Example/P0915/2",
+			"subject": "Example/PR0001/2",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -81,7 +81,7 @@
 						"_INST"
 					],
 					"propertyValues": [
-						"Example/P0915/ValidCat2#14##"
+						"Example/PR0001/ValidCat2#14##"
 					]
 				}
 			}
