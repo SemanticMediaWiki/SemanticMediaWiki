@@ -5,7 +5,8 @@
 			"Ans",
 			"B20180",
 			"Horus",
-			"Passawuth"
+			"Passawuth",
+			"Prem4826"
 		]
 	},
 	"smw-desc": "ทำให้วิกิของคุณเข้าถึงได้ง่ายสำหรับเครื่อง''และ''มนุษย์ ([https://www.semantic-mediawiki.org/wiki/Help:User_manual คู่มือการใช้งานแบบออนไลน์)",
@@ -36,7 +37,7 @@
 	"exportrdf": "ส่งออกหน้าเป็น RDF",
 	"smw_exportrdf_submit": "ส่งออก",
 	"uriresolver": "ตัวแปลงที่อยู่ URI",
-	"properties": "คุณลักษณะ",
+	"properties": "คุณสมบัติ",
 	"smw-categories": "หมวดหมู่",
 	"unusedproperties": "คุณสมบัติที่ไม่ได้ใช้",
 	"smw-unusedproperty-template": "$1 ของประเภท $2",
@@ -49,7 +50,7 @@
 	"smw_ask_defaultformat": "ค่าเริ่มต้น",
 	"smw-ask-delete": "เอาออก",
 	"searchbyproperty": "ค้นหาตามคุณสมบัติ",
-	"smw_sbv_property": "คุณลักษณะ:",
+	"smw_sbv_property": "คุณสมบัติ:",
 	"smw_sbv_value": "ค่า:",
 	"smw_sbv_submit": "ค้นหาผลลัพธ์",
 	"browse": "ค้นดูวิกิ",
@@ -70,7 +71,7 @@
 	"smw_adminlinks_datastructure": "โครงสร้างข้อมูล",
 	"smw-info-par-message": "ข้อความที่จะแสดง",
 	"prefs-general-options": "ตัวเลือกทั่วไป",
-	"smw-ui-tooltip-title-property": "คุณลักษณะ",
+	"smw-ui-tooltip-title-property": "คุณสมบัติ",
 	"smw-ui-tooltip-title-parameter": "พารามิเตอร์",
 	"smw-ui-tooltip-title-event": "เหตุการณ์",
 	"smw-ui-tooltip-title-note": "หมายเหตุ",
