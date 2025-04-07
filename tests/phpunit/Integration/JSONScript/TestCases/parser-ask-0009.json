@@ -2,12 +2,12 @@
 	"description": "Test `#ask` with `[[Category::Foo]]`",
 	"setup": [
 		{
-			"page": "P0710/0",
+			"page": "PA0009/0",
 			"namespace":"NS_MAIN",
 			"contents": "{{#ask: [[Category::Foo]] }}"
 		},
 		{
-			"page": "P0710/1",
+			"page": "PA0009/1",
 			"namespace":"NS_MAIN",
 			"contents": "{{#ask: [[Category::Foo||Bar]] }}"
 		}
@@ -16,7 +16,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "P0710/0",
+			"subject": "PA0009/0",
 			"assert-output": {
 				"to-contain": [
 					"\"[[Category&#58;&#58;Foo]]\" is not recognized as valid category or value annotation."
@@ -33,8 +33,8 @@
 						"_ASK"
 					],
 					"propertyValues": [
-						"P0710/0#0##_ERRc4925219842fff8c0078c42d61051c5e",
-						"P0710/0#0##_ERR32617756f0f702a55404d89059af32b8"
+						"PA0009/0#0##_ERRc4925219842fff8c0078c42d61051c5e",
+						"PA0009/0#0##_ERR32617756f0f702a55404d89059af32b8"
 					]
 				}
 			}
@@ -42,7 +42,7 @@
 		{
 			"type": "parser",
 			"about": "#1 (with disjunction)",
-			"subject": "P0710/1",
+			"subject": "PA0009/1",
 			"assert-output": {
 				"to-contain": [
 					"\"[[Category&#58;&#58;Foo||Bar]]\" is not recognized as valid category or value annotation."

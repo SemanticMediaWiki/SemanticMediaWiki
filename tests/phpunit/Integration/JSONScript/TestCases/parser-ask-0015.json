@@ -12,15 +12,15 @@
 			"contents": "#REDIRECT [[Property:Has PAGE]]"
 		},
 		{
-			"page": "Example/P0903/1",
+			"page": "Example/PA0015/1",
 			"contents": "[[Has page::ABC]]"
 		},
 		{
-			"page": "Example/P0903/2",
+			"page": "Example/PA0015/2",
 			"contents": "[[Has PAGE::ABC]]"
 		},
 		{
-			"page": "Example/P0903/3",
+			"page": "Example/PA0015/3",
 			"contents": "{{#ask:[[Has page::ABC]] |?Has page |?Has PAGE |format=table }}"
 		}
 	],
@@ -28,7 +28,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0903/3",
+			"subject": "Example/PA0015/3",
 			"store": {
 				"clear-cache": true
 			},
@@ -45,8 +45,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example/P0903/1",
-					"Example/P0903/2"
+					"Example/PA0015/1",
+					"Example/PA0015/2"
 				]
 			}
 		}

@@ -18,7 +18,7 @@
 		},
 		{
 			"namespace": "NS_FILE",
-			"page": "P0705.png",
+			"page": "PA0004.png",
 			"contents": {
 				"upload": {
 					"file" : "/../Fixtures/image-upload-480.png",
@@ -27,23 +27,23 @@
 			}
 		},
 		{
-			"page": "Example/P0705/Q.1",
+			"page": "Example/PA0004/Q.1",
 			"contents": "{{#ask: [[Has file::+]] |?Has file |format=table |limit=1 }}"
 		},
 		{
-			"page": "Example/P0705/Q.2",
-			"contents": "{{#ask: [[Has file::+]] |?Has file#120px;thumb;<b>{{#show: File:P0705.png |?Has caption |link=none}}</b>[[Extra]] |format=table |limit=1 }}"
+			"page": "Example/PA0004/Q.2",
+			"contents": "{{#ask: [[Has file::+]] |?Has file#120px;thumb;<b>{{#show: File:PA0004.png |?Has caption |link=none}}</b>[[Extra]] |format=table |limit=1 }}"
 		},
 		{
-			"page": "Example/P0705/Q.3",
+			"page": "Example/PA0004/Q.3",
 			"contents": "{{#ask: [[File:+]] }}"
 		},
 		{
-			"page": "Example/P0705/4",
-			"contents": "[[Has page::File:P0705.png]]"
+			"page": "Example/PA0004/4",
+			"contents": "[[Has page::File:PA0004.png]]"
 		},
 		{
-			"page": "Example/P0705/Q.4",
+			"page": "Example/PA0004/Q.4",
 			"contents": "{{#ask: [[Has page::<q>[[File:+]]</q>]] |?Has page#noimage |format=table |limit=1 }}"
 		}
 	],
@@ -51,27 +51,27 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0705/Q.1",
+			"subject": "Example/PA0004/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"href=\"/index.php/File:P0705.png\"",
-					"300px-P0705.png",
+					"href=\"/index.php/File:PA0004.png\"",
+					"300px-PA0004.png",
 					"width=\"300\" height=\"300\""
 				],
 				"not-contain": [
-					"P0705.png\" width=\"480\" height=\"480\""
+					"PA0004.png\" width=\"480\" height=\"480\""
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1 with options",
-			"subject": "Example/P0705/Q.2",
+			"subject": "Example/PA0004/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"300px-P0705.png",
+					"300px-PA0004.png",
 					"width=\"300\" height=\"300\"",
-					"120px-P0705.png\"",
+					"120px-PA0004.png\"",
 					"width=\"120\" height=\"120\"",
 					"123",
 					"Extra"
@@ -81,24 +81,24 @@
 		{
 			"type": "parser",
 			"about": "#2 (subobject is displayed as normal link and not with an image reference)",
-			"subject": "Example/P0705/Q.3",
+			"subject": "Example/PA0004/Q.3",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"smw-subobject-entity\"><a href=.*P0705.png#Test\" title=.*P0705.png\">P0705.png#Test</a></span>",
-					"<a href=.*P0705.png\""
+					"<span class=\"smw-subobject-entity\"><a href=.*PA0004.png#Test\" title=.*PA0004.png\">PA0004.png#Test</a></span>",
+					"<a href=.*PA0004.png\""
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#3 (#noimage)",
-			"subject": "Example/P0705/Q.4",
+			"subject": "Example/PA0004/Q.4",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=\".*Example/P0705/4\" title=\"Example/P0705/4\">Example/P0705/4</a></td><td class=\"Has-page smwtype_wpg\"><a href=\".*P0705.png\" title=\".*P0705.png\">P0705.png</a></td>"
+					"<td class=\"smwtype_wpg\"><a href=\".*Example/PA0004/4\" title=\"Example/PA0004/4\">Example/PA0004/4</a></td><td class=\"Has-page smwtype_wpg\"><a href=\".*PA0004.png\" title=\".*PA0004.png\">PA0004.png</a></td>"
 				],
 				"not-contain": [
-					"P0705.png\" width=\"480\" height=\"480\""
+					"PA0004.png\" width=\"480\" height=\"480\""
 				]
 			}
 		}

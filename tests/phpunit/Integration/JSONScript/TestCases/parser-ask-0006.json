@@ -7,11 +7,11 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Example/P0707/1",
+			"page": "Example/PA0006/1",
 			"contents": "[[Has text::123]]"
 		},
 		{
-			"page": "Example/P0707/Q.1",
+			"page": "Example/PA0006/Q.1",
 			"contents": "{{#ask: [[Has text::+]] |?Has text }} {{#ask: [[Has text::123]] |?Has text }}"
 		}
 	],
@@ -19,10 +19,10 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0707/Q.1",
+			"subject": "Example/PA0006/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"title=\"Example/P0707/1\">Example/P0707/1",
+					"title=\"Example/PA0006/1\">Example/PA0006/1",
 					"title=\"The parser function has reached the limit for expensive executions"
 				]
 			}

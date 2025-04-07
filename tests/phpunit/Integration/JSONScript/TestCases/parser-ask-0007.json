@@ -8,7 +8,7 @@
 		},
 		{
 			"namespace": "NS_FILE",
-			"page": "P0708-text-file.txt",
+			"page": "PA0007-text-file.txt",
 			"contents": {
 				"upload": {
 					"file" : "/../Fixtures/file-upload.txt",
@@ -17,7 +17,7 @@
 			}
 		},
 		{
-			"page": "Example/P0708/Q.1",
+			"page": "Example/PA0007/Q.1",
 			"contents": "{{#ask: [[File type::txt]] |format=table |limit=1 }}"
 		}
 	],
@@ -25,10 +25,10 @@
 		{
 			"type": "parser",
 			"about": "#0 (using DISPLAYTITLE)",
-			"subject": "Example/P0708/Q.1",
+			"subject": "Example/PA0007/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<a href=\".*:P0708-text-file.txt\" title=\"File:P0708-text-file.txt\">DIFFERENT TITLE</a>"
+					"<a href=\".*:PA0007-text-file.txt\" title=\"File:PA0007-text-file.txt\">DIFFERENT TITLE</a>"
 				]
 			}
 		}

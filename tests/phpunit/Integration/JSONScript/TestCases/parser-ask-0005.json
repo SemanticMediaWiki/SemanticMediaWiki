@@ -2,8 +2,8 @@
 	"description": "Test `#ask` on `format=template` with message parse (`wgContLang=en`, `wgLang=en`)",
 	"setup": [
 		{
-			"page": "Example/P0706/1",
-			"contents": "[[P0706::P0706]]"
+			"page": "Example/PA0005/1",
+			"contents": "[[PA0005::PA0005]]"
 		},
 		{
 			"namespace": "NS_TEMPLATE",
@@ -28,29 +28,29 @@
 		{
 			"namespace": "NS_MEDIAWIKI",
 			"page": "Test/Msg0706/1",
-			"contents": "{{#ask: [[P0706::P0706]] |?P0706 |link=none |template=Example/Tmpl0706 |format=template }}"
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706 |format=template }}"
 		},
 		{
 			"namespace": "NS_MEDIAWIKI",
 			"page": "Test/Msg0706/2",
-			"contents": "{{#ask: [[P0706::P0706]] |?P0706 |link=none |template=Example/Tmpl0706 |format=template }}"
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706 |format=template }}"
 		},
 		{
 			"namespace": "NS_MEDIAWIKI",
 			"page": "Test/Msg0706/3",
-			"contents": "{{#ask: [[P0706::P0706]] |?P0706 |link=none |template=Example/Tmpl0706 |format=list }}"
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706 |format=list }}"
 		},
 		{
-			"page": "Test/P0706/4",
-			"contents": "{{#ask: [[P0706::P0706]] |?P0706 |link=none |template=Example/Tmpl0706ResultOutput |format=template }}"
+			"page": "Test/PA0005/4",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706ResultOutput |format=template }}"
 		},
 		{
-			"page": "Test/P0706/5",
-			"contents": "{{#ask: [[P0706::P0706]] |?P0706 |link=none |template=Example/Tmpl0706ResultOutput |format=template |import-annotation=true }}"
+			"page": "Test/PA0005/5",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706ResultOutput |format=template |import-annotation=true }}"
 		},
 		{
-			"page": "Test/P0706/6",
-			"contents": "{{#ask: [[P0706::P0706]] |?P0706 |link=none |template=Example/Tmpl0706ResultOutput |format=template }}"
+			"page": "Test/PA0005/6",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706ResultOutput |format=template }}"
 		}
 	],
 	"tests": [
@@ -60,7 +60,7 @@
 			"subject": "Test/Msg0706/1",
 			"assert-msgoutput": {
 				"to-contain": [
-					"Example/P0706/1"
+					"Example/PA0005/1"
 				],
 				"not-contain": [
 					">SMW::off</a>",
@@ -74,7 +74,7 @@
 			"subject": "Test/Msg0706/2",
 			"assert-msgoutput": {
 				"to-contain": [
-					"Example/P0706/1"
+					"Example/PA0005/1"
 				],
 				"not-contain": [
 					">SMW::off</a>",
@@ -88,7 +88,7 @@
 			"subject": "Test/Msg0706/3",
 			"assert-msgoutput": {
 				"to-contain": [
-					"Example/P0706/1"
+					"Example/PA0005/1"
 				],
 				"not-contain": [
 					">SMW::off</a>",
@@ -99,7 +99,7 @@
 		{
 			"type": "parser",
 			"about": "#3 (no foreign annotation import)",
-			"subject": "Test/P0706/4",
+			"subject": "Test/PA0005/4",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -113,7 +113,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example/P0706/1",
+					"Example/PA0005/1",
 					"456",
 					"789"
 				]
@@ -122,7 +122,7 @@
 		{
 			"type": "parser",
 			"about": "#4 (import foreign annotation)",
-			"subject": "Test/P0706/5",
+			"subject": "Test/PA0005/5",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -138,7 +138,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example/P0706/1",
+					"Example/PA0005/1",
 					"456",
 					"789"
 				]
@@ -147,7 +147,7 @@
 		{
 			"type": "parser",
 			"about": "#5 (no foreign annotation import)",
-			"subject": "Test/P0706/6",
+			"subject": "Test/PA0005/6",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -161,7 +161,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"Example/P0706/1",
+					"Example/PA0005/1",
 					"456",
 					"789"
 				]

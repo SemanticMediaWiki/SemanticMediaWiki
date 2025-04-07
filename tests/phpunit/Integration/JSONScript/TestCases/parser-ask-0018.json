@@ -12,19 +12,19 @@
 			"contents": "[[Subproperty of::PropertyWithCircularHierarchy]]"
 		},
 		{
-			"page": "Example/P0906/1",
+			"page": "Example/PA0018/1",
 			"contents": "[[Category:CategoryWithCircularHierarchy]]"
 		},
 		{
-			"page": "Example/P0906/Q1",
+			"page": "Example/PA0018/Q1",
 			"contents": "{{#ask: [[Category:CategoryWithCircularHierarchy]] |link=none }}"
 		},
 		{
-			"page": "Example/P0906/2",
+			"page": "Example/PA0018/2",
 			"contents": "[[PropertyWithCircularHierarchy::123]]"
 		},
 		{
-			"page": "Example/P0906/Q2",
+			"page": "Example/PA0018/Q2",
 			"contents": "{{#ask: [[PropertyWithCircularHierarchy::+]] |link=none }}"
 		}
 	],
@@ -32,20 +32,20 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0906/Q1",
+			"subject": "Example/PA0018/Q1",
 			"assert-output": {
 				"to-contain": [
-					"Example/P0906/1"
+					"Example/PA0018/1"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "Example/P0906/Q2",
+			"subject": "Example/PA0018/Q2",
 			"assert-output": {
 				"to-contain": [
-					"Example/P0906/2"
+					"Example/PA0018/2"
 				]
 			}
 		}

@@ -22,15 +22,15 @@
 			"contents": "[[Has type::Reference]] [[Has fields::Date; Version; Memory used; Runtime;ID;Benchmark notes]]"
 		},
 		{
-			"page": "Example/P0914/1",
+			"page": "Example/PA0026/1",
 			"contents": "{{#subobject: |Runtime benchmark=27 Nov 2016;0583b05;16690400;48.35;200;n/a }}"
 		},
 		{
-			"page": "Example/P0914/Q.1",
+			"page": "Example/PA0026/Q.1",
 			"contents": "{{#ask: [[Runtime benchmark.ID::+]] |?Runtime benchmark |?Runtime benchmark.Memory used#- |?Runtime benchmark.ID |?Runtime benchmark.Runtime|?Runtime benchmark.Benchmark notes |format=broadtable |sort=Runtime benchmark.ID,Runtime benchmark.Runtime |order=desc |limit=2 |link=none }}"
 		},
 		{
-			"page": "Example/P0914/Q.2",
+			"page": "Example/PA0026/Q.2",
 			"contents": "{{#ask: [[Runtime benchmark.ID::+]] OR [[Runtime benchmark.Runtime::+]] <q> [[Runtime benchmark.ID::+]]</q> |?Runtime benchmark |?Runtime benchmark.Memory used#- |?Runtime benchmark.ID |?Runtime benchmark.Runtime|?Runtime benchmark.Benchmark notes |format=broadtable |sort=Runtime benchmark.ID,Runtime benchmark.Runtime |order=desc |limit=2 |link=none }}"
 		}
 	],
@@ -38,7 +38,7 @@
 		{
 			"type": "parser",
 			"about": "#0 (no `Error: 1066 Not unique table/alias ...`)",
-			"subject": "Example/P0914/Q.1",
+			"subject": "Example/PA0026/Q.1",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -59,7 +59,7 @@
 		{
 			"type": "parser",
 			"about": "#0 (no `Error: 1066 Not unique table/alias ...`)",
-			"subject": "Example/P0914/Q.2",
+			"subject": "Example/PA0026/Q.2",
 			"assert-output": {
 				"to-contain": [
 					"<td class=\"Runtime-benchmark smwtype_ref_rec\">27 November 2016</td><td class=\"Memory-used smwtype_num\" data-sort-value=\"16690400\">16690400</td><td class=\"ID smwtype_num\" data-sort-value=\"200\">200</td><td class=\"Runtime smwtype_num\" data-sort-value=\"48.35\">48.35</td><td class=\"Benchmark-notes smwtype_wpg\">N/a</td>"

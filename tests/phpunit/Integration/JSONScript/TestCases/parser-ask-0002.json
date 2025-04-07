@@ -7,20 +7,20 @@
 			"contents": "[[Has type::Text]]"
 		},
 		{
-			"page": "Example/P0703/1",
-			"contents": "[[Has text::P0703]]"
+			"page": "Example/PA0002/1",
+			"contents": "[[Has text::PA0002]]"
 		},
 		{
-			"page": "Example/P0703/2",
-			"contents": "[[Has text::P0703]]"
+			"page": "Example/PA0002/2",
+			"contents": "[[Has text::PA0002]]"
 		},
 		{
-			"page": "Example/P0703/Q.1",
-			"contents": "{{#ask: [[Has text::P0703]] |?Has text=<span style=\"color: green; font-size: 120%;\">Label</span> |format=table |limit=1 }}"
+			"page": "Example/PA0002/Q.1",
+			"contents": "{{#ask: [[Has text::PA0002]] |?Has text=<span style=\"color: green; font-size: 120%;\">Label</span> |format=table |limit=1 }}"
 		},
 		{
-			"page": "Example/P0703/Q.2",
-			"contents": "{{#ask: [[Has text::P0703]] |?Has text=Label {{#info:Text info.}} |format=table |limit=1 }}",
+			"page": "Example/PA0002/Q.2",
+			"contents": "{{#ask: [[Has text::PA0002]] |?Has text=Label {{#info:Text info.}} |format=table |limit=1 }}",
 			"message-cache": "clear"
 		}
 	],
@@ -28,23 +28,23 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0703/Q.1",
+			"subject": "Example/PA0002/Q.1",
 			"assert-output": {
 				"to-contain": [
 					"title=\"Property:Has text\"><span style=\"color: green; font-size: 120%;\">Label</span>",
-					"Special:Ask/-5B-5BHas-20text::P0703-5D-5D/-3FHas-20text=-3Cspan-20style=&quot;color:-20green-3B-20font-2Dsize:-20120-25-3B&quot;-3ELabel-3C-2Fspan-3E/mainlabel=/limit=1/offset=1/format=table"
+					"Special:Ask/-5B-5BHas-20text::PA0002-5D-5D/-3FHas-20text=-3Cspan-20style=&quot;color:-20green-3B-20font-2Dsize:-20120-25-3B&quot;-3ELabel-3C-2Fspan-3E/mainlabel=/limit=1/offset=1/format=table"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1 with #info parser",
-			"subject": "Example/P0703/Q.2",
+			"subject": "Example/PA0002/Q.2",
 			"assert-output": {
 				"to-contain": [
 					"title=\"Property:Has text\">Label <span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\" data-title=\"Information\" title=\"Text info.\">",
 					"<span class=\"smwtticon info\"></span><span class=\"smwttcontent\">Text info.</span></span>",
-					"Special:Ask/-5B-5BHas-20text::P0703-5D-5D/-3FHas-20text=Label-20-3Cspan-20class=&quot;smw-2Dhighlighter&quot;-20data-2Dtype=&quot;6&quot;-20data-2Dstate=&quot;persistent&quot;-20data-2Dtitle=&quot;Information&quot;-20title=&quot;Text-20info.&quot;-3E-3Cspan-20class=&quot;smwtticon-20info&quot;-3E-3C-2Fspan-3E-3Cspan-20class=&quot;smwttcontent&quot;-3EText-20info.-3C-2Fspan-3E-3C-2Fspan-3E/mainlabel=/limit=1/offset=1/format=table"
+					"Special:Ask/-5B-5BHas-20text::PA0002-5D-5D/-3FHas-20text=Label-20-3Cspan-20class=&quot;smw-2Dhighlighter&quot;-20data-2Dtype=&quot;6&quot;-20data-2Dstate=&quot;persistent&quot;-20data-2Dtitle=&quot;Information&quot;-20title=&quot;Text-20info.&quot;-3E-3Cspan-20class=&quot;smwtticon-20info&quot;-3E-3C-2Fspan-3E-3Cspan-20class=&quot;smwttcontent&quot;-3EText-20info.-3C-2Fspan-3E-3C-2Fspan-3E/mainlabel=/limit=1/offset=1/format=table"
 				]
 			}
 		}

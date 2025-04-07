@@ -12,36 +12,36 @@
 			"contents": "(Remove set display title from p-0438)"
 		},
 		{
-			"page": "Example/P0702/1",
+			"page": "Example/PA0001/1",
 			"contents": "{{#subobject:|Has inverse prop=InverseExample|Has number=4040}}"
 		},
 		{
-			"page": "Example/P0702/1/1",
-			"contents": "{{#ask: [[-Has inverse prop::<q>[[-Has subobject::Example/P0702/1]]</q>]]|?-Has inverse prop||?-Has inverse prop=LabelOnInversePrintout|format=table}}"
+			"page": "Example/PA0001/1/1",
+			"contents": "{{#ask: [[-Has inverse prop::<q>[[-Has subobject::Example/PA0001/1]]</q>]]|?-Has inverse prop||?-Has inverse prop=LabelOnInversePrintout|format=table}}"
 		},
 		{
-			"page": "Example/P0702/2",
+			"page": "Example/PA0001/2",
 			"contents": "[[-Has inverse prop::Invalid in-text annotation]]"
 		},
 		{
-			"page": "Example/P0702/3/1",
-			"contents": "{{#ask: [[-Has query::Example/P0702/1/1]]|?-Has query |format=table}}"
+			"page": "Example/PA0001/3/1",
+			"contents": "{{#ask: [[-Has query::Example/PA0001/1/1]]|?-Has query |format=table}}"
 		},
 		{
-			"page": "Example/P0702/3/2",
-			"contents": "{{#ask: [[-Has query::Example/P0702/1/1]]|?-Has query=AnotherLabel |format=table}}"
+			"page": "Example/PA0001/3/2",
+			"contents": "{{#ask: [[-Has query::Example/PA0001/1/1]]|?-Has query=AnotherLabel |format=table}}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
 			"about": "#0 table output using inverse property (label is inverse, link is to normal property)",
-			"subject": "Example/P0702/1/1",
+			"subject": "Example/PA0001/1/1",
 			"assert-output": {
 				"to-contain": [
 					"Property:Has_inverse_prop\" title=\"Property:Has inverse prop\">-Has inverse prop</a>",
 					">InverseExample</a>",
-					"title=\"Example/P0702/1\">Example/P0702/1</a>",
+					"title=\"Example/PA0001/1\">Example/PA0001/1</a>",
 					">LabelOnInversePrintout</a>"
 				]
 			}
@@ -49,7 +49,7 @@
 		{
 			"type": "parser",
 			"about": "#1 in-text inverse annotation",
-			"subject": "Example/P0702/2",
+			"subject": "Example/PA0001/2",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -66,7 +66,7 @@
 		{
 			"type": "parser",
 			"about": "#2 (inverse indicator on predefined property)",
-			"subject": "Example/P0702/3/1",
+			"subject": "Example/PA0001/3/1",
 			"assert-output": {
 				"to-contain": [
 					"<a href=.*Property:Has_query\" title=\"Property:Has query\">-Has query</a>"
@@ -76,7 +76,7 @@
 		{
 			"type": "parser",
 			"about": "#3 (custom label overrides any inverse indicator from property)",
-			"subject": "Example/P0702/3/2",
+			"subject": "Example/PA0001/3/2",
 			"assert-output": {
 				"to-contain": [
 					"<a href=.*Property:Has_query\" title=\"Property:Has query\">AnotherLabel</a>"
