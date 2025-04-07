@@ -9,8 +9,13 @@
 	"smw-categories": "Saife kategoriyaları",
 	"smw_purge": "Yañart",
 	"browse": "Vikini qıdırıñız",
-	"smw-admin-tab-alerts": "Bildirmeler",
+	"prefs-smw": "Semantic MediaWiki",
+	"prefs-general-options": "Umumiy parametrler",
+	"prefs-extended-search-options": "Tafsilâtlı qıdıruv",
+	"prefs-ask-options": "Semantik qıdıruv",
+	"smw-admin-tab-alerts": "Tenbiler",
 	"smw-livepreview-loading": "Yüklenmekte…",
+	"logeventslist-smw-log": "Semantik MediaWiki jurnalı",
 	"smw-listingcontinuesabbrev": " (devam)",
 	"smw-showingresults": "Aşağıda №&nbsp;<strong>$2</strong>den başlap {{PLURAL:$1|'''1''' netice|'''$1''' netice}} buluna."
 }
