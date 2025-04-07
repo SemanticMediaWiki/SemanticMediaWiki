@@ -5,7 +5,7 @@
 			"namespace": "SMW_NS_PROPERTY",
 			"page": "P106",
 			"contents": {
-				"import-from": "/../Fixtures/P106.txt"
+				"import-from": "/../Fixtures/parser-in-text-annotation-106.txt"
 			}
 		},
 		{

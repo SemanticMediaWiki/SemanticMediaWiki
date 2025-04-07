@@ -9,7 +9,7 @@
 		{
 			"page": "Example/PS0003/1",
 			"contents": {
-				"import-from": "/../Fixtures/p-0303.txt"
+				"import-from": "/../Fixtures/parser-subobject-0003.txt"
 			}
 		}
 	],
