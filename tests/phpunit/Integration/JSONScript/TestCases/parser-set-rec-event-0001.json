@@ -3,12 +3,12 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has date",
+			"page": "Parser-set-rec-event/Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"page": "John Doe's Birthdays",
-			"contents": "{{#set_recurring_event: Is birthday |property=Has date |start=1948-11-03 |end=2019-01-06 |unit=year |period=1 }}"
+			"contents": "{{#set_recurring_event: Is birthday |property=Parser-set-rec-event/Has date |start=1948-11-03 |end=2019-01-06 |unit=year |period=1 }}"
 		},
 		{
 			"page": "John Doe's Number of Birthdays",
@@ -16,7 +16,7 @@
 		},
 		{
 			"page": "Jane Doe's Birthdays",
-			"contents": "{{#set_recurring_event: Is birthday |property=Has date |start=1953-05-06 |unit=year |period=1 }}"
+			"contents": "{{#set_recurring_event: Is birthday |property=Parser-set-rec-event/Has date |start=1953-05-06 |unit=year |period=1 }}"
 		},
 		{
 			"page": "Jane Doe's Number of Birthdays",

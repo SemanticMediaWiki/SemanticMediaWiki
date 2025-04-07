@@ -3,16 +3,16 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
-			"page": "Has date",
+			"page": "Parser-set-rec-event/Has date",
 			"contents": "[[Has type::Date]]"
 		},
 		{
 			"page": "Team meetings 1",
-			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 15, 2019 9:30 am |end=December 31, 2019 |unit=month |week number=2 }}"
+			"contents": "{{#set_recurring_event: Is team meeting |property=Parser-set-rec-event/Has date |start=January 15, 2019 9:30 am |end=December 31, 2019 |unit=month |week number=2 }}"
 		},
 		{
 			"page": "Team meetings 2",
-			"contents": "{{#set_recurring_event: Is team meeting |property=Has date |start=January 31, 2019 9:30 am |end=December 31, 2019 |unit=month |week number=-1 }}"
+			"contents": "{{#set_recurring_event: Is team meeting |property=Parser-set-rec-event/Has date |start=January 31, 2019 9:30 am |end=December 31, 2019 |unit=month |week number=-1 }}"
 		},
 		{
 			"page": "Team meetings in 2019 - 0",
@@ -20,7 +20,7 @@
 		},
 		{
 			"page": "Team meetings in 2019 - 1",
-			"contents": "{{#ask: [[Is team meeting::Team meetings 1]] |?Has date |format=plainlist }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings 1]] |?Parser-set-rec-event/Has date |format=plainlist }}"
 		},
 		{
 			"page": "Team meetings in 2019 - 2",
@@ -28,7 +28,7 @@
 		},
 		{
 			"page": "Team meetings in 2019 - 3",
-			"contents": "{{#ask: [[Is team meeting::Team meetings 2]] |?Has date |format=plainlist }}"
+			"contents": "{{#ask: [[Is team meeting::Team meetings 2]] |?Parser-set-rec-event/Has date |format=plainlist }}"
 		}
 	],
 	"tests": [
