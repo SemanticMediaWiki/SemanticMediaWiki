@@ -1,5 +1,5 @@
 {
-	"description": "Test #set_recurring_event parser include and exclude parameters",
+	"description": "Test `#set_recurring_event` parser include and exclude parameters",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

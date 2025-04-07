@@ -1,5 +1,5 @@
 {
-	"description": "Test #set_recurring_event parser week number parameter",
+	"description": "Test `#set_recurring_event` parser week number parameter",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

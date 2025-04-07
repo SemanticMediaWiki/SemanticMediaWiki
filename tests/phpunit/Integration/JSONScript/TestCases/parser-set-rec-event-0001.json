@@ -1,5 +1,5 @@
 {
-	"description": "Test #set_recurring_event parser (#3541, en)",
+	"description": "Test `#set_recurring_event` parser (#3541, en)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
