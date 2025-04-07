@@ -12,48 +12,48 @@
 			"contents": "[[Has type::Page]]"
 		},
 		{
-			"page": "P0463/1",
-			"contents": "[[P:0463-000::P0463/2]]"
+			"page": "PR0001/1",
+			"contents": "[[P:0463-000::PR0001/2]]"
 		},
 		{
-			"page": "P0463/2",
-			"contents": "[[P:0463-000::P0463/2/1]]"
+			"page": "PR0001/2",
+			"contents": "[[P:0463-000::PR0001/2/1]]"
 		},
 		{
-			"page": "P0463/1",
+			"page": "PR0001/1",
 			"contents": "{{#ask: [[P:0463-000::+]] }}"
 		},
 		{
-			"page": "P0463/3",
-			"contents": "{{#subobject: |P:0463-001=P0463/4 }}"
+			"page": "PR0001/3",
+			"contents": "{{#subobject: |P:0463-001=PR0001/4 }}"
 		},
 		{
-			"page": "P0463/4",
-			"contents": "[[P:0463-001::P0463/4/1]]"
+			"page": "PR0001/4",
+			"contents": "[[P:0463-001::PR0001/4/1]]"
 		},
 		{
-			"page": "P0463/3",
+			"page": "PR0001/3",
 			"contents": "{{#ask: [[P:0463-001::+]] }}"
 		}
 	],
 	"tests": [
 		{
 			"type": "parser",
-			"about": "#0 (Verifies that (especially in case of ES) the removed assignment to `P:0463-000` in `P0463/1` doesn't remove the entire entity from the back-end but only the reference",
-			"subject": "P0463/1",
+			"about": "#0 (Verifies that (especially in case of ES) the removed assignment to `P:0463-000` in `PR0001/1` doesn't remove the entire entity from the back-end but only the reference",
+			"subject": "PR0001/1",
 			"assert-output": {
 				"to-contain": [
-					"P0463/2"
+					"PR0001/2"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#1",
-			"subject": "P0463/3",
+			"subject": "PR0001/3",
 			"assert-output": {
 				"to-contain": [
-					"P0463/4"
+					"PR0001/4"
 				]
 			}
 		}

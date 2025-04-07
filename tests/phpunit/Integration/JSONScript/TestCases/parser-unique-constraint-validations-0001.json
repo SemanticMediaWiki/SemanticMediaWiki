@@ -32,31 +32,31 @@
 			"contents": "[[Has type::Reference]] [[Has fields::Unique field;Another unique field;Non unique field]]"
 		},
 		{
-			"page": "Example/P0443/1",
+			"page": "Example/PU0001/1",
 			"contents": "[[Has uniqueness one::Allowed one]] [[Has uniqueness one::Not permitted]] [[Has uniqueness two::Allowed two]] [[Has uniqueness two::Not permitted]]"
 		},
 		{
-			"page": "Example/P0443/2",
+			"page": "Example/PU0001/2",
 			"contents": "[[Has uniqueness one::1111]] {{#ask: [[Has uniqueness one::1111]] |link=none |format=plainlist}}"
 		},
 		{
-			"page": "Example/P0443/3",
+			"page": "Example/PU0001/3",
 			"contents": "[[Unique record::abc;123]]"
 		},
 		{
-			"page": "Example/P0443/4",
+			"page": "Example/PU0001/4",
 			"contents": "[[Unique record::abc;123]] (fails on abc)"
 		},
 		{
-			"page": "Example/P0443/5",
+			"page": "Example/PU0001/5",
 			"contents": "[[Unique reference::abc;def;123]] (fails on abc)"
 		},
 		{
-			"page": "Example/P0443/6",
+			"page": "Example/PU0001/6",
 			"contents": "[[Unique reference::abcd;def;123]]"
 		},
 		{
-			"page": "Example/P0443/7",
+			"page": "Example/PU0001/7",
 			"contents": "[[Unique reference::abcde;def;123]] (fails on def)"
 		}
 	],
@@ -64,7 +64,7 @@
 		{
 			"type": "parser",
 			"about": "#0 (verify uniqueness for only one assignment per property)",
-			"subject": "Example/P0443/1",
+			"subject": "Example/PU0001/1",
 			"store": {
 				"clear-cache": true
 			},
@@ -89,17 +89,17 @@
 		{
 			"type": "parser",
 			"about": "#1 (verify declared unique value doesn't interfere with #ask within the same page)",
-			"subject": "Example/P0443/2",
+			"subject": "Example/PU0001/2",
 			"assert-output": {
 				"to-contain": [
-					"<p>1111 Example/P0443/2"
+					"<p>1111 Example/PU0001/2"
 				]
 			}
 		},
 		{
 			"type": "parser",
 			"about": "#2 (verify uniqueness of field in record )",
-			"subject": "Example/P0443/3",
+			"subject": "Example/PU0001/3",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -117,8 +117,8 @@
 		},
 		{
 			"type": "parser",
-			"about": "#3 (verify uniqueness of field in record fails for same value as used in Example/P0443/3)",
-			"subject": "Example/P0443/4",
+			"about": "#3 (verify uniqueness of field in record fails for same value as used in Example/PU0001/3)",
+			"subject": "Example/PU0001/4",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -133,8 +133,8 @@
 		},
 		{
 			"type": "parser",
-			"about": "#4 (verify uniqueness of field in reference fails for same value as used in Example/P0443/3)",
-			"subject": "Example/P0443/5",
+			"about": "#4 (verify uniqueness of field in reference fails for same value as used in Example/PU0001/3)",
+			"subject": "Example/PU0001/5",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -150,7 +150,7 @@
 		{
 			"type": "parser",
 			"about": "#5 (verify uniqueness for reference with uniqueness fields)",
-			"subject": "Example/P0443/6",
+			"subject": "Example/PU0001/6",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
@@ -168,8 +168,8 @@
 		},
 		{
 			"type": "parser",
-			"about": "#6 (verify uniqueness of field in reference fails for same value as used in Example/P0443/6)",
-			"subject": "Example/P0443/7",
+			"about": "#6 (verify uniqueness of field in reference fails for same value as used in Example/PU0001/6)",
+			"subject": "Example/PU0001/7",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,

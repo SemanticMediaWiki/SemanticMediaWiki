@@ -7,7 +7,7 @@
 			"contents": "[[A le type::Texte]]"
 		},
 		{
-			"page": "Example/P0428/1",
+			"page": "Example/PC0001/1",
 			"contents": "[[Has text::#-Foo]]"
 		}
 	],
@@ -15,7 +15,7 @@
 		{
 			"type": "parser",
 			"about": "#0",
-			"subject": "Example/P0428/1",
+			"subject": "Example/PC0001/1",
 			"assert-store": {
 				"semantic-data": {
 					"strictPropertyValueMatch": false,
