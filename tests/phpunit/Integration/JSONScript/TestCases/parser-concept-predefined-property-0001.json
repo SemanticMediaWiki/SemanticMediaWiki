@@ -3,7 +3,7 @@
 	"setup": [
 		{
 			"namespace": "SMW_NS_CONCEPT",
-			"page": "Example/P0501/1",
+			"page": "Example/PC0001/1",
 			"contents": "{{#concept: [[Modification date::+]] |Modification date}}"
 		}
 	],
@@ -11,7 +11,7 @@
 		{
 			"type": "parser",
 			"about": "#0 canonical representation, not userlang specific",
-			"subject": "Example/P0501/1",
+			"subject": "Example/PC0001/1",
 			"namespace": "SMW_NS_CONCEPT",
 			"assert-output": {
 				"to-contain": [

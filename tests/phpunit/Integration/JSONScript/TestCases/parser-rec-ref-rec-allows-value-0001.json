@@ -22,31 +22,31 @@
 			"contents": "[[Has type::Reference]] [[Has fields::URL;Date]] [[Allows value::http://example.org;1 Jan 1970]] [[Allows value::http://example.org;2 Jan 1970]]"
 		},
 		{
-			"page": "P0922/1",
+			"page": "PR0001/1",
 			"contents": "[[Restricted record::Foo;123]]"
 		},
 		{
-			"page": "P0922/2",
+			"page": "PR0001/2",
 			"contents": "[[Restricted record::Foo; 123]]"
 		},
 		{
-			"page": "P0922/3",
+			"page": "PR0001/3",
 			"contents": "[[Restricted record::Bar;456]]"
 		},
 		{
-			"page": "P0922/4",
+			"page": "PR0001/4",
 			"contents": "[[Restricted record::Foobar;789]]"
 		},
 		{
-			"page": "P0922/5",
+			"page": "PR0001/5",
 			"contents": "[[Restricted record::Foo;456]]"
 		},
 		{
-			"page": "P0922/6",
+			"page": "PR0001/6",
 			"contents": "[[Restricted reference::http://example.org;1 Jan 1970]]"
 		},
 		{
-			"page": "P0922/7",
+			"page": "PR0001/7",
 			"contents": "[[Restricted reference::http://example.org;3 Jan 1970]]"
 		}
 	],
@@ -54,7 +54,7 @@
 		{
 			"type": "parser",
 			"about": "#0 (record, passes validation)",
-			"subject": "P0922/1",
+			"subject": "PR0001/1",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -75,7 +75,7 @@
 		{
 			"type": "parser",
 			"about": "#1 (record, passes validation, on leading spaces in annotation)",
-			"subject": "P0922/2",
+			"subject": "PR0001/2",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -96,7 +96,7 @@
 		{
 			"type": "parser",
 			"about": "#2 (record, passes validation)",
-			"subject": "P0922/3",
+			"subject": "PR0001/3",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -117,7 +117,7 @@
 		{
 			"type": "parser",
 			"about": "#4 (record, passes validation, on leading spaces in `Allows value` declaration)",
-			"subject": "P0922/4",
+			"subject": "PR0001/4",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -138,7 +138,7 @@
 		{
 			"type": "parser",
 			"about": "#5 (record, fails validation)",
-			"subject": "P0922/5",
+			"subject": "PR0001/5",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -154,7 +154,7 @@
 		{
 			"type": "parser",
 			"about": "#6 (reference, passes validation)",
-			"subject": "P0922/6",
+			"subject": "PR0001/6",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
@@ -175,7 +175,7 @@
 		{
 			"type": "parser",
 			"about": "#7 (reference, fails validation)",
-			"subject": "P0922/7",
+			"subject": "PR0001/7",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,

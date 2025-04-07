@@ -12,7 +12,7 @@
 			"contents": "[[Has type::Reference]] [[Has fields::Property:URL;wd:id]]"
 		},
 		{
-			"page": "Test:P0920/1",
+			"page": "Test:PR0001/1",
 			"contents": "[[wd:reference::https://en.wikipedia.org/wiki/Franz_Schubert;Q7312]]"
 		}
 	],
@@ -20,7 +20,7 @@
 		{
 			"type": "parser",
 			"about": "#0 (correct formatting for external identifier)",
-			"subject": "Test:P0920/1",
+			"subject": "Test:PR0001/1",
 			"assert-store": {
 				"semantic-data": {
 					"strict-mode-valuematch": false,
