@@ -1,5 +1,5 @@
 {
-	"description": "Test annotations with disabled capital links (#673, `wgCapitalLinks=false`)",
+	"description": "Test `in-text annotation` with disabled capital links (#673, `wgCapitalLinks=false`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
