@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask with `format=table` on inverse property/printrequest (#1270, #1360)",
+	"description": "Test `#ask` correct property header with `format=table` on inverse property/printrequest (#1270, #1360)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
