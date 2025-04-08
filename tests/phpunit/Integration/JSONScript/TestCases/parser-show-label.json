@@ -1,0 +1,182 @@
+{
+	"description": "Test `#show` printout labels",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Parser-show-label/Has page property",
+			"contents": "[[Has type::Page]]" 
+		},
+		{
+			"page": "Parser-show-label/Page",
+			"contents": "[[Parser-show-label/Has page property::Parser-show-label/Foo]]"
+		},
+		{
+			"page": "Parser-show-label/Foo",
+			"contents": "Bar"
+		},
+		{
+			"page": "Parser-show-label/0.1.Page.Default",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property}}"
+		},
+		{
+			"page": "Parser-show-label/0.2.Page.None",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property=}}"
+		},
+		{
+			"page": "Parser-show-label/0.3.Page.AltLabel",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property=Alternative Label}}"
+		},
+		{
+			"page": "Parser-show-label/0.4.Page.Default.Plain",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property#}}"
+		},
+		{
+			"page": "Parser-show-label/0.5.Page.None.Plain",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property#=}}"
+		},
+		{
+			"page": "Parser-show-label/0.6.Page.AltLabel.Plain",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property#=Alternative Label}}"
+		},
+		{
+			"page": "Parser-show-label/0.7.Page.Default.Link",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property|+link=Main}}"
+		},
+		{
+			"page": "Parser-show-label/0.8.Page.None.Link",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property=|+link=Main}}"
+		},
+		{
+			"page": "Parser-show-label/0.9.Page.AltLabel.Link",
+			"contents": "{{#show: Parser-show-label/Page |?Parser-show-label/Has page property=Alternative Label|+link=Main}}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0.1 Property of type=page, label=default",
+			"subject": "Parser-show-label/0.1.Page.Default",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Parser-show-label/Foo\" title=\"Parser-show-label/Foo\">Parser-show-label/Foo</a>"
+				],
+				"not-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Parser-show-label/Has page property</a>:"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.2 Property of type=page, label=none",
+			"subject": "Parser-show-label/0.2.Page.None",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Parser-show-label/Foo\" title=\"Parser-show-label/Foo\">Parser-show-label/Foo</a>"
+				],
+				"not-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Parser-show-label/Has page property</a>:"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.3 Property of type=page, label=altlabel",
+			"subject": "Parser-show-label/0.3.Page.AltLabel",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Alternative Label</a>:",
+					"<a href=\"/index.php/Parser-show-label/Foo\" title=\"Parser-show-label/Foo\">Parser-show-label/Foo</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.4 Property of type=page, label=default, plain",
+			"subject": "Parser-show-label/0.4.Page.Default.Plain",
+			"assert-output": {
+				"to-contain": [
+					"Parser-show-label/Foo"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.5 Property of type=page, label=none, plain",
+			"subject": "Parser-show-label/0.5.Page.None.Plain",
+			"assert-output": {
+				"to-contain": [
+					"Parser-show-label/Foo"
+				],
+				"not-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Parser-show-label/Has page property</a>:"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.6 Property of type=page, label=altlabel, plain",
+			"subject": "Parser-show-label/0.6.Page.AltLabel.Plain",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Alternative Label</a>:",
+					"Parser-show-label/Foo"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.7 Property of type=page, label=default, link=Main",
+			"subject": "Parser-show-label/0.7.Page.Default.Link",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Parser-show-label/Has page property</a>:",
+					"<a href=\"/index.php/Main\" title=\"Main\">Parser-show-label/Foo</a>"
+				]
+			},
+			"skip-on": {
+				"mediawiki": [ "*", "Output formatters are broken. See #6091." ]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.8 Property of type=page, label=none, link=Main",
+			"subject": "Parser-show-label/0.8.Page.None.Link",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Parser-show-label/Foo\" title=\"Parser-show-label/Foo\">Parser-show-label/Foo</a>"
+				],
+				"not-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Parser-show-label/Has page property</a>:"
+				]
+			},
+			"skip-on": {
+				"mediawiki": [ "*", "Output formatters are broken. See #6091." ]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0.9 Property of type=page, label=altlabel, link=Main",
+			"subject": "Parser-show-label/0.9.Page.AltLabel.Link",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\"/index.php/Property:Parser-show-label/Has_page_property\" title=\"Property:Parser-show-label/Has page property\">Alternative Label</a>:",
+					"<a href=\"/index.php/Main\" title=\"Main\">Parser-show-label/Foo</a>"
+				]
+			},
+			"skip-on": {
+				"mediawiki": [ "*", "Output formatters are broken. See #6091." ]
+			}
+		}
+	],
+	"settings": {
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
