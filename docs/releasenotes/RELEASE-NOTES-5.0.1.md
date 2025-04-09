@@ -25,6 +25,7 @@ This is only for those who have installed SMW via Git.
 
 ## Changes
 
-* Fix title handling for pages with namespace-like prefixes
+* Fixed title handling for pages with namespace-like prefixes
 * Fixed broken code references to `SMW\Message`
 * Fixed issue with original parameter in change propagation jobs
+* Fixed previewing edits with a factbox
