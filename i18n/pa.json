@@ -77,6 +77,7 @@
 	"smw-help": "ਮਦਦ",
 	"smw-copy": "ਰੀਸ ਕਰੋ",
 	"smw-jsonview-search-label": "ਖੋਜੋ:",
+	"smw-ask-title-keyword-type": "ਖ਼ਾਸ-ਸ਼ਬਦ ਖੋਜ",
 	"smw-listingcontinuesabbrev": "ਜਾਰੀ",
 	"smw-showingresults": "ਹੇਠਾਂ #'''$2''' ਨਾਲ਼ ਸ਼ੁਰੂ ਹੋਣ ਵਾਲ਼ੇ {{PLURAL:\n$1|'''1''' ਨਤੀਜਾ|'''$1''' ਤੱਕ ਨਤੀਜੇ}} ਵਖਾਓ।"
 }

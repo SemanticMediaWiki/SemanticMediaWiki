@@ -1,0 +1,117 @@
+{
+	"description": "Test `format=csv` output via `Special:Ask` for display units (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has quantity",
+			"contents": "[[Has type::Quantity]] [[Display units::UNIT]] [[Corresponds to::1 UNIT]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has temperature",
+			"contents": "[[Has type::Temperature]] [[Display units::Celsius]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/SA0017/1",
+			"contents": "[[Has quantity::10]] [[Category:SA0017]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "Example/SA0017/2",
+			"contents": "[[Has temperature::10 °C]] [[Category:SA0017]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "special",
+			"about": "#0 type quantity with units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:SA0017]]",
+					"po": "?Has quantity"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.special-ask-0017.0.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#1 type quantity without units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:SA0017]]",
+					"po": "?Has quantity#-n"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.special-ask-0017.1.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 type temperature with units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:SA0017]]",
+					"po": "?Has temperature"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.special-ask-0017.2.csv"
+				}
+			}
+		},
+		{
+			"type": "special",
+			"about": "#2 type temperature without units",
+			"special-page": {
+				"page": "Ask",
+				"request-parameters": {
+					"p": {
+						"format": "csv"
+					},
+					"q": "[[Category:SA0017]]",
+					"po": "?Has temperature#-n"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.special-ask-0017.3.csv"
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgLanguageCode": "en",
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
