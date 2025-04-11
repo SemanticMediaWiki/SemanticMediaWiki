@@ -334,19 +334,16 @@ class CachedFactbox {
 		}
 
 		$contentParser = $applicationFactory->newContentParser( $title );
-		$content = '';
 
 		if ( ( $content = $factbox->getContent() ) !== '' ) {
-			$contentParser->parse( $content );
+			$contentParser->parse( $content, false );
 			$content = InTextAnnotationParser::removeAnnotation(
 				$contentParser->getOutput()->getText()
 			);
 		}
 
-		$attachmentContent = '';
-
 		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
-			$contentParser->parse( $attachmentContent );
+			$contentParser->parse( $attachmentContent, false );
 			$attachmentContent = $contentParser->getOutput()->getText();
 		}
 
