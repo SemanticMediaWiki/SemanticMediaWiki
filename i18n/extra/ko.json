@@ -1,0 +1,129 @@
+{
+    "@metadata": {
+        "authors": []
+    },
+    "fallback_language": "en",
+    "namespace": {
+        "labels": {
+            "SMW_NS_PROPERTY": "속성",
+            "SMW_NS_PROPERTY_TALK": "속성토론",
+            "SMW_NS_CONCEPT": "개념",
+            "SMW_NS_CONCEPT_TALK": "개념토론",
+            "SMW_NS_SCHEMA": "smw/스키마",
+            "SMW_NS_SCHEMA_TALK": "smw/스키마토론"
+        },
+        "aliases": []
+    },
+    "datatype": {
+        "labels": [],
+        "aliases": []
+    },
+    "property": {
+        "labels": [],
+        "aliases": []
+    },
+    "date": {
+        "precision": {
+            "SMW_PREC_Y": "Y년",
+            "SMW_PREC_YM": "Y년n월",
+            "SMW_PREC_YMD": "Y년n월j일",
+            "SMW_PREC_YMDT": "Y년n월j일 H:i:s",
+            "SMW_PREC_YMDTZ": "Y년n월j일 H:i:s T"
+        },
+        "format": [
+            [
+                "SMW_Y"
+            ],
+            [
+                "SMW_MY",
+                "SMW_YM"
+            ],
+            [
+                "SMW_MDY",
+                "SMW_DMY",
+                "SMW_YMD",
+                "SMW_YDM"
+            ]
+        ],
+        "months": [
+            [
+                "1월",
+                "1월"
+            ],
+            [
+                "2월",
+                "2월"
+            ],
+            [
+                "3월",
+                "3월"
+            ],
+            [
+                "4월",
+                "4월"
+            ],
+            [
+                "5월",
+                "5월"
+            ],
+            [
+                "6월",
+                "6월"
+            ],
+            [
+                "7월",
+                "7월"
+            ],
+            [
+                "8월",
+                "8월"
+            ],
+            [
+                "9월",
+                "9월"
+            ],
+            [
+                "10월",
+                "10월"
+            ],
+            [
+                "11월",
+                "11월"
+            ],
+            [
+                "12월",
+                "12월"
+            ]
+        ],
+        "days": [
+            [
+                "월요일",
+                "월"
+            ],
+            [
+                "화요일",
+                "화"
+            ],
+            [
+                "수요일",
+                "수"
+            ],
+            [
+                "목요일",
+                "목"
+            ],
+            [
+                "금요일",
+                "금"
+            ],
+            [
+                "토요일",
+                "토"
+            ],
+            [
+                "일요일",
+                "일"
+            ]
+        ]
+    }
+}
