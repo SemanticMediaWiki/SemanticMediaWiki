@@ -1,6 +1,6 @@
 # Semantic MediaWiki 5.0.1
 
-Not released yet
+Released on April 14th, 2025.
 
 This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixes, no new features, and no breaking changes.
 

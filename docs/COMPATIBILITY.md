@@ -27,7 +27,7 @@ Increases of minimum requirements are indicated in bold.
 		<th>5.0.x</th>
 		<td><strong>Stable release</strong></td>
 		<td>2025-03-10</td>
-		<td>2025-03-10</td>
+		<td>2025-04-14</td>
 		<td><strong>8.1</strong> - 8.4</td>
 		<td><strong>1.39</strong> - 1.43</td>
 		<td></td>
