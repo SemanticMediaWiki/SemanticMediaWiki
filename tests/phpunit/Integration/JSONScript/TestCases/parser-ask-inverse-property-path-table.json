@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask with `format=table` on inverse property, property path",
+	"description": "Test `#ask` with `format=table` on inverse property, property path",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

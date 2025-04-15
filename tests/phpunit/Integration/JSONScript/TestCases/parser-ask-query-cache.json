@@ -1,5 +1,5 @@
 {
-	"description": "Test the QueryResult cache feature (#1251, `wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`)",
+	"description": "Test `#ask` with the QueryResult cache feature (#1251, `wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

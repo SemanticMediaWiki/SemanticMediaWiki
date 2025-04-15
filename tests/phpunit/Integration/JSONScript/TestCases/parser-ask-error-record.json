@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask on failed queries to produce a `_ERRC` (#1297, en)",
+	"description": "Test `#ask` on failed queries to produce a `_ERRC` (#1297, en)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

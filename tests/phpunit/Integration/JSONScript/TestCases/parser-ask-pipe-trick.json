@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask with pipe trick output (#3945)",
+	"description": "Test `#ask` with pipe trick output (#3945)",
 	"setup": [
 		{
 			"page": "Page0 (parenthesis)",

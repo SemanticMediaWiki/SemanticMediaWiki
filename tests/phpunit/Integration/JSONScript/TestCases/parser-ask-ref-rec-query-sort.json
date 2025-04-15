@@ -1,5 +1,5 @@
 {
-	"description": "Test the description optimization on `_ref_rec` type with property chain query/sort (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)",
+	"description": "Test '#ask' with description optimization on `_ref_rec` type with property chain query/sort (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

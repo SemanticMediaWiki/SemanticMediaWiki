@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask on moved redirected subject (#1086)",
+	"description": "Test `#ask` on moved redirected subject (#1086)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

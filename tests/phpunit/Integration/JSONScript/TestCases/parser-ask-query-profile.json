@@ -1,5 +1,5 @@
 {
-	"description": "Test the `_ASK` profile (#2270, `smwgQueryProfiler`, `smwgQueryResultCacheType`)",
+	"description": "Test `#ask` with `_ASK` profile (#2270, `smwgQueryProfiler`, `smwgQueryResultCacheType`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask with `format=table` on inverse property, category subquery",
+	"description": "Test `#ask` with `format=table` on inverse property, category subquery",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

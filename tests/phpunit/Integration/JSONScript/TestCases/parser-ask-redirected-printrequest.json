@@ -1,5 +1,5 @@
 {
-	"description": "Test #ask on redirected printrequest (#1290, en)",
+	"description": "Test `#ask` on redirected printrequest (#1290, en)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

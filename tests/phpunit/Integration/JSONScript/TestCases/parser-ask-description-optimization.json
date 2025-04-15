@@ -1,5 +1,5 @@
 {
-	"description": "Test the description optimization (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)",
+	"description": "Test `#ask` with the description optimization (`wgContLang=en`, `wgLang=en`, `smwgQueryResultCacheType=true`, `smwgQFilterDuplicates=true`, `smwgQueryProfiler`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
