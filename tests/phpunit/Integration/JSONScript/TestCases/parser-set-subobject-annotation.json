@@ -9,19 +9,19 @@
 		{
 			"page": "Example/PSS0001/1",
 			"contents": {
-				"import-from": "/../Fixtures/parser-set-subobject-annotation-0001.1.txt"
+				"import-from": "/../Fixtures/parser-set-subobject-annotation.1.txt"
 			}
 		},
 		{
 			"page": "Example/PSS0001/2",
 			"contents": {
-				"import-from": "/../Fixtures/parser-set-subobject-annotation-0001.2.txt"
+				"import-from": "/../Fixtures/parser-set-subobject-annotation.2.txt"
 			}
 		},
 		{
 			"page": "Example/PSS0001/3",
 			"contents": {
-				"import-from": "/../Fixtures/parser-set-subobject-annotation-0001.3.txt"
+				"import-from": "/../Fixtures/parser-set-subobject-annotation.3.txt"
 			}
 		}
 	],

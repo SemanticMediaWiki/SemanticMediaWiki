@@ -1,5 +1,5 @@
 {
-	"description": "Test #set parser in combination with #subobject and template output (#1067, regression check)",
+	"description": "Test `#set` parser in combination with #subobject and template output (#1067, regression check)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

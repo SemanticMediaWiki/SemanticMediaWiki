@@ -1,5 +1,5 @@
 {
-	"description": "Test #subobject category annotation (#1172)",
+	"description": "Test `#subobject` category annotation (#1172)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

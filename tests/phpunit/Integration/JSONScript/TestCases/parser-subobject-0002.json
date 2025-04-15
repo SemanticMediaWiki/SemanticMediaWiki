@@ -1,5 +1,5 @@
 {
-	"description": "Test #subobject parser to use invalid assignments and create `_ERRC` (#1299, en)",
+	"description": "Test `#subobject` parser to use invalid assignments and create `_ERRC` (#1299, en)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

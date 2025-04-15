@@ -1,5 +1,5 @@
 {
-	"description": "Test #set/#ask recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)",
+	"description": "Test `#set` / `#ask` recursive annotation support (#711, #1055, recursive annotation using import-annotation=true via template)",
 	"setup": [
 		{
 			"namespace": "NS_TEMPLATE",

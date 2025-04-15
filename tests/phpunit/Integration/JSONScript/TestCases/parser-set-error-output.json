@@ -1,5 +1,5 @@
 {
-	"description": "Test #set parser to produce error output (#870, en, verify that #set calls do not affect each other with previous errors)",
+	"description": "Test `#set` parser to produce error output (#870, en, verify that #set calls do not affect each other with previous errors)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

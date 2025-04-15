@@ -1,5 +1,5 @@
 {
-	"description": "Test to create inverted annotation using a #ask/template combination (#711, `import-annotation=true`)",
+	"description": "Test to create inverted annotation using a `#ask` / template combination (#711, `import-annotation=true`)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

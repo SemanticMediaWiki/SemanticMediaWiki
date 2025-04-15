@@ -1,5 +1,5 @@
 {
-	"description": "Test #show parser on inverse printrequest (#1222, #1223)",
+	"description": "Test `#show` parser on inverse printrequest (#1222, #1223)",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",

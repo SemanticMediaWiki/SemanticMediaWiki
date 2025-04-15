@@ -1,5 +1,5 @@
 {
-	"description": "Test #smwdoc parser output",
+	"description": "Test `#smwdoc` parser output",
 	"setup": [
 		{
 			"page": "smwdoc-table",

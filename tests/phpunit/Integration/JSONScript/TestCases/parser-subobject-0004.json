@@ -1,5 +1,5 @@
 {
-	"description": "Test #subobject with assigned sortkey, default order etc.",
+	"description": "Test `#subobject` with assigned sortkey, default order etc.",
 	"setup": [
 		{
 			"namespace": "SMW_NS_PROPERTY",
