@@ -1,0 +1,258 @@
+{
+	"description": "Test `in-text annotation` on invalid properties (#1567, #1638, #1727 `wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has #",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/PA0002/1",
+			"contents": "[[&#124; &#93;&#93;&lt;/td&gt;&lt;::123]]"
+		},
+		{
+			"page": "Example/PA0002/2",
+			"contents": "[[<code>Has property a</code>::ABC]] {{#set: <code>Has property b</code>=DEF }}"
+		},
+		{
+			"page": "Example/PA0002/3",
+			"contents": "[[<code>Has property e::ABC]] {{#set: <code>Has property f=DEF }}"
+		},
+		{
+			"page": "Example/PA0002/4",
+			"contents": "[[File:[[Picture:: Foo.png ]]"
+		},
+		{
+			"page": "Example/PA0002/Q3.1",
+			"contents": "{{#ask: [[<code>Has property e::ABC]] |link=none |format=table |sort=# |order=asc}}"
+		},
+		{
+			"page": "Example/PA0002/5",
+			"contents": "[[<Foo>::abc]]"
+		},
+		{
+			"page": "Example/PA0002/6",
+			"contents": "[[<Foo-<Bar>::abc]]"
+		},
+		{
+			"page": "Example/PA0002/7",
+			"contents": "[[-<Foo>-<Bar>::abc]]"
+		},
+		{
+			"page": "Example/PA0002/8",
+			"contents": "[[Foo-<Bar::abc]]"
+		},
+		{
+			"page": "Example/PA0002/9",
+			"contents": "[[Foo-<Bar>::abc]]"
+		},
+		{
+			"page": "Example/PA0002/10",
+			"contents": "[[Foo\nBar::abc]] [[Foo\rBar::123]] [[Foo\r\nBar::456]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 do not allow #",
+			"subject": "Example/PA0002/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 strip tags",
+			"subject": "Example/PA0002/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_property_a",
+						"Has_property_b",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"ABC",
+						"DEF"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 remove broken tags",
+			"subject": "Example/PA0002/3",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"Has_property_e",
+						"Has_property_f",
+						"_MDAT",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"ABC",
+						"DEF"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 allow things like sort=#",
+			"subject": "Example/PA0002/Q3.1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 `[` to produce an error",
+			"subject": "Example/PA0002/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 `<>` to produce an error",
+			"subject": "Example/PA0002/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#6 `<>` to produce an error",
+			"subject": "Example/PA0002/6",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#7 `<>` to produce an error",
+			"subject": "Example/PA0002/7",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#8 to cut the name at `<`",
+			"subject": "Example/PA0002/8",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Foo-",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#9 to cut the name at `<`",
+			"subject": "Example/PA0002/9",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Foo-",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#10 (CR, LF are invalid)",
+			"subject": "Example/PA0002/10",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ERRC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
