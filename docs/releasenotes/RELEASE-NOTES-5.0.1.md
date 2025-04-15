@@ -13,7 +13,7 @@ No need to run "update.php" or any other migration scripts.
 
 **Get the new version via Composer:**
 
-* Step 1: if you are upgrading from SMW older than 5.0.0, ensure the SMW version in `composer.json` is `^5.0.1`
+* Step 1: if you are upgrading from SMW older than 5.0.0, ensure the SMW version in `composer.local.json` is `^5.0.1`
 * Step 2: run composer in your MediaWiki directory: `composer update --no-dev --optimize-autoloader`
 
 **Get the new version via Git:**
