@@ -18,7 +18,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Highlights
 
-### User interface changes
+### User Interface Changes
 
 Some user interface changes are deployed to make user-facing front-end components more intuitive and
 mobile-friendly by using [Codex](https://doc.wikimedia.org/codex/main/) from Wikimedia Foundation:
@@ -39,14 +39,13 @@ mobile-friendly by using [Codex](https://doc.wikimedia.org/codex/main/) from Wik
 * Minor clean up to SMW Tippy styles ([#5769](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5769))
 * Clean up single-use ResourceLoader modules ([#5777](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5777))
 
-## New features and enhancements
+## New Features and Enhancements
 
 * Support additional formatting options on the `table`/`broadtable` result format (`|+width=`, `|+height=`, `|+link=` and `|+thclass=`) ([#5739](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5739))
 * Allow RDF link in the head element to be disabled ([#5776](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/5776))
 * Update Schema.org vocabulary from version 14 to 28 ([Commit cc5a1db](https://github.com/SemanticMediaWiki/SemanticMediaWiki/commit/cc5a1db96f78d5509950707c20648aa20e524481)), fix in Skos vocabulary ([Commit 7740dd6](https://github.com/SemanticMediaWiki/SemanticMediaWiki/commit/7740dd615f4063607b0e6121641ad853160b9c30))
 
-
-## Breaking changes
+## Breaking Changes
 
 - [#6021](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6021) ChangePropagationDispatchJob: Don't presume job will be run on same server
 
@@ -151,7 +150,6 @@ If you use the [ElasticStore](https://www.semantic-mediawiki.org/wiki/Help:Elast
 
 There is no need to run the "update.php" maintenance script or any of the rebuild data scripts (but it is still advisable to do so to make [table optimizations](https://www.semantic-mediawiki.org/wiki/Database/Table_optimization) on the database).
 
-
 ## Contributors
 
 * translatewiki.net
@@ -172,3 +170,7 @@ There is no need to run the "update.php" maintenance script or any of the rebuil
 * thomas-topway-it ([KM-A](https://km-a.net/))
 * jaideraf
 * Bernhard Krabina ([KM-A](https://km-a.net/))
+
+## See Also
+
+* [Semantic MediaWiki 5 Released](https://professional.wiki/en/news/semantic-mediawiki-5-released) blog post

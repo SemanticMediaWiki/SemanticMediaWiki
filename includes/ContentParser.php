@@ -118,22 +118,25 @@ class ContentParser {
 	 * @since 1.9
 	 *
 	 * @param string|null $text
+	 * @param bool $clear Whether to clear the parser cache.
 	 *
 	 * @return ContentParser
 	 */
-	public function parse( $text = null ) {
+	public function parse( ?string $text = null, bool $clear = true ) {
 		if ( $text !== null ) {
-			return $this->parseText( $text );
+			return $this->parseText( $text, $clear );
 		}
 
 		return $this->fetchFromContent();
 	}
 
-	private function parseText( $text ) {
+	private function parseText( ?string $text, bool $clear ) {
 		$this->parserOutput = $this->parser->parse(
 			$text,
 			$this->getTitle(),
-			$this->makeParserOptions()
+			$this->makeParserOptions(),
+			true,
+			$clear
 		);
 
 		return $this;
