@@ -41,12 +41,18 @@ class EditInfo {
 	private $parserOutput;
 
 	/**
+	 * @var array
+	 */
+	private $extraSemanticSlots;
+
+	/**
 	 * @since 1.9
 	 */
-	public function __construct( WikiPage $page, ?RevisionRecord $revision, User $user ) {
+	public function __construct( WikiPage $page, ?RevisionRecord $revision, User $user, array $extraSemanticSlots = [] ) {
 		$this->page = $page;
 		$this->revision = $revision;
 		$this->user = $user;
+		$this->extraSemanticSlots = $extraSemanticSlots;
 	}
 
 	/**
@@ -96,7 +102,54 @@ class EditInfo {
 
 		$this->parserOutput = $prepareEdit->getOutput();
 
+		if ( $this->parserOutput !== null ) {
+			$this->combineSlotOutput();
+		}
+
 		return $this;
+	}
+
+	private function combineSlotOutput() {
+		foreach ( $this->extraSemanticSlots as $semanticSlot ) {
+			if ( !$this->revision->hasSlot( $semanticSlot ) || $semanticSlot === SlotRecord::MAIN ) {
+				continue;
+			}
+
+			$content = $this->revision->getContent( $semanticSlot );
+
+			if ( $content === null ) {
+				continue;
+			}
+
+			$prepareEdit = $this->page->prepareContentForEdit(
+				$content,
+				null,
+				$this->user,
+				$content->getContentHandler()->getDefaultFormat()
+			);
+
+			if ( method_exists( $prepareEdit, 'getOutput' ) ) {
+				$parserOutput = $prepareEdit->getOutput();
+			} else {
+				$parserOutput = isset( $prepareEdit->output ) ? $prepareEdit->output : null;
+			}
+
+			if ( $parserOutput === null ) {
+				continue;
+			}
+
+			$slotSemanticData = $parserOutput->getExtensionData( ParserData::DATA_ID );
+
+			if ( $slotSemanticData !== null ) {
+				$semanticData = $this->parserOutput->getExtensionData( ParserData::DATA_ID );
+
+				if ( $semanticData === null ) {
+					$this->parserOutput->setExtensionData( ParserData::DATA_ID, $slotSemanticData );
+				} else {
+					$semanticData->importDataFrom( $slotSemanticData );
+				}
+			}
+		}
 	}
 
 }
