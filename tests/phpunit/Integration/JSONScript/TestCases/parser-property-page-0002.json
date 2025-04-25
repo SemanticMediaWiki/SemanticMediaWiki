@@ -1,0 +1,79 @@
+{
+	"description": "Test property page, subcategory of",
+	"setup": [
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "PP0002",
+			"contents": ""
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "PP0002/1",
+			"contents": "[[Category:PP0002]]"
+		}
+	],
+	"beforeTest": {
+		"job-run": [
+			"smw.changePropagationDispatch",
+			"smw.changePropagationClassUpdate",
+			"smw.changePropagationUpdate"
+		]
+	},
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (using predefined property, forced type URL)",
+			"namespace": "NS_CATEGORY",
+			"subject": "PP0002/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SUBC",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#0 (shows prefixed browse links to a category)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "Subcategory of",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {}
+				},
+				"to-contain": [
+					"<span class=\"smwbrowse\"><a href=\".*Special:Browse/:Category:PP0002\" title=\"Special:Browse/:Category:PP0002\">+</a></span>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgQSubcategoryDepth": 10,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_CATEGORY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with NS_SPECIAL when 'ja' is used as sitelanguage." ]
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

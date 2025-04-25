@@ -1,0 +1,92 @@
+{
+	"description": "Test `#smwdoc` parser output",
+	"setup": [
+		{
+			"page": "smwdoc-table",
+			"contents": "{{#smwdoc: table |parameters=base }}"
+		},
+		{
+			"page": "smwdoc-csv",
+			"contents": "{{#smwdoc: csv |parameters=all }}"
+		},
+		{
+			"page": "smwdoc-list",
+			"contents": "{{#smwdoc: list |parameters=all |language=de }}"
+		},
+		{
+			"page": "smwdoc-count",
+			"contents": "{{#smwdoc: count }}"
+		},
+		{
+			"page": "smwdoc-debug",
+			"contents": "{{#smwdoc: debug |parameters=specific |language=en }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (#1019)",
+			"subject": "smwdoc-table",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"smwtable-clean doctable sortable\">",
+					"</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (#1019)",
+			"subject": "smwdoc-csv",
+			"assert-output": {
+				"to-contain": [
+					"<table class=\"smwtable-clean doctable sortable\">",
+					"</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (#1019)",
+			"subject": "smwdoc-list",
+			"assert-output": {
+				"to-contain": [
+					"</td>",
+					"<td>Legt fest, welche zusätzliche CSS-Klasse genutzt werden soll",
+					"</td></tr>",
+					"</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#3186)",
+			"subject": "smwdoc-count",
+			"assert-output": {
+				"to-contain": [
+					"This result format does not provide format specific parameters."
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (#3186)",
+			"subject": "smwdoc-debug",
+			"assert-output": {
+				"to-contain": [
+					"This result format does not provide format specific parameters."
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLanguageCode": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
