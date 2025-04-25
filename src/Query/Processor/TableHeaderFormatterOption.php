@@ -83,7 +83,8 @@ class TableHeaderFormatterOption {
 					return $partsLabel[0] . ';' . $paramParts[0] . '=';
 				} else {
 					if ( str_contains( $mainLabel, '=' ) ) {
-						return $label . ';' . $paramParts[0] . '=';
+						$labelParts = explode( ' ', $partsLabel[0] );
+						return $labelParts[1] . ';' . $paramParts[0] . '=' . $labelParts[0];
 					}
 					return str_replace( '=', '', $label . ';' . $paramParts[0] );
 				}
