@@ -42,7 +42,9 @@ class Logo {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
 			->get( 'ExtensionAssetsPath' );
-		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer.svg";
+		return version_compare( MW_VERSION, '1.43', '>=' )
+			? "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer.svg"
+			: "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer_legacy.svg";
 	}
 
 }
