@@ -57,7 +57,6 @@
 	"version-semantic": "Semantična razširitev",
 	"smw_baduri": "URI-ji v obliki »$1« niso dovoljeni.",
 	"smw_csv_link": "CSV",
-	"smw_dsv_link": "DSV",
 	"smw_json_link": "JSON",
 	"smw_rdf_link": "RDF",
 	"smw_printername_count": "Štetje zadetkov",

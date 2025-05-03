@@ -6,6 +6,7 @@
 			"Growingup"
 		]
 	},
+	"smw-error": "Ката",
 	"smw_finallistconjunct": ", жана",
 	"smw_printername_list": "Тизме",
 	"smw_printername_table": "Жадыбал",
@@ -28,7 +29,11 @@
 	"smw_result_prev": "Мурунку",
 	"smw_result_next": "Кийинки",
 	"smw_result_results": "Натыйжалар",
+	"smw-admin-support": "Колдоо алуу",
 	"smw-admin-supplementary-elastic-indices-title": "Индекстер",
+	"smw-admin-supplementary-elastic-statistics-title": "Статистика",
+	"smw-admin-supplementary-elastic-replication-files": "Файлдар",
+	"smw-admin-supplementary-elastic-replication-pages": "Барактар",
 	"smw-ui-tooltip-title-property": "Өзгөчөлүк",
 	"smw-ui-tooltip-title-quantity": "Сан",
 	"smw-ui-tooltip-title-info": "Маалымат",
