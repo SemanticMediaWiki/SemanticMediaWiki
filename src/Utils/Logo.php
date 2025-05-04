@@ -26,6 +26,8 @@ class Logo {
 		if ( $key === 'footer' ) {
 			return self::footer();
 		}
+
+		return null;
 	}
 
 	private static function small(): string {
