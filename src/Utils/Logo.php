@@ -2,6 +2,7 @@
 
 namespace SMW\Utils;
 
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 
 /**
@@ -30,14 +31,14 @@ class Logo {
 	private static function small(): string {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
-			->get( 'ExtensionAssetsPath' );
+			->get( MainConfigNames::ExtensionAssetsPath );
 		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_small.svg";
 	}
 
 	private static function footer(): string {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
-			->get( 'ExtensionAssetsPath' );
+			->get( MainConfigNames::ExtensionAssetsPath );
 		return version_compare( MW_VERSION, '1.43', '>=' )
 			? "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer.svg"
 			: "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer_legacy.svg";
