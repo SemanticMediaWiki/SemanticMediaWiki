@@ -16,12 +16,8 @@ class Logo {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $key
-	 *
-	 * @return string
 	 */
-	public static function get( $key ) {
+	public static function get( string $key ): ?string {
 		if ( $key === 'small' ) {
 			return self::small();
 		}
@@ -31,14 +27,14 @@ class Logo {
 		}
 	}
 
-	private static function small() {
+	private static function small(): string {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
 			->get( 'ExtensionAssetsPath' );
 		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_small.svg";
 	}
 
-	private static function footer() {
+	private static function footer(): string {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
 			->get( 'ExtensionAssetsPath' );
