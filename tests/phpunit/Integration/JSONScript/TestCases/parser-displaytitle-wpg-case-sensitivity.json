@@ -1,0 +1,92 @@
+{
+	"description": "Test `_wpg` value with lower/upper first case letter +DISPLAYTITLE (#3587, `wgRestrictDisplayTitle`, `wgCapitalLinks`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has number",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "PD0001/1",
+			"contents": "[[Has number::123]] [[Has text::abc]] [[Category:PD0001]] {{DISPLAYTITLE:PD0001/1}}"
+		},
+		{
+			"page": "PD0001/2",
+			"contents": "[[Category:PD0001]] [[Has text::ABC]] {{DISPLAYTITLE:PD0001/2}}"
+		},
+		{
+			"page": "PD0001/Q.1",
+			"contents": "{{#show: PD0001/1 |?Has number |intro=PD0001: }}"
+		},
+		{
+			"page": "PD0001/Q.2",
+			"contents": "{{#show: PD0001/1 |?Has number |intro=PD0001: }}"
+		},
+		{
+			"page": "PD0001/Q.3",
+			"contents": "{{#ask: [[PD0001/1]] |?Has text |intro=PD0001: |format=plain |mainlabel=- |headers=hide }}"
+		},
+		{
+			"page": "PD0001/Q.4",
+			"contents": "{{#ask: [[PD0001/1]] |?Has text |intro=PD0001: |format=plain |mainlabel=- |headers=hide }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (#show, lower case `PD0001`)",
+			"subject": "PD0001/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"PD0001:123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (#show, upper case `PD0001`)",
+			"subject": "PD0001/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"PD0001:123"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (#ask, lower case `PD0001`)",
+			"subject": "PD0001/Q.3",
+			"assert-output": {
+				"to-contain": [
+					"PD0001:abc"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (#ask, upper case `PD0001`)",
+			"subject": "PD0001/Q.4",
+			"assert-output": {
+				"to-contain": [
+					"PD0001:abc"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"wgCapitalLinks": true,
+		"wgRestrictDisplayTitle": false
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

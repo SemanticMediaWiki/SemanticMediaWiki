@@ -1,0 +1,90 @@
+{
+	"description": "Test `#set_recurring_event` (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Parser-set-rec-event/Has date",
+			"contents": "[[Has type::Date]]"
+		},
+		{
+			"page": "Example/PE0005/1",
+			"contents": "{{#set_recurring_event:property=Parser-set-rec-event/Has date |start=01 Feb 1970 |Has title=Recurring event |unit=year |period=12 |limit=3 }}"
+		},
+		{
+			"page": "Example/PE0005/Q1",
+			"contents": "{{#ask: [[Has title::Recurring event]] |?Parser-set-rec-event/Has date |format=table |link=none }}"
+		},
+		{
+			"page": "Example/PE0005/2",
+			"contents": "{{#set_recurring_event:property=Parser-set-rec-event/Has date |start=01 Feb 1970 |Has title=Recurring event 2 |unit=month |period=1 |limit=2 }} {{#set_recurring_event:property=Parser-set-rec-event/Has date |start=01 Feb 1970 |Has title=Recurring event 2, Test|+sep=, |unit=month |period=1 |limit=2 }}"
+		},
+		{
+			"page": "Example/PE0005/2",
+			"contents": "{{#set_recurring_event:property=Parser-set-rec-event/Has date |start=01 Feb 1970 |Has title=Recurring event 2, Test|+sep=, |unit=month |period=1 |limit=2 }}"
+		},
+		{
+			"page": "Example/PE0005/Q.2",
+			"contents": "{{#ask: [[Has title::Recurring event 2]] |?Parser-set-rec-event/Has date |format=table |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/PE0005/Q1",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/PE0005/1#_24b4bb103258162c9354a88ab367bd9b</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2440618.5\">1 February 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/PE0005/1#_55f9e8479ef40a24391a891b5f20fe5b</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2445001.5\">1 February 1982</td>",
+					"<td class=\"smwtype_wpg\">Example/PE0005/1#_ef7da837989bf8b29ffe7171f8dc925f</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2449384.5\">1 February 1994</td>",
+					"<td class=\"smwtype_wpg\">Example/PE0005/1#_4ec057121d088e32042adbbbd3b5a6f6</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2453767.5\">1 February 2006</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (set and replace)",
+			"subject": "Example/PE0005/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\">Example/PE0005/2#_1b42faddcb88b2fa4c839e1efe5dae02</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2440618.5\">1 February 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/PE0005/2#_ca433ec39141e57cc8adb40f23ef410d</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2440677.5\">1 April 1970</td>",
+					"<td class=\"smwtype_wpg\">Example/PE0005/2#_d9c116156c1bb8379c5d5f961b43c2b7</td><td class=\"Parser-set-rec-event/Has-date smwtype_dat\" data-sort-value=\"2440646.5\">1 March 1970</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2",
+			"subject": "Example/PE0005/2#_1b42faddcb88b2fa4c839e1efe5dae02",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"Has title",
+						"Parser-set-rec-event/Has date",
+						"_SKEY"
+					],
+					"propertyValues": [
+						"1970-02-01",
+						"Recurring event 2 ",
+						"Test"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
