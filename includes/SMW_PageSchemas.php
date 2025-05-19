@@ -211,7 +211,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 				$hasExistingValues = true;
 			}
 		}
-		$html_text = '<p>' . wfMessage( 'ps-optional-name' )->text() . ' ';
+		$html_text = '<p>' . wfMessage( 'ps-optional-name' )->escaped() . ' ';
 		$propName = PageSchemas::getValueFromObject( $prop_array, 'name' );
 		$html_text .= Html::input( 'smw_property_name_num', $propName, 'text', [ 'size' => 15 ] ) . "\n";
 		$propType = PageSchemas::getValueFromObject( $prop_array, 'Type' );
@@ -234,7 +234,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		// This can't be last, because of the hacky way the XML is
 		// ocnstructed from this form's output.
 		if ( defined( 'SF_VERSION' ) ) {
-			$html_text .= '<p>' . wfMessage( 'sf_createproperty_linktoform' )->text() . ' ';
+			$html_text .= '<p>' . wfMessage( 'sf_createproperty_linktoform' )->escaped() . ' ';
 			$linkedForm = PageSchemas::getValueFromObject( $prop_array, 'LinkedForm' );
 			$html_text .= Html::input( 'smw_linked_form_num', $linkedForm, 'text', [ 'size' => 15 ] ) . "\n";
 			$html_text .= "(for Page properties only)</p>\n";
