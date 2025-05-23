@@ -1,6 +1,6 @@
 # Semantic MediaWiki 5.0.2
 
-Released on May 26th, 2025.
+Released on May 24th, 2025.
 
 This is a [patch release](../RELEASE-POLICY.md). Thus, it contains only bug fixes, no new features, and no breaking changes.
 
