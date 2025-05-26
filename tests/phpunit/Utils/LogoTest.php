@@ -26,8 +26,12 @@ class LogoTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGet_Footer() {
+		$fileName = version_compare( MW_VERSION, '1.43', '>=' )
+			? 'logo_footer.svg'
+			: 'logo_footer_legacy.svg';
+
 		$this->assertContains(
-			'assets/logo_footer.svg',
+			"assets/$fileName",
 			Logo::get( 'footer' )
 		);
 	}
