@@ -186,7 +186,7 @@ class HtmlBuilder {
 			[
 				'action' => $title->getLocalUrl(),
 				'method' => 'get',
-				'q' => $urlArgs->get( 'q', '' ),
+				'q' => htmlspecialchars( $urlArgs->get( 'q', '' ) ),
 				'csum' => crc32( $urlArgs->get( 'q', '' ) ),
 				'limit' => $params['limit'],
 				'offset' => $params['offset'],

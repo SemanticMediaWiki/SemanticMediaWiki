@@ -2,6 +2,7 @@
 
 namespace SMW\Utils;
 
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 
 /**
@@ -16,12 +17,8 @@ class Logo {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $key
-	 *
-	 * @return string
 	 */
-	public static function get( $key ) {
+	public static function get( string $key ): ?string {
 		if ( $key === 'small' ) {
 			return self::small();
 		}
@@ -29,20 +26,24 @@ class Logo {
 		if ( $key === 'footer' ) {
 			return self::footer();
 		}
+
+		return null;
 	}
 
-	private static function small() {
+	private static function small(): string {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
-			->get( 'ExtensionAssetsPath' );
+			->get( MainConfigNames::ExtensionAssetsPath );
 		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_small.svg";
 	}
 
-	private static function footer() {
+	private static function footer(): string {
 		$extAssets = MediaWikiServices::getInstance()
 			->getMainConfig()
-			->get( 'ExtensionAssetsPath' );
-		return "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer.svg";
+			->get( MainConfigNames::ExtensionAssetsPath );
+		return version_compare( MW_VERSION, '1.43', '>=' )
+			? "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer.svg"
+			: "$extAssets/SemanticMediaWiki/res/smw/assets/logo_footer_legacy.svg";
 	}
 
 }

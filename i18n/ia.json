@@ -186,7 +186,7 @@
 	"specialpages-group-smw_group-search": "Navigar e cercar",
 	"exportrdf": "Exportar paginas verso RDF",
 	"smw_exportrdf_docu": "Iste pagina permitte obtener le datos de un pagina in formato RDF.\nPro exportar paginas, entra le titulos in le quadro de texto in basso, un titulo per linea.",
-	"smw_exportrdf_recursive": "Exportar recursivemente tote le paginas connexe.\nNota que le resultato pote esser grande!",
+	"smw_exportrdf_recursive": "Exportar recursivemente tote le paginas associate.\nNota que le resultato pote esser grande!",
 	"smw_exportrdf_backlinks": "Exportar equalmente tote le paginas con referentias al paginas exportate.\nGenera un RDF navigabile.",
 	"smw_exportrdf_lastdate": "Non exportar paginas que non esseva cambiate post le momento specificate.",
 	"smw_exportrdf_submit": "Exportar",
