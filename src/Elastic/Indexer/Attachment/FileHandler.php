@@ -2,7 +2,10 @@
 
 namespace SMW\Elastic\Indexer\Attachment;
 
+use ConfigException;
+use MediaWiki\MediaWikiServices;
 use Psr\Log\LoggerAwareTrait;
+use RequestContext;
 use SMW\MediaWiki\FileRepoFinder;
 use Title;
 
@@ -77,14 +80,15 @@ class FileHandler {
 
 		$contents = '';
 
+		$protocolizedUrl = $this->protocolizeUrl( $url );
 		// Avoid a "failed to open stream: HTTP request failed! HTTP/1.1 404 Not Found"
-		$file_headers = @get_headers( $url );
+		$file_headers = @get_headers( $protocolizedUrl );
 
 		if (
 			$file_headers !== false &&
 			$file_headers[0] !== 'HTTP/1.1 404 Not Found' &&
 			$file_headers[0] !== 'HTTP/1.0 404 Not Found' ) {
-			return file_get_contents( $url );
+			return file_get_contents( $protocolizedUrl );
 		}
 
 		$this->logger->info(
@@ -111,4 +115,41 @@ class FileHandler {
 		return $contents;
 	}
 
+	/**
+	 * Tries to add a scheme to the url, if a relative url was passed
+	 *
+	 * @since 4.0.0-alpha
+	 *
+	 * @param string $url
+	 *
+	 * @return string
+	 */
+    private function protocolizeUrl( string $url ): string {
+        $parsed = parse_url( $url );
+
+        if ( $parsed !== false && isset( $parsed[ 'scheme' ] ) ) {
+            return $url;
+        }
+
+        try {
+            $canonical = MediaWikiServices::getInstance()->getMainConfig()->get( 'CanonicalServer' );
+            $parsedCanonical = parse_url( $canonical );
+
+            if ( $parsedCanonical !== false && isset( $parsedCanonical[ 'scheme' ] ) ) {
+				return sprintf( '%s://%s', $parsedCanonical[ 'scheme' ], ltrim( $url, '/' ) );
+            }
+        } catch ( ConfigException $e ) {
+            // Pass through
+        }
+
+        $mainContext = RequestContext::getMain();
+
+        // Default scheme if RequestContext is null, in hope that it gets redirect if https is required
+        $scheme = 'http';
+        if ( $mainContext !== null && $mainContext->getRequest()->getProtocol() !== null ) {
+            $scheme = $mainContext->getRequest()->getProtocol();
+        }
+
+        return sprintf( '%s://%s', $scheme, ltrim( $url, '/' ) );
+    }
 }
