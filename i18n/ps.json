@@ -3,7 +3,8 @@
 		"authors": [
 			"Af420",
 			"Ahmed-Najib-Biabani-Ibrahimkhel",
-			"Amjad Khan"
+			"Amjad Khan",
+			"شاه زمان پټان"
 		]
 	},
 	"smw_finallistconjunct": "، او",
@@ -22,7 +23,7 @@
 	"wantedproperties": "غوښتل شوې ځانتياوې",
 	"smw_ask_ascorder": "ختند",
 	"smw_ask_defaultformat": "تلواليز",
-	"smw-ask-delete": "[ړنگول]",
+	"smw-ask-delete": "غورځول",
 	"smw_sbv_property": "ځانتيا:",
 	"smw_sbv_value": "ارزښت:",
 	"smw_sbv_submit": "پايلې موندل",
@@ -36,7 +37,7 @@
 	"smw_result_results": "پايلې",
 	"smw_result_noresults": "بې پايلو.",
 	"smw_smwadmin_return": "$1 ته ورستنېدل",
-	"smw_smwadmin_datarefreshstopconfirm": "هو، زه ډاډه يم.",
+	"smw_smwadmin_datarefreshstopconfirm": "هو، زه {{GENDER:$1|ډاډه}} يم.",
 	"smw-ui-tooltip-title-info": "مالومات",
 	"smw-ui-tooltip-title-warning": "گواښنه",
 	"smw-ui-tooltip-title-reference": "سرچينه",
