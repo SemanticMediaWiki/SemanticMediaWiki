@@ -313,7 +313,7 @@
 		},
 		{
 			"type": "api",
-			"about": "#12 `smwbrowse` subject lookup JSON with inverse property",
+			"about": "#12 `smwbrowse` subject lookup JSON with direct and inverse properties",
 			"api": {
 				"parameters": {
 					"action": "smwbrowse",
