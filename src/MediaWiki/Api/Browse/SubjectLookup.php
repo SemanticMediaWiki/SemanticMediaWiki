@@ -6,6 +6,8 @@ use SMW\DIWikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
+use SMW\RequestOptions;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -132,10 +134,44 @@ class SubjectLookup extends Lookup {
 		$semanticData = $applicationFactory->getStore()->getSemanticData(
 			$dataItem
 		);
+		$inverseEntries = [];
 
-		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+		// check inverse properties if available
+		$requestOptions = new RequestOptions();
+		$requestOptions->sort = true;
+		$requestOptions->setLimit( 100 );
 
-		return $semanticDataSerializer->serialize( $semanticData );
+		$incomingProperties = $this->store->getInProperties( $dataItem, $requestOptions );
+
+		if ( !empty( $incomingProperties ) ) {
+			$inverseSemanticData = new SemanticData( $dataItem );
+
+			foreach ( $incomingProperties as $property ) {
+				$subjects = $this->store->getPropertySubjects( $property, $dataItem );
+
+				foreach ( $subjects as $subject ) {
+					$inverseSemanticData->addPropertyObjectValue( $property, $subject );
+				}
+			}
+
+			$serializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+			$inverseDataSerialized = $serializer->serialize( $inverseSemanticData );
+
+			foreach ( $inverseDataSerialized['data'] as $entry ) {
+				if ( isset( $entry['property'] ) ) {
+					$inverseEntries[] = [
+						'inverse property' => $entry['property'],
+						'dataitem' => $entry['dataitem'] ?? [],
+					];
+				}
+			}
+		} else {
+			$serializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
+		}
+
+		$data = $serializer->serialize( $semanticData );
+		$data['data'] = array_merge( $data['data'], $inverseEntries );
+
+		return $data;
 	}
-
 }
