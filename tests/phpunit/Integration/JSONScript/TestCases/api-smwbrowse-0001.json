@@ -78,8 +78,7 @@
 		},
 		{
 			"namespace": "NS_MAIN",
-			"page": "Api-smwbrowse-0001-8",
-			"contents": "" 
+			"page": "Api-smwbrowse-0001-8"
 		},
 		{
 			"namespace": "NS_MAIN",
@@ -89,7 +88,7 @@
 		{
 			"namespace": "NS_MAIN",
 			"page": "Api-smwbrowse-0001-10",
-			"contents": "[[API inverse property::Api-smwbrowse-0001-7]]"
+			"contents": "[[API_direct_property::Api-smwbrowse-0001-8]]"
 		}
 	],
 	"tests": [
@@ -325,6 +324,23 @@
 			"assert-output": {
 				"to-contain": {
 					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.12.txt"
+				}
+			}
+		},
+		{
+			"type": "api",
+			"about": "#13 `smwbrowse` subject lookup JSON with direct properties",
+			"api": {
+				"parameters": {
+					"action": "smwbrowse",
+					"format": "json",
+					"browse": "subject",
+					"params": "{ \"subject\": \"Api-smwbrowse-0001-10\" , \"ns\": 0 , \"limit\": 100 , \"offset\": 0 ,\"options\": { \"lang\" : \"en\" } }"
+				}
+			},
+			"assert-output": {
+				"to-contain": {
+					"contents-file" : "/../Fixtures/res.api-smwbrowse-0001.13.txt"
 				}
 			}
 		}

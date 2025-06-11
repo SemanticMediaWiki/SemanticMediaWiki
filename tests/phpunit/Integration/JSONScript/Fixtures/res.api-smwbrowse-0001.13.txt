@@ -1,0 +1,1 @@
+{"query":{"subject":"Api-smwbrowse-0001-10#0##","data":[{"property":"API_direct_property","dataitem":[{"type":9,"item":"Api-smwbrowse-0001-8#0##"}]},{"property":"_MDAT","dataitem":[{"type":6,"item":".*"}]}],"serializer":"SMW\\Serializers\\SemanticDataSerializer","version":2},"meta":{"type":"subject"}.*}
