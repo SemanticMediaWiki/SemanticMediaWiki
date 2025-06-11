@@ -139,7 +139,7 @@ class SubjectLookup extends Lookup {
 		// Retrieve direct and incoming (inverse) properties from the store
 		$directProperties = $this->store->getProperties( $dataItem, $requestOptions );
 		$incomingProperties = $this->store->getInProperties( $dataItem, $requestOptions );
-		
+
 		$semanticDataDirect = new SemanticData( $dataItem );
 		$semanticDataIncoming = new SemanticData( $dataItem );
 
