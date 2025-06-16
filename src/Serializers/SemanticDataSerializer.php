@@ -86,12 +86,14 @@ class SemanticDataSerializer implements Serializer {
 	private function doSerializeInverseProperties( SemanticData $semanticData ) {
 		$inverseData = [];
 		$dataItem = $semanticData->getSubject();
-		$incomingProperties = ApplicationFactory::getInstance()->getStore()->getInProperties( $dataItem );
+
+		$store = ApplicationFactory::getInstance()->getStore();
+		$incomingProperties = $store->getInProperties( $dataItem );
 		$semanticDataIncoming = new SemanticData( $dataItem );
 
 		if ( isset( $incomingProperties ) && count( $incomingProperties ) > 0 ) {
 			foreach ( $incomingProperties as $property ) {
-				$subjects = ApplicationFactory::getInstance()->getStore()->getPropertySubjects( $property, $dataItem );
+				$subjects = $store->getPropertySubjects( $property, $dataItem );
 
 				if ( $subjects === [] ) {
 					continue;
@@ -110,6 +112,7 @@ class SemanticDataSerializer implements Serializer {
 				];
 			}
 		}
+
 		return $inverseData;
 	}
 
