@@ -1,0 +1,112 @@
+{
+	"description": "Test `#ask` with (`#-raw`) formatter using `#set` (#..., `wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::text]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has mono text",
+			"contents": "[[Has type::Monolingual text]]"
+		},
+		{
+			"page": "Example/PA0024/1",
+			"contents": "[[Category:PA0024]] {{#set: Has text=Some text with annotation [[Foo::Example/PA0024/1]] }}"
+		},
+		{
+			"page": "Example/PA0024/Q.1",
+			"contents": "{{#ask: [[Category:PA0024]] [[Has text::+]] |?Has text |link=none }}"
+		},
+		{
+			"page": "Example/PA0024/Q.2",
+			"contents": "{{#ask: [[Category:PA0024]] [[Has text::+]] |?Has text#-raw |link=none }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/PA0024/1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_INST",
+						"_SKEY",
+						"Has text"
+					],
+					"propertyValues": [
+						"Some text with annotation [[Foo::Example/PA0024/1]]"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (without `-raw`)",
+			"subject": "Example/PA0024/Q.1",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation Example/PA0024/1</td></tr></tbody></table>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (with `-raw`)",
+			"subject": "Example/PA0024/Q.2",
+			"assert-store": {
+				"semantic-data": {
+					"strict-mode-valuematch": false,
+					"propertyCount": 4,
+					"propertyKeys": [
+						"_MDAT",
+						"_ASK",
+						"_SKEY",
+						"Foo"
+					],
+					"propertyValues": [
+						"Example/PA0024/1"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"Has-text smwtype_txt\">Some text with annotation",
+					"title=\"Example/PA0024/1\">Example/PA0024/1</a></td></tr></tbody></table>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
