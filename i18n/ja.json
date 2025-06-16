@@ -62,7 +62,7 @@
 	"smw-extensionload-error-how-explain": "拡張機能を有効にして名前空間の宣言ならびに未解決の設定を問題回避するには <code>enableSemantics</code>を使用して要求された変数を確実に設定した後で<code>ExtensionRegistry</code>経由で拡張機能をロードする必要があります。 \n\n詳細情報は[https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics]ヘルプページをご参照ください。",
 	"smw-upgrade-maintenance-title": "メンテナンス » Semantic MediaWiki",
 	"smw-upgrade-maintenance-why-title": "このページが表示される理由は？",
-	"smw-upgrade-maintenance-explain": "この拡張機能は影響とダウンタイムを最小限にとどめようとして、<code>update.php</code>までメンテナンスタスクの大半を遅延させますが、データベース関連の変更のいくつかはデータの矛盾を予防するため先に終了させる必要があります。その範囲はいかに及ぶことがあります。\n* テーブル構造の変更、つまり既存のフィールドの改変もしくは新フィールドの追加を含む  \n* テーブル索引の変更もしくは追加\n* テーブル最適化の実行 (有効に設定してある場合)",
+	"smw-upgrade-maintenance-explain": "この拡張機能は、影響とダウンタイムを最小限に抑えるため、メンテナンスタスクの大半を <code>update.php</code> の後に遅延させるようにしていますが、いくつかのデータベース関連の変更については、データの不整合を避けるために先に完了させる必要があります。これには以下が含まれることがあります:\n* テーブル構造の変更 (既存のフィールドの変更や新規フィールドの追加など)\n* テーブル索引の変更または追加\n* テーブル最適化の実行 (有効に設定されている場合)",
 	"smw-semantics-not-enabled": "この wiki では Semantic MediaWiki の機能が有効化されていませんでした。",
 	"smw_viewasrdf": "RDF フィード",
 	"smw_finallistconjunct": ",",
