@@ -115,6 +115,7 @@ class SubjectLookup extends Lookup {
 		);
 
 		$deepRedirectTargetResolver = $applicationFactory->newMwCollaboratorFactory()->newDeepRedirectTargetResolver();
+		$serializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
@@ -132,10 +133,8 @@ class SubjectLookup extends Lookup {
 		$semanticData = $applicationFactory->getStore()->getSemanticData(
 			$dataItem
 		);
-
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 
-		return $semanticDataSerializer->serialize( $semanticData );
+		return $semanticDataSerializer->serialize( $semanticData, true );
 	}
-
 }
