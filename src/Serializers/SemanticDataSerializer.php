@@ -5,6 +5,7 @@ namespace SMW\Serializers;
 use OutOfBoundsException;
 use Serializers\Serializer;
 use SMW\SemanticData;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,12 +20,22 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @since  1.9
 	 */
-	public function serialize( $semanticData ) {
+	public function serialize( $semanticData, $includeInverse = false ) {
 		if ( !$semanticData instanceof SemanticData ) {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		return $this->doSerialize( $semanticData ) + [ 'serializer' => __CLASS__, 'version' => 2 ];
+		$data = $this->doSerialize( $semanticData, $includeInverse );
+
+		// If inverse properties are requested, we serialize them as well.
+		if ( $includeInverse ) {
+			$data['data'] = array_merge(
+				$data['data'],
+				$this->doSerializeInverseProperties( $semanticData )
+			);
+		}
+
+		return $data + [ 'serializer' => __CLASS__, 'version' => 2 ];
 	}
 
 	private function doSerialize( SemanticData $semanticData ) {
@@ -45,9 +56,11 @@ class SemanticDataSerializer implements Serializer {
 	}
 
 	/**
-	 * Build property and dataItem serialization record
+	 * Serializes all direct properties of a given semantic subject,
+	 * including the property name, its associated data item and direction flag.
 	 *
-	 * @return array
+	 * @param SemanticData $semanticData The semantic data of the current subject.
+	 * @return array List of serialized direct properties with their values.
 	 */
 	private function doSerializeProperty( $semanticData ) {
 		$properties = [];
@@ -55,11 +68,49 @@ class SemanticDataSerializer implements Serializer {
 		foreach ( $semanticData->getProperties() as $property ) {
 			$properties[] = [
 				'property' => $property->getSerialization(),
-				'dataitem' => $this->doSerializeDataItem( $semanticData, $property )
+				'dataitem' => $this->doSerializeDataItem( $semanticData, $property ),
+				'direction'	=> 'direct'
 			];
 		}
 
 		return $properties;
+	}
+
+	/**
+	 * Serializes all inverse properties for which the current subject
+	 * is the object, including property name, subjects and direction flag.
+	 *
+	 * @param SemanticData $semanticData The semantic data of the current subject.
+	 * @return array List of serialized inverse properties and referencing subjects.
+	 */
+	private function doSerializeInverseProperties( SemanticData $semanticData ) {
+		$inverseData = [];
+		$dataItem = $semanticData->getSubject();
+		$incomingProperties = ApplicationFactory::getInstance()->getStore()->getInProperties( $dataItem );
+		$semanticDataIncoming = new SemanticData( $dataItem );
+
+		if ( isset( $incomingProperties ) && count( $incomingProperties ) > 0 ) {
+			foreach ( $incomingProperties as $property ) {
+				$subjects = ApplicationFactory::getInstance()->getStore()->getPropertySubjects( $property, $dataItem );
+
+				if ( $subjects === [] ) {
+					continue;
+				}
+
+				foreach ( $subjects as $subject ) {
+					$semanticDataIncoming->addPropertyObjectValue( $property, $subject );
+				}
+			}
+
+			foreach ( $semanticDataIncoming->getProperties() as $property ) {
+				$inverseData[] = [
+					'property' => $property->getSerialization(),
+					'dataitem' => $this->doSerializeDataItem( $semanticDataIncoming, $property ),
+					'direction' => 'inverse'
+				];
+			}
+		}
+		return $inverseData;
 	}
 
 	/**

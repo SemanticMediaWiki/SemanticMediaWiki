@@ -6,8 +6,6 @@ use SMW\DIWikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
-use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -132,64 +130,11 @@ class SubjectLookup extends Lookup {
 			$subobject
 		);
 
-		$semanticData = new SemanticData( $dataItem );
-		$requestOptions = new RequestOptions();
-		$requestOptions->sort = true;
+		$semanticData = $applicationFactory->getStore()->getSemanticData(
+			$dataItem
+		);
+		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 
-		// Retrieve direct and incoming (inverse) properties from the store
-		$directProperties = $applicationFactory->getStore()->getSemanticData( $dataItem )->getProperties();
-		$incomingProperties = $applicationFactory->getStore()->getInProperties( $dataItem, $requestOptions );
-
-		$semanticDataDirect = new SemanticData( $dataItem );
-		$semanticDataIncoming = new SemanticData( $dataItem );
-
-		// Collect and structure direct property values into a separate SemanticData object
-		// This separation allows clear handling before final serialization
-		if ( !empty( $directProperties ) ) {
-			foreach ( $directProperties as $property ) {
-				$directSubjects = $this->store->getPropertyValues( $dataItem, $property );
-
-				foreach ( $directSubjects as $subject ) {
-					$semanticDataDirect->addPropertyObjectValue( $property, $subject );
-				}
-			}
-		}
-
-		$incomingData = [];
-		// Collect inverse (incoming) property values into their own SemanticData object
-		// This allows us to later customize their serialization format (e.g. "inverse property" instead of "property")
-		if ( !empty( $incomingProperties ) ) {
-			foreach ( $incomingProperties as $property ) {
-				$incomingSubjects = $this->store->getPropertySubjects( $property, $dataItem );
-
-				foreach ( $incomingSubjects as $subject ) {
-					$semanticDataIncoming->addPropertyObjectValue( $property, $subject );
-				}
-			}
-
-			// Serialize the inverse SemanticData separately to extract its entries
-			$incomingDataSerialized = $serializer->serialize( $semanticDataIncoming );
-
-			// Transform the entries so that the output clearly distinguishes inverse properties
-			foreach ( $incomingDataSerialized['data'] as $entry ) {
-				if ( isset( $entry['property'] ) ) {
-					$incomingData[] = [
-						'inverse property' => $entry['property'],
-						'dataitem' => $entry['dataitem'] ?? [],
-					];
-				}
-			}
-		}
-
-		// Merge the direct properties into the main SemanticData object for standard serialization
-		$semanticData->importDataFrom( $semanticDataDirect );
-
-		// Serialize the full direct data
-		$semanticData = $serializer->serialize( $semanticData );
-
-		// Append the previously processed inverse properties with custom "inverse property" label
-		$semanticData['data'] = array_merge( $semanticData['data'], $incomingData );
-
-		return $semanticData;
+		return $semanticDataSerializer->serialize( $semanticData, true );
 	}
 }
