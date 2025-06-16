@@ -25,7 +25,7 @@ class SemanticDataSerializer implements Serializer {
 			throw new OutOfBoundsException( 'Object is not supported' );
 		}
 
-		$data = $this->doSerialize( $semanticData, $includeInverse );
+		$data = $this->doSerialize( $semanticData );
 
 		// If inverse properties are requested, we serialize them as well.
 		if ( $includeInverse ) {
