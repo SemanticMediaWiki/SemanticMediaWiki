@@ -1,4 +1,4 @@
-# Semantic MediaWiki 5.1.0-beta
+# Semantic MediaWiki 5.1.0
 
 Not a release yet.
 
