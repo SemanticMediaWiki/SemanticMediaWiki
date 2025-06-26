@@ -53,7 +53,7 @@ class Pager {
 			],
 			Html::hidden(
 			'title',
-			strtok( $title->getPrefixedText(), '/' )
+			$title->getPrefixedText()
 			) . Html::hidden(
 				'limit',
 				$limit
