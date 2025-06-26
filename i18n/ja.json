@@ -59,7 +59,7 @@
 	"smw-upgrade-error-how-explain-admin": "管理者 (もしくは管理者権限の保有者) に連絡しし MediaWiki の [https://www.mediawiki.org/wiki/Special:MyLanguage/Manual:Update.php update.php] もしくは Semantic MediaWiki の [https://www.semantic-mediawiki.org/wiki/Help:SetupStore.php setupStore.php] 管理用スクリプトの実行を依頼してください。",
 	"smw-upgrade-error-how-explain-links": "また手助けに関する詳細情報は以下のページを参照してください。\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation インストール]の手順\n* [https://www.semantic-mediawiki.org/wiki/Help:Installation/Troubleshooting トラブル解決]用のヘルプページ",
 	"smw-extensionload-error-why-title": "このページが表示される理由は？",
-	"smw-extensionload-error-how-explain": "拡張機能を有効にして名前空間の宣言ならびに未解決の設定を問題回避するには <code>enableSemantics</code>を使用して要求された変数を確実に設定した後で<code>ExtensionRegistry</code>経由で拡張機能をロードする必要があります。 \n\n詳細情報は[https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics]ヘルプページをご参照ください。",
+	"smw-extensionload-error-how-explain": "拡張機能を有効にし、名前空間の宣言や未設定の構成による問題を回避するには、<code>enableSemantics</code> を使用して必要な変数を設定してから、<code>ExtensionRegistry</code> を通じて拡張機能を読み込む必要があります。\n\n詳細は [https://www.semantic-mediawiki.org/wiki/Help:EnableSemantics enableSemantics] のヘルプページを参照してください。",
 	"smw-upgrade-maintenance-title": "メンテナンス » Semantic MediaWiki",
 	"smw-upgrade-maintenance-why-title": "このページが表示される理由は？",
 	"smw-upgrade-maintenance-explain": "この拡張機能は、影響とダウンタイムを最小限に抑えるため、メンテナンスタスクの大半を <code>update.php</code> の後に遅延させるようにしていますが、いくつかのデータベース関連の変更については、データの不整合を避けるために先に完了させる必要があります。これには以下が含まれることがあります:\n* テーブル構造の変更 (既存のフィールドの変更や新規フィールドの追加など)\n* テーブル索引の変更または追加\n* テーブル最適化の実行 (有効に設定されている場合)",
