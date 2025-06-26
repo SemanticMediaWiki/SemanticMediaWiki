@@ -129,7 +129,7 @@ class AuxiliaryFields {
 				// tableName conversion required by SQlite otherwise the
 				// integration tests fail
 				't' => $this->connection->tableName( SQLStore::ID_TABLE ),
-				'p' => $this->connection->tableName( SQLStore::ID_AUXILIARY_TABLE ) ],
+				'p' => $this->connection->tableName( SQLStore::ID_AUXILIARY_TABLE )
 			],
 			[
 				't.smw_id',
