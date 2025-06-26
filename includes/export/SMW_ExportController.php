@@ -589,8 +589,7 @@ class SMWExportController {
 				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
-		$res = $dbr->select( $dbr->tableName( 'page' ),
-							'page_id,page_title,page_namespace', $query,
+		$res = $dbr->select( 'page', 'page_id,page_title,page_namespace', $query,
 							'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
 		$foundpages = false;
 

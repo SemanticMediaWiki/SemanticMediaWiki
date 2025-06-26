@@ -122,7 +122,7 @@ class DisplayTitleLookup {
 		$propTable = $propTables[$propTableId];
 
 		$rows = $connection->select(
-			$connection->tablename( $propTable->getName() ),
+			$propTable->getName(),
 			[
 				's_id',
 				'o_hash',

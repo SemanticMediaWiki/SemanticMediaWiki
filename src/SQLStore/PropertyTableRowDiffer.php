@@ -291,7 +291,7 @@ class PropertyTableRowDiffer {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$result = $connection->select(
-			$connection->tablename( $propertyTable->getName() ),
+			$propertyTable->getName(),
 			'*',
 			[ 's_id' => $sid ],
 			__METHOD__
