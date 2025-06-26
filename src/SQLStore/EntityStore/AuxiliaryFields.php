@@ -126,10 +126,9 @@ class AuxiliaryFields {
 	private function fetchCountMap( array $hashes ) {
 		return $this->connection->select(
 			[
-				// tableName conversion required by SQlite otherwise the
-				// integration tests fail
-				't' => $this->connection->tableName( SQLStore::ID_TABLE ),
-				'p' => $this->connection->tableName( SQLStore::ID_AUXILIARY_TABLE ) ],
+				't' => SQLStore::ID_TABLE,
+				'p' => SQLStore::ID_AUXILIARY_TABLE
+			],
 			[
 				't.smw_id',
 				't.smw_hash',

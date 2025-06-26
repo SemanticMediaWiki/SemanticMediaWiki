@@ -58,10 +58,6 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->once() )
-			->method( 'tablename' )
-			->willReturnArgument( 0 );
-
 		$connection->expects( $this->any() )
 			->method( 'unescape_bytea' )
 			->willReturnArgument( 0 );

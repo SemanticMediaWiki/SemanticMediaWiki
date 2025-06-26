@@ -206,12 +206,12 @@ class UsageStatisticsListLookup implements ListLookup {
 
 		// Select object ID's against known property ID's that match the conditions
 		$res = $db->select(
-			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
 			'smw_id',
 			$conditions,
 			__METHOD__,
 			$options,
-			[ $db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
+			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res->numRows();
@@ -306,13 +306,13 @@ class UsageStatisticsListLookup implements ListLookup {
 
 		// Select object ID's against known property ID's that match the conditions
 		$res = $db->select(
-			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
 			'smw_id',
 			$conditions,
 			__METHOD__,
 			$options,
 			[
-				$db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ]
+				SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ]
 			]
 		);
 
