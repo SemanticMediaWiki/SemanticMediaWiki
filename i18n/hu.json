@@ -7,6 +7,7 @@
 			"David92003",
 			"Dj",
 			"Glanthor Reviol",
+			"Krisztina",
 			"Misibacsi",
 			"TK-999",
 			"Tacsipacsi",
@@ -15,6 +16,7 @@
 		]
 	},
 	"smw-desc": "A wiki elérhetőbbé tétele – gépek ''és'' emberek számára is ([https://www.semantic-mediawiki.org/wiki/Help:User_manual online dokumentáció])",
+	"smw-error": "Hiba",
 	"smw_viewasrdf": "RDF hírcsatorna",
 	"smw_finallistconjunct": ", és",
 	"smw_isspecprop": "Ez a tulajdonság különleges ebben a wikiben.",
