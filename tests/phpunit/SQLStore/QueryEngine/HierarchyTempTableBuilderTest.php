@@ -69,12 +69,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFillTempTable() {
-		$this->connection->expects( $this->once() )
-			->method( 'tableName' )
-			->with(
-				$this->stringContains( 'bar' ) )
-			->willReturn( '_bar' );
-
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' );
 

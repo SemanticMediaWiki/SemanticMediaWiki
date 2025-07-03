@@ -78,9 +78,6 @@ class DisplayTitleLookup {
 			}
 
 			$rows = $this->fetchFromTable( $list );
-			if ( !$rows ) {
-				continue;
-			}
 
 			foreach ( $rows as $row ) {
 				if ( !isset( $list[$row->s_id] ) ) {

@@ -70,7 +70,10 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->equalTo( [ 'smw_hash' => [
 					'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
 					'7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] ) )
-			->willReturn( [ (object)[ 'smw_hash' => 'foooo', 'smw_id' => 42 ] ] );
+			->willReturn( [
+                (object)[ 'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', 'smw_id' => 42 ],
+                (object)[ 'smw_hash' => '7b6b944694382bfab461675f40a2bda7e71e68e3', 'smw_id' => 1001 ]
+            ] );
 
 		$connection->expects( $this->at( 2 ) )
 			->method( 'select' )
