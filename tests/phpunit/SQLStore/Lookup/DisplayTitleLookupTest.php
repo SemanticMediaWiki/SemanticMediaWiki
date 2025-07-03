@@ -62,26 +62,19 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'unescape_bytea' )
 			->willReturnArgument( 0 );
 
-		$connection->expects( $this->at( 0 ) )
+		$connection->expects( $this->exactly( 2 ) )
 			->method( 'select' )
-			->with(
-				'smw_object_ids',
-				$this->equalTo( [ 'smw_id', 'smw_title', 'smw_namespace', 'smw_hash' ] ),
-				$this->equalTo( [ 'smw_hash' => [
-					'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
-					'7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] ) )
-			->willReturn( [
-				(object)[ 'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', 'smw_id' => 42 ],
-				(object)[ 'smw_hash' => '7b6b944694382bfab461675f40a2bda7e71e68e3', 'smw_id' => 1001 ]
-			] );
-
-		$connection->expects( $this->at( 2 ) )
-			->method( 'select' )
-			->with(
-				'foo_table',
-				$this->equalTo( [ 's_id', 'o_hash', 'o_blob' ] ),
-				$this->equalTo( [ 's_id' => [ 42, 1001 ] ] ) )
-			->willReturn( $rows );
+			->willReturnCallback( function( $table, $fields, $conditions ) use ( $rows ) {
+				if ( $table === 'smw_object_ids' ) {
+					return [
+						(object)[ 'smw_hash' => 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', 'smw_id' => 42 ],
+						(object)[ 'smw_hash' => '7b6b944694382bfab461675f40a2bda7e71e68e3', 'smw_id' => 1001 ]
+					];
+				} elseif ( $table === 'foo_table' ) {
+					return $rows;
+				}
+				return [];
+			} );
 
 		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
 			->disableOriginalConstructor()

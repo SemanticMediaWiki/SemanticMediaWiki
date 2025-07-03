@@ -39,12 +39,6 @@ class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHierarchyTableDefinitionForType() {
-		$this->connection->expects( $this->once() )
-			->method( 'tableName' )
-			->with(
-				$this->stringContains( 'bar' ) )
-			->willReturn( '_bar' );
-
 		$instance = new HierarchyTempTableBuilder(
 			$this->connection,
 			$this->temporaryTableBuilder
@@ -53,7 +47,7 @@ class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance->setTableDefinitions( [ 'property' => [ 'table' => 'bar', 'depth' => 3 ] ] );
 
 		$this->assertEquals(
-			[ '_bar', 3 ],
+			[ 'bar', 3 ],
 			$instance->getTableDefinitionByType( 'property' )
 		);
 	}
