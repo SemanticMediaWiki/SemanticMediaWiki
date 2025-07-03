@@ -74,7 +74,7 @@ class HierarchyTempTableBuilder {
 	public function setTableDefinitions( array $tableDefinitions ) {
 		foreach ( $tableDefinitions as $key => $tableDefinition ) {
 			$this->tableDefinitions[$key] = [
-				$this->connection->tableName( $tableDefinition['table'] ),
+				$tableDefinition['table'],
 				$tableDefinition['depth']
 			];
 		}

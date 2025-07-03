@@ -192,9 +192,9 @@ class ByGroupPropertyValuesLookup {
 		if ( $isIdField ) {
 			$res = $connection->select(
 				[
-					'o' => $connection->tableName( SQLStore::ID_TABLE ),
-					'p' => $connection->tableName( $propTable->getName() ),
-					'i' => $connection->tableName( SQLStore::ID_TABLE )
+					'o' => SQLStore::ID_TABLE,
+					'p' => $propTable->getName(),
+					'i' => SQLStore::ID_TABLE
 				],
 				$fields,
 				[
@@ -215,8 +215,8 @@ class ByGroupPropertyValuesLookup {
 		} else {
 			$res = $connection->select(
 				[
-					'o' => $connection->tableName( SQLStore::ID_TABLE ),
-					'p' => $connection->tableName( $propTable->getName() )
+					'o' => SQLStore::ID_TABLE,
+					'p' => $propTable->getName()
 				],
 				$fields,
 				[

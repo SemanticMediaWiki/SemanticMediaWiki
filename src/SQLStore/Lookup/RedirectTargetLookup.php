@@ -64,7 +64,7 @@ class RedirectTargetLookup {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$rows = $connection->select(
-			$connection->tableName( RedirectStore::TABLE_NAME ),
+			RedirectStore::TABLE_NAME,
 			[
 				'o_id',
 				's_title',
