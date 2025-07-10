@@ -310,7 +310,7 @@ class ConditionBuilder {
 		$conditionAsString = $condition->getWeakConditionString();
 
 		if ( ( $conditionAsString === '' ) && !$condition->isSafe() ) {
-			$swivtPageResource = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'page' );
+			$swivtPageResource = Exporter::getInstance()->newExpNsResourceById( 'swivt', 'page' );
 			$conditionAsString = '?' . $this->resultVariable . ' ' . $swivtPageResource->getQName() . " ?url .\n";
 		}
 
@@ -457,7 +457,7 @@ class ConditionBuilder {
 		$condition->orderByVariable = $mainVariable . 'sk';
 
 		if ( $this->isSetFlag( SMW_SPARQL_QF_COLLATION ) ) {
-			$skeyExpElement = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'sort' );
+			$skeyExpElement = Exporter::getInstance()->newExpNsResourceById( 'swivt', 'sort' );
 		} else {
 			$skeyExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' );
 		}

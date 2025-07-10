@@ -88,14 +88,16 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit\Fr
 	}
 
 	public function resourceProvider() {
+		$exporter = Exporter::getInstance();
+
 		$provider[] = [
-			Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )
+			$exporter->newExpNsResourceById( 'rdf', 'type' )
 		];
 
 		$provider[] = [
 			new ExpNsResource(
 				'FooRepositoryRedirectLookup',
-				Exporter::getInstance()->getNamespaceUri( 'property' ),
+				$exporter->getNamespaceUri( 'property' ),
 				'property',
 				new DIWikiPage( 'FooRepositoryRedirectLookup', SMW_NS_PROPERTY, '' )
 			)
