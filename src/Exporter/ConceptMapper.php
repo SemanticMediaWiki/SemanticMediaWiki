@@ -86,7 +86,7 @@ class ConceptMapper implements DataItemMapper {
 
 		if ( $owlDescription === false ) {
 			$result = new ExpData(
-				$this->exporter->getSpecialNsResource( 'owl', 'Thing' )
+				$this->exporter->newExpNsResourceById( 'owl', 'Thing' )
 			);
 
 			return $result;
@@ -101,12 +101,12 @@ class ConceptMapper implements DataItemMapper {
 		);
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
-			new ExpData( $this->exporter->getSpecialNsResource( 'owl', 'Class' ) )
+			$this->exporter->newExpNsResourceById( 'rdf', 'type' ),
+			new ExpData( $this->exporter->newExpNsResourceById( 'owl', 'Class' ) )
 		);
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'rdfs', 'subClassOf' ),
+			$this->exporter->newExpNsResourceById( 'rdfs', 'subClassOf' ),
 			$owlDescription
 		);
 
@@ -169,8 +169,8 @@ class ConceptMapper implements DataItemMapper {
 		);
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
-			new ExpData( $this->exporter->getSpecialNsResource( 'owl', 'Restriction' ) )
+			$this->exporter->newExpNsResourceById( 'rdf', 'type' ),
+			new ExpData( $this->exporter->newExpNsResourceById( 'owl', 'Restriction' ) )
 		);
 
 		$property = $description->getProperty();
@@ -180,7 +180,7 @@ class ConceptMapper implements DataItemMapper {
 		}
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'owl', 'onProperty' ),
+			$this->exporter->newExpNsResourceById( 'owl', 'onProperty' ),
 			new ExpData(
 				$this->exporter->getResourceElementForProperty( $property )
 			)
@@ -194,7 +194,7 @@ class ConceptMapper implements DataItemMapper {
 		if ( ( $description->getDescription() instanceof ValueDescription ) &&
 			 ( $description->getDescription()->getComparator() === SMW_CMP_EQ ) ) {
 			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'owl', 'hasValue' ),
+				$this->exporter->newExpNsResourceById( 'owl', 'hasValue' ),
 				$subdata
 			);
 		} else {
@@ -206,21 +206,21 @@ class ConceptMapper implements DataItemMapper {
 
 				if ( $owltype === Exporter::OWL_OBJECT_PROPERTY ) {
 					$subdata = new ExpData(
-						$this->exporter->getSpecialNsResource( 'owl', 'Thing' )
+						$this->exporter->newExpNsResourceById( 'owl', 'Thing' )
 					);
 				} elseif ( $owltype === Exporter::OWL_DATATYPE_PROPERTY ) {
 					$subdata = new ExpData(
-						$this->exporter->getSpecialNsResource( 'rdfs', 'Literal' )
+						$this->exporter->newExpNsResourceById( 'rdfs', 'Literal' )
 					);
 				} else { // no restrictions at all with annotation properties ...
 					return new ExpData(
-						$this->exporter->getSpecialNsResource( 'owl', 'Thing' )
+						$this->exporter->newExpNsResourceById( 'owl', 'Thing' )
 					);
 				}
 			}
 
 			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'owl', 'someValuesFrom' ),
+				$this->exporter->newExpNsResourceById( 'owl', 'someValuesFrom' ),
 				$subdata
 			);
 		}
@@ -249,15 +249,15 @@ class ConceptMapper implements DataItemMapper {
 			}
 
 			$result->addPropertyObjectValue(
-				$this->exporter->getSpecialNsResource( 'owl', 'unionOf' ),
+				$this->exporter->newExpNsResourceById( 'owl', 'unionOf' ),
 				ExpData::makeCollection( $elements )
 			);
 		}
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
+			$this->exporter->newExpNsResourceById( 'rdf', 'type' ),
 			new ExpData(
-				$this->exporter->getSpecialNsResource( 'owl', 'Class' )
+				$this->exporter->newExpNsResourceById( 'owl', 'Class' )
 			)
 		);
 
@@ -270,9 +270,9 @@ class ConceptMapper implements DataItemMapper {
 		);
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'rdf', 'type' ),
+			$this->exporter->newExpNsResourceById( 'rdf', 'type' ),
 			new ExpData(
-				$this->exporter->getSpecialNsResource( 'owl', 'Class' )
+				$this->exporter->newExpNsResourceById( 'owl', 'Class' )
 			)
 		);
 
@@ -283,7 +283,7 @@ class ConceptMapper implements DataItemMapper {
 
 			if ( $element === false ) {
 				$element = new ExpData(
-					$this->exporter->getSpecialNsResource( 'owl', 'Thing' )
+					$this->exporter->newExpNsResourceById( 'owl', 'Thing' )
 				);
 			}
 
@@ -293,7 +293,7 @@ class ConceptMapper implements DataItemMapper {
 		$prop = $description instanceof Conjunction ? 'intersectionOf' : 'unionOf';
 
 		$result->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'owl', $prop ),
+			$this->exporter->newExpNsResourceById( 'owl', $prop ),
 			ExpData::makeCollection( $elements )
 		);
 

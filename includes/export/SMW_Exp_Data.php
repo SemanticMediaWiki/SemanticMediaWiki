@@ -110,24 +110,25 @@ class SMWExpData implements Element {
 	 * @return SMWExpData
 	 */
 	public static function makeCollection( array $elements ) {
+		$exporter = SMWExporter::getInstance();
 		if ( count( $elements ) == 0 ) {
-			return new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' ) );
+			return new SMWExpData( $exporter->newExpNsResourceById( 'rdf', 'nil' ) );
 		}
 
 		$result = new SMWExpData( new ExpResource( '' ) ); // bnode
 
 		$result->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
-			new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'List' ) )
+			$exporter->newExpNsResourceById( 'rdf', 'type' ),
+			new SMWExpData( $exporter->newExpNsResourceById( 'rdf', 'List' ) )
 		);
 
 		$result->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'first' ),
+			$exporter->newExpNsResourceById( 'rdf', 'first' ),
 			array_shift( $elements )
 		);
 
 		$result->addPropertyObjectValue(
-			SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'rest' ),
+			$exporter->newExpNsResourceById( 'rdf', 'rest' ),
 			self::makeCollection( $elements )
 		);
 
@@ -195,7 +196,7 @@ class SMWExpData implements Element {
 	 * @return array of SMWExpData
 	 */
 	public function getSpecialValues( $namespaceId, $localName ) {
-		$pe = SMWExporter::getInstance()->getSpecialNsResource( $namespaceId, $localName );
+		$pe = SMWExporter::getInstance()->newExpNsResourceById( $namespaceId, $localName );
 		return $this->getValues( $pe );
 	}
 
@@ -212,7 +213,8 @@ class SMWExpData implements Element {
 	 * @return SMW\Exporter\Element\ExpElement
 	 */
 	public function extractMainType() {
-		$pe = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' );
+		$exporter = SMWExporter::getInstance();
+		$pe = $exporter->newExpNsResourceById( 'rdf', 'type' );
 		if ( array_key_exists( $pe->getUri(), $this->m_children ) ) {
 			$result = array_shift( $this->m_children[$pe->getUri()] );
 			if ( count( $this->m_children[$pe->getUri()] ) == 0 ) {
@@ -221,7 +223,7 @@ class SMWExpData implements Element {
 			}
 			return ( $result instanceof SMWExpData ) ? $result->getSubject() : $result;
 		} else {
-			return SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'Resource' );
+			return $exporter->newExpNsResourceById( 'rdf', 'Resource' );
 		}
 	}
 
@@ -236,10 +238,12 @@ class SMWExpData implements Element {
 	 * @return mixed array of SMW\Exporter\Element\ExpElement (but not ExpLiteral) or false
 	 */
 	public function getCollection() {
-		$rdftypeUri  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' )->getUri();
-		$rdffirstUri = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'first' )->getUri();
-		$rdfrestUri  = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'rest' )->getUri();
-		$rdfnilUri   = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'nil' )->getUri();
+		$exporter = SMWExporter::getInstance();
+
+		$rdftypeUri  = $exporter->newExpNsResourceById( 'rdf', 'type' )->getUri();
+		$rdffirstUri = $exporter->newExpNsResourceById( 'rdf', 'first' )->getUri();
+		$rdfrestUri  = $exporter->newExpNsResourceById( 'rdf', 'rest' )->getUri();
+		$rdfnilUri   = $exporter->newExpNsResourceById( 'rdf', 'nil' )->getUri();
 		// first check if we are basically an RDF List:
 		if ( ( $this->m_subject->isBlankNode() ) &&
 			 ( count( $this->m_children ) == 3 ) &&
@@ -252,7 +256,7 @@ class SMWExpData implements Element {
 			 ( array_key_exists( $rdfrestUri, $this->m_children ) ) &&
 			 ( count( $this->m_children[$rdfrestUri] ) == 1 ) ) {
 			$typedata = end( $this->m_children[$rdftypeUri] );
-			$rdflistUri = SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'List' )->getUri();
+			$rdflistUri = $exporter->newExpNsResourceById( 'rdf', 'List' )->getUri();
 			if ( $typedata->getSubject()->getUri() == $rdflistUri ) {
 				$first = end( $this->m_children[$rdffirstUri] );
 				$rest  = end( $this->m_children[$rdfrestUri] );

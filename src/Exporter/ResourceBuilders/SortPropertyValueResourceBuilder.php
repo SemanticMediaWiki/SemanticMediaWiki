@@ -63,7 +63,7 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 		);
 
 		$expData->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'swivt', 'sort' ),
+			$this->exporter->newExpNsResourceById( 'swivt', 'sort' ),
 			new ExpLiteral(
 				$sort,
 				'http://www.w3.org/2001/XMLSchema#string'

@@ -54,7 +54,7 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 		// language tag ..."
 
 		$expData->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'skos', 'prefLabel' ),
+			$this->exporter->newExpNsResourceById( 'skos', 'prefLabel' ),
 			new ExpLiteral(
 				(string)$list['_TEXT'],
 				'http://www.w3.org/2001/XMLSchema#string',

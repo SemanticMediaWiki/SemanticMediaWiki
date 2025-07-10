@@ -59,7 +59,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 		$joinVariable = $this->conditionBuilder->getJoinVariable();
 		$orderByProperty = $this->conditionBuilder->getOrderByProperty();
 
-		$nspropExpElement = $this->exporter->getSpecialNsResource( 'swivt', 'wikiNamespace' );
+		$nspropExpElement = $this->exporter->newExpNsResourceById( 'swivt', 'wikiNamespace' );
 		$nsExpElement = new ExpLiteral( strval( $description->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
 
 		$nsName = TurtleSerializer::getTurtleNameForExpElement( $nsExpElement );

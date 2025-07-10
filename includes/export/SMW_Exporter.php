@@ -282,8 +282,8 @@ class SMWExporter {
 
 		if ( $subject->getSubobjectName() !== '' ) {
 			$expData->addPropertyObjectValue(
-				self::getSpecialNsResource( 'rdf', 'type' ),
-				self::getSpecialNsResource( 'swivt', 'Subject' )
+				$this->newExpNsResourceById( 'rdf', 'type' ),
+				$this->newExpNsResourceById( 'swivt', 'Subject' )
 			);
 
 			$masterPage = new DIWikiPage(
@@ -293,7 +293,7 @@ class SMWExporter {
 			);
 
 			$expData->addPropertyObjectValue(
-				self::getSpecialNsResource( 'swivt', 'masterPage' ),
+				$this->newExpNsResourceById( 'swivt', 'masterPage' ),
 				$this->newExpElement( $masterPage )
 			);
 
@@ -303,7 +303,7 @@ class SMWExporter {
 
 			// #520
 			$expData->addPropertyObjectValue(
-				self::getSpecialNsResource( 'swivt', 'wikiNamespace' ),
+				$this->newExpNsResourceById( 'swivt', 'wikiNamespace' ),
 				new ExpLiteral( strval( $subject->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' )
 			);
 
@@ -324,30 +324,30 @@ class SMWExporter {
 			switch ( $subject->getNamespace() ) {
 				case NS_CATEGORY:
 				case SMW_NS_CONCEPT:
-					$maintype_pe = self::getSpecialNsResource( 'owl', 'Class' );
+					$maintype_pe = $this->newExpNsResourceById( 'owl', 'Class' );
 					$label = $pageTitle;
 					break;
 				case SMW_NS_PROPERTY:
 					$property = new DIProperty( $subject->getDBKey() );
-					$maintype_pe = self::getSpecialNsResource( 'owl', $this->getOWLPropertyType( $property ) );
+					$maintype_pe = $this->newExpNsResourceById( 'owl', $this->getOWLPropertyType( $property ) );
 					$label = $pageTitle;
 					break;
 				default:
 					$label = $prefixedSubjectTitle;
-					$maintype_pe = self::getSpecialNsResource( 'swivt', 'Subject' );
+					$maintype_pe = $this->newExpNsResourceById( 'swivt', 'Subject' );
 			}
 
-			$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdf', 'type' ), $maintype_pe );
+			$expData->addPropertyObjectValue( $this->newExpNsResourceById( 'rdf', 'type' ), $maintype_pe );
 
 			if ( !$wikiPageExpElement->isBlankNode() ) {
 				$ed = new ExpLiteral( $displayTitle !== '' ? $displayTitle : $label );
-				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'label' ), $ed );
+				$expData->addPropertyObjectValue( $this->newExpNsResourceById( 'rdfs', 'label' ), $ed );
 				$ed = new ExpResource( self::$m_exporturl . '/' . $prefixedSubjectUrl );
-				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
+				$expData->addPropertyObjectValue( $this->newExpNsResourceById( 'rdfs', 'isDefinedBy' ), $ed );
 				$ed = new ExpResource( self::getNamespaceUri( 'wikiurl' ) . $prefixedSubjectUrl );
-				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'page' ), $ed );
+				$expData->addPropertyObjectValue( $this->newExpNsResourceById( 'swivt', 'page' ), $ed );
 				$ed = new ExpLiteral( strval( $subject->getNamespace() ), 'http://www.w3.org/2001/XMLSchema#integer' );
-				$expData->addPropertyObjectValue( self::getSpecialNsResource( 'swivt', 'wikiNamespace' ), $ed );
+				$expData->addPropertyObjectValue( $this->newExpNsResourceById( 'swivt', 'wikiNamespace' ), $ed );
 
 				if ( $addStubData ) {
 					// Add a default sort key; for pages that exist in the wiki,
@@ -359,7 +359,7 @@ class SMWExporter {
 
 				if ( $subject->getPageLanguage() ) {
 					$expData->addPropertyObjectValue(
-						self::getSpecialNsResource( 'swivt', 'wikiPageContentLanguage' ),
+						$this->newExpNsResourceById( 'swivt', 'wikiPageContentLanguage' ),
 						new ExpLiteral( strval( $subject->getPageLanguage() ), 'http://www.w3.org/2001/XMLSchema#string' )
 					);
 				}
@@ -371,7 +371,7 @@ class SMWExporter {
 
 					if ( $file !== false ) {
 						$expData->addPropertyObjectValue(
-							self::getSpecialNsResource( 'swivt', 'file' ),
+							$this->newExpNsResourceById( 'swivt', 'file' ),
 							new ExpResource( $file->getFullURL() )
 						);
 					}
@@ -538,7 +538,8 @@ class SMWExporter {
 	}
 
 	/**
-	 * @deprecated since 3.2, use
+	 * @deprecated since 3.2, use non-static newExpNsResourceById instead
+	 *
 	 * Create an ExpNsResource for some special element that belongs to
 	 * a known vocabulary. An exception is generated when given parameters
 	 * that do not fit any known vocabulary.

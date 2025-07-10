@@ -58,6 +58,7 @@ jobs:
       PHP_VERSION: ${{ matrix.php_version }}
       DB_TYPE: ${{ matrix.database_type }}
       DB_IMAGE: ${{ matrix.database_image }}
+      PHP_EXTENSIONS: pcntl
 
     steps:
       - name: Checkout

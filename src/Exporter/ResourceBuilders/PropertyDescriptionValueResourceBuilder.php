@@ -35,6 +35,7 @@ class PropertyDescriptionValueResourceBuilder extends PropertyValueResourceBuild
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
+		/** @var \SMW\DataValues\MonolingualTextValue $dataValue */
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$property
@@ -58,7 +59,7 @@ class PropertyDescriptionValueResourceBuilder extends PropertyValueResourceBuild
 		// According to https://www.w3.org/TR/2009/NOTE-skos-primer-20090818/#secdocumentation
 
 		$expData->addPropertyObjectValue(
-			$this->exporter->getSpecialNsResource( 'skos', 'scopeNote' ),
+			$this->exporter->newExpNsResourceById( 'skos', 'scopeNote' ),
 			new ExpLiteral(
 				(string)$list['_TEXT'],
 				'http://www.w3.org/2001/XMLSchema#string',
