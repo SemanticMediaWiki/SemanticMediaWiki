@@ -258,15 +258,16 @@ class SPARQLStore extends Store {
 	 */
 	public function doSparqlDataDelete( DataItem $dataItem ) {
 		$extraNamespaces = [];
+		$exporter = Exporter::getInstance();
 
-		$expResource = Exporter::getInstance()->newExpElement( $dataItem );
+		$expResource = $exporter->newExpElement( $dataItem );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		if ( $expResource instanceof ExpNsResource ) {
 			$extraNamespaces = [ $expResource->getNamespaceId() => $expResource->getNamespace() ];
 		}
 
-		$masterPageProperty = Exporter::getInstance()->getSpecialNsResource( 'swivt', 'masterPage' );
+		$masterPageProperty = $exporter->newExpNsResourceById( 'swivt', 'masterPage' );
 		$masterPagePropertyUri = TurtleSerializer::getTurtleNameForExpElement( $masterPageProperty );
 
 		$success = $this->getConnection()->deleteContentByValue( $masterPagePropertyUri, $resourceUri, $extraNamespaces );

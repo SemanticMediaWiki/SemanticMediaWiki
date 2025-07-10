@@ -54,16 +54,18 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromTitle( $redirectTarget->getTitle(), '__red' )
 		);
 
-		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
+		$exporter = Exporter::getInstance();
+
+		$exportData = $exporter->makeExportData( $semanticData );
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'swivt', 'redirectsTo' ) )
+			$exportData->getValues( $exporter->newExpNsResourceById( 'swivt', 'redirectsTo' ) )
 		);
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'owl', 'sameAs' ) )
+			$exportData->getValues( $exporter->newExpNsResourceById( 'owl', 'sameAs' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
@@ -75,7 +77,7 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getInstance()->getSpecialNsResource( 'owl', 'sameAs' ),
+			$exporter->newExpNsResourceById( 'owl', 'sameAs' ),
 			$exportData
 		);
 	}
@@ -175,11 +177,13 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_SUBP' ), 'SomeTopProperty' )
 		);
 
-		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
+		$exporter = Exporter::getInstance();
+
+		$exportData = $exporter->makeExportData( $semanticData );
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subPropertyOf' ) )
+			$exportData->getValues( $exporter->newExpNsResourceById( 'rdfs', 'subPropertyOf' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
@@ -191,7 +195,7 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subPropertyOf' ),
+			$exporter->newExpNsResourceById( 'rdfs', 'subPropertyOf' ),
 			$exportData
 		);
 	}
@@ -203,11 +207,13 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_INST' ), 'SomeCategory' )
 		);
 
-		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
+		$exporter = Exporter::getInstance();
+
+		$exportData = $exporter->makeExportData( $semanticData );
 
 		$this->assertCount(
 			2,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ) )
+			$exportData->getValues( $exporter->newExpNsResourceById( 'rdf', 'type' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
@@ -219,7 +225,7 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ),
+			$exporter->newExpNsResourceById( 'rdf', 'type' ),
 			$exportData
 		);
 	}
@@ -233,11 +239,13 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_SUBC' ), 'SomeTopCategory' )
 		);
 
-		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
+		$exporter = Exporter::getInstance();
+
+		$exportData = $exporter->makeExportData( $semanticData );
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subClassOf' ) )
+			$exportData->getValues( $exporter->newExpNsResourceById( 'rdfs', 'subClassOf' ) )
 		);
 
 		$expectedResourceElement = new ExpNsResource(
@@ -249,7 +257,7 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
 			$expectedResourceElement,
-			Exporter::getInstance()->getSpecialNsResource( 'rdfs', 'subClassOf' ),
+			$exporter->newExpNsResourceById( 'rdfs', 'subClassOf' ),
 			$exportData
 		);
 	}
@@ -315,18 +323,20 @@ class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$demographicsSubobject->getContainer()
 		);
 
-		$exportData = Exporter::getInstance()->makeExportData(
+		$exporter = Exporter::getInstance();
+
+		$exportData = $exporter->makeExportData(
 			$semanticData->findSubSemanticData( $demographicsSubobject->getSubobjectId() )
 		);
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialPropertyResource( '_SKEY' ) )
+			$exportData->getValues( $exporter->getSpecialPropertyResource( '_SKEY' ) )
 		);
 
 		$this->assertCount(
 			1,
-			$exportData->getValues( Exporter::getInstance()->getSpecialNsResource( 'swivt', 'wikiNamespace' ) )
+			$exportData->getValues( $exporter->newExpNsResourceById( 'swivt', 'wikiNamespace' ) )
 		);
 	}
 
