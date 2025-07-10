@@ -89,15 +89,15 @@ class SpecialConcepts extends \SpecialPage {
 
 		$res = $connection->select(
 			[
-				$connection->tableName( SQLStore::ID_TABLE ),
-				$connection->tableName( SQLStore::CONCEPT_TABLE )
+				SQLStore::ID_TABLE,
+				SQLStore::CONCEPT_TABLE
 			],
 			$fields,
 			$conditions,
 			__METHOD__,
 			$options,
 			[
-				$connection->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
+				SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
 			]
 		);
 
