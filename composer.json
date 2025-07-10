@@ -128,7 +128,7 @@
 		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --bootstrap tests/bootstrap.php",
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
 		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
-		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-html coverage/php --coverage-clover coverage/php/coverage.xml",
+		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover coverage/php/coverage.xml",
 		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
 		"minus-x": "minus-x check .",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
