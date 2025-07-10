@@ -123,7 +123,7 @@
 			"@phpcs-fix"
 		],
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
-		"phpcs": "phpcs -ps --cache -d memory_limit=2G",
+		"phpcs": "phpcs -sp --cache --parallel=$(nproc || sysctl -n hw.logicalcpu || powershell \"Get-WmiObject Win32_Processor | Select-Object -ExpandProperty NumberOfCores .trim()\" || echo 4 )",
 		"phpcs-fix": "phpcbf",
 		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --bootstrap tests/bootstrap.php",
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
