@@ -455,7 +455,7 @@
 	"smw-admin-supplementary-idlookup-intro": "Підтримує просту функцію «<u>$1</u>»",
 	"smw-admin-supplementary-duplookup-title": "Перегляд дубльованих сутностей",
 	"smw-admin-supplementary-duplookup-intro": "<u>$1</span> для знаходження записів, які класифікуються як дублікати у вибраній матриці таблиць",
-	"smw-admin-supplementary-duplookup-docu": "Ця сторінка перелічує записи з вибраних таблиць, що були категоризовані як [https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities дублікати]. Дублікати записів можуть з'являтися лише в рідкісних випадках (або й узагалі ніколи), потенційно спричинені передчасно завершеним оновленням чи невдалою транзакцією відкату.",
+	"smw-admin-supplementary-duplookup-docu": "Ця сторінка перелічує записи з вибраних таблиць, що були категоризовані як [https://www.semantic-mediawiki.org/wiki/Help:Duplicate_entities дублікати]. Дублікати записів можуть з'являтися лише в рідкісних випадках (або й узагалі ніколи), потенційно спричинені передчасно завершеним оновленням чи невдалою транзакцією відкоту.",
 	"smw-admin-supplementary-operational-statistics-cache-title": "Статистика кешу",
 	"smw-admin-supplementary-operational-statistics-cache-intro": "<u>$1</u> показує вибраний набір кеш-дотичної статистику",
 	"smw-admin-supplementary-operational-table-statistics-title": "Статистика таблиць",
