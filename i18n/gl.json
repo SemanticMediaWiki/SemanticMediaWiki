@@ -668,7 +668,7 @@
 	"smw-datavalue-wikipage-property-invalid-title": "A propiedade \"$1\" (como o tipo de páxina) co valor de entrada \"$2\" contén caracteres incorrectos ou está incompleta, e por iso pode producir resultados inesperados durante unha consulta ou nun proceso de anotación.",
 	"smw-datavalue-wikipage-empty": "O valor de entrada da wikipáxina está baleiro (p.ex. <code>[[SomeProperty::]], [[]]</code>) e non pode usarse como nome ou como parte dunha condición de busca.",
 	"smw-type-ref-rec": "\"$1\" é un tipo de [https://www.semantic-mediawiki.org/wiki/Container contedor] que permite gardar información adicional (p.ex. procedencia dos datos) sobre a asignación dun valor.",
-	"smw-datavalue-reference-outputformat": "$1 : $2",
+	"smw-datavalue-reference-outputformat": "$1: $2",
 	"smw-datavalue-reference-invalid-fields-definition": "O tipo [[Special:Types/Reference|Referencia]] espera unha lista de propiedades para ser declarado usando a propiedade [https://www.semantic-mediawiki.org/wiki/Help:Special_property_Has_fields Ten campos].",
 	"smw-parser-invalid-json-format": "O analizador de JSON devolveu un \"$1\".",
 	"smw-property-preferred-label-language-combination-exists": "\"$1\" non pode usarse como etiqueta preferida por a lingua \"$2\" xa está asignada á etiqueta \"$3\".",
