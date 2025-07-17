@@ -26,6 +26,7 @@ src/Tesa/.phpunit.result.cache
 
 composer
 installer
+.env
 .envrc
 conf
 expected

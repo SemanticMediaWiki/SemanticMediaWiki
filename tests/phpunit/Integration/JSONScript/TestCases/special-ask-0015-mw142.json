@@ -39,9 +39,9 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1>.*Test:SA0015.2F1.*</h1>",
+					"<h1 data-mw-anchor=\"Test:SA0015.2F1\" data-mw-fallback-anchor=\"Test:SA0015/1\">",
 					"Has page: <a class=\".*selflink\">Test:SA0015/2</a>",
-					"<h1>.*Test:SA0015/2.*</h1>",
+					"<h1 data-mw-anchor=\"Test:SA0015.2F2\" data-mw-fallback-anchor=\"Test:SA0015/2\">",
 					"<b>Test:SA0015/2</b>"
 				]
 			}
@@ -64,7 +64,7 @@
 		"is-incomplete": false,
 		"debug": false,
 		"skip-on": {
-			"mediawiki": [ ">1.41.x", "Heading and anchor HTML has changed. Covered by special-ask-0015-mw142.json" ]
+			"mediawiki": [ "<1.41.x", "Heading and anchor HTML has changed. Covered by special-ask-0015.json" ]
 		}
 	}
 }

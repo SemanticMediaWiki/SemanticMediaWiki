@@ -611,17 +611,18 @@ class SMWExportController {
 		}
 
 		if ( $foundpages ) { // add link to next result page
-			if ( strpos( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
-				$nexturl = SMWExporter::getInstance()->expandURI( '&export;?offset=' ) . ( $offset + $limit );
+			$exporter = SMWExporter::getInstance();
+			if ( strpos( $exporter->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
+				$nexturl = $exporter->expandURI( '&export;?offset=' ) . ( $offset + $limit );
 			} else {
-				$nexturl = SMWExporter::getInstance()->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
+				$nexturl = $exporter->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
 			}
 
 			$expData = new SMWExpData( new ExpResource( $nexturl ) );
-			$ed = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
-			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ), $ed );
+			$ed = new SMWExpData( $exporter->newExpNsResourceById( 'owl', 'Thing' ) );
+			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdf', 'type' ), $ed );
 			$ed = new SMWExpData( new ExpResource( $nexturl ) );
-			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
+			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdfs', 'isDefinedBy' ), $ed );
 			$this->serializer->serializeExpData( $expData );
 		}
 

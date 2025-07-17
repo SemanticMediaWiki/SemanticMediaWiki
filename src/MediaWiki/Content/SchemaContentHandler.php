@@ -9,6 +9,7 @@ use MediaWiki\Content\Transform\PreSaveTransformParams;
 use MediaWiki\Content\ValidationParams;
 use MediaWiki\MediaWikiServices;
 use ParserOutput;
+use SMW\Localizer\Message;
 use SMW\ParserData;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
