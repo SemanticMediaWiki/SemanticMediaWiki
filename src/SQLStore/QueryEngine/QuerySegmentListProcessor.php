@@ -339,13 +339,7 @@ class QuerySegmentListProcessor {
 		}
 
 		// Try to safe time (SELECT is cheaper than creating/dropping 3 temp tables):
-		$res = $this->connection->select(
-			$smwtable,
-			's_id',
-			$valuecond,
-			__METHOD__,
-			[ 'LIMIT' => 1 ]
-		);
+		$res = $this->connection->query( "SELECT s_id FROM $smwtable WHERE $valuecond LIMIT 1" );
 
 		if ( !$res->fetchObject() ) { // no subobjects, we are done!
 			$res->free();

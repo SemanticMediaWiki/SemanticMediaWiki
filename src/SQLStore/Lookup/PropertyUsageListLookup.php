@@ -115,12 +115,12 @@ class PropertyUsageListLookup implements ListLookup {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$res = $db->select(
-			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
 			[ 'smw_id', 'smw_title', 'usage_count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			[ $db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
+			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;

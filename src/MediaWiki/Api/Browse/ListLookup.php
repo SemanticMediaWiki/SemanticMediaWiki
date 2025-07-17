@@ -212,7 +212,7 @@ class ListLookup extends Lookup {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$res = $connection->select(
-			$connection->tableName( SQLStore::ID_TABLE ),
+			SQLStore::ID_TABLE,
 			$fields,
 			$conditions,
 			__METHOD__,

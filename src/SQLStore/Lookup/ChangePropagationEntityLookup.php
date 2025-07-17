@@ -160,7 +160,7 @@ class ChangePropagationEntityLookup {
 
 			// Select any references that are hidden or remained active
 			$rows = $connection->select(
-				$connection->tableName( $tableName ),
+				$tableName,
 				[
 					's_id'
 				],
