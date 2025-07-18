@@ -1,0 +1,74 @@
+{
+	"description": "Test `in-text annotation` with legacy `:=` style (#2153, `wgContLang=en`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has text",
+			"contents": "[[Has type::Text]]"
+		},
+		{
+			"page": "Example/PA0042/1",
+			"contents": "[[Has text:=Lorem ipsum]]"
+		},
+		{
+			"page": "Example/PA0042/2",
+			"contents": "[[Has text::==Lorem ipsum==]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"subject": "Example/PA0042/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"Lorem ipsum"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "Example/PA0042/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has text"
+					],
+					"propertyValues": [
+						"==Lorem ipsum=="
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgParserFeatures": [
+			"SMW_PARSER_STRICT",
+			"SMW_PARSER_INL_ERROR",
+			"SMW_PARSER_HID_CATS"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

@@ -1,0 +1,183 @@
+{
+	"description": "Test `#ask` on `format=template` with message parse (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"page": "Example/PA0005/1",
+			"contents": "[[PA0005::PA0005]]"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/Tmpl0706",
+			"contents": "{{{1}}}"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/Tmpl0706withAnnotationDeep",
+			"contents": "<includeonly>[[Tmpl0706withAnnotationDeep::789]]</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/Tmpl0706withAnnotation",
+			"contents": "<includeonly>{{#set:|Tmpl0706withAnnotation=123}} [[Tmpl0706withAnnotation::456]] {{Example/Tmpl0706withAnnotationDeep}}</includeonly>"
+		},
+		{
+			"namespace": "NS_TEMPLATE",
+			"page": "Example/Tmpl0706ResultOutput",
+			"contents": "<includeonly>{{{1}}} {{Example/Tmpl0706withAnnotation}}</includeonly>"
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Test/Msg0706/1",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706 |format=template }}"
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Test/Msg0706/2",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706 |format=template }}"
+		},
+		{
+			"namespace": "NS_MEDIAWIKI",
+			"page": "Test/Msg0706/3",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706 |format=list }}"
+		},
+		{
+			"page": "Test/PA0005/4",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706ResultOutput |format=template }}"
+		},
+		{
+			"page": "Test/PA0005/5",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706ResultOutput |format=template |import-annotation=true }}"
+		},
+		{
+			"page": "Test/PA0005/6",
+			"contents": "{{#ask: [[PA0005::PA0005]] |?PA0005 |link=none |template=Example/Tmpl0706ResultOutput |format=template }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 template format, msg parse outputs [[SMW::off]]/[[SMW::on]]",
+			"subject": "Test/Msg0706/1",
+			"assert-msgoutput": {
+				"to-contain": [
+					"Example/PA0005/1"
+				],
+				"not-contain": [
+					">SMW::off</a>",
+					">SMW::on</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 template format, msg parse to avoid [[SMW::off]]/[[SMW::on]]",
+			"subject": "Test/Msg0706/2",
+			"assert-msgoutput": {
+				"to-contain": [
+					"Example/PA0005/1"
+				],
+				"not-contain": [
+					">SMW::off</a>",
+					">SMW::on</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 list format, msg parse to avoid [[SMW::off]]/[[SMW::on]]",
+			"subject": "Test/Msg0706/3",
+			"assert-msgoutput": {
+				"to-contain": [
+					"Example/PA0005/1"
+				],
+				"not-contain": [
+					">SMW::off</a>",
+					">SMW::on</a>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 (no foreign annotation import)",
+			"subject": "Test/PA0005/4",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/PA0005/1",
+					"456",
+					"789"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#4 (import foreign annotation)",
+			"subject": "Test/PA0005/5",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 5,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY",
+						"Tmpl0706withAnnotation",
+						"Tmpl0706withAnnotationDeep"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/PA0005/1",
+					"456",
+					"789"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#5 (no foreign annotation import)",
+			"subject": "Test/PA0005/6",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_ASK",
+						"_MDAT",
+						"_SKEY"
+					]
+				}
+			},
+			"assert-output": {
+				"to-contain": [
+					"Example/PA0005/1",
+					"456",
+					"789"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
