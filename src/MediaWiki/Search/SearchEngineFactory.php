@@ -8,6 +8,8 @@ use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\Rdbms\IConnectionProvider;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,12 +22,20 @@ class SearchEngineFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @param mixed $connection Either IConnectionProvider (MW 1.41+) or IDatabase (MW 1.40)
+	 * @param mixed|null $connection Either IConnectionProvider (MW 1.41+) or IDatabase (MW 1.40)
 	 *
 	 * @return SearchEngine
 	 * @throws SearchEngineInvalidTypeException
 	 */
 	public function newFallbackSearchEngine( $connection = null ) {
+		if ( $connection !== null &&
+			( !$connection instanceof IConnectionProvider &&
+			!$connection instanceof IDatabase )
+		) {
+			// TODO: Once MW 1.39 support is dropped, we can put the type as IConnectionProvider.
+			throw new RuntimeException( 'Expected $connection be instanceof either IConnectionProvider or IDatabase' );
+		}
+
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
