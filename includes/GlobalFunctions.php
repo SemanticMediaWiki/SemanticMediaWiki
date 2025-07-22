@@ -161,8 +161,13 @@ function &smwfGetStore() {
  * @return string
  */
 function smwfCacheKey( $namespace, $key ) {
-	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
-		WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+	if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+		$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
+			WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+	} else {
+		$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
+			MediaWiki\WikiMap\WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+	}
 
 	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;
@@ -191,7 +196,11 @@ function smwfGetLinker() {
 	static $linker = false;
 
 	if ( $linker === false ) {
-		$linker = new Linker();
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$linker = new Linker();
+		} else {
+			$linker = new MediaWiki\Linker\Linker();
+		}
 	}
 
 	return $linker;
