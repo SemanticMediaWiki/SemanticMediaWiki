@@ -67,8 +67,10 @@ class CacheFactory {
 	 * @return string
 	 */
 	public static function getPurgeCacheKey( $key ) {
-		if ( version_compare( MW_VERSION, '1.40', '<' ) && $key instanceof \Title ) {
-			$key = $key->getArticleID();
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			if ( $key instanceof \Title ) {
+				$key = $key->getArticleID();
+			}
 		} elseif ( $key instanceof \MediaWiki\Title\Title ) {
 			$key = $key->getArticleID();
 		}
