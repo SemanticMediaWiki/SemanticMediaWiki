@@ -395,7 +395,7 @@ class Installer implements MessageReporter {
 		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
 			$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
 		} else {
-			$title = MediaWiki\Title\Title::newFromText( 'SMW\SQLStore\Installer' );
+			$title = \MediaWiki\Title\Title::newFromText( 'SMW\SQLStore\Installer' );
 		}
 
 		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
