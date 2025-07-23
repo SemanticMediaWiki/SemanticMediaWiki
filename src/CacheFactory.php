@@ -56,7 +56,7 @@ class CacheFactory {
 		}
 
 		return $GLOBALS['wgCachePrefix'] === false ?
-			MediaWiki\WikiMap\WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+			\MediaWiki\WikiMap\WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
 	}
 
 	/**
