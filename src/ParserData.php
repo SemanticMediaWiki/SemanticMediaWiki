@@ -347,7 +347,9 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function markParserOutput() {
-		$this->parserOutput->setTimestamp( wfTimestampNow() );
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
+			$this->parserOutput->setTimestamp( wfTimestampNow() );
+		}
 
 		$this->parserOutput->setExtensionData(
 			'smw-semanticdata-status',

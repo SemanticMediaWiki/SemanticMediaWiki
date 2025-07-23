@@ -5,6 +5,7 @@ namespace SMW\MediaWiki;
 use MagicWord;
 use MagicWordFactory;
 use ParserOutput;
+use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -78,7 +79,9 @@ class MagicWordsFinder {
 	 * @param array $words
 	 */
 	public function pushMagicWordsToParserOutput( array $words ) {
-		$this->parserOutput->setTimestamp( wfTimestampNow() );
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
+			$this->parserOutput->setTimestamp( wfTimestampNow() );
+		}
 
 		// Filter empty lines
 		$words = array_values( array_filter( $words ) );
