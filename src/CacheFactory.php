@@ -62,7 +62,7 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param \MediaWiki\Title\Title|int|string $key
+	 * @param \MediaWiki\Title\Title|\Title|int|string $key
 	 *
 	 * @return string
 	 */
