@@ -2532,5 +2532,16 @@ return ( static function () {
 		 * @since 5.1
 		 */
 		'smwgSetParserCacheTimestamp' => true,
+
+		/**
+		 * Sets the keys that will be added to the parser cache key.
+		 * Each key will trigger a cache fragmentation.
+		 *
+		 * @since 5.1
+		 */
+		'smwgSetParserCacheKeys' => [
+			'userlang',
+			'dateformat'
+		],
 	];
 } )();
