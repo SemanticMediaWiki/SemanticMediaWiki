@@ -196,9 +196,11 @@ class ParserData {
 	 * @return ParserOptions|null
 	 */
 	public function addExtraParserKey( $key ) {
-		// Looks odd in 1.30 "Saved in parser cache ... idhash:19989-0!canonical!userlang!dateformat!userlang!dateformat!userlang!dateformat!userlang!dateformat and ..."
-		// threfore use the ParserOutput::recordOption instead
-		if ( $key === 'userlang' || $key === 'dateformat' ) {
+		$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
+
+		if ( in_array( $key, $keysToCache ) ) {
+			// Looks odd in 1.30 "Saved in parser cache ... idhash:19989-0!canonical!userlang!dateformat!userlang!dateformat!userlang!dateformat!userlang!dateformat and ..."
+			// therefore use the ParserOutput::recordOption instead
 			$this->parserOutput->recordOption( $key );
 		} elseif ( $this->parserOptions !== null ) {
 			$this->parserOptions->addExtraKey( $key );
@@ -347,7 +349,9 @@ class ParserData {
 	 * @since 3.0
 	 */
 	public function markParserOutput() {
-		$this->parserOutput->setTimestamp( wfTimestampNow() );
+		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
+			$this->parserOutput->setTimestamp( wfTimestampNow() );
+		}
 
 		$this->parserOutput->setExtensionData(
 			'smw-semanticdata-status',
