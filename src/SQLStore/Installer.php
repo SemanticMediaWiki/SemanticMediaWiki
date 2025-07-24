@@ -392,7 +392,11 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
 		);
 
-		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
+		} else {
+			$title = \MediaWiki\Title\Title::newFromText( 'SMW\SQLStore\Installer' );
+		}
 
 		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
 			$title,
