@@ -8,8 +8,6 @@ use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
-use WikiMap;
 
 /**
  * @license GPL-2.0-or-later
@@ -52,19 +50,28 @@ class CacheFactory {
 	 * @return string
 	 */
 	public static function getCachePrefix() {
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			return $GLOBALS['wgCachePrefix'] === false ?
+				\WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+		}
+
 		return $GLOBALS['wgCachePrefix'] === false ?
-			WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
+			\MediaWiki\WikiMap\WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param Title|int|string $key
+	 * @param \MediaWiki\Title\Title|\Title|int|string $key
 	 *
 	 * @return string
 	 */
 	public static function getPurgeCacheKey( $key ) {
-		if ( $key instanceof Title ) {
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			if ( $key instanceof \Title ) {
+				$key = $key->getArticleID();
+			}
+		} elseif ( $key instanceof \MediaWiki\Title\Title ) {
 			$key = $key->getArticleID();
 		}
 
