@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Jobs;
 
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
+use MediaWiki\Title\Title;
 
 /**
  * @license GPL-2.0-or-later
