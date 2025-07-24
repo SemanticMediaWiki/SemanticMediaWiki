@@ -4,7 +4,6 @@ namespace SMW;
 
 use MediaWiki\MediaWikiServices;
 use SiteStats;
-use WikiMap;
 
 /**
  * @license GPL-2.0-or-later
@@ -133,7 +132,11 @@ class Site {
 			$affix = ':' . $affix;
 		}
 
-		return WikiMap::getCurrentWikiId() . $affix;
+		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
+			return \WikiMap::getCurrentWikiId() . $affix;
+		}
+
+		return \MediaWiki\WikiMap\WikiMap::getCurrentWikiId() . $affix;
 	}
 
 	/**
