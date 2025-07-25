@@ -73,7 +73,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\MediaWii\Title\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
+		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -198,7 +198,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
+		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -270,7 +270,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
+		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -339,7 +339,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
+		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
