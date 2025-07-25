@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Jobs;
 
-use RequestContext;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Page\WikiPage;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
-use WikiPage;
 
 /**
  * @license GPL-2.0-or-later

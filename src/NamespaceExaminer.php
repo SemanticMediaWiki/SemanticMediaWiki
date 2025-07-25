@@ -3,6 +3,7 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use MediaWiki\Title\Title;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the

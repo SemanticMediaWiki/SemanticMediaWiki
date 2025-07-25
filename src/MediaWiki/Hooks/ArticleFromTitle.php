@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Page;
+use MediaWiki\Page\Page;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\PageFactory;
 use SMW\Store;
-use Title;
 
 /**
  * Register special classes for displaying semantic content on Property and

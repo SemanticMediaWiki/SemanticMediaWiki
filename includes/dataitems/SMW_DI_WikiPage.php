@@ -3,10 +3,10 @@
 namespace SMW;
 
 use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\Title\Title;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\Exception\DataItemException;
 use SMWDataItem;
-use Title;
 
 /**
  * This class implements wiki page data items.

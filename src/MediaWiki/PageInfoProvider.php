@@ -2,16 +2,16 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiFilePage;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\PageInfo;
 use SMW\Schema\Content\Content;
-use Title;
-use User;
-use WikiFilePage;
-use WikiPage;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * Provide access to MediaWiki objects relevant for the predefined property

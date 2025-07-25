@@ -2,11 +2,12 @@
 
 namespace SMW\Services;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use Onoi\CallbackContainer\CallbackContainerFactory;
 use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\EventDispatcher\EventDispatcher;
-use ParserOutput;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
@@ -48,7 +49,6 @@ use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
 use SMW\Store;
-use Title;
 
 /**
  * Application instances access for internal and external use

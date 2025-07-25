@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
-use Title;
-use WikiFilePage;
-use WikiPage;
+use MediaWiki\Page\WikiFilePage;
+use MediaWiki\Page\WikiPage;
+use MediaWiki\Title\Title;
 
 /**
  * @license GPL-2.0-or-later

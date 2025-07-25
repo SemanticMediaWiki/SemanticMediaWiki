@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
 use SMW\Exporter\Escaper;
-use SpecialPage;
-use Title;
 
 /**
  * Resolve (redirect) pretty URIs (or "short URIs") to the equivalent full MediaWiki

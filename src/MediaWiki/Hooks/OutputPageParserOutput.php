@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use OutputPage;
-use ParserOutput;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is

@@ -2,7 +2,8 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
 use SMWDIError;
@@ -147,7 +148,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 			$title = $property->getDiWikiPage()->getTitle();
 
-			if ( !$title instanceof \Title ) {
+			if ( !$title instanceof Title ) {
 				return '';
 			}
 

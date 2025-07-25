@@ -2,15 +2,15 @@
 
 namespace SMW;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use Parser;
-use ParserOptions;
-use RequestContext;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
-use Title;
-use User;
 
 /**
  * Fetches the ParserOutput either by parsing an invoked text component,

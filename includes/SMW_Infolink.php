@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\Title\Title;
 use SMW\Localizer\Localizer;
 use SMW\Site;
 

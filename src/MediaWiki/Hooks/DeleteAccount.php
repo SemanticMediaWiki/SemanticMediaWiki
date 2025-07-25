@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
-use Title;
-use User;
 
 /**
  * @see https://github.com/wikimedia/mediawiki-extensions-UserMerge/blob/master/includes/MergeUser.php#L654

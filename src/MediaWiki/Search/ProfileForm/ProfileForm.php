@@ -2,14 +2,14 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Schema\SchemaFactory;
 use SMW\Store;
 use SMW\Utils\HtmlModal;
-use SpecialSearch;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

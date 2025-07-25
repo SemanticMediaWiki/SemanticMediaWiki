@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiFilePage;
+use MediaWiki\Page\WikiPage;
+use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory;
-use Title;
-use WikiFilePage;
-use WikiPage;
 
 /**
  * @license GPL-2.0-or-later

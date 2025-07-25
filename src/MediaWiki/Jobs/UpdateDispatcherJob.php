@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -13,7 +14,6 @@ use SMW\RequestOptions;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
-use Title;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific

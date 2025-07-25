@@ -3,15 +3,15 @@
 namespace SMW;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPage;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
-use WikiPage;
 
 /**
  * This function takes care of storing the collected semantic data and

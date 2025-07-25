@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use Html;
-use Title;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 
 /**
  * Query class that provides content for the Special:WantedProperties page

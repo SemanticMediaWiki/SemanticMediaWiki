@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Template;
 
-use Parser;
-use ParserOptions;
-use RequestContext;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
 use RuntimeException;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

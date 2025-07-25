@@ -3,6 +3,8 @@
 namespace SMW\Services;
 
 use JsonSchema\Validator as SchemaValidator;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\ContainerBuilder;
@@ -201,7 +203,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $namespaceExaminer;
 		} );
 
-		$containerBuilder->registerCallback( 'ParserData', static function ( $containerBuilder, \Title $title, \ParserOutput $parserOutput ) {
+		$containerBuilder->registerCallback( 'ParserData', static function ( $containerBuilder, Title $title, ParserOutput $parserOutput ) {
 			$containerBuilder->registerExpectedReturnType( 'ParserData', ParserData::class );
 
 			$parserData = new ParserData( $title, $parserOutput );
@@ -295,7 +297,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $revisionGuard;
 		} );
 
-		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, \Title $title ) {
+		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, Title $title ) {
 			$containerBuilder->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
 
 			$contentParser = new ContentParser(

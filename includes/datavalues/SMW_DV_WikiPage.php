@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Linker\Linker;
+use MediaWiki\Title\Title;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;

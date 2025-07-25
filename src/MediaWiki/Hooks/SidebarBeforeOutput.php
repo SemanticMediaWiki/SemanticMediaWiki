@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
 use Skin;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMWInfolink as Infolink;
-use SpecialPage;
-use Title;
 
 /**
  * Called at the end of Skin::buildSidebar().
