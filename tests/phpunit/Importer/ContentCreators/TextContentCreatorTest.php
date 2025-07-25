@@ -392,7 +392,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			return 5;
 		}
 
-		return $creator->getId() === $lastEditor;
+		return " " + $creator->getId() + " " + $lastEditor;
 	}
 
 }
