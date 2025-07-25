@@ -383,13 +383,13 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		// No user ID, so not a valid user
 		if ( $lastEditor === -1 ) {
-			return false;
+			return 4;
 		}
 
 		$creator = $page->getCreator();
 
 		if ( $creator === null ) {
-			return false;
+			return 5;
 		}
 
 		return $creator->getId() === $lastEditor;
