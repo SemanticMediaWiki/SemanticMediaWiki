@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Page;
 
-use Html;
-use ParserOptions;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
@@ -22,7 +23,6 @@ use SMW\StringCondition;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
 use SMWDataValue;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

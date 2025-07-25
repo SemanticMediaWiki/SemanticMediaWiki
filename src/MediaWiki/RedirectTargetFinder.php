@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use ContentHandler;
-use Title;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Title\Title;
 
 /**
  * @license GPL-2.0-or-later

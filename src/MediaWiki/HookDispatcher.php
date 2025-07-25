@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki;
 
-use Hooks;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Constraint\ConstraintRegistry;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
@@ -17,8 +18,6 @@ use SMW\Property\Annotator as PropertyAnnotator;
 use SMW\Schema\SchemaTypes;
 use SMW\SQLStore\TableBuilder;
 use SMW\Store;
-use Title;
-use User;
 
 /**
  * @private

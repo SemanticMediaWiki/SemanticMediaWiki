@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Renderer;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
 use SMW\MediaWiki\MessageBuilder;
-use Title;
-use Xml;
 
 /**
  * Convenience class to build a html form by using a fluid interface
