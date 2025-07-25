@@ -299,7 +299,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			$this->messageReporter
 		);
 
-		$this->assertSame( 1, $user->getId() );
+		$this->assertSame( 1, $page->getUser() );
 
 		$importContents = new ImportContents();
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
