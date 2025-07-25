@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataModel\SequenceMap;
 use SMW\DataValueFactory;
 use SMW\Encoder;
@@ -10,7 +11,6 @@ use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
-use SpecialPage;
 
 /**
  * This special page implements a view on a object-relation pair, i.e. a page that

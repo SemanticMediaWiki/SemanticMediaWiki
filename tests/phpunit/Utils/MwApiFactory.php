@@ -2,12 +2,13 @@
 
 namespace SMW\Tests\Utils;
 
-use ApiMain;
-use ApiResult;
-use FauxRequest;
-use RequestContext;
+use MediaWiki\Api\ApiErrorFormatter;
+use MediaWiki\Api\ApiMain;
+use MediaWiki\Api\ApiResult;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use WebRequest;
 
 /**
  * Class contains Api related request methods
@@ -36,7 +37,7 @@ class MwApiFactory {
 	public function newApiResult( array $params ) {
 		$result = new ApiResult( 5 );
 
-		$errorFormatter = new \ApiErrorFormatter_BackCompat( $result );
+		$errorFormatter = new ApiErrorFormatter( $result );
 		$result->setErrorFormatter( $errorFormatter );
 
 		return $result;

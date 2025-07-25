@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
-use Title;
 
 /**
  * @group SMW
@@ -66,7 +66,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$main = Title::newFromText( 'SimplePageRedirectRegressionTest' );
+		$main = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SimplePageRedirectRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( DIProperty::TYPE_CATEGORY ),
@@ -191,7 +191,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 	protected function createPageWithRedirectFor( $source, $target ) {
 		$this->pageCreator
-			->createPage( Title::newFromText( $source ) )
+			->createPage( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $source ) )
 			->doEdit( "#REDIRECT [[{$target}]]" );
 
 		return $this->pageCreator->getPage();
@@ -199,7 +199,7 @@ class RedirectPageTest extends SMWIntegrationTestCase {
 
 	protected function movePageToTargetRedirect( $page, $target ) {
 		$this->pageCreator->setPage( $page );
-		$this->pageCreator->doMoveTo( Title::newFromText( $target ), true );
+		$this->pageCreator->doMoveTo( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $target ), true );
 	}
 
 }

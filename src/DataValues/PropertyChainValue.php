@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Html\Html;
 use SMW\DataValueFactory;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -207,7 +208,7 @@ class PropertyChainValue extends StringValue {
 	}
 
 	private function doHintPropertyChainMembers() {
-		return \Html::rawElement( 'span', [ 'title' => $this->m_dataitem, 'class' => 'smw-chain-marker' ], '⠉' );
+		return Html::rawElement( 'span', [ 'title' => $this->m_dataitem, 'class' => 'smw-chain-marker' ], '⠉' );
 	}
 
 }

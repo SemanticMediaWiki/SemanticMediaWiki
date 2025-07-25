@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use MediaWiki\Title\Title;
+
 /**
  * Facade interface to specify access to page information
  *

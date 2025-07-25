@@ -2,6 +2,7 @@
 
 namespace SMW\Property;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
@@ -18,7 +19,6 @@ use SMW\Property\Annotators\TranslationPropertyAnnotator;
 use SMW\Schema\Schema;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

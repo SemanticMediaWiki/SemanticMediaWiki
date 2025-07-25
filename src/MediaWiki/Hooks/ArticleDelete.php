@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\HookListener;
@@ -9,7 +10,6 @@ use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete

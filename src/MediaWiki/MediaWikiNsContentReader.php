@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
 use MediaWiki\Revision\SlotRecord;
-use Title;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 /**
  * @license GPL-2.0-or-later

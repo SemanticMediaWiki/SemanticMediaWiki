@@ -2,6 +2,8 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIConcept;
@@ -9,7 +11,6 @@ use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * Is part of the `rebuildConceptCache.php` maintenance script to rebuild
@@ -264,7 +265,7 @@ class ConceptCacheRebuilder {
 	}
 
 	private function createConcept() {
-		return Title::newFromText( $this->concept, SMW_NS_CONCEPT );
+		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 
 	private function createMultipleConcepts() {

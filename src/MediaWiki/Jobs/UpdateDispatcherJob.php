@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -13,7 +14,6 @@ use SMW\RequestOptions;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataItem as DataItem;
-use Title;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific
@@ -158,11 +158,12 @@ class UpdateDispatcherJob extends Job {
 	}
 
 	private function create_secondary_dispatch_run( $jobs ) {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$origin = $this->getTitle()->getPrefixedText();
 
 		foreach ( array_chunk( $jobs, self::CHUNK_SIZE, true ) as $jobList ) {
 			$job = new self(
-				Title::newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) ),
+				$titleFactory->newFromText( 'UpdateDispatcher/SecondaryRun/' . md5( json_encode( $jobList ) ) ),
 				[
 					self::JOB_LIST => $jobList,
 					'origin' => $origin,

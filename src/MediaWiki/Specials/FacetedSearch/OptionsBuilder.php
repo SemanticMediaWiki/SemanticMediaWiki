@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**

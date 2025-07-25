@@ -2,9 +2,9 @@
 
 namespace SMW\Elastic\Indexer\Attachment;
 
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\FileRepoFinder;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

@@ -15,7 +15,6 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Store;
 use SMW\Utils\Timer;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -160,7 +159,9 @@ class Indexer {
 			return;
 		}
 
-		$title = Title::newFromText( $this->origin . ':' . md5( json_encode( $idList ) ) );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
+			$this->origin . ':' . md5( json_encode( $idList ) )
+		);
 
 		if ( !$this->canReplicate() ) {
 			return IndexerRecoveryJob::pushFromParams( $title, [ 'delete' => $idList ] );

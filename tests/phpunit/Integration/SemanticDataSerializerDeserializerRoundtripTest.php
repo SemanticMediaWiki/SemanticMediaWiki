@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
 use ReflectionClass;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
@@ -89,7 +90,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 		ApplicationFactory::clear();
 
 		$provider = [];
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		// #0 Empty container
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
@@ -138,7 +139,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 	public function incompleteSubobjectDataProvider() {
 		$provider = [];
 
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
@@ -157,7 +158,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 	 */
 	public function typeChangeSemanticDataProvider() {
 		$provider = [];
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		// #0 Single entry
 		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );

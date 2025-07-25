@@ -2,10 +2,10 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Linker;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Parser\Sanitizer;
 use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
-use Sanitizer;
 use SMW\Localizer\Message;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\QueryResult;

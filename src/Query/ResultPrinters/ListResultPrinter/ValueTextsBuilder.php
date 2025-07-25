@@ -2,8 +2,8 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
-use Linker;
-use Sanitizer;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Parser\Sanitizer;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;

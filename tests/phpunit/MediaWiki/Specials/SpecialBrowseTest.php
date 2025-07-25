@@ -5,7 +5,6 @@ namespace SMW\Tests\MediaWiki\Specials;
 use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialBrowse;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialBrowse
@@ -50,12 +49,13 @@ class SpecialBrowseTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testQueryParameter( $query, $expected ) {
 		$instance = new SpecialBrowse();
+		$services = MediaWikiServices::getInstance();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialBrowse' )
+			$services->getTitleFactory()->newFromText( 'SpecialBrowse' )
 		);
 
-		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$languageFactory = $services->getLanguageFactory();
 		$instance->getContext()->setLanguage(
 			$languageFactory->getLanguage( 'en' )
 		);

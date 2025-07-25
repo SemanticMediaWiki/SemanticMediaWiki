@@ -2519,7 +2519,29 @@ return ( static function () {
 		 *
 		 * @since 5.0
 		 */
-		'smwgEnableExportRDFLink' => true
+		'smwgEnableExportRDFLink' => true,
 
+		/**
+		 * Sets whether or not to set the timestamp on the ParserOutput object
+		 * Enabling this allows parser cache to be invalidated immediately
+		 *
+		 * However:
+		 * - Last modified date will become the parser cache purge time instead of the page edit time
+		 * - CDN cache might not be invalidated correctly because the revision is not old enough to be considered stale
+		 *
+		 * @since 5.1
+		 */
+		'smwgSetParserCacheTimestamp' => true,
+
+		/**
+		 * Sets the keys that will be added to the parser cache key.
+		 * Each key will trigger a cache fragmentation.
+		 *
+		 * @since 5.1
+		 */
+		'smwgSetParserCacheKeys' => [
+			'userlang',
+			'dateformat'
+		],
 	];
 } )();

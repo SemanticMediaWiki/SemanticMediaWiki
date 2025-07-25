@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use WebRequest;
 
 /**
  * @private

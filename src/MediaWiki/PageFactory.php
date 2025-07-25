@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\MediaWiki\Page\ConceptPage;
 use SMW\MediaWiki\Page\PropertyPage;
 use SMW\Property\DeclarationExaminerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

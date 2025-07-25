@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\FauxRequest;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Factbox\FactboxText;
@@ -220,7 +222,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$outputPage->expects( $this->any() )
 			->method( 'getLanguage' )
@@ -320,8 +322,8 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$context = new \RequestContext();
-		$context->setRequest( new \FauxRequest() );
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest() );
 
 		$outputPage->expects( $this->any() )
 			->method( 'getContext' )
@@ -357,8 +359,8 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$context = new \RequestContext();
-		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )

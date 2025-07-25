@@ -404,6 +404,7 @@ class SMWExportController {
 	 */
 	public function printPages( $pages, $recursion = 1, $revisiondate = false ) {
 		$mwServices = MediaWikiServices::getInstance();
+		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();
 		$revisionStore = $mwServices->getRevisionStore();
 
@@ -412,7 +413,7 @@ class SMWExportController {
 
 		// transform pages into queued short titles
 		foreach ( $pages as $page ) {
-			$title = Title::newFromText( $page );
+			$title = $titleFactory->newFromText( $page );
 			if ( $title === null ) {
 				continue; // invalid title name given
 			}
@@ -504,7 +505,9 @@ class SMWExportController {
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
-		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
+		$mwServices = MediaWikiServices::getInstance();
+		$titleFactory = $mwServices->getTitleFactory();
+		$linkCache = $mwServices->getLinkCache();
 		$dbr = self::getDBHandle();
 
 		$this->delay_flush = 10;
@@ -518,7 +521,7 @@ class SMWExportController {
 		$delaycount = $delayeach;
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
-			$title = Title::newFromID( $id );
+			$title = $titleFactory->newFromID( $id );
 			if ( $title === null || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
 				continue;
 			}

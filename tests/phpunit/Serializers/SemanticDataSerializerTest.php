@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Serializers;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Subobject;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @covers \SMW\Serializers\SemanticDataSerializer
@@ -57,7 +57,7 @@ class SemanticDataSerializerTest extends \PHPUnit\Framework\TestCase {
 		$this->semanticDataFactory = UtilityFactory::getInstance()->newSemanticDataFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		$title = Title::newFromText( 'Foo' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo' );
 
 		# 0 Empty container
 		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();

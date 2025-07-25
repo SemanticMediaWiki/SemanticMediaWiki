@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Permission;
 
 use SMW\MediaWiki\Permission\TitlePermissions;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Permission\TitlePermissions
@@ -39,7 +38,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGrantPermissionToMainNamespace() {
-		$title = Title::newFromText( 'Foo', NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo', NS_MAIN );
 
 		$user = $this->getMockBuilder( '\User' )
 			->disableOriginalConstructor()
@@ -499,22 +498,24 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleProvider() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
+			$titleFactory->newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'edit',
 			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
 		];
 
 		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
+			$titleFactory->newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'delete',
 			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
 		];
 
 		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
+			$titleFactory->newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'move',
 			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]

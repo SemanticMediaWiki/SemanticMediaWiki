@@ -2,10 +2,13 @@
 
 namespace SMW\MediaWiki;
 
-use Language;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Language\Language;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\StripState;
 use MediaWiki\Revision\RevisionRecord;
-use Parser;
-use RequestContext;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\Connection\ConnectionProvider;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
@@ -14,9 +17,6 @@ use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use StripState;
-use Title;
-use User;
 use WikiPage;
 
 /**

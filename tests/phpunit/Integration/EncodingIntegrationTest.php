@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
@@ -58,7 +59,7 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	public function sidebarBeforeOutputDataProvider() {
 		$specialName = str_replace( '%3A', ':',
-			\SMW\Encoder::encode( \SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
+			\SMW\Encoder::encode( SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
 		);
 
 		$provider = [];
@@ -95,7 +96,7 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->willReturn( Title::newFromText( $text, NS_MAIN ) );
+			->willReturn( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $text, NS_MAIN ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'msg' )

@@ -2,8 +2,9 @@
 
 namespace SMW\ParserFunctions;
 
-use Html;
-use Parser;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Title\Title;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
@@ -12,7 +13,6 @@ use SMW\PostProcHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink;
 use SMWQueryProcessor as QueryProcessor;
-use Title;
 
 /**
  * Class that provides the {{#concept}} parser function

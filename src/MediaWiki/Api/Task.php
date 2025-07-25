@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
-use RequestContext;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Context\RequestContext;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Module to support various tasks initiate using the API interface
@@ -79,12 +80,12 @@ class Task extends ApiBase {
 
 		return [
 			'task' => [
-				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => $taskFactory->getAllowedTypes()
+				ParamValidator::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => $taskFactory->getAllowedTypes()
 			],
 			'params' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 		];
 	}

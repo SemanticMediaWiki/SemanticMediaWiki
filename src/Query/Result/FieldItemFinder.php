@@ -2,6 +2,7 @@
 
 namespace SMW\Query\Result;
 
+use RuntimeException;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;

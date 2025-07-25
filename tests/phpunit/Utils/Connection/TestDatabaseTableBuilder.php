@@ -3,11 +3,11 @@
 namespace SMW\Tests\Utils\Connection;
 
 use CloneDatabase;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Store;
 use SMW\Tests\Utils\PageCreator;
-use Title;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
@@ -241,7 +241,7 @@ class TestDatabaseTableBuilder {
 	private function createDummyPage() {
 		$pageCreator = new PageCreator();
 		$pageCreator
-			->createPage( Title::newFromText( 'SMWUTDummyPage' ) )
+			->createPage( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMWUTDummyPage' ) )
 			->doEdit( 'SMW dummy page' );
 	}
 

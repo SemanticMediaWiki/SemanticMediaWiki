@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -26,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class updateEntityCountMap extends \Maintenance {
+class updateEntityCountMap extends Maintenance {
 
 	/**
 	 * Incomplete task message

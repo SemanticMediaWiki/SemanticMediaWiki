@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\RefreshJob
@@ -55,7 +55,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testRunJobOnMockStore( $parameters, $expected ) {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$expectedToRun = $expected['spos'] === null ? $this->once() : $this->once();
 

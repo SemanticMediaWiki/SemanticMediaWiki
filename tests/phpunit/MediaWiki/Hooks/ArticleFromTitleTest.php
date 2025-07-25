@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle

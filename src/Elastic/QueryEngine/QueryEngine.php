@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine;
 
+use MediaWiki\Html\Html;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
@@ -233,12 +234,12 @@ class QueryEngine implements IQueryEngine {
 			json_encode( $this->queryInfo, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
 		);
 
-		$html = \Html::rawElement(
+		$html = Html::rawElement(
 			'pre',
 			[
 				'class' => 'smwpre smwpre-no-margin smw-debug-box'
 			],
-			\Html::rawElement(
+			Html::rawElement(
 				'div',
 				[
 					'class' => 'smw-debug-box-header'

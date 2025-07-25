@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;

@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use ParserOutput;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\EditInfo;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Title;
-use User;
 use WikiPage;
 
 /**

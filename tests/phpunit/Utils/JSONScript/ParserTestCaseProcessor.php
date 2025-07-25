@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use RuntimeException;
 use SMW\DIWikiPage;
@@ -14,7 +16,6 @@ use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\IncomingSemanticDataValidator;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
-use User;
 
 /**
  * @group semantic-mediawiki
@@ -171,14 +172,14 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		);
 
 		if ( isset( $case['assert-output']['onOutputPage'] ) && $case['assert-output']['onOutputPage'] ) {
-			$context = new \RequestContext();
+			$context = new RequestContext();
 			$context->setTitle( $title );
 			// Ensures the OutputPageBeforeHTML hook is run
 			$context->getOutput()->addParserOutput( $parserOutput );
 			$output = $context->getOutput()->getHtml();
 		} elseif ( isset( $case['assert-output']['onPageView'] ) ) {
 			$parameters = isset( $case['assert-output']['onPageView']['parameters'] ) ? $case['assert-output']['onPageView']['parameters'] : [];
-			$context = \RequestContext::newExtraneousContext(
+			$context = RequestContext::newExtraneousContext(
 				$title,
 				$parameters
 			);

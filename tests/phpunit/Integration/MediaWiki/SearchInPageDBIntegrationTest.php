@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use ExtensionRegistry;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Registration\ExtensionRegistry;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -35,8 +35,9 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testSearchForPageValueAsTerm() {
-		$propertyPage = Title::newFromText( 'Has some page value', SMW_NS_PROPERTY );
-		$targetPage = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$propertyPage = $titleFactory->newFromText( 'Has some page value', SMW_NS_PROPERTY );
+		$targetPage = $titleFactory->newFromText( __METHOD__ );
 
 		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
 			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
@@ -83,8 +84,10 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 			$this->markTestSkipped( "Requires 'Geographic coordinate' to be a supported data type (see Semantic Maps)" );
 		}
 
-		$propertyPage = Title::newFromText( 'Has coordinates', SMW_NS_PROPERTY );
-		$targetPage = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$propertyPage = $titleFactory->newFromText( 'Has coordinates', SMW_NS_PROPERTY );
+		$targetPage = $titleFactory->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 

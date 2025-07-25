@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialURIResolver
@@ -38,7 +38,7 @@ class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialURIResolver();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialURIResolver' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialURIResolver' )
 		);
 
 		$instance->execute( '' );

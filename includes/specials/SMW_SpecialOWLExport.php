@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Exporter\ExporterFactory;
 
 /**
@@ -196,7 +198,11 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 		// If it is a redirect then we don't want to generate triples other than
 		// the redirect target information
-		if ( isset( $pages[0] ) && ( $title = Title::newFromText( $pages[0] ) ) !== null && $title->isRedirect() ) {
+		if (
+			isset( $pages[0] ) &&
+			( $title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $pages[0] ) ) !== null &&
+			$title->isRedirect()
+		) {
 			$backlinks = false;
 		}
 

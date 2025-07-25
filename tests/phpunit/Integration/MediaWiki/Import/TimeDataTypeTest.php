@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -77,7 +77,7 @@ class TimeDataTypeTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$title = Title::newFromText( 'TimeDataTypeRegressionTest' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'TimeDataTypeRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),

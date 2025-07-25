@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use OldLocalFile;
 use RepoGroup;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

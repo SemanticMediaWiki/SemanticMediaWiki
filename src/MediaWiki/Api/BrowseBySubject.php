@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Browse a subject api module
@@ -140,39 +141,39 @@ class BrowseBySubject extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'subject' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 			'ns' => [
-				ApiBase::PARAM_TYPE => 'integer',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => 0,
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_DEFAULT => 0,
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'iw' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'subobject' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'type' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'options' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => '',
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_DEFAULT => '',
+				ParamValidator::PARAM_REQUIRED => false,
 			]
 		];
 	}

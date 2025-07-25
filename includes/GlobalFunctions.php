@@ -1,10 +1,16 @@
 <?php
 
+use MediaWiki\Linker\Linker;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\WikiMap\WikiMap;
 use SMW\ConfigPreloader;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Highlighter;
+use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Store;
+use SMW\StoreFactory;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -145,10 +151,10 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 /**
  * Returns an instance for the storage back-end
  *
- * @return \SMW\Store
+ * @return Store
  */
 function &smwfGetStore() {
-	$store = \SMW\StoreFactory::getStore();
+	$store = StoreFactory::getStore();
 	return $store;
 }
 

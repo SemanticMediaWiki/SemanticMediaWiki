@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -264,7 +265,7 @@ final class Setup {
 			//
 			// Message::setInterfaceMessageFlag "... used to restore the flag
 			// after setting a language"
-			$title = $GLOBALS['wgTitle'] ?? \Title::newFromText( 'Blank', NS_SPECIAL );
+			$title = $GLOBALS['wgTitle'] ?? MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Blank', NS_SPECIAL );
 
 			return $message->setInterfaceMessageFlag( true )->title( $title )->parse();
 		} );

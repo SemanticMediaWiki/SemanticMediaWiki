@@ -2,7 +2,7 @@
 
 namespace SMW\ParserFunctions;
 
-use PPFrame;
+use MediaWiki\Parser\PPFrame;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\ParserData;

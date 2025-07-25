@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Search\SearchResultSet;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResultSet

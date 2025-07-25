@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use SMW\Elastic\ElasticStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -25,7 +26,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class rebuildElasticIndex extends \Maintenance {
+class rebuildElasticIndex extends Maintenance {
 
 	/**
 	 * @var Store
@@ -500,9 +501,10 @@ class rebuildElasticIndex extends \Maintenance {
 
 		if ( $this->hasOption( 'page' ) ) {
 			$pages = explode( '|', $this->getOption( 'page' ) );
+			$titleFactory = $this->getServiceContainer()->getTitleFactory();
 
 			foreach ( $pages as $page ) {
-				$title = \Title::newFromText( $page );
+				$title = $titleFactory->newFromText( $page );
 
 				if ( $title === null ) {
 					continue;

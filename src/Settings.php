@@ -210,7 +210,9 @@ class Settings extends Options {
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
 			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck'],
-			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink']
+			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink'],
+			'smwgSetParserCacheTimestamp' => $GLOBALS['smwgSetParserCacheTimestamp'],
+			'smwgSetParserCacheKeys' => $GLOBALS['smwgSetParserCacheKeys'],
 		];
 
 		$this->isLoaded = true;

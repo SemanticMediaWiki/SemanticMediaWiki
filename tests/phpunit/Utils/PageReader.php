@@ -2,9 +2,10 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory;
-use Title;
 use UnexpectedValueException;
+use WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -26,7 +27,7 @@ class PageReader {
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
-		if ( $this->page instanceof \WikiPage ) {
+		if ( $this->page instanceof WikiPage ) {
 			return $this->page;
 		}
 

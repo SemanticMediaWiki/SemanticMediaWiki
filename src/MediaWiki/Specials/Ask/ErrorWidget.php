@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMWQuery as Query;

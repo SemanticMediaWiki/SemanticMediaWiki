@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Hooks;
+use MediaWiki\User\User;
 use SMW\GroupPermissions;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -14,7 +14,6 @@ use SMW\OptionsAwareTrait;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\SchemaFactory;
 use SMW\Utils\Logo;
-use User;
 
 /**
  * Hook: GetPreferences adds user preference

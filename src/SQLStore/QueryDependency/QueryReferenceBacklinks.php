@@ -2,6 +2,8 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use MediaWiki\Html\Html;
+use MediaWiki\Skin\SkinComponentUtils;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer\Message;
@@ -92,14 +94,12 @@ class QueryReferenceBacklinks {
 			return true;
 		}
 
-		$localURL = \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
-			[
-				'property' => $property->getLabel(),
-				'value' => $subject->getTitle()->getPrefixedText()
-			]
-		);
+		$localURL = SkinComponentUtils::makeSpecialUrl( 'SearchByProperty', [
+			'property' => $property->getLabel(),
+			'value' => $subject->getTitle()->getPrefixedText()
+		] );
 
-		$html .= \Html::element(
+		$html .= Html::element(
 			'a',
 			[ 'href' => $localURL ],
 			Message::get( 'smw_browse_more' )
