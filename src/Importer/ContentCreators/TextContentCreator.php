@@ -130,7 +130,7 @@ class TextContentCreator implements ContentCreator {
 			);
 		}
 
-		// Avoid a possible "Notice: WikiPage::doEditContent: Transaction already
+		// Avoid a possible "Notice: WikiPage::doUserEditContent: Transaction already
 		// in progress (from DatabaseUpdater::doUpdates), performing implicit
 		// commit ..."
 		$this->connection->onTransactionCommitOrIdle( function () use ( $page, $title, $importContents, $action ) {
@@ -150,7 +150,7 @@ class TextContentCreator implements ContentCreator {
 			$user = User::newSystemUser( $importContents->getImportPerformer(), [ 'steal' => true ] );
 		}
 
-		// Use the global user if necessary (same as doEditContent())
+		// Use the global user if necessary (same as doUserEditContent())
 		$user = $user ?? RequestContext::getMain()->getUser();
 		$status = $page->doUserEditContent(
 			$content,

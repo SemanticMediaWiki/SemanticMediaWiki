@@ -3,7 +3,6 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Title\Title;
 use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -30,7 +29,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 	public function getSemanticDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText() ],
+			[ MediaWikiServices::getInstance()->getTitleFactory()->newMainPage()->getFullText() ],
 		];
 	}
 
@@ -53,8 +52,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	public function getPropertyValuesDataProvider() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		return [
-			[ $titleFactory->newFromText( Title::newMainPage()->getFullText() ), new DIProperty( '_MDAT' ) ],
-			[ $titleFactory->newFromText( Title::newMainPage()->getFullText() ), DIProperty::newFromUserLabel( 'Age' ) ],
+			[ $titleFactory->newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
+			[ $titleFactory->newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
 		];
 	}
 
@@ -100,7 +99,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 	public function getPropertiesDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText() ],
+			[ MediaWikiServices::getInstance()->getTitleFactory()->newMainPage()->getFullText() ],
 		];
 	}
 
