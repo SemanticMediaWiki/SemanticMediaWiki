@@ -1,8 +1,10 @@
 # Semantic MediaWiki 5.1.0
 
-Not a release yet.
+Released on July 24, 2025.
 
-This is a minor feature release.
+## Summary
+
+This is a [minor release](../RELEASE-POLICY.md). Thus, it contains no breaking changes, only new features and fixes.
 
 Like SMW 5.0.0, this version is compatible with MediaWiki 1.39 up to 1.43 and PHP 8.1 up to 8.4.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
