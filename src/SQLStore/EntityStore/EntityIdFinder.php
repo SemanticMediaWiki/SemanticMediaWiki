@@ -280,8 +280,7 @@ class EntityIdFinder {
 		}
 
 		$rows = $this->connection->select(
-			// This should be necessary but somehow `SQLite` fails here
-			$this->connection->tableName( SQLStore::ID_TABLE ),
+			SQLStore::ID_TABLE,
 			[
 				'smw_id'
 			],
