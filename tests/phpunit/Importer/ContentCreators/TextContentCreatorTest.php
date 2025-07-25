@@ -299,7 +299,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			$this->messageReporter
 		);
 
-		$this->assertSame( 1, $instance->isCreatorLastEditor( $page ) );
+		$this->assertSame( 1, $this->isCreatorLastEditor( $page ) );
 
 		$importContents = new ImportContents();
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
@@ -376,6 +376,23 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$importContents->setOptions( [ 'replaceable' => [ 'LAST_EDITOR' => 'IS_IMPORTER' ] ] );
 
 		$instance->create( $importContents );
+	}
+
+	private function isCreatorLastEditor( $page ): bool {
+		$lastEditor = $page->getUser();
+
+		// No user ID, so not a valid user
+		if ( $lastEditor === -1 ) {
+			return false;
+		}
+
+		$creator = $page->getCreator();
+
+		if ( $creator === null ) {
+			return false;
+		}
+
+		return $creator->getId() === $lastEditor;
 	}
 
 }
