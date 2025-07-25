@@ -279,6 +279,10 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( $status );
 
 		$page->expects( $this->atLeastOnce() )
+			->method( 'getUser' )
+			->willReturn( false );
+
+		$page->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
 			->willReturn( $user );
 
@@ -376,23 +380,6 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$importContents->setOptions( [ 'replaceable' => [ 'LAST_EDITOR' => 'IS_IMPORTER' ] ] );
 
 		$instance->create( $importContents );
-	}
-
-	private function isCreatorLastEditor( $page ): bool {
-		$lastEditor = $page->getUser();
-
-		// No user ID, so not a valid user
-		if ( $lastEditor === -1 ) {
-			return 4;
-		}
-
-		$creator = $page->getCreator();
-
-		if ( $creator === null ) {
-			return 5;
-		}
-
-		return $lastEditor;
 	}
 
 }
