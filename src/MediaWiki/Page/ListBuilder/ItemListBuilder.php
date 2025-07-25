@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
+use MediaWiki\Html\Html;
+use MediaWiki\Skin\SkinComponentUtils;
 use SMW\DIProperty;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
@@ -190,15 +192,13 @@ class ItemListBuilder {
 
 	private function getLastItemFormatter( $property, $dataItem ) {
 		return function () use ( $property, $dataItem ) {
-			return \Html::element(
+			return Html::element(
 				'a',
 				[
-					'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL(
-						[
-							'property' => $property->getLabel(),
-							'value' => $dataItem->getDBKey()
-						]
-					)
+					'href' => SkinComponentUtils::makeSpecialUrl( 'SearchByProperty', [
+						'property' => $property->getLabel(),
+						'value' => $dataItem->getDBKey()
+					] )
 				],
 				$this->msg( 'smw_browse_more' )
 			);

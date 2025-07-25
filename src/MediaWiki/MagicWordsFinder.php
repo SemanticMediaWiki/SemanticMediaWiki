@@ -2,9 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use MagicWord;
-use MagicWordFactory;
-use ParserOutput;
+use MediaWiki\Parser\MagicWordFactory;
+use MediaWiki\Parser\ParserOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -59,14 +58,7 @@ class MagicWordsFinder {
 	 * @return string
 	 */
 	public function findMagicWordInText( $magicWord, &$text ) {
-		// https://github.com/wikimedia/mediawiki/commit/07628545608ec742dd21fd83f47b1552b898d3b4
-		if ( $this->magicWordFactory !== null ) {
-			$mw = $this->magicWordFactory->get( $magicWord );
-		} else {
-			$mw = MagicWord::get( $magicWord );
-		}
-
-		if ( $mw->matchAndRemove( $text ) ) {
+		if ( $this->magicWordFactory->get( $magicWord )->matchAndRemove( $text ) ) {
 			return $magicWord;
 		}
 

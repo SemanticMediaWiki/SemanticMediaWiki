@@ -2,8 +2,9 @@
 
 namespace SMW;
 
-use Html;
-use Title;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use SMW\SQLStore\Lookup\ListLookup;
 
 /**
  * Query class that provides content for the Special:WantedProperties page
@@ -158,7 +159,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 		$title = $result[0]->getDiWikiPage()->getTitle();
 
-		if ( !$title instanceof \Title ) {
+		if ( !$title instanceof Title ) {
 			return '';
 		}
 

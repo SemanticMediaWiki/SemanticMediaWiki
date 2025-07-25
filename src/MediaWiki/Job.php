@@ -3,12 +3,11 @@
 namespace SMW\MediaWiki;
 
 use Job as MediaWikiJob;
-use JobQueueGroup;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\Store;
-use Title;
 
 /**
  * @ingroup SMW

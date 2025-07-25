@@ -5,15 +5,15 @@ namespace SMW\Tests\MediaWiki;
 use MediaWiki\Block\Block;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
-use ParserOptions;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks

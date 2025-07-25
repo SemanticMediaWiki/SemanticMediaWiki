@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpNsResource;
@@ -16,7 +17,6 @@ use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
 use SMWExporter as Exporter;
 use SMWQuery as Query;
-use Title;
 
 /**
  * Storage and query access point for a SPARQL supported RepositoryConnector to

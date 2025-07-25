@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialProcessingErrorList;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialProcessingErrorList
@@ -42,7 +42,7 @@ class SpecialProcessingErrorListTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialProcessingErrorList();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialProcessingErrorList' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialProcessingErrorList' )
 		);
 
 		$this->assertTrue(
@@ -54,7 +54,7 @@ class SpecialProcessingErrorListTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialProcessingErrorList();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialProcessingErrorList' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialProcessingErrorList' )
 		);
 
 		$expected = [

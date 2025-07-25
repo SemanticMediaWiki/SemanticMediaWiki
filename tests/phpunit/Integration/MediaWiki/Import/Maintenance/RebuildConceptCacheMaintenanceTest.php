@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -119,7 +119,7 @@ class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 
 	protected function createConceptPage( $name, $condition ) {
 		$this->pageCreator
-			->createPage( Title::newFromText( $name, SMW_NS_CONCEPT ) )
+			->createPage( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $name, SMW_NS_CONCEPT ) )
 			->doEdit( "{{#concept: {$condition} }}" );
 
 		return $this->pageCreator->getPage();

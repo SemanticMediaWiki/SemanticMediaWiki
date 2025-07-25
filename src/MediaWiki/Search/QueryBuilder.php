@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Search;
 
+use MediaWiki\Request\WebRequest;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
 use SMW\Query\Language\Conjunction;
@@ -12,7 +13,6 @@ use SMW\Query\Parser\TermParser;
 use SMW\Store;
 use SMWQuery as Query;
 use SMWQueryProcessor as QueryProcessor;
-use WebRequest;
 
 /**
  * @private

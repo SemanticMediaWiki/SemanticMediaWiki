@@ -2,13 +2,13 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * Load the required class
@@ -27,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class disposeOutdatedEntities extends \Maintenance {
+class disposeOutdatedEntities extends Maintenance {
 
 	/**
 	 * @var MessageReporter
@@ -75,7 +75,7 @@ class disposeOutdatedEntities extends \Maintenance {
 		$maintenanceHelper = $maintenanceFactory->newMaintenanceHelper();
 		$maintenanceHelper->initRuntimeValues();
 
-		$title = Title::newFromText( __METHOD__ );
+		$title = $this->getServiceContainer()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$outdatedDisposer = new OutdatedDisposer(
 			$applicationFactory->newJobFactory()->newEntityIdDisposerJob( $title ),

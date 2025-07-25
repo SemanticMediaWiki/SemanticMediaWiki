@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use MediaWiki\Html\Html;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DataValues\ExternalIdentifierValue;
@@ -78,7 +79,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		// Add an extra "title" attribute to support nojs environments by allowing
 		// it to display references even without JS, it will be removed when JS is available
 		// to show the "normal" tooltip
-		$result .= \Html::rawElement(
+		$result .= Html::rawElement(
 			'span',
 			[
 				'class' => $class,

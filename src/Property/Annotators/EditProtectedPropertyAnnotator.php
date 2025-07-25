@@ -2,13 +2,13 @@
 
 namespace SMW\Property\Annotators;
 
-use Html;
+use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotator;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

@@ -112,7 +112,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 			$schemaList = $this->schemaFinder->getConstraintSchema( $dataItem );
 
 			if ( !$schemaList instanceof SchemaList && $dataItems !== [] ) {
-				$schemaList = new SchemaList( $dataItems );
+				$schemaList = new SchemaList( [] );
 			}
 
 			foreach ( $dataItems as $di ) {

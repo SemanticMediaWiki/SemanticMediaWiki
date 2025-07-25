@@ -2,13 +2,13 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataTypeRegistry;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
-use Title;
 
 /**
  * This datavalue implements special processing suitable for defining types of
@@ -119,7 +119,7 @@ class TypesValue extends DataValue {
 			return htmlspecialchars( $this->m_caption );
 		}
 
-		$title = Title::makeTitle(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitle(
 			NS_SPECIAL,
 			$this->getSpecialPageTitleText()
 		);
@@ -160,7 +160,7 @@ class TypesValue extends DataValue {
 			return htmlspecialchars( $this->typeLabel );
 		}
 
-		$title = Title::makeTitle(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitle(
 			NS_SPECIAL,
 			$this->getSpecialPageTitleText()
 		);

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;

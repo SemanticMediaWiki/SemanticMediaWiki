@@ -2,8 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Html;
-use OutputPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Specials\SpecialSearch;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\HookListener;
@@ -11,7 +12,6 @@ use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\OptionsAwareTrait;
 use SMW\Utils\HtmlModal;
-use SpecialSearch;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend

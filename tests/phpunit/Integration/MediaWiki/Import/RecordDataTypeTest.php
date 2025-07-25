@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -67,7 +67,9 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$title = Title::newFromText( 'RecordDataTypeRegressionTest' );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$title = $titleFactory->newFromText( 'RecordDataTypeRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),
@@ -134,7 +136,7 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		];
 
 		$expectedRecordNumberFieldValuesAsNumber = [
-			'subject'        => DIWikiPage::newFromTitle( Title::newFromText( 'RecordDataTypeRegressionTest/WithSubpage' ) ),
+			'subject'        => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'RecordDataTypeRegressionTest/WithSubpage' ) ),
 			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
 			'property'       => DIProperty::newFromUserLabel( 'Has record number field' ),
 			'propertyValues' => [

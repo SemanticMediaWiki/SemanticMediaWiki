@@ -3,11 +3,11 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
-use Title;
 
 /**
  *

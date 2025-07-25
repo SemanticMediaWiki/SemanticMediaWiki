@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ParserAfterTidy
@@ -258,7 +258,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( true );
 
 		$text = '';
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$this->parser->expects( $this->any() )
 			->method( 'getTitle' )
@@ -300,7 +300,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->withConfiguration( $settings );
 
 		$text   = '';
-		$title  = Title::newFromText( __METHOD__ );
+		$title  = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$parser = $this->parserFactory->newFromTitle( $title );
 		$parserOutput = $parser->getOutput();

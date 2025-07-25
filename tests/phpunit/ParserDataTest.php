@@ -2,12 +2,12 @@
 
 namespace SMW\Tests;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Title;
 
 /**
  * @covers \SMW\ParserData
@@ -66,7 +66,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInitialDataIsEmpty() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -77,7 +77,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateJobState() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -90,7 +90,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetterInstances() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -112,7 +112,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddDataVlaueAndClear() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -137,7 +137,9 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddDataValueAndPushSemanticDataToParserOutput() {
-		$title = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$title = $titleFactory->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -149,7 +151,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
 		$instance->pushSemanticDataToParserOutput();
 
-		$title = Title::newFromText( __METHOD__ . '-1' );
+		$title = $titleFactory->newFromText( __METHOD__ . '-1' );
 
 		$newInstance = new ParserData( $title, $instance->getOutput() );
 
@@ -160,7 +162,9 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetSemanticData() {
-		$title = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$title = $titleFactory->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -168,7 +172,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
 
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+			DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) )
 		);
 
 		$semanticData->addDataValue(
@@ -197,7 +201,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider getPropertyValueDataProvider
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -253,7 +257,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -301,7 +305,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			$parserOutput
 		);
 
@@ -324,8 +328,10 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testImportFromParserOutput() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$import = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			$titleFactory->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -339,7 +345,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$import->pushSemanticDataToParserOutput();
 
 		$instance = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			$titleFactory->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 

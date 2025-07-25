@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
-use BacklinkCache;
-use HashBagOStuff;
+use MediaWiki\Cache\BacklinkCache;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use MediaWikiIntegrationTestCase;
 use ObjectCache;
 use PHPUnit\Framework\TestResult;
@@ -17,7 +17,7 @@ use SMW\StoreFactory;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
-use Title;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @group semantic-mediawiki

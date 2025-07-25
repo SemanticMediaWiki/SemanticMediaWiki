@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
@@ -243,7 +245,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$typeKey = 'smw-type' . str_replace( '_', '-', strtolower( $typeId ) );
 		$msgKey = $this->msg( $typeKey )->exists() ? $typeKey : 'smw-types-default';
 
-		$result = \Html::rawElement(
+		$result = Html::rawElement(
 			'div',
 			[
 				'class' => 'plainlinks smw-types-intro ' . $typeKey

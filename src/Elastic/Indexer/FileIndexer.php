@@ -3,6 +3,7 @@
 namespace SMW\Elastic\Indexer;
 
 use File;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DIWikiPage;
@@ -12,7 +13,6 @@ use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\EntityCache;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Store;
-use Title;
 
 /**
  * File indexer to use the Elasticsearch ingest pipeline to index and retrieve

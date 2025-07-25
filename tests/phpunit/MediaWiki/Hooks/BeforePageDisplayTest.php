@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\Tests\TestEnvironment;
 

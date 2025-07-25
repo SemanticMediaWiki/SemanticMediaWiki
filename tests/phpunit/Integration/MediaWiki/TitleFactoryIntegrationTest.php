@@ -2,11 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\TitleFactory
@@ -24,7 +25,7 @@ class TitleFactoryIntegrationTest extends SMWIntegrationTestCase {
 	use PHPUnitCompat;
 
 	public function testNewFromIDs() {
-		$title = Title::makeTitle( NS_MAIN, 'FooTitle' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'FooTitle' );
 
 		$page = UtilityFactory::getInstance()->newPageCreator()->createPage( $title );
 

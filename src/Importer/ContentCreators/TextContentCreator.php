@@ -2,15 +2,16 @@
 
 namespace SMW\Importer\ContentCreators;
 
-use ContentHandler;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use RequestContext;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Utils\CliMsgFormatter;
-use User;
 
 /**
  * @license GPL-2.0-or-later
@@ -193,7 +194,7 @@ class TextContentCreator implements ContentCreator {
 	}
 
 	private function isCreatorLastEditor( $page ) {
-		$lastEditor = User::newFromID(
+		$lastEditor = MediaWikiServices::getInstance()->getUserFactory()->newFromID(
 			$page->getUser()
 		);
 

@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryDependency;
 
+use MediaWiki\Title\Title;
 use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -251,7 +252,7 @@ class QueryResultDependencyListResolver {
 			}
 
 			// Category
-			if ( $data instanceof \Title ) {
+			if ( $data instanceof Title ) {
 				$subjects[] = DIWikiPage::newFromTitle( $data );
 			}
 		}

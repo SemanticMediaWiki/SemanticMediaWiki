@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Parser\Parser;
 use Onoi\Cache\Cache;
-use Parser;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;

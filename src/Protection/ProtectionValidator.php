@@ -3,6 +3,8 @@
 namespace SMW\Protection;
 
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
@@ -11,8 +13,6 @@ use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Services\ServicesFactory;
 use SMW\Store;
-use Title;
-use User;
 
 /**
  * Handles protection validation.

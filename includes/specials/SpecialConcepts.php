@@ -2,7 +2,8 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -18,7 +19,7 @@ use SMW\Utils\Pager;
  *
  * @author mwjames
  */
-class SpecialConcepts extends \SpecialPage {
+class SpecialConcepts extends SpecialPage {
 
 	/**
 	 * @var Store

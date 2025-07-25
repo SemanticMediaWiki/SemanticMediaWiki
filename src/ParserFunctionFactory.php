@@ -3,7 +3,7 @@
 namespace SMW;
 
 // Fatal error: Cannot use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunction because the name is already in use
-use Parser;
+use MediaWiki\Parser\Parser;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;

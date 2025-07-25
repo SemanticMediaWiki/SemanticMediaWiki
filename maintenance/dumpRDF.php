@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Utils\CliMsgFormatter;
@@ -47,7 +48,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Markus Krötzsch
  * @author mwjames
  */
-class dumpRDF extends \Maintenance {
+class dumpRDF extends Maintenance {
 
 	/**
 	 * @var MessageReporter

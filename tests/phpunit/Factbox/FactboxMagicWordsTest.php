@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Factbox;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use ReflectionClass;
 use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
@@ -10,7 +11,6 @@ use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Factbox\Factbox

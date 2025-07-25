@@ -3,8 +3,8 @@
 namespace SMW\Tests\Localizer;
 
 use DateTime;
-use IContextSource;
-use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\Localizer\Localizer;
 
 /**

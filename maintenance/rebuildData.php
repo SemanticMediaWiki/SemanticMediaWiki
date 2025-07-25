@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use InvalidArgumentException;
+use MediaWiki\Maintenance\Maintenance;
 use SMW\Options;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -58,7 +59,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Yaron Koren
  * @author Markus Krötzsch
  */
-class rebuildData extends \Maintenance {
+class rebuildData extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();

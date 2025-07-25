@@ -1,5 +1,6 @@
 <?php
 
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
