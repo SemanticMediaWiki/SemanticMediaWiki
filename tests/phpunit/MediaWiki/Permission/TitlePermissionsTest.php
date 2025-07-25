@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Permission;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Permission\TitlePermissions;
 
 /**

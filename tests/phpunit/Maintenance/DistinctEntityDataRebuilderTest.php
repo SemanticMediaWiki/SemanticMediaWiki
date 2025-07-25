@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Maintenance\DistinctEntityDataRebuilder;
 use SMW\Options;
 use SMW\Tests\TestEnvironment;

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Article;
+use MediaWiki\Html\Html;
 use SMW\DependencyValidator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
