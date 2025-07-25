@@ -230,6 +230,83 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$instance->create( $importContents );
 	}
 
+	public function testCreate_ReplaceableOnCreator() {
+		$this->connection->expects( $this->once() )
+			->method( 'onTransactionCommitOrIdle' )
+			->willReturnCallback( static function ( $callback ) {
+				return call_user_func( $callback );
+			}
+			);
+
+		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$status->expects( $this->any() )
+			->method( 'isOK' )
+			->willReturn( true );
+
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user->expects( $this->any() )
+			->method( 'equals' )
+			->willReturn( true );
+
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'exists' )
+			->willReturn( true );
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$title->expects( $this->any() )
+			->method( 'getContentModel' )
+			->willReturn( CONTENT_MODEL_TEXT );
+
+		$page = $this->getMockBuilder( '\WikiPage' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$page->expects( $this->once() )
+			->method( 'doUserEditContent' )
+			->willReturn( $status );
+
+		$page->expects( $this->atLeastOnce() )
+			->method( 'getCreator' )
+			->willReturn( $user );
+
+		$this->titleFactory->expects( $this->atLeastOnce() )
+			->method( 'makeTitleSafe' )
+			->willReturn( $title );
+
+		$this->titleFactory->expects( $this->atLeastOnce() )
+			->method( 'createPage' )
+			->willReturn( $page );
+
+		$instance = new TextContentCreator(
+			$this->titleFactory,
+			$this->connection
+		);
+
+		$instance->setMessageReporter(
+			$this->messageReporter
+		);
+
+		$importContents = new ImportContents();
+		$importContents->setContentType( ImportContents::CONTENT_TEXT );
+		$importContents->setName( 'Foo' );
+		$importContents->setOptions( [ 'replaceable' => [ 'LAST_EDITOR' => 'IS_IMPORTER' ] ] );
+
+		$instance->create( $importContents );
+	}
+
 	public function testCreate_ReplaceableOnCreator_WithNoAvailableUser() {
 		$this->connection->expects( $this->once() )
 			->method( 'onTransactionCommitOrIdle' )
