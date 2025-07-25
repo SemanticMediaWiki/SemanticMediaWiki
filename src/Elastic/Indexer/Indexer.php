@@ -5,6 +5,7 @@ namespace SMW\Elastic\Indexer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
@@ -15,7 +16,6 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Store;
 use SMW\Utils\Timer;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

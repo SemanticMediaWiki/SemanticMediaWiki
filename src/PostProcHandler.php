@@ -3,13 +3,13 @@
 namespace SMW;
 
 use Html;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
-use ParserOutput;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMWQuery as Query;
-use Title;
-use WebRequest;
 
 /**
  * Some updates need to be handled in via post processing,

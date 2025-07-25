@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter;
 
+use MediaWiki\Title\Title;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Site;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

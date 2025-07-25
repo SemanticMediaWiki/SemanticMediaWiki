@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\Title\Title;
 use ObjectCache;
 use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
@@ -62,16 +63,12 @@ class CacheFactory {
 	/**
 	 * @since 2.2
 	 *
-	 * @param \MediaWiki\Title\Title|\Title|int|string $key
+	 * @param Title|int|string $key
 	 *
 	 * @return string
 	 */
 	public static function getPurgeCacheKey( $key ) {
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			if ( $key instanceof \Title ) {
-				$key = $key->getArticleID();
-			}
-		} elseif ( $key instanceof \MediaWiki\Title\Title ) {
+		if ( $key instanceof Title ) {
 			$key = $key->getArticleID();
 		}
 

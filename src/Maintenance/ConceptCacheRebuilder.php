@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIConcept;
@@ -9,7 +10,6 @@ use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * Is part of the `rebuildConceptCache.php` maintenance script to rebuild

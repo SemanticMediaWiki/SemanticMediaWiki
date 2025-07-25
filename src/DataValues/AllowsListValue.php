@@ -2,7 +2,8 @@
 
 namespace SMW\DataValues;
 
-use Linker;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Title\Title;
 use SMW\Localizer\Localizer;
 
 /**
@@ -96,7 +97,7 @@ class AllowsListValue extends StringValue {
 		}
 
 		$id = $this->getDataItem()->getString();
-		$title = \Title::newFromText( self::LIST_PREFIX . $id, NS_MEDIAWIKI );
+		$title = Title::newFromText( self::LIST_PREFIX . $id, NS_MEDIAWIKI );
 
 		return \Html::rawElement(
 			'a',

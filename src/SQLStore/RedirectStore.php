@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -9,7 +10,6 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

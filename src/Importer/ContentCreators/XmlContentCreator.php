@@ -2,6 +2,7 @@
 
 namespace SMW\Importer\ContentCreators;
 
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;

@@ -3,17 +3,17 @@
 namespace SMW\Parser;
 
 use Error;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use Parser;
-use ParserOptions;
-use ParserOutput;
-use RequestContext;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\ParserData;
 use SMWOutputs;
-use Title;
 
 /**
  * @private

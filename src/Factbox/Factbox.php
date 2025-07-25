@@ -4,6 +4,7 @@ namespace SMW\Factbox;
 
 use Html;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
@@ -16,7 +17,6 @@ use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMWInfolink;
 use TemplateParser;
-use Title;
 
 /**
  * Class handling the "Factbox" content rendering

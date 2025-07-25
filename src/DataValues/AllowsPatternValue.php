@@ -2,7 +2,8 @@
 
 namespace SMW\DataValues;
 
-use Linker;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Title\Title;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 
@@ -102,7 +103,7 @@ class AllowsPatternValue extends StringValue {
 		}
 
 		$id = $this->getDataItem()->getString();
-		$title = \Title::newFromText( self::REFERENCE_PAGE_ID, NS_MEDIAWIKI );
+		$title = Title::newFromText( self::REFERENCE_PAGE_ID, NS_MEDIAWIKI );
 
 		return \Html::rawElement(
 			'a',

@@ -2,13 +2,13 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Title\Title;
 use SMW\DataTypeRegistry;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIUri as DIUri;
-use Title;
 
 /**
  * This datavalue implements special processing suitable for defining types of

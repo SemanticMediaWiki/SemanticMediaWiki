@@ -3,11 +3,13 @@
 namespace SMW\Localizer;
 
 use DateTime;
-use IContextSource;
-use Language;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
-use RequestContext;
 use SMW\DIWikiPage;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\LocalTime;
@@ -15,8 +17,6 @@ use SMW\MediaWiki\NamespaceInfo;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
 use SMW\Site;
-use Title;
-use User;
 
 /**
  * @license GPL-2.0-or-later

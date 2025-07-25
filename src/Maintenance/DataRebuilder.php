@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use Exception;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
@@ -14,7 +15,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * Is part of the `rebuildData.php` maintenance script to rebuild existing data
