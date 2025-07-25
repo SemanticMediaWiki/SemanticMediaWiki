@@ -73,7 +73,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWii\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +85,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\WikiPage' )
+		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,7 +137,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrorsArray' )
 			->willReturn( [ 'FooError', 'BarError' ] );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +149,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\WikiPage' )
+		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -190,7 +190,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -198,7 +198,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$page = $this->getMockBuilder( '\WikiPage' )
+		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -246,7 +246,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -254,7 +254,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'equals' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -270,7 +270,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\WikiPage' )
+		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -323,7 +323,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -339,7 +339,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\WikiPage' )
+		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
