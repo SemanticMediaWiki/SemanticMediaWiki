@@ -46,16 +46,16 @@ class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( $namespace );
 
-		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+		$article = $this->getMockBuilder( '\Article' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new ArticleFromTitle( $this->store );
-		$instance->process( $title, $wikiPage );
+		$instance->process( $title, $article );
 
 		$this->assertInstanceOf(
 			$expected,
-			$wikiPage
+			$article
 		);
 	}
 
