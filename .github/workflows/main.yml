@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ update-class-import ]
   pull_request:
-    branches: [ master ]
+    branches: [ update-class-import ]
   workflow_dispatch:
 
 jobs:
