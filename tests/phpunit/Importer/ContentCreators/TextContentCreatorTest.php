@@ -85,7 +85,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentModel' )
 			->willReturn( CONTENT_MODEL_TEXT );
 
-		$page = $this->getMockBuilder( '\MediaWiki\Page\WikiPage' )
+		$page = $this->getMockBuilder( '\WikiPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
