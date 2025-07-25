@@ -1,0 +1,78 @@
+{
+	"description": "Test category printrequest (`PRINT_CCAT`, `PRINT_CATS`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "PP0002",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "PP0002",
+			"contents": "..."
+		},
+		{
+			"page": "PP0002/1",
+			"contents": "[[PP0002::123]] [[Category:PP0002]]"
+		},
+		{
+			"page": "PP0002/2",
+			"contents": "[[PP0002::123]]"
+		},
+		{
+			"page": "PP0002/Q.1",
+			"contents": "{{#ask: [[PP0002::123]] |?Category:PP0002 }}"
+		},
+		{
+			"page": "PP0002/Q.2",
+			"contents": "{{#ask: [[PP0002::123]] |?category }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (a match to `?Category:PP0002` produces `X`)",
+			"subject": "PP0002/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"<a href=\".*/PP0002/1\" title=\"PP0002/1\">PP0002/1</a>",
+					"<td class=\"PP0002 smwtype_boo\" data-sort-value=\"1\"><span style=\"font-family: sans-serif;\">X</span></td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=\".*/PP0002/2\" title=\"PP0002/2\">PP0002/2</a></td>",
+					"<td class=\"PP0002 smwtype_boo\" data-sort-value=\"0\">&#160;</td>"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 (display categories as literal)",
+			"subject": "PP0002/Q.2",
+			"assert-output": {
+				"to-contain": [
+					"<td class=\"smwtype_wpg\"><a href=\".*/PP0002/1\" title=\"PP0002/1\">PP0002/1</a></td>",
+					"<td class=\"Category smwtype_wpg\"><a href=\".*/Category:PP0002\" title=\"Category:PP0002\">PP0002</a>",
+					"<td class=\"smwtype_wpg\"><a href=\".*/PP0002/2\" title=\"PP0002/2\">PP0002/2</a></td>",
+					"<td class=\"Category smwtype_wpg\"></td></tr>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"skip-on": {
+			"sitelanguage": [ "ja", "Some issues with NS_SPECIAL when 'ja' is used as sitelanguage." ]
+		},
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
