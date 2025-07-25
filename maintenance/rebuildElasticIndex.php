@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Title\Title;
 use SMW\Elastic\ElasticStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -502,7 +503,7 @@ class rebuildElasticIndex extends \Maintenance {
 			$pages = explode( '|', $this->getOption( 'page' ) );
 
 			foreach ( $pages as $page ) {
-				$title = \Title::newFromText( $page );
+				$title = Title::newFromText( $page );
 
 				if ( $title === null ) {
 					continue;

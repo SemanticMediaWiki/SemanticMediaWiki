@@ -2,12 +2,12 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DIProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
-use Title;
 
 $basePath = getenv( 'MW_INSTALL_PATH' ) !== false ? getenv( 'MW_INSTALL_PATH' ) : __DIR__ . '/../../..';
 

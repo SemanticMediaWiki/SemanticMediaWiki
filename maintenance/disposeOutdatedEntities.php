@@ -2,13 +2,13 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\CallbackMessageReporter;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * Load the required class
