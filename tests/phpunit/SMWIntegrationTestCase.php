@@ -15,6 +15,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
 use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * @group semantic-mediawiki
@@ -87,6 +88,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		// Prepare test environment for SMW-specific requirements
 		$this->initializeTestEnvironment();
+
+		ChangedTablesTracker::stopTracking() 
 	}
 
 	 /**
