@@ -165,6 +165,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		ChangedTablesTracker::stopTracking();
 
+		ChangedTablesTracker::startTracking();
+
 		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
 			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
 			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
