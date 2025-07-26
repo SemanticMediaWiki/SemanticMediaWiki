@@ -4,6 +4,7 @@ namespace SMW\Importer\ContentCreators;
 
 use MediaWiki\Content\ContentHandler;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use SMW\Importer\ContentCreator;
@@ -194,20 +195,21 @@ class TextContentCreator implements ContentCreator {
 	}
 
 	private function isCreatorLastEditor( WikiPage $page ): bool {
-		$lastEditor = $page->getUser();
+		$lastEditor = MediaWikiServices::getInstance()
+			->getUserFactory()
+			->newFromId( (int)$page->getUser() );
 
-		// No user ID, so not a valid user
-		if ( $lastEditor === -1 ) {
+		if ( !$lastEditor instanceof User ) {
 			return false;
 		}
 
 		$creator = $page->getCreator();
 
-		if ( $creator === null ) {
+		if ( !$creator instanceof User ) {
 			return false;
 		}
 
-		return $creator->getId() === $lastEditor;
+		return $creator->equals( $lastEditor );
 	}
 
 }
