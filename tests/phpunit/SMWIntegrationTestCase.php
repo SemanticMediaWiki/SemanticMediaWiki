@@ -88,8 +88,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		// Prepare test environment for SMW-specific requirements
 		$this->initializeTestEnvironment();
-
-		ChangedTablesTracker::stopTracking();
 	}
 
 	 /**
@@ -158,6 +156,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		// Ensure all transactions are closed before ending the test
 		$dbw = $this->getDBConnection();
 		$dbw->rollback();
+
+		ChangedTablesTracker::stopTracking();
 
 		parent::tearDown();
 	}
