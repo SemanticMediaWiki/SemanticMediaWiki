@@ -194,20 +194,21 @@ class TextContentCreator implements ContentCreator {
 	}
 
 	private function isCreatorLastEditor( WikiPage $page ): bool {
-		$lastEditor = $page->getUser();
+		$lastEditor = MediaWikiServices::getInstance()
+			->getUserFactory()
+			->newFromId( (int)$page->getUser() );
 
-		// No user ID, so not a valid user
-		if ( $lastEditor === -1 ) {
+		if ( !$lastEditor instanceof User ) {
 			return false;
 		}
 
 		$creator = $page->getCreator();
 
-		if ( $creator === null ) {
+		if ( !$creator instanceof User ) {
 			return false;
 		}
 
-		return $creator->getId() === $lastEditor;
+		return $creator->equals( $lastEditor );
 	}
 
 }
