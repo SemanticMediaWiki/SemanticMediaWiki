@@ -184,9 +184,9 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		} catch ( RuntimeException $e ) {
 			$this->isUsableUnitTestDatabase = false;
 		}
-	
+
 		ChangedTablesTracker::stopTracking();
-	
+
 		$testResult = parent::run( $result );
 
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
