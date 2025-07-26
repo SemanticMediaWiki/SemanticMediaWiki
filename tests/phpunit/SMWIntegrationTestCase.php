@@ -89,7 +89,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		// Prepare test environment for SMW-specific requirements
 		$this->initializeTestEnvironment();
 
-		ChangedTablesTracker::stopTracking() 
+		ChangedTablesTracker::stopTracking();
 	}
 
 	 /**
