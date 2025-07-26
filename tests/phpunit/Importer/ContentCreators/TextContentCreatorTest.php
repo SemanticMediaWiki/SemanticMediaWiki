@@ -279,10 +279,6 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( $status );
 
 		$page->expects( $this->atLeastOnce() )
-			->method( 'getUser' )
-			->willReturn( false );
-
-		$page->expects( $this->atLeastOnce() )
 			->method( 'getCreator' )
 			->willReturn( $user );
 
