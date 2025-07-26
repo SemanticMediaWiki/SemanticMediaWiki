@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Message;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\File\LocalFileUpload;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -130,7 +130,7 @@ class JsonTestCaseContentHandler {
 
 		$name = ( isset( $page['name'] ) ? $page['name'] : $page['page'] );
 
-		$title = Title::newFromText(
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 			$name,
 			$namespace
 		);
@@ -165,7 +165,7 @@ class JsonTestCaseContentHandler {
 	}
 
 	private function doMovePage( $page, $namespace ) {
-		$target = Title::newFromText(
+		$target = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 			$page['move-to']['target'],
 			$namespace
 		);

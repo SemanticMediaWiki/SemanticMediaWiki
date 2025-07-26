@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
-use ExtensionRegistry;
+use MediaWiki\Registration\ExtensionRegistry;
 use SMW\Tests\JSONScriptServicesTestCaseRunner;
 
 /**

@@ -3,10 +3,11 @@
 namespace SMW\Query\ResultPrinters;
 
 use FeedItem;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use ParserOptions;
-use RequestContext;
-use Sanitizer;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\ExportPrinter;
@@ -14,7 +15,6 @@ use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
 use TextContent;
-use Title;
 use WikiPage;
 
 /**

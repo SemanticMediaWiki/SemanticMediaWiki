@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Page;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\DIConcept;
 use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;

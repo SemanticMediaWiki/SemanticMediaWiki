@@ -2,11 +2,12 @@
 
 namespace SMW\Utils;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use MediaWiki\Xml\Xml;
 use SMW\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -44,7 +45,7 @@ class Pager {
 	 * @return string
 	 */
 	public static function filter( Title $title, $limit = 0, $offset = 0, $filter = '' ) {
-		$form = \Xml::tags(
+		$form = Xml::tags(
 			'form',
 			[
 				'id'     => 'search',

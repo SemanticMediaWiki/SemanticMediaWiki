@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Title\Title;
 use SMW\DataItemFactory;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
@@ -52,7 +53,7 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructDIWikiPageFromTitle() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

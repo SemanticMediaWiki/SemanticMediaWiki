@@ -35,19 +35,19 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\User' )
+		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestContext = $this->getMockBuilder( '\RequestContext' )
+		$this->requestContext = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
 			->disableOriginalConstructor()
 			->getMock();
 

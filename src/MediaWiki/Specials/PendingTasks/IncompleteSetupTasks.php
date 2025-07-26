@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\PendingTasks;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\SetupFile;
 

@@ -6,6 +6,7 @@ use SMW\Constraint\ConstraintCheckRunner;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
 use SMWDataValue as DataValue;
 
 /**
@@ -111,7 +112,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 			$schemaList = $this->schemaFinder->getConstraintSchema( $dataItem );
 
 			if ( !$schemaList instanceof SchemaList && $dataItems !== [] ) {
-				$schemaList = new SchemaList();
+				$schemaList = new SchemaList( [] );
 			}
 
 			foreach ( $dataItems as $di ) {

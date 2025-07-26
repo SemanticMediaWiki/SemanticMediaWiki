@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Message;
-use WebRequest;
 
 /**
  * @private

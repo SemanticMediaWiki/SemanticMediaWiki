@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Search;
 
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use Title;
 
 /**
  * @ingroup SMW

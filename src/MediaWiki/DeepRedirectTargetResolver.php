@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use RuntimeException;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

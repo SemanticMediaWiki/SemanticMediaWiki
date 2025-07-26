@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use EditPage;
-use Html;
+use MediaWiki\EditPage\EditPage;
+use MediaWiki\Html\Html;
 use SMW\DIProperty;
 use SMW\GroupPermissions;
 use SMW\Localizer\Message;

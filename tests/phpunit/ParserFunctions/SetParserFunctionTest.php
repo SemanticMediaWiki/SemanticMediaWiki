@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\ParserFunctions;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ParameterProcessorFactory;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\ParserFunctions\SetParserFunction
@@ -63,7 +63,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testParse( array $params ) {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -100,7 +100,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testInstantiatedPropertyValues( array $params, array $expected ) {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -141,7 +141,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 

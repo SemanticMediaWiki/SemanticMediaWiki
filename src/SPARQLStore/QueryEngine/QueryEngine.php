@@ -65,7 +65,7 @@ class QueryEngine implements QueryEngineInterface {
 	 * @param EngineOptions|null $EngineOptions
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-	public function __construct( RepositoryConnection $connection, ConditionBuilder $conditionBuilder, QueryResultFactory $queryResultFactory, EngineOptions $engineOptions = null ) {
+	public function __construct( RepositoryConnection $connection, ConditionBuilder $conditionBuilder, QueryResultFactory $queryResultFactory, ?EngineOptions $engineOptions = null ) {
 	// @codingStandardsIgnoreEnd
 		$this->connection = $connection;
 		$this->conditionBuilder = $conditionBuilder;

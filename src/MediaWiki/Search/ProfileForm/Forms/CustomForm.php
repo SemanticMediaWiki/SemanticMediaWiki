@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
+use MediaWiki\Request\WebRequest;
 use SMW\DIProperty;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
-use WebRequest;
 
 /**
  * @private

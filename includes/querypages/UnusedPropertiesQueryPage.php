@@ -2,9 +2,12 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
+use Skin;
 use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\SQLStore\Lookup\ListLookup;
 use SMWDIError;
 
 /**
@@ -111,7 +114,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @param mixed $result
 	 *
 	 * @return string
-	 * @throws InvalidResultException if the result was not of a supported type
+	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
 	function formatResult( $skin, $result ) {
 		if ( $result instanceof DIProperty ) {
@@ -147,7 +150,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 			$title = $property->getDiWikiPage()->getTitle();
 
-			if ( !$title instanceof \Title ) {
+			if ( !$title instanceof Title ) {
 				return '';
 			}
 

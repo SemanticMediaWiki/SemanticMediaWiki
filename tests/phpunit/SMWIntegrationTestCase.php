@@ -2,11 +2,8 @@
 
 namespace SMW\Tests;
 
-use BacklinkCache;
-use HashBagOStuff;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
-use ObjectCache;
 use PHPUnit\Framework\TestResult;
 use RuntimeException;
 use SMW\DataValueFactory;
@@ -17,7 +14,7 @@ use SMW\StoreFactory;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
-use Title;
+use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
  * @group semantic-mediawiki
@@ -81,8 +78,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		parent::setUp();
 
 		// Clear any cached user to ensure a clean state for each test
-		$user = $this->getTestUser()->getUser();
-		$user->clearInstanceCache( $user->mFrom );
+		// $user = $this->getTestUser()->getUser();
+		// $user->clearInstanceCache( $user->mFrom );
 
 		// Reset services and caches that SMW tests rely on
 		$this->resetSMWServices();
@@ -127,22 +124,9 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 	protected function clearGlobalCaches(): void {
 		// Clear the main cache and other relevant MediaWiki caches
-		$cache = ObjectCache::getInstance( CACHE_ANYTHING );
-		$oldServices = MediaWikiServices::getInstance();
+		$cache = MediaWikiServices::getInstance()->getObjectCacheFactory()->getInstance( CACHE_ANYTHING );
 		if ( $cache instanceof HashBagOStuff ) {
 			$cache->clear();
-		}
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			if ( !$oldServices->hasService( 'BacklinkCacheFactory' ) ) {
-				// BacklinkCacheFactory is available starting with MW 1.37, reset the legacy singleton otherwise.
-				// Use a mock title for this to avoid premature service realization.
-				$title = $this->createMock( Title::class );
-				$title->expects( $this->any() )
-					->method( 'getPrefixedDBkey' )
-					->willReturn( 'Badtitle/Dummy title for BacklinkCache reset' );
-
-				BacklinkCache::get( $title )->clear();
-			}
 		}
 	}
 
@@ -178,7 +162,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	public function run( ?TestResult $result = null ): TestResult {
 		$this->getStore()->clear();
 		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
-
 			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
 			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
 			$this->setCliArg( 'use-normal-tables', true );

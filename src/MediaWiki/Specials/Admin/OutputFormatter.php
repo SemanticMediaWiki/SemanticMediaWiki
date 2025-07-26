@@ -2,9 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use FormatJson;
-use Html;
-use OutputPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Localizer\Message;
 
 /**
@@ -108,7 +110,7 @@ class OutputFormatter {
 	 * @param string $fragment
 	 */
 	public function redirectToRootPage( $fragment = '', $query = [] ) {
-		$title = \SpecialPage::getTitleFor( 'SMWAdmin' );
+		$title = SpecialPage::getTitleFor( 'SMWAdmin' );
 		$title->setFragment( ' ' . $fragment );
 
 		$this->outputPage->redirect( $title->getFullURL( $query ) );
@@ -131,7 +133,11 @@ class OutputFormatter {
 	 * @param array $query
 	 */
 	public function createSpecialPageLink( $caption = '', $query = [] ) {
-		return '<a href="' . htmlspecialchars( \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ) . '">' . $caption . '</a>';
+		return Html::rawElement(
+			'a',
+			[ 'href' => SkinComponentUtils::makeSpecialUrl( 'SMWAdmin', $query ) ],
+			$caption
+		);
 	}
 
 	/**
@@ -185,11 +191,11 @@ class OutputFormatter {
 				[ 'class' => 'smw-breadcrumb-arrow-right' ],
 				''
 			) .
-			Html::rawElement(
-				'a',
-				[ 'href' => \SpecialPage::getTitleFor( 'SMWAdmin' )->getFullURL( $query ) ],
-				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE )
-		) );
+			$this->createSpecialPageLink(
+				Message::get( $title, Message::TEXT, Message::USER_LANGUAGE ),
+				$query
+			)
+		);
 	}
 
 }

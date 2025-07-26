@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Jobs;
 
+use MediaWiki\Title\Title;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticStore;
@@ -10,7 +11,6 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HmacSerializer;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

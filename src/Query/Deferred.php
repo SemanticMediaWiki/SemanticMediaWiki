@@ -2,8 +2,8 @@
 
 namespace SMW\Query;
 
-use Html;
-use ParserOutput;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\ParserOutput;
 use SMWQuery as Query;
 
 /**

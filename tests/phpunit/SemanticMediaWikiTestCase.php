@@ -2,11 +2,13 @@
 
 namespace SMW\Tests;
 
-use FauxRequest;
-use Language;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Language\Language;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use ReflectionClass;
-use RequestContext;
 use SMW\DependencyContainer;
 use SMW\DIWikiPage;
 use SMW\Settings;
@@ -17,8 +19,6 @@ use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use Title;
-use WebRequest;
 
 /**
  * @codeCoverageIgnore

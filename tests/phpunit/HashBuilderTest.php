@@ -2,12 +2,12 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HashBuilder;
 use SMW\SemanticData;
-use Title;
 
 /**
  * @covers \SMW\HashBuilder
@@ -26,7 +26,7 @@ class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider segmentProvider
 	 */
 	public function testTitleRoundTrip( $namespace, $title, $interwiki, $fragment ) {
-		$title = Title::makeTitle( $namespace, $title, $fragment, $interwiki );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->makeTitle( $namespace, $title, $fragment, $interwiki );
 
 		$this->assertEquals(
 			$title,

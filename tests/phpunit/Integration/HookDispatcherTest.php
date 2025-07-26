@@ -103,7 +103,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,7 +179,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -243,7 +243,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 		$propertyAnnotator->expects( $this->once() )
 			->method( 'addAnnotation' );
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -320,7 +320,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnIsApprovedRevision() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -336,7 +336,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnChangeRevisionID() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -357,7 +357,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnChangeFile() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -389,7 +389,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnChangeRevision() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

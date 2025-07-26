@@ -70,7 +70,7 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->entityCache
 		);
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

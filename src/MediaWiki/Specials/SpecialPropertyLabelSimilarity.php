@@ -2,12 +2,13 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use SpecialPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -104,7 +105,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 			) . Html::rawElement(
 				'a',
 				[
-					'href' => \SpecialPage::getTitleFor( 'Specialpages' )->getFullURL( $query ) . '#Semantic_MediaWiki'
+					'href' => SkinComponentUtils::makeSpecialUrl( 'Specialpages', $query ) . '#Semantic_MediaWiki'
 				],
 				Message::get( 'specialpages', Message::TEXT, Message::USER_LANGUAGE )
 		) );

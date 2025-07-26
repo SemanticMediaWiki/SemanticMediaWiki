@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
 use DateTime;
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\SetupFile;

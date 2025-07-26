@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use SMW\DataValues\AbstractMultiValue;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
@@ -159,7 +160,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
 		// Ensure that the validation instance uses the same field properties
 		// as defined by the original DataValue
-		if ( $dataValue instanceof \SMW\DataValues\AbstractMultiValue ) {
+		if ( $dataValue instanceof AbstractMultiValue ) {
 			$testDataValue->setFieldProperties( $dataValue->getPropertyDataItems() );
 		}
 

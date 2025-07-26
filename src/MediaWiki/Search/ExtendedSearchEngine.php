@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Search;
 
-use Content;
+use MediaWiki\Content\Content;
+use MediaWiki\Title\Title;
 use SearchEngine;
-use Title;
 
 /**
  * Facade to the MediaWiki `SearchEngine` which doesn't allow any factory

@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
-use DeferrableUpdate;
-use DeferredUpdates;
+use MediaWiki\Deferred\DeferrableUpdate;
+use MediaWiki\Deferred\DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
 use Wikimedia\Assert\Assert;
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 
@@ -24,7 +25,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class rebuildPropertyStatistics extends \Maintenance {
+class rebuildPropertyStatistics extends Maintenance {
 
 	public function __construct() {
 		parent::__construct();

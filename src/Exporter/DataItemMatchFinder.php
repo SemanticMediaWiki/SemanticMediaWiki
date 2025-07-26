@@ -2,13 +2,13 @@
 
 namespace SMW\Exporter;
 
+use MediaWiki\Title\Title;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Localizer\Localizer;
 use SMW\Store;
 use SMWDataItem as DataItem;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

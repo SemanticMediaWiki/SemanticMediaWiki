@@ -103,7 +103,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +132,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

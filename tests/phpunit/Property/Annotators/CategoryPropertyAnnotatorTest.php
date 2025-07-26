@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Property\Annotators;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;

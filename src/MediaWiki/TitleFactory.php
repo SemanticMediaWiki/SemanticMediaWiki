@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory;
-use Title;
 use WikiFilePage;
 use WikiPage;
 

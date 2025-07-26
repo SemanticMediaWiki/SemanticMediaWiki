@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
+use MediaWiki\Title\Title;
 use SMW\SQLStore\ConceptCache;
 use SMW\SQLStore\SQLStore;
-use Title;
 
 /**
  * @covers \SMW\SQLStore\ConceptCache

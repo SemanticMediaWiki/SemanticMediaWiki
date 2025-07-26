@@ -2,14 +2,15 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\EditPage\EditPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
-use ParserOutput;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMWQuery as Query;
-use Title;
-use WebRequest;
 
 /**
  * Some updates need to be handled in via post processing,
@@ -132,7 +133,7 @@ class PostProcHandler {
 		// page is reloaded using an API request
 		// @see Article::view
 		$postEdit = $webRequest->getCookie(
-			\EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
+			EditPage::POST_EDIT_COOKIE_KEY_PREFIX . $title->getLatestRevID()
 		);
 
 		$jobs = [];
@@ -272,47 +273,6 @@ class PostProcHandler {
 			self::POST_EDIT_CHECK,
 			$data
 		);
-	}
-
-	private function checkRef( $title, $postEdit ) {
-		$key = DependencyLinksUpdateJournal::makeKey( $title );
-
-		// Is a postEdit, mark the update to avoid running in circles
-		// when the pageCache is purged, use the latestRevID to distinguish
-		// content changes
-		if ( $postEdit !== null ) {
-
-			$record = [
-				$title->getLatestRevID() => true
-			];
-
-			$this->cache->save( $key . ':post', $record, self::POST_UPDATE_TTL );
-
-			return $postEdit;
-		}
-
-		// Run outside of a postEdit, check if the dependency journal contains an
-		// active reference to the article and run once (== hash that set by the
-		// dependency journal which is == revID that initiated the change)
-		$hash = $this->cache->fetch( $key );
-		$record = $this->cache->fetch( $key . ':post' );
-
-		if ( $hash !== false && ( $record === false || !isset( $record[$hash] ) ) ) {
-			$postEdit = true;
-
-			if ( !is_array( $record ) ) {
-				$record = [];
-			}
-
-			$record[$hash] = true;
-
-			// Add an update marker (1h) to avoid running twice in case the
-			// journal reference hasn't been deleted yet as result of an existing
-			// PostProcHandler update request.
-			$this->cache->save( $key . ':post', $record, self::POST_UPDATE_TTL );
-		}
-
-		return $postEdit;
 	}
 
 	private function checkDiff( $changeDiff ) {

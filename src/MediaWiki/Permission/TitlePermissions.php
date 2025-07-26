@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Permission;
 
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Protection\ProtectionValidator;
-use Title;
-use User;
 
 /**
  * @license GPL-2.0-or-later

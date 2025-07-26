@@ -2,7 +2,8 @@
 
 namespace SMW\Elastic\Admin;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
@@ -10,7 +11,6 @@ use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Utils\HtmlColumns;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later

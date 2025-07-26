@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
 use PermissionsError;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -10,7 +11,6 @@ use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlTabs;
-use SpecialPage;
 
 /**
  * This special page for MediaWiki provides an administrative interface

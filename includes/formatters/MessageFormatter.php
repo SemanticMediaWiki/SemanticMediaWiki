@@ -2,9 +2,10 @@
 
 namespace SMW;
 
-use Html;
-use Language;
-use StubUserLang;
+use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
+use MediaWiki\Message\Message;
+use MediaWiki\StubObject\StubUserLang;
 
 /**
  * Class implementing message output formatting
@@ -84,7 +85,7 @@ class MessageFormatter {
 	public function addFromKey( $key /*...*/ ) {
 		$params = func_get_args();
 		array_shift( $params );
-		$this->addFromArray( [ new \Message( $key, $params ) ] );
+		$this->addFromArray( [ new Message( $key, $params ) ] );
 		return $this;
 	}
 
@@ -218,7 +219,7 @@ class MessageFormatter {
 
 		foreach ( $messages as $msg ) {
 
-			if ( $msg instanceof \Message ) {
+			if ( $msg instanceof Message ) {
 				$text = $msg->inLanguage( $this->language )->text();
 				$newArray[md5( $text )] = $text;
 			} elseif ( (array)$msg === $msg ) {

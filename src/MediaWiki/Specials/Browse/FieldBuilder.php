@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Localizer\Message;
-use SpecialPage;
 
 /**
  * @private

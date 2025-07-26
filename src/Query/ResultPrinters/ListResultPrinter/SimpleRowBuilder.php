@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
-use Linker;
+use MediaWiki\Linker\Linker;
 use SMW\Query\Result\ResultArray;
 
 /**

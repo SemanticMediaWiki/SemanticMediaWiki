@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
-use ExtensionRegistry;
+use MediaWiki\Registration\ExtensionRegistry;
 use SMW\DataItemFactory;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\SemanticData;

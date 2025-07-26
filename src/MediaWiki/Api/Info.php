@@ -2,9 +2,10 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module to obtain info about the SMW install, primarily targeted at
@@ -76,9 +77,9 @@ class Info extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'info' => [
-				ApiBase::PARAM_DFLT => 'propcount|usedpropcount|declaredpropcount',
-				ApiBase::PARAM_ISMULTI => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_DEFAULT => 'propcount|usedpropcount|declaredpropcount',
+				ParamValidator::PARAM_ISMULTI => true,
+				ParamValidator::PARAM_TYPE => [
 					'propcount',
 					'errorcount',
 					'deletecount',

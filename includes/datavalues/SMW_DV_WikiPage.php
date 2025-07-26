@@ -1,5 +1,8 @@
 <?php
 
+use MediaWiki\Html\Html;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Sanitizer;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
@@ -126,6 +129,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 	protected function parseUserValue( $value ) {
 		$localizer = Localizer::getInstance();
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		// support inputs like " [[Test]] ";
 		// note that this only works when SMW_PARSER_LINV is set
@@ -153,7 +157,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		// instance to distinguish [[~Foo*]] from [[Help:~Foo*]]
 		if ( $this->getOption( self::OPT_QUERY_COMP_CONTEXT ) || $this->getOption( self::OPT_QUERY_CONTEXT ) ) {
 
-			$title = Title::newFromText( $value, $this->m_fixNamespace );
+			$title = $titleFactory->newFromText( $value, $this->m_fixNamespace );
 
 			// T:P0427 If the user value says `ab c*` then make sure to use this one
 			// instead of the transformed DBKey which would be `Ab c*`
@@ -175,12 +179,12 @@ class SMWWikiPageValue extends SMWDataValue {
 				$this->addErrorMsg( [ 'smw-datavalue-wikipage-missing-fragment-context', $value ] );
 				return;
 			} else {
-				$this->m_title = Title::makeTitle( $this->m_contextPage->getNamespace(),
+				$this->m_title = $titleFactory->makeTitle( $this->m_contextPage->getNamespace(),
 					$this->m_contextPage->getDBkey(), substr( $value, 1 ),
 					$this->m_contextPage->getInterwiki() );
 			}
 		} else {
-			$this->m_title = Title::newFromText( $value, $this->m_fixNamespace );
+			$this->m_title = $titleFactory->newFromText( $value, $this->m_fixNamespace );
 		}
 
 		$property = $this->getProperty();
@@ -287,7 +291,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 			// #4037
 			if ( $this->linkAttributes !== [] ) {
-				$text = \Html::rawElement(
+				$text = Html::rawElement(
 					'span',
 					$this->linkAttributes,
 					$text
@@ -324,7 +328,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $this->linkAttributes !== [] ) {
-			$link = \Html::rawElement(
+			$link = Html::rawElement(
 				'span',
 				$this->linkAttributes,
 				$link
@@ -411,7 +415,7 @@ class SMWWikiPageValue extends SMWDataValue {
 		}
 
 		if ( $this->linkAttributes !== [] ) {
-			$link = \Html::rawElement(
+			$link = Html::rawElement(
 				'span',
 				$this->linkAttributes,
 				$link
@@ -541,7 +545,7 @@ class SMWWikiPageValue extends SMWDataValue {
 
 				$this->setOption( self::OPT_DISABLE_INFOLINKS, true );
 
-				$this->m_title = Title::newFromText(
+				$this->m_title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText(
 					$this->m_dataitem->getDBkey()
 				);
 

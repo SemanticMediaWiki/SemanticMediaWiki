@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\Tests\PHPUnitCompat;
 

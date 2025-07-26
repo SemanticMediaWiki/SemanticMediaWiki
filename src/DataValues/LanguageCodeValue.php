@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Language\LanguageCode;
 use SMW\Localizer\Localizer;
 use SMWDIBlob as DIBlob;
 
@@ -34,7 +35,7 @@ class LanguageCodeValue extends StringValue {
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
-		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
+		$this->nonstandardLanguageCodeMapping = LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**

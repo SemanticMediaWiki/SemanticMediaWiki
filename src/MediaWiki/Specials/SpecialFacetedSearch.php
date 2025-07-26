@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
@@ -16,7 +17,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Services\ServicesFactory;
 use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
-use SpecialPage;
 
 /**
  * @license GPL-2.0-or-later

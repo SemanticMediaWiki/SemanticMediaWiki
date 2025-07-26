@@ -19,7 +19,7 @@ class MockTitle extends \PHPUnit\Framework\TestCase {
 
 		$contentModel = defined( 'CONTENT_MODEL_WIKITEXT' ) ? CONTENT_MODEL_WIKITEXT : null;
 
-		$title = $instance->getMockBuilder( 'Title' )
+		$title = $instance->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

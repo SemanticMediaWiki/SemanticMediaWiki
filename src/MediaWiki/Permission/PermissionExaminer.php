@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Permission;
 
+use MediaWiki\User\User;
 use SMW\MediaWiki\PermissionManager;
-use User;
 
 /**
  * @license GPL-2.0-or-later

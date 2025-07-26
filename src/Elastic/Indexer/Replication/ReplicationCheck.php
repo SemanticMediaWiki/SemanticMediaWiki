@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
@@ -9,7 +10,6 @@ use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Store;
 use SMW\Utils\TemplateEngine;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -119,7 +119,7 @@ class ReplicationCheck {
 	 * @param DIWikiPage|Title $subject
 	 */
 	public function deleteReplicationTrail( $subject ) {
-		if ( $subject instanceof \Title ) {
+		if ( $subject instanceof Title ) {
 			$subject = DIWikiPage::newFromTitle( $subject );
 		}
 

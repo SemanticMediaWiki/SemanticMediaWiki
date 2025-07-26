@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Factbox;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use ReflectionClass;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -12,7 +13,6 @@ use SMW\ParserData;
 use SMW\SemanticData;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Factbox\Factbox

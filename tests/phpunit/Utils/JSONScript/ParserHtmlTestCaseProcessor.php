@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use Article;
+use MediaWiki\Context\RequestContext;
 use MediaWikiIntegrationTestCase;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
@@ -112,14 +114,14 @@ class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			return $parserOutput->getText();
 		}
 
-		$context = new \RequestContext();
+		$context = new RequestContext();
 		$context->setTitle( $subject->getTitle() );
 
 		if ( $this->isSetAndTrueish( $case[ 'assert-output' ], 'withOutputPageContext' ) ) {
 			// Ensures the OutputPageBeforeHTML hook is run
 			$context->getOutput()->addParserOutput( $parserOutput );
 		} else {
-			\Article::newFromTitle( $subject->getTitle(), $context )->view();
+			Article::newFromTitle( $subject->getTitle(), $context )->view();
 		}
 
 		return $context->getOutput()->getHTML();

@@ -2,6 +2,8 @@
 
 namespace SMW\Utils;
 
+use IntlRuleBasedBreakIterator;
+
 /**
  * @license GPL-2.0-or-later
  * @since 2.5
@@ -24,7 +26,7 @@ class Tokenizer {
 
 		// As for CJK, this returns better results as trying to split tokens
 		// by a single character
-		$intlRuleBasedBreakIterator = \IntlRuleBasedBreakIterator::createWordInstance( 'en' );
+		$intlRuleBasedBreakIterator = IntlRuleBasedBreakIterator::createWordInstance( 'en' );
 		$intlRuleBasedBreakIterator->setText( $text );
 
 		$prev = 0;

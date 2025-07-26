@@ -1,5 +1,9 @@
 <?php
 
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
+
 /**
  * This class attempts to provide safe yet simple means for managing data that is relevant
  * for the final HTML output of MediaWiki. In particular, this concerns additions to the HTML

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\StringValue;

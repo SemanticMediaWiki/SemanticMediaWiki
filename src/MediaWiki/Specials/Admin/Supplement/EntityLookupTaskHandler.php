@@ -2,7 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
@@ -11,7 +13,6 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -149,7 +150,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
-			\Title::newFromText( __METHOD__ )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ )
 		);
 
 		$entityIdDisposerJob->dispose( intval( $id ) );

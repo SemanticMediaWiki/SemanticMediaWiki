@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use ParamProcessor\Param;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
@@ -27,7 +28,6 @@ use SMWInfolink as Infolink;
 use SMWOutputs;
 use SMWQuery;
 use SMWQueryProcessor as QueryProcessor;
-use SpecialPage;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing

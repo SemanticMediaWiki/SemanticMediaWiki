@@ -58,11 +58,11 @@ class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newUpdateJob' )
 			->willReturn( $nullJob );
 
-		$oldTitle = $this->getMockBuilder( '\Title' )
+		$oldTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$newTitle = $this->getMockBuilder( '\Title' )
+		$newTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

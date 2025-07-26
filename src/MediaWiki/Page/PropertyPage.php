@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Page;
 
-use Html;
-use ParserOptions;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DIProperty;
@@ -22,7 +24,6 @@ use SMW\StringCondition;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
 use SMWDataValue;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -217,7 +218,7 @@ class PropertyPage extends Page {
 			$this->property->isUserDefined()
 		);
 
-		if ( $this->mParserOutput instanceof \ParserOutput ) {
+		if ( $this->mParserOutput instanceof ParserOutput ) {
 			preg_match_all(
 				"/" . "<section class=\"smw-property-specification\"(.*)?>([\s\S]*?)<\/section>" . "/m",
 				$this->mParserOutput->getText(),

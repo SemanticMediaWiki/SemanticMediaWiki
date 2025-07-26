@@ -30,7 +30,7 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testPerformUpdate( $namespace, $text, $expected ) {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

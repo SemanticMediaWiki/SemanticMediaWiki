@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use MediaWiki\User\User;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Alerts\ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler;
@@ -24,7 +25,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\Store;
 use SMW\Utils\FileFetcher;
-use User;
 
 /**
  * @license GPL-2.0-or-later

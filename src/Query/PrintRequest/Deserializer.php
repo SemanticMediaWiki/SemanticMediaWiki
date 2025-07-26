@@ -3,12 +3,12 @@
 namespace SMW\Query\PrintRequest;
 
 use InvalidArgumentException;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

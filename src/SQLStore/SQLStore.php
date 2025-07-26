@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -20,7 +21,6 @@ use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
 use SMWWikiPageValue;
-use Title;
 
 /*
  * Virtual "interwiki prefix" for old-style special SMW objects (no longer used)

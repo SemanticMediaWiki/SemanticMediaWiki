@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Content;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\CodeHighlighter\Geshi;
 use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
 use SMW\DIProperty;
@@ -12,7 +13,6 @@ use SMW\Schema\Schema;
 use SMW\Store;
 use SMW\Utils\Html\SummaryTable;
 use SMWInfolink as Infolink;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -309,14 +309,16 @@ class SchemaContentFormatter {
 		$type = $schema->get( 'type', '' );
 		$link = Infolink::newPropertySearchLink( $type, 'Schema type', $type, '' );
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$params = [
-			'href_type' => Title::newFromText( 'Schema type', SMW_NS_PROPERTY )->getLocalUrl(),
+			'href_type' => $titleFactory->newFromText( 'Schema type', SMW_NS_PROPERTY )->getLocalUrl(),
 			'msg_type'  => $this->msg( [ 'smw-schema-type' ] ),
 			'link_type' => $link->getHtml(),
-			'href_tag'  => Title::newFromText( 'Schema tag', SMW_NS_PROPERTY )->getLocalUrl(),
+			'href_tag'  => $titleFactory->newFromText( 'Schema tag', SMW_NS_PROPERTY )->getLocalUrl(),
 			'msg_tag'   => $this->msg( [ 'smw-schema-tag', count( $tags ) ] ),
 			'tags'      => $tags,
-			'href_description' => Title::newFromText( 'Schema description', SMW_NS_PROPERTY )->getLocalUrl(),
+			'href_description' => $titleFactory->newFromText( 'Schema description', SMW_NS_PROPERTY )->getLocalUrl(),
 			'msg_description'  => $this->msg( [ 'smw-schema-description' ] ),
 		];
 

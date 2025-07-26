@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -10,7 +11,6 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\Store;
 use SMW\Utils\Flag;
-use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**

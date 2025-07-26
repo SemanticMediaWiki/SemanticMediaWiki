@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use Exception;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
@@ -14,7 +15,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use Title;
 
 /**
  * Is part of the `rebuildData.php` maintenance script to rebuild existing data
@@ -493,7 +493,7 @@ class DataRebuilder {
 		$prefix = isset( $entities['t'] ) ? 'T:' : 'S:';
 		$entity = end( $entities );
 
-		if ( $entity instanceof \Title ) {
+		if ( $entity instanceof Title ) {
 			return [ $text, "[$prefix " . $entity->getPrefixedDBKey() . ']' ];
 		}
 
@@ -586,7 +586,7 @@ class DataRebuilder {
 		);
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$outdatedDisposer = new OutdatedDisposer(
 			$applicationFactory->newJobFactory()->newEntityIdDisposerJob( $title ),

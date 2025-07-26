@@ -2,11 +2,12 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 use WikiPage;
 
 /**
@@ -77,7 +78,7 @@ class PageRefresher {
 		}
 
 		if ( is_string( $title ) ) {
-			$title = Title::newFromText( $title );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $title );
 		}
 
 		if ( !$title instanceof Title ) {

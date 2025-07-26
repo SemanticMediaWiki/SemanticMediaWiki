@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\Title\Title;
 use SMW\DataModel\ContainerSemanticData;
 use SMWDIBlob as DIBlob;
 use SMWDIBoolean as DIBoolean;
@@ -10,7 +11,6 @@ use SMWDIError as DIError;
 use SMWDINumber as DINumber;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
-use Title;
 
 /**
  * @private

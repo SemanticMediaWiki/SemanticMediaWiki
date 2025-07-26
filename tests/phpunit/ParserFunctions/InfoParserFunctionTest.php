@@ -28,7 +28,7 @@ class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	public function testHandle() {
 		$instance = new InfoParserFunction();
 
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 

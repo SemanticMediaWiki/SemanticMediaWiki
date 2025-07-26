@@ -104,7 +104,7 @@ class MaintenanceTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHandleSubRequest() {
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

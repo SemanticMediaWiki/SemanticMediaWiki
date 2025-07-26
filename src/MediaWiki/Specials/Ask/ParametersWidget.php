@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
 use SMW\Utils\HtmlDivTable;
 use SMWQueryProcessor as QueryProcessor;
-use Title;
 
 /**
  * @private

@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
-use RequestContext;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -10,7 +11,6 @@ use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -70,7 +70,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 
 		$this->applicationFactory->registerObject( 'Cache', $cache );
 
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -90,7 +90,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPageDelete() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -110,7 +110,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	}
 
 	public function testEditPageToGetNewRevision() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -141,7 +141,7 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 	}
 
 	public function testOnOutputPageParserOutputeOnDatabase() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 

@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
 use SMW\Localizer\Localizer;
 use SMW\NamespaceUriFinder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * @license GPL-2.0-or-later
@@ -118,26 +119,26 @@ class BrowseByProperty extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'property' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'limit' => [
-				ApiBase::PARAM_TYPE => 'limit',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_DFLT => 50,
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'limit',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_DEFAULT => 50,
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'lang' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_REQUIRED => false,
 			],
 			'listonly' => [
-				ApiBase::PARAM_TYPE => 'boolean',
-				ApiBase::PARAM_DFLT => false,
-				ApiBase::PARAM_ISMULTI => false,
-				ApiBase::PARAM_REQUIRED => false,
+				ParamValidator::PARAM_TYPE => 'boolean',
+				ParamValidator::PARAM_DEFAULT => false,
+				ParamValidator::PARAM_ISMULTI => false,
+				ParamValidator::PARAM_REQUIRED => false,
 			]
 		];
 	}

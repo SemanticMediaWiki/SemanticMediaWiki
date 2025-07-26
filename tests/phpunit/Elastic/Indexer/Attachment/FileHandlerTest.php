@@ -31,7 +31,7 @@ class FileHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindFileByTitle() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

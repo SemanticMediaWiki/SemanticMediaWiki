@@ -2,7 +2,7 @@
 
 namespace SMW\Factbox;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer\Message;

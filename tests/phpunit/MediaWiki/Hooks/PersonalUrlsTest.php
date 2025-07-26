@@ -51,7 +51,7 @@ class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw-prefs-general-options-jobqueue-watchlist' )
 			->willReturn( true );
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

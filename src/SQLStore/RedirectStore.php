@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\Cache\Cache;
 use SMW\InMemoryPoolCache;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -9,7 +10,6 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Utils\Flag;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -324,8 +324,9 @@ class RedirectStore {
 			$query['join']
 		);
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		foreach ( $res as $row ) {
-			$title = Title::makeTitleSafe( $row->ns, $row->t );
+			$title = $titleFactory->makeTitleSafe( $row->ns, $row->t );
 
 			if ( $title !== null ) {
 				$jobs[] = new UpdateJob( $title, [ 'origin' => 'RedirectStore' ] );

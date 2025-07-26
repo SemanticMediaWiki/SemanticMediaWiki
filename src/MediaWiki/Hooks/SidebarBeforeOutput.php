@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\Title\Title;
 use Skin;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMWInfolink as Infolink;
-use SpecialPage;
-use Title;
 
 /**
  * Called at the end of Skin::buildSidebar().
@@ -75,7 +75,7 @@ class SidebarBeforeOutput implements HookListener {
 
 		$sidebar["TOOLBOX"]['smwbrowselink'] = [
 			'text' => $skin->msg( 'smw_browselink' )->text(),
-			'href' => SpecialPage::getTitleFor( 'Browse', ':' . $link )->getLocalUrl(),
+			'href' => SkinComponentUtils::makeSpecialUrl( "Browse" ) . "/:$link",
 			'icon' => 'database',
 			'id'   => 't-smwbrowselink',
 			'rel'  => 'search'

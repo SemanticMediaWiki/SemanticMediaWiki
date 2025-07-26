@@ -23,7 +23,7 @@ class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	public function testHandle() {
 		$instance = new DocumentationParserFunction();
 
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 

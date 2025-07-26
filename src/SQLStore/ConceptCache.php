@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\Title\Title;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMWWikiPageValue;
-use Title;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**

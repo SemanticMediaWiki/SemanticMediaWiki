@@ -19,7 +19,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +30,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFormatNumberToText() {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,7 +45,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testListToCommaSeparatedText() {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,11 +68,11 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrevNextToText() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +97,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetForm() {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 

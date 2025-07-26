@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 
 /**

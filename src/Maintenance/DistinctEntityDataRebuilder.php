@@ -3,6 +3,7 @@
 namespace SMW\Maintenance;
 
 use Exception;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DIWikiPage;
@@ -15,7 +16,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMWQueryProcessor;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

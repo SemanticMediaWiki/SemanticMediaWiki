@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -24,7 +25,7 @@ class SemanticDataFactory {
 	 */
 	public function setTitle( $title ) {
 		if ( is_string( $title ) ) {
-			$title = Title::newFromText( $title );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $title );
 		}
 
 		if ( $title instanceof Title ) {

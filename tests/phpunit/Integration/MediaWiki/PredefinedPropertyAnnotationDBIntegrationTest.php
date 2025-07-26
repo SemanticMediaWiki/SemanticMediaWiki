@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDITime as DITime;
-use Title;
 
 /**
  * @group SMW
@@ -57,7 +57,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	public function testPredefinedModificationDatePropertyAndChangedDefaultsortForNewPage() {
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
-		$title   = Title::newFromText( __METHOD__ );
+		$title   = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$this->pageCreator
@@ -82,7 +82,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
-		$title   = Title::newFromText( __METHOD__ );
+		$title   = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$this->pageCreator

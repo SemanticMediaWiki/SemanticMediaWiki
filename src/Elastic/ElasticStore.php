@@ -3,6 +3,7 @@
 namespace SMW\Elastic;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Indexer;
@@ -12,7 +13,6 @@ use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
 use SMWQuery as Query;
-use Title;
 
 /**
  * @private

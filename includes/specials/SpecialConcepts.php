@@ -2,7 +2,8 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -18,7 +19,7 @@ use SMW\Utils\Pager;
  *
  * @author mwjames
  */
-class SpecialConcepts extends \SpecialPage {
+class SpecialConcepts extends SpecialPage {
 
 	/**
 	 * @var Store
@@ -89,15 +90,15 @@ class SpecialConcepts extends \SpecialPage {
 
 		$res = $connection->select(
 			[
-				$connection->tableName( SQLStore::ID_TABLE ),
-				$connection->tableName( SQLStore::CONCEPT_TABLE )
+				SQLStore::ID_TABLE,
+				SQLStore::CONCEPT_TABLE
 			],
 			$fields,
 			$conditions,
 			__METHOD__,
 			$options,
 			[
-				$connection->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
+				SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=s_id' ] ]
 			]
 		);
 

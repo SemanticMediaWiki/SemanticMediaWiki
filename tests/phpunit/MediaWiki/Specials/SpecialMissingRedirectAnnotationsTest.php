@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations
@@ -68,7 +68,7 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase 
 		$instance = new SpecialMissingRedirectAnnotations();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialMissingRedirectAnnotations' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialMissingRedirectAnnotations' )
 		);
 
 		$instance->execute( '' );

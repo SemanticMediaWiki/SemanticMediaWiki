@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\Title\Title;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\Pager;
-use Title;
 
 /**
  * @covers \SMW\Utils\Pager

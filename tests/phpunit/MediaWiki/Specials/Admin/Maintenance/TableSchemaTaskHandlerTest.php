@@ -86,7 +86,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'setup' );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

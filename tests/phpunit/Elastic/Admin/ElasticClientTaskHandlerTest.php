@@ -28,7 +28,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

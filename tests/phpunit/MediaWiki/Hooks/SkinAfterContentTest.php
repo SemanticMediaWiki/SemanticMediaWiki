@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Request\FauxRequest;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\SkinAfterContent;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -124,7 +126,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 10001 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -144,7 +146,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $outputPage );
 
-		$requestContext = new \RequestContext();
+		$requestContext = new RequestContext();
 		$requestContext->setLanguage( 'en' );
 
 		$skin->expects( $this->atLeastOnce() )
@@ -167,7 +169,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 10002 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +177,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$requestContext = new \RequestContext();
+		$requestContext = new RequestContext();
 		$requestContext->setLanguage( 'en' );
 
 		$outputPage->expects( $this->atLeastOnce() )
@@ -214,7 +216,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -236,7 +238,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$provider[] = [
 			[ 'skin' => $skin, 'text' => $text ],
@@ -256,7 +258,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 10003 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -276,8 +278,8 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $outputPage );
 
-		$context = new \RequestContext();
-		$context->setRequest( new \FauxRequest( [ 'action' => 'edit' ], true ) );
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( [ 'action' => 'edit' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
@@ -293,7 +295,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title = MockTitle::buildMock( __METHOD__ . 'delete-request' );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -313,8 +315,8 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $outputPage );
 
-		$context = new \RequestContext();
-		$context->setRequest( new \FauxRequest( [ 'action' => 'delete' ], true ) );
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( [ 'action' => 'delete' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
@@ -330,7 +332,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title = MockTitle::buildMock( __METHOD__ . 'purge-request' );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -350,8 +352,8 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $outputPage );
 
-		$context = new \RequestContext();
-		$context->setRequest( new \FauxRequest( [ 'action' => 'purge' ], true ) );
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( [ 'action' => 'purge' ], true ) );
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getContext' )

@@ -2,12 +2,14 @@
 
 namespace SMW\Tests;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Title;
 
 /**
  * @covers \SMW\ParserData
@@ -47,7 +49,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,7 +57,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( -1 );
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +68,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInitialDataIsEmpty() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -77,7 +79,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateJobState() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -90,18 +92,18 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetterInstances() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
 
 		$this->assertInstanceOf(
-			'Title',
+			Title::class,
 			$instance->getTitle()
 		);
 
 		$this->assertInstanceOf(
-			'ParserOutput',
+			ParserOutput::class,
 			$instance->getOutput()
 		);
 
@@ -112,7 +114,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddDataVlaueAndClear() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -137,7 +139,9 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddDataValueAndPushSemanticDataToParserOutput() {
-		$title = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$title = $titleFactory->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -149,7 +153,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertFalse( $instance->getSemanticData()->isEmpty() );
 		$instance->pushSemanticDataToParserOutput();
 
-		$title = Title::newFromText( __METHOD__ . '-1' );
+		$title = $titleFactory->newFromText( __METHOD__ . '-1' );
 
 		$newInstance = new ParserData( $title, $instance->getOutput() );
 
@@ -160,7 +164,9 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetSemanticData() {
-		$title = Title::newFromText( __METHOD__ );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$title = $titleFactory->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -168,7 +174,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
 
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) )
+			DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) )
 		);
 
 		$semanticData->addDataValue(
@@ -197,7 +203,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider getPropertyValueDataProvider
 	 */
 	public function testAddDataValue( $propertyName, $value, $errorCount, $propertyCount ) {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData( $title, $parserOutput );
@@ -253,7 +259,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$instance = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -269,7 +275,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -301,7 +307,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput = new ParserOutput();
 
 		$instance = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			$parserOutput
 		);
 
@@ -324,8 +330,10 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testImportFromParserOutput() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$import = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			$titleFactory->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -339,7 +347,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$import->pushSemanticDataToParserOutput();
 
 		$instance = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			$titleFactory->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -359,7 +367,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddLimitReport() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -367,7 +375,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( -1 );
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'setLimitReportData' ] )
 			->getMock();
@@ -383,7 +391,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsBlocked() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -410,7 +418,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetOption() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -433,7 +441,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddExtraParserKey() {
-		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+		$parserOptions = $this->getMockBuilder( ParserOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -441,7 +449,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'addExtraKey' )
 			->with( $this->stringContains( 'Foo' ) );
 
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -449,7 +457,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( -1 );
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 

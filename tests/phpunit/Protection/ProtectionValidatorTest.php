@@ -246,7 +246,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasCreateProtection() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -298,11 +298,11 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsClassifiedAsImportPerformerProtected_NoImportersNoProtection() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -327,7 +327,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getUserText' )
 			->willReturn( 'FooImporter' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -343,7 +343,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFirstRevision' )
 			->willReturn( $revision );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -372,7 +372,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getUserText' )
 			->willReturn( 'FooImporter' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -388,7 +388,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFirstRevision' )
 			->willReturn( $revision );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

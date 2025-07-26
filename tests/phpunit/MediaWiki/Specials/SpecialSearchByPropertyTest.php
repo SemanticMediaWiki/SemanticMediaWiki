@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialSearchByProperty
@@ -70,7 +71,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testQueryParameter( $query, $expected ) {
 		$instance = new SpecialSearchByProperty();
-		$instance->getContext()->setTitle( Title::newFromText( 'SearchByProperty' ) );
+		$instance->getContext()->setTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SearchByProperty' ) );
 
 		$instance->execute( $query );
 
@@ -90,8 +91,8 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new SpecialSearchByProperty();
-		$instance->getContext()->setTitle( Title::newFromText( 'SearchByProperty' ) );
-		$instance->getContext()->setRequest( new \FauxRequest( $request, true ) );
+		$instance->getContext()->setTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SearchByProperty' ) );
+		$instance->getContext()->setRequest( new FauxRequest( $request, true ) );
 
 		$instance->execute( null );
 

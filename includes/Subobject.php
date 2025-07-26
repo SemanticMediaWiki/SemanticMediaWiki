@@ -3,11 +3,11 @@
 namespace SMW;
 
 use InvalidArgumentException;
+use MediaWiki\Title\Title;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\Exception\SubSemanticDataException;
 use SMWDataValue;
 use SMWDIContainer;
-use Title;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
@@ -168,7 +168,7 @@ class Subobject {
 	/**
 	 * @since 1.9
 	 *
-	 * @param DataValue $dataValue
+	 * @param SMWDataValue $dataValue
 	 *
 	 * @throws SubSemanticDataException
 	 */

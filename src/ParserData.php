@@ -2,12 +2,12 @@
 
 namespace SMW;
 
-use ParserOptions;
-use ParserOutput;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
-use Title;
 
 /**
  * Handling semantic data exchange with a ParserOutput object

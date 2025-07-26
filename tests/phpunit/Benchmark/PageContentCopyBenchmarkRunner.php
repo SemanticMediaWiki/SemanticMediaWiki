@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Benchmark;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageReader;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -101,7 +101,8 @@ class PageContentCopyBenchmarkRunner {
 			throw new RuntimeException( 'Copy count is not available.' );
 		}
 
-		$copyFrom = Title::newFromText( $case['copyFrom'] );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$copyFrom = $titleFactory->newFromText( $case['copyFrom'] );
 
 		if ( !$copyFrom->exists() ) {
 			throw new RuntimeException( $case['copyFrom'] . ' is not available or readable for the copy process.' );
@@ -141,12 +142,13 @@ class PageContentCopyBenchmarkRunner {
 
 		$memoryBefore = memory_get_peak_usage( false );
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		for ( $i = 0; $i < $this->copyCount; $i++ ) {
 
 			$start = microtime( true );
 
 			$this->pageCreator->createPage(
-				Title::newFromText( $copyName . '-' . $i ),
+				$titleFactory->newFromText( $copyName . '-' . $i ),
 				$copyText
 			);
 

@@ -3,9 +3,9 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\PermissionManager;
-use Title;
-use User;
 
 /**
  * @covers \SMW\MediaWiki\PermissionManager

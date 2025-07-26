@@ -3,6 +3,10 @@
 namespace SMW\Services;
 
 use JsonSchema\Validator as SchemaValidator;
+use MediaWiki\Language\Language;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Onoi\BlobStore\BlobStore;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\ContainerBuilder;
@@ -64,6 +68,7 @@ use SMW\StoreFactory;
 use SMW\Utils\JsonSchemaValidator;
 use SMW\Utils\Stats;
 use SMW\Utils\TempFile;
+use Wikipage;
 
 /**
  * @license GPL-2.0-or-later
@@ -201,7 +206,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $namespaceExaminer;
 		} );
 
-		$containerBuilder->registerCallback( 'ParserData', static function ( $containerBuilder, \Title $title, \ParserOutput $parserOutput ) {
+		$containerBuilder->registerCallback( 'ParserData', static function ( $containerBuilder, Title $title, ParserOutput $parserOutput ) {
 			$containerBuilder->registerExpectedReturnType( 'ParserData', ParserData::class );
 
 			$parserData = new ParserData( $title, $parserOutput );
@@ -218,7 +223,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return new LinksProcessor();
 		} );
 
-		$containerBuilder->registerCallback( 'MessageFormatter', static function ( $containerBuilder, \Language $language ) {
+		$containerBuilder->registerCallback( 'MessageFormatter', static function ( $containerBuilder, Language $language ) {
 			$containerBuilder->registerExpectedReturnType( 'MessageFormatter', '\SMW\MessageFormatter' );
 			return new MessageFormatter( $language );
 		} );
@@ -295,7 +300,7 @@ class SharedServicesContainer implements CallbackContainer {
 			return $revisionGuard;
 		} );
 
-		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, \Title $title ) {
+		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, Title $title ) {
 			$containerBuilder->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
 
 			$contentParser = new ContentParser(
@@ -368,7 +373,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var PostProcHandler
 		 */
-		$containerBuilder->registerCallback( 'PostProcHandler', static function ( $containerBuilder, \ParserOutput $parserOutput ) {
+		$containerBuilder->registerCallback( 'PostProcHandler', static function ( $containerBuilder, ParserOutput $parserOutput ) {
 			$containerBuilder->registerExpectedReturnType( 'PostProcHandler', PostProcHandler::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -744,7 +749,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var EditProtectionUpdater
 		 */
-		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, \WikiPage $wikiPage, ?\User $user = null ) {
+		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, WikiPage $wikiPage, ?User $user = null ) {
 			$containerBuilder->registerExpectedReturnType( 'EditProtectionUpdater', '\SMW\Protection\EditProtectionUpdater' );
 
 			$editProtectionUpdater = new EditProtectionUpdater(
@@ -880,7 +885,7 @@ class SharedServicesContainer implements CallbackContainer {
 		/**
 		 * @var PreferenceExaminer
 		 */
-		$containerBuilder->registerCallback( 'PreferenceExaminer', static function ( $containerBuilder, \User $user ) {
+		$containerBuilder->registerCallback( 'PreferenceExaminer', static function ( $containerBuilder, User $user ) {
 			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
 
 			$preferenceExaminer = new PreferenceExaminer(

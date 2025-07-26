@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\JobFactory;
 use SMW\Tests\PHPUnitCompat;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\JobFactory
@@ -34,7 +34,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertInstanceOf(
 			$expected,
-			$instance->newByType( $type, Title::newFromText( __METHOD__ ) )
+			$instance->newByType( $type, MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) )
 		);
 	}
 
@@ -54,7 +54,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new JobFactory();
 
 		$this->expectException( 'RuntimeException' );
-		$instance->newByType( 'Foo', Title::newFromText( __METHOD__ ) );
+		$instance->newByType( 'Foo', MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 	}
 
 	public function typeProvider() {

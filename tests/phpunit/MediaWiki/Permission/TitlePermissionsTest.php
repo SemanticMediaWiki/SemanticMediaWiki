@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Permission;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Permission\TitlePermissions;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Permission\TitlePermissions
@@ -39,9 +39,9 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGrantPermissionToMainNamespace() {
-		$title = Title::newFromText( 'Foo', NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo', NS_MAIN );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +67,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasEditProtection' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +98,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testNoUserPermissionOnNamespaceWithEditPermissionCheck() {
 		$editProtectionRight = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,7 +126,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasEditProtectionOnNamespace' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +155,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testFalseEditProtectionRightToNeverCheckPermissionOnNonMwNamespace() {
 		$editProtectionRight = false;
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +175,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getEditProtectionRight' )
 			->willReturn( $editProtectionRight );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -192,7 +192,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck() {
 		$createProtectionRight = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -212,7 +212,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCreateProtectionRight' )
 			->willReturn( $createProtectionRight );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -234,7 +234,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testNoUserPermissionOnPropertyNamespaceWithCreateProtectionCheck_TitleExists() {
 		$createProtectionRight = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -254,7 +254,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCreateProtectionRight' )
 			->willReturn( $createProtectionRight );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -274,7 +274,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -294,7 +294,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasChangePropagationProtection' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -316,7 +316,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUserPermissionOnCategoryNamespaceWithChangePropagationProtectionCheck() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -336,7 +336,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasChangePropagationProtection' )
 			->willReturn( false );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -358,7 +358,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testNoUserEditPermissionOnMissingRight_SchemaNamespace() {
 		$editProtectionRight = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -374,7 +374,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( SMW_NS_SCHEMA );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -403,7 +403,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testEditPermissionOnImportPerformer_SchemaNamespace() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -419,7 +419,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( SMW_NS_SCHEMA );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -454,7 +454,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	public function testNoEditcontentmodelPermissionForAnyUser_SchemaNamespace() {
 		$editProtectionRight = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -470,7 +470,7 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( SMW_NS_SCHEMA );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -499,22 +499,24 @@ class TitlePermissionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleProvider() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
+			$titleFactory->newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'edit',
 			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
 		];
 
 		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
+			$titleFactory->newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'delete',
 			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]
 		];
 
 		$provider[] = [
-			Title::newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
+			$titleFactory->newFromText( 'Smw_allows_pattern', NS_MEDIAWIKI ),
 			'smw-patternedit',
 			'move',
 			[ [ 'smw-patternedit-protection', 'smw-patternedit' ] ]

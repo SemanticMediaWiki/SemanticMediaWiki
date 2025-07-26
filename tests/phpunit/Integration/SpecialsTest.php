@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration;
 
-use FauxRequest;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use RequestContext;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use SpecialPage;
 
 /**
  * Tests for registered special pages

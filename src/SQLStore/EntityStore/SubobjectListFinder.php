@@ -129,7 +129,7 @@ class SubobjectListFinder {
 		}
 
 		$res = $connection->select(
-			$connection->tablename( SQLStore::ID_TABLE ),
+			SQLStore::ID_TABLE,
 			[
 				'smw_id',
 				'smw_subobject',

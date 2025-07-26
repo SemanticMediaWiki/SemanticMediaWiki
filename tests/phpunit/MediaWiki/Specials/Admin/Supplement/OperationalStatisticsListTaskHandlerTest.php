@@ -99,7 +99,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 
 		$instance->setStore( $this->store );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +107,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 	}
 
 	public function testHandleSubRequest() {
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -26,7 +26,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parser = $this->getMockBuilder( '\Parser' )
+		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -57,7 +57,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParse() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +83,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParse_PropertyNamespace() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

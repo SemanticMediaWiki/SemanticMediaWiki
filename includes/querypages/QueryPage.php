@@ -2,9 +2,11 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
+use MediaWiki\SpecialPage\QueryPage as MWQueryPage;
+use MediaWiki\Xml\Xml;
 use SMW\MediaWiki\MessageBuilder;
-use Xml;
 
 /**
  * An abstract query page base class that supports array-based
@@ -25,7 +27,7 @@ use Xml;
  * @ingroup SMW
  * @ingroup QueryPage
  */
-abstract class QueryPage extends \QueryPage {
+abstract class QueryPage extends MWQueryPage {
 
 	/** @var MessageFormatter */
 	protected $msgFormatter;

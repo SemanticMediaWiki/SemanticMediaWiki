@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Hooks\EditPageForm;
 use SMW\Tests\PHPUnitCompat;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm

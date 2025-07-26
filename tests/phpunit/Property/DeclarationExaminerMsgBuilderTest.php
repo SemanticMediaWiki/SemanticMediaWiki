@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Property;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Property\DeclarationExaminerMsgBuilder;
 
 /**

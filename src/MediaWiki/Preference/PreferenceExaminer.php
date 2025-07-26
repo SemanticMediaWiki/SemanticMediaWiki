@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Preference;
 
-use MediaWiki\User\UserOptionsLookup;
-use User;
+use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
 
 /**
  * @license GPL-2.0-or-later

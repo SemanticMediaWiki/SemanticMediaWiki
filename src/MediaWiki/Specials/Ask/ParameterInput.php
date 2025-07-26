@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Ask;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Xml\Xml;
 use ParamProcessor\ParamDefinition;
-use Xml;
 
 /**
  * Simple class to get a HTML input for the parameter.

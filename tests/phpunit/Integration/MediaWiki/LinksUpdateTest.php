@@ -3,10 +3,11 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -42,7 +43,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->testEnvironment->addConfiguration( 'smwgPageSpecialProperties', [ '_MDAT' ] );
 
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$this->revisionGuard = ApplicationFactory::getInstance()->singleton( 'RevisionGuard' );
 	}
@@ -113,7 +114,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		/**
 		 * See #347 and LinksUpdateComplete
 		 */
-		$linksUpdate = new LinksUpdate( $this->title, new \ParserOutput() );
+		$linksUpdate = new LinksUpdate( $this->title, new ParserOutput() );
 		$linksUpdate->doUpdate();
 
 		$this->testEnvironment->executePendingDeferredUpdates();
