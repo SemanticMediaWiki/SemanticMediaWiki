@@ -78,11 +78,11 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		];
 
-		$message = $this->getMockBuilder( '\Message' )
+		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

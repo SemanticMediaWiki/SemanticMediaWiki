@@ -58,7 +58,7 @@ class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +119,7 @@ class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

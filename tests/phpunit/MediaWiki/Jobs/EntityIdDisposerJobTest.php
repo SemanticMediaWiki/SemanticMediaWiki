@@ -55,7 +55,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +66,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructOutdatedEntitiesResultIterator() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +79,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +92,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructOutdatedQueryLinksResultIterator() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +105,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructUnassignedQueryLinksResultIterator() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

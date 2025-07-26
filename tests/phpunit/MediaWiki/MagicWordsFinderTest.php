@@ -34,7 +34,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 			new MagicWordsFinder()
 		);
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +99,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoPushOnEmptyMagicWordsList() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 

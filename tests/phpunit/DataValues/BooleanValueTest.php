@@ -43,7 +43,7 @@ class BooleanValueTest extends \PHPUnit\Framework\TestCase {
 	public function testParseUserValueOnSpecificPageContentLanguage() {
 		$language = Localizer::getInstance()->getLanguage( 'ja' );
 
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

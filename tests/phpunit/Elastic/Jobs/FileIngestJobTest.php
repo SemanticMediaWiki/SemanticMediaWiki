@@ -32,7 +32,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->title = $this->getMockBuilder( '\Title' )
+		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

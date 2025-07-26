@@ -65,7 +65,7 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit\Framework\TestCase
 	}
 
 	public function testExecute_OnTitle() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

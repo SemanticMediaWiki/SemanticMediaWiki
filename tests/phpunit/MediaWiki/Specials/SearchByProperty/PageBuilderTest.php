@@ -51,11 +51,11 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtmlForExactValueSearch() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\Message' )
+		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,11 +101,11 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtmlForNearbyResultsSearch() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\Message' )
+		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 

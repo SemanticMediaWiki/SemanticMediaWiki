@@ -49,7 +49,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +60,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPushToJobQueue() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +71,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChunkedJobWithListOnValidMembers() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +92,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChunkedJobWithListOnInvalidMembers() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

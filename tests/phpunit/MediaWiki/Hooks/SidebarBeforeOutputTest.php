@@ -152,11 +152,11 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newSkinStub( bool $isArticle ) {
-		$message = $this->getMockBuilder( '\Message' )
+		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

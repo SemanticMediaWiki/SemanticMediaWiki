@@ -24,7 +24,7 @@ class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->getMockBuilder( '\User' )
+		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

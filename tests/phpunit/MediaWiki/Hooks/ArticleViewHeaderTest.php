@@ -85,14 +85,14 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSemanticData' )
 			->willReturn( $semanticData );
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$output->expects( $this->once() )
 			->method( 'addHtml' );
 
-		$context = $this->getMockBuilder( '\RequestContext' )
+		$context = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +141,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,7 +187,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$title = $subject->getTitle();
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

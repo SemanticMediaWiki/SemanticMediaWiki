@@ -49,7 +49,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -449,7 +449,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'addExtraKey' )
 			->with( $this->stringContains( 'Foo' ) );
 
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

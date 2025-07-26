@@ -88,7 +88,7 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 

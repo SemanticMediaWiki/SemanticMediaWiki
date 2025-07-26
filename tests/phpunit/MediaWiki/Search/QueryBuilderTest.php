@@ -23,7 +23,7 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

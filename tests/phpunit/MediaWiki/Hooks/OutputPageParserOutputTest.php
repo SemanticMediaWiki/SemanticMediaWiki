@@ -59,11 +59,11 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$this->parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -212,7 +212,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 9098 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -254,7 +254,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 90000 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -284,7 +284,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -314,7 +314,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isRedirect' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -351,7 +351,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPageLanguage' )
 			->willReturn( $language );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

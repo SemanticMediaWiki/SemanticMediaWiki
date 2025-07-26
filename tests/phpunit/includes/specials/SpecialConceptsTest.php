@@ -36,7 +36,7 @@ class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
 	public function testExecute() {
 		$expected = 'p class="smw-special-concept-docu plainlinks"';
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

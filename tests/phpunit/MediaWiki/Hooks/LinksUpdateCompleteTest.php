@@ -72,7 +72,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

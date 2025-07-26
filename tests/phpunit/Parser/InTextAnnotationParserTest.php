@@ -64,7 +64,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testCanConstruct( $namespace ) {
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 

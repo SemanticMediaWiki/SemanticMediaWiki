@@ -50,7 +50,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +63,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testNonProcessForEmptyText() {
 		$text = '';
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +84,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testDisableProcessOfInterfaceMessageOnNonSpecialPage() {
 		$text = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +100,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInterfaceMessage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +125,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOfInterfaceMessageOnEnabledSpecialPage() {
 		$text = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +150,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +158,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInterfaceMessage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,7 +183,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOfInterfaceMessageOnSpecialPageWithOnOffMarker() {
 		$text = '[[SMW::off]]Foo[[SMW::on]]';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -208,11 +208,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 

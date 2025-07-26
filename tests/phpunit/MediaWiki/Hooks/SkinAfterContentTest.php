@@ -126,7 +126,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 10001 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,7 +169,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 10002 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +216,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -258,7 +258,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 10003 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -295,7 +295,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title = MockTitle::buildMock( __METHOD__ . 'delete-request' );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -332,7 +332,7 @@ class SkinAfterContentTest extends \PHPUnit\Framework\TestCase {
 
 		$title = MockTitle::buildMock( __METHOD__ . 'purge-request' );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -70,7 +70,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +81,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithMissingParserOutput() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +96,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithInvalidTitle() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +121,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithNoRevisionAvailable() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -146,7 +146,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithValidRevision() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -205,7 +205,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobToCompareLastModified() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

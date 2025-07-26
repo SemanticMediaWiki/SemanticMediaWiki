@@ -335,7 +335,7 @@ class ElasticFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testOnInvalidateEntityCache_OnTitle() {
 		$instance = new ElasticFactory();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

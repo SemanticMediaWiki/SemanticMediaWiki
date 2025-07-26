@@ -45,7 +45,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExecuteWithValidUser() {
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

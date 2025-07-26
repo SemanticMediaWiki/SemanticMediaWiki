@@ -51,7 +51,7 @@ class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 		$user = new MockSuperUser();
 		$this->testEnvironment->overrideUserPermissions( $user, [ 'smw-admin' ] );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +77,7 @@ class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExecuteWithInvalidPermissionThrowsException() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

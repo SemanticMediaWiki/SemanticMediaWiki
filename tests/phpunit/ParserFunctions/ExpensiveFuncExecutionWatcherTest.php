@@ -33,7 +33,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasReachedExpensiveLimit() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +65,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnExsitingCounter() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +106,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnNull() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
