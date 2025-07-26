@@ -158,8 +158,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		$dbw->rollback();
 
 		parent::tearDown();
-
-		ChangedTablesTracker::stopTracking();
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
@@ -185,6 +183,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		} catch ( RuntimeException $e ) {
 			$this->isUsableUnitTestDatabase = false;
 		}
+
+		ChangedTablesTracker::stopTracking();
 
 		$testResult = parent::run( $result );
 
