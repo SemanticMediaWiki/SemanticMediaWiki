@@ -82,7 +82,7 @@ class PredefinedPropertyAnnotationDBIntegrationTest extends SMWIntegrationTestCa
 	public function testAddedCategoryAndChangedDefaultsortWithoutPredefinedPropertiesForNewPage() {
 		$this->applicationFactory->getSettings()->set( 'smwgPageSpecialProperties', [] );
 
-		$title   = Title::newFromText( __METHOD__ );
+		$title   = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromTitle( $title );
 
 		$this->pageCreator
