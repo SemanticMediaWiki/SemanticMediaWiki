@@ -2,9 +2,9 @@ name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ paladox-patch-3 ]
   pull_request:
-    branches: [ master ]
+    branches: [ paladox-patch-3 ]
   workflow_dispatch:
 
 jobs:
