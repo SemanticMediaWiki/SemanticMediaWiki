@@ -157,9 +157,9 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		$dbw = $this->getDBConnection();
 		$dbw->rollback();
 
-		ChangedTablesTracker::stopTracking();
-
 		parent::tearDown();
+
+		ChangedTablesTracker::stopTracking();
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
