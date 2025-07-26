@@ -72,7 +72,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		// ---- taken from mediawiki/tests/phpunit/includes/page/MovePageTest.php
 		$createRedirect = true;
 		$pageId = $title->getArticleID();
-		$status = $this->getServiceContainer()
+		$status = MediaWikiServices::getInstance()
 			->getMovePageFactory()
 			->newMovePage( $title, $newTitle )
 			->move( $this->getTestUser()->getUser(), 'move reason', $createRedirect );

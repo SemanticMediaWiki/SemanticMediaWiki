@@ -3,7 +3,9 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\ParserData;
@@ -55,7 +57,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( -1 );
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,12 +98,12 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ParserData( $title, $parserOutput );
 
 		$this->assertInstanceOf(
-			'Title',
+			Title::class,
 			$instance->getTitle()
 		);
 
 		$this->assertInstanceOf(
-			'ParserOutput',
+			ParserOutput::class,
 			$instance->getOutput()
 		);
 
@@ -273,7 +275,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'RevisionGuard', $this->revisionGuard );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -365,7 +367,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddLimitReport() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -373,7 +375,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( -1 );
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'setLimitReportData' ] )
 			->getMock();
@@ -389,7 +391,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsBlocked() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -416,7 +418,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetOption() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -439,7 +441,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddExtraParserKey() {
-		$parserOptions = $this->getMockBuilder( '\ParserOptions' )
+		$parserOptions = $this->getMockBuilder( ParserOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -455,7 +457,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( -1 );
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 

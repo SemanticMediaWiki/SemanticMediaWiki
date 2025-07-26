@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use Article;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
@@ -188,7 +189,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			// limited to users in the group ..."
 			$context->setUser( $this->superUser );
 
-			\Article::newFromTitle( $title, $context )->view();
+			Article::newFromTitle( $title, $context )->view();
 			$output = $context->getOutput()->getHtml();
 		} else {
 			$output = $parserOutput->getText();
