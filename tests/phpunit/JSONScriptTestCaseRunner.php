@@ -11,6 +11,7 @@ use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
+use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
@@ -94,6 +95,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$this->connectorId = 'elastic';
 		} else {
 			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
+			ChangedTablesTracker::stopTracking()
 		}
 	}
 
