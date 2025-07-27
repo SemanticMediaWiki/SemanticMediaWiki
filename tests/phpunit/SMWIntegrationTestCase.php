@@ -170,17 +170,17 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 				// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
 				$this->setCliArg( 'use-normal-tables', true );
 			}
-	
+
 			$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
 				$this->getStore()
 			);
-	
+
 			$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
 				$this->databaseToBeExcluded
 			);
-	
+
 			$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
-	
+
 			try {
 				$this->testDatabaseTableBuilder->doBuild();
 			} catch ( RuntimeException $e ) {
