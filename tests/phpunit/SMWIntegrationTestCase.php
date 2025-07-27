@@ -15,6 +15,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
 use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * @group semantic-mediawiki
@@ -159,7 +160,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		parent::tearDown();
 	}
 
-	public function run( ?TestResult $result = null ): TestResult {
+	public function run( ?TestResult $result = null ): TestResult {		
 		$this->getStore()->clear();
 		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
 			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
@@ -187,7 +188,9 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->isUsableUnitTestDatabase = false;
 		}
 
+		ChangedTablesTracker::stopTracking();
 		$testResult = parent::run( $result );
+		ChangedTablesTracker::startTracking();
 
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
 
