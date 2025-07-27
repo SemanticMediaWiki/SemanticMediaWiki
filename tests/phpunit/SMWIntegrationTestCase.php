@@ -14,6 +14,7 @@ use SMW\StoreFactory;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
+use Throwable;
 use Wikimedia\ObjectCache\HashBagOStuff;
 
 /**
