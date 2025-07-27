@@ -160,34 +160,48 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
-		$this->getStore()->clear();
-		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
-			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
-			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
-			$this->setCliArg( 'use-normal-tables', true );
-		}
-
-		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-			$this->getStore()
-		);
-
-		$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
-			$this->databaseToBeExcluded
-		);
-
-		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
+		$result ??= $this->createResult();
 
 		try {
-			$this->testDatabaseTableBuilder->doBuild();
-		} catch ( RuntimeException $e ) {
-			$this->isUsableUnitTestDatabase = false;
+			$this->getStore()->clear();
+			if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
+				// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
+				// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
+				$this->setCliArg( 'use-normal-tables', true );
+			}
+	
+			$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+				$this->getStore()
+			);
+	
+			$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
+				$this->databaseToBeExcluded
+			);
+	
+			$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
+	
+			try {
+				$this->testDatabaseTableBuilder->doBuild();
+			} catch ( RuntimeException $e ) {
+				$this->isUsableUnitTestDatabase = false;
+			}
+		} catch ( Throwable $e ) {
+			$result->stop();
+			$result->addError( $this, $e, 0 );
+
+			return $result;
 		}
 
-		$testResult = parent::run( $result );
+		parent::run( $result );
 
-		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
+		try {
+			$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
+		} catch ( Throwable $e ) {
+			$result->stop();
+			$result->addError( $this, $e, 0 );
+		}
 
-		return $testResult;
+		return $result;
 	}
 
 	protected function getStore() {
