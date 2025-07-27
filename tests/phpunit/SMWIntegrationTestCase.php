@@ -77,10 +77,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		global $wgDBprefix;
-
-		fwrite( STDERR, 'testing: ' . $wgDBprefix . "\n" );
-
 		// Clear any cached user to ensure a clean state for each test
 		$user = $this->getTestUser()->getUser();
 		$user->clearInstanceCache( $user->mFrom );
@@ -170,6 +166,10 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
 			$this->setCliArg( 'use-normal-tables', true );
 		}
+
+		global $wgDBprefix;
+
+		fwrite( STDERR, 'testing: ' . $wgDBprefix . "\n" );
 
 		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
 			$this->getStore()
