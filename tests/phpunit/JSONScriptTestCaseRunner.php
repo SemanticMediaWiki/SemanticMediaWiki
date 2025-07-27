@@ -95,7 +95,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			$this->connectorId = 'elastic';
 		} else {
 			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
-			ChangedTablesTracker::stopTracking()
+			ChangedTablesTracker::stopTracking();
 		}
 	}
 
