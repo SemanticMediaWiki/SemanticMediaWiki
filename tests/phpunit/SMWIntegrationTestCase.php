@@ -75,9 +75,9 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	protected function setUp(): void {
-		parent::setUp();
+		fwrite( STDERR, 'run: ' . spl_object_id( $this ) . "\n" );
 
-		fwrite( STDERR, 'run: ' . spl_object_id( $this ) . "\n" ); 
+		parent::setUp();
 
 		// Clear any cached user to ensure a clean state for each test
 		// $user = $this->getTestUser()->getUser();
@@ -162,7 +162,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
-		fwrite( STDERR, 'run: ' . spl_object_id( $this ) . "\n" ); 
+		fwrite( STDERR, 'run: ' . spl_object_id( $this ) . "\n" );
 
 		$this->getStore()->clear();
 		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
