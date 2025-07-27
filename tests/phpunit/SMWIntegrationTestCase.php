@@ -77,6 +77,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		fwrite( STDERR, 'run: ' . spl_object_id( $this ) . "\n" ); 
+
 		// Clear any cached user to ensure a clean state for each test
 		// $user = $this->getTestUser()->getUser();
 		// $user->clearInstanceCache( $user->mFrom );
@@ -160,6 +162,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
+		fwrite( STDERR, 'run: ' . spl_object_id( $this ) . "\n" ); 
+
 		$this->getStore()->clear();
 		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
 			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
