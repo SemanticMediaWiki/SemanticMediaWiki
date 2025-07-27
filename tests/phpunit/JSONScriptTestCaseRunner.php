@@ -11,7 +11,6 @@ use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
-use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * The `JSONScriptTestCaseRunner` is a convenience provider for `Json` formatted
