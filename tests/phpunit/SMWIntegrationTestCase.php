@@ -187,13 +187,13 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->isUsableUnitTestDatabase = false;
 		}
 
-		ChangedTablesTracker::stopTracking();
+		parent::run( $result );
 
-		$testResult = parent::run( $result );
+		ChangedTablesTracker::stopTracking();
 
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
 
-		return $testResult;
+		return $result;
 	}
 
 	protected function getStore() {
