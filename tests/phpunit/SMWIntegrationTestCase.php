@@ -4,7 +4,6 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
-use PHPUnit\Framework\TestResult;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\LinkBatch;
@@ -14,8 +13,6 @@ use SMW\StoreFactory;
 use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
-use Wikimedia\ObjectCache\HashBagOStuff;
-use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * @group semantic-mediawiki
@@ -88,6 +85,33 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		// Prepare test environment for SMW-specific requirements
 		$this->initializeTestEnvironment();
+
+		$this->getStore()->clear();
+		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
+			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
+			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
+			$this->setCliArg( 'use-normal-tables', true );
+		}
+
+		global $wgDBprefix;
+
+		fwrite( STDERR, 'testing: ' . $wgDBprefix . "\n" );
+
+		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
+			$this->getStore()
+		);
+
+		$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
+			$this->databaseToBeExcluded
+		);
+
+		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
+
+		try {
+			$this->testDatabaseTableBuilder->doBuild();
+		} catch ( RuntimeException $e ) {
+			$this->isUsableUnitTestDatabase = false;
+		}
 	}
 
 	 /**
@@ -158,43 +182,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		$dbw->rollback();
 
 		parent::tearDown();
-	}
-
-	public function run( ?TestResult $result = null ): TestResult {
-		$this->getStore()->clear();
-		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
-			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
-			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
-			$this->setCliArg( 'use-normal-tables', true );
-		}
-
-		global $wgDBprefix;
-
-		fwrite( STDERR, 'testing: ' . $wgDBprefix . "\n" );
-
-		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-			$this->getStore()
-		);
-
-		$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
-			$this->databaseToBeExcluded
-		);
-
-		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
-
-		try {
-			$this->testDatabaseTableBuilder->doBuild();
-		} catch ( RuntimeException $e ) {
-			$this->isUsableUnitTestDatabase = false;
-		}
-
-		ChangedTablesTracker::stopTracking();
-		ChangedTablesTracker::startTracking();
-		$testResult = parent::run( $result );
 
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
-
-		return $testResult;
 	}
 
 	protected function getStore() {
