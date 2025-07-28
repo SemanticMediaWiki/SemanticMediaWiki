@@ -15,6 +15,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
 use Wikimedia\ObjectCache\HashBagOStuff;
+use Wikimedia\Rdbms\ChangedTablesTracker;
 
 /**
  * @group semantic-mediawiki
@@ -154,7 +155,10 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		}
 		// Ensure all transactions are closed before ending the test
 		$dbw = $this->getDBConnection();
-		$dbw->rollback();
+		if ( $dbw !== null )
+			$dbw->rollback();
+			ChangedTablesTracker::startTracking();
+		}
 
 		parent::tearDown();
 	}
@@ -182,6 +186,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		} catch ( RuntimeException $e ) {
 			$this->isUsableUnitTestDatabase = false;
 		}
+
+		ChangedTablesTracker::stopTracking();
 
 		$testResult = parent::run( $result );
 
