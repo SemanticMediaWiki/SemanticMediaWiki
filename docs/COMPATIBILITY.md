@@ -38,8 +38,8 @@ Increases of minimum requirements are indicated in bold.
 		<td>2025-03-10</td>
 		<td>2025-07-24</td>
 		<td><strong>8.1</strong> - 8.4</td>
-		<td><strong>1.39</strong> - 1.43</td>
-		<td></td>
+		<td><strong>1.39</strong> - 1.43.1</td>
+		<td>MW 1.43.1 is the final version supported by the SMW 5.x series</td>
 	</tr>
 	<tr>
 		<th>4.2.x</th>
