@@ -66,8 +66,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		parent::setUp();
 
 		// Clear any cached user to ensure a clean state for each test
-		$user = $this->getTestUser()->getUser();
-		$user->clearInstanceCache( $user->mFrom );
+		// $user = $this->getTestUser()->getUser();
+		// $user->clearInstanceCache( $user->mFrom );
 
 		// Reset services and caches that SMW tests rely on
 		$this->resetSMWServices();
