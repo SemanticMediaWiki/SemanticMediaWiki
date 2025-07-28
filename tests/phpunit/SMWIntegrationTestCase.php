@@ -5,7 +5,6 @@ namespace SMW\Tests;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\TestResult;
-use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\LinkBatch;
 use SMW\PropertyRegistry;
