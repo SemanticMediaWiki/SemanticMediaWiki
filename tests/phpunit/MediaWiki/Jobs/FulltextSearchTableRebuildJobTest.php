@@ -48,7 +48,6 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
-		$this->testEnvironment->addConfiguration( 'smwgEnabledFulltextSearch', true );
 	}
 
 	protected function tearDown(): void {
