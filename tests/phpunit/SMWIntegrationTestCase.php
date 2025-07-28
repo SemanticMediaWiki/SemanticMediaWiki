@@ -154,7 +154,9 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		}
 		// Ensure all transactions are closed before ending the test
 		$dbw = $this->getDBConnection();
-		$dbw->rollback();
+		if ( $dbw !== null ) {
+			$dbw->rollback( __METHOD__ );
+		}
 
 		parent::tearDown();
 	}
