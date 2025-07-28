@@ -86,7 +86,7 @@ class SearchTableUpdater {
 		}
 
 		$this->connection->query(
-			"OPTIMIZE TABLE " . $this->searchTable->getTableName(),
+			"OPTIMIZE TABLE " . $this->connection->tableName( $this->searchTable->getTableName() ),
 			__METHOD__,
 			ISQLPlatform::QUERY_CHANGE_SCHEMA
 		);
@@ -104,7 +104,7 @@ class SearchTableUpdater {
 	 */
 	public function exists( $sid, $pid ) {
 		$row = $this->connection->selectRow(
-			$this->searchTable->getTableName(),
+			$this->connection->tableName( $this->searchTable->getTableName() ),
 			[ 's_id' ],
 			[
 				's_id' => (int)$sid,
@@ -126,7 +126,7 @@ class SearchTableUpdater {
 	 */
 	public function read( $sid, $pid ) {
 		$row = $this->connection->selectRow(
-			$this->searchTable->getTableName(),
+			$this->connection->tableName( $this->searchTable->getTableName() ),
 			[ 'o_text' ],
 			[
 				's_id' => (int)$sid,
@@ -155,7 +155,7 @@ class SearchTableUpdater {
 		}
 
 		$this->connection->update(
-			$this->searchTable->getTableName(),
+			$this->connection->tableName( $this->searchTable->getTableName() ),
 			[
 				'o_text' => $indexableText,
 				'o_sort' => mb_substr( $text, 0, 32 )
@@ -176,7 +176,7 @@ class SearchTableUpdater {
 	 */
 	public function insert( $sid, $pid ) {
 		$this->connection->insert(
-			$this->searchTable->getTableName(),
+			$this->connection->tableName( $this->searchTable->getTableName() ),
 			[
 				's_id' => (int)$sid,
 				'p_id' => (int)$pid,
@@ -194,7 +194,7 @@ class SearchTableUpdater {
 	 */
 	public function delete( $sid, $pid ) {
 		$this->connection->delete(
-			$this->searchTable->getTableName(),
+			$this->connection->tableName( $this->searchTable->getTableName() ),
 			[
 				's_id' => (int)$sid,
 				'p_id' => (int)$pid
