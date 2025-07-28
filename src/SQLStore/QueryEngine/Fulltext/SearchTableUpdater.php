@@ -208,7 +208,7 @@ class SearchTableUpdater {
 	 */
 	public function flushTable() {
 		$this->connection->delete(
-			$this->searchTable->getTableName(),
+			$this->connection->tableName( $this->searchTable->getTableName() ),
 			'*',
 			__METHOD__
 		);
