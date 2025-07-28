@@ -29,7 +29,7 @@ Increases of minimum requirements are indicated in bold.
 		<td>2025-08-TBD</td>
 		<td>TBD</td>
 		<td>TBD - 8.4</td>
-		<td><strong>1.43.2</strong> - 1.44</td>
+		<td><strong>1.43</strong> - 1.44</td>
 		<td></td>
 	</tr>
 	<tr>
