@@ -155,7 +155,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		}
 		// Ensure all transactions are closed before ending the test
 		$dbw = $this->getDBConnection();
-		if ( $dbw !== null )
+		if ( $dbw !== null ) {
 			$dbw->rollback();
 			ChangedTablesTracker::startTracking();
 		}
