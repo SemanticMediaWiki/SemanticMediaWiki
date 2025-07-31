@@ -2,8 +2,10 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
-use ParserOutput;
 use SMW\DependencyValidator;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
@@ -14,8 +16,6 @@ use SMW\SQLStore\ChangeOp\FieldChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 use SMWQuery;
-use Title;
-use WebRequest;
 
 /**
  * @covers \SMW\PostProcHandler

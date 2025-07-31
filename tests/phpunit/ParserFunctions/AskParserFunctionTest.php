@@ -2,14 +2,14 @@
 
 namespace SMW\Tests\ParserFunctions;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use ReflectionClass;
 use SMW\Localizer\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\ParserFunctions\AskParserFunction
@@ -95,7 +95,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testParse( array $params ) {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -142,7 +142,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -195,7 +195,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCircularGuard() {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -225,7 +225,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testQueryIdStabilityForFixedSetOfParametersWithFingerprintMethod() {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -274,7 +274,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -309,7 +309,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -341,7 +341,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', false );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -373,7 +373,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryProfiler', true );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__, NS_SPECIAL ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_SPECIAL ),
 			new ParserOutput()
 		);
 
@@ -407,7 +407,7 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'addUpdate' );
 
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 

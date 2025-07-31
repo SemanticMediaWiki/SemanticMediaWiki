@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use MediaWiki\Message\Message;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\Exception\PropertyLabelNotResolvedException;
@@ -115,12 +116,12 @@ class PropertyUsageListLookup implements ListLookup {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$res = $db->select(
-			[ $db->tableName( SQLStore::ID_TABLE ), $db->tableName( SQLStore::PROPERTY_STATISTICS_TABLE ) ],
+			[ SQLStore::ID_TABLE, SQLStore::PROPERTY_STATISTICS_TABLE ],
 			[ 'smw_id', 'smw_title', 'usage_count' ],
 			$conditions,
 			__METHOD__,
 			$options,
-			[ $db->tableName( SQLStore::ID_TABLE ) => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
+			[ SQLStore::ID_TABLE => [ 'INNER JOIN', [ 'smw_id=p_id' ] ] ]
 		);
 
 		return $res;
@@ -134,7 +135,7 @@ class PropertyUsageListLookup implements ListLookup {
 			try {
 				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
 			} catch ( PropertyLabelNotResolvedException $e ) {
-				$property = new DIError( new \Message( 'smw_noproperty', [ $row->smw_title ] ) );
+				$property = new DIError( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
 			}
 
 			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;

@@ -36,7 +36,7 @@ class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +56,7 @@ class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasPermissionOf' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

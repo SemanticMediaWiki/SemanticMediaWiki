@@ -50,7 +50,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructParserFunctionFactory() {
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +121,7 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructContentParser() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

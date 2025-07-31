@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiFormatXml;
 use SMWQueryProcessor;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * API module to query SMW by providing a query in the ask language.
@@ -35,7 +37,7 @@ class Ask extends Query {
 			$parameters
 		) );
 
-		if ( $this->getMain()->getPrinter() instanceof \ApiFormatXml ) {
+		if ( $this->getMain()->getPrinter() instanceof ApiFormatXml ) {
 			$outputFormat = 'xml';
 		}
 
@@ -55,12 +57,12 @@ class Ask extends Query {
 	public function getAllowedParams() {
 		return [
 			'query' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 			'api_version' => [
-				ApiBase::PARAM_TYPE => [ '2', '3' ],
-				ApiBase::PARAM_DFLT => '2',
+				ParamValidator::PARAM_TYPE => [ '2', '3' ],
+				ParamValidator::PARAM_DEFAULT => '2',
 				ApiBase::PARAM_HELP_MSG => 'apihelp-ask-parameter-api-version',
 			],
 		];

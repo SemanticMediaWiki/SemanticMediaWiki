@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use SMW\Query\Parser as QueryParser;
 use SMW\Store;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
 use SMWQuery as Query;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -216,9 +216,10 @@ class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			);
 		}
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		foreach ( $queryTestCaseInterpreter->getExpectedConceptCache() as $expectedConceptCache ) {
 
-			$concept = Title::newFromText( $expectedConceptCache['concept'], SMW_NS_CONCEPT );
+			$concept = $titleFactory->newFromText( $expectedConceptCache['concept'], SMW_NS_CONCEPT );
 
 			$this->getStore()->refreshConceptCache( $concept );
 

@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use MediaWiki\Html\Html;
 use RuntimeException;
 use SMW\DataValues\PropertyValue;
 use SMW\Highlighter;
@@ -163,7 +164,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		// Output both according to the formatting rule set forth by
 		if ( $canonicalLabel !== $label ) {
-			$canonicalLabel = \Html::rawElement(
+			$canonicalLabel = Html::rawElement(
 				'span', [ 'style' => 'font-size:small;' ], '(' . $canonicalLabel . ')' );
 			$output = $output . '&nbsp;' . $canonicalLabel;
 		}
@@ -301,7 +302,7 @@ class PropertyValueFormatter extends DataValueFormatter {
 			return '';
 		}
 
-		return '&nbsp;' . \Html::rawElement(
+		return '&nbsp;' . Html::rawElement(
 			'span',
 			[
 				'title' => $property->getCanonicalLabel()

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\ParserFunctions;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @covers \SMW\ParserFunctions\ConceptParserFunction
@@ -54,7 +54,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testErrorForNonConceptNamespace( $namespace ) {
 		$parserData = $this->applicationFactory->newParserData(
-			Title::newFromText( __METHOD__, $namespace ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
 
@@ -76,7 +76,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testErrorForOnDoubleParse( array $params ) {
 		$parserData = $this->applicationFactory->newParserData(
-			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
 		);
 
@@ -101,7 +101,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testExistForFoundMessageFormatterEntry() {
 		$parserData = $this->applicationFactory->newParserData(
-			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
 		);
 
@@ -134,7 +134,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testParse( array $params, array $expected ) {
 		$parserData = $this->applicationFactory->newParserData(
-			Title::newFromText( __METHOD__, SMW_NS_CONCEPT ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT ),
 			new ParserOutput()
 		);
 
@@ -209,7 +209,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #2 (includes Parser object)
-		$parser = UtilityFactory::getInstance()->newParserFactory()->newFromTitle( Title::newFromText( __METHOD__ ) );
+		$parser = UtilityFactory::getInstance()->newParserFactory()->newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$provider[] = [
 			[

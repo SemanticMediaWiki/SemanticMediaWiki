@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Supplement;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Utils\HtmlTabs;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later

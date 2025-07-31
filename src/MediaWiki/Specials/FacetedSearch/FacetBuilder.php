@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Title\Title;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

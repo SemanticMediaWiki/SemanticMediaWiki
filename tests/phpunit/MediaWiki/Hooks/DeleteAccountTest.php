@@ -65,7 +65,7 @@ class DeleteAccountTest extends \PHPUnit\Framework\TestCase {
 		$this->articleDelete->expects( $this->atLeastOnce() )
 			->method( 'process' );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

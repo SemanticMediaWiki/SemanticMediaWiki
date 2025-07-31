@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\PropertyLabelSimilarity;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\RequestOptions;

@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
+use MediaWiki\User\User;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\Store;
-use User;
 
 /**
  * @license GPL-2.0-or-later

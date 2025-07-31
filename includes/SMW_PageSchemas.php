@@ -9,7 +9,10 @@
  * @ingroup SMW
  */
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Xml\Xml;
 
 class SMWPageSchemas extends PSExtensionHandler {
 
@@ -115,17 +118,18 @@ class SMWPageSchemas extends PSExtensionHandler {
 		$pagesToGenerate = [];
 
 		$psTemplates = $pageSchemaObj->getTemplates();
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		foreach ( $psTemplates as $psTemplate ) {
 			$smwConnectingPropertyName = self::getConnectingPropertyName( $psTemplate );
 			if ( $smwConnectingPropertyName === null ) {
 				continue;
 			}
-			$pagesToGenerate[] = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
+			$pagesToGenerate[] = $titleFactory->makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
 		}
 
 		$propertyDataArray = self::getAllPropertyData( $pageSchemaObj );
 		foreach ( $propertyDataArray as $propertyData ) {
-			$title = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
+			$title = $titleFactory->makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
 			$pagesToGenerate[] = $title;
 		}
 		return $pagesToGenerate;
@@ -260,6 +264,8 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * passed-in Page Schemas XML object.
 	 */
 	public static function generatePages( $pageSchemaObj, $selectedPages ) {
+		$services = MediaWikiServices::getInstance();
+		$titleFactory = $services->getTitleFactory();
 		$datatypeLabels = smwfContLang()->getDatatypeLabels();
 		$pageTypeLabel = $datatypeLabels['_wpg'];
 
@@ -274,7 +280,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			if ( $smwConnectingPropertyName === null ) {
 				continue;
 			}
-			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
+			$propTitle = $titleFactory->makeTitleSafe( SMW_NS_PROPERTY, $smwConnectingPropertyName );
 			if ( !in_array( $propTitle, $selectedPages ) ) {
 				continue;
 			}
@@ -286,7 +292,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		// Second, create jobs for all regular properties.
 		$propertyDataArray = self::getAllPropertyData( $pageSchemaObj );
 		foreach ( $propertyDataArray as $propertyData ) {
-			$propTitle = Title::makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
+			$propTitle = $titleFactory->makeTitleSafe( SMW_NS_PROPERTY, $propertyData['name'] );
 			if ( !in_array( $propTitle, $selectedPages ) ) {
 				continue;
 			}
@@ -297,7 +303,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 			$jobs[] = new PSCreatePageJob( $propTitle, $jobParams );
 		}
 
-		MediaWikiServices::getInstance()->getJobQueueGroup()->push( $jobs );
+		$services->getJobQueueGroup()->push( $jobs );
 	}
 
 	/**

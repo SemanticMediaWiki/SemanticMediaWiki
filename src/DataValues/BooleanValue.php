@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use Sanitizer;
+use MediaWiki\Parser\Sanitizer;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMWDataItem as DataItem;

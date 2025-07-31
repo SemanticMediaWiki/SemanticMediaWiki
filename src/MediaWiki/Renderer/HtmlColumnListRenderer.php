@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Renderer;
 
-use Html;
+use MediaWiki\Html\Html;
 
 /**
  * Simple list formatter to transform an indexed array (e.g. array( 'F' => array( 'Foo', 'Bar' ) )

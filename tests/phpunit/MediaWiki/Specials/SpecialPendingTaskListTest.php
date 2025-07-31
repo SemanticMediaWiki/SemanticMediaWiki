@@ -2,9 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
 use SMW\MediaWiki\Specials\SpecialPendingTaskList;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialPendingTaskList
@@ -42,7 +43,7 @@ class SpecialPendingTaskListTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialPendingTaskList();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialPendingTaskList' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialPendingTaskList' )
 		);
 
 		$this->assertTrue(
@@ -54,11 +55,11 @@ class SpecialPendingTaskListTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialPendingTaskList();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialPendingTaskList' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialPendingTaskList' )
 		);
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( [], true )
+			new FauxRequest( [], true )
 		);
 
 		$expected = [

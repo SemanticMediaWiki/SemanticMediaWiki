@@ -38,15 +38,15 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\Title' )
+		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parser = $this->getMockBuilder( '\Parser' )
+		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$this->parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +100,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunParseFromRevision() {
-		$content = $this->getMockBuilder( '\Content' )
+		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

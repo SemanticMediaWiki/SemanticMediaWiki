@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\RedirectTargetFinder;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\RedirectTargetFinder
@@ -46,7 +46,7 @@ class RedirectTargetFinderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider redirectTextProvider
 	 */
 	public function testInjectedRedirectTargetOverridesTextFinder( $text ) {
-		$directRedirectTarget = Title::newFromText( 'Foo' );
+		$directRedirectTarget = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo' );
 
 		$instance = new RedirectTargetFinder();
 		$instance->setRedirectTarget( $directRedirectTarget );
@@ -64,8 +64,10 @@ class RedirectTargetFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function redirectTextProvider() {
-		$provider[] = [ '#REDIRECT [[:Lala]]', true, Title::newFromText( 'Lala' ) ];
-		$provider[] = [ '#REDIRECT [[Lala]]', true, Title::newFromText( 'Lala' ) ];
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$provider[] = [ '#REDIRECT [[:Lala]]', true, $titleFactory->newFromText( 'Lala' ) ];
+		$provider[] = [ '#REDIRECT [[Lala]]', true, $titleFactory->newFromText( 'Lala' ) ];
 		$provider[] = [ '[[:Lala]]', false, null ];
 
 		return $provider;

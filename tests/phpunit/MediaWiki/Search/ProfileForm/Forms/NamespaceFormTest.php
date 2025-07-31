@@ -62,7 +62,7 @@ class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckNamespaceEditToken() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

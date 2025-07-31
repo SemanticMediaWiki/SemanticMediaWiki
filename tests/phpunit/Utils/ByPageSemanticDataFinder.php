@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Utils;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\ParserData;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory;
 use SMW\Store;
-use Title;
 use UnexpectedValueException;
 
 /**

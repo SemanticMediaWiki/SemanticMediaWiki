@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Linker\Linker;
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
 use SMW\Site;
 
@@ -289,7 +291,8 @@ class SMWInfolink {
 				$titletext = $this->mTarget;
 			}
 
-			$title = Title::newFromText( $titletext );
+			$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+			$title = $titleFactory->newFromText( $titletext );
 
 			if ( $title !== null ) {
 				if ( $outputformat == SMW_OUTPUT_WIKI ) {
@@ -304,7 +307,7 @@ class SMWInfolink {
 				// a direct URL link (only possible if offending target parts belong
 				// to some parameter that can be separated from title text, e.g.
 				// as in Special:Bla/il<leg>al -> Special:Bla&p=il&lt;leg&gt;al)
-				$title = Title::newFromText( $this->mTarget );
+				$title = $titleFactory->newFromText( $this->mTarget );
 
 				// Just give up due to the title being bad, normally this would
 				// indicate a software bug
@@ -387,7 +390,7 @@ class SMWInfolink {
 			return $this->buildTarget( $query );
 		}
 
-		$title = Title::newFromText( $this->mTarget );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->mTarget );
 
 		if ( $title !== null ) {
 			return $title->getFullURL( $query );
@@ -413,7 +416,7 @@ class SMWInfolink {
 			return $this->buildTarget( $query );
 		}
 
-		$title = Title::newFromText( $this->mTarget );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->mTarget );
 
 		if ( $title !== null ) {
 			return $title->getLocalURL( $query );

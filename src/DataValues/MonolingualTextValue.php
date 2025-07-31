@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Language\LanguageCode;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
@@ -57,7 +58,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 */
 	public function __construct( $typeid = '' ) {
 		parent::__construct( self::TYPE_ID );
-		$this->nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
+		$this->nonstandardLanguageCodeMapping = LanguageCode::getNonstandardLanguageCodeMapping();
 	}
 
 	/**

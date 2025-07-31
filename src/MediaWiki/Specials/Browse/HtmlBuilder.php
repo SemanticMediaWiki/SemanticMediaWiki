@@ -2,8 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Skin\SkinComponentUtils;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -13,7 +15,6 @@ use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMWDataValue;
-use TemplateParser;
 
 /**
  * @license GPL-2.0-or-later
@@ -724,7 +725,7 @@ class HtmlBuilder {
 				$value_html .= Html::element(
 					'a',
 					[
-						'href' => \SpecialPage::getSafeTitleFor( 'SearchByProperty' )->getLocalURL( [
+						'href' => SkinComponentUtils::makeSpecialUrl( 'SearchByProperty', [
 							 'property' => $dvProperty->getWikiValue(),
 							 'value' => $this->dataValue->getWikiValue()
 						] )
@@ -737,7 +738,7 @@ class HtmlBuilder {
 				$value_html .= Html::element(
 					'a',
 					[
-						'href' => \SpecialPage::getSafeTitleFor( 'PageProperty' )->getLocalURL( [
+						'href' => SkinComponentUtils::makeSpecialUrl( 'PageProperty', [
 							 'type' => $dvProperty->getWikiValue(),
 							 'from' => $this->dataValue->getWikiValue()
 						] )

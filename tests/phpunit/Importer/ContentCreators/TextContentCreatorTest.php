@@ -4,7 +4,6 @@ namespace SMW\Tests\Importer\ContentCreators;
 
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ImportContents;
-use WikiPage;
 
 /**
  * @covers \SMW\Importer\ContentCreators\TextContentCreator
@@ -66,21 +65,15 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			$status = $this->getMockBuilder( '\Status' )
+		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
 			->disableOriginalConstructor()
 			->getMock();
-		} else {
-			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
-			->disableOriginalConstructor()
-			->getMock();
-		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +90,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( self::getDoEditContentMethod() )
+			->method( 'doUserEditContent' )
 			->willReturn( $status );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -132,15 +125,9 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			$status = $this->getMockBuilder( '\Status' )
+		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
 			->disableOriginalConstructor()
 			->getMock();
-		} else {
-			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
-			->disableOriginalConstructor()
-			->getMock();
-		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
@@ -150,7 +137,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrorsArray' )
 			->willReturn( [ 'FooError', 'BarError' ] );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +154,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( self::getDoEditContentMethod() )
+			->method( 'doUserEditContent' )
 			->willReturn( $status );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
@@ -203,7 +190,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +203,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$page->expects( $this->never() )
-			->method( self::getDoEditContentMethod() );
+			->method( 'doUserEditContent' );
 
 		$this->titleFactory->expects( $this->atLeastOnce() )
 			->method( 'makeTitleSafe' )
@@ -251,21 +238,15 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			$status = $this->getMockBuilder( '\Status' )
+		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
 			->disableOriginalConstructor()
 			->getMock();
-		} else {
-			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
-			->disableOriginalConstructor()
-			->getMock();
-		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -273,7 +254,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'equals' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -294,7 +275,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( self::getDoEditContentMethod() )
+			->method( 'doUserEditContent' )
 			->willReturn( $status );
 
 		$page->expects( $this->atLeastOnce() )
@@ -334,21 +315,15 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			$status = $this->getMockBuilder( '\Status' )
+		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
 			->disableOriginalConstructor()
 			->getMock();
-		} else {
-			$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
-			->disableOriginalConstructor()
-			->getMock();
-		}
 
 		$status->expects( $this->any() )
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -369,7 +344,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$page->expects( $this->once() )
-			->method( self::getDoEditContentMethod() )
+			->method( 'doUserEditContent' )
 			->willReturn( $status );
 
 		$page->expects( $this->atLeastOnce() )
@@ -399,15 +374,6 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$importContents->setOptions( [ 'replaceable' => [ 'LAST_EDITOR' => 'IS_IMPORTER' ] ] );
 
 		$instance->create( $importContents );
-	}
-
-	/**
-	 * Get the name of the appropriate edit method to mock.
-	 * @return string
-	 */
-	private static function getDoEditContentMethod(): string {
-		return method_exists( WikiPage::class, 'doUserEditContent' )
-			? 'doUserEditContent' : 'doEditContent';
 	}
 
 }

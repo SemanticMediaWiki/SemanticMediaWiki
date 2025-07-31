@@ -16,7 +16,7 @@ use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +37,7 @@ class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 			'action' => $action
 		];
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

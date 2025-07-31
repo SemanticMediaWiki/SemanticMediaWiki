@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use SMW\CacheFactory;
@@ -52,7 +53,7 @@ class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPurgeCacheKey() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

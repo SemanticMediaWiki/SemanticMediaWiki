@@ -2,9 +2,9 @@
 
 namespace SMW\Factbox;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

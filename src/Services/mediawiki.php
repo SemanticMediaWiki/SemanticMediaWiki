@@ -4,10 +4,11 @@ namespace SMW\Services;
 
 use ImportStreamSource;
 use ImportStringSource;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\User\UserOptionsLookup;
-use RequestContext;
+use MediaWiki\Title\Title;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\PermissionManager;
@@ -64,7 +65,7 @@ return [
 	 *
 	 * @return callable
 	 */
-	'WikiPage' => static function ( $containerBuilder, \Title $title ) {
+	'WikiPage' => static function ( $containerBuilder, Title $title ) {
 		$containerBuilder->registerExpectedReturnType( 'WikiPage', '\WikiPage' );
 		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	},

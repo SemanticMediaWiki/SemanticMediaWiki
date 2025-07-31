@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Benchmark;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\MediaWiki\JobFactory;
 use SMW\Tests\Utils\Runners\JobQueueRunner;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -81,9 +81,10 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 			throw new RuntimeException( 'No repetitionCount is available.' );
 		}
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$job = $this->jobFactory->newByType(
 			$case['job'],
-			Title::newFromText( __METHOD__ . $case['job'] )
+			$titleFactory->newFromText( __METHOD__ . $case['job'] )
 		);
 
 		$job->insert();

@@ -2,7 +2,8 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
-use Html;
+use Iterator;
+use MediaWiki\Html\Html;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer\Message;
@@ -256,7 +257,7 @@ class ValueListBuilder {
 	}
 
 	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ) {
-		if ( $diWikiPages instanceof \Iterator ) {
+		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 

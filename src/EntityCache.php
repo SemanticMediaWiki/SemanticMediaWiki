@@ -2,8 +2,8 @@
 
 namespace SMW;
 
+use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
-use Title;
 
 /**
  * Class provides a simple interface the link independent cache entries as

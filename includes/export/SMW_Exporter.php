@@ -155,10 +155,11 @@ class SMWExporter {
 		}
 
 		$localizer = Localizer::getInstance();
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		global $smwgNamespace; // complete namespace for URIs (with protocol, usually http://)
 
-		$resolver = Title::makeTitle( NS_SPECIAL, 'URIResolver' );
+		$resolver = $titleFactory->makeTitle( NS_SPECIAL, 'URIResolver' );
 
 		if ( $smwgNamespace == '' ) {
 			$smwgNamespace = $resolver->getFullURL() . '/';
@@ -181,7 +182,7 @@ class SMWExporter {
 		self::$m_ent_property = self::$m_ent_wiki . Escaper::encodeUri( $property . ':' );
 		self::$m_ent_category = self::$m_ent_wiki . Escaper::encodeUri( $category . ':' );
 
-		$title = Title::makeTitle( NS_SPECIAL, 'ExportRDF' );
+		$title = $titleFactory->makeTitle( NS_SPECIAL, 'ExportRDF' );
 		self::$m_exporturl = self::$m_ent_wikiurl . $title->getPrefixedURL();
 
 		// Canonical form, the title object always contains a wgContLang reference
@@ -365,8 +366,8 @@ class SMWExporter {
 				}
 
 				if ( $subject->getNamespace() === NS_FILE ) {
-
-					$title = Title::makeTitle( $subject->getNamespace(), $subject->getDBkey() );
+					$title = MediaWikiServices::getInstance()->getTitleFactory()
+						->makeTitle( $subject->getNamespace(), $subject->getDBkey() );
 					$file = self::$mwRepoGroup->findFile( $title );
 
 					if ( $file !== false ) {

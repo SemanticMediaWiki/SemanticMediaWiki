@@ -3,14 +3,14 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * UpdateJob is responsible for the asynchronous update of semantic data

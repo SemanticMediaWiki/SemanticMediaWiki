@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\Utils\GitInfo;
+
 /**
  * @private
  *
@@ -135,7 +137,7 @@ class PHPUnitEnvironment {
 	 * @return string
 	 */
 	public function getGitInfo( $id ) {
-		if ( $this->gitHead === [] && class_exists( 'GitInfo' ) ) {
+		if ( $this->gitHead === [] && class_exists( GitInfo::class ) ) {
 			$this->gitHead = [
 				'mw' => '',
 				'smw' => ''

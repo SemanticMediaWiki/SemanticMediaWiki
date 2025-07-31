@@ -72,7 +72,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +83,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnSelfInvokedReason() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,11 +106,11 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnMatchableEditProtectionToAddAnnotation() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +167,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 			$dataItem
 		);
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +175,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getExtensionData' )
 			->willReturn( $semanticData );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DIProperty;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
@@ -29,7 +30,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class updateEntityCollation extends \Maintenance {
+class updateEntityCollation extends Maintenance {
 
 	/**
 	 * Incomplete task message
@@ -37,7 +38,7 @@ class updateEntityCollation extends \Maintenance {
 	const ENTITY_COLLATION_INCOMPLETE = 'smw-updateentitycollation-incomplete';
 
 	/**
-	 * @var Store
+	 * @var SQLStore
 	 */
 	private $store;
 

@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use PSr\Log\LoggerAwareTrait;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\EditInfo;
@@ -9,7 +10,6 @@ use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * Occurs after the protect article request has been processed

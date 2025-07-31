@@ -5,7 +5,7 @@
 
 ```php
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;

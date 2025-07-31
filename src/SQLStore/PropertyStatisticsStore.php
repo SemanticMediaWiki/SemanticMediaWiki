@@ -282,7 +282,7 @@ class PropertyStatisticsStore {
 		}
 
 		$propertyStatistics = $this->connection->select(
-			$this->connection->tablename( SQLStore::PROPERTY_STATISTICS_TABLE ),
+			SQLStore::PROPERTY_STATISTICS_TABLE,
 			[
 				'usage_count',
 				'p_id',

@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\MediaWiki\HookListener;
-use Title;
 
 /**
  * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable

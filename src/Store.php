@@ -4,6 +4,7 @@ namespace SMW;
 
 use InvalidArgumentException;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
@@ -15,7 +16,6 @@ use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
 use SMWDataItem as DataItem;
 use SMWQuery;
-use Title;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving

@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
-use Linker;
+use MediaWiki\Linker\Linker;
 use SMW\Localizer\Message;
 use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;

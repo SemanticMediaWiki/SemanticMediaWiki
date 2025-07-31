@@ -2,6 +2,7 @@
 
 namespace SMW\Parser;
 
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -13,7 +14,6 @@ use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Timer;
 use SMWOutputs;
-use Title;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -65,7 +65,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends SMWIntegrationTestCase {
 
 		$this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		$title = Title::newFromText( 'CategoryInstanceAndCategoryHierarchyRegressionTest' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'CategoryInstanceAndCategoryHierarchyRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
 			'property' => new DIProperty( '_INST' ),

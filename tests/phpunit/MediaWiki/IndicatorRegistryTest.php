@@ -36,7 +36,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddIndicatorProvider() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +63,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAttachIndicators() {
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +75,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoPermissionOnIndicatorProvider() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +94,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPermissionAwareIndicatorProvider() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

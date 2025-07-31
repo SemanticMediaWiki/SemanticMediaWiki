@@ -2,6 +2,7 @@
 
 namespace SMW\Serializers;
 
+use MediaWiki\Title\Title;
 use OutOfBoundsException;
 use Serializers\DispatchableSerializer;
 use SMW\DataValueFactory;
@@ -9,7 +10,6 @@ use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
 use SMWDataItem as DataItem;
-use Title;
 
 /**
  * Class for serializing SMWDataItem and QueryResult objects to a context
@@ -72,7 +72,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @since 1.7
 	 *
-	 * @param SMWDataItem $dataItem
+	 * @param DataItem $dataItem
 	 *
 	 * @return mixed
 	 */

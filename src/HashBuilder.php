@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use Title;
+use MediaWiki\Title\Title;
 
 /**
  * Utility class to create unified hash keys for a variety of objects

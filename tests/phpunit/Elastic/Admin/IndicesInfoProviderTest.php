@@ -32,7 +32,7 @@ class IndicesInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'encodeAsJson' )
 			->willReturn( '' );
 
-		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

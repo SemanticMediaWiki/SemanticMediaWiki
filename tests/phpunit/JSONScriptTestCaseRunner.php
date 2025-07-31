@@ -2,9 +2,12 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
+use SMW\NamespaceManager;
 use SMW\SPARQLStore\SPARQLStore;
+use SMW\Tests\Utils\File\JsonFileReader;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseContentHandler;
 use SMW\Tests\Utils\JSONScript\JsonTestCaseFileHandler;
 use SMW\Tests\Utils\UtilityFactory;
@@ -30,7 +33,7 @@ use SMW\Tests\Utils\UtilityFactory;
 abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
-	 * @var FileReader
+	 * @var JsonFileReader
 	 */
 	private $fileReader;
 
@@ -150,10 +153,10 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		// Ensure that the context is set for a selected language
 		// and dependent objects are reset
 		$this->registerConfigValueCallback( 'wgContLang', function ( $val ) {
-			\RequestContext::getMain()->setLanguage( $val );
+			RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
 			// #4682, Avoid any surprises when the `wgLanguageCode` is changed during a test
-			\SMW\NamespaceManager::clear();
+			NamespaceManager::clear();
 
 			// Reset title-related services to prevent stale language objects. See #5951.
 			$this->testEnvironment->resetMediaWikiService( 'TitleParser' );
@@ -171,9 +174,9 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		} );
 
 		$this->registerConfigValueCallback( 'wgLang', static function ( $val ) {
-			\RequestContext::getMain()->setLanguage( $val );
+			RequestContext::getMain()->setLanguage( $val );
 			Localizer::clear();
-			\SMW\NamespaceManager::clear();
+			NamespaceManager::clear();
 			$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 			$lang = $languageFactory->getLanguage( $val );
 			return $lang;

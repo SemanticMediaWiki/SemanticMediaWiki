@@ -3,8 +3,8 @@
 namespace SMW\Tests\Localizer;
 
 use DateTime;
-use IContextSource;
-use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\Localizer\Localizer;
 
 /**
@@ -28,7 +28,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->language = $this->getMockBuilder( '\Language' )
+		$this->language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -199,11 +199,11 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetLanguageCodeByRule_OnTitleExpectedToPageLanguage() {
 		$instance = $this->newLocalizer();
 
-		$pageLanguage = $this->getMockBuilder( '\Language' )
+		$pageLanguage = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -239,7 +239,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 			$instance->getLang( 'en' )
 		);
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -338,7 +338,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasLocalTimeOffsetPreference() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -357,7 +357,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	public function testGetLocalTime() {
 		$dataTime = new DateTime();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

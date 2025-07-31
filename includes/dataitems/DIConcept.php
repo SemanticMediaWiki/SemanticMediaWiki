@@ -3,6 +3,7 @@
 namespace SMW;
 
 use MediaWiki\Json\JsonUnserializer;
+use SMW\Exception\DataItemException;
 use SMWDataItem;
 
 /**
@@ -19,7 +20,7 @@ use SMWDataItem;
  * @author Markus Krötzsch
  * @author mwjames
  */
-class DIConcept extends \SMWDataItem {
+class DIConcept extends SMWDataItem {
 
 	/**
 	 * Query string for this concept. Possibly long.

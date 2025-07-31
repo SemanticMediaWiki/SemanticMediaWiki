@@ -2,7 +2,9 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataValueFactory;
 use SMW\Encoder;
 use SMW\Localizer\Message;
@@ -10,8 +12,6 @@ use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWInfolink as Infolink;
-use SpecialPage;
-use TemplateParser;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it

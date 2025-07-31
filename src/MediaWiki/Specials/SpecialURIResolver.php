@@ -2,9 +2,10 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Exporter\Escaper;
-use SpecialPage;
-use Title;
 
 /**
  * Resolve (redirect) pretty URIs (or "short URIs") to the equivalent full MediaWiki
@@ -54,14 +55,14 @@ class SpecialURIResolver extends SpecialPage {
 			$query = Escaper::decodeUri( $query );
 			$query = str_replace( '_', '%20', $query );
 			$query = urldecode( $query );
-			$title = Title::newFromText( $query );
+			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $query );
 
 			// In case the title doesn't exist throw an error page
 			if ( $title === null ) {
 				$out->showErrorPage( 'badtitle', 'badtitletext' );
 			} elseif ( stristr( $_SERVER['HTTP_ACCEPT'], 'RDF' ) ) {
 				$out->redirect(
-					SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getFullURL( [ 'xmlmime' => 'rdf' ] )
+					SkinComponentUtils::makeSpecialUrl( 'ExportRDF', [ 'xmlmime' => 'rdf' ] )
 				);
 			} else {
 				$out->redirect( $title->getFullURL(), '303' );

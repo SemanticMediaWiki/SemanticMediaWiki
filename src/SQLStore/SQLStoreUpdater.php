@@ -4,6 +4,7 @@ namespace SMW\SQLStore;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Enum;
@@ -12,7 +13,6 @@ use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
 use SMWDIBlob as DIBlob;
-use Title;
 
 /**
  * Class Handling all the write and update methods for SQLStore.

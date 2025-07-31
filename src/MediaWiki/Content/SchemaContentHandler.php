@@ -2,19 +2,19 @@
 
 namespace SMW\MediaWiki\Content;
 
-use Content;
-use JsonContentHandler;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\JsonContentHandler;
 use MediaWiki\Content\Renderer\ContentParseParams;
 use MediaWiki\Content\Transform\PreSaveTransformParams;
 use MediaWiki\Content\ValidationParams;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Status\Status;
+use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
 use SMW\ParserData;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 use SMW\Schema\Schema;
-use Status;
-use Title;
 use WikiPage;
 
 /**

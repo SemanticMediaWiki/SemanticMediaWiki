@@ -74,7 +74,7 @@ class UserChangeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOnEnabledUserNamespace_User() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

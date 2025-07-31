@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
-use ApiBase;
+use MediaWiki\Api\ApiBase;
 use SMW\Exception\JSONParseException;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
@@ -15,6 +15,7 @@ use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use Wikimedia\ParamValidator\ParamValidator;
 
 /**
  * Module to support selected browse activties including:
@@ -273,8 +274,8 @@ class Browse extends ApiBase {
 	public function getAllowedParams() {
 		return [
 			'browse' => [
-				ApiBase::PARAM_REQUIRED => true,
-				ApiBase::PARAM_TYPE => [
+				ParamValidator::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => [
 
 					// List, browse of properties
 					'property',
@@ -299,8 +300,8 @@ class Browse extends ApiBase {
 				]
 			],
 			'params' => [
-				ApiBase::PARAM_TYPE => 'string',
-				ApiBase::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_REQUIRED => true,
 			],
 		];
 	}

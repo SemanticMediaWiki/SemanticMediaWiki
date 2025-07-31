@@ -3,14 +3,14 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use ParserOutput;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\EditInfo;
 use SMW\ParserData;
 use SMW\SemanticData;
-use Title;
-use User;
 use WikiPage;
 
 /**
@@ -203,7 +203,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newContentStub() {
-		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
+		$contentHandler = $this->getMockBuilder( '\MediaWiki\Content\ContentHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -211,7 +211,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDefaultFormat' )
 			->willReturn( 'Foo' );
 
-		$content = $this->getMockBuilder( '\Content' )
+		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
 			->disableOriginalConstructor()
 			->getMock();
 

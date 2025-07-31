@@ -35,11 +35,11 @@ class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\Title' )
+		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\User' )
+		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

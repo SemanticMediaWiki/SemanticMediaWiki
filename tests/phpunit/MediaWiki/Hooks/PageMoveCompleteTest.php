@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Hooks\PageMoveComplete;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
@@ -60,6 +61,7 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChangeSubjectForSupportedSemanticNamespace() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(
@@ -68,8 +70,8 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 				[ $this->equalTo( 'InvalidateEntityCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
-		$oldTitle = \Title::newFromText( 'Old' );
-		$newTitle = \Title::newFromText( 'New' );
+		$oldTitle = $titleFactory->newFromText( 'Old' );
+		$newTitle = $titleFactory->newFromText( 'New' );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -94,6 +96,7 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteSubjectForNotSupportedSemanticNamespace() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )
 			->withConsecutive(
@@ -102,8 +105,8 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 				[ $this->equalTo( 'InvalidateEntityCache' ) ],
 				[ $this->equalTo( 'InvalidateEntityCache' ) ] );
 
-		$oldTitle = \Title::newFromText( 'Old' );
-		$newTitle = \Title::newFromText( 'New', NS_HELP );
+		$oldTitle = $titleFactory->newFromText( 'Old' );
+		$newTitle = $titleFactory->newFromText( 'New', NS_HELP );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

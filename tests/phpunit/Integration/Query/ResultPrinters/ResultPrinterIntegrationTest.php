@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki-integration
@@ -47,10 +47,12 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel= }}
 	 */
 	public function testLimitNullWithEmptySearchlabel() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
-				->createPage( Title::newFromText( $title ) )
+				->createPage( $titleFactory->newFromText( $title ) )
 				->doEdit( '[[Category:LimitNullForEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
@@ -64,7 +66,7 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 			->addString( '}}' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) )
+			->createPage( $titleFactory->newFromText( __METHOD__ ) )
 			->doEdit( $this->stringBuilder->getString() );
 
 		$this->subjects[] = $this->pageCreator->getPage();
@@ -82,10 +84,12 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 	 * @query {{#ask: [[Modification date::+]]|limit=0|searchlabel=do something }}
 	 */
 	public function testLimitNullWithDescriptiveSearchlabel() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		foreach ( [ 'Foo', 'Bar', 'テスト' ] as $title ) {
 
 			$this->pageCreator
-				->createPage( Title::newFromText( $title ) )
+				->createPage( $titleFactory->newFromText( $title ) )
 				->doEdit( '[[Category:LimitNullForNotEmptySearchlabel]]' );
 
 			$this->subjects[] = $this->pageCreator->getPage();
@@ -99,7 +103,7 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 			->addString( '}}' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) )
+			->createPage( $titleFactory->newFromText( __METHOD__ ) )
 			->doEdit( $this->stringBuilder->getString() );
 
 		$this->subjects[] = $this->pageCreator->getPage();

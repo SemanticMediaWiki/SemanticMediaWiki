@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Renderer;
 
-use Parser;
+use MediaWiki\Parser\Parser;
 
 /**
  * @license GPL-2.0-or-later

@@ -19,7 +19,7 @@ class DeferredTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testRegisterResourceModules() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 

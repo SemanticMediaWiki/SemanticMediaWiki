@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\Runners\MaintenanceRunner;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -75,7 +75,7 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 
 		 $this->titleValidator->assertThatTitleIsKnown( $this->importedTitles );
 
-		 $main = Title::newFromText( 'Lorem ipsum' );
+		 $main = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Lorem ipsum' );
 
 		 $expectedSomeProperties = [
 			'properties' => [

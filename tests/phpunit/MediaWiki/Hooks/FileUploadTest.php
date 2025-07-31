@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\HookContainer\HookContainer;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Hooks\FileUpload;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\FileUpload

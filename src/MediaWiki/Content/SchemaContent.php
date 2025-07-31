@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Content;
 
-use JsonContent;
-use ParserOptions;
+use MediaWiki\Content\JsonContent;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\Exception\JSONParseException;
 use SMW\Schema\SchemaFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
-use Title;
-use User;
 
 /**
  * The content model supports both JSON and YAML (as a superset of JSON), allowing
@@ -134,7 +134,7 @@ class SchemaContent extends JsonContent {
 	 * {@inheritDoc}
 	 */
 	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
-		// FIXME: WikiPage::doEditContent invokes PST before validation. As such, native data
+		// FIXME: WikiPage::doUserEditContent invokes PST before validation. As such, native data
 		// may be invalid (though PST result is discarded later in that case).
 		if ( !$this->isValid() ) {
 			return $this;

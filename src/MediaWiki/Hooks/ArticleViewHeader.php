@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Html;
-use Page;
+use Article;
+use MediaWiki\Html\Html;
 use SMW\DependencyValidator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -60,13 +60,13 @@ class ArticleViewHeader implements HookListener {
 	/**
 	 * @since 3.0
 	 *
-	 * @param Page $page
+	 * @param Article $page
 	 * @param bool &$outputDone
 	 * @param bool &$useParserCache
 	 *
 	 * @return bool
 	 */
-	public function process( Page $page, &$outputDone, &$useParserCache ) {
+	public function process( Article $page, &$outputDone, &$useParserCache ) {
 		$title = $page->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {

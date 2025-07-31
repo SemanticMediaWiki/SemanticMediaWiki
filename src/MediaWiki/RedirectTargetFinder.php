@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki;
 
-use ContentHandler;
-use Title;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Title\Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -61,11 +61,7 @@ class RedirectTargetFinder {
 	}
 
 	private function findFromText( $text ) {
-		if ( $this->hasContentHandler() ) {
-			return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
-		}
-
-		return Title::newFromRedirect( $text );
+		return ContentHandler::makeContent( $text, null, CONTENT_MODEL_WIKITEXT )->getRedirectTarget();
 	}
 
 	protected function hasContentHandler() {

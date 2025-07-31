@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Hooks\TitleIsMovable;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\TitleIsMovable
@@ -17,7 +17,7 @@ use Title;
 class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -28,7 +28,7 @@ class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPredefinedPropertyPageIsNotMovable() {
-		$title = Title::newFromText( 'Modification date', SMW_NS_PROPERTY );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Modification date', SMW_NS_PROPERTY );
 		$isMovable = true;
 
 		$instance = new TitleIsMovable( $title );
@@ -43,7 +43,7 @@ class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUserdefinedPropertyPageIsMovable() {
-		$title = Title::newFromText( 'Foo', SMW_NS_PROPERTY );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo', SMW_NS_PROPERTY );
 		$isMovable = true;
 
 		$instance = new TitleIsMovable( $title );
@@ -58,7 +58,7 @@ class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNonPropertyPageIsAlwaysMovable() {
-		$title = Title::newFromText( 'Foo', NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo', NS_MAIN );
 		$isMovable = true;
 
 		$instance = new TitleIsMovable( $title );
@@ -73,7 +73,7 @@ class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRulePageIsAlwaysNotMovable() {
-		$title = Title::newFromText( 'Foo', SMW_NS_SCHEMA );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo', SMW_NS_SCHEMA );
 		$isMovable = true;
 
 		$instance = new TitleIsMovable( $title );

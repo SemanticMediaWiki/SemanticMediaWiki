@@ -54,7 +54,7 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testShowHideLink() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -69,7 +69,7 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDebugLink() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +84,7 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoQCacheLink() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +99,7 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoQCacheLinkOnFalseFromCache() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

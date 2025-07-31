@@ -3,7 +3,7 @@
 namespace SMW\Localizer;
 
 use Closure;
-use Language;
+use MediaWiki\Language\Language;
 use SMW\InMemoryPoolCache;
 
 /**

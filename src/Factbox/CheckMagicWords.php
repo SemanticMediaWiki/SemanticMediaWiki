@@ -2,7 +2,7 @@
 
 namespace SMW\Factbox;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
 
 /**
  * @private

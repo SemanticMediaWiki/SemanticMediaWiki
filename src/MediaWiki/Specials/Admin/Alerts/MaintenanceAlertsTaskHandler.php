@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 
 /**

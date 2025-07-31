@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialConstraintErrorList;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialConstraintErrorList
@@ -42,7 +42,7 @@ class SpecialConstraintErrorListTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialConstraintErrorList();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialConstraintErrorList' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialConstraintErrorList' )
 		);
 
 		$this->assertTrue(
@@ -54,7 +54,7 @@ class SpecialConstraintErrorListTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialConstraintErrorList();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialConstraintErrorList' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialConstraintErrorList' )
 		);
 
 		$expected = [

@@ -38,7 +38,7 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInProperties' )
 			->willReturn( [] );
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,9 +2,12 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
 use ReflectionClass;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use Title;
 
 /**
  * @covers \SMW\QueryPage
@@ -34,7 +37,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$context = $this->newContext( [ 'property' => $search ] );
-		$context->setTitle( Title::newFromText( __METHOD__ ) );
+		$context->setTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$queryPage->setContext( $context );
 
@@ -121,12 +124,12 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newContext( $request = [] ) {
-		$context = new \RequestContext();
+		$context = new RequestContext();
 
-		if ( $request instanceof \WebRequest ) {
+		if ( $request instanceof WebRequest ) {
 			$context->setRequest( $request );
 		} else {
-			$context->setRequest( new \FauxRequest( $request, true ) );
+			$context->setRequest( new FauxRequest( $request, true ) );
 		}
 
 		$context->setUser( new MockSuperUser() );

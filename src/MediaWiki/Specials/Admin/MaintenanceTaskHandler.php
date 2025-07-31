@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\Admin;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Message;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\HtmlTabs;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later

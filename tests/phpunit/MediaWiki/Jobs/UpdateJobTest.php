@@ -3,12 +3,12 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\DAO\WikiAwareEntity;
+use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
@@ -70,7 +70,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +81,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithMissingParserOutput() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +96,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithInvalidTitle() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +121,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithNoRevisionAvailable() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -146,7 +146,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithValidRevision() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -205,7 +205,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobToCompareLastModified() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -267,7 +267,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobOnSerializedSemanticData() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

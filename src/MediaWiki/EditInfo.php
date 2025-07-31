@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
-use ParserOutput;
+use MediaWiki\User\User;
 use SMW\ParserData;
 use SMW\SemanticData;
-use User;
 use WikiPage;
 
 /**

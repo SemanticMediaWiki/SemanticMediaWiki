@@ -8,7 +8,7 @@ namespace SMW\Query\ResultPrinters;
 use SMW\Query\QueryResult;
 use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
-use Html;
+use MediaWiki\Html\Html;
 
 /**
  * Boilerplate query printer

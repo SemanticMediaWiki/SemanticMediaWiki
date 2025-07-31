@@ -3,6 +3,7 @@
 namespace SMW\Query;
 
 use InvalidArgumentException;
+use MediaWiki\Title\Title;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
@@ -10,7 +11,6 @@ use SMW\Query\PrintRequest\Deserializer;
 use SMW\Query\PrintRequest\Formatter;
 use SMW\Query\PrintRequest\Serializer;
 use SMWDataValue;
-use Title;
 
 /**
  * Container class for request for printout, as used in queries to

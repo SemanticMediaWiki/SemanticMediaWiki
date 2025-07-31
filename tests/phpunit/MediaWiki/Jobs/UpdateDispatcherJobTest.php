@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateDispatcherJob
@@ -49,7 +49,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +60,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPushToJobQueue() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +71,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChunkedJobWithListOnValidMembers() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +92,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChunkedJobWithListOnInvalidMembers() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +113,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobRunOnMainNamespace() {
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -139,7 +139,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobRunOnPropertyNamespace() {
-		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -175,7 +175,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobRunOnRestrictedPool() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
 		$semanticData = new SemanticData( $subject );
@@ -314,6 +314,8 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function subjectDataProvider() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$provider = [];
 
 		$duplicate = DIWikiPage::newFromText( 'Foo' );
@@ -329,7 +331,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
-		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = $titleFactory->newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		# 0
@@ -346,7 +348,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = $titleFactory->newFromText( __METHOD__, NS_MAIN );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		# 1
@@ -376,7 +378,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		];
 
-		$title = Title::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$title = $titleFactory->newFromText( __METHOD__, SMW_NS_PROPERTY );
 		$property = DIProperty::newFromUserLabel( $title->getText() );
 
 		$provider[] = [

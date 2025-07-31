@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -15,7 +16,6 @@ use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\MediaWiki\Jobs\UpdateJob;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

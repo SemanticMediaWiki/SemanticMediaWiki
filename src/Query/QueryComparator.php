@@ -2,6 +2,8 @@
 
 namespace SMW\Query;
 
+use Exception;
+
 /**
  * @license GPL-2.0-or-later
  * @since 1.5.3

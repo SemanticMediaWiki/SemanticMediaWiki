@@ -2,9 +2,9 @@
 
 namespace SMW\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
-use Parser;
 use ParserHooks\HookDefinition;
 use ParserHooks\HookHandler;
 use SMW\Highlighter;

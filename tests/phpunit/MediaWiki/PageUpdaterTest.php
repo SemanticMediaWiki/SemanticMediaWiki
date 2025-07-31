@@ -52,7 +52,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurge( $purgeMethod, $titleMethod ) {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +70,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDisablePurgeHtmlCache() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +89,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFilterDuplicatePages() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,7 +111,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurgeOnTransactionIdle( $purgeMethod, $titleMethod ) {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -136,7 +136,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider purgeMethodProvider
 	 */
 	public function testPurgeWillNotWaitOnTransactionIdleForMissingConnection( $purgeMethod, $titleMethod ) {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -164,7 +164,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -186,7 +186,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddNullPage() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -219,7 +219,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$transactionalCallableUpdate->expects( $this->once() )
 			->method( 'markAsPending' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -261,7 +261,7 @@ class PageUpdaterTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

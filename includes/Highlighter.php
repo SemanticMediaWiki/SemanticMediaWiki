@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMWOutputs;
 

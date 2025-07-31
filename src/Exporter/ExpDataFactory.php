@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Site;
 use SMWExpData as ExpData;
 use SMWExporter as Exporter;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -71,7 +71,7 @@ class ExpDataFactory {
 			new ExpLiteral( Site::languageCode(), 'http://www.w3.org/2001/XMLSchema#string' )
 		);
 
-		$mainpage = Title::newMainPage();
+		$mainpage = MediaWikiServices::getInstance()->getTitleFactory()->newMainPage();
 
 		if ( $mainpage !== null ) {
 			$ed = new ExpData( new ExpResource( $mainpage->getFullURL() ) );

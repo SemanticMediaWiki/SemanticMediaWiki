@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
@@ -10,7 +11,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use Title;
 
 /**
  * @group semantic-mediawiki

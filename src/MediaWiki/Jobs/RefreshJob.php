@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use ExtensionRegistry;
+use MediaWiki\Registration\ExtensionRegistry;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;

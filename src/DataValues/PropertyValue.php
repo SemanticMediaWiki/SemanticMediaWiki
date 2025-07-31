@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues;
 
-use Linker;
+use MediaWiki\Linker\Linker;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;

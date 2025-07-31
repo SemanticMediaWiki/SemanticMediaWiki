@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use Html;
+use MediaWiki\Html\Html;
 use Onoi\HttpRequest\CachedCurlRequest;
 use Onoi\HttpRequest\CurlRequest;
 use Onoi\HttpRequest\HttpRequest;

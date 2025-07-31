@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use RuntimeException;
 use SMW\Localizer\Message;
-use WebRequest;
 
 /**
  * @private

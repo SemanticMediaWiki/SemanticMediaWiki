@@ -52,7 +52,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -612,7 +612,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResult() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -887,7 +887,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleProvider() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -903,7 +903,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			$title
 		];
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

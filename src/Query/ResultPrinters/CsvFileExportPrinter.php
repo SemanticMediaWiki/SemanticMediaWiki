@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use Sanitizer;
+use MediaWiki\Parser\Sanitizer;
 use SMW\Query\QueryResult;
 use SMW\Utils\Csv;
 

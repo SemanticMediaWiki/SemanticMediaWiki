@@ -2,17 +2,18 @@
 
 namespace SMW\Tests\Utils;
 
-use CommentStoreComment;
+use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Storage\RevisionSlotsUpdate;
-use RequestContext;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\TestEnvironment;
-use Title;
 use UnexpectedValueException;
-use User;
 
 /**
  * @license GPL-2.0-or-later
@@ -94,7 +95,7 @@ class PageCreator {
 	 * @return PageCreator
 	 */
 	public function doEdit( $pageContent = '', $editMessage = '' ) {
-		$content = \ContentHandler::makeContent(
+		$content = ContentHandler::makeContent(
 			$pageContent,
 			$this->getPage()->getTitle()
 		);

@@ -29,15 +29,15 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\Message' )
+		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,7 +45,7 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isAllowed' )
 			->willReturn( true );
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 

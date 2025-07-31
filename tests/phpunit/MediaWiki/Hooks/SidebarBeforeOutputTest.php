@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\Tests\Utils\Mock\MockTitle;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
@@ -152,11 +152,11 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newSkinStub( bool $isArticle ) {
-		$message = $this->getMockBuilder( '\Message' )
+		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$output = $this->getMockBuilder( '\OutputPage' )
+		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -170,7 +170,7 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$skin->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
-			->willReturn( Title::newFromText( __METHOD__ ) );
+			->willReturn( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$skin->expects( $this->any() )
 			->method( 'msg' )

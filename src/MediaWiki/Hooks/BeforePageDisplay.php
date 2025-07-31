@@ -2,15 +2,15 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Html;
-use OutputPage;
+use MediaWiki\Html\Html;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Skin\SkinComponentUtils;
+use MediaWiki\Title\Title;
 use Skin;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory;
-use SpecialPage;
-use Title;
 
 /**
  * BeforePageDisplay hook which allows last minute changes to the
@@ -83,7 +83,7 @@ class BeforePageDisplay implements HookListener {
 			$link['rel']   = 'alternate';
 			$link['type']  = 'application/rdf+xml';
 			$link['title'] = $title->getPrefixedText();
-			$link['href']  = SpecialPage::getTitleFor( 'ExportRDF', $title->getPrefixedText() )->getLocalUrl( 'xmlmime=rdf' );
+			$link['href']  = SkinComponentUtils::makeSpecialUrl( 'ExportRDF', [ 'xmlmime' => 'rdf' ] );
 			$outputPage->addLink( $link );
 		}
 

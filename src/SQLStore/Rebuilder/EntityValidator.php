@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\Rebuilder;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\SQLStore;
-use Title;
 
 /**
  * @private

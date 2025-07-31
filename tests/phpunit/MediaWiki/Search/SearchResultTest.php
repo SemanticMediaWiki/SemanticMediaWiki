@@ -19,7 +19,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testGetSectionTitle_WithFragment() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,7 +36,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetSectionTitle_WithoutFragment() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +52,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExcerpt() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +70,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTitleSnippet() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +95,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTextSnippet_HasHighlight() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -110,7 +110,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTextSnippet_NoHighlight() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

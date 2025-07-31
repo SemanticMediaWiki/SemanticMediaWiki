@@ -74,7 +74,7 @@ class ConfigurationListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

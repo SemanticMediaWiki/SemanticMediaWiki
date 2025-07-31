@@ -57,7 +57,7 @@ class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterTaskHandlers' );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

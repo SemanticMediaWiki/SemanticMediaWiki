@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -79,14 +79,16 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 			"Skipping test because JobQueue::getQueueSize only returns correct results on 1.27+"
 		);
 
-		$propertyPage = Title::newFromText( 'FooProperty', SMW_NS_PROPERTY );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$propertyPage = $titleFactory->newFromText( 'FooProperty', SMW_NS_PROPERTY );
 
 		$this->pageCreator
 			->createPage( $propertyPage )
 			->doEdit( '[[Has type::Page]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Foo', NS_MAIN ) )
+			->createPage( $titleFactory->newFromText( 'Foo', NS_MAIN ) )
 			->doEdit( '[[FooProperty::SomePage]]' );
 
 		$this->pageCreator
@@ -119,7 +121,7 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 
 		$this->pages = [
 			$propertyPage,
-			Title::newFromText( 'Foo' )
+			$titleFactory->newFromText( 'Foo' )
 		];
 	}
 
@@ -133,7 +135,7 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 			"Skipping test because JobQueue::getQueueSize only returns correct results on 1.27+"
 		);
 
-		$category = Title::newFromText( 'FooCat', NS_CATEGORY );
+		$category = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'FooCat', NS_CATEGORY );
 
 		$this->pageCreator
 			->createPage( $category )

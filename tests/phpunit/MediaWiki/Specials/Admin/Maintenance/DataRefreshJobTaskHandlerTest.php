@@ -105,7 +105,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +127,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'delete' )
 			->with( 'smw.refresh' );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

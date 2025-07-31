@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group SMW
@@ -75,7 +75,7 @@ class PageWithTemplateInclusionTest extends SMWIntegrationTestCase {
 			]
 		];
 
-		$title = Title::newFromText( 'Foo-1-19-7' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo-1-19-7' );
 
 		$semanticDataFinder = new ByPageSemanticDataFinder();
 		$semanticDataFinder
