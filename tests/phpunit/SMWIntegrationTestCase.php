@@ -8,6 +8,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use ObjectCache;
 use PHPUnit\Framework\TestResult;
+use RequestContext;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\LinkBatch;
@@ -81,7 +82,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		parent::setUp();
 
 		// Clear any cached user to ensure a clean state for each test
-		$user = $this->getTestUser()->getUser();
+		$user = RequestContext::getMain()->getUser();
 		$user->clearInstanceCache( $user->mFrom );
 
 		// Reset services and caches that SMW tests rely on
