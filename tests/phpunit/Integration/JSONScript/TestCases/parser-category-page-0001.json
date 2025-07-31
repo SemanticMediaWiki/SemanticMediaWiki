@@ -1,0 +1,53 @@
+{
+	"description": "Test category page (#4759)",
+	"setup": [
+		{
+			"namespace": "NS_MAIN",
+			"page": "PP0001",
+			"contents": "test"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has page",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "PP0001",
+			"contents": "[[Has page::PP0001]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0",
+			"namespace": "NS_CATEGORY",
+			"subject": "PP0001",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {}
+				},
+				"to-contain": [
+					"<p><a href=\".*/PP0001\" title=\"PP0001\">PP0001</a>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_CATEGORY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

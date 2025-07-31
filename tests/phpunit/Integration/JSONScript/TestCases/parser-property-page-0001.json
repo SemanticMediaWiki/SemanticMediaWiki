@@ -1,0 +1,52 @@
+{
+	"description": "Test property page, '...' more than (`smwgMaxPropertyValues`)",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "PP0001",
+			"contents": "[[Has type::Number]]"
+		},
+		{
+			"namespace": "NS_MAIN",
+			"page": "PP0001/1",
+			"contents": "[[PP0001::1]] [[PP0001::2]] [[PP0001::3]] [[PP0001::4]] [[PP0001::5]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (ensure only one `…` appears when more than 3 (see `smwgMaxPropertyValues`) annotations are available)",
+			"namespace": "SMW_NS_PROPERTY",
+			"subject": "PP0001",
+			"assert-output": {
+				"onPageView": {
+					"parameters": {}
+				},
+				"to-contain": [
+					"<a href=\".*/PP0001-2F1::PP0001\" title=\".*/PP0001-2F1::PP0001\">…</a></div>"
+				],
+				"not-contain": [
+					"<a href=\".*/PP0001-2F1::PP0001\" title=\".*/PP0001-2F1::PP0001\">…</a>, <a href=\".*/PP0001-2F1::PP0001\" title=\".*/PP0001-2F1::PP0001\">…</a></div>"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgMaxPropertyValues": 3,
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"SMW_NS_PROPERTY": true,
+			"NS_CATEGORY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
