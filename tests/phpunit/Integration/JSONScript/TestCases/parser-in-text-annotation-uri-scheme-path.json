@@ -1,0 +1,106 @@
+{
+	"description": "Test `in-text annotation` with `_uri` on valid/invalid scheme/path",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "Has url",
+			"contents": "[[Has type::URL]]"
+		},
+		{
+			"page": "Example/PA0052/1",
+			"contents": "[[Has url::ftp://example.com/foo]]"
+		},
+		{
+			"page": "Example/PA0052/2",
+			"contents": "[[Has url::User:Test]]"
+		},
+		{
+			"page": "Example/PA0052/3",
+			"contents": "[[Has url::http:///]]"
+		},
+		{
+			"page": "Example/PA0052/Q.1",
+			"contents": "{{#ask: [[Has url::User:Test]] |default=No result }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 valid ftp",
+			"subject": "Example/PA0052/1",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"Has url"
+					],
+					"propertyValues": [
+						"ftp://example.com/foo"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 invalid User:",
+			"subject": "Example/PA0052/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 (allow invalid scheme in query context)",
+			"subject": "Example/PA0052/Q.1",
+			"assert-output": {
+				"to-contain": [
+					"No result"
+				],
+				"not-contain": [
+					"<span class=\"smw-highlighter\" data-type=\"4\" data-state=\"inline\""
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#3 invalid path `///`",
+			"subject": "Example/PA0052/3#_ERRd3ce18ed907900b1ec8f6a2b7bce6aea",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_ERRT",
+						"_ERRP"
+					],
+					"propertyValues": [
+						"\"http:///\" has been identified to contain an invalid \"/\" authority or path component."
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

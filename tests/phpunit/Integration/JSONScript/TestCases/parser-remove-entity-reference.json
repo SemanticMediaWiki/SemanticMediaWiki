@@ -1,0 +1,73 @@
+{
+	"description": "Test removal of entity references",
+	"setup": [
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P:0463-000",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"namespace": "SMW_NS_PROPERTY",
+			"page": "P:0463-001",
+			"contents": "[[Has type::Page]]"
+		},
+		{
+			"page": "PR0001/1",
+			"contents": "[[P:0463-000::PR0001/2]]"
+		},
+		{
+			"page": "PR0001/2",
+			"contents": "[[P:0463-000::PR0001/2/1]]"
+		},
+		{
+			"page": "PR0001/1",
+			"contents": "{{#ask: [[P:0463-000::+]] }}"
+		},
+		{
+			"page": "PR0001/3",
+			"contents": "{{#subobject: |P:0463-001=PR0001/4 }}"
+		},
+		{
+			"page": "PR0001/4",
+			"contents": "[[P:0463-001::PR0001/4/1]]"
+		},
+		{
+			"page": "PR0001/3",
+			"contents": "{{#ask: [[P:0463-001::+]] }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 (Verifies that (especially in case of ES) the removed assignment to `P:0463-000` in `PR0001/1` doesn't remove the entire entity from the back-end but only the reference",
+			"subject": "PR0001/1",
+			"assert-output": {
+				"to-contain": [
+					"PR0001/2"
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1",
+			"subject": "PR0001/3",
+			"assert-output": {
+				"to-contain": [
+					"PR0001/4"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		]
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

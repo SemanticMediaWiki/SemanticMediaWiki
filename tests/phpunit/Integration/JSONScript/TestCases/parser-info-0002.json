@@ -1,0 +1,48 @@
+{
+	"description": "Test `#info`, `#ask`/`#show` with error output (`wgContLang=en`, `wgLang=en`)",
+	"setup": [
+		{
+			"page": "PI0002/1",
+			"contents": "Info: {{#info: message=Test some error {{#show: [[PI0002/2]] |?Has text }} }}"
+		},
+		{
+			"page": "PI0002/2",
+			"contents": "Info: {{#info: message=Test some <span style='color:red;'>error</span> }}"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 switch #info to error display, inner `smw-highlighter` is removed",
+			"subject": "PI0002/1",
+			"assert-output": {
+				"n-sequence": true,
+				"to-contain": [
+					"Info: <span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\"",
+					"title=\"Test some error "
+				]
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 inner <span> remains",
+			"subject": "PI0002/2",
+			"assert-output": {
+				"n-sequence": true,
+				"to-contain": [
+					"Info: <span class=\"smw-highlighter\" data-type=\"6\" data-state=\"persistent\"",
+					"Test some &lt;span style='color:red;'&gt;error&lt;/span&gt;"
+				]
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en"
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}

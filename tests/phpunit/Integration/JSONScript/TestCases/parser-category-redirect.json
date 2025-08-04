@@ -1,0 +1,112 @@
+{
+	"description": "Test category redirect (`SMW_CAT_REDIRECT`)",
+	"setup": [
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Example/PR0001",
+			"contents": "#REDIRECT [[Example/PR0001/1]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Example/PR0001/SubCat",
+			"contents": "[[Category:Example/PR0001]]"
+		},
+		{
+			"namespace": "NS_CATEGORY",
+			"page": "Example/PR0001/ValidCat",
+			"contents": "#REDIRECT [[:Category:Example/PR0001/ValidCat2]]"
+		},
+		{
+			"page": "Example/PR0001/1",
+			"contents": "[[Category:Example/PR0001]]"
+		},
+		{
+			"page": "Example/PR0001/2",
+			"contents": "[[Category:Example/PR0001/ValidCat]]"
+		}
+	],
+	"tests": [
+		{
+			"type": "parser",
+			"about": "#0 track category with invalid (NS_MAIN) redirect target",
+			"subject": "Example/PR0001/1",
+			"store": {
+				"clear-cache": true
+			},
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					],
+					"incoming": {
+						"propertyKeys": [
+							"_REDI"
+						]
+					}
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#1 track sub-category",
+			"namespace": "NS_CATEGORY",
+			"subject": "Example/PR0001/SubCat",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_ERRC"
+					]
+				}
+			}
+		},
+		{
+			"type": "parser",
+			"about": "#2 valid cat redirect, dsiplay the redirect target",
+			"subject": "Example/PR0001/2",
+			"assert-store": {
+				"semantic-data": {
+					"strictPropertyValueMatch": false,
+					"propertyCount": 3,
+					"propertyKeys": [
+						"_SKEY",
+						"_MDAT",
+						"_INST"
+					],
+					"propertyValues": [
+						"Example/PR0001/ValidCat2#14##"
+					]
+				}
+			}
+		}
+	],
+	"settings": {
+		"wgContLang": "en",
+		"wgLang": "en",
+		"smwgCategoryFeatures": [
+			"SMW_CAT_INSTANCE",
+			"SMW_CAT_REDIRECT",
+			"SMW_CAT_HIERARCHY"
+		],
+		"smwgPageSpecialProperties": [
+			"_MDAT"
+		],
+		"smwgNamespacesWithSemanticLinks": {
+			"NS_MAIN": true,
+			"NS_CATEGORY": true,
+			"SMW_NS_PROPERTY": true
+		}
+	},
+	"meta": {
+		"version": "2",
+		"is-incomplete": false,
+		"debug": false
+	}
+}
