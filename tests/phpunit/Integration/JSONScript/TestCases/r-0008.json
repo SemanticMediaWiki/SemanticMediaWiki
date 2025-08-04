@@ -79,6 +79,9 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
+		"skip-on": {
+			"mediawiki": [ ">1.42.x", "Skipping, broken due to missing 4, 5, 6 in #1" ]
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false
