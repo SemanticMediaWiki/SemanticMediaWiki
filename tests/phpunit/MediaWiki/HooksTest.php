@@ -5,15 +5,15 @@ namespace SMW\Tests\MediaWiki;
 use MediaWiki\Block\Block;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
-use ParserOptions;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks
@@ -47,15 +47,15 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parser = $this->getMockBuilder( '\Parser' )
+		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\Title' )
+		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +67,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 9900 );
 
-		$this->outputPage = $this->getMockBuilder( '\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,11 +75,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getUser' )
 			->willReturn( $user );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestContext = $this->getMockBuilder( '\RequestContext' )
+		$this->requestContext = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -157,7 +157,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		// BeforePageDisplay
 		$callback = end( $vars['wgHooks']['BeforePageDisplay'] );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -171,7 +171,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider callMethodProvider
 	 */
 	public function testRegister( $method ) {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -196,7 +196,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			'AdminLinks'
 		];
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -360,7 +360,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callOutputPageParserOutput( $instance ) {
 		$handler = 'OutputPageParserOutput';
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -450,7 +450,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -506,7 +506,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -539,14 +539,14 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callRevisionFromEditComplete( $instance ) {
 		$handler = 'RevisionFromEditComplete';
 
-		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
+		$contentHandler = $this->getMockBuilder( '\MediaWiki\Content\ContentHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 		$contentHandler->expects( $this->any() )
 			->method( 'getDefaultFormat' )
 			->willReturn( CONTENT_FORMAT_WIKITEXT );
 
-		$content = $this->getMockBuilder( '\Content' )
+		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -554,7 +554,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentHandler' )
 			->willReturn( $contentHandler );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -574,7 +574,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContent' )
 			->willReturn( $content );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -607,7 +607,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$oldTitle = $this->getMockBuilder( '\Title' )
+		$oldTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -619,7 +619,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$newTitle = $this->getMockBuilder( '\Title' )
+		$newTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -627,7 +627,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_SPECIAL );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -650,14 +650,14 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callArticleProtectComplete( $instance ) {
 		$handler = 'ArticleProtectComplete';
 
-		$contentHandler = $this->getMockBuilder( '\ContentHandler' )
+		$contentHandler = $this->getMockBuilder( '\MediaWiki\Content\ContentHandler' )
 			->disableOriginalConstructor()
 			->getMock();
 		$contentHandler->expects( $this->any() )
 			->method( 'getDefaultFormat' )
 			->willReturn( CONTENT_FORMAT_WIKITEXT );
 
-		$content = $this->getMockBuilder( '\Content' )
+		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -681,7 +681,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $this->title );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -855,7 +855,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $this->title );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -892,7 +892,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1020,7 +1020,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$handler = 'GetPreferences';
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 		$preferences = [];
@@ -1037,7 +1037,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callSkinTemplateNavigation( $instance ) {
 		$handler = 'SkinTemplateNavigation::Universal';
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1202,7 +1202,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$title = Title::newFromText( 'Foo' );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1214,7 +1214,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1255,7 +1255,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callParserFirstCallInit( $instance ) {
 		$handler = 'ParserFirstCallInit';
 
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1280,7 +1280,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$title = $this->title;
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1447,7 +1447,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callUserGroupsChanged( $instance ) {
 		$handler = 'UserGroupsChanged';
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1470,7 +1470,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callDeleteAccount( $instance ) {
 		$handler = 'DeleteAccount';
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1541,7 +1541,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( 'User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

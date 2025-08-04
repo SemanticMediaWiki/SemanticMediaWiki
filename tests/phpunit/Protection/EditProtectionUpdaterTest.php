@@ -37,7 +37,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\User' )
+		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -124,7 +124,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testDoUpdateFromWithRestrictionsButNoTrueEditProtection() {
 		$this->markTestSkipped( 'SUT needs refactoring' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +175,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

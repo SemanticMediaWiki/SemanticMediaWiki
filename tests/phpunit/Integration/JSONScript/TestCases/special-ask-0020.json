@@ -32,7 +32,7 @@
                     "th class=\"unsortable\"",
                     "class=\"unsortable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<a href=\"/index.php/File:SA0020.png\"",
+                    "<a href=\"/wiki/File:SA0020.png\"",
                     "width=\"75\""
 				]
 			}
@@ -49,7 +49,7 @@
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<a href=\"/index.php/File:SA0020.png\"",
+                    "<a href=\"/wiki/File:SA0020.png\"",
                     "height=\"95\""
 				],
                 "not-contain": [
@@ -74,7 +74,7 @@
 				],
                 "not-contain": [
                     "class=\"unsortable\"",
-                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/index.php/File:SA0020.png\""
+                    "<td class=\"Has-file smwtype_wpg\"><a href=\"/wiki/File:SA0020.png\""
                 ]
 			}
 		},
@@ -90,7 +90,7 @@
 				"to-contain": [
 					"<table class=\"sortable wikitable smwtable broadtable\"",
                     "<td class=\"Has-file smwtype_wpg\"",
-                    "<a href=\"/index.php/File:SA0020.png\"",
+                    "<a href=\"/wiki/File:SA0020.png\"",
                     "width=\"90\""
 				]
 			}

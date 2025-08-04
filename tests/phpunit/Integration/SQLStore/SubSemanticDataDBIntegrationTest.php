@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -9,7 +10,6 @@ use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use Title;
 
 /**
  *
@@ -45,7 +45,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testCreatePageWithSubobject() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$pageCreator = new PageCreator();
 
@@ -87,7 +87,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPredefinedProperty_Canonical_MonolingualText() {
-		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
 
 		$pageCreator = new PageCreator();
 
@@ -127,7 +127,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPredefinedProperty_Key_MonolingualText() {
-		$this->title = Title::newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Display_precision_of', SMW_NS_PROPERTY );
 
 		$pageCreator = new PageCreator();
 

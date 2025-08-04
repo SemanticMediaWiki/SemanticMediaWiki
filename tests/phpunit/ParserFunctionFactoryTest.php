@@ -44,7 +44,7 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 

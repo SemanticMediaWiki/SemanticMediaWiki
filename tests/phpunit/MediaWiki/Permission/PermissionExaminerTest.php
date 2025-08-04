@@ -28,7 +28,7 @@ class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\User' )
+		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

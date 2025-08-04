@@ -111,7 +111,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -123,7 +123,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$user
 		);
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,7 +179,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,7 +187,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'matchEditToken' )
 			->willReturn( true );
 
-		$webRequest = $this->getMockBuilder( '\WebRequest' )
+		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Preference;
 
-use MediaWiki\User\UserOptionsLookup;
+use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\Tests\PHPUnitCompat;
 
@@ -24,7 +24,7 @@ class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->getMockBuilder( '\User' )
+		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -172,7 +172,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 				->willReturn( $returnValue );
 		}
 
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -288,7 +288,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testWikiPage_NativeData() {
-		$content = $this->getMockBuilder( '\Content' )
+		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -19,7 +19,7 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +30,7 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetForm_IsEditMode() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

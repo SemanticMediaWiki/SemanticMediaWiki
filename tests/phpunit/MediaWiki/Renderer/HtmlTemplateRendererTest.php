@@ -21,7 +21,7 @@ class HtmlTemplateRendererTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -32,7 +32,7 @@ class HtmlTemplateRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRenderTemplate() {
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 

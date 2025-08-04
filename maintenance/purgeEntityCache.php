@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -29,7 +30,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class purgeEntityCache extends \Maintenance {
+class purgeEntityCache extends Maintenance {
 
 	/**
 	 * @var Store

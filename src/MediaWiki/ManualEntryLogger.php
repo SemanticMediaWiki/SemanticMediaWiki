@@ -4,8 +4,8 @@ namespace SMW\MediaWiki;
 
 use LogEntry;
 use ManualLogEntry;
-use Title;
-use User;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 
 /**
  * @license GPL-2.0-or-later

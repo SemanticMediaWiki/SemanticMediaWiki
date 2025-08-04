@@ -2,14 +2,14 @@
 
 namespace SMW\Factbox;
 
-use OutputPage;
-use ParserOutput;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\EntityCache;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HmacSerializer;
-use Title;
 
 /**
  * Factbox output caching

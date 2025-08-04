@@ -2,7 +2,9 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Html\Html;
 use SMW\DIProperty;
+use SMWDataItem;
 
 /**
  * @private
@@ -74,7 +76,7 @@ class ExternalIdentifierValue extends StringValue {
 			$url = '[' . $uri . ' ' . $this->m_caption . ']';
 		}
 
-		return \Html::rawElement(
+		return Html::rawElement(
 			'span',
 			[
 				'class' => 'plainlinks smw-eid'
@@ -109,7 +111,7 @@ class ExternalIdentifierValue extends StringValue {
 			return $this->m_caption;
 		}
 
-		return \Html::rawElement(
+		return Html::rawElement(
 			'a',
 			[
 				'href'   => $uri,
@@ -136,7 +138,7 @@ class ExternalIdentifierValue extends StringValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DataItem
+	 * @return SMWDataItem
 	 */
 	public function getUri() {
 		if ( !$this->isValid() ) {

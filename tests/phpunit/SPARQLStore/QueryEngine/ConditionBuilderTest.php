@@ -751,7 +751,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExtendConditionUsingPropertyPathForWpgPropertyValueRedirect() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -812,7 +812,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExtendConditionUsingPropertyPathForWpgValueRedirect() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

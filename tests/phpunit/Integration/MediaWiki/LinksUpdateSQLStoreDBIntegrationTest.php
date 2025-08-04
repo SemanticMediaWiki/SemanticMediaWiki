@@ -4,13 +4,13 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
 use SMW\DIWikiPage;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
-use Title;
 use UnexpectedValueException;
 
 /**
@@ -64,7 +64,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testPageCreationAndRevisionHandlingBeforeLinksUpdate() {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
 		$this->assertSemanticDataBeforeContentAlteration();
@@ -83,7 +83,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	 * @dataProvider propertyCountProvider
 	 */
 	public function testLinksUpdateAndVerifyStoreUpdate( $expected ) {
-		$this->title = Title::newFromText( __METHOD__ );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$beforeAlterationRevId = $this->createSinglePageWithAnnotations();
 		$afterAlterationRevId  = $this->alterPageContentToCreateNewRevisionWithoutAnnotations();

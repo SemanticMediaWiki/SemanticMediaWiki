@@ -2,8 +2,8 @@
 
 namespace SMW\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
-use Parser;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;

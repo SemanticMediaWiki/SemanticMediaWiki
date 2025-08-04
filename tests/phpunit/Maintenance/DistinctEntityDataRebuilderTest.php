@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Maintenance\DistinctEntityDataRebuilder;
 use SMW\Options;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Maintenance\DistinctEntityDataRebuilder
@@ -96,7 +96,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$subject->expects( $this->once() )
 			->method( 'getTitle' )
-			->willReturn( Title::newFromText( __METHOD__ ) );
+			->willReturn( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
 			->disableOriginalConstructor()
@@ -234,25 +234,27 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$mwTitleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$titleFactory->expects( $this->at( 0 ) )
 			->method( 'newFromText' )
 			->with( 'Main page' )
-			->willReturn( Title::newFromText( 'Main page' ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Main page' ) );
 
 		$titleFactory->expects( $this->at( 1 ) )
 			->method( 'newFromText' )
 			->with( 'Some other page' )
-			->willReturn( Title::newFromText( 'Some other page' ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Some other page' ) );
 
 		$titleFactory->expects( $this->at( 2 ) )
 			->method( 'newFromText' )
 			->with( 'Help:Main page' )
-			->willReturn( Title::newFromText( 'Main page', NS_HELP ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Main page', NS_HELP ) );
 
 		$titleFactory->expects( $this->at( 3 ) )
 			->method( 'newFromText' )
 			->with( 'Main page' )
-			->willReturn( Title::newFromText( 'Main page' ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Main page' ) );
 
 		$instance = new DistinctEntityDataRebuilder(
 			$store,

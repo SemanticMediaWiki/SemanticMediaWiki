@@ -2,14 +2,14 @@
 
 namespace SMW;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 use Skin;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMWDIError;
-use Title;
 
 /**
  * Query class that provides content for the Special:Properties page

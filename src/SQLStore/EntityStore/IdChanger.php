@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\SQLStore;
@@ -129,7 +130,7 @@ class IdChanger {
 
 		$connection->endAtomicTransaction( __METHOD__ );
 
-		if ( ( $title = \Title::newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
+		if ( ( $title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $row->smw_title, $row->smw_namespace ) ) !== null ) {
 			$updateJob = $this->jobFactory->newUpdateJob( $title, [ 'origin' => __METHOD__ ] );
 			$updateJob->insert();
 		}

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -10,7 +11,6 @@ use SMW\SPARQLStore\SPARQLStore;
 use SMW\Subobject;
 use SMW\Tests\TestEnvironment;
 use SMWExporter as Exporter;
-use Title;
 
 /**
  * @covers \SMW\SPARQLStore\SPARQLStore
@@ -40,7 +40,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetSemanticDataOnMockBaseStore() {
-		$subject = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$subject = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
@@ -64,7 +64,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteSubjectOnMockBaseStore() {
-		$title = Title::newFromText( 'DeleteSubjectOnMockBaseStore' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'DeleteSubjectOnMockBaseStore' );
 
 		$expResource = Exporter::getInstance()->newExpElement( DIWikiPage::newFromTitle( $title ) );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
@@ -154,8 +154,9 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCallToChangeTitleForCompletePageMove() {
-		$oldTitle = Title::newFromText( __METHOD__ . '-old' );
-		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$oldTitle = $titleFactory->newFromText( __METHOD__ . '-old' );
+		$newTitle = $titleFactory->newFromText( __METHOD__ . '-new' );
 
 		$respositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RespositoryConnection' )
 			->disableOriginalConstructor()
@@ -186,7 +187,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoDeleteTaskForSubobjectsDuringUpdate() {
-		$expectedSubjectForDeleteTask = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ ) );
+		$expectedSubjectForDeleteTask = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$subobject = new Subobject( $expectedSubjectForDeleteTask->getTitle() );
 		$subobject->setEmptyContainerForId( 'Foo' );

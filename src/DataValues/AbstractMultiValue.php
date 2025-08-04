@@ -4,6 +4,7 @@ namespace SMW\DataValues;
 
 use SMW\DIProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMWDataItem;
 use SMWDataValue as DataValue;
 use SMWPropertyListValue as PropertyListValue;
 
@@ -60,7 +61,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return DataItem[]|null
+	 * @return SMWDataItem[]|null
 	 */
 	public function getDataItems() {
 		if ( !$this->isValid() ) {

@@ -153,7 +153,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasLatestRevID' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

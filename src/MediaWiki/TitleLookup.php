@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
-use Title;
 
 /**
  * A convenience class to encapsulate MW related database interaction

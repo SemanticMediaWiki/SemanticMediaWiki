@@ -3,10 +3,10 @@
 namespace SMW\Tests\Integration\MediaWiki\Jobs;
 
 use Job;
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -63,7 +63,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		// configured to run immediately, so after it was run, the number of exprected jobs in queue will be 0
 		parent::runJobs( [ 'minJobs' => 0, 'complete' => false ] );
 
-		$newTitle = Title::newFromText( __METHOD__ . '-new' );
+		$newTitle = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ . '-new' );
 
 		$wikiPage = parent::getNonexistingTestPage( __METHOD__ . '-old' );
 		parent::editPage( $wikiPage, '[[Has jobqueue test::UpdateJob]]' );
@@ -72,7 +72,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		// ---- taken from mediawiki/tests/phpunit/includes/page/MovePageTest.php
 		$createRedirect = true;
 		$pageId = $title->getArticleID();
-		$status = $this->getServiceContainer()
+		$status = MediaWikiServices::getInstance()
 			->getMovePageFactory()
 			->newMovePage( $title, $newTitle )
 			->move( $this->getTestUser()->getUser(), 'move reason', $createRedirect );
@@ -96,7 +96,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	public function testJobFactory( $jobName, $type ) {
 		$job = Job::factory(
 			$jobName,
-			Title::newFromText( __METHOD__ . $jobName ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ . $jobName ),
 			[]
 		);
 
@@ -120,24 +120,26 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 	public function titleProvider() {
 		$provider = [];
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		// #0 Simple property reference
 		$provider[] = [ [
-				'title' => Title::newFromText( __METHOD__ . '-foo' ),
+				'title' => $titleFactory->newFromText( __METHOD__ . '-foo' ),
 				'edit'  => '{{#set:|DeferredJobFoo=DeferredJobBar}}'
 			], [
-				'title' => Title::newFromText( __METHOD__ . '-bar' ),
+				'title' => $titleFactory->newFromText( __METHOD__ . '-bar' ),
 				'edit'  => '{{#set:|DeferredJobFoo=DeferredJobBar}}'
 			]
 		];
 
 		// #1 Source page in-property reference
-		$title = Title::newFromText( __METHOD__ . '-foo' );
+		$title = $titleFactory->newFromText( __METHOD__ . '-foo' );
 
 		$provider[] = [ [
 				'title' => $title,
 				'edit'  => ''
 			], [
-				'title' => Title::newFromText( __METHOD__ . '-bar' ),
+				'title' => $titleFactory->newFromText( __METHOD__ . '-bar' ),
 				'edit'  => '{{#set:|DeferredJobFoo=' . $title->getPrefixedText() . '}}'
 			]
 		];
@@ -183,7 +185,7 @@ class UpdateJobRoundtripTest extends SMWIntegrationTestCase {
 		}
 
 		$this->assertTrue(
-			Title::newFromText( 'Foo-A' )->isRedirect()
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo-A' )->isRedirect()
 		);
 	}
 }

@@ -3,10 +3,11 @@
 namespace SMW;
 
 use MediaWiki\Json\JsonUnserializer;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\Exception\DataItemException;
 use SMWDataItem;
-use Title;
 
 /**
  * This class implements wiki page data items.
@@ -241,7 +242,7 @@ class DIWikiPage extends SMWDataItem {
 	 * @return Title|null
 	 */
 	public function getTitle() {
-		return Title::makeTitleSafe(
+		return MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
 			$this->m_namespace,
 			$this->m_dbkey,
 			$this->m_subobjectname,

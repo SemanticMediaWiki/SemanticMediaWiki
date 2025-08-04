@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Localizer;
 use SMWInfolink as Infolink;
-use WebRequest;
 
 /**
  * @private

@@ -3,10 +3,10 @@
 namespace SMW\MediaWiki;
 
 use File;
-use IDBAccessObject;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
-use Title;
+use MediaWiki\Title\Title;
+use Wikimedia\Rdbms\IDBAccessObject;
 use WikiPage;
 
 /**

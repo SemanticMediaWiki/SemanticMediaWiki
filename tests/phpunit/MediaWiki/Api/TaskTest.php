@@ -164,7 +164,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunJobListTask() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

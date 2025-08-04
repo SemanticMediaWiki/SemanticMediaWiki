@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Benchmark;
 
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageReader;
-use Title;
 
 /**
  * @group semantic-mediawiki-benchmark
@@ -107,10 +107,11 @@ class PageEditCopyBenchmarkRunner {
 		}
 
 		$editReports = [];
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		foreach ( $case['edit'] as $title ) {
 
-			$editTitle = Title::newFromText( $title );
+			$editTitle = $titleFactory->newFromText( $title );
 
 			if ( !$editTitle->exists() ) {
 				throw new RuntimeException( $title . ' is not available or readable for the edit process.' );

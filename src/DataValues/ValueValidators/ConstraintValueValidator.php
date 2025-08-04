@@ -2,6 +2,8 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use SMWDataValue as DataValue;
+
 /**
  * @license GPL-2.0-or-later
  * @since 2.4

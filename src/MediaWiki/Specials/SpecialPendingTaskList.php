@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
 use SMW\Utils\HtmlTabs;
-use SpecialPage;
 
 /**
  * Displays pending tasks in connection with Semantic MediaWiki.

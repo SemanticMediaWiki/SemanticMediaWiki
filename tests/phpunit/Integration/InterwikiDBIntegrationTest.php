@@ -9,7 +9,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -83,11 +82,13 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			$this->markTestSkipped( 'The Serialization for interwiki needs to be checked for MW 1.40 and newer.' );
 		}
 
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$this->stringBuilder
 			->addString( '[[Has type::Page]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
+			->createPage( $titleFactory->newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
 			->doEdit( $this->stringBuilder->getString() );
 
 		$this->stringBuilder
@@ -97,7 +98,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		// parent::editPage( $wikiPageTwo, $this->stringBuilder->getString() );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) )
+			->createPage( $titleFactory->newFromText( __METHOD__ ) )
 			->doEdit( $this->stringBuilder->getString() );
 
 		$output = $this->fetchSerializedRdfOutputFor(
@@ -116,17 +117,19 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testQueryForInterwikiAnnotation() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$this->stringBuilder
 			->addString( '[[Has type::Page]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
+			->createPage( $titleFactory->newFromText( 'Use for interwiki annotation', SMW_NS_PROPERTY ) )
 			->doEdit( $this->stringBuilder->getString() );
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ . '-1' ) )
+			->createPage( $titleFactory->newFromText( __METHOD__ . '-1' ) )
 			->doEdit( '[[Use for interwiki annotation::Interwiki link]]' );
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ . '-2' ) )
+			->createPage( $titleFactory->newFromText( __METHOD__ . '-2' ) )
 			->doEdit( '[[Use for interwiki annotation::iw-test:Interwiki link]]' );
 
 		$this->stringBuilder
@@ -144,14 +147,14 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 		$query->setLimit( 10 );
 
 		// Expects only one result with an interwiki being used as differentiator
-		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-2' ) );
+		$this->subjects[] = DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ . '-2' ) );
 
 		$this->queryResultValidator->assertThatQueryResultHasSubjects(
 			$this->subjects,
 			$this->getStore()->getQueryResult( $query )
 		);
 
-		$this->subjects[] = DIWikiPage::newFromTitle( Title::newFromText( __METHOD__ . '-1' ) );
+		$this->subjects[] = DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ . '-1' ) );
 	}
 
 	private function fetchSerializedRdfOutputFor( array $pages ) {

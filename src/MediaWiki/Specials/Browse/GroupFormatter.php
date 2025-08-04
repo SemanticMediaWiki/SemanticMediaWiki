@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;

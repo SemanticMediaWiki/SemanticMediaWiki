@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Options;
@@ -57,7 +58,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  * @author James Hong Kong
  */
-class setupStore extends \Maintenance {
+class setupStore extends Maintenance {
 
 	/**
 	 * Name of the store class configured in the "LocalSettings.php" file. Stored to
@@ -104,7 +105,7 @@ class setupStore extends \Maintenance {
 	 * @since 3.0
 	 */
 	public function getDbType() {
-		return \Maintenance::DB_ADMIN;
+		return Maintenance::DB_ADMIN;
 	}
 
 	/**

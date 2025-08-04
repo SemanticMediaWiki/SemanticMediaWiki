@@ -4,8 +4,8 @@ namespace SMW\Tests\Utils\Runners;
 
 use ImportReporter;
 use ImportStreamSource;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use RequestContext;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
 

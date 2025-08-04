@@ -58,7 +58,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcesCanKeepParserCache() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +97,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcesCanNOTKeepParserCache() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -136,7 +136,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnDisabledNamespace() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

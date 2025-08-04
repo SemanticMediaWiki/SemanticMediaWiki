@@ -2,15 +2,14 @@
 
 namespace SMW\MediaWiki;
 
-use IDBAccessObject;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionLookup;
 use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\PageInfo;
-use SMW\Schema\Content\Content;
-use Title;
-use User;
 use WikiFilePage;
+use Wikimedia\Rdbms\IDBAccessObject;
 use WikiPage;
 
 /**
@@ -131,14 +130,9 @@ class PageInfoProvider implements PageInfo {
 	 * @return text
 	 */
 	public function getNativeData() {
-		if ( $this->wikiPage->getContent() === null ) {
-			return '';
-		}
-
 		$content = $this->wikiPage->getContent();
-
-		if ( $content instanceof Content ) {
-			return $content->toJson();
+		if ( $content === null ) {
+			return '';
 		}
 
 		return $content->getNativeData();

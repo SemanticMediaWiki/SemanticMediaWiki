@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use Parser;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\StripState;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use StripState;
 
 /**
  * The main task for this hook is to parse and replace the Semantic MediaWiki

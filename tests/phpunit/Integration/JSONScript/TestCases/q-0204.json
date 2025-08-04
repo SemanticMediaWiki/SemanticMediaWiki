@@ -106,6 +106,7 @@
 	},
 	"meta": {
 		"skip-on": {
+			"mediawiki": [ ">1.42.x", "Skipping, broken due to no results being returned on #2" ],
 			"virtuoso": "Virtuoso reports 'SPARQL compiler: Blank node ... is not allowed in a constant clause', see https://github.com/openlink/virtuoso-opensource/issues/126"
 		},
 		"version": "2",

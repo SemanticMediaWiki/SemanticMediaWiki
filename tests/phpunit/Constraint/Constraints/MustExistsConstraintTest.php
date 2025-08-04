@@ -56,7 +56,7 @@ class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-must-exists';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

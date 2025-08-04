@@ -2,9 +2,9 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\SpecialConcepts;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -36,7 +36,7 @@ class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
 	public function testExecute() {
 		$expected = 'p class="smw-special-concept-docu plainlinks"';
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +48,7 @@ class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialConcepts();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SemanticMadiaWiki' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
 		);
 
 		$oldOutput = $instance->getOutput();

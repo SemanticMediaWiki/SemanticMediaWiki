@@ -2,11 +2,13 @@
 
 namespace SMW\Services;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Onoi\Cache\Cache;
 use Onoi\CallbackContainer\CallbackContainerFactory;
 use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\EventDispatcher\EventDispatcher;
-use ParserOutput;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
@@ -48,7 +50,6 @@ use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
 use SMW\Store;
-use Title;
 
 /**
  * Application instances access for internal and external use
@@ -179,7 +180,7 @@ class ServicesFactory {
 	 *
 	 * @return PermissionExaminer
 	 */
-	public function newPermissionExaminer( ?\User $user = null ): PermissionExaminer {
+	public function newPermissionExaminer( ?User $user = null ): PermissionExaminer {
 		return new PermissionExaminer( $this->containerBuilder->create( 'PermissionManager' ), $user );
 	}
 
@@ -190,7 +191,7 @@ class ServicesFactory {
 	 *
 	 * @return PreferenceExaminer
 	 */
-	public function newPreferenceExaminer( ?\User $user = null ): PreferenceExaminer {
+	public function newPreferenceExaminer( ?User $user = null ): PreferenceExaminer {
 		return $this->containerBuilder->create( 'PreferenceExaminer', $user );
 	}
 

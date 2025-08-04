@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SpecialPage;
 
 /**
  * Convenience special page that just redirects to Special:Ask with a preset

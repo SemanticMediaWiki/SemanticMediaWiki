@@ -1,10 +1,16 @@
 <?php
 
+use MediaWiki\Linker\Linker;
+use MediaWiki\Parser\Sanitizer;
+use MediaWiki\WikiMap\WikiMap;
 use SMW\ConfigPreloader;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Highlighter;
+use SMW\Localizer\Localizer;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\Store;
+use SMW\StoreFactory;
 
 /**
  * Global functions specified and used by Semantic MediaWiki. In general, it is
@@ -145,10 +151,10 @@ function smwfEncodeMessages( array $messages, $type = 'warning', $separator = ' 
 /**
  * Returns an instance for the storage back-end
  *
- * @return \SMW\Store
+ * @return Store
  */
 function &smwfGetStore() {
-	$store = \SMW\StoreFactory::getStore();
+	$store = StoreFactory::getStore();
 	return $store;
 }
 
@@ -161,13 +167,8 @@ function &smwfGetStore() {
  * @return string
  */
 function smwfCacheKey( $namespace, $key ) {
-	if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-		$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
-			WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
-	} else {
-		$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
-			MediaWiki\WikiMap\WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
-	}
+	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
+		WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
 
 	if ( $namespace[0] !== ':' ) {
 		$namespace = ':' . $namespace;
@@ -196,11 +197,7 @@ function smwfGetLinker() {
 	static $linker = false;
 
 	if ( $linker === false ) {
-		if ( version_compare( MW_VERSION, '1.40', '<' ) ) {
-			$linker = new Linker();
-		} else {
-			$linker = new MediaWiki\Linker\Linker();
-		}
+		$linker = new Linker();
 	}
 
 	return $linker;

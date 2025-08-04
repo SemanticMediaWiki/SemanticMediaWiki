@@ -2,14 +2,14 @@
 
 namespace SMW\Tests;
 
-use FauxRequest;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use OutputPage;
-use RequestContext;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Request\WebResponse;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use SpecialPage;
-use WebRequest;
-use WebResponse;
 
 /**
  *

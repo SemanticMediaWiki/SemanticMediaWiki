@@ -78,6 +78,9 @@
 		"smwgNamespace": "http://example.org/id/"
 	},
 	"meta": {
+		"skip-on": {
+			"mediawiki": [ ">1.42.x", "Skipping, broken due to 2 and 3 in #0" ]
+		},
 		"version": "2",
 		"is-incomplete": false,
 		"debug": false

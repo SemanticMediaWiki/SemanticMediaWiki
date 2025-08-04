@@ -2,6 +2,8 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Title\Title;
+
 /**
  * @license GPL-2.0-or-later
  * @since   3.1
@@ -33,7 +35,7 @@ class Pipetrick {
 		# Regexes taken from MediaWiki parser.php. Maybe some day they'll factor it
 		# into its own function!
 
-		$tc = '[' . \Title::legalChars() . ']';
+		$tc = '[' . Title::legalChars() . ']';
 		$nc = '[ _0-9A-Za-z\x80-\xff-]'; # Namespaces can use non-ascii!
 		// [[ns:page (context)|]]
 		$p1 = "/\[\[(:?$nc+:|:|)($tc+?)( ?\\($tc+\\))\\|]]/";

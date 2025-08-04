@@ -2,7 +2,7 @@
 
 namespace SMW;
 
-use ExtensionDependencyError;
+use MediaWiki\Registration\ExtensionDependencyError;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
 
 /**

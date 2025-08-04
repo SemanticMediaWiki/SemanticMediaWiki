@@ -41,7 +41,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function servicesProvider() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 		$title->expects( $this->any() )

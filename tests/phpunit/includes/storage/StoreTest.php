@@ -2,12 +2,12 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\StoreFactory;
-use Title;
 
 /**
  * Tests for the SMWStore class.
@@ -29,7 +29,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 	public function getSemanticDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText() ],
+			[ MediaWikiServices::getInstance()->getTitleFactory()->newMainPage()->getFullText() ],
 		];
 	}
 
@@ -37,7 +37,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	 * @dataProvider getSemanticDataProvider
 	 */
 	public function testGetSemanticData( $titleText, $filter = false ) {
-		$title = Title::newFromText( $titleText );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$title = $titleFactory->newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 
@@ -49,9 +50,10 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function getPropertyValuesDataProvider() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		return [
-			[ Title::newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
-			[ Title::newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
+			[ $titleFactory->newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
+			[ $titleFactory->newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
 		];
 	}
 
@@ -59,7 +61,7 @@ class StoreTest extends SMWIntegrationTestCase {
 	 * @dataProvider getPropertyValuesDataProvider
 	 */
 	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
-		$title = Title::newFromText( $titleText );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
@@ -97,7 +99,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 	public function getPropertiesDataProvider() {
 		return [
-			[ Title::newMainPage()->getFullText() ],
+			[ MediaWikiServices::getInstance()->getTitleFactory()->newMainPage()->getFullText() ],
 		];
 	}
 
@@ -105,7 +107,7 @@ class StoreTest extends SMWIntegrationTestCase {
 	 * @dataProvider getPropertiesDataProvider
 	 */
 	public function testGetProperties( $titleText, $requestOptions = null ) {
-		$title = Title::newFromText( $titleText );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $titleText );
 		$subject = DIWikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );

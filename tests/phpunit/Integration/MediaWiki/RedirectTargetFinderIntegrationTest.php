@@ -2,13 +2,13 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @group semantic-mediawiki-integration
@@ -60,10 +60,11 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testRedirectParseUsingManualRedirect() {
-		$target = Title::newFromText( 'RedirectParseUsingManualRedirect' );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$target = $titleFactory->newFromText( 'RedirectParseUsingManualRedirect' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) )
+			->createPage( $titleFactory->newFromText( __METHOD__ ) )
 			->doEdit( '#REDIRECT [[RedirectParseUsingManualRedirect]]' );
 
 		$expected = [
@@ -82,10 +83,11 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testRedirectParseUsingMoveToPage() {
-		$target = Title::newFromText( 'RedirectParseUsingMoveToPage' );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+		$target = $titleFactory->newFromText( 'RedirectParseUsingMoveToPage' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( __METHOD__ ) );
+			->createPage( $titleFactory->newFromText( __METHOD__ ) );
 
 		$this->pageCreator->doMoveTo( $target, true );
 
@@ -107,12 +109,13 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testManualRemovalOfRedirectTarget() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$source = DIWikiPage::newFromTitle(
-			Title::newFromText( __METHOD__ )
+			$titleFactory->newFromText( __METHOD__ )
 		);
 
 		$target = DIWikiPage::newFromTitle(
-			Title::newFromText( 'ManualRemovalOfRedirectTarget' )
+			$titleFactory->newFromText( 'ManualRemovalOfRedirectTarget' )
 		);
 
 		$target->getSortKey();
@@ -161,27 +164,29 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 			"Skipping test because expected target isn't resolved correctly on 1.19"
 		);
 
-		$source = Title::newFromText( 'DeepRedirectTargetResolverToFindTarget' );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$source = $titleFactory->newFromText( 'DeepRedirectTargetResolverToFindTarget' );
 
 		$this->pageCreator
 			->createPage( $source )
 			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToFindTarget/1]]' );
 
-		$intermediateTarget = Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/2' );
+		$intermediateTarget = $titleFactory->newFromText( 'DeepRedirectTargetResolverToFindTarget/2' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/1' ) )
+			->createPage( $titleFactory->newFromText( 'DeepRedirectTargetResolverToFindTarget/1' ) )
 			->doEdit( '...' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/1' ) )
+			->createPage( $titleFactory->newFromText( 'DeepRedirectTargetResolverToFindTarget/1' ) )
 			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToFindTarget/2]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/2' ) )
+			->createPage( $titleFactory->newFromText( 'DeepRedirectTargetResolverToFindTarget/2' ) )
 			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToFindTarget/3]]' );
 
-		$target = Title::newFromText( 'DeepRedirectTargetResolverToFindTarget/3' );
+		$target = $titleFactory->newFromText( 'DeepRedirectTargetResolverToFindTarget/3' );
 
 		$deepRedirectTargetResolver = ApplicationFactory::getInstance()
 			->newMwCollaboratorFactory()
@@ -211,19 +216,21 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 			"Skipping test because circular target (RuntimeException) isn't found on 1.19"
 		);
 
-		$source = Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget' );
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
+		$source = $titleFactory->newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget' );
 
 		$this->pageCreator
 			->createPage( $source )
 			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToDetectCircularTarget/1]]' );
 
 		$this->pageCreator
-			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' ) )
+			->createPage( $titleFactory->newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' ) )
 			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToDetectCircularTarget/2]]' );
 
 		// Create circular redirect
 		$this->pageCreator
-			->createPage( Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/2' ) )
+			->createPage( $titleFactory->newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/2' ) )
 			->doEdit( '#REDIRECT [[DeepRedirectTargetResolverToDetectCircularTarget/1]]' );
 
 		$deepRedirectTargetResolver = ApplicationFactory::getInstance()
@@ -232,7 +239,7 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 		// Store will point towards the correct target
 		$expectedRedirect = DIWikiPage::newFromTitle(
-			Title::newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' )
+			$titleFactory->newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' )
 		);
 
 		$this->assertEquals(

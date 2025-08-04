@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
-use Html;
-use WebRequest;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 
 /**
  * @private

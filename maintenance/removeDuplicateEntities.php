@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\Utils\CliMsgFormatter;
@@ -23,7 +24,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class removeDuplicateEntities extends \Maintenance {
+class removeDuplicateEntities extends Maintenance {
 
 	/**
 	 * @since 3.0
