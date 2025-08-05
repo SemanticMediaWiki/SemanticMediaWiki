@@ -24,11 +24,11 @@ Increases of minimum requirements are indicated in bold.
         <th>Notes</th>
     </tr>
     <tr>
-        <th>6.0.x</th>
-        <td>Future release</td>
-        <td>2025-08-TBD</td>
-        <td>TBD</td>
-        <td>TBD - 8.4</td>
+        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_6.0.0">6.0.x</a></th>
+        <td>Stable release</td>
+        <td>2025-08-12</td>
+        <td>2025-08-12</td>
+        <td>8.1 - 8.4</td>
         <td><strong>1.43</strong> - 1.44</td>
         <td></td>
     </tr>
