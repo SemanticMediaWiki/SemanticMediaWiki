@@ -162,6 +162,12 @@ Increases of minimum requirements are indicated in bold.
 		<th>PostgreSQL</th>
 	</tr>
 	<tr>
+		<th>6.x</th>
+		<td>Full support (5.7.0+)</td>
+		<td>Full support (3.3.7+)</td>
+		<td>Full support (9.5.0+)</td>
+	</tr>
+	<tr>
 		<th>5.x</th>
 		<td>Full support (5.5.8+)</td>
 		<td>Full support (3.3.7+)</td>
