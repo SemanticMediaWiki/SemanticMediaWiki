@@ -43,7 +43,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -104,16 +104,12 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 		$parserOutput->setTitleText( $title->getPrefixedText() );
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
-			->setMethods( [ 'exists', 'findAssociatedRev' ] )
+			->setMethods( [ 'exists' ] )
 			->getMock();
 
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'exists' )
 			->willReturn( true );
-
-		$idTable->expects( $this->atLeastOnce() )
-			->method( 'findAssociatedRev' )
-			->willReturn( 42 );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()
