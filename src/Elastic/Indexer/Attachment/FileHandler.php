@@ -2,9 +2,9 @@
 
 namespace SMW\Elastic\Indexer\Attachment;
 
-use MediaWiki\Title\Title;
 use File;
 use FileBackend;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\FileRepoFinder;
 
