@@ -195,12 +195,8 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		// 4348
 		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+link='
-			],
+			[ '[[Foo::Bar]]', '?Foobar', '+abc=123' ],
 			false,
 			[
 				'showMode'   => false,
@@ -208,8 +204,10 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => 'Foobar #link',
-						'params'  => [ 'link' => '' ]
+						'label'   => 'Foobar',
+						'params'  => [
+							'abc' => '123'
+						]
 					]
 				],
 				'parameters' => [],
@@ -218,11 +216,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+link=',
-				'+thclass=unsortable'
-			],
+			[ '[[Foo::Bar]]', '?Foobar', '+abc=123', '+abc=123' ],
 			false,
 			[
 				'showMode'   => false,
@@ -230,9 +224,10 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => 'Foobar #link;thclass',
-						'params'  => [ 'link' => '',
-									  'thclass' => 'unsortable' ]
+						'label'   => 'Foobar',
+						'params'  => [
+							'abc' => '123'
+						]
 					]
 				],
 				'parameters' => [],
@@ -241,12 +236,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+width=30px',
-				'+link=',
-				'+thclass=unsortable'
-			],
+			[ '[[Foo::Bar]]', '?Foobar', '+abc=123', '?ABC', '+abc=456', '+abc=+FOO', 'limit=10' ],
 			false,
 			[
 				'showMode'   => false,
@@ -254,103 +244,38 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 				'query'      => '[[Foo::Bar]]',
 				'printouts'  => [
 					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => "Foobar #30px;link;thclass",
-						'params'  => [ 'width' => '30px', 'link' => '', 'thclass' => 'unsortable' ]
+						'label'   => 'Foobar',
+						'params'  => [
+							'abc' => '123'
+						]
+					],
+					'2a30f08efdf827f7e76b895fde0fe670' => [
+						'label'   => 'ABC',
+						'params'  => [
+							'abc' => '456',
+							'abc' => '+FOO'
+						]
 					]
 				],
-				'parameters' => [],
+				'parameters' => [
+					'limit' => '10'
+				],
 				'this'       => []
 			]
 		];
 
+		// mainlabel=Foo|+abc=123 is currently NOT supported
 		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+width=30px',
-				'+link=',
-				'+height=50px',
-				'+thclass=unsortable'
-			],
+			[ '[[Foo::Bar]]', 'mainlabel=Foo', '+abc=123' ],
 			false,
 			[
 				'showMode'   => false,
 				'templateArgs' => false,
 				'query'      => '[[Foo::Bar]]',
-				'printouts'  => [
-					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => "Foobar #30x50px;link;thclass",
-						'params'  => [ 'width' => '30px', 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ]
-					]
+				'printouts'  => [],
+				'parameters' => [
+					'mainlabel' => 'Foo'
 				],
-				'parameters' => [],
-				'this'       => []
-			]
-		];
-
-		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+link=',
-				'+height=50px',
-				'+thclass=unsortable' ],
-			false,
-			[
-				'showMode'   => false,
-				'templateArgs' => false,
-				'query'      => '[[Foo::Bar]]',
-				'printouts'  => [
-					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => "Foobar #x50px;link;thclass",
-						'params'  => [ 'height' => '50px', 'link' => '', 'thclass' => 'unsortable' ]
-					]
-				],
-				'parameters' => [],
-				'this'       => []
-			]
-		];
-
-		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+link=',
-				'+height=100px',
-				'+thclass=unsortable',
-				'+width=90px' ],
-			false,
-			[
-				'showMode'   => false,
-				'templateArgs' => false,
-				'query'      => '[[Foo::Bar]]',
-				'printouts'  => [
-					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => "Foobar #90x100px;link;thclass",
-						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ]
-					]
-				],
-				'parameters' => [],
-				'this'       => []
-			]
-		];
-
-		yield [
-			[ '[[Foo::Bar]]',
-				'?Foobar',
-				'+height=100px',
-				'+thclass=unsortable',
-				'+width=90px',
-				'+link=' ],
-			false,
-			[
-				'showMode'   => false,
-				'templateArgs' => false,
-				'query'      => '[[Foo::Bar]]',
-				'printouts'  => [
-					'0bfab051cd82c364058617af13e9874a' => [
-						'label'   => "Foobar #90x100px;thclass;link",
-						'params'  => [ 'width' => '90px', 'height' => '100px', 'link' => '', 'thclass' => 'unsortable' ]
-					]
-				],
-				'parameters' => [],
 				'this'       => []
 			]
 		];
@@ -472,4 +397,5 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 	}
+
 }
