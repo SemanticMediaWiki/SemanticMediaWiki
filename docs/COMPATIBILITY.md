@@ -14,150 +14,140 @@ Semantic MediaWiki may also work with more recent versions of PHP and MediaWiki,
 Increases of minimum requirements are indicated in bold.
 
 <table class="compatibility">
-    <tr>
-        <th>SMW</th>
-        <th>Status</th>
-        <th>First release</th>
-        <th>Latest release</th>
-        <th>PHP</th>
-        <th>MediaWiki</th>
-        <th>Notes</th>
-    </tr>
-    <tr>
-        <th>6.0.x</th>
-        <td>Future release</td>
-        <td>2025-08-TBD</td>
-        <td>TBD</td>
-        <td>TBD - 8.4</td>
-        <td><strong>1.43</strong> - 1.44</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.0.0">5.0.x</a></th>
-        <td><strong>Stable release</strong></td>
-        <td>2025-03-10</td>
-        <td>2025-07-24</td>
-        <td><strong>8.1</strong> - 8.4</td>
-        <td><strong>1.39</strong> - 1.43.1</td>
-        <td>MW 1.43.1 is the final version supported by the SMW 5.x series</td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.2.0">4.2.x</a></th>
-        <td>Obsolete release</td>
-        <td>2024-07-18</td>
-        <td>2024-07-18</td>
-        <td>7.4 - 8.2</td>
-        <td>1.35 - 1.41</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.1.0">4.1.x</a></th>
-        <td>Obsolete release</td>
-        <td>2023-01-21</td>
-        <td>2024-02-17</td>
-        <td><strong>7.4</strong> - 8.1</td>
-        <td>1.35 - 1.39</td>
-        <td>4.1.1 or higher needed for PHP 8.1+</td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
-        <td>Obsolete release</td>
-        <td>2022-01-18</td>
-        <td>2022-07-21</td>
-        <td><strong>7.3</strong> - 8.0</td>
-        <td><strong>1.35</strong> - 1.37</td>
-        <td>Not compatible with PHP 8.1+ or MW 1.39</td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
-        <td>Obsolete release</td>
-        <td>2020-09-07</td>
-        <td>2021-03-29</td>
-        <td><strong>7.1.0</strong> - 7.4.x</td>
-        <td>1.31.0 - 1.35.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
-        <td>Obsolete release</td>
-        <td>2019-09-23</td>
-        <td>2020-04-19</td>
-        <td><strong>7.0.0</strong> - 7.3.x</td>
-        <td><strong>1.31.0</strong> - 1.34.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0">3.0.x</a></th>
-        <td>Obsolete release</td>
-        <td>2018-10-11</td>
-        <td>2019-04-11</td>
-        <td><strong>5.6.0</strong> - 7.2.x</td>
-        <td><strong>1.27.0</strong> - 1.31.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">2.5.x</a></th>
-        <td>Obsolete release</td>
-        <td>2017-03-14</td>
-        <td>2018-09-07</td>
-        <td><strong>5.5.0</strong> - 7.1.x</td>
-        <td><strong>1.23.0</strong> - 1.30.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.4.0">2.4.x</a></th>
-        <td>Obsolete release</td>
-        <td>2016-07-09</td>
-        <td>2017-02-15</td>
-        <td>5.3.2 - 7.0.x</td>
-        <td>1.19.0 - 1.27.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">2.3.x</a></th>
-        <td>Obsolete release</td>
-        <td>2015-10-25</td>
-        <td>2016-01-06</td>
-        <td>5.3.2 - 5.6.x</td>
-        <td>1.19.0 - 1.25.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.2.0">2.2.x</a></th>
-        <td>Obsolete release</td>
-        <td>2015-05-09</td>
-        <td>2015-10-10</td>
-        <td>5.3.2 - 5.6.x</td>
-        <td>1.19.0 - 1.25.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.0">2.1.x</a></th>
-        <td>Obsolete release</td>
-        <td>2015-01-19</td>
-        <td>2015-03-30</td>
-        <td>5.3.2 - 5.6.x</td>
-        <td>1.19.0 - 1.24.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0.0">2.0.x</a></th>
-        <td>Obsolete release</td>
-        <td>2014-08-04</td>
-        <td>2014-09-27</td>
-        <td>5.3.2 - 5.6.x</td>
-        <td>1.19.0 - 1.23.x</td>
-        <td></td>
-    </tr>
-    <tr>
-        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_1.9.0">1.9.x</a></th>
-        <td>Obsolete release</td>
-        <td>2014-01-03</td>
-        <td>2014-04-18</td>
-        <td>5.3.2 - 5.6.x</td>
-        <td>1.19.0 - 1.22.x</td>
-        <td></td>
-    </tr>
+	<tr>
+		<th>SMW</th>
+		<th>Status</th>
+		<th>First release</th>
+		<th>Latest release</th>
+		<th>PHP</th>
+		<th>MediaWiki</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<th>6.0.x</th>
+		<td>Stable release</td>
+		<td>2025-08-TBD</td>
+		<td>2025-08-TBD</td>
+		<td>8.1 - 8.4</td>
+		<td><strong>1.43</strong> - 1.44</td>
+		<td></td>
+	</tr>
+	<tr>
+		<th>5.0.x</th>
+		<td><strong>Stable release</strong></td>
+		<td>2025-03-10</td>
+		<td>2025-07-24</td>
+		<td><strong>8.1</strong> - 8.4</td>
+		<td><strong>1.39</strong> - 1.43.1</td>
+		<td>MW 1.43.1 is the final version supported by the SMW 5.x series</td>
+	</tr>
+	<tr>
+		<th>4.2.x</th>
+		<td>Obsolete release</td>
+		<td>2024-07-18</td>
+		<td>2024-07-18</td>
+		<td>7.4 - 8.2</td>
+		<td>1.35 - 1.41</td>
+		<td></td>
+	</tr>
+	<tr>
+		<th>4.1.x</th>
+		<td>Obsolete release</td>
+		<td>2023-01-21</td>
+		<td>2024-02-17</td>
+		<td><strong>7.4</strong> - 8.1</td>
+		<td>1.35 - 1.39</td>
+		<td>4.1.1 or higher needed for PHP 8.1+</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.0.0">4.0.x</a></th>
+		<td>Obsolete release</td>
+		<td>2022-01-18</td>
+		<td>2022-07-21</td>
+		<td><strong>7.3</strong> - 8.0</td>
+		<td><strong>1.35</strong> - 1.37</td>
+		<td>Not compatible with PHP 8.1+ or MW 1.39</td>
+	</tr>
+</table>
+
+<table class="compatibility">
+	<tr>
+		<th>SMW</th>
+		<th>PHP</th>
+		<th>MediaWiki</th>
+		<th>Released</th>
+		<th>Status</th>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.2.0">3.2.x</a></th>
+		<td><strong>7.1.0</strong> - 7.4.x</td>
+		<td>1.31.0 - 1.35.x</td>
+		<td>2020-09-07</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.1.0">3.1.x</a></th>
+		<td><strong>7.0.0</strong> - 7.3.x</td>
+		<td><strong>1.31.0</strong> - 1.34.x</td>
+		<td>2019-09-23</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_3.0.0">3.0.x</a></th>
+		<td><strong>5.6.0</strong> - 7.2.x</td>
+		<td><strong>1.27.0</strong> - 1.31.x</td>
+		<td>2018-10-11</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.5.0">2.5.x</a></th>
+		<td><strong>5.5.0</strong> - 7.1.x</td>
+		<td><strong>1.23.0</strong> - 1.30.x</td>
+		<td>2017-03-14</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.4.0">2.4.x</a></th>
+		<td>5.3.2 - 7.0.x</td>
+		<td>1.19.0 - 1.27.x</td>
+		<td>2016-07-09</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.3.0">2.3.x</a></th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19.0 - 1.25.x</td>
+		<td>2015-10-25</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.2.0">2.2.x</a></th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19.0 - 1.25.x</td>
+		<td>2015-05-09</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.1.0">2.1.x</a></th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19.0 - 1.24.x</td>
+		<td>2015-01-19</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_2.0.0">2.0.x</a></th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19.0 - 1.23.x</td>
+		<td>2014-08-04</td>
+		<td>Obsolete</td>
+	</tr>
+	<tr>
+		<th>1.9.x</th>
+		<td>5.3.2 - 5.6.x</td>
+		<td>1.19.0 - 1.22.x</td>
+		<td>2014-01-03</td>
+		<td>Obsolete</td>
+	</tr>
 </table>
 
 ## Database compatibility
