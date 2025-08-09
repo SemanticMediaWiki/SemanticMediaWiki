@@ -2,6 +2,8 @@
 
 namespace SMW\Elastic\Indexer\Attachment;
 
+use File;
+use FileBackend;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\FileRepoFinder;
@@ -58,6 +60,25 @@ class FileHandler {
 	 */
 	public function findFileByTitle( Title $title ) {
 		return $this->fileRepoFinder->findFile( $title );
+	}
+
+	/**
+	 * @since 6.0
+	 *
+	 * @param File $file
+	 *
+	 * @return string
+	 */
+	public function fetchContentFromFile( File $file ): string {
+		$be = $file->getRepo()->getBackend();
+
+		$content = '';
+
+		if ( $be instanceof FileBackend ) {
+			$content = $be->getFileContents( [ 'src' => $file->getPath() ] ) ?: '';
+		}
+
+		return $content;
 	}
 
 	/**
