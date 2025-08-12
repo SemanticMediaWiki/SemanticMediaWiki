@@ -354,11 +354,11 @@ final class Setup {
 			return;
 		}
 
-		if ( isset( $vars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
+		if ( isset( $vars['wgFooterIcons']['poweredbysmw']['semanticmediawiki'] ) ) {
 			return;
 		}
 
-		$vars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
+		$vars['wgFooterIcons']['poweredbysmw']['semanticmediawiki'] = [
 			'src' => Logo::get( 'footer' ),
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',
