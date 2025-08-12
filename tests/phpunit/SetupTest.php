@@ -218,7 +218,7 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 	public function testRegisterFooterIcon() {
 		$config = $this->defaultConfig;
 
-		$config['wgFooterIcons']['poweredby'] = [];
+		$config['wgFooterIcons']['poweredbysmw'] = [];
 
 		$instance = new Setup();
 
@@ -229,7 +229,7 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 		$config = $instance->init( $config, 'Foo' );
 
 		$this->assertNotEmpty(
-			$config['wgFooterIcons']['poweredby']['semanticmediawiki']
+			$config['wgFooterIcons']['poweredbysmw']['semanticmediawiki']
 		);
 	}
 
