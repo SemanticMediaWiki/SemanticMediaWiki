@@ -2,10 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\PageProperty;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Options;

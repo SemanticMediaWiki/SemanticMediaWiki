@@ -2,14 +2,14 @@
 
 namespace SMW;
 
+use MediaWiki\Title\Title;
+use MediaWiki\WikiMap\WikiMap;
 use ObjectCache;
 use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
-use WikiMap;
 
 /**
  * @license GPL-2.0-or-later

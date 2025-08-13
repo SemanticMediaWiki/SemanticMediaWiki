@@ -2,9 +2,9 @@
 
 namespace SMW;
 
+use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

@@ -10,6 +10,9 @@
 		{
 			"type": "special",
 			"about": "#0 restricted property causes unapproved listing",
+			"skip-on": {
+				"mediawiki": [ ">1.42.x", "Skipping, broken due to wiki page creation failure in test setup" ]
+			},
 			"special-page": {
 				"page": "WantedProperties",
 				"query-parameters": [],

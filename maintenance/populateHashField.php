@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
@@ -26,7 +27,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class populateHashField extends \Maintenance {
+class populateHashField extends Maintenance {
 
 	/**
 	 * Threshold as the when the `populateHashField.php` should be used by an

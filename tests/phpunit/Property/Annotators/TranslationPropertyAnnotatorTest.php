@@ -50,7 +50,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,7 +102,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +134,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

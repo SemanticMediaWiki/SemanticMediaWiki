@@ -2,7 +2,7 @@
 
 namespace SMW\Tests;
 
-use Message;
+use MediaWiki\Message\Message;
 use ReflectionClass;
 use SMW\MessageFormatter;
 

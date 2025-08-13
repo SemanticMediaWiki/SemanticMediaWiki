@@ -153,11 +153,11 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
 		}
 
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$content = $this->getMockBuilder( 'Content' )
+		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

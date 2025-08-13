@@ -54,7 +54,7 @@
 			"subject": "Example/P0705/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"href=\"/index.php/File:P0705.png\"",
+					"href=\"/wiki/File:P0705.png\"",
 					"300px-P0705.png",
 					"width=\"300\" height=\"300\""
 				],

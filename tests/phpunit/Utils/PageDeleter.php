@@ -2,10 +2,11 @@
 
 namespace SMW\Tests\Utils;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\DIWikiPage;
 use SMW\Tests\TestEnvironment;
-use Title;
-use User;
 use WikiPage;
 
 /**
@@ -58,7 +59,7 @@ class PageDeleter {
 			}
 
 			if ( is_string( $page ) ) {
-				$page = Title::newFromText( $page );
+				$page = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $page );
 			}
 
 			if ( !$page instanceof Title ) {

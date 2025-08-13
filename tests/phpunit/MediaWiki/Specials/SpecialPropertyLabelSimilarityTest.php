@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialPropertyLabelSimilarity
@@ -42,7 +42,7 @@ class SpecialPropertyLabelSimilarityTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialPropertyLabelSimilarity();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SpecialPropertyLabelSimilarity' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SpecialPropertyLabelSimilarity' )
 		);
 
 		$this->assertTrue(

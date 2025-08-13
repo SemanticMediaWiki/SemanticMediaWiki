@@ -2,6 +2,7 @@
 
 namespace SMW\Query\Parser;
 
+use MediaWiki\Title\Title;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -14,7 +15,6 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Parser;
 use SMW\Query\QueryToken;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

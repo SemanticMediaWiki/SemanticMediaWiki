@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Serializers;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\Serializers\QueryResultSerializer;
@@ -11,7 +12,6 @@ use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
 use SMWDataItem as DataItem;
-use Title;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
@@ -230,7 +230,7 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 			] );
 
 			$printRequests[] = $printRequest;
-			$getResults[] = \SMW\DIWikiPage::newFromTitle( Title::newFromText( $value['printRequest'], NS_MAIN ) );
+			$getResults[] = \SMW\DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $value['printRequest'], NS_MAIN ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 				'getDIType' => DataItem::TYPE_NUMBER,

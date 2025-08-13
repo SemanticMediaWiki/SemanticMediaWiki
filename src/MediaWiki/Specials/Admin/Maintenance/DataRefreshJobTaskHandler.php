@@ -2,14 +2,15 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 
-use Html;
+use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Job;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use WebRequest;
 
 /**
  * @license GPL-2.0-or-later
@@ -138,7 +139,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 
 				$newjob = $applicationFactory->newJobFactory()->newByType(
 					'smw.refresh',
-					\SpecialPage::getTitleFor( 'SMWAdmin' ),
+					SpecialPage::getTitleFor( 'SMWAdmin' ),
 					[ 'spos' => 1, 'prog' => 0, 'rc' => 2 ]
 				);
 

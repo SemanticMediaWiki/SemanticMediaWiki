@@ -43,10 +43,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$connection->expects( $this->any() )
-			->method( 'tablename' )
-			->willReturnArgument( 0 );
-
-		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
 			->willReturnArgument( 0 );
 
@@ -125,10 +121,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'tablename' )
-			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )
@@ -213,10 +205,6 @@ class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$connection->expects( $this->any() )
-			->method( 'tablename' )
-			->willReturnArgument( 0 );
 
 		$connection->expects( $this->any() )
 			->method( 'addQuotes' )

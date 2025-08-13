@@ -2,8 +2,8 @@
 
 namespace SMW\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
-use Parser;
 use SMW\DIProperty;
 use SMW\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
@@ -254,7 +254,7 @@ class AskParserFunction {
 
 			// Skip the first (being the condition) and other marked
 			// printrequests
-			if ( $key == 0 || ( $value !== '' && ( $value[0] === '?' || $value[0] === '+' ) ) ) {
+			if ( $key == 0 || ( $value !== '' && $value[0] === '?' ) ) {
 				continue;
 			}
 

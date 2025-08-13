@@ -39,7 +39,7 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findFile' )
 			->willReturn( $file );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

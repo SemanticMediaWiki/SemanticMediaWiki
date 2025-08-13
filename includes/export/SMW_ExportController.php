@@ -404,6 +404,7 @@ class SMWExportController {
 	 */
 	public function printPages( $pages, $recursion = 1, $revisiondate = false ) {
 		$mwServices = MediaWikiServices::getInstance();
+		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();
 		$revisionStore = $mwServices->getRevisionStore();
 
@@ -412,7 +413,7 @@ class SMWExportController {
 
 		// transform pages into queued short titles
 		foreach ( $pages as $page ) {
-			$title = Title::newFromText( $page );
+			$title = $titleFactory->newFromText( $page );
 			if ( $title === null ) {
 				continue; // invalid title name given
 			}
@@ -504,7 +505,9 @@ class SMWExportController {
 	 * @since 2.0 made protected; use printAllToFile or printAllToOutput
 	 */
 	protected function printAll( $ns_restriction, $delay, $delayeach ) {
-		$linkCache = MediaWikiServices::getInstance()->getLinkCache();
+		$mwServices = MediaWikiServices::getInstance();
+		$titleFactory = $mwServices->getTitleFactory();
+		$linkCache = $mwServices->getLinkCache();
 		$dbr = self::getDBHandle();
 
 		$this->delay_flush = 10;
@@ -518,7 +521,7 @@ class SMWExportController {
 		$delaycount = $delayeach;
 
 		for ( $id = 1; $id <= $end; $id += 1 ) {
-			$title = Title::newFromID( $id );
+			$title = $titleFactory->newFromID( $id );
 			if ( $title === null || !$this->isSemanticEnabled( $title->getNamespace() ) ) {
 				continue;
 			}
@@ -589,9 +592,13 @@ class SMWExportController {
 				$query .= 'page_namespace = ' . $dbr->addQuotes( $ns );
 			}
 		}
-		$res = $dbr->select( $dbr->tableName( 'page' ),
-							'page_id,page_title,page_namespace', $query,
-							'SMW::RDF::PrintPageList', [ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ] );
+		$res = $dbr->select(
+			'page',
+			'page_id,page_title,page_namespace',
+			$query,
+			'SMW::RDF::PrintPageList',
+			[ 'ORDER BY' => 'page_id ASC', 'OFFSET' => $offset, 'LIMIT' => $limit ]
+		);
 		$foundpages = false;
 
 		foreach ( $res as $row ) {
@@ -607,17 +614,18 @@ class SMWExportController {
 		}
 
 		if ( $foundpages ) { // add link to next result page
-			if ( strpos( SMWExporter::getInstance()->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
-				$nexturl = SMWExporter::getInstance()->expandURI( '&export;?offset=' ) . ( $offset + $limit );
+			$exporter = SMWExporter::getInstance();
+			if ( strpos( $exporter->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
+				$nexturl = $exporter->expandURI( '&export;?offset=' ) . ( $offset + $limit );
 			} else {
-				$nexturl = SMWExporter::getInstance()->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
+				$nexturl = $exporter->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
 			}
 
 			$expData = new SMWExpData( new ExpResource( $nexturl ) );
-			$ed = new SMWExpData( SMWExporter::getInstance()->getSpecialNsResource( 'owl', 'Thing' ) );
-			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdf', 'type' ), $ed );
+			$ed = new SMWExpData( $exporter->newExpNsResourceById( 'owl', 'Thing' ) );
+			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdf', 'type' ), $ed );
 			$ed = new SMWExpData( new ExpResource( $nexturl ) );
-			$expData->addPropertyObjectValue( SMWExporter::getInstance()->getSpecialNsResource( 'rdfs', 'isDefinedBy' ), $ed );
+			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdfs', 'isDefinedBy' ), $ed );
 			$this->serializer->serializeExpData( $expData );
 		}
 

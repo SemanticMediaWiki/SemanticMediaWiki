@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\ParserFunctions;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\DIProperty;
 use SMW\Localizer\Localizer;
 use SMW\MessageFormatter;
@@ -12,7 +13,6 @@ use SMW\ParserParameterProcessor;
 use SMW\Subobject;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
-use Title;
 
 /**
  * @covers \SMW\ParserFunctions\SubobjectParserFunction
@@ -36,7 +36,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
@@ -60,7 +60,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testParse( array $parameters, array $expected ) {
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 		$result   = $instance->parse( new ParserParameterProcessor( $parameters ) );
@@ -75,7 +75,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider parameterDataProvider
 	 */
 	public function testInstantiatedSubobject( array $parameters, array $expected ) {
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterProcessor( $parameters ) );
@@ -91,7 +91,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testFirstElementAsPropertyLabel( $isEnabled, array $parameters, array $expected ) {
 		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( __METHOD__ );
+		$title        = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance( $subobject, $parserOutput );
@@ -143,7 +143,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			'Foo=Bar'
 		];
 
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterProcessor( $parameters ) );
@@ -161,7 +161,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			'+sep=,'
 		];
 
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 
@@ -185,7 +185,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			'+sep=,'
 		];
 
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 
@@ -209,7 +209,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			'+sep=,'
 		];
 
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 
@@ -229,7 +229,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreateSameIdForNormalizedParametersWithEnabledCapitalLinks() {
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$parametersOne = [
 			'Foo=Bar',
@@ -277,7 +277,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			'Date=Foo'
 		];
 
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterProcessor( $parameters ) );
@@ -290,7 +290,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$title = isset( $expected['embeddedTitle'] ) ? $expected['embeddedTitle'] : __METHOD__;
 
 		$parserOutput = new ParserOutput();
-		$title        = Title::newFromText( $title );
+		$title        = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $title );
 		$subobject    = new Subobject( $title );
 
 		$instance = $this->acquireInstance(

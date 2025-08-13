@@ -2,11 +2,11 @@
 
 namespace SMW\Property;
 
+use MediaWiki\User\User;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
-use User;
 
 /**
  * @license GPL-2.0-or-later

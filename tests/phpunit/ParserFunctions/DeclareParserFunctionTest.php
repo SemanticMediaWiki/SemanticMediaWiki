@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\ParserFunctions;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\ParserFunctions\DeclareParserFunction
@@ -53,7 +53,7 @@ class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testParse( $args, $expected ) {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 

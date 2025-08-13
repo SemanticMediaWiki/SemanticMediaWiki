@@ -3,10 +3,10 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\LinksUpdateComplete
@@ -72,7 +72,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,7 +152,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			[ NS_HELP => false ]
 		);
 
-		$title = Title::newFromText( __METHOD__, NS_HELP );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_HELP );
 		$parserOutput = new ParserOutput();
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
@@ -196,7 +196,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			[ NS_HELP => false ]
 		);
 
-		$title = Title::newFromText( __METHOD__, NS_HELP );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_HELP );
 		$parserOutput = $this->createMock( ParserOutput::class );
 		$parserOutput->expects( $this->any() )
 			->method( 'getTemplates' )

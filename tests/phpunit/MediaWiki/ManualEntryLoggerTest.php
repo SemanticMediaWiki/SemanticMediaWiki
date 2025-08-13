@@ -78,7 +78,7 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLogToTableForLoggableEventWithPerformer() {
-		$performer = $this->getMockBuilder( '\User' )
+		$performer = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

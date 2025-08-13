@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Parser;
 
-use ParserOutput;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use ReflectionClass;
 use SMW\DIProperty;
 use SMW\MediaWiki\RedirectTargetFinder;
@@ -11,7 +12,6 @@ use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Parser\InTextAnnotationParser
@@ -64,7 +64,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testCanConstruct( $namespace ) {
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +72,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = Title::newFromText( __METHOD__, $namespace );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace );
 
 		$instance =	new InTextAnnotationParser(
 			new ParserData( $title, $parserOutput ),
@@ -106,7 +106,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testStripMagicWords( $namespace, $text, array $expected ) {
 		$parserData = new ParserData(
-			Title::newFromText( __METHOD__, $namespace ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
 
@@ -136,7 +136,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testTextParse( $namespace, array $settings, $text, array $expected ) {
 		$parserData = new ParserData(
-			Title::newFromText( __METHOD__, $namespace ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
 
@@ -200,7 +200,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$parserData = new ParserData(
-			Title::newFromText( __METHOD__, $namespace ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
 
@@ -226,9 +226,10 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRedirectAnnotationFromInjectedRedirectTarget() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$namespace = NS_MAIN;
 		$text      = '';
-		$redirectTarget = Title::newFromText( 'Foo' );
+		$redirectTarget = $titleFactory->newFromText( 'Foo' );
 
 		$expected = [
 			'propertyCount'  => 1,
@@ -246,7 +247,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$parserData = new ParserData(
-			Title::newFromText( __METHOD__, $namespace ),
+			$titleFactory->newFromText( __METHOD__, $namespace ),
 			new ParserOutput()
 		);
 
@@ -296,7 +297,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'Bar' );
 
 		$parserData = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 
@@ -335,7 +336,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 	public function testProcessOnReflection() {
 		$parserData = new ParserData(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			new ParserOutput()
 		);
 

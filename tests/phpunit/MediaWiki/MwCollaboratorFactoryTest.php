@@ -45,7 +45,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 			$instance->newMessageBuilder()
 		);
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +99,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructHtmlFormRenderer() {
 		$instance = new MwCollaboratorFactory( new ApplicationFactory() );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,7 +108,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 			$instance->newHtmlFormRenderer( $title )
 		);
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -238,7 +238,7 @@ class MwCollaboratorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructHtmlTemplateRenderer() {
-		$parser = $this->getMockBuilder( '\Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 

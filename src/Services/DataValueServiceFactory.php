@@ -2,8 +2,8 @@
 
 namespace SMW\Services;
 
+use MediaWiki\Context\RequestContext;
 use Onoi\CallbackContainer\ContainerBuilder;
-use RequestContext;
 use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\StringValue;

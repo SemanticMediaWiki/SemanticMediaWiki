@@ -15,6 +15,7 @@ use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Options;
 use SMW\ProcessingError;
+use SMW\Query\Language\Description;
 use SMW\Query\QueryComparator;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Utils\CharArmor;

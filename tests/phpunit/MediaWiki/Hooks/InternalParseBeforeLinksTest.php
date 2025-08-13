@@ -2,12 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
-use ParserOptions;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOptions;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\InternalParseBeforeLinks
@@ -50,7 +50,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +63,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testNonProcessForEmptyText() {
 		$text = '';
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +84,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testDisableProcessOfInterfaceMessageOnNonSpecialPage() {
 		$text = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +100,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInterfaceMessage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +125,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOfInterfaceMessageOnEnabledSpecialPage() {
 		$text = 'Foo';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +150,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +158,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInterfaceMessage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,7 +183,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOfInterfaceMessageOnSpecialPageWithOnOffMarker() {
 		$text = '[[SMW::off]]Foo[[SMW::on]]';
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -208,11 +208,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser = $this->getMockBuilder( 'Parser' )
+		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -304,7 +304,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 
 	public function titleProvider() {
 		# 0
-		$provider[] = [ Title::newFromText( __METHOD__ ) ];
+		$provider[] = [ MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) ];
 
 		$title = MockTitle::buildMockForMainNamespace();
 
@@ -337,10 +337,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function textDataProvider() {
+		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$provider = [];
 
 		// #0 NS_MAIN; [[FooBar...]] with a different caption
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = $titleFactory->newFromText( __METHOD__, NS_MAIN );
 
 		$provider[] = [
 			[
@@ -382,7 +383,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #2 NS_SPECIAL, processed but no annotations
-		$title = Title::newFromText( 'Ask', NS_SPECIAL );
+		$title = $titleFactory->newFromText( 'Ask', NS_SPECIAL );
 
 		$provider[] = [
 			[
@@ -405,7 +406,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #3 NS_SPECIAL, not processed, Title::isSpecial returns false
-		$title = Title::newFromText( 'Foo', NS_SPECIAL );
+		$title = $titleFactory->newFromText( 'Foo', NS_SPECIAL );
 
 		$provider[] = [
 			[
@@ -428,7 +429,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		// #4 NS_SPECIAL, not processed, invalid smwgEnabledSpecialPage setting
-		$title = Title::newFromText( 'Foobar', NS_SPECIAL );
+		$title = $titleFactory->newFromText( 'Foobar', NS_SPECIAL );
 
 		$provider[] = [
 			[

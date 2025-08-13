@@ -24,7 +24,7 @@ class TemplateExpanderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->parser = $this->getMockBuilder( '\Parser' )
+		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}

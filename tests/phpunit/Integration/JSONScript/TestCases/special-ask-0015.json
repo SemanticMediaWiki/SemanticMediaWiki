@@ -62,6 +62,9 @@
 	"meta": {
 		"version": "2",
 		"is-incomplete": false,
-		"debug": false
+		"debug": false,
+		"skip-on": {
+			"mediawiki": [ ">1.41.x", "Heading and anchor HTML has changed. Covered by special-ask-0015-mw142.json" ]
+		}
 	}
 }

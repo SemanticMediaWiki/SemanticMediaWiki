@@ -575,6 +575,7 @@
 	"group-smwcurator": "القيمون (ميدياويكي الدلالي)",
 	"group-smwcurator-member": "{{GENDER:$1|قيمون (ميدياويكي الدلالي)}}",
 	"grouppage-smwcurator": "{{ns:project}}:قيمون (ميدياويكي الدلالي)",
+	"group-smweditor": "المحررون (ميدياويكي الدلالية)",
 	"action-smw-admin": "الوصول للمهام الإدارية في ميدياويكي الدلالي",
 	"action-smw-ruleedit": "تحرير صفحات القاعدة (ميدياويكي الدلالي)",
 	"smw-property-predefined-default": "\"$1\" هي خاصية محددة مسبقا $2.",

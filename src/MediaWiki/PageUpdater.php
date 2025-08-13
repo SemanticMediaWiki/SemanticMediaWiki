@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki;
 
-use DeferrableUpdate;
+use MediaWiki\Deferred\DeferrableUpdate;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\Utils\Timer;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

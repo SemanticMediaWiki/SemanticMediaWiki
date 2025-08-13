@@ -2,11 +2,13 @@
 
 namespace SMW\MediaWiki\Template;
 
-use Parser;
-use ParserOptions;
-use RequestContext;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\StubObject\StubObject;
+use MediaWiki\Title\Title;
 use RuntimeException;
-use Title;
 
 /**
  * @license GPL-2.0-or-later
@@ -59,7 +61,7 @@ class TemplateExpander {
 	 * @return string
 	 */
 	public function expand( $template ) {
-		if ( !$this->parser instanceof Parser && !$this->parser instanceof \StubObject ) {
+		if ( !$this->parser instanceof Parser && !$this->parser instanceof StubObject ) {
 			throw new RuntimeException( 'Missing a parser instance!' );
 		}
 
@@ -87,7 +89,7 @@ class TemplateExpander {
 			}
 
 			if ( !$title instanceof Title ) {
-				$title = Title::newFromText( 'UNKNOWN_TITLE' );
+				$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'UNKNOWN_TITLE' );
 			}
 		}
 

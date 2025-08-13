@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
-use Title;
-use User;
 
 /**
  * @see https://github.com/wikimedia/mediawiki-extensions-UserMerge/blob/master/includes/MergeUser.php#L654
@@ -55,7 +55,7 @@ class DeleteAccount implements HookListener {
 		$this->articleDelete->setOrigin( 'DeleteAccount' );
 
 		$this->articleDelete->process(
-			Title::newFromText( $user, NS_USER )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $user, NS_USER )
 		);
 
 		return true;

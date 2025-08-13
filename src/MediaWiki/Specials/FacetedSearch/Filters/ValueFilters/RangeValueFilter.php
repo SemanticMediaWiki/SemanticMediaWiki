@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Schema\CompartmentIterator;
 use SMW\Utils\TemplateEngine;

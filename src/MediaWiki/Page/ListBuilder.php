@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Page;
 
-use Linker;
+use MediaWiki\Linker\Linker;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer\Message;

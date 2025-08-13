@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\Tests\TestEnvironment;
 
@@ -32,7 +33,7 @@ class ParametersWidgetTest extends \PHPUnit\Framework\TestCase {
 				'<fieldset><legend>.*</legend><span class="smw-ask-format-list">',
 				'<input type="checkbox" id="options-toggle"/><div id="options-list" class="options-list"><div class="options-parameter-list">'
 			],
-			ParametersWidget::fieldset( \Title::newFromText( 'Foo' ), $parameters )
+			ParametersWidget::fieldset( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo' ), $parameters )
 		);
 	}
 

@@ -23,6 +23,9 @@
 		{
 			"type": "special",
 			"about": "#0 (whether to appear on the list of wanted properties)",
+			"skip-on": {
+				"mediawiki": [ ">1.42.x", "Skipping, broken due to wiki page creation failure in test setup" ]
+			},
 			"special-page": {
 				"page": "WantedProperties",
 				"query-parameters": [],

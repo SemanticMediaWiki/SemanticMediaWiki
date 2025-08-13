@@ -2,10 +2,10 @@
 
 namespace SMW\Query\PrintRequest;
 
-use Linker;
+use MediaWiki\Linker\Linker;
+use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

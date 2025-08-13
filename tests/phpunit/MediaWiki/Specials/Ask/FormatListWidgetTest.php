@@ -19,7 +19,7 @@ class FormatListWidgetTest extends \PHPUnit\Framework\TestCase {
 	public function testEmptyParameters() {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +35,7 @@ class FormatListWidgetTest extends \PHPUnit\Framework\TestCase {
 	public function testSetResultFormats() {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

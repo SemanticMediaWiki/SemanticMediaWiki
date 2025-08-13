@@ -2,7 +2,7 @@
 
 namespace SMW\Utils\Html;
 
-use Html;
+use MediaWiki\Html\Html;
 use SMW\Utils\HtmlDivTable;
 
 /**

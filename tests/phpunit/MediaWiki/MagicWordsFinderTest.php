@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
@@ -34,7 +34,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 			new MagicWordsFinder()
 		);
 
-		$parserOutput = $this->getMockBuilder( 'ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +99,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoPushOnEmptyMagicWordsList() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 

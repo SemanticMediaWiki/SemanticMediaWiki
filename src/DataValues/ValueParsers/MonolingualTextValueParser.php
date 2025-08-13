@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues\ValueParsers;
 
+use MediaWiki\Language\LanguageCode;
 use SMW\Localizer\Localizer;
 
 /**
@@ -54,7 +55,7 @@ class MonolingualTextValueParser implements ValueParser {
 		}
 
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
-		$nonstandardLanguageCodeMapping = \LanguageCode::getNonstandardLanguageCodeMapping();
+		$nonstandardLanguageCodeMapping = LanguageCode::getNonstandardLanguageCodeMapping();
 
 		$mappedLanguageCode = array_search( $languageCode, $nonstandardLanguageCodeMapping ) ?: $languageCode;
 

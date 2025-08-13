@@ -3,14 +3,13 @@
 namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\ParserParameterProcessor;
 use SMW\RecurringEvents;
 use SMW\Subobject;
-use Title;
 
 /**
  * @covers \SMW\ParserFunctions\RecurringEventsParserFunction
@@ -24,7 +23,7 @@ use Title;
 class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
-		$subobject = new Subobject( Title::newFromText( __METHOD__ ) );
+		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
 			->disableOriginalConstructor()
@@ -53,9 +52,10 @@ class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$recurringEvents->setDefaultNumRecurringEvents( 100 );
 		$recurringEvents->setMaxNumRecurringEvents( 100 );
 
-		$title = Title::newFromText( __METHOD__ );
+		$services = MediaWikiServices::getInstance();
+		$title = $services->getTitleFactory()->newFromText( __METHOD__ );
 
-		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
+		$languageFactory = $services->getLanguageFactory();
 
 		$instance = new RecurringEventsParserFunction(
 			new ParserData( $title, new ParserOutput() ),

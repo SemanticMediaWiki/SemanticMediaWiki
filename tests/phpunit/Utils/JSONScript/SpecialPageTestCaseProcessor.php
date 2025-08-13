@@ -2,11 +2,12 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
-use FauxRequest;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\FauxRequest;
+use MediaWiki\Request\WebRequest;
 use MediaWikiIntegrationTestCase;
-use OutputPage;
-use RequestContext;
 use SMW\Tests\Utils\File\ContentsReader;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
@@ -175,7 +176,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	/**
 	 * @return RequestContext
 	 */
-	private function makeRequestContext( \WebRequest $request, $user, $title ) {
+	private function makeRequestContext( WebRequest $request, $user, $title ) {
 		$languageFactory = MediaWikiServices::getInstance()->getLanguageFactory();
 
 		$context = new RequestContext();

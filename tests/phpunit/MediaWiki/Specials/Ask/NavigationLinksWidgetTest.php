@@ -20,7 +20,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	public function testNavigation() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +39,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetMaxInlineLimit() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +62,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNavigationLinksOnZeroCountResult() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +80,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOffsetLimit() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -104,7 +104,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTopLinks() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,7 +120,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHiddenTopLinks() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

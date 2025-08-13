@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -392,7 +393,7 @@ class Installer implements MessageReporter {
 			$this->cliMsgFormatter->firstCol( "... Property statistics rebuild job ...", 3 )
 		);
 
-		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMW\SQLStore\Installer' );
 
 		$propertyStatisticsRebuildJob = new PropertyStatisticsRebuildJob(
 			$title,

@@ -2,17 +2,17 @@
 
 namespace SMW\Protection;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use RequestContext;
 use SMW\DIProperty;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\SemanticData;
-use User;
 use WikiPage;
 
 /**

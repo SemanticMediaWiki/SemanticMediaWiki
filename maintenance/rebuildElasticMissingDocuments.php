@@ -2,6 +2,8 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
+use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -10,6 +12,7 @@ use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\MediaWiki\JobFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\SQLStore;
@@ -33,7 +36,7 @@ if ( getenv( 'MW_INSTALL_PATH' ) !== false ) {
  *
  * @author mwjames
  */
-class rebuildElasticMissingDocuments extends \Maintenance {
+class rebuildElasticMissingDocuments extends Maintenance {
 
 	/**
 	 * @var Store
@@ -278,7 +281,7 @@ class rebuildElasticMissingDocuments extends \Maintenance {
 		);
 	}
 
-	private function checkAndRebuild( \Iterator $rows ) {
+	private function checkAndRebuild( Iterator $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$connection = $this->store->getConnection( 'mw.db' );
 

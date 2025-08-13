@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Integration\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
-use Title;
 
 /**
  *
@@ -53,7 +53,7 @@ class RefreshSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	public function testAfterPageCreation_StoreHasDataToRefreshWithoutJobs( $ns, $name, $iw ) {
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->title = Title::makeTitle( $ns, $name, '', $iw );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $name );
 
 		$this->pageCreator->createPage( $this->title );
 
@@ -66,7 +66,7 @@ class RefreshSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	public function testAfterPageCreation_StoreHasDataToRefreshWitJobs( $ns, $name, $iw ) {
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->title = Title::makeTitle( $ns, $name, '', $iw );
+		$this->title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $name );
 
 		$this->pageCreator->createPage( $this->title );
 

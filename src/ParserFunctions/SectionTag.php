@@ -2,9 +2,9 @@
 
 namespace SMW\ParserFunctions;
 
-use Html;
-use Parser;
-use PPFrame;
+use MediaWiki\Html\Html;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
 
 /**
  * To support the generation of <section> ... </section>

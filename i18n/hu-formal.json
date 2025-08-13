@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Torontál-vármegye"
+		]
+	},
+	"smw-ui-tooltip-title-warning": "Figyelmeztetés",
+	"smw-ui-tooltip-title-error": "Hiba",
+	"smw-ui-tooltip-title-parameter": "Paraméter",
+	"smw-ui-tooltip-title-event": "Esemény",
+	"smw-ui-tooltip-title-note": "Megjegyzés"
+}

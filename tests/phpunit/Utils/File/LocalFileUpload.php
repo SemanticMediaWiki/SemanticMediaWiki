@@ -48,6 +48,7 @@ class LocalFileUpload extends UploadBase {
 	public function __construct( $localUploadPath = '', $desiredDestName = '' ) {
 		$this->localUploadPath = $localUploadPath;
 		$this->desiredDestName = $desiredDestName;
+		parent::__construct();
 	}
 
 	/**

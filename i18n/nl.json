@@ -524,7 +524,7 @@
 	"smw-admin-operational-statistics": "Op deze pagina staan operationele statistieken die zijn verzameld in of vanuit functies die verband houden met Semantic MediaWiki. Een uitgebreide lijst met wiki-specifieke statistieken vindt u [[Special:Statistics|<b>hier</b>]].",
 	"smw_adminlinks_datastructure": "Gegevensstructuur",
 	"smw_adminlinks_displayingdata": "Gegevens weergeven",
-	"smw_adminlinks_inlinequerieshelp": "Hulp bij inline zoekopdrachten",
+	"smw_adminlinks_inlinequerieshelp": "Hulp bij ingevoegde zoekopdrachten",
 	"smw-page-indicator-usage-count": "Geschatte [https://www.semantic-mediawiki.org/wiki/Help:Property_usage_count aantal keren gebruikt]: {{PLURAL:$2|'''$2'''}}",
 	"smw-property-indicator-type-info": "Door {{PLURAL:$1|de gebruiker|het systeem}} gedefinieerde eigenschap",
 	"smw-property-indicator-last-count-update": "Geschat gebruiksaantal\nLaatst bijgewerkt: $1",

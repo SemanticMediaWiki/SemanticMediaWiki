@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreUpdater;
-use Title;
 
 /**
  * @covers \SMW\SQLStore\SQLStoreUpdater
@@ -157,7 +157,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDoDataUpdateForMainNamespaceWithoutSubobject() {
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
@@ -216,7 +216,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDoDataUpdateForConceptNamespaceWithoutSubobject() {
-		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
@@ -272,7 +272,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'shouldCleanUpAnnotationsAndRedirects' )
 			->willReturn( true );
 
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
@@ -324,7 +324,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'shouldCleanUpAnnotationsAndRedirects' )
 			->willReturn( true );
 
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
@@ -378,7 +378,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteSubjectForMainNamespace() {
-		$title = Title::newFromText( __METHOD__, NS_MAIN );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$this->idTable->expects( $this->atLeastOnce() )
 			->method( 'findIdsByTitle' )
@@ -426,7 +426,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteSubjectForConceptNamespace() {
-		$title = Title::newFromText( __METHOD__, SMW_NS_CONCEPT );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
 			->disableOriginalConstructor()

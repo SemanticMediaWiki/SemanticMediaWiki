@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki;
 
-use IContextSource;
-use Language;
+use MediaWiki\Context\IContextSource;
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Language\Language;
+use MediaWiki\Message\Message;
 use MediaWiki\Navigation\PagerNavigationBuilder;
-use Message;
-use RequestContext;
+use MediaWiki\Title\Title;
 use RuntimeException;
-use Title;
 
 /**
  * Convenience class to build language dependent messages and special text

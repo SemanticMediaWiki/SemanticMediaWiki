@@ -89,7 +89,7 @@
 	"smw_printername_rdf": "RDF aktarımı",
 	"smw_printername_category": "Kategori",
 	"validator-type-class-SMWParamSource": "metin",
-	"smw-paramdesc-limit": "Verilecek azami sonuç sayısı",
+	"smw-paramdesc-limit": "Döndürülecek en fazla sonuç sayısı",
 	"smw-paramdesc-offset": "İlk sonucun ofseti",
 	"smw-paramdesc-headers": "Başlıkları/özellik adlarını göster",
 	"smw-paramdesc-mainlabel": "Anasayfa ismine verilecek etiket",

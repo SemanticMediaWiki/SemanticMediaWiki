@@ -2,7 +2,7 @@
 
 namespace SMW\DataValues\Time;
 
-use Language;
+use MediaWiki\Language\Language;
 use SMW\Localizer\Localizer;
 use SMWDITime as DITime;
 

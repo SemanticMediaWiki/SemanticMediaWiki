@@ -4,6 +4,7 @@
 			"Ahonc",
 			"Andrew J.Kurbiko",
 			"Andriykopanytsia",
+			"Andygol",
 			"Avatar6",
 			"Base",
 			"Bunyk",
@@ -12,6 +13,7 @@
 			"Eduardoaddad",
 			"Ice bulldog",
 			"KHMELNYTSKYIA",
+			"METROKOP228 UA",
 			"McDutchie",
 			"Movses",
 			"Nemo bis",
@@ -1102,6 +1104,9 @@
 	"smw-indicator-revision-mismatch": "Версія",
 	"smw-indicator-revision-mismatch-error": "Перевірка [https://www.semantic-mediawiki.org/wiki/Help:Associated_revision/Examiner пов'язаної версії] виявила невідповідність між версією, на яку посилається MediaWiki, та тією, з якою здійснюється пов'язування в Семантичній MediaWiki для цієї сутності.",
 	"smw-indicator-revision-mismatch-comment": "Невідповідність зазвичай свідчить про те, що якийсь процес перервав операцію зі зберігання в Семантичній MediaWiki. Рекомендується переглянути журнали сервера та пошукати винятків чи інших невдач.",
+	"smw-facetedsearch-intro-tab-search": "Пошук",
+	"smw-facetedsearch-format-table": "Таблиця",
+	"smw-search-placeholder": "Пошук…",
 	"smw-listingcontinuesabbrev": "(прод.)",
 	"smw-showingresults": "Нижче {{PLURAL:$1|показане|показані|показані|}} <strong>$1</strong> {{PLURAL:$1|результат|результати|результатів|}}, починаючи з №&nbsp;<strong>$2</strong>"
 }

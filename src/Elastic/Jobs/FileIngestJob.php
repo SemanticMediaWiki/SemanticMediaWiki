@@ -2,12 +2,12 @@
 
 namespace SMW\Elastic\Jobs;
 
+use MediaWiki\Title\Title;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use Title;
 
 /**
  * @license GNU GPL v2

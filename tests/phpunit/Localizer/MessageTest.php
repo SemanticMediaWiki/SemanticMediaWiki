@@ -67,7 +67,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisteredHandlerWithLanguage() {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 

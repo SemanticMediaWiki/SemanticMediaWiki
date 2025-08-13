@@ -54,6 +54,8 @@
 	"smw-limitreport-pagepurge-storeupdatetime-value": "$1 {{PLURAL:$1|सेकेण्ड|सेकेण्डहरू}}",
 	"smw-format-datatable-search": "खोज्नुहोस्:",
 	"smw-format-datatable-last": "पछिल्लो",
+	"smw-property-reserved-category": "श्रेणी",
+	"smw-category": "श्रेणी",
 	"smw-collapse": "खुम्च्याउनुहाेस्",
 	"smw-pendingtasks-setup-tasks": "कार्यहरू",
 	"smw-entity-examiner-deferred-elastic-replication": "लचकता",

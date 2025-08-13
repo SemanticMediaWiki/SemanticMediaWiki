@@ -57,7 +57,7 @@ class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewTaskHandlerRegistry() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

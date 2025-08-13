@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\ParserOutput;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
@@ -260,7 +262,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 			return false;
 		} );
 
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -274,7 +276,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 
 		$instance = $factboxFactory->newFactbox(
 			$title,
-			new \ParserOutput()
+			new ParserOutput()
 		);
 
 		$instance->setCheckMagicWords(
@@ -293,7 +295,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 		// To make this work with SPARQLStore, need to inject the basestore
 		$storeClass = '\SMW\SQLStore\SQLStore';
 
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$store = $this->getMockBuilder( $storeClass )
 			->disableOriginalConstructor()
@@ -362,7 +364,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 		// To make this work with SPARQLStore, need to inject the basestore
 		$storeClass = '\SMW\SQLStore\SQLStore';
 
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$idGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -400,7 +402,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 		// To make this work with SPARQLStore, need to inject the basestore
 		$storeClass = '\SMW\SQLStore\SQLStore';
 
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$idGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
 			->disableOriginalConstructor()
@@ -433,11 +435,11 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends \PHPUnit\Fra
 	}
 
 	public function testRegisteredParserBeforeMagicWordsFinder() {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = \Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()

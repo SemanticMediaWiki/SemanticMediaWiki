@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialAsk;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialAsk
@@ -45,7 +45,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExecuteWithValidUser() {
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +56,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialAsk();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SemanticMadiaWiki' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
 		);
 
 		$oldOutput = $instance->getOutput();

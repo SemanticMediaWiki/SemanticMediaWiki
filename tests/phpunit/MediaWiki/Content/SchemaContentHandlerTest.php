@@ -5,14 +5,14 @@ namespace SMW\Tests\MediaWiki\Content;
 use MediaWiki\Content\ValidationParams;
 use MediaWiki\Page\PageIdentity;
 use MediaWiki\Page\PageIdentityValue;
-use ParserOptions;
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\Content\SchemaContent;
 use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaFactory;
 use SMW\Schema\SchemaValidator;
-use Title;
-use User;
 use WikiPage;
 
 /**

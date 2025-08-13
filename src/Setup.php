@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -264,7 +265,7 @@ final class Setup {
 			//
 			// Message::setInterfaceMessageFlag "... used to restore the flag
 			// after setting a language"
-			$title = $GLOBALS['wgTitle'] ?? \Title::newFromText( 'Blank', NS_SPECIAL );
+			$title = $GLOBALS['wgTitle'] ?? MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Blank', NS_SPECIAL );
 
 			return $message->setInterfaceMessageFlag( true )->title( $title )->parse();
 		} );
@@ -353,11 +354,11 @@ final class Setup {
 			return;
 		}
 
-		if ( isset( $vars['wgFooterIcons']['poweredby']['semanticmediawiki'] ) ) {
+		if ( isset( $vars['wgFooterIcons']['poweredbysmw']['semanticmediawiki'] ) ) {
 			return;
 		}
 
-		$vars['wgFooterIcons']['poweredby']['semanticmediawiki'] = [
+		$vars['wgFooterIcons']['poweredbysmw']['semanticmediawiki'] = [
 			'src' => Logo::get( 'footer' ),
 			'url' => 'https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki',
 			'alt' => 'Powered by Semantic MediaWiki',

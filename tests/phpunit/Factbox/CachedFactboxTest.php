@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Factbox;
 
+use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use ParserOutput;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\FauxRequest;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
@@ -257,7 +259,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10001 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -267,7 +269,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getRevisionId' )
@@ -310,7 +312,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10002 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -322,8 +324,8 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRevisionId' )
 			->willReturn( 9001 );
 
-		$context = new \RequestContext();
-		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
+		$context = new RequestContext();
+		$context->setRequest( new FauxRequest( [ 'oldid' => 9001 ], true ) );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
@@ -362,7 +364,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10003 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -372,7 +374,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$provider[] = [
 			[
@@ -406,7 +408,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10004 );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -416,7 +418,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getRevisionId' )
@@ -462,7 +464,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -472,7 +474,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()
@@ -506,7 +508,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( false );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -516,7 +518,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
-			->willReturn( new \RequestContext() );
+			->willReturn( new RequestContext() );
 
 		$store = $this->getMockBuilder( '\SMW\Store' )
 			->disableOriginalConstructor()

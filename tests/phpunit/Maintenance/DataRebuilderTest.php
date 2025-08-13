@@ -2,11 +2,12 @@
 
 namespace SMW\Tests\Maintenance;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder
@@ -369,25 +370,27 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$mwTitleFactory = MediaWikiServices::getInstance()->getTitleFactory();
+
 		$titleFactory->expects( $this->at( 0 ) )
 			->method( 'newFromText' )
 			->with( 'Main page' )
-			->willReturn( Title::newFromText( 'Main page' ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Main page' ) );
 
 		$titleFactory->expects( $this->at( 1 ) )
 			->method( 'newFromText' )
 			->with( 'Some other page' )
-			->willReturn( Title::newFromText( 'Some other page' ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Some other page' ) );
 
 		$titleFactory->expects( $this->at( 2 ) )
 			->method( 'newFromText' )
 			->with( 'Help:Main page' )
-			->willReturn( Title::newFromText( 'Main page', NS_HELP ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Main page', NS_HELP ) );
 
 		$titleFactory->expects( $this->at( 3 ) )
 			->method( 'newFromText' )
 			->with( 'Main page' )
-			->willReturn( Title::newFromText( 'Main page' ) );
+			->willReturn( $mwTitleFactory->newFromText( 'Main page' ) );
 
 		$instance = new DataRebuilder( $store, $titleFactory );
 

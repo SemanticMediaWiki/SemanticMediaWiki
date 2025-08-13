@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use MediaWiki\MediaWikiServices;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -279,7 +280,7 @@ class QueryTestCaseInterpreter {
 			return '';
 		}
 
-		$title = \Title::newFromText( $this->contents['subject'] );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->contents['subject'] );
 		$parserOutput = UtilityFactory::getInstance()->newPageReader()->getEditInfo( $title )->getOutput();
 
 		return $parserOutput->getText();

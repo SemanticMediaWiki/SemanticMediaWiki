@@ -3,10 +3,10 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
-use Title;
 
 /**
  * Printer for embedded data.

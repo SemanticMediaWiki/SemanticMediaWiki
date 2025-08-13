@@ -36,7 +36,7 @@ class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewPageFromNotRegisteredNamespaceThrowsException() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +54,7 @@ class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testNewPageFromTitle( $namespace, $expected ) {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

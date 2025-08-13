@@ -16,6 +16,9 @@
 		{
 			"type": "special",
 			"about": "#0 (whether to appear in the list of unused properties without subproperty)",
+			"skip-on": {
+				"mediawiki": [ ">1.42.x", "Skipping, broken due to wiki page creation failure in test setup" ]
+			},
 			"special-page": {
 				"page": "UnusedProperties",
 				"query-parameters": [],

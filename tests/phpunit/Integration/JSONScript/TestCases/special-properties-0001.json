@@ -38,6 +38,9 @@
 		{
 			"type": "special",
 			"about": "#1 search for pre-defined property",
+			"skip-on": {
+				"mediawiki": [ ">1.42.x", "Skipping, broken due to wiki page creation failure in test setup" ]
+			},
 			"special-page": {
 				"page": "Properties",
 				"query-parameters": [],

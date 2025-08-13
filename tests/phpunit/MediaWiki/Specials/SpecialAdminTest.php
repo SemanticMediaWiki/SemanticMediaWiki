@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialAdmin;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialAdmin
@@ -51,7 +51,7 @@ class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 		$user = new MockSuperUser();
 		$this->testEnvironment->overrideUserPermissions( $user, [ 'smw-admin' ] );
 
-		$outputPage = $this->getMockBuilder( '\OutputPage' )
+		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +62,7 @@ class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialAdmin();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SemanticMadiaWiki' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
 		);
 
 		$oldOutput = $instance->getOutput();
@@ -77,7 +77,7 @@ class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExecuteWithInvalidPermissionThrowsException() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +87,7 @@ class SpecialAdminTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialAdmin();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'SemanticMadiaWiki' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SemanticMadiaWiki' )
 		);
 
 		$instance->getContext()->setUser( $user );

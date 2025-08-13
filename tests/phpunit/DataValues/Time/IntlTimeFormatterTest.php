@@ -32,7 +32,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider formatProvider
 	 */
 	public function testFormat( $serialization, $languageCode, $formatOption, $expected ) {
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +65,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testContainsValidDateFormatRule() {
 		$formatOption = 'F Y/m/d H:i:s';
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +83,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 		// F - A full textual representation of a month, such as January or March
 		$formatOption = 'F Y/m/d H:i:s';
 
-		$language = $this->getMockBuilder( '\Language' )
+		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
 			->disableOriginalConstructor()
 			->getMock();
 

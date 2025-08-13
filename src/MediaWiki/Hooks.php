@@ -2,10 +2,11 @@
 
 namespace SMW\MediaWiki;
 
-use IContextSource;
+use MediaWiki\Context\IContextSource;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use ParserHooks\HookRegistrant;
 use SMW\DataTypeRegistry;
@@ -52,8 +53,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\Site;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
-use SMW\Store;
-use User;
 
 /**
  * @license GPL-2.0-or-later
@@ -559,7 +558,7 @@ class Hooks {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$mwCollaboratorFactory = $applicationFactory->newMwCollaboratorFactory();
 
-		$user = User::newFromIdentity( $user );
+		$user = MediaWikiServices::getInstance()->getUserFactory()->newFromUserIdentity( $user );
 		$editInfo = $mwCollaboratorFactory->newEditInfo(
 			$wikiPage,
 			$revision,

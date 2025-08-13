@@ -2,8 +2,8 @@
 
 namespace SMW\Property\Annotators;
 
+use MediaWiki\Title\Title;
 use SMW\Property\Annotator;
-use Title;
 
 /**
  * @license GPL-2.0-or-later

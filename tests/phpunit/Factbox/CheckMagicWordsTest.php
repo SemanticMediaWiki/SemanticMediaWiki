@@ -26,7 +26,7 @@ class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider magicWordsProvider
 	 */
 	public function testGetMagicWords( $magicWords, $options, $expected ) {
-		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
 			->disableOriginalConstructor()
 			->getMock();
 

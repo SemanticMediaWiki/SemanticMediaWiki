@@ -16,7 +16,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
 class HookDispatcherAwareTraitTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetHookDispatcher() {
-		$user = $this->getMockBuilder( '\User' )
+		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -6,6 +6,7 @@ use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMW\SPARQLStore\Exception\XmlParserException;
 use SMW\SPARQLStore\HttpResponseParser;
+use XMLParser;
 
 /**
  * Class for parsing SPARQL results in XML format
@@ -18,7 +19,7 @@ use SMW\SPARQLStore\HttpResponseParser;
 class XmlResponseParser implements HttpResponseParser {
 
 	/**
-	 * @var resource
+	 * @var XMLParser
 	 */
 	private $parser;
 

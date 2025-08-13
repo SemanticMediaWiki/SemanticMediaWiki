@@ -2,10 +2,11 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\Subobject;
 use SMWDIBlob;
-use Title;
 
 /**
  * @covers \SMW\Subobject
@@ -41,7 +42,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( 'Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,14 +53,14 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetSemanticWithInvalidIdThrowsException() {
-		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$this->expectException( 'InvalidArgumentException' );
 		$instance->setSemanticData( '' );
 	}
 
 	public function testSetEmptySemanticData() {
-		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 		$instance->setEmptyContainerForId( 'Foo' );
 
 		$this->assertInstanceOf(
@@ -83,7 +84,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testgetSubobjectId( array $parameters, array $expected ) {
 		$instance = $this->acquireInstanceForId(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			$parameters['identifier']
 		);
 
@@ -102,7 +103,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testGetProperty( array $parameters ) {
 		$instance = $this->acquireInstanceForId(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			$parameters['identifier']
 		);
 
@@ -117,7 +118,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testAddDataValue( array $parameters, array $expected ) {
 		$instance = $this->acquireInstanceForId(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			$parameters['identifier']
 		);
 
@@ -187,14 +188,14 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$instance->addDataValue( $dataValue );
 	}
 
 	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
-		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
 		$instance->getSemanticData();
@@ -204,7 +205,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider errorProvider
 	 */
 	public function testErrorHandlingOnErrors( $errors, $expected ) {
-		$instance = new Subobject( Title::newFromText( __METHOD__ ) );
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		foreach ( $errors as $error ) {
 			$instance->addError( $error );
@@ -221,7 +222,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	 */
 	public function testGetContainer( array $parameters ) {
 		$instance = $this->acquireInstanceForId(
-			Title::newFromText( __METHOD__ ),
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
 			$parameters['identifier']
 		);
 

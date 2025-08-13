@@ -16,48 +16,43 @@ jobs:
     strategy:
       matrix:
         include:
-          - mediawiki_version: '1.39'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: false
-          - mediawiki_version: '1.39'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mysql:8"
-            coverage: false
-            experimental: false
-          - mediawiki_version: '1.40'
-            php_version: 8.1
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: false
-          - mediawiki_version: '1.41'
+          - mediawiki_version: '1.43'
             php_version: 8.1
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: true
             experimental: false
-          - mediawiki_version: '1.42'
-            php_version: 8.2
-            database_type: mysql
-            database_image: "mariadb:11.2"
-            coverage: false
-            experimental: true
           - mediawiki_version: '1.43'
             php_version: 8.2
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: false
+            experimental: false
+          - mediawiki_version: '1.43'
+            php_version: 8.3
+            database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: false
             experimental: true
-            
+          - mediawiki_version: '1.44'
+            php_version: 8.3
+            database_type: mysql
+            database_image: "mariadb:11.2"
+            coverage: false
+            experimental: true
+          - mediawiki_version: '1.44'
+            php_version: 8.3
+            database_type: mysql
+            database_image: "mariadb:11.8"
+            coverage: false
+            experimental: true
+
     env:
       MW_VERSION: ${{ matrix.mediawiki_version }}
       PHP_VERSION: ${{ matrix.php_version }}
       DB_TYPE: ${{ matrix.database_type }}
       DB_IMAGE: ${{ matrix.database_image }}
+      PHP_EXTENSIONS: pcntl
 
     steps:
       - name: Checkout

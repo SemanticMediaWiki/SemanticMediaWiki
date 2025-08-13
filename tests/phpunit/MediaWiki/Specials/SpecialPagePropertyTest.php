@@ -2,9 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials;
 
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Request\FauxRequest;
 use SMW\MediaWiki\Specials\SpecialPageProperty;
 use SMW\Tests\TestEnvironment;
-use Title;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialPageProperty
@@ -57,7 +58,7 @@ class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialPageProperty();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'PageProperty' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'PageProperty' )
 		);
 
 		$instance->execute( $query );
@@ -81,11 +82,11 @@ class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SpecialPageProperty();
 
 		$instance->getContext()->setTitle(
-			Title::newFromText( 'PageProperty' )
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'PageProperty' )
 		);
 
 		$instance->getContext()->setRequest(
-			new \FauxRequest( $request, true )
+			new FauxRequest( $request, true )
 		);
 
 		$instance->execute( null );

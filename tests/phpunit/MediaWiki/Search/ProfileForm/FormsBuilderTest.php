@@ -26,7 +26,7 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$this->webRequest = $this->getMockBuilder( '\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +43,7 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildForm() {
-		$title = $this->getMockBuilder( '\Title' )
+		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
 			->disableOriginalConstructor()
 			->getMock();
 

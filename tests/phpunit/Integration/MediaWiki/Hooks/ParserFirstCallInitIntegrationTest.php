@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use MediaWiki\MediaWikiServices;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
-use Title;
 
 /**
  * @group semantic-mediawiki
@@ -100,7 +100,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			'declare'
 		];
 
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$this->testEnvironment->addConfiguration( 'smwgQEnabled', true );
 
 		$instance = ServicesFactory::getInstance()->newContentParser( $title );
@@ -129,7 +129,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			'show'
 		];
 
-		$title = Title::newFromText( __METHOD__ );
+		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 		$this->testEnvironment->addConfiguration( 'smwgQEnabled', false );
 
 		$instance = ServicesFactory::getInstance()->newContentParser( $title );
