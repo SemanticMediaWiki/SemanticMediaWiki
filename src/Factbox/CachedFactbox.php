@@ -312,43 +312,72 @@ class CachedFactbox {
 	}
 
 	/**
-	 * Processing and re-parsing of the Factbox content
-	 */
+ 	* Processing and re-parsing of the Factbox content
+ 	* with a temporary hack to avoid accessing Parser::$mOutput
+ 	* before initialization on MW 1.43.x.
+ 	*
+ 	* @param Title        $title           Page title for Factbox context.
+ 	* @param ParserOutput $parserOutput    Original parser output.
+ 	* @param bool         $checkMagicWords Whether to enforce magic word checks.
+ 	* @return string|null HTML of the rebuilt Factbox or null on hack fallback.
+ 	*/
 	private function rebuild( Title $title, ParserOutput $parserOutput, $checkMagicWords ) {
-		$text = null;
-		$applicationFactory = ApplicationFactory::getInstance();
+    	$text = null;
+    	$applicationFactory = ApplicationFactory::getInstance();
 
-		$factbox = $applicationFactory->singleton( 'FactboxFactory' )->newFactbox(
-			$title,
-			$parserOutput
-		);
+    	// Build the Factbox
+    	$factbox = $applicationFactory->singleton( 'FactboxFactory' )->newFactbox(
+        	$title,
+        	$parserOutput
+    	);
+    	$factbox->setCheckMagicWords( $checkMagicWords );
+    	$factbox->doBuild();
 
-		$factbox->setCheckMagicWords(
-			$checkMagicWords
-		);
+    	// If not visible, bail out
+    	if ( !$factbox->isVisible() ) {
+        	return $text;
+    	}
 
-		$factbox->doBuild();
+    	// Prepare parser for content and attachment
+    	$contentParser = $applicationFactory->newContentParser( $title );
+    	$parserOutputClass = \MediaWiki\Parser\Parser::class;
+    	$parserOutputRef = new \ReflectionClass( $parserOutputClass );
+    	$mOutputProp = $parserOutputRef->getProperty( 'mOutput' );
+    	$cpRef = new \ReflectionClass( $contentParser );
+    	$parserProp = $cpRef->getProperty( 'parser' );
+    	$parserProp->setAccessible( true );
 
-		if ( !$factbox->isVisible() ) {
-			return $text;
-		}
+    	// Process main content
+    	$content = $factbox->getContent();
+    	if ( $content !== '' ) {
+        	// Use reflection to extract the underlying Parser instance
+        	$parser = $parserProp->getValue( $contentParser );
+        	if ( $parser instanceof \MediaWiki\Parser\Parser && !$mOutputProp->isInitialized( $parser ) ) {
+            	wfDebugLog( 'SemanticMediaWiki', 'Parser::$mOutput uninitialized, skipping factbox content parse' );
+            	return null;
+        	}
+        	$contentParser->parse( $content, false );
+        	$content = InTextAnnotationParser::removeAnnotation(
+            	$contentParser->getOutput()->getText()
+        	);
+    	}
 
-		$contentParser = $applicationFactory->newContentParser( $title );
+    	// Process attachment content
+    	$attachmentContent = $factbox->getAttachmentHTML();
+    	if ( $attachmentContent !== '' ) {
+        	$parser = $parserProp->getValue( $contentParser );
+        	if ( $parser instanceof \MediaWiki\Parser\Parser && !$mOutputProp->isInitialized( $parser ) ) {
+            	wfDebugLog( 'SemanticMediaWiki', 'Parser::$mOutput uninitialized, skipping factbox attachment parse' );
+            	return null;
+        	}
+        	$contentParser->parse( $attachmentContent, false );
+        	$attachmentContent = $contentParser->getOutput()->getText();
+    	}
 
-		if ( ( $content = $factbox->getContent() ) !== '' ) {
-			$contentParser->parse( $content, false );
-			$content = InTextAnnotationParser::removeAnnotation(
-				$contentParser->getOutput()->getText()
-			);
-		}
-
-		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
-			$contentParser->parse( $attachmentContent, false );
-			$attachmentContent = $contentParser->getOutput()->getText();
-		}
-
-		return $factbox->tabs( $content, $attachmentContent );
+    	// Return the final HTML tabs
+    	return $factbox->tabs( $content, $attachmentContent );
 	}
+
 
 	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
