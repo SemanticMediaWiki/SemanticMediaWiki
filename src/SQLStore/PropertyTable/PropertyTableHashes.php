@@ -131,6 +131,8 @@ class PropertyTableHashes {
 			$hash = $this->connection->unescape_bytea( $hash );
 		}
 
+		$hash = $hash === null || $hash === false || strlen($hash) <= 1 ? [] : unserialize( $hash );
+
 		if(strlen($hash ?? '') > 1) { $hash=unserialize($hash); }
 		else { $hash = []; }
 		$cache->save( $id, $hash );
