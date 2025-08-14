@@ -113,22 +113,45 @@ class ContentParser {
 	}
 
 	/**
-	 * Generates or fetches the ParserOutput object from an appropriate source
-	 *
-	 * @since 1.9
-	 *
-	 * @param string|null $text
-	 * @param bool $clear Whether to clear the parser cache.
-	 *
-	 * @return ContentParser
-	 */
+	 * Parses the page content or provided text, with a temporary hack to avoid
+ 	* accessing Parser::$mOutput before initialization on MW 1.43.x.
+ 	*
+ 	* @param string|null $text  Optional wikitext to parse instead of page text.
+ 	* @param bool        $clear Whether to clear the parser state before parsing.
+ 	* @return ParserOutput|null Returns ParserOutput on success, null on hack fallback.
+ 	*/
 	public function parse( ?string $text = null, bool $clear = true ) {
-		if ( $text !== null ) {
-			return $this->parseText( $text, $clear );
-		}
+    	// If explicit text is provided, attempt to parse it directly.
+    	if ( $text !== null ) {
+        	// Temporary hack: check that the Parser::$mOutput property is initialized
+        	$parser = $this->getParser();
+        	if ( $parser instanceof \MediaWiki\Parser\Parser ) {
+            	$ref = new \ReflectionClass( \MediaWiki\Parser\Parser::class );
+            	$prop = $ref->getProperty( 'mOutput' );
+            	if ( !$prop->isInitialized( $parser ) ) {
+                	// Skip parsing to avoid fatal error; return null fallback
+                	wfDebugLog( 'SemanticMediaWiki', 'Parser::$mOutput uninitialized, skipping parseText()' );
+                	return null;
+            	}
+        	}
+        	return $this->parseText( $text, $clear );
+    	}
 
-		return $this->fetchFromContent();
+    	// No text override: fetch cached or fresh content.
+    	// Temporary hack also applies here if fetchFromContent() triggers parse()
+    	$parser = $this->getParser();
+    	if ( $parser instanceof \MediaWiki\Parser\Parser ) {
+        	$ref = new \ReflectionClass( \MediaWiki\Parser\Parser::class );
+        	$prop = $ref->getProperty( 'mOutput' );
+        	if ( !$prop->isInitialized( $parser ) ) {
+            	wfDebugLog( 'SemanticMediaWiki', 'Parser::$mOutput uninitialized, skipping fetchFromContent()' );
+	            return null;
+    	    }
+    	}
+
+    	return $this->fetchFromContent();
 	}
+
 
 	private function parseText( ?string $text, bool $clear ) {
 		$this->parserOutput = $this->parser->parse(
