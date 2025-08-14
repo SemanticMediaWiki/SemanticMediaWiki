@@ -798,7 +798,7 @@ class Database {
 	public function escape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
 			$connection = $this->connRef->getConnection( 'write' );
-			$text = pg_escape_bytea( $connection, $text );
+			$text = pg_escape_bytea( $connection, $text ?? '' );
 		}
 
 		return $text;
@@ -813,7 +813,8 @@ class Database {
 	 */
 	public function unescape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
-			$text = pg_unescape_bytea( $text ?? '' );
+			$connection = $this->connRef->getConnection( 'write' );
+			$text = pg_unescape_bytea( $connection, $text ?? '' );
 		}
 
 		return $text;
