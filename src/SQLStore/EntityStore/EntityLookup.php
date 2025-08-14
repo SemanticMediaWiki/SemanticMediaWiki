@@ -109,7 +109,7 @@ class EntityLookup implements IEntityLookup {
 		}
 
 		foreach ( $this->store->getPropertyTables() as $tid => $proptable ) {
-			if ( !array_key_exists( $proptable->getName(), $propertyTableHashes ) ) {
+			if ( is_array($propertyTableHashes) && !array_key_exists( $proptable->getName(), $propertyTableHashes ) ) {
 				continue;
 			}
 
