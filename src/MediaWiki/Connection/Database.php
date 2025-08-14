@@ -813,8 +813,7 @@ class Database {
 	 */
 	public function unescape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
-			$connection = $this->connRef->getConnection( 'write' );
-			$text = pg_unescape_bytea( $connection, $text ?? '' );
+			$text = pg_unescape_bytea( $text ?? '' );
 		}
 
 		return $text;

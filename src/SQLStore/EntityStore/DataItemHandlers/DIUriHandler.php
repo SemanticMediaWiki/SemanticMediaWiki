@@ -105,8 +105,8 @@ class DIUriHandler extends DataItemHandler {
 
 		// bytea type handling
 		if ( $text !== null && $this->isDbType( 'postgres' ) ) {
-			$connection = $this->connRef->getConnection( 'write' );
-			$text = pg_escape_bytea( $connection, $text );
+			$connection = $this->store->getConnection( 'mw.db' );
+			$text = $connection->escape_bytea( $text );
 		}
 
 		return [
@@ -144,7 +144,8 @@ class DIUriHandler extends DataItemHandler {
 		}
 
 		if ( $this->isDbType( 'postgres' ) ) {
-			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] || '' );
+			$connection = $this->store->getConnection( 'mw.db' );
+			$dbkeys[0] = $connection->unescape_bytea( $dbkeys[0] ?? '' );
 		}
 
 		return DIUri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
