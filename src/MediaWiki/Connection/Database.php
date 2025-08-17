@@ -797,20 +797,11 @@ class Database {
 	 */
 	public function escape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
-			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+
 			// $escaped = pg_escape_bytea( $connection, $text ?? '' );
+			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+
 			// this seems to be quite hard to get so here is a PHP implementation
-			$text = $text ?? '';
-			$escaped = '';
-			$len = strlen( (string)$text );
-			for ( $i = 0; $i < $len ; $i++ ) {
-				$char = $text[ $i ];
-				$ord = ord( $char );
-				$escaped .= ( $ord < 32 || $ord > 126 )
-					? sprintf( '\\%03o', $ord ) 
-					: ( $char === '\\' ? '\\\\' : $char );
-			}
-			return (string)$escaped;
+			$text = (string)( $text ?? '' );
+			return '\\x' . bin2hex( $text );
 		}
 
 		return $text;
