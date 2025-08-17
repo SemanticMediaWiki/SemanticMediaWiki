@@ -797,8 +797,14 @@ class Database {
 	 */
 	public function escape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
-			$connection = $this->connRef->getConnection( 'write' );
-			$text = pg_escape_bytea( $connection, $text ?? '' );
+       		$text = $text ?? '';
+            $escaped = '';
+            for( $i = 0; $i < strlen( $text ) ; $i++ ) {
+                    $char = $text[ $i ];
+                    $ord = ord( $char );
+                    $escaped.= ( $ord < 32 || $ord > 126 ? sprintf( '\\%03o', $ord ) : ( $char == '\\' ? '\\\\' : $char ) );
+            }
+            return $escaped;
 		}
 
 		return $text;
