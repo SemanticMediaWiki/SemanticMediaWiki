@@ -800,14 +800,14 @@ class Database {
 			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+
 			// $escaped = pg_escape_bytea( $connection, $text ?? '' );
 			// this seems to be quite hard to get so here is a PHP implementation
-       		$text = $text ?? '';
-            $escaped = '';
-            for( $i = 0; $i < strlen( $text ) ; $i++ ) {
-                    $char = $text[ $i ];
-                    $ord = ord( $char );
-                    $escaped.= ( $ord < 32 || $ord > 126 ? sprintf( '\\%03o', $ord ) : ( $char == '\\' ? '\\\\' : $char ) );
-            }
-            return $escaped;
+			$text = $text ?? '';
+			$escaped = '';
+			for( $i = 0; $i < strlen( $text ) ; $i++ ) {
+				$char = $text[ $i ];
+				$ord = ord( $char );
+				$escaped .= $ord < 32 || $ord > 126 ? sprintf( '\\%03o', $ord ) : ( $char == '\\' ? '\\\\' : $char );
+			}
+			return $escaped;
 		}
 
 		return $text;
