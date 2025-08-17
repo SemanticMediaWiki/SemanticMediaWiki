@@ -817,7 +817,7 @@ class Database {
 	 */
 	public function unescape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
-			$text = pg_unescape_bytea( $text ?? '' );
+			$text = pg_unescape_bytea( (string)( $text ?? '' ) );
 		}
 
 		return $text;
