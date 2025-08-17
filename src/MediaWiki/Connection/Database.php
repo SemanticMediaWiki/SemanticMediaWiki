@@ -802,12 +802,15 @@ class Database {
 			// this seems to be quite hard to get so here is a PHP implementation
 			$text = $text ?? '';
 			$escaped = '';
-			for( $i = 0; $i < strlen( $text ) ; $i++ ) {
+			$len = strlen( (string)$text );
+			for ( $i = 0; $i < $len ; $i++ ) {
 				$char = $text[ $i ];
 				$ord = ord( $char );
-				$escaped .= $ord < 32 || $ord > 126 ? sprintf( '\\%03o', $ord ) : ( $char == '\\' ? '\\\\' : $char );
+				$escaped .= ( $ord < 32 || $ord > 126 )
+					? sprintf( '\\%03o', $ord ) 
+					: ( $char === '\\' ? '\\\\' : $char );
 			}
-			return $escaped;
+			return (string)$escaped;
 		}
 
 		return $text;
