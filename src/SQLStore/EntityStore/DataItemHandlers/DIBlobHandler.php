@@ -162,7 +162,7 @@ class DIBlobHandler extends DataItemHandler {
 
 		if ( $this->isDbType( 'postgres' ) ) {
 			$connection = $this->store->getConnection( 'mw.db' );
-			$dbkeys[0] = $connection->escape_bytea( $dbkeys[0] ?? '' );
+			$dbkeys[0] = $connection->unescape_bytea( $dbkeys[0] ?? '' );
 		}
 
 		// empty blob: use "hash" string
