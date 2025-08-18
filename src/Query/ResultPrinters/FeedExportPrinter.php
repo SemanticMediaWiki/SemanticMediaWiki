@@ -2,8 +2,9 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use FeedItem;
+use MediaWiki\Content\TextContent;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Feed\FeedItem;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\Sanitizer;
@@ -14,7 +15,6 @@ use SMW\Query\ExportPrinter;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
-use TextContent;
 use WikiPage;
 
 /**
