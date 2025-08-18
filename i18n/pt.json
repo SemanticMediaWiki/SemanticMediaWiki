@@ -636,7 +636,7 @@
 	"smw-admin-maintenance-script-description-rebuilddata": "Recria todos os dados semânticos na base de dados, percorrendo todas as páginas que possam ter dados semânticos.",
 	"smw-admin-maintenance-script-description-rebuildelasticindex": "Reconstrói o índice Elasticsearch (só nas instalações que usam o <code>ElasticStore</code>), percorrendo todas as entidades que têm dados semânticos.",
 	"smw-admin-maintenance-script-description-rebuildelasticmissingdocuments": "Encontrar as entidades em falta no Elasticsearch (só nas instalações que usam o <code>ElasticStore</code>) e agendar os processos de atualização apropriados.",
-	"smw-admin-maintenance-script-description-rebuildfulltextsearchtable": "Reconstrói o índice de pesquisa de texto completo <code>SQLStore</code> (nas instalações onde a configuração foi ativada).",
+	"smw-admin-maintenance-script-description-rebuildfulltextsearchtable": "Recria o índice de pesquisa do texto completo de <code>SQLStore</code> (para as instalações onde a configuração foi ativada).",
 	"smw-admin-maintenance-script-description-rebuildpropertystatistics": "Reconstrói as estatísticas de utilização de todas as entidades propriedade.",
 	"smw-admin-maintenance-script-description-removeduplicateentities": "Remove as entidades duplicadas encontradas em tabelas selecionadas que não tenham referências ativas.",
 	"smw-admin-maintenance-script-description-setupstore": "Configura o servidor de armazenamento e consulta como definido em <code>LocalSettings.php</code>.",
