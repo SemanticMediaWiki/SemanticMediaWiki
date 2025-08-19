@@ -75,7 +75,6 @@ $autoloader->addClassMap( [
 	'SMW\Tests\TestEnvironment'                     => __DIR__ . '/phpunit/TestEnvironment.php',
 	'SMW\Tests\TestConfig'                          => __DIR__ . '/phpunit/TestConfig.php',
 	'SMW\Tests\PHPUnitCompat'                       => __DIR__ . '/phpunit/PHPUnitCompat.php',
-	'SMW\Tests\DatabaseTestCase'                    => __DIR__ . '/phpunit/DatabaseTestCase.php',
 	'SMW\Tests\JSONScriptTestCaseRunner'            => __DIR__ . '/phpunit/JSONScriptTestCaseRunner.php',
 	'SMW\Tests\JSONScriptServicesTestCaseRunner'    => __DIR__ . '/phpunit/JSONScriptServicesTestCaseRunner.php',
 	'SMW\Tests\QueryPrinterTestCase'                => __DIR__ . '/phpunit/QueryPrinterTestCase.php',
