@@ -47,15 +47,10 @@ class LocalTime {
 		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 
-		// DateTime is mutable, keep track of possible changes
-		// TODO: Illegal dynamic property (#5421)
-		$dateTime->hasLocalTimeCorrection = false;
-
 		if ( $data[0] == 'ZoneInfo' ) {
 			try {
 				$userTZ = new DateTimeZone( $data[2] );
 				$dateTime->setTimezone( $userTZ );
-				$dateTime->hasLocalTimeCorrection = true;
 				return $dateTime;
 			} catch ( \Exception $e ) {
 				// Unrecognized timezone, default to 'Offset' with the stored offset.
@@ -94,8 +89,6 @@ class LocalTime {
 		} else {
 			$dateTime->sub( $dateInterval );
 		}
-
-		$dateTime->hasLocalTimeCorrection = true;
 
 		return $dateTime;
 	}
