@@ -614,23 +614,23 @@ class SMWInfolink {
 	 * @return string
 	 */
 	public static function decodeCompactLink( $value ) {
-		if ( !is_string( $value ) || mb_substr( $value, 0, 3 ) !== 'cl:' ) {
+		if ( !is_string( $value ) || substr( $value, 0, 3 ) !== 'cl:' ) {
 			return $value;
 		}
 
-		$value = mb_substr( $value, 3 );
+		$value = substr( $value, 3 );
 
 		$value = base64_decode(
 			str_pad( strtr( str_replace( '.', '__', $value ), '-_', '+/' ), strlen( $value ) % 4, '=', STR_PAD_RIGHT )
 		);
 
 		// Compressed?
-		if ( mb_substr( $value, 0, 2 ) === 'c:' ) {
-			$val = @gzinflate( mb_substr( $value, 2 ) );
+		if ( substr( $value, 0, 2 ) === 'c:' ) {
+			$val = @gzinflate( substr( $value, 2 ) );
 
 			// Guessing that MediaWiki swallowed the last `_`
 			if ( $val === false ) {
-				$val = @gzinflate( mb_substr( $value, 2 ) . '?' );
+				$val = @gzinflate( substr( $value, 2 ) . '?' );
 			}
 
 			$value = $val;
