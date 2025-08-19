@@ -273,7 +273,7 @@ class Indexer {
 			$id = $this->revisionGuard->getLatestRevID( $id );
 		}
 
-		if ( $id == 0 ) {
+		if ( !is_int( $id ) || $id == 0 ) {
 			return '';
 		}
 
