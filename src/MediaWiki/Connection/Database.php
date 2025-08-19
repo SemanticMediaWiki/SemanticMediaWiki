@@ -798,9 +798,9 @@ class Database {
 	public function escape_bytea( $text ) {
 		if ( $this->isType( 'postgres' ) ) {
 			// normally one uses pg_escape_bytea PHP function to do this
-			// $text = pg_escape_bytea( $connection, $text ?? '' );
 			// unfortunately pg_escape_bytea requires a PgSql\Connection as of PHP 8.1+
 			// this seems to be quite hard to get so here is a PHP alternative
+			// Emit the bytea-hex input format instead (uniform since PostgreSQL 9.0+)
 			$text = (string)( $text ?? '' );
 			return '\\x' . bin2hex( $text );
 		}
