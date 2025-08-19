@@ -20,7 +20,7 @@ class LocalTime {
 	 */
 	private static $localTimeOffset = 0;
 
-	public static bool readonly $hasLocalTimeCorrection = false;
+	public static bool $hasLocalTimeCorrection = false;
 
 	/**
 	 * @since 3.0
