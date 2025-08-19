@@ -33,7 +33,7 @@ jobs:
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: false
-            experimental: true
+            experimental: false
           - mediawiki_version: '1.44'
             php_version: 8.3
             database_type: mysql
