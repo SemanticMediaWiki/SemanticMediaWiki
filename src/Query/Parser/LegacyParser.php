@@ -759,7 +759,7 @@ class LegacyParser implements Parser {
 				[ $k, $depth ] = explode( '=', $chunk, 2 );
 
 				if ( $description instanceof ClassDescription || $description instanceof SomeProperty || $description instanceof Disjunction ) {
-					$description->setHierarchyDepth( $depth );
+					$description->setHierarchyDepth( (int)$depth );
 				}
 
 				$chunk = $this->readChunk( '\]\]' );
