@@ -137,17 +137,6 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 				'[[Property description::Simple monolingual test@en]]'
 			);
 
-		// 1) SMW\Tests\Integration\SQLStore\SubSemanticDataDBIntegrationTest::testPredefinedProperty_Key_MonolingualText
-		// SMW\Exception\SubSemanticDataException: Data for a subobject of Display_precision_of cannot be added to _PREC.
-		//
-		// ...\SemanticMediaWiki\src\DataModel\SubSemanticData.php:206
-		// ...\SemanticMediaWiki\includes\SemanticData.php:814
-		// ...\SemanticMediaWiki\src\SQLStore\EntityStore\StubSemanticData.php:417
-		// ...\SemanticMediaWiki\src\SQLStore\EntityStore\StubSemanticData.php:202
-		// ...\SemanticMediaWiki\tests\phpunit\Integration\SQLStore\SubSemanticDataDBIntegrationTest.php:153
-		// ...\SemanticMediaWiki\tests\phpunit\DatabaseTestCase.php:155
-		// ...\doMaintenance.php:94
-
 		$semanticData = $this->getStore()->getSemanticData(
 			DIWikiPage::newFromText( '_PREC', SMW_NS_PROPERTY )
 		);
