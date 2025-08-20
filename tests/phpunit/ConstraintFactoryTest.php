@@ -80,7 +80,7 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider constraintByClass
+	 * @dataProvider constraintByClassProvider
 	 */
 	public function testCanConstructConstraintByClass( $class, $expected ) {
 		$instance = new ConstraintFactory();
@@ -96,7 +96,7 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function constraintByClass() {
+	public function constraintByClassProvider() {
 		yield [
 			'\SMW\Constraint\Constraints\NullConstraint',
 			'\SMW\Constraint\Constraints\NullConstraint'
