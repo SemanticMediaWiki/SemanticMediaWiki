@@ -53,7 +53,7 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @test Test if global functions are accessible
-	 * @dataProvider getGlobalFunctions
+	 * @dataProvider getGlobalFunctionsProvider
 	 *
 	 * @param $function
 	 */
@@ -108,7 +108,7 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @return array
 	 */
-	public function getGlobalFunctions() {
+	public function getGlobalFunctionsProvider() {
 		return [
 			[ 'smwfNormalTitleDBKey' ],
 			[ 'smwfXMLContentEncode' ],
