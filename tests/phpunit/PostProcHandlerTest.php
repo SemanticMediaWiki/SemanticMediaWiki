@@ -278,7 +278,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider validPropertyKey
+	 * @dataProvider validPropertyKeyProvider
 	 */
 	public function testGetHtmlOnCookieAndValidChangeDiff( $key ) {
 		$fieldChangeOp = $this->createMock( FieldChangeOp::class );
@@ -410,7 +410,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 		return $provider;
 	}
 
-	public function validPropertyKey() {
+	public function validPropertyKeyProvider() {
 		yield [
 			'Foo'
 		];
