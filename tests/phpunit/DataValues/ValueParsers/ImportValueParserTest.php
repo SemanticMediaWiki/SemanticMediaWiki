@@ -60,7 +60,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider invalidUriContent
+	 * @dataProvider invalidUriContentProvider
 	 */
 	public function testTryParseForValidValueFormatErroredByUriMismatch( $content ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
@@ -123,7 +123,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
-	public function invalidUriContent() {
+	public function invalidUriContentProvider() {
 		$provider[] = [
 			''
 		];
