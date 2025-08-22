@@ -79,7 +79,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider invalidTypeContent
+	 * @dataProvider invalidTypeContentProvider
 	 */
 	public function testTryParseForValidValueFormatErroredByTypeMismatch( $content, $typelist ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
@@ -98,7 +98,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider validMatchTypeContent
+	 * @dataProvider validMatchTypeContentProvider
 	 */
 	public function testParseForValidValueToMatchType( $content, $parseValue, $expected ) {
 		$this->mediaWikiNsContentReader->expects( $this->once() )
@@ -136,7 +136,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 		return $provider;
 	}
 
-	public function invalidTypeContent() {
+	public function invalidTypeContentProvider() {
 		// Url missing
 		$provider[] = [
 			'|[http://www.foaf-project.org/ Friend Of A Friend]\n name',
@@ -168,7 +168,7 @@ class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
 		return $provider;
 	}
 
-	public function validMatchTypeContent() {
+	public function validMatchTypeContentProvider() {
 		# 0
 		$provider[] = [
 			"http://xmlns.com/foaf/0.1/|[http://www.foaf-project.org/ Friend Of A Friend]\n name|Type:Text\n",

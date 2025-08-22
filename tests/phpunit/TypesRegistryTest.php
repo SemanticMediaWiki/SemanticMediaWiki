@@ -86,7 +86,7 @@ class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider propertyList
+	 * @dataProvider propertyListProvider
 	 */
 	public function testPropertyList_FirstCharUnderscore( $key, $def ) {
 		$this->assertTrue( $key[0] === '_' );
@@ -109,7 +109,7 @@ class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 		}
 	}
 
-	public function propertyList() {
+	public function propertyListProvider() {
 		$excludes = [];
 
 		foreach ( TypesRegistry::getPropertyList() as $key => $def ) {
