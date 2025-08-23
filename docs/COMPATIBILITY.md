@@ -33,13 +33,22 @@ Increases of minimum requirements are indicated in bold.
         <td></td>
     </tr>
     <tr>
+        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.1.0">5.1.x</a></th>
+        <td>Obsolete release</td>
+        <td>2025-07-24</td>
+        <td>2025-07-24</td>
+        <td>8.1 - 8.4</td>
+        <td>1.39 - 1.43.1</td>
+        <td>MW 1.43.1 is the final version supported by the SMW 5.x series.</td>
+    </tr>
+    <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.0.0">5.0.x</a></th>
         <td>Obsolete release</td>
         <td>2025-03-10</td>
         <td>2025-05-24</td>
         <td><strong>8.1</strong> - 8.4</td>
         <td><strong>1.39</strong> - 1.43.1</td>
-        <td>MW 1.43.1 is the final version supported by the SMW 5.x series.</td>
+        <td></td>
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.2.0">4.2.x</a></th>
@@ -364,6 +373,11 @@ Note that MS SQL Server and Oracle are not supported as database backends.
         <td>1.3.x+</td>
         <td></td>
     </tr>
+    <tr>
+        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.1.0">5.1.x</a></th>
+        <td>7.10.2</td>
+        <td>1.3.x+</td>
+        <td></td>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.0.0">5.0.x</a></th>
         <td>7.10.2</td>
