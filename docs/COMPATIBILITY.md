@@ -412,7 +412,7 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 </table>
 
 - A 'minimum' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
-- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [migrating to](https://phabricator.wikimedia.org/T370147).
+- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by The Linux Foundation which Wikimedia is [migrating to](https://phabricator.wikimedia.org/T370147).
 
 ### Notes
 
