@@ -25,7 +25,7 @@ Increases of minimum requirements are indicated in bold.
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_6.0.0">6.0.x</a></th>
-        <td>Stable release</td>
+        <td><strong>Stable release</strong></td>
         <td>2025-08-12</td>
         <td>2025-08-12</td>
         <td>8.1 - 8.4</td>
@@ -34,7 +34,7 @@ Increases of minimum requirements are indicated in bold.
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.0.0">5.0.x</a></th>
-        <td><strong>Stable release</strong></td>
+        <td>Obsolete release</td>
         <td>2025-03-10</td>
         <td>2025-07-24</td>
         <td><strong>8.1</strong> - 8.4</td>
@@ -174,14 +174,14 @@ Increases of minimum requirements are indicated in bold.
     <tr>
         <th>6.x</th>
         <td>Full support (5.7.0+)</td>
-        <td>Full support (3.24.0+)</td>
+        <td>Full support <strong>(3.24.0+)</strong></td>
         <td>Full support (10+)</td>
     </tr>
     <tr>
         <th>5.x</th>
-        <td>Full support (5.5.8+)</td>
-        <td>Full support (3.3.7+)</td>
-        <td>Full support (9.5.0+)</td>
+        <td>Full support <strong>(5.7.0+)</strong></td>
+        <td>Full support <strong>(3.8.0+)</strong></td>
+        <td>Full support <strong>(10+)</strong></td>
     </tr>
     <tr>
         <th>4.x</th>
@@ -359,16 +359,19 @@ Note that MS SQL Server and Oracle are not supported as database backends.
         <th>Notes</th>
     </tr>
         <tr>
-        <th>6.0.x</th>
-        <td>TBD</td>
-        <td>Not supported</td>
+        <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_6.0.0">6.0.x</a></th>
+        <td>7.10.2</td>
+        <td>1.3.x+</td>
         <td></td>
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_5.0.0">5.0.x</a></th>
         <td>7.10.2</td>
-        <td>Not supported</td>
-        <td>Confirmed to work with ElasticSearch 7.10.2 (MW 1.43.1)</td>
+        <td>1.3.x+</td>
+        <td>
+        Confirmed to work with ElasticSearch 7.10.2 (MW 1.43.1)<br>
+        <a href="https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6219#issuecomment-3214084025">Confirmed to work with OpenSearch 2.15.0+ (MW 1.43.1)</a>
+        </td>
     </tr>
     <tr>
         <th><a href="https://www.semantic-mediawiki.org/wiki/Semantic_MediaWiki_4.1.3">4.1.3 - 4.2.x</a></th>
@@ -409,7 +412,7 @@ Note that MS SQL Server and Oracle are not supported as database backends.
 </table>
 
 - A 'minimum' supported version of ElasticSearch is followed by [CirrusSearch's requirements](https://www.mediawiki.org/wiki/Extension:CirrusSearch#Dependencies).
-- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [migrating to](https://phabricator.wikimedia.org/T280482).
+- [OpenSearch](https://opensearch.org/) is a forked version of ElasticSearch OSS 7.10.2 by Amazon which Wikimedia is [migrating to](https://phabricator.wikimedia.org/T370147).
 
 ### Notes
 
