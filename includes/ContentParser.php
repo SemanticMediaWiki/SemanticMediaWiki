@@ -130,13 +130,15 @@ class ContentParser {
 	}
 
 	private function parseText( ?string $text, bool $clear ) {
-		$this->parserOutput = $this->parser->parse(
-			$text,
-			$this->getTitle(),
-			$this->makeParserOptions(),
-			true,
-			$clear
-		);
+		$options = $this->makeParserOptions();
+
+		// Deal with uninitialised parser output:
+		if ( !$clear ) {
+			$this->parser->setOptions( $options );
+			$this->parser->clearState();
+		}
+
+		$this->parserOutput = $this->parser->parse( $text, $this->getTitle(), $options, true, $clear );
 
 		return $this;
 	}
