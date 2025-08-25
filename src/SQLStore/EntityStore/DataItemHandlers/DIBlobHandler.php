@@ -118,7 +118,8 @@ class DIBlobHandler extends DataItemHandler {
 		$hash = $isKeyword ? $dataItem->normalize( $text ) : $this->makeHash( $text );
 
 		if ( $this->isDbType( 'postgres' ) ) {
-			$text = pg_escape_bytea( $text );
+			$connection = $this->store->getConnection( 'mw.db' );
+			$text = $connection->escape_bytea( $text );
 		}
 
 		if ( mb_strlen( $text ) <= $this->getMaxLength() && !$isKeyword ) {
@@ -160,7 +161,8 @@ class DIBlobHandler extends DataItemHandler {
 		}
 
 		if ( $this->isDbType( 'postgres' ) ) {
-			$dbkeys[0] = pg_unescape_bytea( $dbkeys[0] );
+			$connection = $this->store->getConnection( 'mw.db' );
+			$dbkeys[0] = $connection->unescape_bytea( $dbkeys[0] ?? '' );
 		}
 
 		// empty blob: use "hash" string
