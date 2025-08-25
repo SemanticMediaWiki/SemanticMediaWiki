@@ -13,6 +13,7 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Fixed MediaWiki 1.44 compatibility issues:
     * [FeedItem import error in FeedExportPrinter](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6205)
     * [Title import error when indexing Elasticsearch](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/6215)
+* Fixed error "[$mOutput must not be accessed before initialization](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6120)"
 
 ## Upgrading
 
