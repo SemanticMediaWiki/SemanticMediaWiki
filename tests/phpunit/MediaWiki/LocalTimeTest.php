@@ -22,7 +22,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertFalse(
-			$dateTime->hasLocalTimeCorrection
+			LocalTime::$hasLocalTimeCorrection
 		);
 	}
 
@@ -33,7 +33,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 		$dateTime = LocalTime::getLocalizedTime( $dti );
 
 		$this->assertTrue(
-			$dateTime->hasLocalTimeCorrection
+			LocalTime::$hasLocalTimeCorrection
 		);
 
 		$this->assertEquals(
@@ -49,7 +49,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 		$dateTime = LocalTime::getLocalizedTime( $dti );
 
 		$this->assertTrue(
-			$dateTime->hasLocalTimeCorrection
+			LocalTime::$hasLocalTimeCorrection
 		);
 
 		$this->assertEquals(
@@ -65,7 +65,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+120|Europe/Berlin' );
 
 		$this->assertTrue(
-			$dateTime->hasLocalTimeCorrection
+			LocalTime::$hasLocalTimeCorrection
 		);
 
 		$this->assertEquals(
@@ -80,7 +80,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+125|Foo' );
 
 		$this->assertTrue(
-			$dateTime->hasLocalTimeCorrection
+			LocalTime::$hasLocalTimeCorrection
 		);
 
 		$this->assertEquals(
