@@ -121,7 +121,8 @@ class DIBlobHandler extends DataItemHandler {
 			$text = pg_escape_bytea( $text );
 		}
 
-		if ( mb_strlen( $text ) <= $this->getMaxLength() && !$isKeyword ) {
+		// We need string length in bytes, not characters.
+		if ( strlen( $text ) <= $this->getMaxLength() && !$isKeyword ) {
 			$text = null;
 		}
 
