@@ -164,7 +164,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		[ $result, $error ] = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {
-			$id = null;
+			$id = '';
 		}
 
 		$html = $this->htmlFormRenderer
@@ -188,7 +188,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 		if ( $id > 0 && $webRequest->getText( 'dispose' ) == 'yes' ) {
 			$result = $this->msg( [ 'smw-admin-iddispose-done', $id ] );
-			$id = null;
+			$id = '';
 		}
 
 		if ( !$this->isEnabledFeature( SMW_ADM_DISPOSAL ) ) {
