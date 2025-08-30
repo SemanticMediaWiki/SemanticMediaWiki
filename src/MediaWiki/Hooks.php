@@ -894,11 +894,10 @@ class Hooks {
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 	 */
 	public function onResourceLoaderGetConfigVars( &$vars ) {
-		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars(
-			$applicationFactory->singleton( 'NamespaceInfo' )
+			MediaWikiServices::getInstance()->getNamespaceInfo()
 		);
 
 		$resourceLoaderGetConfigVars->setOptions(
