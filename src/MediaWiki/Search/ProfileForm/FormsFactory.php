@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
@@ -60,7 +61,7 @@ class FormsFactory {
 	 */
 	public function newNamespaceForm(): NamespaceForm {
 		return new NamespaceForm(
-			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' ),
+			MediaWikiServices::getInstance()->getNamespaceInfo(),
 			Localizer::getInstance()
 		);
 	}
