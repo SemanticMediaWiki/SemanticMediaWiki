@@ -9,7 +9,6 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @private
