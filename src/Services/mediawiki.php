@@ -156,7 +156,7 @@ return [
 	 * @return callable
 	 */
 	'NamespaceInfo' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'NamespaceInfo', '\SMW\MediaWiki\NamespaceInfo' );
+		$containerBuilder->registerExpectedReturnType( 'NamespaceInfo', '\MediaWiki\Title\NamespaceInfo' );
 		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
 		return new NamespaceInfo( $namespaceInfo );
