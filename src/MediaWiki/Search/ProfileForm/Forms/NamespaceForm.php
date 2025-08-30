@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Html\Html;
-use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Specials\SpecialSearch;
+use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Xml\Xml;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
