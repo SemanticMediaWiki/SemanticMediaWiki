@@ -3,8 +3,8 @@
 namespace SMW\Services;
 
 use JsonSchema\Validator as SchemaValidator;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Language\Language;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
