@@ -7,10 +7,10 @@ use ImportStringSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\MediaWiki\FileRepoFinder;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Utils\Logger;
 
