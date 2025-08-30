@@ -3,6 +3,7 @@
 namespace SMW\Services;
 
 use JsonSchema\Validator as SchemaValidator;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Language\Language;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
@@ -193,7 +194,7 @@ class SharedServicesContainer implements CallbackContainer {
 
 		$containerBuilder->registerCallback( 'NamespaceExaminer', static function () use ( $containerBuilder ) {
 			$settings = $containerBuilder->singleton( 'Settings' );
-			$namespaceInfo = $containerBuilder->singleton( 'NamespaceInfo' );
+			$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
 			$namespaceExaminer = new NamespaceExaminer(
 				$settings->get( 'smwgNamespacesWithSemanticLinks' )
