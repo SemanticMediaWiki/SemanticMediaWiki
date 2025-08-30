@@ -77,7 +77,7 @@ class Localizer {
 
 		self::$instance = new self(
 			$servicesFactory->singleton( 'ContentLanguage' ),
-			$servicesFactory->singleton( 'NamespaceInfo' ),
+			MediaWikiServices::getInstance()->getNamespaceInfo(),
 			$servicesFactory->singleton( 'UserOptionsLookup' ),
 			RequestContext::getMain()
 		);
