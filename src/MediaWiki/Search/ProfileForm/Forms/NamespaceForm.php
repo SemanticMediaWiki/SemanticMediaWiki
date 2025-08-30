@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Xml\Xml;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\NamespaceInfo;
 
 /**
  * @note Copied from SearchFormWidget::powerSearchBox, #3126 contains the reason
