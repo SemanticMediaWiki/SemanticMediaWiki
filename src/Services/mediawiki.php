@@ -7,7 +7,6 @@ use ImportStringSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\MediaWiki\FileRepoFinder;
@@ -148,18 +147,6 @@ return [
 		$logger = LoggerFactory::getInstance( $channel );
 
 		return new Logger( $logger, $role );
-	},
-
-	/**
-	 * NamespaceInfo
-	 *
-	 * @return callable
-	 */
-	'NamespaceInfo' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'NamespaceInfo', '\MediaWiki\Title\NamespaceInfo' );
-		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
-
-		return new NamespaceInfo( $namespaceInfo );
 	},
 
 	/**
