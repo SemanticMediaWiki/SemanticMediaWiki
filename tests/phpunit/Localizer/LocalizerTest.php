@@ -364,7 +364,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->newLocalizer();
 
 		$this->assertInstanceOf(
-			'DateTime',
+			'SMW\MediaWiki\ExtendedDateTime',
 			$instance->getLocalTime( $dataTime, $user )
 		);
 	}
