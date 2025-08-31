@@ -2,7 +2,6 @@
 
 namespace SMW\Localizer;
 
-use DateTime;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
@@ -13,6 +12,7 @@ use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use SMW\DIWikiPage;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
 use SMW\MediaWiki\NamespaceInfo;
 use SMW\NamespaceManager;
@@ -128,12 +128,12 @@ class Localizer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DateTime $dateTime
+	 * @param ExtendedDateTime $dateTime
 	 * @param User|null $user
 	 *
-	 * @return DateTime
+	 * @return ExtendedDateTime
 	 */
-	public function getLocalTime( DateTime $dateTime, $user = null ) {
+	public function getLocalTime( ExtendedDateTime $dateTime, $user = null ) {
 		if ( !$user instanceof User ) {
 			$user = $this->context->getUser();
 		}
