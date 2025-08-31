@@ -4,6 +4,7 @@ use MediaWiki\Json\JsonUnserializer;
 use SMW\DataValues\Time\CalendarModel;
 use SMW\DataValues\Time\JulianDay;
 use SMW\Exception\DataItemException;
+use SMW\MediaWiki\ExtendedDateTime;
 
 /**
  * This class implements time data items.
@@ -277,12 +278,12 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DateTime $dateTime
+	 * @param ExtendedDateTime $dateTime
 	 *
 	 * @return self
 	 * @throws DataItemException
 	 */
-	public static function newFromDateTime( DateTime $dateTime ) {
+	public static function newFromDateTime( ExtendedDateTime $dateTime ) {
 		$calendarModel = self::CM_JULIAN;
 
 		$year = $dateTime->format( 'Y' );
@@ -301,7 +302,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	/**
 	 * @since 2.4
 	 *
-	 * @return DateTime
+	 * @return ExtendedDateTime
 	 */
 	public function asDateTime() {
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
@@ -323,7 +324,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 			str_pad( $this->m_minutes, 2, '0', STR_PAD_LEFT ) . ':' .
 			$seconds;
 
-		return new DateTime( $time );
+		return new ExtendedDateTime( $time );
 	}
 
 	/**
