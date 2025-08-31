@@ -18,5 +18,5 @@ class ExtendedDateTime extends DateTime {
 	/**
 	 * @var bool
 	 */
-	private $hasLocalTimeCorrection = false;
+	public $hasLocalTimeCorrection = false;
 }
