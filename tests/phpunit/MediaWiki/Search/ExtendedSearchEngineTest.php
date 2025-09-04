@@ -148,42 +148,6 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testGetTextFromContent() {
-		if ( !method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
-			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
-		}
-
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'getTextFromContent' )
-			->with(
-				$title,
-				$content )
-			->willReturnMap( [ [ $title, $content, 'text from content for title' ] ] );
-
-		$searchEngine = new ExtendedSearchEngine(
-			$this->connection
-		);
-
-		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
-
-		$this->assertEquals(
-			'text from content for title',
-			$searchEngine->getTextFromContent( $title, $content )
-		);
-	}
-
 	public function testTextAlreadyUpdatedForIndex() {
 		if ( !method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
 			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
