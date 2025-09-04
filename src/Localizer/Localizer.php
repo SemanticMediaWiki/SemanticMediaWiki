@@ -8,13 +8,13 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
 use MediaWiki\Language\LanguageCode;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
 use SMW\DIWikiPage;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\LocalTime;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory;
 use SMW\Site;
@@ -77,7 +77,7 @@ class Localizer {
 
 		self::$instance = new self(
 			$servicesFactory->singleton( 'ContentLanguage' ),
-			$servicesFactory->singleton( 'NamespaceInfo' ),
+			MediaWikiServices::getInstance()->getNamespaceInfo(),
 			$servicesFactory->singleton( 'UserOptionsLookup' ),
 			RequestContext::getMain()
 		);

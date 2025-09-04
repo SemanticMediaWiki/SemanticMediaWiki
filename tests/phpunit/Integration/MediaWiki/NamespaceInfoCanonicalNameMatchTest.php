@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use MediaWiki\MediaWikiServices;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\PHPUnitCompat;
@@ -60,7 +61,7 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 	public function testCanonicalNames() {
 		$this->mwHooksHandler->deregisterListedHooks();
 		$applicationFactory = ApplicationFactory::getInstance();
-		$namespaceInfo = $applicationFactory->singleton( 'NamespaceInfo' );
+		$namespaceInfo = MediaWikiServices::getInstance()->getNamespaceInfo();
 
 		$count = 0;
 		$index = NamespaceManager::buildNamespaceIndex( $applicationFactory->getSettings()->get( 'smwgNamespaceIndex' ) );

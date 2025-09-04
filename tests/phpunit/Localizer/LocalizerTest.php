@@ -32,7 +32,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+		$this->namespaceInfo = $this->getMockBuilder( '\MediaWiki\Title\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 
