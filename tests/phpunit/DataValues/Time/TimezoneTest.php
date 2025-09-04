@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\DataValues\Time;
 
-use DateTime;
 use SMW\DataValues\Time\Timezone;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Tests\PHPUnitCompat;
 
 /**
@@ -69,7 +69,7 @@ class TimezoneTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetModifiedTime() {
-		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
+		$dti = new ExtendedDateTime( '2017-08-01 10:00:00+00:00' );
 		$tz = 'Asia/Tokyo';
 
 		$dateTime = Timezone::getModifiedTime( $dti, $tz );
