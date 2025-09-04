@@ -18,13 +18,9 @@
 	 * @param api {Object}
 	 */
 	var Query = function ( container, api ) {
-
-		this.VERSION = "3.0";
-
 		this.container = container;
 		this.mwApi = api;
 
-		this.title = mw.config.get( 'wgPageName' );
 		this.data = container.data( 'query' );
 		this.query = this.data.query;
 
@@ -39,23 +35,37 @@
 		this.init = true;
 
 		this.max = this.data.max;
-		this.step = 5;
-		this.postfix = '';
 
-		// Ensure to have a limit, offset parameter for queries that use
-		// the default setting
-		if ( this.query.indexOf( "|limit=" ) == -1 ) {
-			this.query = this.query + '|limit=' + this.limit;
-		}
-
-		if ( this.query.indexOf( "|offset=" ) == -1 ) {
-			this.query = this.query + '|offset=' + this.offset;
-		}
-
-		if ( this.query.indexOf( "|default=" ) == -1 ) {
-			this.query = this.query + '|default=' + mw.msg( 'smw_result_noresults' );
-		}
+		// Add some parameters required by a deferred SMW query.
+		var self = this; // no let until JS6; this will be reset and need to be remembered.
+		this.query = this.neededParams.reduce( function ( query, param) {
+			// no lambdas until JS6.
+			return query + ( query.match( self.paramMatchers[param] ) ? '' : '|' + param + '=' + self[param] );
+		}, this.query );
 	};
+
+
+	/**
+	 * Do not initialise class constants every time that a class instance is created for a deferred query on a page.
+	 *
+	 * @since 6.0.1
+	 */
+	Query.prototype.VERSION = '6.0.1';
+	Query.prototype.title = mw.config.get( 'wgPageName' );
+	Query.prototype.step = 5;
+	Query.prototype.postfix = '';
+	Query.prototype.neededParams = [ 'limit', 'offset', 'default' ];
+	Query.prototype.default = mw.msg( 'smw_result_noresults' );
+
+	/**
+	 * So that the same RegExp objects are not created for every deferred query on a page.
+	 *
+	 * @since 6.0.1
+	 */
+	Query.prototype.paramMatchers = Object.fromEntries( Query.prototype.neededParams.map( function( param) {
+		// no lambdas until JS6.
+		return [ param, new RegExp( '\\|\\s*' + param + '\\s*=' ) ];
+	} ) );
 
 	/**
 	 * Request and parse a #ask/#show query using the MediaWiki API back-end
@@ -65,14 +75,14 @@
 	Query.prototype.doApiRequest = function() {
 
 		var self = this,
-			noTrace = '';
+		noTrace = '';
 
 		// Replace limit, offset with altered values
 		var query = self.query.replace(
-			'limit=' + self.limit,
+			new RegExp( 'limit\\s*=\\s*' + self.limit ),
 			'limit=' + self.rangeLimit
 		).replace(
-			'offset=' + self.offset,
+			new RegExp( 'offset\\s*=\\s*' + self.offset ),
 			'offset=' + self.rangeOffset
 		);
 
@@ -80,13 +90,13 @@
 		// to the QueryDependencyLinksStore to disable any tracking
 		if ( self.query !== query ) {
 			noTrace = '|@notrace';
-		};
+		}
 
 		// API notes "modules: Gives the ResourceLoader modules used on the page.
 		// Either jsconfigvars or encodedjsconfigvars must be requested jointly
 		// with modules. 1.24+"
 		self.mwApi.post( {
-			action: "parse",
+			action: 'parse',
 			title: self.title,
 			contentmodel: 'wikitext',
 			prop: 'text|modules|jsconfigvars',
@@ -96,7 +106,7 @@
 			if ( self.init === true ) {
 				self.initControls();
 				self.replaceOutput( '' );
-			};
+			}
 
 			// Remove any comments retrieved from the API parse
 			var text = data.parse.text['*'].replace(/<!--[\S\s]*?-->/gm, '' );
@@ -108,7 +118,7 @@
 
 			// Remove any <p> element to avoid line breakages
 			if ( self.cmd === 'show' ) {
-				text = text.replace( /(?:^<p[^>]*>)|(?:<\/p>$)/img, '' );
+				text = text.replace( /(^<p[^>]*>|<\/p>$)/img, '' );
 			}
 
 			self.replaceOutput( text, '', data.parse.modules );
@@ -122,9 +132,9 @@
 				error = failure.error.info;
 			}
 
-			self.container.find( '#deferred-control' ).replaceWith( "<div id='deferred-control'></div>" );
+			self.container.find( '#deferred-control' ).replaceWith( '<div id="deferred-control"></div>' );
 			self.container.find( '.irs' ).hide();
-			self.replaceOutput( error, "error" );
+			self.replaceOutput( error, 'error' );
 		} );
 	};
 
@@ -144,10 +154,10 @@
 		var self = this,
 			element = this.cmd === 'ask' ? 'div' : 'span';
 
-		oClass = oClass !== undefined ? "class='" + oClass + "'" : '';
+		oClass = oClass !== undefined ? 'class="' + oClass + '"' : '';
 
 		self.container.find( '#deferred-output' ).replaceWith(
-			"<" + element + " id='deferred-output'" + oClass + ">" + text + "</" + element + ">"
+			'<' + element + ' id="deferred-output"' + oClass + '>' + text + '</' + element + '>'
 		);
 
 		self.reload( modules );
@@ -199,7 +209,7 @@
 
 		if ( self.init === true && self.control === 'slider' ) {
 			self.container.find( '#deferred-control' ).ionRangeSlider( {
-				type: "double",
+				type: 'double',
 				min: 0,
 				max: self.max,
 				step: self.step,
@@ -219,7 +229,7 @@
 					self.doApiRequest();
 				}
 			} );
-		};
+		}
 
 		// Once called turn off the init flag
 		self.init = self.init === true ? false : self.init;
