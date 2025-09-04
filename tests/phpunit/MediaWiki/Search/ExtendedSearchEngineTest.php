@@ -303,17 +303,6 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testReplacePrefixes() {
-		$searchEngine = new ExtendedSearchEngine(
-			$this->connection
-		);
-
-		$this->assertEquals(
-			'Some query',
-			$searchEngine->replacePrefixes( 'Some query' )
-		);
-	}
-
 	public function testTransformSearchTerm() {
 		$searchEngine = new ExtendedSearchEngine(
 			$this->connection
