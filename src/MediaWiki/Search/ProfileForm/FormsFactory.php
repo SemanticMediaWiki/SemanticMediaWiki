@@ -2,13 +2,13 @@
 
 namespace SMW\MediaWiki\Search\ProfileForm;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\WebRequest;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
-use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
  * @private
@@ -60,7 +60,7 @@ class FormsFactory {
 	 */
 	public function newNamespaceForm(): NamespaceForm {
 		return new NamespaceForm(
-			ApplicationFactory::getInstance()->singleton( 'NamespaceInfo' ),
+			MediaWikiServices::getInstance()->getNamespaceInfo(),
 			Localizer::getInstance()
 		);
 	}
