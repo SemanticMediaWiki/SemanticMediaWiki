@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\NamespaceInfo;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookListener;
-use SMW\MediaWiki\NamespaceInfo;
 use SMW\OptionsAwareTrait;
 
 /**
