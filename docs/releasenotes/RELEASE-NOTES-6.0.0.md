@@ -33,8 +33,8 @@ This is only for those who have installed SMW via Git.
 ## Changes
 
 * BREAKING CHANGE: Reverted "Support additional formatting options in ask queries"
+* BREAKING CHANGE: Added footer icon spacing and [changed the array key](https://github.com/SemanticMediaWiki/SemanticMediaWiki/commit/6dd90911d6cfba80a6d2137f6a80e58ffdb4577f) of the icon in `$wgFooterIcons` (by [Professional Wiki])
 * Use MediaWiki file backend for ingest (by Marijn van Wezel)
-* Added footer icon spacing (by [Professional Wiki])
 * Fixed compatability issues with MediaWiki 1.43.2+, 1.44 (by Paladox and [Professional Wiki])
 * Fixed DB query issues such as `RuntimeException: Identifier must not contain quote, dot or null characters` (by huaj1ng)
 * Fixed deprecation message when running `update.php` (by emwiemaikel)
