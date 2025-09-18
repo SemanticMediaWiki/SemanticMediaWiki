@@ -34,10 +34,10 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @dataProvider descriptionProvider
 	 */
-	public function testAddFromDesciption( $description, $expected ) {
+	public function testAddFromDescription( $description, $expected ) {
 		$instance = new QueryToken();
 
-		$instance->addFromDesciption( $description );
+		$instance->addFromDescription( $description );
 
 		$this->assertEquals(
 			$expected,
@@ -45,7 +45,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testMulitpleAddFromDesciption() {
+	public function testMulitpleAddFromDescription() {
 		$instance = new QueryToken();
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
@@ -60,7 +60,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItem' )
 			->willReturn( $this->dataItemFactory->newDIBlob( 'abc Foo 123' ) );
 
-		$instance->addFromDesciption( $description );
+		$instance->addFromDescription( $description );
 
 		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
 			->disableOriginalConstructor()
@@ -70,7 +70,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItem' )
 			->willReturn( $this->dataItemFactory->newDIWikiPage( '~*123 bar 456' ) );
 
-		$instance->addFromDesciption( $description );
+		$instance->addFromDescription( $description );
 
 		$this->assertEquals(
 			[
@@ -90,7 +90,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 	public function testHighlight( $description, $text, $type, $expected ) {
 		$instance = new QueryToken();
 
-		$instance->addFromDesciption( $description );
+		$instance->addFromDescription( $description );
 		$instance->setOutputFormat( '-hL' );
 
 		$this->assertEquals(
