@@ -6,6 +6,7 @@
 			"Mechanizatar",
 			"No Sleep till Krupki",
 			"Plaga med",
+			"ZlyiLev",
 			"Тест",
 			"Чаховіч Уладзіслаў"
 		]
@@ -14,7 +15,7 @@
 	"smw_printername_category": "Катэгорыя",
 	"validator-type-class-SMWParamSource": "тэкст",
 	"smw-paramdesc-limit": "Максімальная колькасць вынікаў",
-	"smw_querytoolarge": "$2 {{PLURAL:$2|наступная ўмова запыту не можа|наступныя ўмовы запыту не могуць|наступных умоваў запыту не могуць}} улічвацца праз абмежаванні гэтай вікі на глыбіню і памер запыту: <code>$1</code>.",
+	"smw_querytoolarge": "$2 {{PLURAL:$2|наступная ўмова запыту не можа|наступныя ўмовы запыту не могуць|наступных умоў запыту не могуць}} улічвацца праз абмежаванні гэтай вікі на глыбіню і памер запыту: <code>$1</code>.",
 	"smw_attributearticlecount": "{{PLURAL:$1|Паказваецца $1 старонка, якая выкарыстоўвае|Паказваюцца $1 старонкі, якія выкарыстоўваюць|Паказваюцца $1 старонак, якія выкарыстоўваюць}} гэту ўласцівасць.",
 	"properties": "Уласцівасці",
 	"smw-categories": "Катэгорыі",
@@ -31,6 +32,7 @@
 	"smw-admin-permissionswarn": "Калі адбываюцца SQL-памылкі падчас выканання аперацыі, гэта значыць, што ўліковы запіс базы даных, які выкарыстоўвае ваша вікі, магчыма, не мае адпаведных правоў (праверце ваш файл «LocalSettings.php»). Надайце ўліковаму запісу дадатковыя правы на стварэнне і выдаленне табліц, часова ўвядзіце імя карыстальніка для адміністратара базы даных у файл «LocalSettings.php», або скарыстайцеся скрыптам падтрымкі <code>setupStore.php</code>, які можа выкарыстоўваць уліковыя даныя адміністратара.",
 	"smw-admin-supportdocu": "Розныя рэсурсы могуць дапамагчы вам у выпадку ўзнікнення праблемаў:",
 	"smw-admin-installfile": "Калі ўзнікнуць праблемы з вашым усталяваннем, пачніце з рэкамэндацыяў у <a href=\"https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/INSTALL.md\">файле INSTALL</a> і <a href=\"https://www.semantic-mediawiki.org/wiki/Help:Installation\">на старонцы ўсталявання</a>.",
+	"smw-admin-smwhomepage": "Поўная дакументацыя Semantic MediaWiki знаходзіцца на <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-ui-tooltip-title-property": "Уласцівасць",
 	"smw-livepreview-loading": "Счытваем…",
 	"smw-help": "Даведка",
