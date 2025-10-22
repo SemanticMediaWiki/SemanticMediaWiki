@@ -454,7 +454,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 						$row->t,
 						intval( $row->ns ),
 						$row->iw,
-						'',
+						$row->sortkey ?? '',
 						$row->so
 					] );
 
