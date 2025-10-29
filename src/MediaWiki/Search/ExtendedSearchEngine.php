@@ -201,15 +201,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @see SearchEngine::replacePrefixes
-	 *
-	 * {@inheritDoc}
-	 */
-	public function replacePrefixes( $query ) {
-		return $query;
-	}
-
-	/**
 	 * @see SearchEngine::transformSearchTerm
 	 *
 	 * {@inheritDoc}
