@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Title\Title;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -23,9 +23,9 @@ class FacetBuilder {
 	private $filterFactory;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var ResultFetcher
@@ -41,13 +41,13 @@ class FacetBuilder {
 	 * @since 3.2
 	 *
 	 * @param Profile $profile
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param FilterFactory $filterFactory
 	 * @param ResultFetcher $resultFetcher
 	 */
-	public function __construct( Profile $profile, TemplateEngine $templateEngine, FilterFactory $filterFactory, ResultFetcher $resultFetcher ) {
+	public function __construct( Profile $profile, TemplateParser $templateParser, FilterFactory $filterFactory, ResultFetcher $resultFetcher ) {
 		$this->profile = $profile;
-		$this->templateEngine = $templateEngine;
+		$this->templateParser = $templateParser;
 		$this->filterFactory = $filterFactory;
 		$this->resultFetcher = $resultFetcher;
 	}
@@ -93,8 +93,8 @@ class FacetBuilder {
 			$clear = $this->createClearFilter( 'clear[p.all]', count( $pv ) );
 		}
 
-		$this->templateEngine->compile(
-			'filter-facet',
+		return $this->templateParser->processTemplate(
+			'facet',
 			[
 				'id' => 'card-prop',
 				'label' => $this->msg( 'properties' ),
@@ -103,8 +103,6 @@ class FacetBuilder {
 				'clear' => $clear
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-facet' );
 	}
 
 	/**
@@ -149,8 +147,8 @@ class FacetBuilder {
 			$clear = $this->createClearFilter( 'clear[c.all]', count( $c ) );
 		}
 
-		$this->templateEngine->compile(
-			'filter-facet',
+		return $this->templateParser->processTemplate(
+			'facet',
 			[
 				'id' => 'card-cat',
 				'label' => $this->msg( 'smw-categories' ),
@@ -159,8 +157,6 @@ class FacetBuilder {
 				'clear' => $clear
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-facet' );
 	}
 
 	/**
@@ -223,8 +219,8 @@ class FacetBuilder {
 				$cssClass = 'value-filter';
 			}
 
-			$this->templateEngine->compile(
-				'filter-facet',
+			$html .= $this->templateParser->processTemplate(
+				'facet',
 				[
 					'id' => "card-$id",
 					'label' => $property,
@@ -233,24 +229,20 @@ class FacetBuilder {
 					'clear' => $clear
 				]
 			);
-
-			$html .= $this->templateEngine->publish( 'filter-facet' );
 		}
 
 		return $html;
 	}
 
 	private function createClearFilter( $name, $count = 1 ) {
-		$this->templateEngine->compile(
-			'filter-items-clear-button',
+		return $this->templateParser->processTemplate(
+			'items.clear.button',
 			[
 				'name' => $name,
 				'value' => '',
 				'title' => $this->msg( [ 'smw-facetedsearch-clear-filters', $count ] )
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-clear-button' );
 	}
 
 }

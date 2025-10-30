@@ -18,14 +18,14 @@ class FilterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	use PHPUnitCompat;
 
-	private $templateEngine;
+	private $templateParser;
 	private $treeBuilder;
 	private $schemaFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +41,7 @@ class FilterFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			FilterFactory::class,
-			new FilterFactory( $this->templateEngine, $this->treeBuilder, $this->schemaFactory )
+			new FilterFactory( $this->templateParser, $this->treeBuilder, $this->schemaFactory )
 		);
 	}
 
