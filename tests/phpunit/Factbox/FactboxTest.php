@@ -78,7 +78,6 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$buildHTML  = $reflector->getMethod( 'buildHTML' );
-		$buildHTML->setAccessible( true );
 
 		$this->assertIsString(
 			$buildHTML->invoke( $instance, $parserData->getSemanticData() )
@@ -119,7 +118,6 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
-		$fetchContent->setAccessible( true );
 
 		$this->assertIsString(
 			$fetchContent->invoke( $instance, SMW_FACTBOX_NONEMPTY )
@@ -198,7 +196,6 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
-		$fetchContent->setAccessible( true );
 
 		$this->assertIsString(
 			$fetchContent->invoke( $factbox )

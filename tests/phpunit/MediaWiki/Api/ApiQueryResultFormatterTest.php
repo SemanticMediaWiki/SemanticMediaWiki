@@ -41,7 +41,6 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 		// method public to test the exception without reflection
 		// $reflector = new ReflectionClass( 'SMW\MediaWiki\Api\ApiQueryResultFormatter' );
 		// $method = $reflector->getMethod( 'setIndexedTagName' );
-		// $method->setAccessible( true );
 		// $method->invoke( $instance, $arr, null )
 
 		$arr = [];
