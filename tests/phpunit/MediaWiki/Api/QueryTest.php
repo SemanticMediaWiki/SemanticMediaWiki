@@ -54,7 +54,6 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\Query' );
 		$getQuery  = $reflector->getMethod( 'getQuery' );
-		$getQuery->setAccessible( true );
 		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', [], [] );
 
 		$this->assertInstanceOf(
@@ -63,7 +62,6 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$getQueryResult = $reflector->getMethod( 'getQueryResult' );
-		$getQueryResult->setAccessible( true );
 
 		$this->assertInstanceOf(
 			'\SMW\Query\QueryResult',
@@ -104,7 +102,6 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\Query' );
 		$method = $reflector->getMethod( 'addQueryResult' );
-		$method->setAccessible( true );
 
 		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Api\Query' )
 			->disableOriginalConstructor()

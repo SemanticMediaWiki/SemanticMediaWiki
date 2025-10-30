@@ -95,7 +95,6 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( $this->aggregatablePrinter );
 		$method = $reflector->getMethod( 'addNumbersForDataItem' );
-		$method->setAccessible( true );
 
 		for ( $i = 1; $i <= 10; $i++ ) {
 
@@ -137,7 +136,6 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( $this->aggregatablePrinter );
 		$method = $reflector->getMethod( 'getNumericResults' );
-		$method->setAccessible( true );
 
 		$result = $method->invoke(
 			$this->aggregatablePrinter,

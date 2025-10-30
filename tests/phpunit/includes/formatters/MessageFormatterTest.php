@@ -153,7 +153,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		// Access protected method
 		$reflection = new ReflectionClass( $this->getClass() );
 		$method = $reflection->getMethod( 'doFormat' );
-		$method->setAccessible( true );
 
 		// Test array normalization and deletion of duplicates
 		$result = $method->invoke( $instance, $instance->getMessages() );

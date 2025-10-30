@@ -185,7 +185,6 @@ class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\ParserFunctions\AskParserFunction' );
 		$showMode = $reflector->getProperty( 'showMode' );
-		$showMode->setAccessible( true );
 
 		$this->assertFalse( $showMode->getValue( $instance ) );
 		$instance->setShowMode( true );

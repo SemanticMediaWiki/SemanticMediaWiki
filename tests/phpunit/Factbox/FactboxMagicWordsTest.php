@@ -121,7 +121,6 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
 		$magic = $reflector->getMethod( 'getMagicWords' );
-		$magic->setAccessible( true );
 
 		$result = $magic->invoke( $instance );
 

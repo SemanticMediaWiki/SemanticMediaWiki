@@ -81,7 +81,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\QueryPage' );
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
-		$selectOptions->setAccessible( true );
 		$selectOptions->setValue( $instance, [
 			'offset' => 1,
 			'limit'  => 2,

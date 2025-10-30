@@ -30,7 +30,6 @@ class FeedExportPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\Query\ResultPrinters\FeedExportPrinter' );
 		$method = $reflector->getMethod( 'feedItemDescription' );
-		$method->setAccessible( true );
 
 		$this->assertEquals(
 			$expected['text'],

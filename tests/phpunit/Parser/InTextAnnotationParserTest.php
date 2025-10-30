@@ -350,7 +350,6 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 		$reflector = new ReflectionClass( '\SMW\Parser\InTextAnnotationParser' );
 
 		$method = $reflector->getMethod( 'process' );
-		$method->setAccessible( true );
 
 		$result = $method->invoke( $instance, [] );
 		$this->assertEmpty( $result );
