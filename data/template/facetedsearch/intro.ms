@@ -1,1 +1,0 @@
-<div class="intro-text">{{text}}</div><div class="intro-tips">{{tips}}</div>

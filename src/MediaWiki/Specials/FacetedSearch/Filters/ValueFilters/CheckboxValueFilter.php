@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -20,9 +20,9 @@ class CheckboxValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var UrlArgs
@@ -37,11 +37,11 @@ class CheckboxValueFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, array $params ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, array $params ) {
+		$this->templateParser = $templateParser;
 		$this->params = $params;
 	}
 
@@ -115,20 +115,18 @@ class CheckboxValueFilter {
 			$option = '';
 		} else {
 
-			$this->templateEngine->compile(
-				'filter-items-option',
+			$option = $this->templateParser->processTemplate(
+				'items.option',
 				[
 					'input' => $this->createInputField( $property, $values ),
 					'condition' => $this->createConditionField( $property )
 				]
 			);
-
-			$option = $this->templateEngine->publish( 'filter-items-option' );
 			$cssClass = '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
 				'option' => $option,
 				'unlinked' => implode( '', $list['unlinked'] ),
@@ -136,8 +134,6 @@ class CheckboxValueFilter {
 				'css-class' => $cssClass
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
 	private function matchFilter( $property, $key, $label, $count, $valueFilters, &$list, $isClear ) {
@@ -160,19 +156,15 @@ class CheckboxValueFilter {
 				return;
 			}
 
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['unlinked'][$key] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['unlinked'][$key] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['linked'][$key] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['linked'][$key] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		}
 	}
 
@@ -190,8 +182,8 @@ class CheckboxValueFilter {
 
 		$condition = $this->urlArgs->find( "vc.$property", 'or' );
 
-		$this->templateEngine->compile(
-			'filter-items-condition',
+		return $this->templateParser->processTemplate(
+			'items.condition',
 			[
 				'property' => $property,
 				'or-selected' => $condition === 'or' ? 'selected' : '',
@@ -199,8 +191,6 @@ class CheckboxValueFilter {
 				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-condition' );
 	}
 
 	private function createInputField( $property, array $values ) {
@@ -208,14 +198,12 @@ class CheckboxValueFilter {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		return $this->templateParser->processTemplate(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder', $property ] ),
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-input' );
 	}
 
 }

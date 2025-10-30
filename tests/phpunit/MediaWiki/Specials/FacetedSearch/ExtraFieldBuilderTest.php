@@ -19,7 +19,7 @@ class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	private $profile;
-	private $templateEngine;
+	private $templateParser;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -28,7 +28,7 @@ class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +36,7 @@ class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ExtraFieldBuilder::class,
-			new ExtraFieldBuilder( $this->profile, $this->templateEngine )
+			new ExtraFieldBuilder( $this->profile, $this->templateParser )
 		);
 	}
 

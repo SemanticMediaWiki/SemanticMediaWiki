@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Schema\CompartmentIterator;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 use SMWDataItem as DataItem;
 
@@ -22,9 +22,9 @@ class CheckboxRangeGroupValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var CompartmentIterator
@@ -44,12 +44,12 @@ class CheckboxRangeGroupValueFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param CompartmentIterator $compartmentIterator
 	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, CompartmentIterator $compartmentIterator, array $params ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, CompartmentIterator $compartmentIterator, array $params ) {
+		$this->templateParser = $templateParser;
 		$this->compartmentIterator = $compartmentIterator;
 		$this->params = $params;
 	}
@@ -88,8 +88,8 @@ class CheckboxRangeGroupValueFilter {
 			$this->matchFilter( $property, $range, $valueFilters, $list, $isClear );
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-option',
+		$option = $this->templateParser->processTemplate(
+			'items.option',
 			[
 				'input' => $this->createInputField( $property, $ranges ),
 				'condition' => $this->createConditionField( $property )
@@ -100,17 +100,15 @@ class CheckboxRangeGroupValueFilter {
 			$list['linked'] = [ $this->msg( 'smw-facetedsearch-no-filters' ) ];
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
-				'option' => $this->templateEngine->publish( 'filter-items-option' ),
+				'option' => $option,
 				'unlinked' => implode( '', $list['unlinked'] ),
 				'linked' => implode( '', $list['linked'] ),
 				'css-class' => ''
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
 	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ) {
@@ -131,19 +129,15 @@ class CheckboxRangeGroupValueFilter {
 		if ( isset( $valueFilters[$key] ) && $isClear === false ) {
 			$attr['checked'] = 'checked';
 
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['unlinked'][] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['unlinked'][] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-checkbox',
+			$list['linked'][] = $this->templateParser->processTemplate(
+				'item.checkbox',
 				$attr
 			);
-
-			$list['linked'][] = $this->templateEngine->publish( 'filter-item-checkbox' );
 		}
 	}
 
@@ -260,8 +254,8 @@ class CheckboxRangeGroupValueFilter {
 
 		$condition = $this->urlArgs->find( "vc.$property", 'or' );
 
-		$this->templateEngine->compile(
-			'filter-items-condition',
+		$this->templateParser->compile(
+			'items.condition',
 			[
 				'property' => $property,
 				'or-selected' => $condition === 'or' ? 'selected' : '',
@@ -270,7 +264,7 @@ class CheckboxRangeGroupValueFilter {
 			]
 		);
 
-		return $this->templateEngine->publish( 'filter-items-condition' );
+		return $this->templateParser->publish( 'items.condition' );
 	}
 
 	private function createInputField( $property, array $values ) {
@@ -278,14 +272,14 @@ class CheckboxRangeGroupValueFilter {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		$this->templateParser->compile(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder', $property ] ),
 			]
 		);
 
-		return $this->templateEngine->publish( 'filter-items-input' );
+		return $this->templateParser->publish( 'items.input' );
 	}
 
 	private function getJD( $property, $value ) {

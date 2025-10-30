@@ -19,7 +19,7 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	private $profile;
-	private $templateEngine;
+	private $templateParser;
 	private $optionsBuilder;
 	private $extraFieldBuilder;
 	private $facetBuilder;
@@ -33,7 +33,7 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +61,7 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			HtmlBuilder::class,
-			new HtmlBuilder( $this->profile, $this->templateEngine, $this->optionsBuilder, $this->extraFieldBuilder, $this->facetBuilder, $this->resultFetcher, $this->exploreListBuilder )
+			new HtmlBuilder( $this->profile, $this->templateParser, $this->optionsBuilder, $this->extraFieldBuilder, $this->facetBuilder, $this->resultFetcher, $this->exploreListBuilder )
 		);
 	}
 
