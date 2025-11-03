@@ -2,11 +2,11 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -20,9 +20,9 @@ class ListValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var UrlArgs
@@ -37,11 +37,11 @@ class ListValueFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, array $params ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, array $params ) {
+		$this->templateParser = $templateParser;
 		$this->params = $params;
 	}
 
@@ -119,20 +119,18 @@ class ListValueFilter {
 			$unlinked = "<ul>" . implode( '', $list['unlinked'] ) . "</ul>";
 			$linked = "<ul>" . implode( '', $list['linked'] ) . "</ul>";
 
-			$this->templateEngine->compile(
-				'filter-items-option',
+			$option = $this->templateParser->processTemplate(
+				'items.option',
 				[
 					'input' => $this->createInputField( $property, $values ),
 					'condition' => $this->createConditionField( $property )
 				]
 			);
-
-			$option = $this->templateEngine->publish( 'filter-items-option' );
 			$cssClass = '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
 				'option' => $option,
 				'unlinked' => $unlinked,
@@ -140,8 +138,6 @@ class ListValueFilter {
 				'css-class' => $cssClass
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
 	private function getValueFilters( $property ) {
@@ -194,8 +190,8 @@ class ListValueFilter {
 				return;
 			}
 
-			$this->templateEngine->compile(
-				'filter-item-unlink-button',
+			$list[$count]['unlinked'][$key] = $this->templateParser->processTemplate(
+				'item.unlink.button',
 				[
 					'label' => $label,
 					'count' => $count,
@@ -205,11 +201,9 @@ class ListValueFilter {
 					'hidden-value' => $key
 				]
 			);
-
-			$list[$count]['unlinked'][$key] = $this->templateEngine->publish( 'filter-item-unlink-button' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-linked-button',
+			$list[$count]['linked'][$key] = $this->templateParser->processTemplate(
+				'item.linked.button',
 				[
 					'name' => "pv[$property][]",
 					'value' => $key,
@@ -217,8 +211,6 @@ class ListValueFilter {
 					'count' => $count
 				]
 			);
-
-			$list[$count]['linked'][$key] = $this->templateEngine->publish( 'filter-item-linked-button' );
 		}
 
 		// Sort by key ascending
@@ -233,8 +225,8 @@ class ListValueFilter {
 
 		$condition = $this->urlArgs->find( "vc.$property", 'or' );
 
-		$this->templateEngine->compile(
-			'filter-items-condition',
+		return $this->templateParser->processTemplate(
+			'items.condition',
 			[
 				'property' => $property,
 				'or-selected' => $condition === 'or' ? 'selected' : '',
@@ -242,8 +234,6 @@ class ListValueFilter {
 				'not-selected' => $condition === 'not' ? 'selected' : ''
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-condition' );
 	}
 
 	private function createInputField( $property, array $values ) {
@@ -251,14 +241,12 @@ class ListValueFilter {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		return $this->templateParser->processTemplate(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder', $property ] ),
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-input' );
 	}
 
 }

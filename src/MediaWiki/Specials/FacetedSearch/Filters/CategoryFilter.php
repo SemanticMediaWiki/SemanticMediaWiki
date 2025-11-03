@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DIWikiPage;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -19,9 +19,9 @@ class CategoryFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var TreeBuilder
@@ -36,12 +36,12 @@ class CategoryFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param TreeBuilder $treeBuilder
 	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, TreeBuilder $treeBuilder, array $params ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, TreeBuilder $treeBuilder, array $params ) {
+		$this->templateParser = $templateParser;
 		$this->treeBuilder = $treeBuilder;
 		$this->params = $params;
 	}
@@ -81,8 +81,8 @@ class CategoryFilter {
 			$categories[] = $this->matchFilter( $categoryFilters, $key, $count, $list, $clear );
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-option',
+		$option = $this->templateParser->processTemplate(
+			'items.option',
 			[
 				'input' => $this->createInputField( $filters ),
 				'condition' => ''
@@ -105,17 +105,15 @@ class CategoryFilter {
 			$cssClass = '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items',
+		return $this->templateParser->processTemplate(
+			'items',
 			[
-				'option' => $this->templateEngine->publish( 'filter-items-option' ),
+				'option' => $option,
 				'unlinked' => $unlinked,
 				'linked' => $linked,
 				'css-class' => $cssClass
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items' );
 	}
 
 	private function matchFilter( $categoryFilters, $key, $count, &$list, $clear ) {
@@ -125,8 +123,8 @@ class CategoryFilter {
 		if ( isset( $categoryFilters[$key] ) && $clear !== $key ) {
 			unset( $categoryFilters[$key] );
 
-			$this->templateEngine->compile(
-				'filter-item-unlink-button',
+			$list['unlinked'][$key] = $this->templateParser->processTemplate(
+				'item.unlink.button',
 				[
 					'label' => $key,
 					'count' => $count,
@@ -136,11 +134,9 @@ class CategoryFilter {
 					'hidden-value' => $key
 				]
 			);
-
-			$list['unlinked'][$key] = $this->templateEngine->publish( 'filter-item-unlink-button' );
 		} else {
-			$this->templateEngine->compile(
-				'filter-item-linked-button',
+			$list['linked'][$key] = $this->templateParser->processTemplate(
+				'item.linked.button',
 				[
 					'name' => "c[]",
 					'value' => $key,
@@ -148,8 +144,6 @@ class CategoryFilter {
 					'count' => $count
 				]
 			);
-
-			$list['linked'][$key] = $this->templateEngine->publish( 'filter-item-linked-button' );
 		}
 
 		return $category;
@@ -160,14 +154,12 @@ class CategoryFilter {
 			return '';
 		}
 
-		$this->templateEngine->compile(
-			'filter-items-input',
+		return $this->templateParser->processTemplate(
+			'items.input',
 			[
 				'placeholder' => $this->msg( [ 'smw-facetedsearch-input-filter-placeholder' ] ),
 			]
 		);
-
-		return $this->templateEngine->publish( 'filter-items-input' );
 	}
 
 }

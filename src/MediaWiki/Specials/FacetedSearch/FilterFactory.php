@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\CategoryFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
 use SMW\Schema\SchemaFactory;
-use SMW\Utils\TemplateEngine;
 
 /**
  * @license GPL-2.0-or-later
@@ -18,9 +18,9 @@ use SMW\Utils\TemplateEngine;
 class FilterFactory {
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var TreeBuilder
@@ -35,12 +35,12 @@ class FilterFactory {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param TreeBuilder $treeBuilder
 	 * @param SchemaFactory $schemaFactory
 	 */
-	public function __construct( TemplateEngine $templateEngine, TreeBuilder $treeBuilder, SchemaFactory $schemaFactory ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, TreeBuilder $treeBuilder, SchemaFactory $schemaFactory ) {
+		$this->templateParser = $templateParser;
 		$this->treeBuilder = $treeBuilder;
 		$this->schemaFactory = $schemaFactory;
 	}
@@ -53,7 +53,7 @@ class FilterFactory {
 	 * @return PropertyFilter
 	 */
 	public function newPropertyFilter( array $params ): PropertyFilter {
-		return new PropertyFilter( $this->templateEngine, $this->treeBuilder, $params );
+		return new PropertyFilter( $this->templateParser, $this->treeBuilder, $params );
 	}
 
 	/**
@@ -64,7 +64,7 @@ class FilterFactory {
 	 * @return CategoryFilter
 	 */
 	public function newCategoryFilter( array $params ): CategoryFilter {
-		return new CategoryFilter( $this->templateEngine, $this->treeBuilder, $params );
+		return new CategoryFilter( $this->templateParser, $this->treeBuilder, $params );
 	}
 
 	/**
@@ -76,11 +76,11 @@ class FilterFactory {
 	 */
 	public function newValueFilter( array $params ): ValueFilter {
 		$valueFilterFactory = new ValueFilterFactory(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$valueFilter = new ValueFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$valueFilterFactory,
 			$this->schemaFactory->newSchemaFinder(),
 			$params

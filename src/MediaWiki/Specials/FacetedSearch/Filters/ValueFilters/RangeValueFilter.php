@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Html\TemplateParser;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Schema\CompartmentIterator;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -19,9 +19,9 @@ class RangeValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var CompartmentIterator
@@ -41,12 +41,12 @@ class RangeValueFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param CompartmentIterator $compartmentIterator
 	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, CompartmentIterator $compartmentIterator, array $params ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, CompartmentIterator $compartmentIterator, array $params ) {
+		$this->templateParser = $templateParser;
 		$this->compartmentIterator = $compartmentIterator;
 		$this->params = $params;
 	}

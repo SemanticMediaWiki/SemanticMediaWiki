@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -24,9 +24,9 @@ class HtmlBuilder {
 	private $profile;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var OptionsBuilder
@@ -57,16 +57,16 @@ class HtmlBuilder {
 	 * @since 3.2
 	 *
 	 * @param Profile $profile
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param OptionsBuilder $optionsBuilder
 	 * @param ExtraFieldBuilder $extraFieldBuilder
 	 * @param FacetBuilder $facetBuilder
 	 * @param ResultFetcher $resultFetcher
 	 * @param ExploreListBuilder $exploreListBuilder
 	 */
-	public function __construct( Profile $profile, TemplateEngine $templateEngine, OptionsBuilder $optionsBuilder, ExtraFieldBuilder $extraFieldBuilder, FacetBuilder $facetBuilder, ResultFetcher $resultFetcher, ExploreListBuilder $exploreListBuilder ) {
+	public function __construct( Profile $profile, TemplateParser $templateParser, OptionsBuilder $optionsBuilder, ExtraFieldBuilder $extraFieldBuilder, FacetBuilder $facetBuilder, ResultFetcher $resultFetcher, ExploreListBuilder $exploreListBuilder ) {
 		$this->profile = $profile;
-		$this->templateEngine = $templateEngine;
+		$this->templateParser = $templateParser;
 		$this->optionsBuilder = $optionsBuilder;
 		$this->extraFieldBuilder = $extraFieldBuilder;
 		$this->facetBuilder = $facetBuilder;
@@ -83,8 +83,8 @@ class HtmlBuilder {
 	public function buildEmptyHTML( Title $title, UrlArgs $urlArgs ): string {
 		$profileName = $this->profile->getProfileName();
 
-		$this->templateEngine->compile(
-			'search-form',
+		$searchForm = $this->templateParser->processTemplate(
+			'search',
 			[
 				'action' => $title->getLocalUrl(),
 				'method' => 'get',
@@ -103,7 +103,7 @@ class HtmlBuilder {
 			]
 		);
 
-		$this->templateEngine->compile(
+		$intro = $this->templateParser->processTemplate(
 			'intro',
 			[
 				'text' => $this->msg( 'smw-facetedsearch-intro-text', Message::PARSE ),
@@ -112,20 +112,18 @@ class HtmlBuilder {
 		);
 
 		if ( ( $html = $this->exploreListBuilder->buildHTML( $title ) ) === '' ) {
-			$html = $this->templateEngine->publish( 'intro' );
+			$html = $intro;
 		}
 
-		$this->templateEngine->compile(
-			'facetedsearch-container-empty',
+		return $this->templateParser->processTemplate(
+			'container.empty',
 			[
-				'search' => $this->templateEngine->publish( 'search-form' ),
+				'search' => $searchForm,
 				'search-extra-fields' => $this->extraFieldBuilder->buildHTML( $urlArgs ),
 				'intro' => $html,
 				'theme' => $this->profile->get( 'theme' )
 			]
 		);
-
-		return $this->templateEngine->publish( 'facetedsearch-container-empty' );
 	}
 
 	/**
@@ -147,8 +145,8 @@ class HtmlBuilder {
 
 		$urlArgs->delete( 'title' );
 
-		$this->templateEngine->compile(
-			'filter-cards',
+		$filterCards = $this->templateParser->processTemplate(
+			'cards',
 			[
 				'property-filter-card' => $this->facetBuilder->getPropertyFilterFacet( $title, $urlArgs ),
 				'category-filter-card' => $this->facetBuilder->getCategoryFilterFacet( $title, $urlArgs ),
@@ -156,8 +154,8 @@ class HtmlBuilder {
 			]
 		);
 
-		$this->templateEngine->compile(
-			'search-options',
+		$searchOptions = $this->templateParser->processTemplate(
+			'options',
 			[
 				'count' => $params['count'],
 				'size-title' => $this->msg( 'smw-facetedsearch-size-options' ),
@@ -181,8 +179,8 @@ class HtmlBuilder {
 			$hidden .= '<input name="' . "cstate[$key]" . '" type="hidden" value="' . $value . '">';
 		}
 
-		$this->templateEngine->compile(
-			'search-form',
+		$searchForm = $this->templateParser->processTemplate(
+			'search',
 			[
 				'action' => $title->getLocalUrl(),
 				'method' => 'get',
@@ -212,34 +210,32 @@ class HtmlBuilder {
 			$debug = '<pre>' . $queryString . '</pre>';
 		}
 
-		$this->templateEngine->compile(
-			'facetedsearch-content',
+		$content = $this->templateParser->processTemplate(
+			'content',
 			[
 				'debug' => $debug,
-				'options' => $this->templateEngine->publish( 'search-options', TemplateEngine::HTML_TIDY ),
+				'options' => $searchOptions,
 				'results' => $result
 			]
 		);
 
-		$this->templateEngine->compile(
-			'facetedsearch-sidebar',
+		$sidebar = $this->templateParser->processTemplate(
+			'sidebar',
 			[
-				'cards' => $this->templateEngine->publish( 'filter-cards', TemplateEngine::HTML_TIDY )
+				'cards' => $filterCards
 			]
 		);
 
-		$this->templateEngine->compile(
-			'facetedsearch-container',
+		return $this->templateParser->processTemplate(
+			'container',
 			[
-				'search'  => $this->templateEngine->publish( 'search-form', TemplateEngine::HTML_TIDY ),
+				'search'  => $searchForm,
 				'search-extra-fields' => $this->extraFieldBuilder->buildHTML( $urlArgs ),
-				'sidebar' => $this->templateEngine->publish( 'facetedsearch-sidebar' ),
-				'content' => $this->templateEngine->publish( 'facetedsearch-content' ),
+				'sidebar' => $sidebar,
+				'content' => $content,
 				'theme' => $this->profile->get( 'theme' )
 			]
 		);
-
-		return $this->templateEngine->publish( 'facetedsearch-container' );
 	}
 
 }

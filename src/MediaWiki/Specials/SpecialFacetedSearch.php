@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use MediaWiki\Html\TemplateParser;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\GetPreferences;
 use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
@@ -15,7 +16,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Services\ServicesFactory;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -92,41 +92,9 @@ class SpecialFacetedSearch extends SpecialPage {
 		);
 
 		/**
-		 * @var TemplateEngine
+		 * @var TemplateParser
 		 */
-		$templateEngine = new TemplateEngine();
-		$templateEngine->bulkLoad(
-			[
-				'/facetedsearch/container.ms' => 'facetedsearch-container',
-				'/facetedsearch/container.empty.ms' => 'facetedsearch-container-empty',
-				'/facetedsearch/intro.ms' => 'intro',
-
-				// Search
-				'/facetedsearch/search.ms' => 'search-form',
-				'/facetedsearch/search.extrafields.ms' => 'search-extra-fields',
-				'/facetedsearch/search.extrafield.input.ms' => 'search-extra-field-input',
-
-				// Content, result
-				'/facetedsearch/options.ms' => 'search-options',
-				'/facetedsearch/content.ms' => 'facetedsearch-content',
-
-				// Sidebar, facets, filters
-				'/facetedsearch/sidebar.ms' => 'facetedsearch-sidebar',
-				'/facetedsearch/filter/facet.ms' => 'filter-facet',
-				'/facetedsearch/filter/cards.ms' => 'filter-cards',
-				'/facetedsearch/filter/item.linked.ms' => 'filter-item-linked',
-				'/facetedsearch/filter/item.linked.button.ms' => 'filter-item-linked-button',
-				'/facetedsearch/filter/item.unlink.ms' => 'filter-item-unlink',
-				'/facetedsearch/filter/item.unlink.button.ms' => 'filter-item-unlink-button',
-				'/facetedsearch/filter/item.checkbox.ms' => 'filter-item-checkbox',
-				'/facetedsearch/filter/items.input.ms' => 'filter-items-input',
-				'/facetedsearch/filter/items.clear.ms' => 'filter-items-clear',
-				'/facetedsearch/filter/items.clear.button.ms' => 'filter-items-clear-button',
-				'/facetedsearch/filter/items.condition.ms' => 'filter-items-condition',
-				'/facetedsearch/filter/items.option.ms' => 'filter-items-option',
-				'/facetedsearch/filter/items.ms' => 'filter-items'
-			]
-		);
+		$templateParser = new TemplateParser( __DIR__ . '/../../../templates/FacetedSearch' );
 
 		/**
 		 * Result fetcher
@@ -143,14 +111,14 @@ class SpecialFacetedSearch extends SpecialPage {
 		);
 
 		$filterFactory = new FilterFactory(
-			$templateEngine,
+			$templateParser,
 			$treeBuilder,
 			$schemaFactory
 		);
 
 		$facetBuilder = new FacetBuilder(
 			$profile,
-			$templateEngine,
+			$templateParser,
 			$filterFactory,
 			$resultFetcher,
 		);
@@ -160,9 +128,9 @@ class SpecialFacetedSearch extends SpecialPage {
 		 */
 		$htmlBuilder = new HtmlBuilder(
 			$profile,
-			$templateEngine,
+			$templateParser,
 			new OptionsBuilder( $profile ),
-			new ExtraFieldBuilder( $profile, $templateEngine ),
+			new ExtraFieldBuilder( $profile, $templateParser ),
 			$facetBuilder,
 			$resultFetcher,
 			new ExploreListBuilder( $profile )
