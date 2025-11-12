@@ -88,25 +88,18 @@ class StripMarkerDecoder {
 	 * @return text
 	 */
 	public function unstrip( $text ) {
-		// Escape the text case to avoid any HTML elements
-		// cause an issue during parsing
-		return str_replace(
-			[ '<', '>', ' ', '[', '{', '=', "'", ':', "\n" ],
-			[ '&lt;', '&gt;', ' ', '&#x005B;', '&#x007B;', '&#x003D;', '&#x0027;', '&#58;', "<br />" ],
-			$this->doUnstrip( $text ) ?? ''
-		);
-	}
-
-	public function doUnstrip( $text ) {
-		if ( ( $value = $this->stripState->unstripNoWiki( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
-			return $this->addNoWikiToUnstripValue( $value );
+		while ( $this->hasStripMarker( $text ) ) {
+			$from = strpos( $text, Parser::MARKER_PREFIX );
+			$to = strpos( $text, Parser::MARKER_SUFFIX, $from ) + strlen( Parser::MARKER_SUFFIX );
+			$toStrip = substr( $text, $from, $to - $from );
+			if ( str_starts_with( $toStrip, Parser::MARKER_PREFIX . '-nowiki-' ) ) {
+				$toStrip = '<nowiki>' . $this->stripState->unstripNoWiki( $toStrip ) . '</nowiki>';
+			} else {
+				$toStrip = $this->stripState->unstripGeneral( $toStrip );
+			}
+			$text = substr( $text, 0, $from ) . $toStrip . substr( $text, $to );
 		}
-
-		if ( ( $value = $this->stripState->unstripGeneral( $text ) ) !== '' && !$this->hasStripMarker( $value ) ) {
-			return $value;
-		}
-
-		return $this->doUnstrip( $value );
+		return $text;
 	}
 
 	private function addNoWikiToUnstripValue( $text ) {
