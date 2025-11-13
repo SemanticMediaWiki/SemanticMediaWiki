@@ -30,7 +30,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 
 		$this->fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
-			->setMethods( [ 'replacePrefixes', 'searchTitle', 'searchText' ] )
+			->setMethods( [ 'searchTitle', 'searchText' ] )
 			->getMock();
 	}
 
@@ -90,10 +90,6 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'replacePrefixes' )
-			->willReturnArgument( 0 );
-
-		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'searchTitle' )
 			->willReturnMap( [ [ $term, $searchResultSet ] ] );
 
@@ -118,10 +114,6 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 		$searchResultSet = $this->getMockBuilder( 'SearchResultSet' )
 			->disableOriginalConstructor()
 			->getMock();
-
-		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'replacePrefixes' )
-			->willReturnArgument( 0 );
 
 		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'searchTitle' )
