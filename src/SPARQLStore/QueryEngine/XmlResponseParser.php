@@ -85,13 +85,6 @@ class XmlResponseParser implements HttpResponseParser {
 	}
 
 	/**
-	 * @since 2.0
-	 */
-	public function __destruct() {
-		xml_parser_free( $this->parser );
-	}
-
-	/**
 	 * Parse the given XML result and return an RepositoryResult for
 	 * the contained data.
 	 *
