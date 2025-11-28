@@ -89,6 +89,10 @@
 				prop: 'text|modules|jsconfigvars',
 				text: '{{#' + this.cmd + ':' +  query + noTrace + '}}'
 			} ).done( data => {
+				// ensure srfFilteredConfig is available to SRF filtered format
+				if (jsvars) {
+					mw.config.set(jsvars); 
+				}
 
 				if ( this.init ) {
 					this.initControls();
