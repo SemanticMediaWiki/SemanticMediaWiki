@@ -130,7 +130,7 @@ class TableResultPrinter extends ResultPrinter {
 				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
 				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
-				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
+				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : htmlspecialchars( $text ) ), $attributes );
 			}
 		}
 
