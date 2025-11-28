@@ -2,7 +2,7 @@
 
 Released on TBD.
 
-This is a [pfeature release](../RELEASE-POLICY.md). Thus, it contains new features and bug fixes, but no breaking changes.
+This is a [feature release](../RELEASE-POLICY.md). Thus, it contains new features and bug fixes, but no breaking changes.
 
 Like SMW 6.0.x, this version is compatible with MediaWiki 1.43 up to 1.44 and PHP 8.1 up to 8.4.
 For more detailed information, see the [compatibility matrix](../COMPATIBILITY.md#compatibility).
