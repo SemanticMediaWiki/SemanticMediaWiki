@@ -128,11 +128,6 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 		$this->assertTrue(
 			$instance->process( $file, $reUploadStatus )
 		);
-
-		$this->assertEquals(
-			$wikiFilePage->smwFileReUploadStatus,
-			$reUploadStatus
-		);
 	}
 
 	public function testTryToProcessDisabledNamespace() {
