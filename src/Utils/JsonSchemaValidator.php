@@ -14,37 +14,15 @@ use JsonSerializable;
  */
 class JsonSchemaValidator {
 
-	/**
-	 * @var SchemaValidator
-	 */
-	private $schemaValidator;
+	private ?SchemaValidator $schemaValidator;
+	private bool $isValid = true;
+	private array $errors = [];
 
-	/**
-	 * @var boolen
-	 */
-	private $isValid = true;
-
-	/**
-	 * @var
-	 */
-	private $errors = [];
-
-	/**
-	 * @since 3.0
-	 *
-	 * @param SchemaValidator|null $schemaValidator
-	 */
 	public function __construct( ?SchemaValidator $schemaValidator = null ) {
 		$this->schemaValidator = $schemaValidator;
 	}
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param JsonSerializable $data
-	 * @param string|null $schemaLink
-	 */
-	public function validate( JsonSerializable $data, $schemaLink = null ) {
+	public function validate( JsonSerializable $data, ?string $schemaLink = null ): void {
 		// Raise an error because we expect the validator to be available
 		// when at the same time a schema link is present
 		if ( $this->schemaValidator === null && $schemaLink !== null ) {
@@ -65,7 +43,7 @@ class JsonSchemaValidator {
 
 		// https://github.com/justinrainbow/json-schema
 		try {
-			$this->schemaValidator->check(
+			$this->schemaValidator->validate(
 				$data,
 				(object)[ '$ref' => 'file://' . $schemaLink ]
 			);
@@ -78,30 +56,15 @@ class JsonSchemaValidator {
 		}
 	}
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean
-	 */
-	public function hasSchemaValidator() {
+	public function hasSchemaValidator(): bool {
 		return $this->schemaValidator !== null;
 	}
 
-	/**
-	 * @since 3.0
-	 *
-	 * @param boolean
-	 */
-	public function isValid() {
+	public function isValid(): bool {
 		return $this->isValid;
 	}
 
-	/**
-	 * @since 3.0
-	 *
-	 * @return
-	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 
