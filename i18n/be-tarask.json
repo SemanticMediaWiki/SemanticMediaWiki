@@ -6,6 +6,7 @@
 			"Nerogaf",
 			"Red Winged Duck",
 			"Renessaince",
+			"Ucukor",
 			"Wizardist",
 			"Zedlik",
 			"아라"
@@ -270,7 +271,7 @@
 	"smw-admin-permissionswarn": "Калі адбываюцца SQL-памылкі падчас выкананьня апэрацыі, гэта значыць, што рахунак базы зьвестак, які выкарыстоўвае вікі (праверце ваш файл «LocalSettings.php»), магчыма, ня мае адпаведных правоў.\nНадайце рахунку дадатковыя правы на стварэньне і выдаленьне табліцаў, часова ўвядзіце рахунак адміністратара базы зьвестак у файл «LocalSettings.php», ці карыстайцеся скрыптом падтрымкі <code>setupStore.php</code>, які можа выкарыстоўваць рахунак адміністратара.",
 	"smw-admin-dbbutton": "Усталяваць ці абнавіць табліцы",
 	"smw-admin-announce": "Анансуйце вашую вікі",
-	"smw-admin-deprecation-notice-title": "Паведамленьні аб старэньні",
+	"smw-admin-deprecation-notice-title": "Абвесткі пра застарэласьць",
 	"smw-admin-deprecation-notice-title-notice": "Састарэлыя налады",
 	"smw-admin-deprecation-notice-title-replacement": "Замененыя ці перайменаваныя налады",
 	"smw-admin-deprecation-notice-title-removal": "Прыбраныя налады",
