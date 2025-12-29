@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutputLinkTypes;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -149,7 +150,8 @@ class ParserAfterTidy implements HookListener {
 		}
 
 		if ( $displayTitle ||
-			$parserOutput->getImages() !== [] ||
+			// JLT $parserOutput->getImages() !== [] ||
+			$parserOutput->getLinkList(ParserOutputLinkTypes::MEDIA)  !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
 			$parserCategories ) {
 			return true;
@@ -253,7 +255,8 @@ class ParserAfterTidy implements HookListener {
 		// #3640
 		$propertyAnnotator = $propertyAnnotatorFactory->newAttachmentLinkPropertyAnnotator(
 			$propertyAnnotator,
-			$parserOutput->getImages()
+			//JLT $parserOutput->getImages()
+			$parserOutput->getLinkList(ParserOutputLinkTypes::MEDIA)
 		);
 
 		$propertyAnnotator->addAnnotation();
