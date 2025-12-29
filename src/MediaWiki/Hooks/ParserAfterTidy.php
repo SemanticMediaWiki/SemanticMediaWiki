@@ -151,7 +151,7 @@ class ParserAfterTidy implements HookListener {
 
 		if ( $displayTitle ||
 			// JLT $parserOutput->getImages() !== [] ||
-			$parserOutput->getLinkList(ParserOutputLinkTypes::MEDIA)  !== [] ||
+			$parserOutput->getLinkList( ParserOutputLinkTypes::MEDIA ) !== [] ||
 			$parserOutput->getExtensionData( 'translate-translation-page' ) ||
 			$parserCategories ) {
 			return true;
@@ -255,8 +255,8 @@ class ParserAfterTidy implements HookListener {
 		// #3640
 		$propertyAnnotator = $propertyAnnotatorFactory->newAttachmentLinkPropertyAnnotator(
 			$propertyAnnotator,
-			//JLT $parserOutput->getImages()
-			$parserOutput->getLinkList(ParserOutputLinkTypes::MEDIA)
+			// JLT $parserOutput->getImages()
+			$parserOutput->getLinkList( ParserOutputLinkTypes::MEDIA )
 		);
 
 		$propertyAnnotator->addAnnotation();

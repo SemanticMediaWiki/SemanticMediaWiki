@@ -110,7 +110,7 @@ class LinksUpdateComplete implements HookListener {
 
 		// Update incurred by a template change and is signaled through
 		// the following condition
-		if ( $linksUpdate->getParserOutput()->getLinkList(ParserOutputLinkTypes::TEMPLATE)  !== [] && $linksUpdate->isRecursive() === false ) {
+		if ( $linksUpdate->getParserOutput()->getLinkList( ParserOutputLinkTypes::TEMPLATE ) !== [] && $linksUpdate->isRecursive() === false ) {
 			$parserData->setOption( $parserData::OPT_FORCED_UPDATE, true );
 		}
 
