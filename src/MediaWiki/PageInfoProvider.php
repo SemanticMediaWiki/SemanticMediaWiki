@@ -47,6 +47,8 @@ class PageInfoProvider implements PageInfo {
 	 */
 	private $revisionLookup;
 
+	private bool $fileReUploadStatus;
+
 	/**
 	 * @since 1.9
 	 *
@@ -57,11 +59,13 @@ class PageInfoProvider implements PageInfo {
 	public function __construct(
 		WikiPage $wikiPage,
 		?RevisionRecord $revision = null,
-		?User $user = null
+		?User $user = null,
+		?bool $fileReUploadStatus = true
 	) {
 		$this->wikiPage = $wikiPage;
 		$this->revision = $revision;
 		$this->user = $user;
+		$this->fileReUploadStatus = $fileReUploadStatus;
 	}
 
 	/**
@@ -97,7 +101,7 @@ class PageInfoProvider implements PageInfo {
 	 */
 	public function isNewPage() {
 		if ( $this->isFilePage() ) {
-			return isset( $this->wikiPage->smwFileReUploadStatus ) ? !$this->wikiPage->smwFileReUploadStatus : false;
+			return $this->fileReUploadStatus === false;
 		}
 
 		$revision = $this->revision ??
