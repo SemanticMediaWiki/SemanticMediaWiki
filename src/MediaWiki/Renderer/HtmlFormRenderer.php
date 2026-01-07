@@ -436,7 +436,7 @@ class HtmlFormRenderer {
 			}
 
 			$resultCount = $instance->getMessageBuilder()
-				->getMessage( 'showingresults' )
+				->getMessage( 'smw-showingresults' )
 				->numParams( $messageCount, (int)$offset + 1 )
 				->parse();
 
