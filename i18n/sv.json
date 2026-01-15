@@ -30,6 +30,7 @@
 			"Sabelöga",
 			"Sannab",
 			"Skalman",
+			"Stefan2255",
 			"Umeaboy",
 			"WikiPhoenix",
 			"아라"
@@ -40,6 +41,7 @@
 	"smw-upgrade-error": "[https://www.semantic-mediawiki.org/ Semantic MediaWiki] installerade och aktiverades men saknar en lämplig [https://www.semantic-mediawiki.org/wiki/Help:Upgrade uppgraderingsnyckel].",
 	"smw-upgrade-release": "Utgåva",
 	"smw-upgrade-progress": "Framsteg",
+	"smw-upgrade-progress-explain": "En uppskattning av när uppgraderingen kommer att vara klar är svår att förutsäga eftersom det beror på storleken på datalagret och tillgänglig hårdvara och kan ta en stund för större wikier att slutföras.\n\nKontakta din lokala administratör för att få mer information om förloppet.",
 	"smw-upgrade-error-title": "Fel » Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Varför ser jag denna sida?",
 	"smw-upgrade-error-how-title": "Hur kan jag åtgärda felet?",
