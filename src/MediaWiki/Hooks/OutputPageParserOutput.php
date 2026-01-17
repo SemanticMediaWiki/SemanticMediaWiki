@@ -11,6 +11,7 @@ use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Utils\ParserOutputHelper;
 
 /**
  * OutputPageParserOutput hook is called after parse, before the HTML is
@@ -158,7 +159,7 @@ class OutputPageParserOutput implements HookListener {
 	protected function getParserOutput( OutputPage $outputPage, ParserOutput $parserOutput ) {
 		if ( $outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
 
-			$text = $parserOutput->getText();
+			$text = ParserOutputHelper::getText( $parserOutput );
 
 			$parserData = ApplicationFactory::getInstance()->newParserData(
 				$outputPage->getTitle(),
