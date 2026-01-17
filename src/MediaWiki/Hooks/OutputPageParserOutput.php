@@ -158,14 +158,7 @@ class OutputPageParserOutput implements HookListener {
 	protected function getParserOutput( OutputPage $outputPage, ParserOutput $parserOutput ) {
 		if ( $outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
 
-			$text = '';
-			if ( method_exists( $parserOutput, 'getContentHolderText' ) ) {
-				$text = $parserOutput->getContentHolderText();
-			} elseif ( method_exists( $parserOutput, 'getRawText' ) ) {
-				$text = $parserOutput->getRawText();
-			} elseif ( method_exists( $parserOutput, 'getText' ) ) {
-				$text = $parserOutput->getText();
-			}
+			$text = $parserOutput->getText();
 
 			$parserData = ApplicationFactory::getInstance()->newParserData(
 				$outputPage->getTitle(),

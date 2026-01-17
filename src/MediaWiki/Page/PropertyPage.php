@@ -219,18 +219,9 @@ class PropertyPage extends Page {
 		);
 
 		if ( $this->mParserOutput instanceof ParserOutput ) {
-			$content = '';
-			if ( method_exists( $this->mParserOutput, 'getContentHolderText' ) ) {
-				$content = $this->mParserOutput->getContentHolderText();
-			} elseif ( method_exists( $this->mParserOutput, 'getRawText' ) ) {
-				$content = $this->mParserOutput->getRawText();
-			} elseif ( method_exists( $this->mParserOutput, 'getText' ) ) {
-				$content = $this->mParserOutput->getText();
-			}
-
 			preg_match_all(
 				"/" . "<section class=\"smw-property-specification\"(.*)?>([\s\S]*?)<\/section>" . "/m",
-				$content,
+				$this->mParserOutput->getText(),
 				$matches
 			);
 		}
