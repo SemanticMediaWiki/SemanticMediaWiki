@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Page;
 
-use LogicException;
 use MediaWiki\Html\Html;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
@@ -221,15 +220,13 @@ class PropertyPage extends Page {
 
 		if ( $this->mParserOutput instanceof ParserOutput ) {
 			$content = '';
-			try {
-				if ( method_exists( $this->mParserOutput, 'getContentHolderText' ) ) {
-					$content = $this->mParserOutput->getContentHolderText();
-				} elseif ( method_exists( $this->mParserOutput, 'getRawText' ) ) {
-					$content = $this->mParserOutput->getRawText();
-				} elseif ( method_exists( $this->mParserOutput, 'getText' ) ) {
-					$content = $this->mParserOutput->getText();
-				}
-			} catch( LogicException $e ) {}
+			if ( method_exists( $this->mParserOutput, 'getContentHolderText' ) ) {
+				$content = $this->mParserOutput->getContentHolderText();
+			} elseif ( method_exists( $this->mParserOutput, 'getRawText' ) ) {
+				$content = $this->mParserOutput->getRawText();
+			} elseif ( method_exists( $this->mParserOutput, 'getText' ) ) {
+				$content = $this->mParserOutput->getText();
+			}
 
 			preg_match_all(
 				"/" . "<section class=\"smw-property-specification\"(.*)?>([\s\S]*?)<\/section>" . "/m",
