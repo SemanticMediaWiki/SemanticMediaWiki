@@ -13,7 +13,7 @@ $autoloader->addPsr4( 'SMW\\Test\\', __DIR__ . '/phpunit' );
 $autoloader->addPsr4( 'SMW\\Tests\\', __DIR__ . '/phpunit' );
 
 $autoloader->addClassMap( [
-	'SMW\Tests\DataItemTest'                     => __DIR__ . '/phpunit/includes/dataitems/DataItemTest.php',
+	'SMW\Tests\AbstractDataItem'                     => __DIR__ . '/phpunit/includes/dataitems/AbstractDataItem.php',
 	'SMW\Maintenance\rebuildConceptCache'        => __DIR__ . '/../maintenance/rebuildConceptCache.php',
 	'SMW\Maintenance\rebuildData'                => __DIR__ . '/../maintenance/rebuildData.php',
 	'SMW\Maintenance\rebuildPropertyStatistics'  => __DIR__ . '/../maintenance/rebuildPropertyStatistics.php',

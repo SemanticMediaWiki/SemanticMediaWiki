@@ -3,33 +3,36 @@
 namespace SMW\Tests;
 
 /**
- * @covers SMWDINumber
+ * @covers SMWDIBoolean
  * @covers SMWDataItem
+ *
+ * @file
+ * @since 1.8
+ *
  *
  * @group SMW
  * @group SMWExtension
  * @group SMWDataItems
- * @group SMWDINumberTest
  * @group Database
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDINumberTest extends DataItemTest {
+class SMWDIBooleanTest extends AbstractDataItem {
 
 	/**
-	 * @see DataItemTest::getClass
+	 * @see AbstractDataItem::getClass
 	 *
 	 * @since 1.8
 	 *
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWDINumber';
+		return '\SMWDIBoolean';
 	}
 
 	/**
-	 * @see DataItemTest::constructorProvider
+	 * @see AbstractDataItem::constructorProvider
 	 *
 	 * @since 1.8
 	 *
@@ -37,8 +40,8 @@ class SMWDINumberTest extends DataItemTest {
 	 */
 	public function constructorProvider() {
 		return [
-			[ 0 ],
-			[ 243.35353 ],
+			[ false ],
+			[ true ],
 		];
 	}
 
