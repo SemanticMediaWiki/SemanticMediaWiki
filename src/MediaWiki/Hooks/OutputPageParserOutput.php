@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use LogicException;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
@@ -159,13 +160,15 @@ class OutputPageParserOutput implements HookListener {
 		if ( $outputPage->getContext()->getRequest()->getInt( 'oldid' ) ) {
 
 			$text = '';
-			if ( method_exists( $parserOutput, 'getContentHolderText' ) ) {
-				$text = $parserOutput->getContentHolderText();
-			} elseif ( method_exists( $parserOutput, 'getRawText' ) ) {
-				$text = $parserOutput->getRawText();
-			} elseif ( method_exists( $parserOutput, 'getText' ) ) {
-				$text = $parserOutput->getText();
-			}
+			try {
+				if ( method_exists( $parserOutput, 'getContentHolderText' ) ) {
+					$text = $parserOutput->getContentHolderText();
+				} elseif ( method_exists( $parserOutput, 'getRawText' ) ) {
+					$text = $parserOutput->getRawText();
+				} elseif ( method_exists( $parserOutput, 'getText' ) ) {
+					$text = $parserOutput->getText();
+				}
+			} catch( LogicException $e ) {}
 
 			$parserData = ApplicationFactory::getInstance()->newParserData(
 				$outputPage->getTitle(),
