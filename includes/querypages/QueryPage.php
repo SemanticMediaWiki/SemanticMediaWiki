@@ -157,6 +157,7 @@ abstract class QueryPage extends MWQueryPage {
 				Html::input(
 					'property',
 					$property,
+					'text',
 					[ 'id' => 'smw-property-input', 'size' => 20 ]
 				) . ' ' .
 				Html::submitButton( $this->msg( 'allpagessubmit' )->text() );
