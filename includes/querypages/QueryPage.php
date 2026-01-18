@@ -150,8 +150,17 @@ abstract class QueryPage extends MWQueryPage {
 
 		if ( $propertySearch ) {
 			$propertySearch = Xml::tags( 'hr', [ 'style' => 'margin-bottom:10px;' ], '' ) .
-				Xml::inputLabel( $this->msg( 'smw-special-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
-				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() );
+				Html::label(
+					$this->msg( 'smw-special-property-searchform' )->text(),
+					'smw-property-input'
+				) . "\u{00A0}" .
+				Html::input(
+					'property',
+					$property,
+					'text',
+					[ 'id' => 'smw-property-input', 'size' => 20 ]
+				) . ' ' .
+				Html::submitButton( $this->msg( 'allpagessubmit' )->text() );
 		}
 
 		if ( $filter !== '' ) {
