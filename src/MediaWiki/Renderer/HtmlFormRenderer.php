@@ -256,7 +256,7 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addSubmitButton( $text, $attributes = [] ) {
-		$this->content[] = Xml::submitButton( $text, $attributes );
+		$this->content[] = Html::submitButton( $text, $attributes );
 		return $this;
 	}
 
