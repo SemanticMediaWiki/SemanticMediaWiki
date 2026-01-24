@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
-use MediaWiki\Xml\Xml;
 use ParamProcessor\ParamDefinition;
 
 /**
@@ -224,7 +223,7 @@ class ParameterInput {
 			$attributes = $this->attributes;
 		}
 
-		return Xml::check(
+		return Html::check(
 			$this->inputName,
 			$this->getValueToUse(),
 			$attributes
