@@ -19,9 +19,10 @@ class HtmlUtil {
 	 *
 	 */
 	public static function checkLabel( $label, $name, $id, $checked = false, $attribs = [] ) {
+		$labelAttr = array_intersect_key( $attribs, array_flip( [ 'class', 'title' ] ) );
 		return Html::check( $name, $checked, [ 'id' => $id ] + $attribs ) .
 			"\u{00A0}" .
-			Html::label( $label, $id, $attribs );
+			Html::label( $label, $id, $labelAttr );
 	}
 
     /**
