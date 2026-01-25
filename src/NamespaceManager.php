@@ -273,10 +273,10 @@ class NamespaceManager {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgContentNamespaces
 		 */
-		$vars['wgContentNamespaces'] = array_merge( $vars['wgContentNamespaces'], [
-			SMW_NS_PROPERTY,
-			SMW_NS_CONCEPT
-		] );
+		$vars['wgContentNamespaces'] = $vars['wgContentNamespaces'] + [
+			SMW_NS_PROPERTY => true,
+			SMW_NS_CONCEPT => true
+		];
 
 		/**
 		 * To indicate which namespaces are enabled for searching by default
