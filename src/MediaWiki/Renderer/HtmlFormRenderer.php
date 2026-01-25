@@ -309,8 +309,8 @@ class HtmlFormRenderer {
 			$attributes['class'] = $this->defaultPrefix . '-input';
 		}
 
-		$label = Xml::label( $label, $id, [] );
-		$input = Xml::input( $name, $size, $value, [ 'id' => $id ] + $attributes );
+		$label = Html::label( $label, $id, [] );
+		$input = Html::input( $name, $value, 'text', [ 'size' => $size, 'id' => $id ] + $attributes );
 
 		$this->content[] = $label . '&#160;' . $input;
 
@@ -398,7 +398,7 @@ class HtmlFormRenderer {
 
 		$this->addQueryParameter( $inputName, $inputValue );
 
-		$html = Xml::checkLabel(
+		$html = HtmlUtil::checkLabel(
 			$label,
 			$inputName,
 			$id,
@@ -467,7 +467,7 @@ class HtmlFormRenderer {
 		}
 
 		if ( $this->useFieldset ) {
-			$content = Xml::fieldset(
+			$content = HtmlUtil::fieldset(
 				$this->messageBuilder->getMessage( $this->name )->text(),
 				$content,
 				[
