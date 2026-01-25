@@ -310,7 +310,7 @@ class HtmlFormRenderer {
 		}
 
 		$label = Html::label( $label, $id, [] );
-		$input = Html::input( $name, $size, $value, [ 'id' => $id ] + $attributes );
+		$input = Html::input( $name, $value, 'text', [ 'size' => $size, 'id' => $id ] + $attributes );
 
 		$this->content[] = $label . '&#160;' . $input;
 
