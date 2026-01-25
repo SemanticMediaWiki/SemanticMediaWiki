@@ -25,7 +25,7 @@ class HtmlUtil {
 			Html::label( $label, $id, $labelAttr );
 	}
 
-    /**
+	/**
 	 * Shortcut for creating fieldsets.
 	 *
 	 * @param string|false $legend Legend of the fieldset. If evaluates to false,
