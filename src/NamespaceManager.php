@@ -274,8 +274,8 @@ class NamespaceManager {
 		 * @see https://www.mediawiki.org/wiki/Manual:$wgContentNamespaces
 		 */
 		$vars['wgContentNamespaces'] = $vars['wgContentNamespaces'] + [
-			SMW_NS_PROPERTY => true,
-			SMW_NS_CONCEPT => true
+			SMW_NS_PROPERTY,
+			SMW_NS_CONCEPT
 		];
 
 		/**
