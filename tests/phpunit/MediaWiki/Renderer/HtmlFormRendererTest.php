@@ -105,11 +105,12 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 			->addSubmitButton( 'FindFoo' );
 
 		$expected = [
-			'form id="smw-form-SomeForm" name="SomeForm" method="get"',
+			// Allow attributes to appear in any order and tolerate extra attributes
+			'form id="smw-form-SomeForm".*name="SomeForm".*method="get"',
 			'<p class="smw-form-paragraph">SomeDescription</p>',
-			'input name="foo" size="333" value="Foo" id="FooId"',
-			'input name="AnotherInputFieldName" size="20" value="AnotherInputFieldValue" id="AnotherInputFieldName"',
-			'input type="submit" value="FindFoo"',
+			'input name="foo".*size="333".*value="Foo".*id="FooId"',
+			'input name="AnotherInputFieldName".*size="20".*value="AnotherInputFieldValue".*id="AnotherInputFieldName"',
+			'input type="submit".*value="FindFoo"',
 			// '<br />&nbsp;' MW 1.27 <br/>&nbsp;
 		];
 
@@ -204,11 +205,12 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 				'checkBoxId' );
 
 		$expected = [
-			'<form id="smw-form-checkboxForm" name="checkboxForm" method="post" action="http://example.org/foo">',
+			// Allow attribute reordering and extra attributes
+			'<form id="smw-form-checkboxForm".*name="checkboxForm".*method="post".*action="http://example.org/foo"',
 			'<h2>someHeader</h2>',
 			'<fieldset id="smw-form-fieldset-checkboxForm">',
-			'<input name="checkboxName" type="checkbox" value="1" checked="checked" id="checkboxName" class="smw-form-checkbox" />',
-			'<label for="checkboxName" class="smw-form-checkbox">checkboxLabel</label>'
+			'<input name="checkboxName".*type="checkbox".*value="1".*checked="checked".*id="checkboxName".*class="smw-form-checkbox"',
+			'<label for="checkboxName".*class="smw-form-checkbox">checkboxLabel</label>'
 		];
 
 		$this->stringValidator->assertThatStringContains(
