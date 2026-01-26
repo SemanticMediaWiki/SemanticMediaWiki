@@ -1,5 +1,10 @@
 <?php
 
+use SMW\MediaWiki\Connection\CleanUpTables;
+use SMW\MediaWiki\Connection\Sequence;
+use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
+
 if ( PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' ) {
 	die( 'Not an entry point' );
 }
@@ -42,24 +47,24 @@ register_shutdown_function( static function () {
 		return;
 	}
 
-	// $connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
-	// $connection = $connectionManager->getConnection( 'mw.db' );
+	$connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
+	$connection = $connectionManager->getConnection( 'mw.db' );
 
-	// // Reset any sequence modified during the test
-	// $sequence = new Sequence(
-	// 	$connection
-	// );
+	// Reset any sequence modified during the test
+	$sequence = new Sequence(
+		$connection
+	);
 
-	// try {
-	// 	$sequence->tablePrefix( '' );
-	// 	$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
-	// } catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
-	// 	return;
-	// }
+	try {
+		$sequence->tablePrefix( '' );
+		$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
+	} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+		return;
+	}
 
-	// $cleanUpTables = new CleanUpTables(
-	// 	$connection
-	// );
+	$cleanUpTables = new CleanUpTables(
+		$connection
+	);
 
-	// $cleanUpTables->dropTables( SMW_PHPUNIT_TABLE_PREFIX );
+	$cleanUpTables->dropTables( SMW_PHPUNIT_TABLE_PREFIX );
 } );
