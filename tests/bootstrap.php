@@ -58,7 +58,7 @@ register_shutdown_function( static function () {
 	try {
 		$sequence->tablePrefix( '' );
 		$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
-	} catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
+	} catch ( \Wikimedia\Rdbms\DBConnectionError $e ) {
 		return;
 	}
 
