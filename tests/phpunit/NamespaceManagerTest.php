@@ -298,7 +298,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertContains(
-            SMW_NS_PROPERTY,
+			SMW_NS_PROPERTY,
 			$vars['wgContentNamespaces']
 		);
 	}
