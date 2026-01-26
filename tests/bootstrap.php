@@ -30,8 +30,8 @@ $autoloader->addClassMap( [
 ] );
 
 // Ensure no persistent test-table prefix causes a collision in CI.
-if ( ! defined( 'SMW_PHPUNIT_TABLE_PREFIX' ) ) {
-    define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
+if ( !defined( 'SMW_PHPUNIT_TABLE_PREFIX' ) ) {
+	define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
 }
 
 /**
