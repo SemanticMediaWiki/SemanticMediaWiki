@@ -29,8 +29,10 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\updateEntityCountMap'       => __DIR__ . '/../maintenance/updateEntityCountMap.php'
 ] );
 
-// define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
-// define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
+// Ensure no persistent test-table prefix causes a collision in CI.
+if ( ! defined( 'SMW_PHPUNIT_TABLE_PREFIX' ) ) {
+    define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
+}
 
 /**
  * Register a shutdown function the invoke a final clean-up
