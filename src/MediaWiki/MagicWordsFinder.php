@@ -72,9 +72,7 @@ class MagicWordsFinder {
 	 */
 	public function pushMagicWordsToParserOutput( array $words ) {
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
-			method_exists( $this->parserOutput, "setRevisionTimestamp" )
-				? $this->parserOutput->setRevisionTimestamp( wfTimestampNow() )
-				: $this->parserOutput->setTimestamp( wfTimestampNow() );
+			$this->parserOutput->setRevisionTimestamp( wfTimestampNow() );
 		}
 
 		// Filter empty lines
