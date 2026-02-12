@@ -17,7 +17,7 @@ jobs:
       matrix:
         include:
           - mediawiki_version: '1.43'
-            php_version: 8.1
+            php_version: 8.2
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: true
@@ -42,6 +42,12 @@ jobs:
             experimental: true
           - mediawiki_version: '1.44'
             php_version: 8.3
+            database_type: mysql
+            database_image: "mariadb:11.8"
+            coverage: false
+            experimental: true
+          - mediawiki_version: '1.45'
+            php_version: 8.4
             database_type: mysql
             database_image: "mariadb:11.8"
             coverage: false
