@@ -575,7 +575,7 @@
 	"right-smw-pageedit": "Bewerkingsrechten voor pagina’s die zijn geannoteerd met <code>Is edit protected</code> (Semantic MediaWiki)",
 	"right-smw-schemaedit": "Bewerk [https://www.semantic-mediawiki.org/wiki/Help:Schema schema pages] (Semantic MediaWiki)",
 	"right-smw-viewjobqueuewatchlist": "De [https://www.semantic-mediawiki.org/wiki/Help:Job_queue_watchlist volglijst voor de taakwachtrij] gebruiken (Semantic MediaWiki)",
-	"right-smw-viewentityassociatedrevisionmismatch": "Toegangsinformatie over een revisie wanverhouding geassocieerd met een entiteit (Semantic MediaWiki)",
+	"right-smw-viewentityassociatedrevisionmismatch": "Toegang tot informatie over een aan een entiteit gekoppelde versie-mismatch (Semantic MediaWiki)",
 	"right-smw-vieweditpageinfo": "Bekijk [https://www.semantic-mediawiki.org/wiki/Help:Edit_help edit help] (Semantic MediaWiki)",
 	"restriction-level-smw-pageedit": "beveiligd (alleen in aanmerking komende gebruikers)",
 	"action-smw-patternedit": "reguliere expressies gebruikt door Semantic MediaWiki te bewerken",
