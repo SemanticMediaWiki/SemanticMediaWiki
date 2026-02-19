@@ -168,9 +168,10 @@ class MwCollaboratorFactory {
 	public function newPageInfoProvider(
 		WikiPage $wikiPage,
 		?RevisionRecord $revision = null,
-		?User $user = null
+		?User $user = null,
+		?bool $fileReUploadStatus = true
 	) {
-		$pageInfoProvider = new PageInfoProvider( $wikiPage, $revision, $user );
+		$pageInfoProvider = new PageInfoProvider( $wikiPage, $revision, $user, $fileReUploadStatus );
 
 		$pageInfoProvider->setRevisionGuard(
 			$this->applicationFactory->singleton( 'RevisionGuard' )
