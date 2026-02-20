@@ -57,7 +57,7 @@
 		"onoi/callback-container": "~2.0",
 		"symfony/css-selector": "^5|^4|^3.3",
 		"seld/jsonlint": "^1.7",
-		"justinrainbow/json-schema": "~5.2",
+		"justinrainbow/json-schema": "~6.4",
 		"jeroen/file-fetcher": "^6|^5|^4.4",
 		"wikimedia/cdb": "^3|^2|^1",
 		"wikimedia/textcat": "^2|^1.1"
