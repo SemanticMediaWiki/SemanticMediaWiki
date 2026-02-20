@@ -140,15 +140,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @see SearchEngine::textAlreadyUpdatedForIndex
-	 *
-	 * {@inheritDoc}
-	 */
-	public function textAlreadyUpdatedForIndex() {
-		return $this->fallbackSearchEngine->textAlreadyUpdatedForIndex();
-	}
-
-	/**
 	 * @see SearchEngine::update
 	 *
 	 * {@inheritDoc}
