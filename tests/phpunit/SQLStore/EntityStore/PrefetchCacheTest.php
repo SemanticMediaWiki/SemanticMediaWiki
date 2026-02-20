@@ -83,4 +83,43 @@ class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function testCacheMergeWithDifferentFingerprints() {
+		$property = new DIProperty('Pm');
+		$subject1 = DIWikiPage::newFromText("Subject1");
+		$subject2 = DIWikiPage::newFromText("Subject2");
+	
+		$idTable = $this->getMockBuilder('\SMW\SQLStore\EntityStore\EntityIdManager')
+			->disableOriginalConstructor()
+			->getMock();
+	
+		$idTable->method('getSMWPageID')
+			->willReturnOnConsecutiveCalls(101, 102);
+	
+		$this->store->method('getObjectIds')
+			->willReturn($idTable);
+	
+		$this->prefetchItemLookup->method('getPropertyValues')
+			->willReturnOnConsecutiveCalls(
+				[101 => [DIWikiPage::newFromText('Result1')]],
+				[102 => [DIWikiPage::newFromText('Result2')]]
+			);
+	
+		$instance = new PrefetchCache($this->store, $this->prefetchItemLookup);
+		
+		// First prefetch
+		$instance->prefetch([$subject1], $property, $this->requestOptions);
+	
+		// Second prefetch with a different fingerprint, that is generated in PrefetchCache
+		$instance->prefetch([$subject2], $property, $this->requestOptions);
+	
+		// Verify that both results are present in the cache
+		$this->assertEquals(
+			[DIWikiPage::newFromText('Result1')],
+			$instance->getPropertyValues($subject1, $property, $this->requestOptions)
+		);
+		$this->assertEquals(
+			[DIWikiPage::newFromText('Result2')],
+			$instance->getPropertyValues($subject2, $property, $this->requestOptions)
+		);
+	}
 }
