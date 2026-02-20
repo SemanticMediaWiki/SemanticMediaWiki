@@ -400,10 +400,6 @@ class ExtendedSearch {
 		$this->fallbackSearchEngine->prefix = $this->prefix;
 		$this->fallbackSearchEngine->namespaces = $this->namespaces;
 
-		$term = $this->fallbackSearchEngine->replacePrefixes(
-			$term
-		);
-
 		if ( $fulltext ) {
 			return $this->fallbackSearchEngine->searchText( $term );
 		}
