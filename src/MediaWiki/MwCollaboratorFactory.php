@@ -219,7 +219,12 @@ class MwCollaboratorFactory {
 			$user = RequestContext::getMain()->getUser();
 		}
 
-		$editInfo = new EditInfo( $wikiPage, $revision, $user );
+		$editInfo = new EditInfo(
+			$wikiPage,
+			$revision,
+			$user,
+			$this->applicationFactory->getSettings()->get( 'smwgExtraSlotsWithSemanticLinks' ) ?? []
+		);
 
 		$editInfo->setRevisionGuard(
 			$this->applicationFactory->singleton( 'RevisionGuard' )

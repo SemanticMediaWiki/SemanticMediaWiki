@@ -209,6 +209,7 @@ class Settings extends Options {
 			'smwgCheckForConstraintErrors' => $GLOBALS['smwgCheckForConstraintErrors'],
 			'smwgPlainList' => $GLOBALS['smwgPlainList'],
 			'smwgDetectOutdatedData' => $GLOBALS['smwgDetectOutdatedData'],
+			'smwgExtraSlotsWithSemanticLinks' => $GLOBALS['smwgExtraSlotsWithSemanticLinks'],
 			'smwgIgnoreUpgradeKeyCheck' => $GLOBALS['smwgIgnoreUpgradeKeyCheck'],
 			'smwgEnableExportRDFLink' => $GLOBALS['smwgEnableExportRDFLink'],
 			'smwgSetParserCacheTimestamp' => $GLOBALS['smwgSetParserCacheTimestamp'],

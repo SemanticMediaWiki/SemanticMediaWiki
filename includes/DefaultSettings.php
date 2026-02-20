@@ -2512,6 +2512,17 @@ return ( static function () {
 		 */
 		'smwgDetectOutdatedData' => false,
 
+		# #
+		# Overwriting the following array, you can define for which slots
+		# the semantic links and annotations are to be evaluated. In other
+		# slots, annotations can be given but are silently ignored.
+		#
+		# Annotations in the 'main' slot are always evaluated.
+		#
+		# @since 4.2.0
+		##
+		'smwgExtraSlotsWithSemanticLinks' => [],
+
 		/**
 		 * Whether Special:ExportRDF <link> element is added to the <head> element
 		 * Used to avoid bots scraping ExportRDF by not advertising on every page
