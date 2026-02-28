@@ -69,9 +69,18 @@ class ValueTextsBuilder {
 	 */
 	private function getValueText( SMWDataValue $value, $column = 0 ) {
 		$isSubject = ( $column === 0 );
-		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+		$linker = $this->getLinkerForColumn( $column) ;
 
-		$text = $value->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinkerForColumn( $column ) );
+		if ( $useLongText ) {
+			// used by SMWWikiPageValue -> getWikiValue
+			$value->setOption( $value::PREFIXED_FORM, true );
+			$text = $value->getLongText( SMW_OUTPUT_WIKI, $linker );
+
+		} else {
+			$value->setOption( $value::SHORT_FORM, true );
+			$text = $value->getShortText( SMW_OUTPUT_WIKI, $linker );
+		}
 
 		return $this->sanitizeValueText( $text );
 	}
