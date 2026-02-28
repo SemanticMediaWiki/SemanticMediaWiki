@@ -73,6 +73,7 @@ class ValueTextsBuilder {
 		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 		$linker = $this->getLinkerForColumn( $column) ;
 
+		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
 		$dataValue->setOption(
 			$useLongText
 				? $dataValue::PREFIXED_FORM
