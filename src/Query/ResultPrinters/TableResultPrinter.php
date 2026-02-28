@@ -323,23 +323,41 @@ class TableResultPrinter extends ResultPrinter {
 	 */
 	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
+		$isHtmlOutput = $outputMode === SMW_OUTPUT_HTML;
 
 		$values = [];
 		foreach ( $dataValues as $dv ) {
+			$linker = $this->getLinker( $isSubject );
+			$dataItem = $dv->getDataItem();
 
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
-				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) ) {
+			$parseAsWikitext =
+				$isHtmlOutput && (
+					( $dataItem instanceof DIWikiPage && $dataItem->getNamespace() === NS_FILE ) ||
+					( $dataItem instanceof DIBlob )
+				);
+
+			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
+			if ( $dataValueMethod === 'getLongText' ) {
+				$dv->setOption( $dv::PREFIXED_FORM, true );
+
+			} else {
+				$dv->setOption( $dv::SHORT_FORM, true );
+			}
+
+			if ( $parseAsWikitext ) {
+				$raw = $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
+
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(
-					[ 'smw-parse', $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $this->getLinker( $isSubject ) ) ],
+					[ 'smw-parse', $raw ],
 					Message::PARSE
 				);
 			} else {
-				$value = $dv->$dataValueMethod( $outputMode, $this->getLinker( $isSubject ) );
+				$value = $dv->$dataValueMethod( $outputMode, $linker );
 			}
 
 			$values[] = $value === '' ? '&nbsp;' : $value;
