@@ -62,7 +62,7 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param SMWDataValue $value
+	 * @param SMWDataValue $dataValue
 	 * @param int $column
 	 *
 	 * @return string
@@ -71,7 +71,7 @@ class ValueTextsBuilder {
 		$isSubject = ( $column === 0 );
 		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
 		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
-		$linker = $this->getLinkerForColumn( $column) ;
+		$linker = $this->getLinkerForColumn( $column );
 
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
 		$dataValue->setOption(
