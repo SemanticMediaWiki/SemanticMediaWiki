@@ -67,21 +67,20 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	private function getValueText( SMWDataValue $value, $column = 0 ) {
+	private function getValueText( SMWDataValue $dataValue, $column = 0 ) {
 		$isSubject = ( $column === 0 );
 		$useLongText = $this->prefixParameterProcessor->useLongText( $isSubject );
+		$dataValueMethod = $useLongText ? 'getLongText' : 'getShortText';
 		$linker = $this->getLinkerForColumn( $column) ;
 
-		if ( $useLongText ) {
-			// used by SMWWikiPageValue -> getWikiValue
-			$value->setOption( $value::PREFIXED_FORM, true );
-			$text = $value->getLongText( SMW_OUTPUT_WIKI, $linker );
+		$dataValue->setOption(
+			$useLongText
+				? $dataValue::PREFIXED_FORM
+				: $dataValue::SHORT_FORM,
+			true
+		);
 
-		} else {
-			$value->setOption( $value::SHORT_FORM, true );
-			$text = $value->getShortText( SMW_OUTPUT_WIKI, $linker );
-		}
-
+		$text = $dataValue->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
 		return $this->sanitizeValueText( $text );
 	}
 
