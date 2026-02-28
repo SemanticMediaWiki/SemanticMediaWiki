@@ -340,12 +340,12 @@ class TableResultPrinter extends ResultPrinter {
 				);
 
 			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
-			if ( $dataValueMethod === 'getLongText' ) {
-				$dv->setOption( $dv::PREFIXED_FORM, true );
-
-			} else {
-				$dv->setOption( $dv::SHORT_FORM, true );
-			}
+			$dv->setOption(
+				$dataValueMethod === 'getLongText'
+					? $dv::PREFIXED_FORM
+					: $dv::SHORT_FORM,
+				true
+			);
 
 			if ( $parseAsWikitext ) {
 				$raw = $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
