@@ -131,15 +131,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @see SearchEngine::getTextFromContent
-	 *
-	 * {@inheritDoc}
-	 */
-	public function getTextFromContent( Title $t, ?Content $c = null ) {
-		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
-	}
-
-	/**
 	 * @see SearchEngine::textAlreadyUpdatedForIndex
 	 *
 	 * {@inheritDoc}
