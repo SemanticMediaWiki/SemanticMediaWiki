@@ -281,7 +281,7 @@
 	"smw-special-wantedproperties-docu": "此页面列出在本wiki内使用但没有页面描述的[https://www.semantic-mediawiki.org/wiki/Wanted_properties 需要的属性]。要获取其他类型属性列表，请查看[[Special:Properties|属性]]或[[Special:UnusedProperties|未使用的属性]]特殊页面。",
 	"smw-special-wantedproperties-template": "$1（$2次{{PLURAL:$2|使用}}）",
 	"smw_purge": "刷新",
-	"smw-purge-update-dependencies": "语义MediaWiki正在清除当前页面缓存，因为它检测到一些需要更新的过时依赖。",
+	"smw-purge-update-dependencies": "此页面正在重新加载以确保所有信息均为最新状态。这可能需要一些时间，且可能会发生多次。",
 	"smw-purge-failed": "语义MediaWiki尝试清除页面缓存失败",
 	"types": "类型",
 	"smw_types_docu": "[https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes 可用数据类型]列表，其中每个[https://www.semantic-mediawiki.org/wiki/Help:Datatype 类型]代表一组从存储特征角度和从会遗传给分配的属性的显示特征角度描述值的唯一特性。",

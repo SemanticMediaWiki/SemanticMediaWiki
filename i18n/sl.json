@@ -230,7 +230,7 @@
 	"smw-special-wantedproperties-docu": "Na tej strani so navedene [https://www.semantic-mediawiki.org/wiki/Wanted_properties želene lastnosti], ki se uporabljajo v vikiju, vendar nimajo opisne strani. Razčlenjeni prikaz si lahko ogledate na posebnih straneh [[Special:Properties|vseh]] ali [[Special:UnusedProperties|neuporabljenih lastnosti]].",
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|uporaba|uporabi|uporabe|uporab}})",
 	"smw_purge": "Osveži",
-	"smw-purge-update-dependencies": "Semantični MediaWiki čisti trenutno stran zaradi nekaterih zastarelih odvisnosti, ki jih je odkril in zahtevajo posodobitev.",
+	"smw-purge-update-dependencies": "Ta stran se ponovno nalaga, da se zagotovi, da so vse informacije posodobljene. To lahko traja nekaj časa in se lahko zgodi večkrat.",
 	"smw-purge-failed": "Semantični MediaWiki je poskušal počistiti predpomnjenje strani, vendar ni uspelo",
 	"types": "Tipi",
 	"smw_types_docu": "Seznam [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes available podatkovnih tipov], kjer vsak [https://www.semantic-mediawiki.org/wiki/Help:Datatype tip] predstavlja izvirno množico atributov za opis vrednosti v smislu značilnosti hrambe in prikaza, ki so dedne dodeljeni lastnosti.",
