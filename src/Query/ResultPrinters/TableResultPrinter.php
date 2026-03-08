@@ -327,7 +327,7 @@ class TableResultPrinter extends ResultPrinter {
 		$values = [];
 		foreach ( $dataValues as $dv ) {
 
-			// Restore output in Special:Ask on:
+			// Restore output in Special:Ask on: --test
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
 			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
