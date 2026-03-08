@@ -207,7 +207,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 			'<form id="smw-form-checkboxForm" name="checkboxForm" method="post" action="http://example.org/foo">',
 			'<h2>someHeader</h2>',
 			'<fieldset id="smw-form-fieldset-checkboxForm">',
-			'<input id="checkboxName" class="smw-form-checkbox" checked="" checked="" type="checkbox" value="1" name="checkboxName" />',
+			'<input id="checkboxName" class="smw-form-checkbox" checked="" checked="" type="checkbox" value="1" name="checkboxName">',
 			'<label class="smw-form-checkbox" for="checkboxName">checkboxLabel</label>'
 		];
 
