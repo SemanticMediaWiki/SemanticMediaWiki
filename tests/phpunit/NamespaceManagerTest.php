@@ -295,7 +295,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			$vars['wgNamespacesToBeSearchedDefault'][SMW_NS_PROPERTY]
 		);
 
-		$this->assertArrayHasKey(
+		$this->assertContains(
 			SMW_NS_PROPERTY,
 			$vars['wgContentNamespaces']
 		);
