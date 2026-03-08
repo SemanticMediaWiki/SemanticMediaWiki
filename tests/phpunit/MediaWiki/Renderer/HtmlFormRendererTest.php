@@ -107,8 +107,8 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 		$expected = [
 			'form id="smw-form-SomeForm" name="SomeForm" method="get"',
 			'<p class="smw-form-paragraph">SomeDescription</p>',
-			'input name="foo" size="333" value="Foo" id="FooId"',
-			'input name="AnotherInputFieldName" size="20" value="AnotherInputFieldValue" id="AnotherInputFieldName"',
+			'input size="333" id="FooId" class="smw-form-input" value="Foo" name="foo"',
+			'input size="20" id="AnotherInputFieldName" class="smw-form-input" value="AnotherInputFieldValue" name="AnotherInputFieldName"',
 			'input type="submit" value="FindFoo"',
 			// '<br />&nbsp;' MW 1.27 <br/>&nbsp;
 		];
