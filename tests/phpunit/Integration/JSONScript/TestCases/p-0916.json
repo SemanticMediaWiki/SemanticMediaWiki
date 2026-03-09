@@ -124,7 +124,7 @@
 				"to-contain": [
 					"<p><a rel=\"nofollow\" class=\"external text\" href=\"https://en.wikipedia.org/wiki/Franz_Schubert\">https://en.wikipedia.org/wiki/Franz Schubert</a>",
 					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;.*WDID&quot; title=&quot;.*WDID&quot;&gt;WDID&lt;/a&gt;: &lt;a",
-					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;_blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;&#95;blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
 				]
 			}
 		},

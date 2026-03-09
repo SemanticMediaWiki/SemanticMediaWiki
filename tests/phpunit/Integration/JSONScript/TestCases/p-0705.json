@@ -95,7 +95,7 @@
 			"subject": "Example/P0705/Q.4",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=\".*Example/P0705/4\" title=\"Example/P0705/4\">Example/P0705/4</a></td><td class=\"Has-page smwtype_wpg\"><a href=\".*P0705.png\" title=\".*P0705.png\">P0705.png</a></td>"
+					"<td class=\"smwtype&#95;wpg\"><a href=\".*Example/P0705/4\" title=\"Example/P0705/4\">Example/P0705/4</a></td><td class=\"Has-page smwtype&#95;wpg\"><a href=\".*P0705.png\" title=\".*P0705.png\">P0705.png</a></td>"
 				],
 				"not-contain": [
 					"P0705.png\" width=\"480\" height=\"480\""
