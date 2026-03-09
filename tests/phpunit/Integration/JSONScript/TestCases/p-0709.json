@@ -51,7 +51,7 @@
 			"subject": "P0709/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=\".*\">ABC</a></td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=\".*\">ABC</a></td>"
 				]
 			}
 		},
@@ -61,8 +61,8 @@
 			"subject": "P0709/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=\".*\">ABC</a></td>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=\".*\">DEF</a></td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=\".*\">ABC</a></td>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=\".*\">DEF</a></td>"
 				]
 			}
 		},
