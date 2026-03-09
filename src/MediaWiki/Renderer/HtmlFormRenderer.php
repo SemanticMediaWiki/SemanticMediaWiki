@@ -407,7 +407,7 @@ class HtmlFormRenderer {
 				'id' => $id,
 				'class' => $this->defaultPrefix . '-checkbox',
 				'value' => $inputValue
-			] + ( $isChecked ? [ 'checked' => 'checked' ] : [] )
+			]
 		);
 
 		$this->content[] = Html::rawElement( 'span', $attributes, $html );
