@@ -38,10 +38,10 @@
 			"subject": "Example/FT0003/ASC",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/FT0003/A</td><td class=\"Has-project smwtype_wpg\">Project A</td><td class=\"Category smwtype_wpg\">Category:Project group A</td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/FT0003/AA</td><td class=\"Has-project smwtype_wpg\">Project AA</td><td class=\"Category smwtype_wpg\">Category:Project group A</td></tr>",
-					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/FT0003/B</td><td class=\"Has-project smwtype_wpg\">Project B</td><td class=\"Category smwtype_wpg\">Category:Project group B</td></tr>",
-					"<tr data-row-number=\"4\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/FT0003/C</td><td class=\"Has-project smwtype_wpg\">Project C</td><td class=\"Category smwtype_wpg\">Category:Project group C</td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Example/FT0003/A</td><td class=\"Has-project smwtype&#95;wpg\">Project A</td><td class=\"Category smwtype&#95;wpg\">Category:Project group A</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\">Example/FT0003/AA</td><td class=\"Has-project smwtype&#95;wpg\">Project AA</td><td class=\"Category smwtype&#95;wpg\">Category:Project group A</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Example/FT0003/B</td><td class=\"Has-project smwtype&#95;wpg\">Project B</td><td class=\"Category smwtype&#95;wpg\">Category:Project group B</td></tr>",
+					"<tr data-row-number=\"4\" class=\"row-even\"><td class=\"smwtype&#95;wpg\">Example/FT0003/C</td><td class=\"Has-project smwtype&#95;wpg\">Project C</td><td class=\"Category smwtype&#95;wpg\">Category:Project group C</td></tr>"
 				]
 			}
 		},
@@ -51,10 +51,10 @@
 			"subject": "Example/FT0003/DESC",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/FT0003/C</td><td class=\"Has-project smwtype_wpg\">Project C</td><td class=\"Category smwtype_wpg\">Category:Project group C</td></tr>",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/FT0003/B</td><td class=\"Has-project smwtype_wpg\">Project B</td><td class=\"Category smwtype_wpg\">Category:Project group B</td></tr>",
-					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\">Example/FT0003/A</td><td class=\"Has-project smwtype_wpg\">Project A</td><td class=\"Category smwtype_wpg\">Category:Project group A</td></tr>",
-					"<tr data-row-number=\"4\" class=\"row-even\"><td class=\"smwtype_wpg\">Example/FT0003/AA</td><td class=\"Has-project smwtype_wpg\">Project AA</td><td class=\"Category smwtype_wpg\">Category:Project group A</td></tr>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Example/FT0003/C</td><td class=\"Has-project smwtype&#95;wpg\">Project C</td><td class=\"Category smwtype&#95;wpg\">Category:Project group C</td></tr>",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\">Example/FT0003/B</td><td class=\"Has-project smwtype&#95;wpg\">Project B</td><td class=\"Category smwtype&#95;wpg\">Category:Project group B</td></tr>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\">Example/FT0003/A</td><td class=\"Has-project smwtype&#95;wpg\">Project A</td><td class=\"Category smwtype&#95;wpg\">Category:Project group A</td></tr>",
+					"<tr data-row-number=\"4\" class=\"row-even\"><td class=\"smwtype&#95;wpg\">Example/FT0003/AA</td><td class=\"Has-project smwtype&#95;wpg\">Project AA</td><td class=\"Category smwtype&#95;wpg\">Category:Project group A</td></tr>"
 				]
 			}
 		}

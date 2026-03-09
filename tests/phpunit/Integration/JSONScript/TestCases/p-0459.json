@@ -79,9 +79,9 @@
 			"subject": "Example/P0459/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/1\" title=\"Example/P0459/1\">Example/P0459/1</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\">aBcDEF</a></td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/2\" title=\"Example/P0459/2\">Example/P0459/2</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\">abcdef</a></td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/3\" title=\"Example/P0459/3\">Example/P0459/3</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\">ABCDEF</a></td>"
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0459/1\" title=\"Example/P0459/1\">Example/P0459/1</a></td><td class=\"Has-keyword smwtype&#95;keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\">aBcDEF</a></td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0459/2\" title=\"Example/P0459/2\">Example/P0459/2</a></td><td class=\"Has-keyword smwtype&#95;keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\">abcdef</a></td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0459/3\" title=\"Example/P0459/3\">Example/P0459/3</a></td><td class=\"Has-keyword smwtype&#95;keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\">ABCDEF</a></td>"
 				]
 			}
 		},
@@ -91,9 +91,9 @@
 			"subject": "Example/P0459/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/1\" title=\"Example/P0459/1\">Example/P0459/1</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\">aBcDEF</a></td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/2\" title=\"Example/P0459/2\">Example/P0459/2</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\">abcdef</a></td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0459/3\" title=\"Example/P0459/3\">Example/P0459/3</a></td><td class=\"Has-keyword smwtype_keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\">ABCDEF</a></td>"
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0459/1\" title=\"Example/P0459/1\">Example/P0459/1</a></td><td class=\"Has-keyword smwtype&#95;keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YUJjREVGLTVELTVEL2Zvcm1hdD1saXN0\">aBcDEF</a></td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0459/2\" title=\"Example/P0459/2\">Example/P0459/2</a></td><td class=\"Has-keyword smwtype&#95;keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6YWJjZGVmLTVELTVEL2Zvcm1hdD1saXN0\">abcdef</a></td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0459/3\" title=\"Example/P0459/3\">Example/P0459/3</a></td><td class=\"Has-keyword smwtype&#95;keyw\"><a href=.*Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\" title=\"Special:Ask/cl:LTVCLTVCSGFzLTIwa2V5d29yZDo6QUJDREVGLTVELTVEL2Zvcm1hdD1saXN0\">ABCDEF</a></td>"
 				]
 			}
 		}
