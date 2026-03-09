@@ -281,9 +281,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			'wgNamespacesToBeSearchedDefault' => [
 				SMW_NS_PROPERTY => false
 			],
-			'wgContentNamespaces' => [
-				SMW_NS_PROPERTY => false
-			]
+			'wgContentNamespaces' => []
 		] + $this->default;
 
 		$instance = new NamespaceManager( $this->localLanguage );
@@ -297,8 +295,9 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			$vars['wgNamespacesToBeSearchedDefault'][SMW_NS_PROPERTY]
 		);
 
-		$this->assertFalse(
-			$vars['wgContentNamespaces'][SMW_NS_PROPERTY]
+		$this->assertContains(
+			SMW_NS_PROPERTY,
+			$vars['wgContentNamespaces']
 		);
 	}
 
