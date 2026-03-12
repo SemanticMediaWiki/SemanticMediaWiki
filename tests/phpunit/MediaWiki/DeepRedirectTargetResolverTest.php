@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\MockTitle;
@@ -63,7 +64,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( true );
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			 $instance->findRedirectTargetFor( $title )
 		);
 	}
