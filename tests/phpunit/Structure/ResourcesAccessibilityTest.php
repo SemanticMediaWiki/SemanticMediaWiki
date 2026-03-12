@@ -19,7 +19,7 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 	use PHPUnitCompat;
 
 	/**
-	 * @covers Resources
+	 * @covers \MediaWiki\ResourceLoader\Module
 	 * @dataProvider moduleDataProvider
 	 */
 	public function testModulesScriptsFilesAreAccessible( $modules ) {
@@ -48,7 +48,7 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @covers Resources
+	 * @covers \MediaWiki\ResourceLoader\Module
 	 * @dataProvider moduleDataProvider
 	 */
 	public function testModulesStylesFilesAreAccessible( $modules ) {
