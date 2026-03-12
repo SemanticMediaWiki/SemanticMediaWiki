@@ -6,7 +6,7 @@ use SMW\Localizer\LocalLanguage\LanguageContents;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
- * @covers \SMW\Localizer\LocalLanguage
+ * @covers \SMW\Localizer\LocalLanguage\LocalLanguage
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
