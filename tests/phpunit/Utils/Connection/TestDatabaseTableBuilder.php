@@ -3,11 +3,9 @@
 namespace SMW\Tests\Utils\Connection;
 
 use CloneDatabase;
-use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Store;
-use SMW\Tests\Utils\PageCreator;
 use Wikimedia\Rdbms\IDatabase;
 
 /**
@@ -196,7 +194,6 @@ class TestDatabaseTableBuilder {
 
 		$this->cloneDatabaseTables();
 		$this->store->setup( false );
-		$this->createDummyPage();
 
 		$this->dbSetup = true;
 	}
@@ -236,13 +233,6 @@ class TestDatabaseTableBuilder {
 			// @see https://github.com/wikimedia/mediawiki/commit/6badc7415684df54d6672098834359223b859507
 			CloneDatabase::changePrefix( self::$UTDB_PREFIX );
 		}
-	}
-
-	private function createDummyPage() {
-		$pageCreator = new PageCreator();
-		$pageCreator
-			->createPage( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'SMWUTDummyPage' ) )
-			->doEdit( 'SMW dummy page' );
 	}
 
 	private function destroyDatabaseTables() {
