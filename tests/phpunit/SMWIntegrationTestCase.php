@@ -149,14 +149,20 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		if ( $this->testEnvironment !== null ) {
-			$this->testEnvironment->tearDown();
+		try {
+			if ( $this->testEnvironment !== null ) {
+				$this->testEnvironment->tearDown();
+			}
+		} finally {
+			try {
+				// Ensure all transactions are closed before ending the test
+				if ( $this->testDatabaseTableBuilder !== null ) {
+					$this->getDBConnection()?->rollback();
+				}
+			} finally {
+				parent::tearDown();
+			}
 		}
-		// Ensure all transactions are closed before ending the test
-		$dbw = $this->getDBConnection();
-		$dbw->rollback();
-
-		parent::tearDown();
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
