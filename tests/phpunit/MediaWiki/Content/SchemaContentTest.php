@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Content;
 
+use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use SMW\MediaWiki\Content\SchemaContent;
 use SMW\Tests\PHPUnitCompat;
 
@@ -51,11 +54,11 @@ class SchemaContentTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPreSaveTransform() {
-		$title = $this->createMock( '\Title' );
+		$title = $this->createMock( Title::class );
 
-		$user = $this->createMock( '\User' );
+		$user = $this->createMock( User::class );
 
-		$parserOptions = $this->createMock( '\ParserOptions' );
+		$parserOptions = $this->createMock( ParserOptions::class );
 
 		$instance = new SchemaContent(
 			json_encode( [ 'Foo' => 42 ] )
