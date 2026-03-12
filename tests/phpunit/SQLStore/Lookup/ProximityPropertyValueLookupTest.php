@@ -10,7 +10,7 @@ use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
- * @covers \SMW\MediaWiki\Api\Browse\ProximityPropertyValueLookup
+ * @covers \SMW\SQLStore\Lookup\ProximityPropertyValueLookup
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
