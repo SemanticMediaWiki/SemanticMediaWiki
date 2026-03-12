@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki;
 use MediaWiki\Block\Block;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\EditPage\EditPage;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
@@ -1206,7 +1207,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$editPage = $this->getMockBuilder( '\EditPage' )
+		$editPage = $this->getMockBuilder( EditPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
