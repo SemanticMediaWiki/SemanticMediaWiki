@@ -35,7 +35,7 @@ class SearchEngineFactory {
 			$connection = $applicationFactory->getConnectionManager()->getConnection( DB_REPLICA );
 		}
 
-		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancer' );
+		$dbLoadBalancer = $applicationFactory->create( 'DBLoadBalancerFactory' );
 
 		$type = $settings->get( 'smwgFallbackSearchType' );
 		$defaultSearchEngine = $applicationFactory->create( 'DefaultSearchEngineTypeForDB', $connection );
