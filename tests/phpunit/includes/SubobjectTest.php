@@ -64,7 +64,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 		$instance->setEmptyContainerForId( 'Foo' );
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			$instance->getTitle()
 		);
 
