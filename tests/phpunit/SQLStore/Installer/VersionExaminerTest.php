@@ -8,7 +8,7 @@ use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\TableBuilder\VersionExaminer
+ * @covers \SMW\SQLStore\Installer\VersionExaminer
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
