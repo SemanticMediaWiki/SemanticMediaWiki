@@ -26,23 +26,12 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
 		$context = Context::newDummyContext();
 
-		if ( version_compare( MW_VERSION, '1.41.0', '>=' ) ) {
-			foreach ( array_keys( $modules ) as $name ) {
-				$resourceLoaderModule = $resourceLoader->getModule( $name );
-				$scripts = $resourceLoaderModule->getScript( $context );
+		foreach ( array_keys( $modules ) as $name ) {
+			$resourceLoaderModule = $resourceLoader->getModule( $name );
+			$scripts = $resourceLoaderModule->getScript( $context );
 
-				foreach ( $scripts['plainScripts'] as $key => $value ) {
-					$this->assertIsString( $value['content'] );
-				}
-			}
-		} else {
-			foreach ( array_keys( $modules ) as $name ) {
-				$resourceLoaderModule = $resourceLoader->getModule( $name );
-
-				$this->assertIsString(
-
-					$resourceLoaderModule->getScript( $context )
-				);
+			foreach ( $scripts['plainScripts'] as $key => $value ) {
+				$this->assertIsString( $value['content'] );
 			}
 		}
 	}
@@ -55,23 +44,12 @@ class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
 		$resourceLoader = MediaWikiServices::getInstance()->getResourceLoader();
 		$context = Context::newDummyContext();
 
-		if ( version_compare( MW_VERSION, '1.41.0', '>=' ) ) {
-			foreach ( array_keys( $modules ) as $name ) {
-				$resourceLoaderModule = $resourceLoader->getModule( $name );
-				$styles = $resourceLoaderModule->getStyles( $context );
+		foreach ( array_keys( $modules ) as $name ) {
+			$resourceLoaderModule = $resourceLoader->getModule( $name );
+			$styles = $resourceLoaderModule->getStyles( $context );
 
-				foreach ( $styles as $key => $value ) {
-					$this->assertIsString( $value );
-				}
-			}
-		} else {
-			foreach ( array_keys( $modules ) as $name ) {
-				$resourceLoaderModule = $resourceLoader->getModule( $name );
-				$styles = $resourceLoaderModule->getStyles( $context );
-
-				foreach ( $styles as $style ) {
-					$this->assertIsString( $style );
-				}
+			foreach ( $styles as $key => $value ) {
+				$this->assertIsString( $value );
 			}
 		}
 	}
