@@ -7,7 +7,7 @@ use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\SQLStore\TableBuilder\TableOptimizer
+ * @covers \SMW\SQLStore\Installer\TableOptimizer
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
