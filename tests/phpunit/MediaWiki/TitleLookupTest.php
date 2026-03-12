@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Tests\PHPUnitCompat;
 
@@ -238,7 +239,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->assertIsArray( $arrayOfTitles );
 
 		foreach ( $arrayOfTitles as $title ) {
-			$this->assertInstanceOf( 'Title', $title );
+			$this->assertInstanceOf( Title::class, $title );
 		}
 	}
 

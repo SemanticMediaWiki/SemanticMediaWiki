@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Search\SearchResult;
 use SMW\Tests\PHPUnitCompat;
 
@@ -30,7 +31,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SearchResult( $title );
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			$instance->getSectionTitle()
 		);
 	}

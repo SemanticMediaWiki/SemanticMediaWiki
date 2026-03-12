@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Tests\PHPUnitCompat;
 
@@ -29,7 +30,7 @@ class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new TitleFactory();
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			 $instance->newFromText( __METHOD__ )
 		);
 	}
@@ -39,7 +40,7 @@ class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
 		$title = $instance->newFromID( 9999999 );
 
 		$this->assertTrue(
-			$title === null || $title instanceof \Title
+			$title === null || $title instanceof Title
 		);
 	}
 
@@ -70,7 +71,7 @@ class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new TitleFactory();
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			$instance->makeTitleSafe( NS_MAIN, 'Foo' )
 		);
 	}

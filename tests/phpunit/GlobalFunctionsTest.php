@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Linker\Linker;
+
 /**
  * @group semantic-mediawiki
  *
@@ -21,7 +23,7 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 	public function testSmwfGetLinker() {
 		$instance = smwfGetLinker();
 
-		$this->assertInstanceOf( 'Linker', $instance );
+		$this->assertInstanceOf( Linker::class, $instance );
 	}
 
 	/**
