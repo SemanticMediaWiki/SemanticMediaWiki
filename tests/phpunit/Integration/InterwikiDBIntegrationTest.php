@@ -99,7 +99,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$expectedOutputContent = [
 			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Interwiki_link"/>',
-			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;iw-2Dtest-3AInterwiki_link"/>'
+			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Iw-2Dtest-3AInterwiki_link"/>'
 		];
 
 		$this->stringValidator->assertThatStringContains(
