@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $setupFile;
 
@@ -47,7 +44,7 @@ class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framew
 
 		$instance->setFeatureSet( SMW_ADM_ALERT_LAST_OPTIMIZATION_RUN );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-admin-alerts-last-optimization-run',
 			$instance->getHtml()
 		);

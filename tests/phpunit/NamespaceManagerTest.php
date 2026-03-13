@@ -15,8 +15,6 @@ use SMW\NamespaceManager;
  */
 class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $varsEnvironment;
 	private $localLanguage;
 	private $default;

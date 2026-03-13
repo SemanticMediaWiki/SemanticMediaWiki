@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class CustomFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $webRequest;
 
@@ -55,7 +52,7 @@ class CustomFormTest extends \PHPUnit\Framework\TestCase {
 		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
 		$actual = str_replace( '/>', '>', $actual );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			implode( '', $form ),
 			$actual
 		);

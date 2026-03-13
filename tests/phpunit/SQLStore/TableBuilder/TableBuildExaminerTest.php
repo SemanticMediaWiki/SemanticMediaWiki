@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $hashField;
@@ -139,7 +136,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->checkOnPostCreation( $tableBuilder );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'copying smw_sortkey to smw_sort',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

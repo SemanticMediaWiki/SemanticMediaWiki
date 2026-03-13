@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class OpenFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $webRequest;
 
@@ -51,7 +48,7 @@ class OpenFormTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->isActiveForm( true );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-input-group"><div class="smw-input-field" style="display:inline-block;">',
 			$instance->makeFields( [] )
 		);

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\QueryLinker;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers SMW\Query\QueryLinker
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -68,7 +65,7 @@ class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
 		$link = QueryLinker::get( $query );
 		$link->setCompactLink( false );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected,
 			$link->getLocalURL()
 		);

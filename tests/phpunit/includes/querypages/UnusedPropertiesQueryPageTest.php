@@ -17,8 +17,6 @@ use SMW\UnusedPropertiesQueryPage;
  */
 class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $store;
 	private $skin;
 	private $settings;
@@ -72,7 +70,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			$result
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Foo',
 			$result
 		);
@@ -101,7 +99,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			$property
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Foo',
 			$result
 		);
@@ -120,7 +118,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			$property
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Help:Special_properties',
 			$result
 		);

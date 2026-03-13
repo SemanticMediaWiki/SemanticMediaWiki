@@ -3,7 +3,6 @@
 namespace SMW\Tests\Integration\Query\ResultPrinters;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -18,8 +17,6 @@ use SMW\Tests\Utils\UtilityFactory;
  * @author mwjames
  */
 class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $subjects = [];
 	private $pageCreator;
@@ -73,7 +70,7 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 
 		$parserOutput = $this->pageCreator->getEditInfo()->getOutput();
 
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'[[Special:Ask/-5B-5BModification-20date::+-5D-5D-5B-5BCategory:LimitNullForEmptySearchlabel-5D-5D/searchlabel=/offset=0|]]',
 			$parserOutput->getText()
 		);
@@ -110,7 +107,7 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 
 		$parserOutput = $this->pageCreator->getEditInfo()->getOutput();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'do something',
 			$parserOutput->getText()
 		);

@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $outputFormatter;
@@ -146,7 +143,7 @@ class DeprecationNoticeTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->messageLocalizer
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-admin-deprecation">',
 			$instance->getHtml()
 		);

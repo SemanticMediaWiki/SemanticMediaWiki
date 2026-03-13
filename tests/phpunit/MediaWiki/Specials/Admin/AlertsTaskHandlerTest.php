@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\AlertsTaskHandler;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $outputFormatter;
@@ -65,7 +62,7 @@ class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<section id="tab-content-foo">bar</section>',
 			$instance->getHtml()
 		);

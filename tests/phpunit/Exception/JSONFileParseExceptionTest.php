@@ -3,7 +3,6 @@
 namespace SMW\Tests\Exception;
 
 use SMW\Exception\JSONFileParseException;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exception\JSONFileParseException
@@ -16,14 +15,12 @@ use SMW\Tests\PHPUnitCompat;
  */
 class JSONFileParseExceptionTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$instance = new JSONFileParseException(
 			\SMW_PHPUNIT_DIR . '/Fixtures/Exception/invalid.trailing.comma.json'
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"Expected: 'STRING' - It appears you have an extra trailing comma",
 			$instance->getMessage()
 		);
@@ -34,7 +31,7 @@ class JSONFileParseExceptionTest extends \PHPUnit\Framework\TestCase {
 			'Foo'
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"Foo is not readable!",
 			$instance->getMessage()
 		);

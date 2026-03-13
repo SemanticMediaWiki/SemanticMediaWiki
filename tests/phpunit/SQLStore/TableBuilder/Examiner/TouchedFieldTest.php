@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
@@ -65,7 +62,7 @@ class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'updating 42 rows with',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

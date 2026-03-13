@@ -11,7 +11,6 @@ use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterProcessor;
 use SMW\Subobject;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -24,8 +23,6 @@ use SMW\Tests\Utils\UtilityFactory;
  * @author mwjames
  */
 class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $semanticDataValidator;
 
@@ -80,7 +77,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected['identifier'],
 			$subobject->getSubobjectId()
 		);

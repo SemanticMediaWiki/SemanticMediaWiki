@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\Installer;
 
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\VersionExaminer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private SetupFile $setupFile;
@@ -155,7 +152,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 						$instance->meetsVersionMinRequirement( [ 'foo' => 2 ] )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"The `foo` database version of 1 doesn't meet the minimum requirement of 2",
 			$this->spyMessageReporter->getMessagesAsString()
 		);

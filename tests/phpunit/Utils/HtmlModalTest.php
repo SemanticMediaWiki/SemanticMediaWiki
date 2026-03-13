@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\HtmlModal;
 
 /**
@@ -15,8 +14,6 @@ use SMW\Utils\HtmlModal;
  * @author mwjames
  */
 class HtmlModalTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testGetModules() {
 		$this->assertIsArray(
@@ -31,21 +28,21 @@ class HtmlModalTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLink() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-modal-link',
 			HtmlModal::link( 'Foo' )
 		);
 	}
 
 	public function testElement() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-modal-link',
 			HtmlModal::element( 'Foo' )
 		);
 	}
 
 	public function testModal() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-modal',
 			HtmlModal::modal( 'Foo' )
 		);

@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\Field;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\Field
@@ -16,12 +15,10 @@ use SMW\Tests\PHPUnitCompat;
  */
 class FieldTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testTooltip() {
 		$instance = new Field();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Foo ... bar',
 			$instance->tooltip( [ 'tooltip' => 'Foo ... bar' ] )
 		);
@@ -30,12 +27,12 @@ class FieldTest extends \PHPUnit\Framework\TestCase {
 	public function testCreate() {
 		$instance = new Field();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-input-field',
 			$instance->create( 'input', [] )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-select',
 			$instance->create( 'select', [] )
 		);
@@ -54,17 +51,17 @@ class FieldTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->select( $attr );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<select name="Foobar">',
 			$html
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"<option value='A'>Foo</option>",
 			$html
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"<option value='B' disabled>42</option>",
 			$html
 		);
@@ -80,7 +77,7 @@ class FieldTest extends \PHPUnit\Framework\TestCase {
 		// MW 1.39-1.40 produces self-closing tag, which is invalid HTML
 		$actual = str_replace( '/>', '>', $actual );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected,
 			$actual
 		);

@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\Store' )
@@ -72,8 +69,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultLookup( $store );
 
-		$this->assertInternaltype(
-			'array',
+		$this->assertIsArray(
 			$instance->doQuery( $pageRequestOptions )
 		);
 	}
@@ -101,8 +97,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultLookup( $store );
 
-		$this->assertInternaltype(
-			'array',
+		$this->assertIsArray(
 			$instance->doQueryForNearbyResults( $pageRequestOptions, 1 )
 		);
 	}
@@ -130,8 +125,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new QueryResultLookup( $store );
 
-		$this->assertInternaltype(
-			'array',
+		$this->assertIsArray(
 			$instance->doQueryLinksReferences( $pageRequestOptions, 1 )
 		);
 	}

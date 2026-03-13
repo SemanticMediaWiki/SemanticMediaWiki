@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $stringValidator;
 	private $webRequest;
@@ -90,7 +87,7 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 			'<div id="smw-form-foo" class="smw-fields"></div></div>'
 		];
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			implode( '', $expected ),
 			$instance->buildForm( $data )
 		);

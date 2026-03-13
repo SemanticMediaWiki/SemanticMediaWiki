@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $apiFactory;
@@ -225,11 +222,13 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 	protected function assertInternalArrayStructure( $setup, $result, $field, $internalType, $definition ) {
 		if ( isset( $setup[$field] ) && $setup[$field] ) {
+			$value = is_callable( $definition ) ? $definition( $result ) : $definition;
 
-			$this->assertInternalType(
-				$internalType,
-				is_callable( $definition ) ? $definition( $result ) : $definition
-			);
+			match ( $internalType ) {
+				'array'  => $this->assertIsArray( $value ),
+				'string' => $this->assertIsString( $value ),
+				default  => $this->fail( "Unhandled type: $internalType" ),
+			};
 		}
 	}
 
