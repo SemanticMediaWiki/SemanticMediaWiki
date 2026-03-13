@@ -60,7 +60,7 @@ class Csv {
 		}
 
 		if ( $header !== [] ) {
-			fputcsv( $handle, $header, $sep );
+			fputcsv( $handle, $header, $sep, '\\' );
 		}
 
 		foreach ( $rows as $row ) {
