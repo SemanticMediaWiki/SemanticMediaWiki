@@ -30,25 +30,13 @@ use Wikimedia\ObjectCache\HashBagOStuff;
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
-	/**
-	 * @var TestEnvironment
-	 */
-	protected $testEnvironment;
+	protected ?TestEnvironment $testEnvironment = null;
 
-	/**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
+	protected ?TestDatabaseTableBuilder $testDatabaseTableBuilder = null;
 
-	/**
-	 * @var bool
-	 */
-	protected $destroyDatabaseTablesBeforeRun = false;
+	protected bool $destroyDatabaseTablesBeforeRun = false;
 
-	/**
-	 * @var bool
-	 */
-	protected $isUsableUnitTestDatabase = true;
+	protected bool $isUsableUnitTestDatabase = true;
 
 	/**
 	 * Setup configuration required for SMW integration tests.
@@ -177,7 +165,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return StoreFactory::getStore();
 	}
 
-	protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
+	protected function skipTestForMediaWikiVersionLowerThan( string $version, string $message = '' ): void {
 		if ( $message === '' ) {
 			$message = "This test is skipped for MediaWiki version " . MW_VERSION;
 		}
@@ -187,7 +175,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		}
 	}
 
-	protected function skipTestForDatabase( $excludedDatabase, $message = '' ) {
+	protected function skipTestForDatabase( string|array $excludedDatabase, string $message = '' ): void {
 		if ( is_string( $excludedDatabase ) ) {
 			$excludedDatabase = [ $excludedDatabase ];
 		}
@@ -209,7 +197,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return $this->testDatabaseTableBuilder->getConnectionProvider();
 	}
 
-	private function destroyDatabaseTables( $destroyDatabaseTables ) {
+	private function destroyDatabaseTables( bool $destroyDatabaseTables ): void {
 		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
 			try {
 				$this->testDatabaseTableBuilder->doDestroy();
