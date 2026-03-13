@@ -1,9 +1,0 @@
-connect http://localhost:8080/rdf4j-server .
-create memory .
-test-smw
-test store for Semantic MediaWiki
-10000
-true
-120
-
-quit .
