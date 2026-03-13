@@ -15,8 +15,6 @@ use SMW\Enum;
  */
 class EnumTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * @dataProvider constProvider
 	 */

@@ -26,7 +26,7 @@ use WikiPage;
 class SchemaContentHandler extends JsonContentHandler {
 
 	public function __construct() {
-		parent::__construct( CONTENT_MODEL_SMW_SCHEMA, [ CONTENT_FORMAT_JSON ] );
+		parent::__construct( CONTENT_MODEL_SMW_SCHEMA );
 	}
 
 	/**
@@ -224,7 +224,7 @@ class SchemaContentHandler extends JsonContentHandler {
 				$e->getType()
 			);
 
-			$output->setText(
+			$output->setContentHolderText(
 				$contentFormatter->getText( $content->getText() )
 			);
 
@@ -275,7 +275,7 @@ class SchemaContentHandler extends JsonContentHandler {
 			$schemaFactory->getType( $schema->get( 'type' ) )
 		);
 
-		$output->setText(
+		$output->setContentHolderText(
 			$contentFormatter->getText( $content->getText(), $schema, $errors )
 		);
 

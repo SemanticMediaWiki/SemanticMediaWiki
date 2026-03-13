@@ -16,8 +16,6 @@ use SMW\Site;
  */
 class SiteTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	protected function setUp(): void {
 		parent::setUp();
 

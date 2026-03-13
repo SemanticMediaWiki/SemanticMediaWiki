@@ -4,7 +4,6 @@ namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\DataItemFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\MustExistsConstraint
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

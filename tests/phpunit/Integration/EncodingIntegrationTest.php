@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SidebarBeforeOutput
@@ -24,8 +23,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider sidebarBeforeOutputDataProvider
@@ -49,7 +46,7 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->process( $setup['skin'], $sidebar );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected,
 			$sidebar['TOOLBOX']['smwbrowselink']['href']
 		);

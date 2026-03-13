@@ -14,7 +14,7 @@ use SMWDataItem;
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-abstract class DataItemTest extends SMWIntegrationTestCase {
+abstract class AbstractDataItem extends SMWIntegrationTestCase {
 
 	/**
 	 * Returns the name of the \SMW\DataItem deriving class this test tests.

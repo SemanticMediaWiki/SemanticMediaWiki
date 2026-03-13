@@ -15,10 +15,10 @@ use SMW\DIWikiPage;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIWikiPageTest extends DataItemTest {
+class DIWikiPageTest extends AbstractDataItem {
 
 	/**
-	 * @see DataItemTest::getClass
+	 * @see AbstractDataItem::getClass
 	 *
 	 * @since 1.9
 	 *
@@ -29,7 +29,7 @@ class DIWikiPageTest extends DataItemTest {
 	}
 
 	/**
-	 * @see DataItemTest::constructorProvider
+	 * @see AbstractDataItem::constructorProvider
 	 *
 	 * @since 1.9
 	 *

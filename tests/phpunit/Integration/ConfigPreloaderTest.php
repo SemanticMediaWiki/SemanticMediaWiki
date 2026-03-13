@@ -3,7 +3,6 @@
 namespace SMW\Tests\Integration;
 
 use SMW\ConfigPreloader;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Utils\FileFetcher;
  * @author mwjames
  */
 class ConfigPreloaderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $gl = [];
 

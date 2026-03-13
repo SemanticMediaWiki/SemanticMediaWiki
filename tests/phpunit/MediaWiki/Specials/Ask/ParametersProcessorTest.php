@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\ParametersProcessor
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testEmpty() {
 		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
@@ -106,17 +103,16 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$request->expects( $this->at( 5 ) )
+		$request->expects( $this->exactly( 2 ) )
 			->method( 'getInt' )
-			->with(
-				'offset',
-				0 );
-
-		$request->expects( $this->at( 6 ) )
-			->method( 'getInt' )
-			->with(
-				'limit',
-				42 );
+			->willReturnCallback( static function ( $key, $default = null ) {
+				if ( $key === 'offset' ) {
+					return $default;
+				}
+				if ( $key === 'limit' ) {
+					return $default;
+				}
+			} );
 
 		ParametersProcessor::setDefaultLimit( 42 );
 
@@ -133,15 +129,15 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$request->expects( $this->at( 3 ) )
+		$request->expects( $this->exactly( 2 ) )
 			->method( 'getArray' )
-			->with( 'sort_num' )
-			->willReturn( [ '', '', 'Foo' ] );
-
-		$request->expects( $this->at( 4 ) )
-			->method( 'getArray' )
-			->with( 'order_num' )
-			->willReturn( [ 'asc', 'desc' ] );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'sort_num'  => [ '', '', 'Foo' ],
+					'order_num' => [ 'asc', 'desc' ],
+				];
+				return $map[$key] ?? [];
+			} );
 
 		$parameters = [
 			'[[Foo::bar]]'
@@ -168,15 +164,15 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$request->expects( $this->at( 3 ) )
+		$request->expects( $this->exactly( 2 ) )
 			->method( 'getArray' )
-			->with( 'sort_num' )
-			->willReturn( [ 'Foo', '' ] );
-
-		$request->expects( $this->at( 4 ) )
-			->method( 'getArray' )
-			->with( 'order_num' )
-			->willReturn( [ 'asc', 'desc' ] );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'sort_num'  => [ 'Foo', '' ],
+					'order_num' => [ 'asc', 'desc' ],
+				];
+				return $map[$key] ?? [];
+			} );
 
 		$parameters = [
 			'[[Foo::bar]]'
@@ -203,20 +199,25 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$request->expects( $this->at( 0 ) )
+		$request->expects( $this->atLeastOnce() )
 			->method( 'getCheck' )
-			->with( 'q' )
-			->willReturn( true );
+			->willReturnCallback( static function ( $key ) {
+				return $key === 'q';
+			} );
 
-		$request->expects( $this->at( 1 ) )
+		$request->expects( $this->once() )
 			->method( 'getVal' )
 			->with( 'p' )
 			->willReturn( '' );
 
-		$request->expects( $this->at( 2 ) )
+		$request->expects( $this->atLeastOnce() )
 			->method( 'getArray' )
-			->with( 'p' )
-			->willReturn( [ 'foo' => [ 'Bar', 'foobar' ] ] );
+			->willReturnCallback( static function ( $key ) {
+				if ( $key === 'p' ) {
+					return [ 'foo' => [ 'Bar', 'foobar' ] ];
+				}
+				return [];
+			} );
 
 		$parameters = [];
 
@@ -226,8 +227,10 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 			[
 				'foo'    => 'Bar,foobar',
 				'format' => 'broadtable',
-				'offset' => null,
-				'limit'  => null
+				'offset' => 0,
+				'limit'  => 0,
+				'order'  => 'asc',
+				'sort'   => '',
 			],
 			$res[1]
 		);

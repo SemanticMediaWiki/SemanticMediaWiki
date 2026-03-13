@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\MessageBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\MessageBuilder
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
@@ -84,15 +81,15 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 		preg_match_all( '!<a.*?</a>!', $html, $m, PREG_PATTERN_ORDER );
 		$links = $m[0];
 
-		$this->assertContains( 'class="mw-nextlink"', $links[0] );
-		$this->assertContains( '>next 20<', $links[0] );
+		$this->assertStringContainsString( 'class="mw-nextlink"', $links[0] );
+		$this->assertStringContainsString( '>next 20<', $links[0] );
 
 		$nums = [ 50, 100, 250, 500 ];
 		for ( $i = 1; $i < count( $links ); $i++ ) {
 			$a = $links[$i];
-			$this->assertContains( 'class="mw-numlink"', $a );
-			$this->assertContains( 'title="Show ' . $nums[$i - 1] . ' results per page"', $a );
-			$this->assertContains( ">{$nums[$i - 1]}<", $a );
+			$this->assertStringContainsString( 'class="mw-numlink"', $a );
+			$this->assertStringContainsString( 'title="Show ' . $nums[$i - 1] . ' results per page"', $a );
+			$this->assertStringContainsString( ">{$nums[$i - 1]}<", $a );
 		}
 	}
 

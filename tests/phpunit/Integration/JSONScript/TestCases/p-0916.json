@@ -124,7 +124,7 @@
 				"to-contain": [
 					"<p><a rel=\"nofollow\" class=\"external text\" href=\"https://en.wikipedia.org/wiki/Franz_Schubert\">https://en.wikipedia.org/wiki/Franz Schubert</a>",
 					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;.*WDID&quot; title=&quot;.*WDID&quot;&gt;WDID&lt;/a&gt;: &lt;a",
-					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;_blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;&#95;blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
 				]
 			}
 		},
@@ -137,7 +137,7 @@
 					"<p><span class=\"plainlinks smw-eid\"><a rel=\"nofollow\" class=\"external text\" href=\"https://www.wikidata.org/entity/Q7312\">Q7312</a></span>",
 					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a",
 					"href=&quot;.*URL&quot; title=&quot;.*URL&quot;&gt;URL&lt;/a&gt;: &lt;a class=&quot;external&quot; rel=&quot;nofollow&quot;",
-					"href=&quot;https&#58;//en.wikipedia.org/wiki/Franz_Schubert&quot;&gt;https&#58;//en.wikipedia.org/wiki/Franz Schubert&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+					"href=&quot;https&#58;//en.wikipedia.org/wiki/Franz&#95;Schubert&quot;&gt;https&#58;//en.wikipedia.org/wiki/Franz Schubert&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
 				]
 			}
 		},
@@ -150,9 +150,9 @@
 					"<p><a href=\".*Franz_Schubert\" title=\"Franz Schubert\">Franz Schubert</a>",
 					"data-content=\"&lt;ul&gt;&lt;li&gt;&lt;a",
 					"href=&quot;.*WDID&quot; title=&quot;.*WDID&quot;&gt;WDID&lt;/a&gt;: &lt;a",
-					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;_blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a",
+					"href=&quot;https&#58;//www.wikidata.org/entity/Q7312&quot; target=&quot;&#95;blank&quot;&gt;Q7312&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a",
 					"href=&quot;.*URL&quot; title=&quot;.*URL&quot;&gt;URL&lt;/a&gt;: &lt;a class=&quot;external&quot; rel=&quot;nofollow&quot;",
-					"href=&quot;https&#58;//en.wikipedia.org/wiki/Franz_Schubert&quot;&gt;https&#58;//en.wikipedia.org/wiki/Franz Schubert&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
+					"href=&quot;https&#58;//en.wikipedia.org/wiki/Franz&#95;Schubert&quot;&gt;https&#58;//en.wikipedia.org/wiki/Franz Schubert&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;\""
 				]
 			}
 		}

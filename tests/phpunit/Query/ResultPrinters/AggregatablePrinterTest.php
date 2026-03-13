@@ -5,7 +5,6 @@ namespace SMW\Tests\Query\ResultPrinters;
 use ReflectionClass;
 use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWDataItem;
 use SMWDINumber;
@@ -20,8 +19,6 @@ use SMWDINumber;
  * @author mwjames
  */
 class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $queryResult;
 	private $resultPrinterReflector;
@@ -95,7 +92,6 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( $this->aggregatablePrinter );
 		$method = $reflector->getMethod( 'addNumbersForDataItem' );
-		$method->setAccessible( true );
 
 		for ( $i = 1; $i <= 10; $i++ ) {
 
@@ -137,7 +133,6 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( $this->aggregatablePrinter );
 		$method = $reflector->getMethod( 'getNumericResults' );
-		$method->setAccessible( true );
 
 		$result = $method->invoke(
 			$this->aggregatablePrinter,

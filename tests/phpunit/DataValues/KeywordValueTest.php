@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\KeywordValue;
 use SMW\Property\SpecificationLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,8 +18,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class KeywordValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -91,7 +88,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 			$instance->getShortWikiText()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-datavalue-keyword-maximum-length',
 			implode( ', ', $instance->getErrors() )
 		);
@@ -156,7 +153,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 			$instance->getShortWikiText()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[[:Special:SearchByProperty/cl:OkJhci9mb28|foo]]',
 			$instance->getShortWikiText( 'linker' )
 		);
@@ -200,7 +197,7 @@ class KeywordValueTest extends \PHPUnit\Framework\TestCase {
 			$instance->getShortWikiText()
 		);
 
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'[[:Special:SearchByProperty/cl:OkJhci9mb28|foo]]',
 			$instance->getShortWikiText( 'linker' )
 		);

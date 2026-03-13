@@ -3,7 +3,6 @@
 namespace SMW\Tests\Services;
 
 use SMW\Services\DataValueServiceFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Services\DataValueServiceFactory
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $containerBuilder;
 

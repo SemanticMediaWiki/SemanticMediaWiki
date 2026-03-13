@@ -2,10 +2,10 @@
 
 namespace SMW\Tests\Localizer;
 
-use DateTime;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\ExtendedDateTime;
 
 /**
  * @covers \SMW\Localizer\Localizer
@@ -32,7 +32,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+		$this->namespaceInfo = $this->getMockBuilder( '\MediaWiki\Title\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -355,7 +355,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetLocalTime() {
-		$dataTime = new DateTime();
+		$dataTime = new ExtendedDateTime();
 
 		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
 			->disableOriginalConstructor()
@@ -364,7 +364,7 @@ class LocalizerTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->newLocalizer();
 
 		$this->assertInstanceOf(
-			'DateTime',
+			'SMW\MediaWiki\ExtendedDateTime',
 			$instance->getLocalTime( $dataTime, $user )
 		);
 	}

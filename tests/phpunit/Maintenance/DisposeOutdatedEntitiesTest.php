@@ -4,7 +4,6 @@ namespace SMW\Tests\Maintenance;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\disposeOutdatedEntities;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DisposeOutdatedEntitiesTest extends TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $spyMessageReporter;
@@ -51,7 +48,7 @@ class DisposeOutdatedEntitiesTest extends TestCase {
 
 		$instance->execute();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Outdated entitie(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

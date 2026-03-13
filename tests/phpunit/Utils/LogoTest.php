@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\Logo;
 
 /**
@@ -16,10 +15,8 @@ use SMW\Utils\Logo;
  */
 class LogoTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testGet_Small() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'assets/logo_small.svg',
 			Logo::get( 'small' )
 		);
@@ -30,7 +27,7 @@ class LogoTest extends \PHPUnit\Framework\TestCase {
 			? 'logo_footer.svg'
 			: 'logo_footer_legacy.svg';
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"assets/$fileName",
 			Logo::get( 'footer' )
 		);

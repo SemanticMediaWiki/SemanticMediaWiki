@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm
@@ -16,14 +15,12 @@ use SMW\Tests\PHPUnitCompat;
  */
 class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $namespaceInfo;
 	private $localizer;
 	private $messageLocalizer;
 
 	protected function setUp(): void {
-		$this->namespaceInfo = $this->getMockBuilder( '\SMW\MediaWiki\NamespaceInfo' )
+		$this->namespaceInfo = $this->getMockBuilder( '\MediaWiki\Title\NamespaceInfo' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,7 +52,7 @@ class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setSearchableNamespaces( [ 0 => 'Foo ' ] );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"<fieldset id='mw-searchoptions'>",
 			$instance->makeFields()
 		);

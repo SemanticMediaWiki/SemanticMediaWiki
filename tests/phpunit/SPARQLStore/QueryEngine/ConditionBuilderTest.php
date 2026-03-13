@@ -14,7 +14,6 @@ use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
@@ -32,8 +31,6 @@ use SMWExporter;
  * @author mwjames
  */
 class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $stringBuilder;
 	private $descriptionInterpreterFactory;
@@ -781,15 +778,17 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
 
-		$instance->expects( $this->at( 0 ) )
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_NOCASE )
-			->willReturn( false );
-
-		$instance->expects( $this->at( 1 ) )
-			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_REDI )
-			->willReturn( true );
+			->willReturnCallback( static function ( $flag ) {
+				if ( $flag === SMW_SPARQL_QF_NOCASE ) {
+					return false;
+				}
+				if ( $flag === SMW_SPARQL_QF_REDI ) {
+					return true;
+				}
+				return false;
+			} );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -836,15 +835,17 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
 
-		$instance->expects( $this->at( 0 ) )
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_NOCASE )
-			->willReturn( false );
-
-		$instance->expects( $this->at( 1 ) )
-			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_REDI )
-			->willReturn( true );
+			->willReturnCallback( static function ( $flag ) {
+				if ( $flag === SMW_SPARQL_QF_NOCASE ) {
+					return false;
+				}
+				if ( $flag === SMW_SPARQL_QF_REDI ) {
+					return true;
+				}
+				return false;
+			} );
 
 		$condition = $instance->getConditionFrom( $description );
 

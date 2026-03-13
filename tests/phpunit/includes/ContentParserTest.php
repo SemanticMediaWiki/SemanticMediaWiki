@@ -17,8 +17,6 @@ use SMW\ContentParser;
  */
 class ContentParserTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $revisionGuard;
 	private $title;
 	private $parser;

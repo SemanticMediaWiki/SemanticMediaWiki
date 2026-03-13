@@ -15,8 +15,6 @@ use SMW\Options;
  */
 class OptionsTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			'\SMW\Options',

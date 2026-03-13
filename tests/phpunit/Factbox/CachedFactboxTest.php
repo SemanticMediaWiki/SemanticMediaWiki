@@ -12,7 +12,6 @@ use SMW\EntityCache;
 use SMW\Factbox\CachedFactbox;
 use SMW\Factbox\FactboxText;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -27,8 +26,6 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @author mwjames
  */
 class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $memoryCache;
@@ -145,7 +142,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 	public function assertPreProcess( $expected, $result, $outputPage, $instance ) {
 		if ( $expected['text'] ) {
 
-			$this->assertContains(
+			$this->assertStringContainsString(
 				$expected['text'],
 				$result,
 				'Asserts that content was altered as expected'

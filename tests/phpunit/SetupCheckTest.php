@@ -16,8 +16,6 @@ use SMW\SetupCheck;
  */
 class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $setupFile;
 
 	protected function setUp(): void {
@@ -153,7 +151,7 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 			$errorType
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<!DOCTYPE html>',
 			$instance->getError( false )
 		);

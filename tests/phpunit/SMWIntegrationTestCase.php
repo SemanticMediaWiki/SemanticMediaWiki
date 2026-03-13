@@ -149,14 +149,28 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		if ( $this->testEnvironment !== null ) {
-			$this->testEnvironment->tearDown();
-		}
-		// Ensure all transactions are closed before ending the test
-		$dbw = $this->getDBConnection();
-		$dbw->rollback();
+		try {
+			if ( $this->testEnvironment !== null ) {
+				$this->testEnvironment->tearDown();
+			}
+		} finally {
+			try {
+				// Roll back all open database transactions to prevent lock
+				// contention when MediaWikiIntegrationTestCase::tearDown()
+				// truncates tables. Without this, page deletions from
+				// flushPages() can hold row locks that block TRUNCATE,
+				// causing "Lock wait timeout" errors.
+				if ( $this->testDatabaseTableBuilder !== null ) {
+					$this->getDBConnection()?->rollback();
+				}
 
-		parent::tearDown();
+				MediaWikiServices::getInstance()
+					->getDBLoadBalancerFactory()
+					->rollbackPrimaryChanges( __METHOD__ );
+			} finally {
+				parent::tearDown();
+			}
+		}
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {

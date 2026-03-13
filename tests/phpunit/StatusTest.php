@@ -15,8 +15,6 @@ use SMW\Status;
  */
 class StatusTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			Status::class,

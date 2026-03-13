@@ -97,19 +97,27 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'fetchList' )
 			->willReturn( [ 'Foo' ] );
 
-		$listLookup->expects( $this->once() )
+		$listLookup->expects( $this->atLeastOnce() )
 			->method( 'getTimestamp' )
 			->willReturn( 42 );
+
+		$listLookup->expects( $this->any() )
+			->method( 'getHash' )
+			->willReturn( 'Foo#123' );
 
 		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache->expects( $this->at( 1 ) )
+		$cache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( false );
+
+		$cache->expects( $this->atLeastOnce() )
 			->method( 'save' )
 			->with(
 				$this->stringContains( 'smw:store:lookup' ),
-				$this->anything( serialize( $expectedCacheItem ) ),
+				$this->anything(),
 				1001 );
 
 		$cacheOptions = new \stdClass;

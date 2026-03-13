@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\SemanticData;
-use SMW\Tests\PHPUnitCompat;
 use SMWDataItem as DataItem;
 
 /**
@@ -20,8 +19,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class SemanticDataValidator extends \PHPUnit\Framework\Assert {
-
-	use PHPUnitCompat;
 
 	/**
 	 * @var bool
@@ -327,20 +324,23 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 	private function assertContainsPropertyKeys( $keys, DIProperty $property, $message = null ) {
 		$keys = str_replace( " ", "_", $keys );
 		$message = ( $message === null ? 'Failed asserting' : "Failed asserting \"$message\"" );
+		$assertMessage = "{$message} property key: '{$property->getLabel()}' in ({$this->formatAsString( $keys )})";
 
-		$this->assertContains(
-			$property->getKey(),
-			$keys,
-			"{$message} property key: '{$property->getLabel()}' in ({$this->formatAsString( $keys )})"
-		);
+		if ( is_array( $keys ) ) {
+			$keys = implode( ' ', $keys );
+		}
+
+		$this->assertStringContainsString( $property->getKey(), (string)$keys, $assertMessage );
 	}
 
 	private function assertContainsPropertyLabels( $labels, DIProperty $property ) {
-		$this->assertContains(
-			$property->getLabel(),
-			$labels,
-			__METHOD__ . " asserts property label for '{$property->getKey()}' with ({$this->formatAsString( $labels )})"
-		);
+		$assertMessage = __METHOD__ . " asserts property label for '{$property->getKey()}' with ({$this->formatAsString( $labels )})";
+
+		if ( is_array( $labels ) ) {
+			$labels = implode( ' ', $labels );
+		}
+
+		$this->assertStringContainsString( $property->getLabel(), (string)$labels, $assertMessage );
 	}
 
 	private function assertContainsProperty( array $properties, DIProperty $property ) {
@@ -382,15 +382,17 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 		$expected['@valueHint'][] = $value;
 
 		if ( $this->strictModeForValueMatch ) {
-
-			$this->assertContains(
-				$value,
-				$expected['propertyValues'],
-				__METHOD__ .
+			$assertMessage = __METHOD__ .
 				" for '{$dataValue->getProperty()->getKey()}'" .
 				" as '{$dataValue->getTypeID()}'" .
-				" with ({$this->formatAsString( $expected['propertyValues'] )})"
-			);
+				" with ({$this->formatAsString( $expected['propertyValues'] )})";
+
+			$propertyValues = $expected['propertyValues'];
+			if ( is_array( $propertyValues ) ) {
+				$propertyValues = implode( ' ', $propertyValues );
+			}
+
+			$this->assertStringContainsString( $value, (string)$propertyValues, $assertMessage );
 
 			return true;
 		}

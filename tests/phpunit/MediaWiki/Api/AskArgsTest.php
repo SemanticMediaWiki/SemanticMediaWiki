@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use SMW\MediaWiki\Api\AskArgs;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\MwApiFactory;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\Utils\MwApiFactory;
  * @author mwjames
  */
 class AskArgsTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $apiFactory;
 	private $applicationFactory;

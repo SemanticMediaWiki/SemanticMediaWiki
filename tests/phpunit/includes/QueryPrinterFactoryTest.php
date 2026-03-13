@@ -18,8 +18,6 @@ use SMW\TableResultPrinter;
  */
 class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testSingleton() {
 		$instance = QueryPrinterFactory::singleton();
 

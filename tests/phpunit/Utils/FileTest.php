@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\File;
 
 /**
@@ -15,8 +14,6 @@ use SMW\Utils\File;
  * @author mwjames
  */
 class FileTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$instance = new File();

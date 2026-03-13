@@ -4,11 +4,11 @@ namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Specials\SpecialSearch;
-use MediaWiki\Xml\Xml;
+use MediaWiki\Title\NamespaceInfo;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
-use SMW\MediaWiki\NamespaceInfo;
+use SMW\MediaWiki\Renderer\HtmlUtil;
 
 /**
  * @note Copied from SearchFormWidget::powerSearchBox, #3126 contains the reason
@@ -156,7 +156,7 @@ class NamespaceForm {
 			$rows[$subject] .= Html::rawElement(
 				'td',
 				[],
-				Xml::checkLabel( $name, "ns{$namespace}", "mw-search-ns{$namespace}", $isChecked )
+				HtmlUtil::checkLabel( $name, "ns{$namespace}", "mw-search-ns{$namespace}", $isChecked )
 			);
 		}
 
@@ -181,7 +181,7 @@ class NamespaceForm {
 		$remember = '';
 
 		if ( $this->token ) {
-			$remember = $divider . Xml::checkLabel(
+			$remember = $divider . HtmlUtil::checkLabel(
 				$this->msg( 'powersearch-remember', Message::TEXT, Message::USER_LANGUAGE ),
 				'nsRemember',
 				'mw-search-powersearch-remember',

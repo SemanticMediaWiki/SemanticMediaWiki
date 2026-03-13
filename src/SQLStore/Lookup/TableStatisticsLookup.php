@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
@@ -126,7 +127,7 @@ class TableStatisticsLookup {
 			);
 		}
 
-		$snapshot_date = new \DateTime( 'now' );
+		$snapshot_date = new ExtendedDateTime( 'now' );
 
 		$stats = [
 			SQLStore::ID_TABLE => [

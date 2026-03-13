@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\TemplateEngine;
 
 /**
@@ -15,8 +14,6 @@ use SMW\Utils\TemplateEngine;
  * @author mwjames
  */
 class TemplateEngineTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testLoad_ThrowsException() {
 		$instance = new TemplateEngine();

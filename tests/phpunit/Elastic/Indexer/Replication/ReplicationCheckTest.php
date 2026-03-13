@@ -5,7 +5,6 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\Tests\PHPUnitCompat;
 use SMWDITime as DITime;
 
 /**
@@ -18,8 +17,6 @@ use SMWDITime as DITime;
  * @author mwjames
  */
 class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $documentReplicationExaminer;
@@ -165,7 +162,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( DIWikiPage::newFromText( 'Foo' ), [] );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-missing-id"',
 			$html
 		);
@@ -204,7 +201,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( $subject );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-no-connection"',
 			$html
 		);
@@ -244,7 +241,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( $subject );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-maintenance-mode"',
 			$html
 		);
@@ -298,7 +295,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( $subject );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-other-exception"',
 			$html
 		);
@@ -353,12 +350,12 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( $subject );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-divergent-date"',
 			$html
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'2010-04-29 02:41:43',
 			$html
 		);
@@ -413,12 +410,12 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( $subject, [] );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-divergent-revision"',
 			$html
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'99999',
 			$html
 		);
@@ -471,7 +468,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->checkReplication( $subject, [] );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-file-ingest-missing-file-attachment"',
 			$html
 		);

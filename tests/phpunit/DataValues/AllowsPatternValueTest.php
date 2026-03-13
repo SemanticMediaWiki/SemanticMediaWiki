@@ -5,7 +5,6 @@ namespace SMW\Tests\DataValues;
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,8 +17,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -171,7 +168,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setUserValue( 'abc/e' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Smw_allows_pattern',
 			$instance->getShortWikiText()
 		);
@@ -207,7 +204,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setUserValue( 'abc/e' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Smw_allows_pattern',
 			$instance->getShortHtmlText()
 		);

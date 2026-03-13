@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\Search\SearchResult;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResult
@@ -15,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SearchResultTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testGetSectionTitle_WithFragment() {
 		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
@@ -30,7 +28,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SearchResult( $title );
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			$instance->getSectionTitle()
 		);
 	}

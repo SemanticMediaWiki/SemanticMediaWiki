@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query\DescriptionBuilders;
 
 use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

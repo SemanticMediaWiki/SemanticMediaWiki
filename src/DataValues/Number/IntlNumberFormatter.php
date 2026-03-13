@@ -147,6 +147,10 @@ class IntlNumberFormatter {
 	 * @return string
 	 */
 	public function format( $value, $precision = false, $format = '' ) {
+		if ( !is_numeric( $value ) ) {
+			$value = 0;
+		}
+
 		if ( $format === self::VALUE_FORMAT ) {
 			return $this->getValueFormattedNumberWithPrecision( $value, $precision );
 		}

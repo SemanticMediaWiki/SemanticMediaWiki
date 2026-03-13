@@ -8,7 +8,6 @@ use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,8 +19,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -96,7 +93,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 
 		$instance->parse( $outputText );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected['resultText'],
 			$outputText
 		);

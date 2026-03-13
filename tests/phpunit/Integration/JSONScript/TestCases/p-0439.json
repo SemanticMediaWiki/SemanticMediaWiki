@@ -74,7 +74,7 @@
 			"subject": "Example/P0439/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">ö/ä/ü</td>"
+					"<td class=\"Has-text smwtype&#95;txt\">ö/ä/ü</td>"
 				]
 			}
 		},

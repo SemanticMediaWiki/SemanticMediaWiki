@@ -11,7 +11,6 @@ use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\SemanticData;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -24,8 +23,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class FactboxTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $stringValidator;
 	private $testEnvironment;
@@ -78,7 +75,6 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$buildHTML  = $reflector->getMethod( 'buildHTML' );
-		$buildHTML->setAccessible( true );
 
 		$this->assertIsString(
 			$buildHTML->invoke( $instance, $parserData->getSemanticData() )
@@ -86,17 +82,17 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTabs() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'tab-facts-list',
 			Factbox::tabs( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'tab-facts-attachment',
 			Factbox::tabs( 'Foo', 'Bar' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'tab-facts-derived',
 			Factbox::tabs( 'Foo', 'Bar', 'Foobar' )
 		);
@@ -119,7 +115,6 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
-		$fetchContent->setAccessible( true );
 
 		$this->assertIsString(
 			$fetchContent->invoke( $instance, SMW_FACTBOX_NONEMPTY )
@@ -198,7 +193,6 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
-		$fetchContent->setAccessible( true );
 
 		$this->assertIsString(
 			$fetchContent->invoke( $factbox )

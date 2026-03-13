@@ -640,7 +640,7 @@ class LegacyParser implements Parser {
 						$value
 					);
 
-					$this->queryToken->addFromDesciption( $outerDesription );
+					$this->queryToken->addFromDescription( $outerDesription );
 					$innerdesc = $this->descriptionProcessor->asOr(
 						$innerdesc,
 						$outerDesription
@@ -717,7 +717,7 @@ class LegacyParser implements Parser {
 					$chunk
 				);
 
-				$this->queryToken->addFromDesciption( $outerDesription );
+				$this->queryToken->addFromDescription( $outerDesription );
 
 				$description = $this->descriptionProcessor->asOr(
 					$description,

@@ -2,7 +2,9 @@
 
 namespace SMW\Maintenance;
 
+use DateTimeZone;
 use Exception;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Options;
 use SMW\Utils\File;
 
@@ -62,7 +64,7 @@ class ExceptionFileLogger {
 	 * @param Options $options
 	 */
 	public function setOptions( Options $options ) {
-		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$this->exceptionFile = __DIR__ . "/../../../";
 
 		if ( $options->has( 'exception-log' ) ) {

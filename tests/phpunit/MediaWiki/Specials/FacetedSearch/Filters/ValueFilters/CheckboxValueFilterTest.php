@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter
@@ -16,9 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  */
 class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
-	private $templateEngine;
+	private $templateParser;
 	private $urlArgs;
 	private $messageLocalizer;
 
@@ -29,7 +26,7 @@ class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,13 +38,13 @@ class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			CheckboxValueFilter::class,
-			new CheckboxValueFilter( $this->templateEngine, [] )
+			new CheckboxValueFilter( $this->templateParser, [] )
 		);
 	}
 
 	public function testCreate_NoFilter() {
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -55,7 +52,7 @@ class CheckboxValueFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new CheckboxValueFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$params
 		);
 

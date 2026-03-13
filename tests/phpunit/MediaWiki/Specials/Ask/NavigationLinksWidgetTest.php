@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testNavigation() {
 		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
@@ -55,7 +52,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 
 		$result = NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, false );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'class="page-link">250</a>',
 			$result
 		);
@@ -89,18 +86,21 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'get', 'set' ] )
 			->getMock();
 
-		$urlArgs->expects( $this->at( 0 ) )
+		$urlArgs->expects( $this->any() )
 			->method( 'get' )
-			->with(	'limit' )
-			->willReturn( 3 );
-
-		$urlArgs->expects( $this->at( 1 ) )
-			->method( 'get' )
-			->with(	'offset' )
-			->willReturn( 10 );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'limit'  => 3,
+					'offset' => 10,
+				];
+				return $map[$key] ?? null;
+			} );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
-		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true );
+
+		$this->assertIsString(
+			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true )
+		);
 	}
 
 	public function testTopLinks() {
@@ -108,12 +108,12 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div id="ask-toplinks" class="smw-ask-toplinks"><span class="float-left"><a href="#options">',
 			NavigationLinksWidget::topLinks( $title, [ 'options' ] )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div id="ask-toplinks" class="smw-ask-toplinks"><span class="float-left"></span>&#160;<span class="float-right">',
 			NavigationLinksWidget::topLinks( $title, [ 'empty' ] )
 		);

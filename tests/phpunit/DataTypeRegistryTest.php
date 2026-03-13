@@ -16,8 +16,6 @@ use SMWDataItem as DataItem;
  */
 class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $dataTypeRegistry;
 
 	protected function setUp(): void {

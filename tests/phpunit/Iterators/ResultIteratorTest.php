@@ -3,7 +3,6 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\ResultIterator;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\ResultIterator
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ResultIteratorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

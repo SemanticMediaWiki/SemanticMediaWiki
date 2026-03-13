@@ -18,8 +18,6 @@ use SMW\ProcessingErrorMsgHandler;
  */
 class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $semanticDataValidator;
 	private $testEnvironment;
 	private $dataItemFactory;

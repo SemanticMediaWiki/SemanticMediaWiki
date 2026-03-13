@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder
@@ -16,10 +15,8 @@ use SMW\Tests\PHPUnitCompat;
  */
 class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $profile;
-	private $templateEngine;
+	private $templateParser;
 	private $filterFactory;
 	private $resultFetcher;
 
@@ -30,7 +27,7 @@ class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +43,7 @@ class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			FacetBuilder::class,
-			new FacetBuilder( $this->profile, $this->templateEngine, $this->filterFactory, $this->resultFetcher )
+			new FacetBuilder( $this->profile, $this->templateParser, $this->filterFactory, $this->resultFetcher )
 		);
 	}
 

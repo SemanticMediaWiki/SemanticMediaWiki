@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Integration\JSONScript;
 
+use DateTimeZone;
+use SMW\MediaWiki\ExtendedDateTime;
+
 /**
  * Build contents from a selected folder and replaces the content of the
  * README.md from where the script was started.
@@ -48,7 +51,7 @@ class ReadmeContentsBuilder {
 	}
 
 	private function doGenerateContentFor( $title, $path ) {
-		$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$urlLocation = $this->urlLocationMap[$title];
 
 		$counter = 0;

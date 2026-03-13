@@ -20,8 +20,6 @@ use SMW\SemanticData;
  */
 class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * @dataProvider segmentProvider
 	 */
@@ -84,7 +82,7 @@ class HashBuilderTest extends \PHPUnit\Framework\TestCase {
 			HashBuilder::createFromContent( [ 'Foo' ] )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Bar',
 			HashBuilder::createFromContent( [ 'Foo' ], 'Bar' )
 		);

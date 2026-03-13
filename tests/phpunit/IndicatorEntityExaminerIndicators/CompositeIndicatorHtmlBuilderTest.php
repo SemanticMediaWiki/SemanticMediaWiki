@@ -5,7 +5,6 @@ namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Localizer\MessageLocalizer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Utils\TemplateEngine;
 
@@ -19,8 +18,6 @@ use SMW\Utils\TemplateEngine;
  * @author mwjames
  */
 class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $templateEngine;
@@ -78,7 +75,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" ' .
 			'data-subject="Foo#0##" data-dir="" data-uselang="" ' .
 			'title="__foo__"></div>',
@@ -125,7 +122,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-highlighter smw-icon-entity-examiner-panel-error',
 			$html
 		);
@@ -172,7 +169,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-highlighter smw-icon-entity-examiner-panel-warning',
 			$html
 		);
@@ -212,7 +209,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'data-deferred="yes"',
 			$html
 		);
@@ -260,7 +257,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$html = $instance->buildHTML( $indicatorProviders, $options );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-entity-examiner smw-indicator-vertical-bar-loader" ' .
 			'data-subject="Foo#0##" data-dir="" data-uselang="" ' .
 			'title="__foo__"></div>',

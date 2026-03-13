@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore\Installer;
 
-use DateTime;
 use DateTimeZone;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\SetupFile;
 use SMW\SQLStore\TableBuilder;
 use SMW\Utils\CliMsgFormatter;
@@ -92,7 +92,7 @@ class TableOptimizer {
 
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 
-		$dateTimeUtc = new DateTime( 'now', new DateTimeZone( 'UTC' ) );
+		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 
 		$this->setupFile->set(
 			[
