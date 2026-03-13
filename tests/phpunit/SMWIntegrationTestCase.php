@@ -155,10 +155,18 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			}
 		} finally {
 			try {
-				// Ensure all transactions are closed before ending the test
+				// Roll back all open database transactions to prevent lock
+				// contention when MediaWikiIntegrationTestCase::tearDown()
+				// truncates tables. Without this, page deletions from
+				// flushPages() can hold row locks that block TRUNCATE,
+				// causing "Lock wait timeout" errors.
 				if ( $this->testDatabaseTableBuilder !== null ) {
 					$this->getDBConnection()?->rollback();
 				}
+
+				MediaWikiServices::getInstance()
+					->getDBLoadBalancerFactory()
+					->rollbackPrimaryChanges( __METHOD__ );
 			} finally {
 				parent::tearDown();
 			}
