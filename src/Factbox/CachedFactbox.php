@@ -10,7 +10,6 @@ use SMW\EntityCache;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HmacSerializer;
-use SMW\Utils\ParserOutputHelper;
 
 /**
  * Factbox output caching
@@ -339,13 +338,13 @@ class CachedFactbox {
 		if ( ( $content = $factbox->getContent() ) !== '' ) {
 			$contentParser->parse( $content, false );
 			$content = InTextAnnotationParser::removeAnnotation(
-				ParserOutputHelper::getText( $contentParser->getOutput() )
+				$contentParser->getOutput()->getContentHolderText()
 			);
 		}
 
 		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
 			$contentParser->parse( $attachmentContent, false );
-			$attachmentContent = ParserOutputHelper::getText( $contentParser->getOutput() );
+			$attachmentContent = $contentParser->getOutput()->getContentHolderText();
 		}
 
 		return $factbox->tabs( $content, $attachmentContent );

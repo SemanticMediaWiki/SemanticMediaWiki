@@ -75,7 +75,7 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->assertNotContains(
 			'[[Special:Ask/-5B-5BModification-20date::+-5D-5D-5B-5BCategory:LimitNullForEmptySearchlabel-5D-5D/searchlabel=/offset=0|]]',
-			$parserOutput->getText()
+			$parserOutput->getContentHolderText()
 		);
 	}
 
@@ -112,7 +112,7 @@ class ResultPrinterIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->assertContains(
 			'do something',
-			$parserOutput->getText()
+			$parserOutput->getContentHolderText()
 		);
 	}
 

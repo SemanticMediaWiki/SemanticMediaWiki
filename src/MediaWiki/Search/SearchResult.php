@@ -18,6 +18,16 @@ use SMW\DIWikiPage;
 class SearchResult extends \SearchResult {
 
 	/**
+	 * @var Title|null
+	 */
+	protected $mTitle;
+
+	/**
+	 * @var string|null
+	 */
+	protected $mText;
+
+	/**
 	 * @var bool
 	 */
 	private $hasHighlight = false;
@@ -28,24 +38,38 @@ class SearchResult extends \SearchResult {
 	 * @param Title|null $title
 	 */
 	public function __construct( $title ) {
-		$this->initFromTitle( $title );
+		$this->mTitle = $title;
+	}
+
+	/**
+	 * @return Title|null
+	 */
+	public function getTitle() {
+		return $this->mTitle;
+	}
+
+	/**
+	 * @return \File|null
+	 */
+	public function getFile() {
+		return null;
 	}
 
 	/**
 	 * @see SearchResult::getTextSnippet
 	 */
-	function getTextSnippet( $terms = [] ) {
+	public function getTextSnippet( $terms = [] ) {
 		if ( $this->hasHighlight ) {
 			return str_replace( [ '<em>', '</em>' ], [ "<span class='searchmatch'>", '</span>' ], $this->mText );
 		}
 
-		return parent::getTextSnippet( $terms );
+		return $this->mText ?? '';
 	}
 
 	/**
 	 * @see SearchResult::getSectionTitle
 	 */
-	function getSectionTitle() {
+	public function getSectionTitle() {
 		if ( !isset( $this->mTitle ) || $this->mTitle->getFragment() === '' ) {
 			return null;
 		}
@@ -56,14 +80,14 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isBrokenTitle
 	 */
-	function isBrokenTitle() {
+	public function isBrokenTitle() {
 		return $this->mTitle === null;
 	}
 
 	/**
 	 * @see SearchResult::isMissingRevision
 	 */
-	function isMissingRevision() {
+	public function isMissingRevision() {
 		if ( $this->mTitle == null ) {
 			return true;
 		}
@@ -114,6 +138,76 @@ class SearchResult extends \SearchResult {
 
 		// Will return the DISPLAYTITLE, if available
 		return $dataValue->getPreferredCaption();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRedirectSnippet() {
+		return '';
+	}
+
+	/**
+	 * @return Title|null
+	 */
+	public function getRedirectTitle() {
+		return null;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getSectionSnippet() {
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getCategorySnippet() {
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTimestamp() {
+		return '';
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getWordCount() {
+		return 0;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getByteSize() {
+		return 0;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInterwikiPrefix() {
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInterwikiNamespaceText() {
+		return '';
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isFileMatch() {
+		return false;
 	}
 
 }
