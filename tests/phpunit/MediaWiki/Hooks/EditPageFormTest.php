@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\EditPage\EditPage;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Hooks\EditPageForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
@@ -16,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class EditPageFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $namespaceExaminer;
 	private $permissionExaminer;
@@ -52,7 +50,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDisabledHelp() {
-		$editPage = $this->getMockBuilder( '\EditPage' )
+		$editPage = $this->getMockBuilder( EditPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -78,12 +76,12 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasPermissionOf' )
 			->willReturn( true );
 
-		$this->preferenceExaminer->expects( $this->at( 0 ) )
+		$this->preferenceExaminer->expects( $this->once() )
 			->method( 'hasPreferenceOf' )
 			->with( 'smw-prefs-general-options-disable-editpage-info' )
 			->willReturn( true );
 
-		$editPage = $this->getMockBuilder( '\EditPage' )
+		$editPage = $this->getMockBuilder( EditPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +114,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasPermissionOf' )
 			->willReturn( true );
 
-		$this->preferenceExaminer->expects( $this->at( 0 ) )
+		$this->preferenceExaminer->expects( $this->once() )
 			->method( 'hasPreferenceOf' )
 			->with( 'smw-prefs-general-options-disable-editpage-info' )
 			->willReturn( false );
@@ -126,7 +124,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 			->with( $namespaces )
 			->willReturn( $isSemanticEnabled );
 
-		$editPage = $this->getMockBuilder( '\EditPage' )
+		$editPage = $this->getMockBuilder( EditPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -154,7 +152,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->process( $editPage );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected,
 			$editPage->editFormPageTop
 		);

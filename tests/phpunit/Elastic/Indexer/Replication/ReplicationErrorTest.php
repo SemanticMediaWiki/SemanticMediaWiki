@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationError
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ReplicationErrorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

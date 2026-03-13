@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
@@ -22,8 +21,6 @@ use Wikimedia\Rdbms\IResultWrapper;
  * @author mwjames
  */
 class DatabaseTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connRef;
 	private $transactionHandler;

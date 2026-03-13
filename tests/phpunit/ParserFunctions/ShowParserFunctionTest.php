@@ -7,7 +7,6 @@ use MediaWiki\Parser\ParserOutput;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,8 +19,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;
@@ -120,7 +117,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		if ( $expected['output'] === '' ) {
 			$this->assertEmpty( $result, "Actual result: \"$result\"\n" );
 		} else {
-			$this->assertContains( $expected['output'], $result );
+			$this->assertStringContainsString( $expected['output'], $result );
 		}
 	}
 

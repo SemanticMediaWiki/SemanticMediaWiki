@@ -4,7 +4,6 @@ namespace SMW\Tests\Iterators;
 
 use ArrayIterator;
 use SMW\Iterators\MappingIterator;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\MappingIterator
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MappingIteratorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

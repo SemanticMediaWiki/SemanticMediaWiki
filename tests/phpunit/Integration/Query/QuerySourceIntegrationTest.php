@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Query;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
 
@@ -16,8 +15,6 @@ use SMWQueryProcessor;
  * @author mwjames
  */
 class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;

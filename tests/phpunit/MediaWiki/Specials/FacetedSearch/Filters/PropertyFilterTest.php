@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter
@@ -16,9 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  */
 class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
-	private $templateEngine;
+	private $templateParser;
 	private $treeBuilder;
 	private $urlArgs;
 	private $messageLocalizer;
@@ -30,7 +27,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,13 +43,13 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			PropertyFilter::class,
-			new PropertyFilter( $this->templateEngine, $this->treeBuilder, [] )
+			new PropertyFilter( $this->templateParser, $this->treeBuilder, [] )
 		);
 	}
 
 	public function testCreate_NoFilter() {
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -60,7 +57,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new PropertyFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$this->treeBuilder,
 			$params
 		);
@@ -78,8 +75,8 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreate_OneFilter() {
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -88,7 +85,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new PropertyFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$this->treeBuilder,
 			$params
 		);

@@ -223,7 +223,7 @@
 	"smw-special-wantedproperties-docu": "Iste pagina lista le [https://www.semantic-mediawiki.org/wiki/Wanted_properties proprietates desirate] que es usate in le wiki ma non ha un pagina que los describe. Pro un vista differentiate, vide le paginas special listante [[Special:Properties|tote le proprietates]] o le  [[Special:UnusedProperties|proprietates non usate]].",
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|uso|usos}})",
 	"smw_purge": "Refrescar",
-	"smw-purge-update-dependencies": "Semantic MediaWiki purga le pagina actual a causa de alcun dependentias obsolete que illo ha detegite, que necessita un actualisation.",
+	"smw-purge-update-dependencies": "Iste pagina se recarga pro assecurar que tote le informationes es actual. Isto pote prender un momento e pote occurrer plus de un vice.",
 	"smw-purge-failed": "Semantic MediaWiki ha tentate a purgar le pagina ma ha fallite",
 	"types": "Typos",
 	"smw_types_docu": "Lista del [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes typos de datos disponibile] in que cata [https://www.semantic-mediawiki.org/wiki/Help:Datatype typo] representa un insimul unic de attributos pro describer un valor in terminos de characteristicas de immagazinage e visualisation que se heredita in un proprietate assignate.",

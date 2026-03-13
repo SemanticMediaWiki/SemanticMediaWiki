@@ -5,7 +5,6 @@ namespace SMW\Tests\Constraint\Constraints;
 use SMW\Constraint\ConstraintError;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\DataItemFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,8 +17,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

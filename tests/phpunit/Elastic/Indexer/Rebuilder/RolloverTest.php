@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
 use SMW\Elastic\Indexer\Rebuilder\Rollover;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rollover
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class RolloverTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connection;
 

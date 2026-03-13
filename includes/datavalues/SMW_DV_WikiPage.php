@@ -190,10 +190,15 @@ class SMWWikiPageValue extends SMWDataValue {
 		$property = $this->getProperty();
 
 		/// TODO: Escape the text so users can see punctuation problems (bug 11666).
+		// Bug 6117: if $value contains an incorrect parser function call (correct ones should be resolved by now),
+		// parser will be re-entered.
+		$sanitized = preg_replace( '/\{\{#([^:]+):/', '&lbrace;&lbrace;#\1:', $value );
 		if ( $this->m_title === null && $property !== null ) {
-			$this->addErrorMsg( [ 'smw-datavalue-wikipage-property-invalid-title', $property->getLabel(), $value ] );
+			$this->addErrorMsg(
+				[ 'smw-datavalue-wikipage-property-invalid-title', $property->getLabel(), $sanitized ]
+			);
 		} elseif ( $this->m_title === null ) {
-			$this->addErrorMsg( [ 'smw-datavalue-wikipage-invalid-title', $value ] );
+			$this->addErrorMsg( [ 'smw-datavalue-wikipage-invalid-title', $sanitized ] );
 		} elseif ( ( $this->m_fixNamespace != NS_MAIN ) &&
 			 ( $this->m_fixNamespace != $this->m_title->getNamespace() ) ) {
 			$this->addErrorMsg( [ 'smw_wrong_namespace', $localizer->getNsText( $this->m_fixNamespace ) ] );

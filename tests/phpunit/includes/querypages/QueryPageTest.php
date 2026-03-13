@@ -20,8 +20,6 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  */
 class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * Helper method that returns a QueryPage object
 	 *
@@ -81,7 +79,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 		$reflector = new ReflectionClass( '\SMW\QueryPage' );
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
-		$selectOptions->setAccessible( true );
 		$selectOptions->setValue( $instance, [
 			'offset' => 1,
 			'limit'  => 2,
@@ -103,7 +100,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );
-		$this->assertContains( $search, $result );
+		$this->assertStringContainsString( $search, $result );
 	}
 
 	/**

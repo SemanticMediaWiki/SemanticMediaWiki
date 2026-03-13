@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\SortWidget;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SortWidgetTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $stringValidator;
 
@@ -38,7 +35,7 @@ class SortWidgetTest extends \PHPUnit\Framework\TestCase {
 	public function testEnabledWithEmptyParameters() {
 		SortWidget::setSortingSupport( true );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div id="options-sort" class="smw-ask-options-sort">',
 			SortWidget::sortSection( [] )
 		);

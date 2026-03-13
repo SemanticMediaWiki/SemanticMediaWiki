@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private Database $connection;
@@ -66,7 +63,7 @@ class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
 		$instance->setSetupFile( $this->setupFile );
 		$instance->check( [ 'smw_objects_aux' => [ 'smw_countmap' => 'field.new' ] ] );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'adding incomplete task for `smw_countmap` conversion',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -81,7 +78,7 @@ class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
 		$instance->setSetupFile( $this->setupFile );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Checking smw_countmap field consistency',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

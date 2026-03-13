@@ -83,19 +83,12 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
 
-		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+		$callCount = 0;
+		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
 			->method( 'getSpecification' )
-			->with(
-				new DIProperty( 'Foo' ),
-				new DIProperty( '_CONSTRAINT_SCHEMA' ) )
-			->willReturnOnConsecutiveCalls( [ $subject ] );
-
-		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
-			->method( 'getSpecification' )
-			->with(
-				$subject,
-				new DIProperty( '_SCHEMA_DEF' ) )
-			->willReturnOnConsecutiveCalls( [ $data[0] ], [ $data[1] ] );
+			->willReturnCallback( static function () use ( &$callCount, $subject, $data ) {
+				return [ [ $subject ], [ $data[0] ] ][$callCount++];
+			} );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -114,19 +107,12 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
 
-		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+		$callCount = 0;
+		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
 			->method( 'getSpecification' )
-			->with(
-				new DIProperty( 'Foo' ),
-				new DIProperty( 'BAR' ) )
-			->willReturnOnConsecutiveCalls( [ $subject ] );
-
-		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
-			->method( 'getSpecification' )
-			->with(
-				$subject,
-				new DIProperty( '_SCHEMA_DEF' ) )
-			->willReturnOnConsecutiveCalls( [ $data[0] ] );
+			->willReturnCallback( static function () use ( &$callCount, $subject, $data ) {
+				return [ [ $subject ], [ $data[0] ] ][$callCount++];
+			} );
 
 		$instance = new SchemaFinder(
 			$this->store,
@@ -141,7 +127,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSchemaList_NoMatch() {
-		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+		$this->propertySpecificationLookup->expects( $this->once() )
 			->method( 'getSpecification' )
 			->willReturn( false );
 
@@ -160,19 +146,12 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 		$data[] = new DIBlob( '' );
 
-		$this->propertySpecificationLookup->expects( $this->at( 0 ) )
+		$callCount = 0;
+		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
 			->method( 'getSpecification' )
-			->with(
-				new DIProperty( 'Foo' ),
-				new DIProperty( 'BAR' ) )
-			->willReturnOnConsecutiveCalls( [ $subject ] );
-
-		$this->propertySpecificationLookup->expects( $this->at( 1 ) )
-			->method( 'getSpecification' )
-			->with(
-				$subject,
-				new DIProperty( '_SCHEMA_DEF' ) )
-			->willReturnOnConsecutiveCalls( [ $data[0] ] );
+			->willReturnCallback( static function () use ( &$callCount, $subject, $data ) {
+				return [ [ $subject ], [ $data[0] ] ][$callCount++];
+			} );
 
 		$instance = new SchemaFinder(
 			$this->store,

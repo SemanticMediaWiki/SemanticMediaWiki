@@ -3,7 +3,6 @@
 namespace SMW\Tests\Exporter;
 
 use SMW\Exporter\ExporterFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exporter\ExporterFactory
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

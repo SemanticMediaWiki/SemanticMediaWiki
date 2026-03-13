@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
@@ -23,8 +22,6 @@ use SMW\Tests\Utils\UtilityFactory;
  * @author mwjames
  */
 class TimeDataTypeTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $importedTitles = [];
 	private $runnerFactory;

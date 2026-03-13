@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\PropertyLabelSimilarity;
 
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $propertyLabelSimilarityLookup;

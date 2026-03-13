@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class OpenFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $webRequest;
 
@@ -34,20 +31,16 @@ class OpenFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMakeFields() {
-		$this->webRequest->expects( $this->at( 0 ) )
+		$this->webRequest->expects( $this->exactly( 3 ) )
 			->method( 'getArray' )
-			->with( 'property' )
-			->willReturn( [ 'Bar' ] );
-
-		$this->webRequest->expects( $this->at( 1 ) )
-			->method( 'getArray' )
-			->with( 'pvalue' )
-			->willReturn( [ 42 ] );
-
-		$this->webRequest->expects( $this->at( 2 ) )
-			->method( 'getArray' )
-			->with( 'op' )
-			->willReturn( [ 'OR' ] );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'property' => [ 'Bar' ],
+					'pvalue'   => [ 42 ],
+					'op'       => [ 'OR' ],
+				];
+				return $map[$key] ?? [];
+			} );
 
 		$instance = new OpenForm(
 			$this->webRequest
@@ -55,7 +48,7 @@ class OpenFormTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->isActiveForm( true );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-input-group"><div class="smw-input-field" style="display:inline-block;">',
 			$instance->makeFields( [] )
 		);

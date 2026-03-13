@@ -22,6 +22,7 @@
 			"Patrik L.",
 			"Vks",
 			"XenoPheX",
+			"Zagothal",
 			"아라"
 		]
 	},
@@ -323,7 +324,7 @@
 	"smw-admin-permissionswarn": "Selže-li operace s SQL chybami, pak uživatel databáze, kterého vaše wiki používá (zkontrolujte soubor „LocalSettings.php“) pravděpodobně nemá dostatečná oprávnění.\nPřidělte tomuto uživateli dostatečná oprávnění k tvorbě a mazání tabulek, dočasně do souboru „LocalSettings.php“ zadejte údaje rootu databáze, nebo použijte údržbový skript <code>setupStore.php</code>, který používá údaje správce.",
 	"smw-admin-dbbutton": "Inicializovat či upgradovat tabulky",
 	"smw-admin-announce": "Nahlásit tuto wiki",
-	"smw-admin-deprecation-notice-title-notice": "Připravované změny",
+	"smw-admin-deprecation-notice-title-notice": "Zastaralé nastavení",
 	"smw-admin-deprecation-notice-title-notice-explanation": "V této wiki byla rozpoznána následující nastavení, která budou v příští verzi odebrána nebo změněna.",
 	"smw-admin-deprecation-notice-title-replacement": "Nahrazená nebo přejmenovaná nastavení",
 	"smw-admin-deprecation-notice-title-replacement-explanation": "Následující sekce obsahuje nastavení, která byla přejmenována nebo jinak změněna. Doporučujeme aktualizovat jejich název nebo formát.",
@@ -373,7 +374,7 @@
 	"smw-search-syntax-support": "Vyhledávací vstup podporuje použití sémantické [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search syntaxové otázky], která pomůže získávání výsledků s použitím Semantic MediaWiki.",
 	"smw-search-input-assistance": "[https://www.semantic-mediawiki.org/wiki/Help:Input_assistance Vstupní asistent] je také aktivní pro zjednodušení zvolení možných vlastností a kategorií.",
 	"smw-search-profile-extended-section-sort": "Řadit podle",
-	"smw-search-profile-extended-section-form": "Vybrat formulář",
+	"smw-search-profile-extended-section-form": "Formuláře",
 	"smw-type-geo": "\"$1\" je typ dat, který popisuje geografické lokace a požaduje [https://www.semantic-mediawiki.org/wiki/Extension:Maps mapové rozšíření] k poskytnutí rozšířených funkcí.",
 	"smw-types-extra-geo-not-available": "[https://www.semantic-mediawiki.org/wiki/Extension:Maps Rozšíření map] nebylo zjištěno, protože \"$1\" je omezeno v kapacitě, takže nemůže fungovat.",
 	"smw-datavalue-keyword-maximum-length": "Klíčové slovo je delší než maximální délku {{PLURAL:$1|$1 znaku|$1 znaků}}.",

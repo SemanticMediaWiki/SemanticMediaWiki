@@ -101,10 +101,21 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 			$contentParser->getOutput()
 		);
 
-		$this->assertCount(
-			4,
-			$parserData->getSemanticData()->getProperties()
-		);
+		// The predefined _MDAT property is added by DataUpdater during the store
+		// update phase, not during parsing. On MW 1.43, prepareContentForEdit()
+		// returns a cached ParserOutput that includes _MDAT from the store update.
+		// On MW 1.44+, it returns a fresh parse without _MDAT.
+		if ( version_compare( MW_VERSION, '1.44', '>=' ) ) {
+			$this->assertCount(
+				3,
+				$parserData->getSemanticData()->getProperties()
+			);
+		} else {
+			$this->assertCount(
+				4,
+				$parserData->getSemanticData()->getProperties()
+			);
+		}
 
 		$this->assertCount(
 			4,

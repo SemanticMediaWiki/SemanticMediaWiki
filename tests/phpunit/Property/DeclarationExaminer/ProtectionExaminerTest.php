@@ -4,7 +4,6 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 
 use SMW\DataItemFactory;
 use SMW\Property\DeclarationExaminer\ProtectionExaminer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $declarationExaminer;
 	private $protectionValidator;
@@ -78,7 +75,7 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Test:CreateProtectionRight' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["warning","smw-create-protection","Test:CreateProtectionRight","abc"]',
 			$instance->getMessagesAsString()
 		);
@@ -108,7 +105,7 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Test:EditProtectionRight' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["error","smw-edit-protection","abc_123"]',
 			$instance->getMessagesAsString()
 		);
@@ -138,7 +135,7 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( '_EDIP' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-edit-protection-disabled',
 			$instance->getMessagesAsString()
 		);

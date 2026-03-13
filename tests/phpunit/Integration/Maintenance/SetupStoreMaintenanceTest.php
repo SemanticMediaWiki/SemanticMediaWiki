@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $importedTitles = [];
 	private $runnerFactory;
@@ -64,7 +61,7 @@ class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 
 		$maintenanceRunner->run();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Database table cleanup',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -99,7 +96,7 @@ class SetupStoreMaintenanceTest extends SMWIntegrationTestCase {
 		$maintenanceRunner->setQuiet();
 		$maintenanceRunner->run();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Core table(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\CallableUpdate;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -83,7 +80,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$this->expectException( '\Exception' );
 		$instance->doUpdate();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'failed',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -97,7 +94,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Empty callback',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -125,7 +122,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Added',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -191,7 +188,7 @@ class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setOrigin( 'Foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Foo',
 			$instance->getOrigin()
 		);

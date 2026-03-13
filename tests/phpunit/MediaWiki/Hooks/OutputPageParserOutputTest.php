@@ -11,7 +11,6 @@ use SMW\DIWikiPage;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -26,8 +25,6 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @author mwjames
  */
 class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $applicationFactory;
@@ -139,7 +136,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 		// that the content is also available via the CacheStore
 		$text = $this->factboxText->getText();
 
-		$this->assertContains( $expected['text'], $text );
+		$this->assertStringContainsString( $expected['text'], $text );
 
 		$this->assertEquals(
 			$text,
@@ -387,7 +384,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 	protected function makeParserOutput( $data ) {
 		$parserOutput = new ParserOutput();
 		$parserOutput->setExtensionData( 'smwdata', $data );
-		$parserOutput->setText( 'test' );
+		$parserOutput->setContentHolderText( 'test' );
 		return $parserOutput;
 	}
 

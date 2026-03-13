@@ -3,7 +3,6 @@
 namespace SMW\Tests\Deserializers;
 
 use SMW\Deserializers\SemanticDataDeserializer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SemanticDataDeserializerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(

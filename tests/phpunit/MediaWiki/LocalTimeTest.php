@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
-use DateTime;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
 
 /**
@@ -18,7 +18,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 
 	public function testNoModifiedLocalTime() {
 		$dateTime = LocalTime::getLocalizedTime(
-			new DateTime( '2017-08-01 10:00:00+00:00' )
+			new ExtendedDateTime( '2017-08-01 10:00:00+00:00' )
 		);
 
 		$this->assertFalse(
@@ -27,7 +27,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testModifiedTimeWithPositiveLocalTimeOffset() {
-		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
+		$dti = new ExtendedDateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( 60 );
 		$dateTime = LocalTime::getLocalizedTime( $dti );
@@ -43,7 +43,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testModifiedTimeWithNegativeLocalTimeOffset() {
-		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
+		$dti = new ExtendedDateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( -60 );
 		$dateTime = LocalTime::getLocalizedTime( $dti );
@@ -59,7 +59,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testModifiedTimeWithUserTimeCorrection() {
-		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
+		$dti = new ExtendedDateTime( '2017-08-01 10:00:00+00:00' );
 
 		LocalTime::setLocalTimeOffset( 0 );
 		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+120|Europe/Berlin' );
@@ -75,7 +75,7 @@ class LocalTimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testModifiedTimeWithUserTimeCorrectionOnInvalidZone() {
-		$dti = new DateTime( '2017-08-01 10:00:00+00:00' );
+		$dti = new ExtendedDateTime( '2017-08-01 10:00:00+00:00' );
 
 		$dateTime = LocalTime::getLocalizedTime( $dti, 'ZoneInfo|+125|Foo' );
 

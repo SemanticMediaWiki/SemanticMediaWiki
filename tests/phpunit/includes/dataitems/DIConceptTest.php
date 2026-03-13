@@ -13,7 +13,7 @@ namespace SMW\Tests;
  * @license GPL-2.0-or-later
  * @author mwjames
  */
-class DIConceptTest extends DataItemTest {
+class DIConceptTest extends AbstractDataItem {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -27,7 +27,7 @@ class DIConceptTest extends DataItemTest {
 	}
 
 	/**
-	 * @see DataItemTest::constructorProvider
+	 * @see AbstractDataItem::constructorProvider
 	 *
 	 * @since 1.8
 	 *

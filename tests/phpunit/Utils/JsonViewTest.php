@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\JsonView;
 
 /**
@@ -15,8 +14,6 @@ use SMW\Utils\JsonView;
  * @author mwjames
  */
 class JsonViewTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

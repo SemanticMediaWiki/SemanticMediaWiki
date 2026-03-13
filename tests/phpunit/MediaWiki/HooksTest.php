@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki;
 use MediaWiki\Block\Block;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\EditPage\EditPage;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use MediaWiki\User\UserIdentity;
@@ -12,7 +13,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -26,8 +26,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class HooksTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $parser;
 	private $title;
@@ -1206,7 +1204,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$editPage = $this->getMockBuilder( '\EditPage' )
+		$editPage = $this->getMockBuilder( EditPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

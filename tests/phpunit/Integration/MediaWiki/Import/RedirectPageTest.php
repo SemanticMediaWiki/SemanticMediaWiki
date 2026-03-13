@@ -5,7 +5,6 @@ namespace SMW\Tests\Integration\MediaWiki\Import;
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\InSemanticDataFetcher;
 
@@ -23,8 +22,6 @@ use SMW\Tests\Utils\InSemanticDataFetcher;
  * @author mwjames
  */
 class RedirectPageTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $importedTitles = [];
 	private $runnerFactory;

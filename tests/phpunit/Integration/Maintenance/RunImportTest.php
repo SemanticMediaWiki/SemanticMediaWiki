@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class RunImportTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -49,7 +46,7 @@ class RunImportTest extends SMWIntegrationTestCase {
 			$maintenanceRunner->run()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Importing from smw.vocab.json',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

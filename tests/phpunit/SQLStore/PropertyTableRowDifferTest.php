@@ -6,7 +6,6 @@ use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\PropertyTableRowDiffer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer
@@ -19,8 +18,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $propertyTableRowMapper;
 

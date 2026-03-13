@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -16,8 +16,6 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @author mwjames
  */
 class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
@@ -58,12 +56,15 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isValidRedirectTarget' )
 			->willReturn( true );
 
-		$instance->expects( $this->at( 0 ) )
+		$isRedirectCallCount = 0;
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->willReturn( true );
+			->willReturnCallback( static function () use ( &$isRedirectCallCount ) {
+				return $isRedirectCallCount++ === 0;
+			} );
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			 $instance->findRedirectTargetFor( $title )
 		);
 	}
@@ -95,7 +96,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isValidRedirectTarget' )
 			->willReturn( false );
 
-		$instance->expects( $this->at( 0 ) )
+		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
 			->willReturn( false );
 

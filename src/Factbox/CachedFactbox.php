@@ -338,13 +338,13 @@ class CachedFactbox {
 		if ( ( $content = $factbox->getContent() ) !== '' ) {
 			$contentParser->parse( $content, false );
 			$content = InTextAnnotationParser::removeAnnotation(
-				$contentParser->getOutput()->getText()
+				$contentParser->getOutput()->getContentHolderText()
 			);
 		}
 
 		if ( ( $attachmentContent = $factbox->getAttachmentHTML() ) !== '' ) {
 			$contentParser->parse( $attachmentContent, false );
-			$attachmentContent = $contentParser->getOutput()->getText();
+			$attachmentContent = $contentParser->getOutput()->getContentHolderText();
 		}
 
 		return $factbox->tabs( $content, $attachmentContent );

@@ -46,9 +46,9 @@
 			"subject": "Example/P0456/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" .*Example/P0456/1#bar\" title=\"Example/P0456/1\">Example/P0456/1#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>",
-					"<tr data-row-number=\"2\" .*Example/P0456/1#baz\" title=\"Example/P0456/1\">Example/P0456/1#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
-					"<tr data-row-number=\"3\" .*Example/P0456/1#foo\" title=\"Example/P0456/1\">Example/P0456/1#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>"
+					"<tr data-row-number=\"1\" .*Example/P0456/1#bar\" title=\"Example/P0456/1\">Example/P0456/1#bar</a></span></td><td class=\"Has-text smwtype&#95;txt\">bar</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/P0456/1#baz\" title=\"Example/P0456/1\">Example/P0456/1#baz</a></span></td><td class=\"Has-text smwtype&#95;txt\">baz</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/P0456/1#foo\" title=\"Example/P0456/1\">Example/P0456/1#foo</a></span></td><td class=\"Has-text smwtype&#95;txt\">foo</td></tr>"
 				]
 			}
 		},
@@ -58,9 +58,9 @@
 			"subject": "Example/P0456/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" .*Example/P0456/2#bar\" title=\"Example/P0456/2\">Example/P0456/2#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>",
-					"<tr data-row-number=\"2\" .*Example/P0456/2#baz\" title=\"Example/P0456/2\">Example/P0456/2#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
-					"<tr data-row-number=\"3\" .*Example/P0456/2#foo\" title=\"Example/P0456/2\">Example/P0456/2#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>"
+					"<tr data-row-number=\"1\" .*Example/P0456/2#bar\" title=\"Example/P0456/2\">Example/P0456/2#bar</a></span></td><td class=\"Has-text smwtype&#95;txt\">bar</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/P0456/2#baz\" title=\"Example/P0456/2\">Example/P0456/2#baz</a></span></td><td class=\"Has-text smwtype&#95;txt\">baz</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/P0456/2#foo\" title=\"Example/P0456/2\">Example/P0456/2#foo</a></span></td><td class=\"Has-text smwtype&#95;txt\">foo</td></tr>"
 				]
 			}
 		},
@@ -70,9 +70,9 @@
 			"subject": "Example/P0456/Q.3",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" .*Example/P0456/3#baz\" title=\"Example/P0456/3\">Example/P0456/3#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
-					"<tr data-row-number=\"2\" .*Example/P0456/3#foo\" title=\"Example/P0456/3\">Example/P0456/3#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>",
-					"<tr data-row-number=\"3\" .*Example/P0456/3#bar\" title=\"Example/P0456/3\">Example/P0456/3#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>"
+					"<tr data-row-number=\"1\" .*Example/P0456/3#baz\" title=\"Example/P0456/3\">Example/P0456/3#baz</a></span></td><td class=\"Has-text smwtype&#95;txt\">baz</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/P0456/3#foo\" title=\"Example/P0456/3\">Example/P0456/3#foo</a></span></td><td class=\"Has-text smwtype&#95;txt\">foo</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/P0456/3#bar\" title=\"Example/P0456/3\">Example/P0456/3#bar</a></span></td><td class=\"Has-text smwtype&#95;txt\">bar</td></tr>"
 				]
 			}
 		},
@@ -82,9 +82,9 @@
 			"subject": "Example/P0456/Q.4",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" .*Example/P0456/4#baz\" title=\"Example/P0456/4\">Example/P0456/4#baz</a></span></td><td class=\"Has-text smwtype_txt\">baz</td></tr>",
-					"<tr data-row-number=\"2\" .*Example/P0456/4#foo\" title=\"Example/P0456/4\">Example/P0456/4#foo</a></span></td><td class=\"Has-text smwtype_txt\">foo</td></tr>",
-					"<tr data-row-number=\"3\" .*Example/P0456/4#bar\" title=\"Example/P0456/4\">Example/P0456/4#bar</a></span></td><td class=\"Has-text smwtype_txt\">bar</td></tr>"
+					"<tr data-row-number=\"1\" .*Example/P0456/4#baz\" title=\"Example/P0456/4\">Example/P0456/4#baz</a></span></td><td class=\"Has-text smwtype&#95;txt\">baz</td></tr>",
+					"<tr data-row-number=\"2\" .*Example/P0456/4#foo\" title=\"Example/P0456/4\">Example/P0456/4#foo</a></span></td><td class=\"Has-text smwtype&#95;txt\">foo</td></tr>",
+					"<tr data-row-number=\"3\" .*Example/P0456/4#bar\" title=\"Example/P0456/4\">Example/P0456/4#bar</a></span></td><td class=\"Has-text smwtype&#95;txt\">bar</td></tr>"
 				]
 			}
 		}

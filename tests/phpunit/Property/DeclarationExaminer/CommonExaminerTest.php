@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\SemanticData;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\CommonExaminer
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $entityManager;
@@ -65,7 +62,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Bar' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["error","smw-property-namespace-disabled"]',
 			$instance->getMessagesAsString()
 		);
@@ -88,7 +85,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Bar' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["error","smw-property-name-reserved","Bar"]',
 			$instance->getMessagesAsString()
 		);
@@ -109,7 +106,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["error","smw-property-label-uniqueness","Foo"]',
 			$instance->getMessagesAsString()
 		);
@@ -142,7 +139,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-property-req-violation-type',
 			$instance->getMessagesAsString()
 		);
@@ -174,7 +171,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'{"0":"error","_msgkey":"smw-property-req-error-list","_list":["testFindErrMessages"]}',
 			$instance->getMessagesAsString()
 		);

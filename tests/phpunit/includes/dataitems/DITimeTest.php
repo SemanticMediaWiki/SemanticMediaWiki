@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use SMW\MediaWiki\ExtendedDateTime;
 use SMWDITime as DITime;
 
 /**
@@ -13,8 +14,6 @@ use SMWDITime as DITime;
  * @author mwjames
  */
 class DITimeTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -34,7 +33,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 
 	public function testNewFromDateTime() {
 		$instance = DITime::newFromDateTime(
-			new \DateTime( '2012-07-08 11:14:15.638276' )
+			new ExtendedDateTime( '2012-07-08 11:14:15.638276' )
 		);
 
 		$this->assertSame(
@@ -43,7 +42,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance = DITime::newFromDateTime(
-			new \DateTime( '1582-10-04' )
+			new ExtendedDateTime( '1582-10-04' )
 		);
 
 		$this->assertEquals(
@@ -52,7 +51,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance = DITime::newFromDateTime(
-			new \DateTime( '1582-10-05' )
+			new ExtendedDateTime( '1582-10-05' )
 		);
 
 		$this->assertEquals(
@@ -62,7 +61,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDateTimeRoundTrip() {
-		$dateTime = new \DateTime( '2012-07-08 11:14:15.638276' );
+		$dateTime = new ExtendedDateTime( '2012-07-08 11:14:15.638276' );
 
 		$instance = DITime::newFromDateTime(
 			$dateTime
@@ -75,7 +74,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDateTimeWithLargeMs() {
-		$dateTime = new \DateTime( '1300-11-02 12:03:25.888499' );
+		$dateTime = new ExtendedDateTime( '1300-11-02 12:03:25.888499' );
 
 		$instance = new DITime(
 			2, 1300, 11, 02, 12, 03, 25.888499
@@ -88,7 +87,7 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDateTimeWithHistoricDate() {
-		$dateTime = new \DateTime( '-0900-02-02 00:00:00' );
+		$dateTime = new ExtendedDateTime( '-0900-02-02 00:00:00' );
 
 		$instance = new DITime(
 			2, -900, 02, 02

@@ -44,7 +44,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<a href=\".*P0713/1#_c869667efa584ce62a07d13723321630\" title=\"P0713/1\">P0713/1</a>",
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
@@ -65,7 +65,7 @@
 			"assert-output": {
 				"to-contain": [
 					"<a href=\".*P0713/1#_c869667efa584ce62a07d13723321630\" title=\"P0713/1\">P0713/1</a>",
-					"<td class=\"Has-number smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"Has-number smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		}

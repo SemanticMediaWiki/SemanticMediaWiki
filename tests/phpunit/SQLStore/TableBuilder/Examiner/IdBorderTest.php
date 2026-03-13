@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class IdBorderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
@@ -68,7 +65,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'space for internal properties allocated',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -111,7 +108,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'space for internal properties allocated',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -168,17 +165,17 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'allocating space for internal properties',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'moving upper bound',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'42 to 100',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

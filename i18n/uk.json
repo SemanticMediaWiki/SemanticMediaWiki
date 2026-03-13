@@ -243,7 +243,7 @@
 	"smw-special-wantedproperties-docu": "На цій сторінці перелічені [https://www.semantic-mediawiki.org/wiki/Wanted_properties бажані властивості], які використовуються у вікі, але не мають сторінки опису. Диференційований показ див. на спеціальних сторінках  [[Special:Properties|усіх]] або  [[Special:UnusedProperties|невикористовуваних властивостей]].",
 	"smw-special-wantedproperties-template": "$1 ($2 {{PLURAL:$2|звернення|звернення|звернень}})",
 	"smw_purge": "Оновити",
-	"smw-purge-update-dependencies": "Семантична MediaWiki очищає кеш поточної сторінки через якісь застарілі залежності, які вона виявила, і які потребують оновлення.",
+	"smw-purge-update-dependencies": "Ця сторінка перезавантажується, щоб забезпечити актуальність усієї інформації. Це може зайняти деякий час і повторитися кілька разів.",
 	"smw-purge-failed": "Від Semantic MediaWiki була невдала спроба очистити сторінку",
 	"types": "Типи",
 	"smw_types_docu": "Список [https://www.semantic-mediawiki.org/wiki/Help:List_of_datatypes доступних типів даних], де кожен [https://www.semantic-mediawiki.org/wiki/Help:Datatype тип] репрезентує унікальний набір атрибутів, що описують значення з точки зору характеристик зберігання й відображення, похідних від присвоєної властивості.",

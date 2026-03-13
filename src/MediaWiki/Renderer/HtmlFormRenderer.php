@@ -256,7 +256,7 @@ class HtmlFormRenderer {
 	 * @return HtmlFormRenderer
 	 */
 	public function addSubmitButton( $text, $attributes = [] ) {
-		$this->content[] = Xml::submitButton( $text, $attributes );
+		$this->content[] = Html::submitButton( $text, $attributes );
 		return $this;
 	}
 
@@ -309,8 +309,8 @@ class HtmlFormRenderer {
 			$attributes['class'] = $this->defaultPrefix . '-input';
 		}
 
-		$label = Xml::label( $label, $id, [] );
-		$input = Xml::input( $name, $size, $value, [ 'id' => $id ] + $attributes );
+		$label = Html::label( $label, $id, [] );
+		$input = Html::input( $name, $value, 'text', [ 'size' => $size, 'id' => $id ] + $attributes );
 
 		$this->content[] = $label . '&#160;' . $input;
 
@@ -398,7 +398,7 @@ class HtmlFormRenderer {
 
 		$this->addQueryParameter( $inputName, $inputValue );
 
-		$html = Xml::checkLabel(
+		$html = HtmlUtil::checkLabel(
 			$label,
 			$inputName,
 			$id,
@@ -407,7 +407,7 @@ class HtmlFormRenderer {
 				'id' => $id,
 				'class' => $this->defaultPrefix . '-checkbox',
 				'value' => $inputValue
-			] + ( $isChecked ? [ 'checked' => 'checked' ] : [] )
+			]
 		);
 
 		$this->content[] = Html::rawElement( 'span', $attributes, $html );
@@ -436,7 +436,7 @@ class HtmlFormRenderer {
 			}
 
 			$resultCount = $instance->getMessageBuilder()
-				->getMessage( 'showingresults' )
+				->getMessage( 'smw-showingresults' )
 				->numParams( $messageCount, (int)$offset + 1 )
 				->parse();
 
@@ -467,7 +467,7 @@ class HtmlFormRenderer {
 		}
 
 		if ( $this->useFieldset ) {
-			$content = Xml::fieldset(
+			$content = HtmlUtil::fieldset(
 				$this->messageBuilder->getMessage( $this->name )->text(),
 				$content,
 				[

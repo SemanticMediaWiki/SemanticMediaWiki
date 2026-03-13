@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter
@@ -16,9 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  */
 class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
-	private $templateEngine;
+	private $templateParser;
 	private $valueFilterFactory;
 	private $schemaFinder;
 	private $urlArgs;
@@ -31,7 +28,7 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,13 +48,13 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ValueFilter::class,
-			new ValueFilter( $this->templateEngine, $this->valueFilterFactory, $this->schemaFinder, [] )
+			new ValueFilter( $this->templateParser, $this->valueFilterFactory, $this->schemaFinder, [] )
 		);
 	}
 
 	public function testCreate_NoFilter() {
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -65,7 +62,7 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new ValueFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$this->valueFilterFactory,
 			$this->schemaFinder,
 			$params
@@ -92,8 +89,8 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSchemaList' )
 			->willReturn( $schemaList );
 
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -103,7 +100,7 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new ValueFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$this->valueFilterFactory,
 			$this->schemaFinder,
 			$params
@@ -132,8 +129,8 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSchemaList' )
 			->willReturn( $schemaList );
 
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -143,7 +140,7 @@ class ValueFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new ValueFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$this->valueFilterFactory,
 			$this->schemaFinder,
 			$params

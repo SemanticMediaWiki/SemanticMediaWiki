@@ -276,17 +276,18 @@
 }
 
 .filter-items {
-    max-height: 200px;
+	max-height: 200px;
     overflow-y: scroll;
 }
 
 .filter-items.no-result {
-	 overflow-y: unset;
+	overflow-y: unset;
 }
 
 .filter-items ul {
-	margin: 0.3em 0 0 1.6em;
-    padding: 0;
+	margin: 0.3em 0 0 0;
+	list-style: none;
+	padding: 0;
 }
 
 .filter-items li {

@@ -34,9 +34,9 @@
 			"subject": "Example/P0458/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/1\" title=\"Example/P0458/1\">Example/P0458/1</a></td><td class=\"Has-keyword smwtype_keyw\">aBcDEF</td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/2\" title=\"Example/P0458/2\">Example/P0458/2</a></td><td class=\"Has-keyword smwtype_keyw\">abcdef</td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/3\" title=\"Example/P0458/3\">Example/P0458/3</a></td><td class=\"Has-keyword smwtype_keyw\">ABCDEF</td>"
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0458/1\" title=\"Example/P0458/1\">Example/P0458/1</a></td><td class=\"Has-keyword smwtype&#95;keyw\">aBcDEF</td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0458/2\" title=\"Example/P0458/2\">Example/P0458/2</a></td><td class=\"Has-keyword smwtype&#95;keyw\">abcdef</td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0458/3\" title=\"Example/P0458/3\">Example/P0458/3</a></td><td class=\"Has-keyword smwtype&#95;keyw\">ABCDEF</td>"
 				]
 			}
 		},
@@ -46,9 +46,9 @@
 			"subject": "Example/P0458/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/1\" title=\"Example/P0458/1\">Example/P0458/1</a></td><td class=\"Has-keyword smwtype_keyw\">aBcDEF</td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/2\" title=\"Example/P0458/2\">Example/P0458/2</a></td><td class=\"Has-keyword smwtype_keyw\">abcdef</td>",
-					"<td class=\"smwtype_wpg\"><a href=.*Example/P0458/3\" title=\"Example/P0458/3\">Example/P0458/3</a></td><td class=\"Has-keyword smwtype_keyw\">ABCDEF</td>"
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0458/1\" title=\"Example/P0458/1\">Example/P0458/1</a></td><td class=\"Has-keyword smwtype&#95;keyw\">aBcDEF</td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0458/2\" title=\"Example/P0458/2\">Example/P0458/2</a></td><td class=\"Has-keyword smwtype&#95;keyw\">abcdef</td>",
+					"<td class=\"smwtype&#95;wpg\"><a href=.*Example/P0458/3\" title=\"Example/P0458/3\">Example/P0458/3</a></td><td class=\"Has-keyword smwtype&#95;keyw\">ABCDEF</td>"
 				]
 			}
 		}

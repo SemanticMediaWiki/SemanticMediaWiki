@@ -6,7 +6,6 @@ use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ThingDescription;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Language\ClassDescription
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $cat_name;
 

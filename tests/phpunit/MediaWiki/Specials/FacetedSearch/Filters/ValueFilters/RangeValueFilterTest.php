@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter
@@ -16,9 +15,7 @@ use SMW\Tests\PHPUnitCompat;
  */
 class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
-	private $templateEngine;
+	private $templateParser;
 	private $urlArgs;
 	private $messageLocalizer;
 	private $compartmentIterator;
@@ -30,7 +27,7 @@ class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,13 +43,13 @@ class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			RangeValueFilter::class,
-			new RangeValueFilter( $this->templateEngine, $this->compartmentIterator, [] )
+			new RangeValueFilter( $this->templateParser, $this->compartmentIterator, [] )
 		);
 	}
 
 	public function testCreate_NoFilter() {
-		$this->templateEngine->expects( $this->any() )
-			->method( 'publish' )
+		$this->templateParser->expects( $this->any() )
+			->method( 'processTemplate' )
 			->willReturn( '' );
 
 		$params = [
@@ -60,7 +57,7 @@ class RangeValueFilterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$instance = new RangeValueFilter(
-			$this->templateEngine,
+			$this->templateParser,
 			$this->compartmentIterator,
 			$params
 		);

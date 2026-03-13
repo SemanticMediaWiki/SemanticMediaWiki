@@ -148,7 +148,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'hasSubproperty' )
 			->willReturn( true );
 
-		$this->hierarchyLookup->expects( $this->at( 1 ) )
+		$this->hierarchyLookup->expects( $this->once() )
 			->method( 'getConsecutiveHierarchyList' )
 			->with( new DIProperty( 'Foobar' ) )
 			->willReturn(
@@ -286,7 +286,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'hasSubproperty' )
 			->willReturn( true );
 
-		$this->hierarchyLookup->expects( $this->at( 1 ) )
+		$this->hierarchyLookup->expects( $this->once() )
 			->method( 'getConsecutiveHierarchyList' )
 			->with( new DIProperty( 'Foobar' ) )
 			->willReturn(
@@ -343,7 +343,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'hasSubcategory' )
 			->willReturn( true );
 
-		$this->hierarchyLookup->expects( $this->at( 1 ) )
+		$this->hierarchyLookup->expects( $this->once() )
 			->method( 'getConsecutiveHierarchyList' )
 			->with( DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) )
 			->willReturn(

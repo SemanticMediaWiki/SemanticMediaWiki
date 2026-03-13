@@ -24,8 +24,6 @@ use SMWQueryProcessor;
  */
 class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 
-	use PHPUnitCompat;
-
 	public function createQueryDataProvider() {
 		return [
 			[ '[[Modification date::+]]|?Modification date|sort=Modification date|order=desc' ],

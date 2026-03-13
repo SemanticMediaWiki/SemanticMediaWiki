@@ -2,6 +2,7 @@
 	"@metadata": {
 		"authors": [
 			"Macofe",
+			"SaldırganSincap",
 			"Sasan700",
 			"Исмаил Садуев",
 			"Умар"
@@ -1015,7 +1016,7 @@
 	"smw-remote-source-disabled": "Хьосто '''$1''' генара дехарш дӀадаьхна!",
 	"smw-remote-source-unmatched-id": "Хьост '''$1''' нийса ца догӀу Semantic MediaWiki версица, генара дехарш дан йиш йолуш.",
 	"smw-remote-request-note": "ЖамӀ схьаэцна генарчу хьостанера '''$1''', ткъа генераци йинчу чулацамехь хир йу карарчу хенахь вики чохь йоцу информаци.",
-	"smw-remote-request-note-cached": "ЖамӀ '''кэш'' ду генарчу хьостанера '''$1''', ткъа генераци йина чулацамехь хир йу карарчу хенахь вики чохь йоцу информаци.",
+	"smw-remote-request-note-cached": "ЖамӀ '''кэш''' ду генарчу хьостанера '''$1''', ткъа генераци йина чулацамехь хир йу карарчу хенахь вики чохь йоцу информаци.",
 	"smw-parameter-missing": "«$1» параметр йац.",
 	"smw-property-tab-usage": "Лелор",
 	"smw-property-tab-profile-schema": "Профилан схема",
@@ -1052,7 +1053,7 @@
 	"smw-es-replication-file-ingest-error": "Файл чуйаккхаран проблема",
 	"smw-es-replication-maintenance-mode": "Elasticsearch латтор",
 	"smw-es-replication-error-missing-id": "Репликацин мониторингехь гучуделира $1» (ID: $2) йаззам ца хилар Elasticsearch бекэндехь.",
-	"smw-es-replication-error-divergent-date": "Репликацин мониторингехь гучуделира «$1» (ID: $2) <b> йаззаман <b>хийцина хан</b> гойту нийса цахилар.",
+	"smw-es-replication-error-divergent-date": "Репликацин мониторингехь гучуделира «$1» (ID: $2) <b>йаззаман хийцина хан</b> гойту нийса цахилар.",
 	"smw-es-replication-error-divergent-date-short": "Дустарна лелийна хӀара денош:",
 	"smw-es-replication-error-divergent-date-detail": "Хьажорг хийцина хан:\n* Elasticsearch: $1\n* Database: $2",
 	"smw-es-replication-error-divergent-revision": "Репликацин мониторингехь гучуделира «$1» (ID: $2) йаззамна <b>богӀуш болу хийцам</b> гойту нийса цахилар.",

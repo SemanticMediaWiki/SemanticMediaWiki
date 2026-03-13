@@ -139,15 +139,11 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [] );
 
-		$idTable->expects( $this->at( 0 ) )
+		$idTable->expects( $this->exactly( 2 ) )
 			->method( 'getSMWPageID' )
-			->willReturn( 1 );
+			->willReturnOnConsecutiveCalls( 1, 5 );
 
-		$idTable->expects( $this->at( 1 ) )
-			->method( 'getSMWPageID' )
-			->willReturn( 5 );
-
-		$idTable->expects( $this->at( 1 ) )
+		$idTable->expects( $this->once() )
 			->method( 'findRedirect' )
 			->willReturn( 0 );
 
@@ -213,13 +209,9 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [] );
 
-		$idTable->expects( $this->at( 0 ) )
+		$idTable->expects( $this->exactly( 2 ) )
 			->method( 'getSMWPageID' )
-			->willReturn( 1 );
-
-		$idTable->expects( $this->at( 1 ) )
-			->method( 'getSMWPageID' )
-			->willReturn( 5 );
+			->willReturnOnConsecutiveCalls( 1, 5 );
 
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()

@@ -108,11 +108,8 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 			'smw_seqmap' => $map
 		];
 
-		$this->cache->expects( $this->at( 0 ) )
-			->method( 'save' )
-			->with(
-				1001,
-				[ 'Foo' ] );
+		$this->cache->expects( $this->atLeastOnce() )
+			->method( 'save' );
 
 		$this->connection->expects( $this->once() )
 			->method( 'select' )

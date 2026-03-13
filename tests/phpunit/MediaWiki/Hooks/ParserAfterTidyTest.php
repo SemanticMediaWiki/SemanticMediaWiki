@@ -216,7 +216,11 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$displayTitle = isset( $parameters['displaytitle'] ) ? $parameters['displaytitle'] : false;
 
 		$parserOutput->setExtensionData( 'smw-semanticdata-status', $parameters['data-status'] );
-		$parserOutput->setPageProperty( 'displaytitle', $displayTitle );
+		if ( is_bool( $displayTitle ) ) {
+			$parserOutput->setNumericPageProperty( 'displaytitle', (int)$displayTitle );
+		} else {
+			$parserOutput->setUnsortedPageProperty( 'displaytitle', $displayTitle );
+		}
 
 		$text = '';
 

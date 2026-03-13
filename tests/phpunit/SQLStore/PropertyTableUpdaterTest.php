@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore;
 
 use SMW\Parameters;
 use SMW\SQLStore\PropertyTableUpdater;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableUpdater
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $idTable;

@@ -5,7 +5,6 @@ namespace SMW\Tests\DataValues;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\MonolingualTextValue
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @reviewer thomas-topway-it
  */
 class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataValueServiceFactory;
 
@@ -177,7 +174,7 @@ class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setUserValue( 'Foo@foobar' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'class="smw-highlighter" data-type="4"',
 			$instance->getWikiValue()
 		);

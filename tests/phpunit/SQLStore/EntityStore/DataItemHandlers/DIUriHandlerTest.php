@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMW\Tests\PHPUnitCompat;
 use SMWDIUri as DIUri;
 
 /**
@@ -17,8 +16,6 @@ use SMWDIUri as DIUri;
  * @author mwjames
  */
 class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 

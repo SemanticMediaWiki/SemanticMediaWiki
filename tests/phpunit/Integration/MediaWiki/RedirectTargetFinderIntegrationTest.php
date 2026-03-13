@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -23,8 +22,6 @@ use SMW\Tests\Utils\UtilityFactory;
  * @author mwjames
  */
 class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $deletePoolOfPages = [];
 

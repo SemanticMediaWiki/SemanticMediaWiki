@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,8 +19,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	protected $obLevel;
 	private $connectionManager;
@@ -261,13 +258,13 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store->expects( $this->at( 0 ) )
+		$callCount = 0;
+		$store->expects( $this->exactly( 2 ) )
 			->method( 'getQueryResult' )
-			->willReturn( 1 );
-
-		$store->expects( $this->at( 1 ) )
-			->method( 'getQueryResult' )
-			->willReturn( $queryResult );
+			->willReturnCallback( static function () use ( &$callCount, $queryResult ) {
+				$callCount++;
+				return $callCount === 1 ? 1 : $queryResult;
+			} );
 
 		$store->setConnectionManager( $this->connectionManager );
 
@@ -372,25 +369,14 @@ class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$mwTitleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
-		$titleFactory->expects( $this->at( 0 ) )
+		$titleFactory->expects( $this->exactly( 4 ) )
 			->method( 'newFromText' )
-			->with( 'Main page' )
-			->willReturn( $mwTitleFactory->newFromText( 'Main page' ) );
-
-		$titleFactory->expects( $this->at( 1 ) )
-			->method( 'newFromText' )
-			->with( 'Some other page' )
-			->willReturn( $mwTitleFactory->newFromText( 'Some other page' ) );
-
-		$titleFactory->expects( $this->at( 2 ) )
-			->method( 'newFromText' )
-			->with( 'Help:Main page' )
-			->willReturn( $mwTitleFactory->newFromText( 'Main page', NS_HELP ) );
-
-		$titleFactory->expects( $this->at( 3 ) )
-			->method( 'newFromText' )
-			->with( 'Main page' )
-			->willReturn( $mwTitleFactory->newFromText( 'Main page' ) );
+			->willReturnCallback( static function ( $title ) use ( $mwTitleFactory ) {
+				if ( $title === 'Help:Main page' ) {
+					return $mwTitleFactory->newFromText( 'Main page', NS_HELP );
+				}
+				return $mwTitleFactory->newFromText( $title );
+			} );
 
 		$instance = new DataRebuilder( $store, $titleFactory );
 

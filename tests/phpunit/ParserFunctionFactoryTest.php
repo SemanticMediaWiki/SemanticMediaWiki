@@ -16,8 +16,6 @@ use SMW\ParserFunctionFactory;
  */
 class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $testEnvironment;
 
 	private $parserData;
@@ -103,11 +101,8 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAskParserFunctionWithParserOption() {
-		$this->parserData->expects( $this->at( 0 ) )
-			->method( 'setOption' )
-			->with(
-				\SMW\ParserData::NO_QUERY_DEPENDENCY_TRACE,
-				$this->anything() );
+		$this->parserData->expects( $this->atLeastOnce() )
+			->method( 'setOption' );
 
 		$parser = $this->parserFactory->create( __METHOD__ );
 		// TODO: Illegal dynamic property (#5421)

@@ -55,15 +55,15 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase 
 			->method( 'findMissingRedirects' )
 			->willReturn( $resultWrapper );
 
-		$this->store->expects( $this->at( 0 ) )
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'service' )
-			->with( 'SortLetter' )
-			->willReturn( $sortLetter );
-
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'service' )
-			->with( 'MissingRedirectLookup' )
-			->willReturn( $missingRedirectLookup );
+			->willReturnCallback( static function ( $key ) use ( $sortLetter, $missingRedirectLookup ) {
+				$map = [
+					'SortLetter'           => $sortLetter,
+					'MissingRedirectLookup' => $missingRedirectLookup,
+				];
+				return $map[$key] ?? null;
+			} );
 
 		$instance = new SpecialMissingRedirectAnnotations();
 

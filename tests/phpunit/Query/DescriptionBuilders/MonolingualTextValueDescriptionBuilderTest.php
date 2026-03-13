@@ -5,7 +5,6 @@ namespace SMW\Tests\Query\DescriptionBuilders;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

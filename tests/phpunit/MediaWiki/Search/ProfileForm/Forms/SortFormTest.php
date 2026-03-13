@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
 use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Search\ProfileForm\Forms\SortForm
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SortFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $webRequest;
 
@@ -34,7 +31,7 @@ class SortFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMakeFields() {
-		$this->webRequest->expects( $this->at( 0 ) )
+		$this->webRequest->expects( $this->once() )
 			->method( 'getVal' )
 			->with( 'sort' )
 			->willReturn( 'Foo' );
@@ -43,7 +40,7 @@ class SortFormTest extends \PHPUnit\Framework\TestCase {
 			$this->webRequest
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-search-sort',
 			$instance->makeFields( [] )
 		);

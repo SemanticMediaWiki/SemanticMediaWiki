@@ -4,7 +4,6 @@ namespace SMW\Tests\Elastic\Indexer\Attachment;
 
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Attachment\FileAttachment
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $indexer;

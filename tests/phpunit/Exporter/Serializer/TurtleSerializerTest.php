@@ -5,7 +5,6 @@ namespace SMW\Tests\Exporter\Serializer;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
-use SMW\Tests\PHPUnitCompat;
 use SMWExpData as ExpData;
 
 /**
@@ -19,14 +18,12 @@ use SMWExpData as ExpData;
  */
 class TurtleSerializerTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testFlushContent_Empty() {
 		$instance = new TurtleSerializer();
 		$instance->startSerialization();
 		$instance->finishSerialization();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>',
 			$instance->flushContent()
 		);
@@ -48,7 +45,7 @@ class TurtleSerializerTest extends \PHPUnit\Framework\TestCase {
 		$instance->serializeExpData( $expData );
 		$instance->finishSerialization();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"ns:Mo:Foobar\n" .
 			" 	ns:Lu:Li  \"Foo\"^^<Bar> .\n",
 			$instance->flushContent()

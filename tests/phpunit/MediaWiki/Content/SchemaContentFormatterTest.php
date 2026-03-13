@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\SchemaContentFormatter;
 use SMW\Schema\Schema;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Content\SchemaContentFormatter
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 
@@ -151,7 +148,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		[ $usage, $count ] = $instance->getUsage( $schema );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-columnlist-container',
 			$usage
 		);
@@ -186,7 +183,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		[ $usage, $count ] = $instance->getUsage( $schema );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-columnlist-container',
 			$usage
 		);

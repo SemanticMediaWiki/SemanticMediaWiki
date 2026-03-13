@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues\ValueValidators;
 
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class CompoundConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyLogger;
 
