@@ -64,7 +64,7 @@ class Csv {
 		}
 
 		foreach ( $rows as $row ) {
-			fputcsv( $handle, $row, $sep );
+			fputcsv( $handle, $row, $sep, '\\' );
 		}
 
 		rewind( $handle );
