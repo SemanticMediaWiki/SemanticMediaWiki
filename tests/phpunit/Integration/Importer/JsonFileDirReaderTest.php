@@ -4,7 +4,6 @@ namespace SMW\Tests\Integration\Importer;
 
 use SMW\Importer\ContentModeller;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\File;
 use SMW\Utils\FileFetcher;
 
@@ -17,8 +16,6 @@ use SMW\Utils\FileFetcher;
  * @author mwjames
  */
 class JsonFileDirReaderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $contentModeller;
 	private $fileFetcher;
@@ -116,7 +113,7 @@ class JsonFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->getContentList();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'JSON error in file',
 			implode( '', $instance->getErrors() )
 		);

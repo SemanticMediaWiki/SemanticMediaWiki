@@ -16,8 +16,6 @@ use SMW\EntityCache;
  */
 class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $cache;
 
 	protected function setUp(): void {
@@ -38,7 +36,7 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 			$this->cache
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			EntityCache::CACHE_NAMESPACE,
 			$instance->makeCacheKey( 'Foo' )
 		);
@@ -68,12 +66,12 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw:entity:44ab375ee7ebac04b8e4471a70180dc5',
 			EntityCache::makeCacheKey( $subject )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw:entity:foo:44ab375ee7ebac04b8e4471a70180dc5',
 			EntityCache::makeCacheKey( ':foo', $subject )
 		);

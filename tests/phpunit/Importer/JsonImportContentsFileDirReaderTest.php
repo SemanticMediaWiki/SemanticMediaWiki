@@ -3,7 +3,6 @@
 namespace SMW\Tests\Importer;
 
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Importer\JsonImportContentsFileDirReader
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $contentModeller;
 	private $fileFetcher;
@@ -109,7 +106,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->getContentList();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'FooFile is not readable',
 			implode( '', $instance->getErrors() )
 		);

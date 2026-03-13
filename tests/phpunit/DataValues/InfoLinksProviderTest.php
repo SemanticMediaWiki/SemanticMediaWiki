@@ -7,7 +7,6 @@ use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\StringValue;
 use SMW\Localizer\Message;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 
@@ -21,8 +20,6 @@ use SMWNumberValue as NumberValue;
  * @author mwjames
  */
 class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -94,12 +91,12 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/:Foo/1000.42|+]]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/:Foo/1000.42">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
@@ -127,12 +124,12 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/:Foo/Text-20with-20-2D3A-2D3A-20content|+]]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/:Foo/Text-20with-20-2D3A-2D3A-20content">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
@@ -187,12 +184,12 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/:Foo/12-20December-201970|+]]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/:Foo/12-20December-201970">+</a></span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);
@@ -234,12 +231,12 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newInfoLinksProvider' )
 			->willReturn( $instance );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<span class="smwttcontent">[SERVICELINK-B SERVICELINK-A]</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_WIKI )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<span class="smwttcontent">&lt;a href="SERVICELINK-B"&gt;SERVICELINK-A&lt;/a&gt;</span>',
 			$instance->getInfolinkText( SMW_OUTPUT_HTML )
 		);

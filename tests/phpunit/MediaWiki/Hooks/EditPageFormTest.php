@@ -5,7 +5,6 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Hooks\EditPageForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class EditPageFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $namespaceExaminer;
 	private $permissionExaminer;
@@ -155,7 +152,7 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->process( $editPage );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$expected,
 			$editPage->editFormPageTop
 		);

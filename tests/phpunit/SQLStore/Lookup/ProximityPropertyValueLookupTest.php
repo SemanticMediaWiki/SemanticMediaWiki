@@ -6,7 +6,6 @@ use SMW\DIProperty;
 use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -19,8 +18,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -108,7 +105,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 			new RequestOptions()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[{"OR":"smw_sortkey LIKE %Foo%"},{"OR":"smw_sortkey LIKE %Foo%"},{"OR":"smw_sortkey LIKE %FOO%"}]',
 			$query->__toString()
 		);
@@ -193,7 +190,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 			new RequestOptions()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[{"OR":"o_hash LIKE %Foo%"},{"OR":"o_hash LIKE %Foo%"},{"OR":"o_hash LIKE %FOO%"},{"AND":"p_id=42"}]',
 			$query->__toString()
 		);

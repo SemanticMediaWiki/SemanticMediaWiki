@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\Deferred;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Deferred
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DeferredTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testRegisterResourceModules() {
 		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
@@ -37,7 +34,7 @@ class DeferredTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-deferred-query',
 			Deferred::buildHTML( $query )
 		);

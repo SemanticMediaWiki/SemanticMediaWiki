@@ -15,8 +15,6 @@ use SMWInfolink as Infolink;
  */
 class InfolinkTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $testEnvironment;
 
 	protected function setUp(): void {
@@ -67,14 +65,14 @@ class InfolinkTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setCompactLink( false );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'title=Special:SearchByProperty&x=%3ABar%2FFoobar',
 			$instance->getText( SMW_OUTPUT_RAW )
 		);
 
 		$instance->setCompactLink( true );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'title=Special:SearchByProperty&cl=OkJhci9Gb29iYXI',
 			$instance->getText( SMW_OUTPUT_RAW )
 		);
@@ -89,36 +87,36 @@ class InfolinkTest extends \PHPUnit\Framework\TestCase {
 		$instance = new Infolink( true, 'Foo', 'Bar/Foobar' );
 		$instance->setCompactLink( true );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/Bar/Foobar',
 			$instance->getLocalURL()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'/Bar/Foobar',
 			$instance->getURL()
 		);
 
 		$instance->setParameter( 123, 'foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'title=Bar/Foobar&cl=Zm9vPTEyMw',
 			$instance->getLocalURL()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'title=Bar/Foobar&cl=Zm9vPTEyMw',
 			$instance->getURL()
 		);
 
 		$instance->setCompactLink( false );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'title=Bar/Foobar&foo=123',
 			$instance->getLocalURL()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'title=Bar/Foobar&foo=123',
 			$instance->getURL()
 		);
@@ -128,7 +126,7 @@ class InfolinkTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider base64Provider
 	 */
 	public function testEncodeBase64( $source, $target ) {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$target,
 			Infolink::encodeCompactLink( $source )
 		);
@@ -155,7 +153,7 @@ class InfolinkTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNotDecodable() {
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'%3ABar/Foobar',
 			Infolink::decodeCompactLink( 'eD0lM0FCYXIlMkZGb29iYXI' )
 		);

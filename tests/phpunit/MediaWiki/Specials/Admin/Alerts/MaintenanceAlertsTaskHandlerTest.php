@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MaintenanceAlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -41,7 +38,7 @@ class MaintenanceAlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'FOO',
 			$instance->getHtml()
 		);

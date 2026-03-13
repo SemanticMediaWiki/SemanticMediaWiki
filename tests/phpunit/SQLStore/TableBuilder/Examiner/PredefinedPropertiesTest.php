@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
@@ -182,7 +179,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'invalid registration',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

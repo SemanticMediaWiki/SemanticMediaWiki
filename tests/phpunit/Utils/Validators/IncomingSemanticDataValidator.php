@@ -4,7 +4,6 @@ namespace SMW\Tests\Utils\Validators;
 
 use SMW\DIWikiPage;
 use SMW\Store;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class IncomingSemanticDataValidator extends \PHPUnit\Framework\Assert {
-
-	use PHPUnitCompat;
 
 	/**
 	 * @var Store

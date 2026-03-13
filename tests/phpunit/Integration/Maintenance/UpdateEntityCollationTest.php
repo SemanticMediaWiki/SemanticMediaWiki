@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class UpdateEntityCollationTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -53,7 +50,7 @@ class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 
 		$maintenanceRunner->run();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Collation update(s)',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

@@ -4,7 +4,6 @@ namespace SMW\Tests\Query;
 
 use SMW\DIWikiPage;
 use SMW\Query\ScoreSet;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\ScoreSet
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ScoreSetTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -77,12 +74,12 @@ class ScoreSetTest extends \PHPUnit\Framework\TestCase {
 
 		$table = $instance->asTable();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<tr><td>42</td><td>Foo</td><td>0</td></tr>',
 			$table
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<tr><td>1001</td><td>Bar</td><td>5</td></tr>',
 			$table
 		);
