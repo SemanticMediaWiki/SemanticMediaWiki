@@ -2,8 +2,10 @@
 
 namespace SMW\Tests;
 
+use Closure;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use SMW\Elastic\ElasticStore;
 use SMW\Localizer\Localizer;
 use SMW\NamespaceManager;
 use SMW\SPARQLStore\SPARQLStore;
@@ -90,7 +92,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 			}
 
 			$this->connectorId = strtolower( $connectorId );
-		} elseif ( $this->getStore() instanceof \SMW\Elastic\ElasticStore ) {
+		} elseif ( $this->getStore() instanceof ElasticStore ) {
 			$this->connectorId = 'elastic';
 		} else {
 			$this->connectorId = strtolower( $this->testDatabaseTableBuilder->getDBConnection()->getType() );
@@ -194,7 +196,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 * @param string $key
 	 * @param Closure $callback
 	 */
-	protected function registerConfigValueCallback( $key, \Closure $callback ) {
+	protected function registerConfigValueCallback( $key, Closure $callback ) {
 		$this->configValueCallback[$key] = $callback;
 	}
 
@@ -303,10 +305,6 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
 			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
-
-		if ( $jsonTestCaseFileHandler->requiredToSkipForConnector( $this->testDatabaseTableBuilder->getDBConnection()->getType() ) ) {
-			$this->markTestSkipped( $jsonTestCaseFileHandler->getReasonForSkip() );
-		}
 	}
 
 	/**
@@ -332,13 +330,6 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$this->itemsMarkedForDeletion = $this->jsonTestCaseContentHandler->getPages();
-	}
-
-	/**
-	 * @deprecated 2.5
-	 */
-	protected function createPagesFor( array $pages, $defaultNamespace ) {
-		$this->createPagesFrom( $pages, $defaultNamespace );
 	}
 
 }
