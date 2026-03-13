@@ -74,10 +74,6 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testRdfSerializationForInterwikiAnnotation() {
-		if ( version_compare( MW_VERSION, '1.40', '>=' ) ) {
-			$this->markTestSkipped( 'The Serialization for interwiki needs to be checked for MW 1.40 and newer.' );
-		}
-
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		$this->stringBuilder
@@ -103,7 +99,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$expectedOutputContent = [
 			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Interwiki_link"/>',
-			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;iw-2Dtest-3AInterwiki_link"/>'
+			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Iw-2Dtest-3AInterwiki_link"/>'
 		];
 
 		$this->stringValidator->assertThatStringContains(
