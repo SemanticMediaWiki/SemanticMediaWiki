@@ -157,6 +157,8 @@ class TestEnvironment {
 			foreach ( $poolCache as $pc ) {
 				$this->resetPoolCacheById( $pc );
 			}
+
+			return $this;
 		}
 
 		$this->applicationFactory->getInMemoryPoolCache()->resetPoolCacheById( $poolCache );
