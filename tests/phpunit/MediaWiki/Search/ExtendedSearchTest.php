@@ -193,10 +193,6 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->fallbackSearchEngine->expects( $this->once() )
-			->method( 'replacePrefixes' )
-			->willReturnArgument( 0 );
-
-		$this->fallbackSearchEngine->expects( $this->once() )
 			->method( 'searchText' )
 			->willReturnMap( [ [ $term, $searchResultSet ] ] );
 
