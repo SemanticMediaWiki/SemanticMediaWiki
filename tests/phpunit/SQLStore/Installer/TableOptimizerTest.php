@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\Installer;
 
 use SMW\SQLStore\Installer\TableOptimizer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $setupFile;

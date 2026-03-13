@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Connection;
 
 use SMW\Elastic\Connection\LockManager;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\LockManager
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class LockManagerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $cache;
 

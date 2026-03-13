@@ -17,8 +17,6 @@ use SMW\HierarchyLookup;
  */
 class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $store;
 	private $cache;
 	private $spyLogger;

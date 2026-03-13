@@ -13,7 +13,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -27,8 +26,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class HooksTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $parser;
 	private $title;

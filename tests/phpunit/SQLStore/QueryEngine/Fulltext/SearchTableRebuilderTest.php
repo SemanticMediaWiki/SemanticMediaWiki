@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWDataItem as DataItem;
 
@@ -17,8 +16,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $searchTableUpdater;
 	private $searchTable;

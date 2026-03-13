@@ -6,7 +6,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMWDIBlob as DIBlob;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -20,8 +19,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $connection;

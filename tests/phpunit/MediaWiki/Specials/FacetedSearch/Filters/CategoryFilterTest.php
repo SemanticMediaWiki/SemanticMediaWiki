@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\CategoryFilter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\CategoryFilter
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class CategoryFilterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $templateParser;
 	private $treeBuilder;

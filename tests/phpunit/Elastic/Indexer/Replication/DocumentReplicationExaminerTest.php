@@ -5,7 +5,6 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
-use SMW\Tests\PHPUnitCompat;
 use SMWDITime as DITime;
 
 /**
@@ -18,8 +17,6 @@ use SMWDITime as DITime;
  * @author mwjames
  */
 class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $replicationStatus;

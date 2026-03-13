@@ -3,7 +3,6 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\DotSeekableIteratorTrait;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\DotSeekableIteratorTrait
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DotSeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testSeek_MultiAssociative_Dot() {
 		$container = [

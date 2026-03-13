@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\TitleFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\TitleFactory
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

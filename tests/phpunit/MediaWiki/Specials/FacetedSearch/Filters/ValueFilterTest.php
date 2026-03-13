@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilter
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ValueFilterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $templateParser;
 	private $valueFilterFactory;

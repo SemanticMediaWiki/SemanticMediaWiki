@@ -3,7 +3,6 @@
 namespace SMW\Tests\Constraint;
 
 use SMW\Constraint\ConstraintRegistry;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\ConstraintRegistry
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $constraintFactory;
 	private $hookDispatcher;

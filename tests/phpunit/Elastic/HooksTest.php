@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\Hooks;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class HooksTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $elasticFactory;

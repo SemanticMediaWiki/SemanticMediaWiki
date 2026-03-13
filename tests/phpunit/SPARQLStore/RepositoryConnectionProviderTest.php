@@ -3,7 +3,6 @@
 namespace SMW\Tests\SPARQLStore;
 
 use SMW\SPARQLStore\RepositoryConnectionProvider;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\GlobalsProvider;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\Utils\GlobalsProvider;
  * @author mwjames
  */
 class RepositoryConnectionProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $globalsProvider;
 	private $smwgSparqlCustomConnector;

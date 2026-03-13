@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\Maintenance\DataRebuilder;
 use SMW\Options;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,8 +19,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DataRebuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	protected $obLevel;
 	private $connectionManager;

@@ -4,7 +4,6 @@ namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
 use SMW\DataItemFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Constraint\Constraints\MandatoryPropertiesConstraint
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MandatoryPropertiesConstraintTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

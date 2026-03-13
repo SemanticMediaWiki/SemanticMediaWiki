@@ -16,8 +16,6 @@ use SMW\ParserFunctionFactory;
  */
 class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $testEnvironment;
 
 	private $parserData;

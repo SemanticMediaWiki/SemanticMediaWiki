@@ -15,8 +15,6 @@ use SMW\SerializerFactory;
  */
 class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			'\SMW\SerializerFactory',

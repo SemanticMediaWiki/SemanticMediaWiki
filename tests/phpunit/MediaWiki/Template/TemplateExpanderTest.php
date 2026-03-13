@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Template;
 
 use SMW\MediaWiki\Template\Template;
 use SMW\MediaWiki\Template\TemplateExpander;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Template\TemplateExpander
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class TemplateExpanderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $parser;
 

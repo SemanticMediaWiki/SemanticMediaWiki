@@ -4,7 +4,6 @@ namespace SMW\Tests\Query;
 
 use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\QueryResult
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class QueryResultTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$query = $this->getMockBuilder( '\SMWQuery' )

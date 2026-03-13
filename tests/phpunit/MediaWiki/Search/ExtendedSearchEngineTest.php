@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author Stephan Gambke
  */
 class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $connection;

@@ -4,7 +4,6 @@ namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $errorLookup;

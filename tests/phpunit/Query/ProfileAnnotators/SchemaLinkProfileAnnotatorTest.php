@@ -6,7 +6,6 @@ use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWDIContainer as DIContainer;
 
@@ -20,8 +19,6 @@ use SMWDIContainer as DIContainer;
  * @author mwjames
  */
 class SchemaLinkProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $semanticDataValidator;
 

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
-use SMW\Tests\PHPUnitCompat;
 use SMWDITime as DITime;
 
 /**
@@ -16,8 +15,6 @@ use SMWDITime as DITime;
  * @author mwjames
  */
 class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connection;
 

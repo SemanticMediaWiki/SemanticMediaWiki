@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\HtmlColumns;
 
 /**
@@ -15,8 +14,6 @@ use SMW\Utils\HtmlColumns;
  * @author mwjames
  */
 class HtmlColumnsTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $stringValidator;
 

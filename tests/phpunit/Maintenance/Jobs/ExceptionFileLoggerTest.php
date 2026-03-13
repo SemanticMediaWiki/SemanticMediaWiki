@@ -4,7 +4,6 @@ namespace SMW\Tests\Maintenance\Jobs;
 
 use SMW\Maintenance\ExceptionFileLogger;
 use SMW\Options;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\ExceptionFileLogger
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ExceptionFileLoggerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $file;
 

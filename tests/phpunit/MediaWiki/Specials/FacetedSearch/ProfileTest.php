@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\Utils\Mock\IteratorMockBuilder;
  * @author mwjames
  */
 class ProfileTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $schemaFactory;
 

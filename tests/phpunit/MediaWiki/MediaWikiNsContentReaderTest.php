@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki;
 
 use SMW\MediaWiki\MediaWikiNsContentReader;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\MediaWikiNsContentReader
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

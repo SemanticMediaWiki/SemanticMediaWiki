@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\TransactionHandler;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\ILBFactory;
 
 /**
@@ -16,8 +15,6 @@ use Wikimedia\Rdbms\ILBFactory;
  * @author mwjames
  */
 class TransactionHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $loadBalancerFactory;
 	private $transactionProfiler;

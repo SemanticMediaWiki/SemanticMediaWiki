@@ -4,7 +4,6 @@ namespace SMW\Tests\Query\DescriptionBuilders;
 
 use SMW\DIProperty;
 use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

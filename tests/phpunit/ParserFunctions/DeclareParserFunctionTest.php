@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,8 +18,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;

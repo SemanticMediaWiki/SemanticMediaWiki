@@ -8,7 +8,6 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\ParameterProcessorFactory;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -21,8 +20,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;
