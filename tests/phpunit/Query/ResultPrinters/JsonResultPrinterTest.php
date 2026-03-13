@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query\ResultPrinters;
 
 use SMW\Query\ResultPrinters\JsonResultPrinter;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class JsonResultPrinterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $queryResult;
 	private $resultPrinterReflector;

@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $profile;
 	private $templateParser;

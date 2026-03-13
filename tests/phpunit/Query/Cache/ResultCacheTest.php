@@ -7,7 +7,6 @@ use Onoi\BlobStore\Container;
 use SMW\DIWikiPage;
 use SMW\Query\Cache\CacheStats;
 use SMW\Query\Cache\ResultCache;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Cache\ResultCache
@@ -19,8 +18,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ResultCacheTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $queryFactory;

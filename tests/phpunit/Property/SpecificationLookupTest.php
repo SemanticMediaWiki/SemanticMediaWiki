@@ -5,7 +5,6 @@ namespace SMW\Tests\Property;
 use SMW\DataItemFactory;
 use SMW\Property\LanguageFalldownAndInverse;
 use SMW\Property\SpecificationLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWDataItem as DataItem;
 
@@ -20,8 +19,6 @@ use SMWDataItem as DataItem;
  * @author thomas-topway-it
  */
 class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $monolingualTextLookup;
 	private $dataItemFactory;

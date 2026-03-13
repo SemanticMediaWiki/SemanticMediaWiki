@@ -18,8 +18,6 @@ use SMW\CacheFactory;
  */
 class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			'\SMW\CacheFactory',

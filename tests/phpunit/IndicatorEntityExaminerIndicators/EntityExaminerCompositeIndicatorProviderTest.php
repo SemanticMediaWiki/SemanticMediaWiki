@@ -5,7 +5,6 @@ namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,8 +17,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $compositeIndicatorHtmlBuilder;
 

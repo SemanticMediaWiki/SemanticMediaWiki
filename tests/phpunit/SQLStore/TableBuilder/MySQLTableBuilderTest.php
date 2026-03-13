@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\TableBuilder;
 
 use SMW\SQLStore\TableBuilder\MySQLTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IMaintainableDatabase;
 
@@ -18,8 +17,6 @@ use Wikimedia\Rdbms\IMaintainableDatabase;
  * @author mwjames
  */
 class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connection;
 

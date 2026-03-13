@@ -4,7 +4,6 @@ namespace SMW\Tests\Query\DescriptionBuilders;
 
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

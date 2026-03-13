@@ -16,8 +16,6 @@ use SMW\Tests\Fixtures\PlainClass;
  */
 class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ConstraintFactory::class,

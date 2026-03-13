@@ -4,7 +4,6 @@ namespace SMW\Tests\Elastic\Admin;
 
 use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Admin\MappingsInfoProvider
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $outputFormatter;
 	private $webRequest;

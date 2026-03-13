@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues\Time;
 
 use SMW\DataValues\Time\Timezone;
 use SMW\MediaWiki\ExtendedDateTime;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\Time\Timezone
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class TimezoneTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

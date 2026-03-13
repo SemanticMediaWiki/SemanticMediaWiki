@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

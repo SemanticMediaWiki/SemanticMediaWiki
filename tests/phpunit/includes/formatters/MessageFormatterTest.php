@@ -26,8 +26,6 @@ use SMW\MessageFormatter;
  */
 class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * Returns the name of the class to be tested
 	 *

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\MaintenanceLogger;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\MaintenanceLogger
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MaintenanceLoggerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )

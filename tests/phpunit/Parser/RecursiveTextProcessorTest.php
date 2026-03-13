@@ -3,7 +3,6 @@
 namespace SMW\Tests\Parser;
 
 use SMW\Parser\RecursiveTextProcessor;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Parser\RecursiveTextProcessor
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $parser;
 	private $parserOptions;

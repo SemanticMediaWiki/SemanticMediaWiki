@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\HtmlForm;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\HtmlForm
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class HtmlFormTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )

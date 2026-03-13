@@ -9,7 +9,6 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
@@ -23,8 +22,6 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  * @author mwjames
  */
 class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $connection;

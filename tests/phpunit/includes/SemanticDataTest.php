@@ -24,8 +24,6 @@ use SMWDITime as DITime;
  */
 class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $semanticDataValidator;
 	private $dataValueFactory;
 	private $testEnvironment;

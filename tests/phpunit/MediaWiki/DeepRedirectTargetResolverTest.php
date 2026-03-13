@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\Utils\Mock\MockTitle;
  * @author mwjames
  */
 class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )

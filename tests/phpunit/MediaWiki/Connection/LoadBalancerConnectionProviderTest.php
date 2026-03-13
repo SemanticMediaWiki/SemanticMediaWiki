@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\ILoadBalancer;
 
@@ -17,8 +16,6 @@ use Wikimedia\Rdbms\ILoadBalancer;
  * @author mwjames
  */
 class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $loadBalancer;
 

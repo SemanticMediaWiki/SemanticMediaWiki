@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class RebuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connection;
 	private $fileIndexer;

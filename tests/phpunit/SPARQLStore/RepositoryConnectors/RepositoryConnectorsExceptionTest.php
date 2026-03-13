@@ -3,7 +3,6 @@
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
 use SMW\SPARQLStore\RepositoryClient;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector
@@ -19,8 +18,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $defaultGraph;
 

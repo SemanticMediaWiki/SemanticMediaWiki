@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use SMW\DataItemFactory;
 use SMW\Property\SpecificationLookup;
 use SMW\Serializers\QueryResultSerializer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
@@ -23,8 +22,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;

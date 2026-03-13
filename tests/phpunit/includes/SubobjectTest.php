@@ -21,8 +21,6 @@ use SMWDIBlob;
  */
 class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $testEnvironment;
 
 	private $semanticDataValidator;

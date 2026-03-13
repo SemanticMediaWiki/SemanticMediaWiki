@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Content;
 
 use SMW\MediaWiki\Content\HtmlBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Content\HtmlBuilder
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

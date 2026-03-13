@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic;
 
 use SMW\Elastic\Config;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Config
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ConfigTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
