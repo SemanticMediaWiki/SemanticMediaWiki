@@ -46,7 +46,7 @@ class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnJobQueueWatchlist() {
-		$this->preferenceExaminer->expects( $this->at( 0 ) )
+		$this->preferenceExaminer->expects( $this->once() )
 			->method( 'hasPreferenceOf' )
 			->with( 'smw-prefs-general-options-jobqueue-watchlist' )
 			->willReturn( true );

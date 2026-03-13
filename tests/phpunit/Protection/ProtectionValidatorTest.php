@@ -416,7 +416,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyChangeListener->expects( $this->at( 0 ) )
+		$propertyChangeListener->expects( $this->once() )
 			->method( 'addListenerCallback' )
 			->with(
 				$this->dataItemFactory->newDIProperty( '_CHGPRO' ),

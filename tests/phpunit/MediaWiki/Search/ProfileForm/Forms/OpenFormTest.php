@@ -34,20 +34,16 @@ class OpenFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMakeFields() {
-		$this->webRequest->expects( $this->at( 0 ) )
+		$this->webRequest->expects( $this->exactly( 3 ) )
 			->method( 'getArray' )
-			->with( 'property' )
-			->willReturn( [ 'Bar' ] );
-
-		$this->webRequest->expects( $this->at( 1 ) )
-			->method( 'getArray' )
-			->with( 'pvalue' )
-			->willReturn( [ 42 ] );
-
-		$this->webRequest->expects( $this->at( 2 ) )
-			->method( 'getArray' )
-			->with( 'op' )
-			->willReturn( [ 'OR' ] );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'property' => [ 'Bar' ],
+					'pvalue'   => [ 42 ],
+					'op'       => [ 'OR' ],
+				];
+				return $map[$key] ?? [];
+			} );
 
 		$instance = new OpenForm(
 			$this->webRequest

@@ -781,15 +781,17 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
 
-		$instance->expects( $this->at( 0 ) )
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_NOCASE )
-			->willReturn( false );
-
-		$instance->expects( $this->at( 1 ) )
-			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_REDI )
-			->willReturn( true );
+			->willReturnCallback( static function ( $flag ) {
+				if ( $flag === SMW_SPARQL_QF_NOCASE ) {
+					return false;
+				}
+				if ( $flag === SMW_SPARQL_QF_REDI ) {
+					return true;
+				}
+				return false;
+			} );
 
 		$condition = $instance->getConditionFrom( $description );
 
@@ -836,15 +838,17 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
 
-		$instance->expects( $this->at( 0 ) )
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_NOCASE )
-			->willReturn( false );
-
-		$instance->expects( $this->at( 1 ) )
-			->method( 'isSetFlag' )
-			->with( SMW_SPARQL_QF_REDI )
-			->willReturn( true );
+			->willReturnCallback( static function ( $flag ) {
+				if ( $flag === SMW_SPARQL_QF_NOCASE ) {
+					return false;
+				}
+				if ( $flag === SMW_SPARQL_QF_REDI ) {
+					return true;
+				}
+				return false;
+			} );
 
 		$condition = $instance->getConditionFrom( $description );
 

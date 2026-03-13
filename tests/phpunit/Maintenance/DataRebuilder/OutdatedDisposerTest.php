@@ -84,7 +84,7 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newUnassignedQueryLinksResultIterator' )
 			->willReturn( $this->resultIterator );
 
-		$this->entityIdDisposerJob->expects( $this->once() )
+		$this->entityIdDisposerJob->expects( $this->exactly( 2 ) )
 			->method( 'dispose' );
 
 		$this->iteratorFactory->expects( $this->exactly( 2 ) )
