@@ -23,7 +23,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<div id=\"smw-types\" class=\"smw-tabs smw-types\"><input id=\"tab-smw-type-list\" class=\"nav-tab\" type=\"radio\" name=\"types\" checked=\"\"/>",
+					"<div id=\"smw-types\" class=\"smw-tabs smw-types\"><input id=\"tab-smw-type-list\" class=\"nav-tab\" type=\"radio\" name=\"types\" checked=\"\">",
 					"<p class=\"plainlinks smw-types-intro\">"
 				]
 			}
