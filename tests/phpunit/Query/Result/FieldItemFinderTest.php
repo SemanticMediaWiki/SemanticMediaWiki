@@ -97,10 +97,11 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->dataItemFactory->newDIProperty( '_INST' ) )
 			->willReturn( [ $expected ] );
 
-		$this->printRequest->expects( $this->at( 1 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( PrintRequest::PRINT_CATS )
-			->willReturn( true );
+			->willReturnCallback( static function ( $mode ) {
+				return $mode === PrintRequest::PRINT_CATS;
+			} );
 
 		$instance = new FieldItemFinder(
 			$this->store,
@@ -125,10 +126,11 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->dataItemFactory->newDIProperty( '_INST' ) )
 			->willReturn( [ $expected ] );
 
-		$this->printRequest->expects( $this->at( 2 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( PrintRequest::PRINT_CCAT )
-			->willReturn( true );
+			->willReturnCallback( static function ( $mode ) {
+				return $mode === PrintRequest::PRINT_CCAT;
+			} );
 
 		$this->printRequest->expects( $this->once() )
 			->method( 'getData' )
@@ -158,10 +160,11 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $expected ] );
 
-		$this->printRequest->expects( $this->at( 3 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( PrintRequest::PRINT_PROP )
-			->willReturn( true );
+			->willReturnCallback( static function ( $mode ) {
+				return $mode === PrintRequest::PRINT_PROP;
+			} );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
@@ -199,10 +202,11 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $expected ] );
 
-		$this->printRequest->expects( $this->at( 3 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( PrintRequest::PRINT_PROP )
-			->willReturn( true );
+			->willReturnCallback( static function ( $mode ) {
+				return $mode === PrintRequest::PRINT_PROP;
+			} );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
@@ -243,10 +247,11 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $expected ] );
 
-		$this->printRequest->expects( $this->at( 3 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( PrintRequest::PRINT_PROP )
-			->willReturn( true );
+			->willReturnCallback( static function ( $mode ) {
+				return $mode === PrintRequest::PRINT_PROP;
+			} );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getTypeID' )
@@ -287,10 +292,11 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $text ] );
 
-		$this->printRequest->expects( $this->at( 3 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'isMode' )
-			->with( PrintRequest::PRINT_PROP )
-			->willReturn( true );
+			->willReturnCallback( static function ( $mode ) {
+				return $mode === PrintRequest::PRINT_PROP;
+			} );
 
 		$this->printRequest->expects( $this->any() )
 			->method( 'getOutputFormat' )

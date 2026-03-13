@@ -242,13 +242,17 @@ class EntityCacheTest extends \PHPUnit\Framework\TestCase {
 			->method( 'fetch' )
 			->willReturn( [ md5( 'bar' ) => 'Foobar', '__assoc' => [ 'Foo' => true ] ] );
 
-		$this->cache->expects( $this->at( 1 ) )
+		$this->cache->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
-			->with(	$this->stringContains( 'Foo' ) );
-
-		$this->cache->expects( $this->at( 2 ) )
-			->method( 'delete' )
-			->with(	$this->stringContains( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5' ) );
+			->willReturnCallback( function ( $key ) {
+				static $calls = [];
+				$calls[] = $key;
+				if ( count( $calls ) === 1 ) {
+					$this->assertStringContainsString( 'Foo', $key );
+				} elseif ( count( $calls ) === 2 ) {
+					$this->assertStringContainsString( 'smw:entity:44ab375ee7ebac04b8e4471a70180dc5', $key );
+				}
+			} );
 
 		$instance = new EntityCache(
 			$this->cache

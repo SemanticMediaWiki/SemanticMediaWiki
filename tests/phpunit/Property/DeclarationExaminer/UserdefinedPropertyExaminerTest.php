@@ -238,15 +238,20 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 		$imported_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_num' );
 		$user_type = $dataItemFactory->newDIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_dat' );
 
-		$this->semanticData->expects( $this->at( 0 ) )
+		$this->semanticData->expects( $this->atLeastOnce() )
 			->method( 'hasProperty' )
-			->with( $dataItemFactory->newDIProperty( '_IMPO' ) )
-			->willReturn( true );
+			->willReturnCallback( static function ( $property ) {
+				return $property->getKey() === '_IMPO';
+			} );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getOption' )
-			->with( \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE )
-			->willReturn( $imported_type );
+			->willReturnCallback( static function ( $key ) use ( $imported_type ) {
+				if ( $key === \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) {
+					return $imported_type;
+				}
+				return null;
+			} );
 
 		$this->semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )

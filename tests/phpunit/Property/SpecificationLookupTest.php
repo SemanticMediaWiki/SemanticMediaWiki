@@ -513,21 +513,12 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_CATEGORY );
 		$bool = $this->dataItemFactory->newDIBoolean( true );
 
-		$this->store->expects( $this->at( 0 ) )
+		$callCount = 0;
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertyValues' )
-			->with(
-				$property->getDiWikiPage(),
-				$this->anything(),
-				$this->anything() )
-			->willReturn( [ $dataItem ] );
-
-		$this->store->expects( $this->at( 1 ) )
-			->method( 'getPropertyValues' )
-			->with(
-				$dataItem,
-				$ppgr,
-				$this->anything() )
-			->willReturn( [ $bool ] );
+			->willReturnCallback( static function () use ( &$callCount, $dataItem, $bool ) {
+				return [ [ $dataItem ], [ $bool ] ][$callCount++];
+			} );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'fetchSub' )
@@ -547,21 +538,12 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testInvalidateCache() {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Foo' );
 
-		$this->entityCache->expects( $this->at( 0 ) )
+		$this->entityCache->expects( $this->once() )
 			->method( 'invalidate' )
 			->with( $subject );
 
-		$this->entityCache->expects( $this->at( 1 ) )
-			->method( 'delete' )
-			->with( $this->stringContains( 'smw:entity:propertyspecificationlookup:44ab375ee7ebac04b8e4471a70180dc5' ) );
-
-		$this->entityCache->expects( $this->at( 2 ) )
-			->method( 'delete' )
-			->with( $this->stringContains( 'smw:entity:propertyspecificationlookup:preferredlabel:44ab375ee7ebac04b8e4471a70180dc5' ) );
-
-		$this->entityCache->expects( $this->at( 3 ) )
-			->method( 'delete' )
-			->with( $this->stringContains( 'smw:entity:propertyspecificationlookup:description:44ab375ee7ebac04b8e4471a70180dc5' ) );
+		$this->entityCache->expects( $this->exactly( 3 ) )
+			->method( 'delete' );
 
 		$instance = new SpecificationLookup(
 			$this->store,

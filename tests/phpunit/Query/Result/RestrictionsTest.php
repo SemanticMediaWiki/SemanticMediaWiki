@@ -37,15 +37,11 @@ class RestrictionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testApplyLimitRestriction() {
-		$this->printRequest->expects( $this->at( 0 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->with( 'limit' )
-			->willReturn( 2 );
-
-		$this->printRequest->expects( $this->at( 1 ) )
-			->method( 'getParameter' )
-			->with( 'offset' )
-			->willReturn( 1 );
+			->willReturnCallback( static function ( $param ) {
+				return [ 'limit' => 2, 'offset' => 1 ][$param] ?? null;
+			} );
 
 		$content = [
 			$this->dataItemFactory->newDIWikiPage( 'Foo' ),
@@ -65,10 +61,11 @@ class RestrictionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testApplySortRestriction() {
-		$this->printRequest->expects( $this->at( 0 ) )
+		$this->printRequest->expects( $this->any() )
 			->method( 'getParameter' )
-			->with( 'order' )
-			->willReturn( 'desc' );
+			->willReturnCallback( static function ( $param ) {
+				return $param === 'order' ? 'desc' : null;
+			} );
 
 		$content = [
 			$this->dataItemFactory->newDIWikiPage( 'Foo' ),

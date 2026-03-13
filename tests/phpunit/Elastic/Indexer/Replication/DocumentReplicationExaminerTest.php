@@ -78,7 +78,7 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'equals' )
 			->willReturn( true );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->willReturn( 42 );
 
@@ -265,11 +265,11 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	'modification_date_associated_revision' )
 			->willReturn( $replicationStatus );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->willReturn( 42 );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->willReturn( [ $time ] );
 
@@ -335,17 +335,17 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	'modification_date_associated_revision' )
 			->willReturn( $replicationStatus );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->willReturn( 99999 );
 
-		$this->store->expects( $this->at( 1 ) )
+		$getPropertyValuesCallCount = 0;
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertyValues' )
-			->willReturn( [ $time ] );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->willReturn( [] );
+			->willReturnCallback( static function () use ( &$getPropertyValuesCallCount, $time ) {
+				$getPropertyValuesCallCount++;
+				return $getPropertyValuesCallCount === 1 ? [ $time ] : [];
+			} );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -411,17 +411,17 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	'modification_date_associated_revision' )
 			->willReturn( $replicationStatus );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->willReturn( 99999 );
 
-		$this->store->expects( $this->at( 1 ) )
+		$getPropertyValuesCallCount = 0;
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertyValues' )
-			->willReturn( [ $time ] );
-
-		$this->store->expects( $this->at( 4 ) )
-			->method( 'getPropertyValues' )
-			->willReturn( [ 'Foo' ] );
+			->willReturnCallback( static function () use ( &$getPropertyValuesCallCount, $time ) {
+				$getPropertyValuesCallCount++;
+				return $getPropertyValuesCallCount === 1 ? [ $time ] : [ 'Foo' ];
+			} );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -474,11 +474,11 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	'modification_date_associated_revision' )
 			->willReturn( $replicationStatus );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->willReturn( 99999 );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->willReturn( [ $time ] );
 
@@ -520,11 +520,11 @@ class DocumentReplicationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->with(	'modification_date_associated_revision' )
 			->willReturn( $replicationStatus );
 
-		$this->idTable->expects( $this->at( 1 ) )
+		$this->idTable->expects( $this->once() )
 			->method( 'findAssociatedRev' )
 			->willReturn( 99999 );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->willReturn( [ $time ] );
 
