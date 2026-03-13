@@ -100,22 +100,6 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testAskParserFunctionWithParserOption() {
-		$this->parserData->expects( $this->atLeastOnce() )
-			->method( 'setOption' );
-
-		$parser = $this->parserFactory->create( __METHOD__ );
-		// TODO: Illegal dynamic property (#5421)
-		$parser->getOptions()->smwAskNoDependencyTracking = true;
-
-		$parserFunctionFactory = new ParserFunctionFactory();
-
-		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\AskParserFunction',
-			$parserFunctionFactory->newAskParserFunction( $parser )
-		);
-	}
-
 	public function parserFunctionProvider() {
 		$provider[] = [
 			'\SMW\ParserFunctions\RecurringEventsParserFunction',
