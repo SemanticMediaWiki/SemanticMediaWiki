@@ -57,10 +57,6 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @note When other methods called before the actual current/next then
-	 * set the counter to ensure the starting point matches the expected
-	 * InvokeCount.
-	 *
 	 * @since  2.5
 	 *
 	 * @param int $num
@@ -88,26 +84,34 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 			throw new RuntimeException( "Instance is not an Iterator" );
 		}
 
-		$instance->expects( $this->at( $this->counter++ ) )
-			->method( 'rewind' );
+		$items = array_values( $this->items );
+		$position = 0;
 
-		foreach ( $this->items as $key => $value ) {
+		$instance->expects( $this->any() )
+			->method( 'rewind' )
+			->willReturnCallback( static function () use ( &$position ) {
+				$position = 0;
+			} );
 
-			$instance->expects( $this->at( $this->counter++ ) )
-				->method( 'valid' )
-				->willReturn( true );
-
-			$instance->expects( $this->at( $this->counter++ ) )
-				->method( 'current' )
-				->willReturn( $value );
-
-			$instance->expects( $this->at( $this->counter++ ) )
-				->method( 'next' );
-		}
-
-		$instance->expects( $this->at( $this->counter++ ) )
+		$instance->expects( $this->any() )
 			->method( 'valid' )
-			->willReturn( false );
+			->willReturnCallback( static function () use ( &$position, $items ) {
+				return $position < count( $items );
+			} );
+
+		$instance->expects( $this->any() )
+			->method( 'current' )
+			->willReturnCallback( static function () use ( &$position, $items ) {
+				return $items[$position] ?? null;
+			} );
+
+		$instance->expects( $this->any() )
+			->method( 'next' )
+			->willReturnCallback( static function () use ( &$position ) {
+				$position++;
+			} );
+
+		$this->counter += 2 + ( count( $items ) * 3 );
 
 		return $instance;
 	}

@@ -47,17 +47,17 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyChangeListener->expects( $this->at( 0 ) )
+		$propertyChangeListener->expects( $this->exactly( 2 ) )
 			->method( 'addListenerCallback' )
-			->with(
-				new DIProperty( '_SUBP' ),
-				$this->anything() );
-
-		$propertyChangeListener->expects( $this->at( 1 ) )
-			->method( 'addListenerCallback' )
-			->with(
-				new DIProperty( '_SUBC' ),
-				$this->anything() );
+			->willReturnCallback( function ( $property, $callback ) {
+				static $calls = [];
+				$calls[] = $property;
+				if ( count( $calls ) === 1 ) {
+					$this->assertEquals( new DIProperty( '_SUBP' ), $property );
+				} elseif ( count( $calls ) === 2 ) {
+					$this->assertEquals( new DIProperty( '_SUBC' ), $property );
+				}
+			} );
 
 		$instance = new HierarchyLookup(
 			$this->store,
@@ -149,24 +149,22 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$a = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
-
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				new DIProperty( '_SUBP' ),
-				$property->getDiWikiPage(),
-				$this->anything() )
-			->willReturn( [ $a ] );
-
 		$b = DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
-			->with(
-				new DIProperty( '_SUBP' ),
-				$a,
-				$this->anything() )
-			->willReturn( [ $b ] );
+			->willReturnCallback( function ( $prop, $subject, $requestOptions ) use ( $property, $a, $b ) {
+				static $calls = [];
+				$calls[] = $subject;
+				if ( count( $calls ) === 1 ) {
+					$this->assertEquals( new DIProperty( '_SUBP' ), $prop );
+					$this->assertEquals( $property->getDiWikiPage(), $subject );
+					return [ $a ];
+				}
+				$this->assertEquals( new DIProperty( '_SUBP' ), $prop );
+				$this->assertEquals( $a, $subject );
+				return [ $b ];
+			} );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
@@ -236,24 +234,22 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				new DIProperty( '_SUBC' ),
-				$category,
-				$this->anything() )
-			->willReturn( [ $a ] );
-
 		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
-			->with(
-				new DIProperty( '_SUBC' ),
-				$a,
-				$this->anything() )
-			->willReturn( [ $b ] );
+			->willReturnCallback( function ( $prop, $subject, $requestOptions ) use ( $category, $a, $b ) {
+				static $calls = [];
+				$calls[] = $subject;
+				if ( count( $calls ) === 1 ) {
+					$this->assertEquals( new DIProperty( '_SUBC' ), $prop );
+					$this->assertEquals( $category, $subject );
+					return [ $a ];
+				}
+				$this->assertEquals( new DIProperty( '_SUBC' ), $prop );
+				$this->assertEquals( $a, $subject );
+				return [ $b ];
+			} );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
@@ -291,24 +287,22 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
-
-		$this->store->expects( $this->at( 0 ) )
-			->method( 'getPropertySubjects' )
-			->with(
-				new DIProperty( '_SUBC', true ),
-				$category,
-				$this->anything() )
-			->willReturn( [ $a ] );
-
 		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
 
-		$this->store->expects( $this->at( 1 ) )
+		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
-			->with(
-				new DIProperty( '_SUBC', true ),
-				$a,
-				$this->anything() )
-			->willReturn( [ $b ] );
+			->willReturnCallback( function ( $prop, $subject, $requestOptions ) use ( $category, $a, $b ) {
+				static $calls = [];
+				$calls[] = $subject;
+				if ( count( $calls ) === 1 ) {
+					$this->assertEquals( new DIProperty( '_SUBC', true ), $prop );
+					$this->assertEquals( $category, $subject );
+					return [ $a ];
+				}
+				$this->assertEquals( new DIProperty( '_SUBC', true ), $prop );
+				$this->assertEquals( $a, $subject );
+				return [ $b ];
+			} );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )

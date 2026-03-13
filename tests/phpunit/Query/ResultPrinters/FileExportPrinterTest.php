@@ -24,15 +24,15 @@ class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
 			->getMockForAbstractClass();
 
 		// #4375 (needs to be accessed first)
-		$fileExportPrinter->expects( $this->at( 0 ) )
+		$fileExportPrinter->expects( $this->once() )
 			->method( 'getFileResult' )
 			->with( $queryResult )
 			->willReturn( __METHOD__ );
 
-		$fileExportPrinter->expects( $this->at( 1 ) )
+		$fileExportPrinter->expects( $this->once() )
 			->method( 'getMimeType' );
 
-		$fileExportPrinter->expects( $this->at( 2 ) )
+		$fileExportPrinter->expects( $this->once() )
 			->method( 'getFileName' )
 			->willReturn( 'test' );
 

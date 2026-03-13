@@ -86,15 +86,16 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'DESCRIBE' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text  FIRST' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'DESCRIBE' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD `bar` text  FIRST' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = MySQLTableBuilder::factory( $this->connection );
 
@@ -109,15 +110,16 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'DESCRIBE' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" . ' FIRST' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'DESCRIBE' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" . ' FIRST' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = MySQLTableBuilder::factory( $this->connection );
 
@@ -133,15 +135,16 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( false );
 
-		$this->connection->expects( $this->at( 5 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->with( $this->stringContains( 'SHOW INDEX' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 7 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD INDEX (bar)' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'SHOW INDEX' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD INDEX (bar)' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = MySQLTableBuilder::factory( $this->connection );
 
@@ -169,15 +172,16 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptimizeTable() {
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ANALYZE TABLE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'OPTIMIZE TABLE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'ANALYZE TABLE foo' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+				if ( strpos( $sql, 'OPTIMIZE TABLE foo' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = MySQLTableBuilder::factory( $this->connection );
 

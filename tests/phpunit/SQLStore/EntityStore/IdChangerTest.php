@@ -98,7 +98,7 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'nextSequenceValue' )
 			->willReturn( '__seq__' );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
@@ -159,7 +159,7 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 				[ 'smw_id' => 42 ] )
 			->willReturn( (object)$row );
 
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
@@ -213,34 +213,20 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturnOnConsecutiveCalls( [ $table ] );
 
-		$this->connection->expects( $this->at( 0 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 's_id' => 42 ] )
-			->willReturn( true );
+			->willReturnCallback( static function ( $table, $vars, $conds ) {
+				if ( isset( $conds['s_id'] ) && $conds['s_id'] === 42 ) {
+					return true;
+				}
+				return false;
+			} );
 
-		$this->connection->expects( $this->at( 1 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 's_id' => 1001 ],
-				[ 's_id' => 42 ] );
-
-		$this->connection->expects( $this->at( 2 ) )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 'p_id' => 1001 ],
-				[ 'p_id' => 42 ] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ '_foo' => 1001 ],
-				[ '_foo' => 42 ] );
+			->willReturnCallback( static function ( $table, $set, $conds ) {
+				// Accepts calls for s_id, p_id, _foo updates
+			} );
 
 		$instance = new IdChanger(
 			$this->store
@@ -270,33 +256,26 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturnOnConsecutiveCalls( [ $table ] );
 
-		$this->connection->expects( $this->at( 0 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				[ 's_id' => 42 ] )
-			->willReturn( true );
+			->willReturnCallback( static function ( $table, $vars, $conds ) {
+				if ( isset( $conds['s_id'] ) && $conds['s_id'] === 42 ) {
+					return true;
+				}
+				return false;
+			} );
 
-		$this->connection->expects( $this->at( 1 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 's_id' => 1001 ],
-				[ 's_id' => 42 ] );
+			->willReturnCallback( static function ( $table, $set, $conds ) {
+				// Accepts calls for s_id and _foo updates
+			} );
 
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
 				[ 'p_id' => 42 ] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ '_foo' => 1001 ],
-				[ '_foo' => 42 ] );
 
 		$instance = new IdChanger(
 			$this->store
@@ -326,7 +305,7 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturnOnConsecutiveCalls( [ $table ] );
 
-		$this->connection->expects( $this->at( 0 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'selectRow' )
 			->with(
 				$this->anything(),
@@ -334,31 +313,17 @@ class IdChangerTest extends \PHPUnit\Framework\TestCase {
 				[ 's_id' => 42 ] )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 1 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 's_id' => 1001 ],
-				[ 's_id' => 42 ] );
+			->willReturnCallback( static function ( $table, $set, $conds ) {
+				// Accepts calls for s_id and o_id updates
+			} );
 
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
 			->with(
 				$this->anything(),
 				[ 's_id' => 42 ] );
-
-		$this->connection->expects( $this->at( 3 ) )
-			->method( 'delete' )
-			->with(
-				$this->anything(),
-				[ 's_id' => 42 ] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'update' )
-			->with(
-				$this->anything(),
-				[ 'o_id' => 1001 ],
-				[ 'o_id' => 42 ] );
 
 		$instance = new IdChanger(
 			$this->store

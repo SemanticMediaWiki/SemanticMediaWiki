@@ -59,9 +59,12 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isValidRedirectTarget' )
 			->willReturn( true );
 
-		$instance->expects( $this->at( 0 ) )
+		$isRedirectCallCount = 0;
+		$instance->expects( $this->atLeastOnce() )
 			->method( 'isRedirect' )
-			->willReturn( true );
+			->willReturnCallback( static function () use ( &$isRedirectCallCount ) {
+				return $isRedirectCallCount++ === 0;
+			} );
 
 		$this->assertInstanceOf(
 			Title::class,
@@ -96,7 +99,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isValidRedirectTarget' )
 			->willReturn( false );
 
-		$instance->expects( $this->at( 0 ) )
+		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
 			->willReturn( false );
 

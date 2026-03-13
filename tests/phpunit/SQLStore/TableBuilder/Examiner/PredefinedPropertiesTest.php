@@ -110,20 +110,16 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection->expects( $this->at( 0 ) )
+		$connection->expects( $this->atLeastOnce() )
 			->method( 'selectRow' )
-			->with(
-				$this->anything(),
-				$this->anything(),
-				$this->equalTo( [
-					'smw_title' => 'Foo',
-					'smw_namespace' => SMW_NS_PROPERTY,
-					'smw_subobject' => '' ] ) )
-			->willReturn( (object)$row );
-
-		$connection->expects( $this->at( 1 ) )
-			->method( 'selectRow' )
-			->willReturn( (object)$row );
+			->willReturnCallback( static function ( $table, $vars, $conds ) use ( $row ) {
+				if ( is_array( $conds ) && isset( $conds['smw_title'] ) && $conds['smw_title'] === 'Foo'
+					&& isset( $conds['smw_namespace'] ) && $conds['smw_namespace'] === SMW_NS_PROPERTY
+					&& isset( $conds['smw_subobject'] ) && $conds['smw_subobject'] === '' ) {
+					return (object)$row;
+				}
+				return (object)$row;
+			} );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()

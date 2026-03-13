@@ -172,10 +172,14 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContextPage' )
 			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
-		$query->expects( $this->at( 2 ) )
+		$query->expects( $this->atLeastOnce() )
 			->method( 'getOption' )
-			->with( $query::NO_CACHE )
-			->willReturn( true );
+			->willReturnCallback( static function ( $key ) use ( $query ) {
+				if ( $key === $query::NO_CACHE ) {
+					return true;
+				}
+				return false;
+			} );
 
 		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
 			->disableOriginalConstructor()

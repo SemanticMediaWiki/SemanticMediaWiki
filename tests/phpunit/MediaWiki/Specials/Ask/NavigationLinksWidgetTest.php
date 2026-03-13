@@ -89,18 +89,21 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'get', 'set' ] )
 			->getMock();
 
-		$urlArgs->expects( $this->at( 0 ) )
+		$urlArgs->expects( $this->any() )
 			->method( 'get' )
-			->with(	'limit' )
-			->willReturn( 3 );
-
-		$urlArgs->expects( $this->at( 1 ) )
-			->method( 'get' )
-			->with(	'offset' )
-			->willReturn( 10 );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'limit'  => 3,
+					'offset' => 10,
+				];
+				return $map[$key] ?? null;
+			} );
 
 		NavigationLinksWidget::setMaxInlineLimit( 300 );
-		NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true );
+
+		$this->assertIsString(
+			NavigationLinksWidget::navigationLinks( $title, $urlArgs, 20, true )
+		);
 	}
 
 	public function testTopLinks() {
