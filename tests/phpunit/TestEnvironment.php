@@ -62,6 +62,30 @@ class TestEnvironment {
 	}
 
 	/**
+	 * Disable MediaWiki software change tags (mw-new-redirect, mw-blank,
+	 * etc.) to avoid MariaDB 11.8+ error 1020 ("Record has changed since
+	 * last read") caused by ChangeTagsStore::updateTags reading and then
+	 * updating change_tag_def within the same transaction.
+	 *
+	 * @since 6.1.0
+	 */
+	public function disableSoftwareChangeTags() {
+		$GLOBALS['wgSoftwareTags'] = [
+			'mw-contentmodelchange' => false,
+			'mw-new-redirect' => false,
+			'mw-removed-redirect' => false,
+			'mw-changed-redirect-target' => false,
+			'mw-blank' => false,
+			'mw-replace' => false,
+			'mw-rollback' => false,
+			'mw-undo' => false,
+			'mw-manual-revert' => false,
+			'mw-reverted' => false,
+			'mw-server-side-upload' => false,
+		];
+	}
+
+	/**
 	 * @since 3.2
 	 *
 	 * @param array $defaultSettingKeys
