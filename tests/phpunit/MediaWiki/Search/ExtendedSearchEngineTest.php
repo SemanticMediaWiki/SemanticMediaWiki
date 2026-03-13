@@ -145,31 +145,6 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function testTextAlreadyUpdatedForIndex() {
-		if ( !method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
-			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
-		}
-
-		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'textAlreadyUpdatedForIndex' )
-			->with()
-			->willReturn( true );
-
-		$searchEngine = new ExtendedSearchEngine(
-			$this->connection
-		);
-
-		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
-
-		$this->assertTrue(
-			$searchEngine->textAlreadyUpdatedForIndex( 'Some text' )
-		);
-	}
-
 	public function testUpdate() {
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
 			->disableOriginalConstructor()
