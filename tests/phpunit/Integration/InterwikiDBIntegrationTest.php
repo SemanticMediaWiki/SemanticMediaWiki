@@ -74,10 +74,6 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testRdfSerializationForInterwikiAnnotation() {
-		if ( version_compare( MW_VERSION, '1.40', '>=' ) ) {
-			$this->markTestSkipped( 'The Serialization for interwiki needs to be checked for MW 1.40 and newer.' );
-		}
-
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		$this->stringBuilder
