@@ -110,6 +110,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
+		$this->testEnvironment->disableSoftwareChangeTags();
 		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
 		$this->testEnvironment->resetDBLoadBalancer();
