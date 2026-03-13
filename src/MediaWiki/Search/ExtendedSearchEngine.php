@@ -2,8 +2,6 @@
 
 namespace SMW\MediaWiki\Search;
 
-use MediaWiki\Content\Content;
-use MediaWiki\Title\Title;
 use SearchEngine;
 
 /**
@@ -128,15 +126,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	 */
 	public function normalizeText( $string ) {
 		return $this->fallbackSearchEngine->normalizeText( $string );
-	}
-
-	/**
-	 * @see SearchEngine::getTextFromContent
-	 *
-	 * {@inheritDoc}
-	 */
-	public function getTextFromContent( Title $t, ?Content $c = null ) {
-		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
 	}
 
 	/**
