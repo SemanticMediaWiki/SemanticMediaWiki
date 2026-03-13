@@ -3,7 +3,6 @@
 namespace SMW\Tests\Schema\Filters;
 
 use SMW\Schema\Filters\FilterTrait;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\FilterTrait
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class FilterTraitTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testHasMatches() {
 		$instance = $this->newFilterTrait();

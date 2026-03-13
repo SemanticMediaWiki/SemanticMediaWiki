@@ -3,7 +3,6 @@
 namespace SMW\Tests\ParserFunctions;
 
 use SMW\ParserFunctions\SectionTag;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\SectionTag
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SectionTagTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $frame;
 	private $parser;
@@ -76,7 +73,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 
 		$args = [];
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<section>Foo</section>',
 			$instance->parse( 'Foo', $args )
 		);
@@ -106,7 +103,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 
 		$args = [];
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<section class="smw-property-specification">Foo</section>',
 			$instance->parse( 'Foo', $args )
 		);

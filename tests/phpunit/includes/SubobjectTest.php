@@ -21,8 +21,6 @@ use SMWDIBlob;
  */
 class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $testEnvironment;
 
 	private $semanticDataValidator;
@@ -64,7 +62,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 		$instance->setEmptyContainerForId( 'Foo' );
 
 		$this->assertInstanceOf(
-			'\Title',
+			Title::class,
 			$instance->getTitle()
 		);
 

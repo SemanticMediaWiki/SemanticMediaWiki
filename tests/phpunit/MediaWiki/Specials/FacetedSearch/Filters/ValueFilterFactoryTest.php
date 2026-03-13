@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory
@@ -16,14 +15,12 @@ use SMW\Tests\PHPUnitCompat;
  */
 class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
-	private $templateEngine;
+	private $templateParser;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->templateEngine = $this->getMockBuilder( '\SMW\Utils\TemplateEngine' )
+		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -31,13 +28,13 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ValueFilterFactory::class,
-			new ValueFilterFactory( $this->templateEngine )
+			new ValueFilterFactory( $this->templateParser )
 		);
 	}
 
 	public function testCanConstructListValueFilter() {
 		$instance = new ValueFilterFactory(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$this->assertInstanceOf(
@@ -48,7 +45,7 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructCheckboxValueFilter() {
 		$instance = new ValueFilterFactory(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$this->assertInstanceOf(
@@ -63,7 +60,7 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$instance = new ValueFilterFactory(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$this->assertInstanceOf(
@@ -78,7 +75,7 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$instance = new ValueFilterFactory(
-			$this->templateEngine
+			$this->templateParser
 		);
 
 		$this->assertInstanceOf(

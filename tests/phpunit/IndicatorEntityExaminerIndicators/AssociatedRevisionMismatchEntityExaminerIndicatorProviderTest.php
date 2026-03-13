@@ -5,7 +5,6 @@ namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\SQLStore\EntityStore\EntityIdManager;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,8 +17,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private EntityIdManager $entityIdManager;
 	private $store;

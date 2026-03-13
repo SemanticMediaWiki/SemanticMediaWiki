@@ -15,8 +15,6 @@ use SMW\GroupPermissions;
  */
 class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $hookDispatcher;
 
 	protected function setUp(): void {

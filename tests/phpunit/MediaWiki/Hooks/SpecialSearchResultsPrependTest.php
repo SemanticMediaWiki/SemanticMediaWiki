@@ -44,10 +44,11 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$this->preferenceExaminer->expects( $this->at( 1 ) )
+		$this->preferenceExaminer->expects( $this->any() )
 			->method( 'hasPreferenceOf' )
-			->with( 'smw-prefs-general-options-suggester-textinput' )
-			->willReturn( true );
+			->willReturnCallback( static function ( $key ) {
+				return $key === 'smw-prefs-general-options-suggester-textinput';
+			} );
 
 		$search = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()
@@ -88,10 +89,11 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess_DisabledInfo() {
-		$this->preferenceExaminer->expects( $this->at( 2 ) )
+		$this->preferenceExaminer->expects( $this->any() )
 			->method( 'hasPreferenceOf' )
-			->with( 'smw-prefs-general-options-disable-search-info' )
-			->willReturn( true );
+			->willReturnCallback( static function ( $key ) {
+				return $key === 'smw-prefs-general-options-disable-search-info';
+			} );
 
 		$search = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
 			->disableOriginalConstructor()

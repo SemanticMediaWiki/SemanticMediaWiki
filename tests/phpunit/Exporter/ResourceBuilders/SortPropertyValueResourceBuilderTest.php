@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
 use SMW\Serializers\ExpDataSerializer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWExpData as ExpData;
 
@@ -20,8 +19,6 @@ use SMWExpData as ExpData;
  * @author mwjames
  */
 class SortPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 	private $testEnvironment;
@@ -86,7 +83,7 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$res = json_encode( $this->expDataSerializer->serialize( $expData ) );
 
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'sort|http:\/\/semantic-mediawiki.org\/swivt\/1.0#|swivt',
 			$res
 		);
@@ -111,12 +108,12 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$res = json_encode( $this->expDataSerializer->serialize( $expData ) );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'sort|http:\/\/semantic-mediawiki.org\/swivt\/1.0#|swivt',
 			$res
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'http:\/\/www.w3.org\/2001\/XMLSchema#string',
 			$res
 		);
@@ -141,12 +138,12 @@ class SortPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$res = json_encode( $this->expDataSerializer->serialize( $expData ) );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'sort|http:\/\/semantic-mediawiki.org\/swivt\/1.0#|swivt',
 			$res
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'http:\/\/www.w3.org\/2001\/XMLSchema#string',
 			$res
 		);

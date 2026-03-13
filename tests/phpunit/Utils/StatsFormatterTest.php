@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\StatsFormatter;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Utils\StatsFormatter;
  */
 class StatsFormatterTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * @dataProvider statsProvider
 	 */
@@ -29,41 +26,47 @@ class StatsFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider formatProvider
+	 * @dataProvider formatStringProvider
 	 */
-	public function testFormat( $stats, $format, $expected ) {
-		$this->assertInternalType(
-			$expected,
+	public function testFormatReturnsString( $stats, $format ) {
+		$this->assertIsString(
 			StatsFormatter::format( $stats, $format )
 		);
 	}
 
-	public function formatProvider() {
-		$provider[] = [
-			[ 'Foo' => 1, 'Bar' => 1 ],
-			StatsFormatter::FORMAT_PLAIN,
-			'string'
-		];
+	/**
+	 * @dataProvider formatArrayProvider
+	 */
+	public function testFormatReturnsArray( $stats, $format ) {
+		$this->assertIsArray(
+			StatsFormatter::format( $stats, $format )
+		);
+	}
 
-		$provider[] = [
-			[ 'Foo' => 1, 'Bar' => 1 ],
-			StatsFormatter::FORMAT_HTML,
-			'string'
+	public function formatStringProvider() {
+		return [
+			[
+				[ 'Foo' => 1, 'Bar' => 1 ],
+				StatsFormatter::FORMAT_PLAIN,
+			],
+			[
+				[ 'Foo' => 1, 'Bar' => 1 ],
+				StatsFormatter::FORMAT_HTML,
+			],
+			[
+				[ 'Foo' => 1, 'Bar' => 1 ],
+				StatsFormatter::FORMAT_JSON,
+			],
 		];
+	}
 
-		$provider[] = [
-			[ 'Foo' => 1, 'Bar' => 1 ],
-			StatsFormatter::FORMAT_JSON,
-			'string'
+	public function formatArrayProvider() {
+		return [
+			[
+				[ 'Foo' => 1, 'Bar' => 1 ],
+				null,
+			],
 		];
-
-		$provider[] = [
-			[ 'Foo' => 1, 'Bar' => 1 ],
-			null,
-			'array'
-		];
-
-		return $provider;
 	}
 
 	public function statsProvider() {

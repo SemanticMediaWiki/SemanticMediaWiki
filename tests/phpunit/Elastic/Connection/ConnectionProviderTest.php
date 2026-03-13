@@ -8,7 +8,6 @@ use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Connection\ConnectionProvider;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Connection\LockManager;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\ConnectionProvider
@@ -20,8 +19,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private LoggerInterface $logger;
 	private LockManager $lockManager;

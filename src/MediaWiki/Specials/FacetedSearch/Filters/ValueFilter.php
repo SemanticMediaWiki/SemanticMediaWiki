@@ -2,12 +2,12 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
+use MediaWiki\Html\TemplateParser;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundException;
 use SMW\Schema\SchemaFinder;
-use SMW\Utils\TemplateEngine;
 use SMW\Utils\UrlArgs;
 use SMWDataItem as DataItem;
 
@@ -22,9 +22,9 @@ class ValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
+	 * @var TemplateParser
 	 */
-	private $templateEngine;
+	private $templateParser;
 
 	/**
 	 * @var ValueFilterFactory
@@ -49,13 +49,13 @@ class ValueFilter {
 	/**
 	 * @since 3.2
 	 *
-	 * @param TemplateEngine $templateEngine
+	 * @param TemplateParser $templateParser
 	 * @param ValueFilterFactory $valueFilterFactory
 	 * @param SchemaFinder $schemaFinder
 	 * @param array $params
 	 */
-	public function __construct( TemplateEngine $templateEngine, ValueFilterFactory $valueFilterFactory, SchemaFinder $schemaFinder, array $params ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( TemplateParser $templateParser, ValueFilterFactory $valueFilterFactory, SchemaFinder $schemaFinder, array $params ) {
+		$this->templateParser = $templateParser;
 		$this->valueFilterFactory = $valueFilterFactory;
 		$this->schemaFinder = $schemaFinder;
 		$this->params = $params;

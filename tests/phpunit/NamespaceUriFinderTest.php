@@ -15,34 +15,31 @@ use SMW\NamespaceUriFinder;
  */
 class NamespaceUriFinderTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
+	public function testGetUriForUnknownNamespaceKeyReturnsBool() {
+		$this->assertIsBool(
+			NamespaceUriFinder::getUri( 'Foo' )
+		);
+	}
 
 	/**
 	 * @dataProvider namespaceProvider
 	 */
-	public function testGetUriForNamespaceKey( $key, $expected ) {
-		$this->assertInternalType(
-			$expected,
+	public function testGetUriForNamespaceKeyReturnsString( $key ) {
+		$this->assertIsString(
 			NamespaceUriFinder::getUri( $key )
 		);
 	}
 
 	public function namespaceProvider() {
-		$provider[] = [
-			'Foo',
-			'boolean'
-		];
-
 		$ns = [
 			'owl', 'rdf', 'rdfs', 'swivt', 'xsd', 'skos', 'foaf', 'dc',
 			'OWL'
 		];
 
+		$provider = [];
+
 		foreach ( $ns as $key ) {
-			$provider[] = [
-				$key,
-				'string'
-			];
+			$provider[] = [ $key ];
 		}
 
 		return $provider;

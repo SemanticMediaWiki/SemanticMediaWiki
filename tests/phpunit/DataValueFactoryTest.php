@@ -19,8 +19,6 @@ use SMWDataItem;
  */
 class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	protected function tearDown(): void {
 		DataValueFactory::getInstance()->clear();
 		parent::tearDown();
@@ -113,7 +111,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		if ( $dataValue->getErrors() === [] ) {
 			$this->assertInstanceOf( '\SMW\DIProperty', $dataValue->getProperty() );
-			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
+			$this->assertStringContainsString( $propertyName, $dataValue->getProperty()->getLabel() );
 			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
@@ -146,7 +144,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		if ( $dataValue->getErrors() === [] ) {
 			$this->assertInstanceOf( '\SMW\DIProperty', $dataValue->getProperty() );
-			$this->assertContains( $propertyName, $dataValue->getProperty()->getLabel() );
+			$this->assertStringContainsString( $propertyName, $dataValue->getProperty()->getLabel() );
 			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}

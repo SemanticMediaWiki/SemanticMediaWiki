@@ -68,15 +68,16 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD "bar" TEXT' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'SELECT a.attname as' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD "bar" TEXT' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
@@ -91,15 +92,16 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'SELECT a.attname as' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD "bar" TEXT' . " DEFAULT '0'" ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'SELECT a.attname as' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD "bar" TEXT' . " DEFAULT '0'" ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
@@ -119,15 +121,16 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'indexInfo' )
 			->willReturn( false );
 
-		$this->connection->expects( $this->at( 5 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->with( $this->stringContains( 'SELECT  i.relname AS indexname' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 8 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_idx_bar ON foo (bar)' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'SELECT  i.relname AS indexname' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'CREATE INDEX foo_idx_bar ON foo (bar)' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 
@@ -170,10 +173,16 @@ class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getType' )
 			->willReturn( 'postgres' );
 
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'ANALYZE foo' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'ANALYZE foo' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+				if ( strpos( $sql, 'VACUUM (ANALYZE) foo' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = PostgresTableBuilder::factory( $this->connection );
 

@@ -118,13 +118,11 @@ class ExtensionSchemaUpdates implements HookListener {
 		// Check required due to missing property in MW 1.29-
 		if ( property_exists( $this->updater, 'maintenance' ) ) {
 			$reflectionProperty = new ReflectionProperty( $this->updater, 'maintenance' );
-			$reflectionProperty->setAccessible( true );
 			$maintenance = $reflectionProperty->getValue( $this->updater );
 		}
 
 		if ( $maintenance instanceof Maintenance ) {
 			$reflectionProperty = new ReflectionProperty( $maintenance, 'mOptions' );
-			$reflectionProperty->setAccessible( true );
 			$options = $reflectionProperty->getValue( $maintenance );
 			return isset( $options[$key] );
 		}

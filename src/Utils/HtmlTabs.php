@@ -121,7 +121,7 @@ class HtmlTabs {
 		// Attach the tab definition as `data` element so it can be loaded using
 		// JS
 		if ( $this->isSubTab ) {
-			$attributes['data-subtab'] = json_encode( $tabs );
+			$attributes['data-mw-subtab'] = json_encode( $tabs );
 			$tabs = '';
 		}
 

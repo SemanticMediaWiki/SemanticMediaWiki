@@ -65,13 +65,12 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'ABC' )
 		];
 
-		$this->sortLetter->expects( $this->at( 0 ) )
+		$callCount = 0;
+		$this->sortLetter->expects( $this->exactly( 2 ) )
 			->method( 'getFirstLetter' )
-			->willReturn( 'F' );
-
-		$this->sortLetter->expects( $this->at( 1 ) )
-			->method( 'getFirstLetter' )
-			->willReturn( 'A' );
+			->willReturnCallback( static function () use ( &$callCount ) {
+				return $callCount++ === 0 ? 'F' : 'A';
+			} );
 
 		$instance = new ListBuilder(
 			$this->store

@@ -5,7 +5,6 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -61,7 +58,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 			$instance->isFromCache()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'PropertyUsageListLookup',
 			$instance->getHash()
 		);

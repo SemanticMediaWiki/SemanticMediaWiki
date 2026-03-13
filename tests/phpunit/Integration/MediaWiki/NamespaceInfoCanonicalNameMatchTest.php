@@ -5,7 +5,6 @@ namespace SMW\Tests\Integration\MediaWiki;
 use MediaWiki\MediaWikiServices;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\MwHooksHandler;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\Utils\MwHooksHandler;
  * @author mwjames
  */
 class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $mwHooksHandler;
 

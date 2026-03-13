@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWRecordValue as RecordValue;
 
@@ -17,8 +16,6 @@ use SMWRecordValue as RecordValue;
  * @author mwjames
  */
 class RecordValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -165,7 +162,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 			$instance->getDataItem()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"smw-datavalue-wikipage-property-invalid-title",
 			implode( ' ', $instance->getErrors() )
 		);

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\DebugFormatter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\DebugFormatter
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DebugFormatterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testFormatDebugOutputWithoutQuery() {
 		$instance = new DebugFormatter();

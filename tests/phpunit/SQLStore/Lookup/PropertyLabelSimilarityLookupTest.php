@@ -5,7 +5,6 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\DataItemFactory;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $propertyStatisticsStore;

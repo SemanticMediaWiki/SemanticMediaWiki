@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Connection;
 
 use SMW\MediaWiki\Connection\Sequence;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Connection\Sequence
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SequenceTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connection;
 

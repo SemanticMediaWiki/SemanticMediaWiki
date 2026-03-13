@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
 use SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 
@@ -52,7 +49,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandlerTest extends \
 			$this->store
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-admin-alerts-outdates-entities',
 			$instance->getHtml()
 		);

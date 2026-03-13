@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\LanguageCodeValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\LanguageCodeValue
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class LanguageCodeValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -70,7 +67,7 @@ class LanguageCodeValueTest extends \PHPUnit\Framework\TestCase {
 		$instance = new LanguageCodeValue();
 		$instance->setUserValue( 'Foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[2,"smw-datavalue-languagecode-invalid","foo"]',
 			$instance->getDataItem()->getString()
 		);

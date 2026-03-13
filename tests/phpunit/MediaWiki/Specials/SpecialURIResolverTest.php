@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $stringValidator;
@@ -43,7 +40,7 @@ class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->execute( '' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'https://www.w3.org/2001/tag/issues.html#httpRange-14',
 			$instance->getOutput()->getHTML()
 		);

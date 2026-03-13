@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,8 +18,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -143,12 +140,12 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 			$this->propertySpecificationLookup
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<span class="smwtext">ABC[<>]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::WIKI_SHORT ] )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<span class="smwtext">ABC[&lt;&gt;]</span><span class="smwttcontent"></span>',
 			$instance->format( $propertyValue, [ PropertyValueFormatter::HTML_SHORT ] )
 		);

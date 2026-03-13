@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Specials\Admin\Alerts;
 
-use DateTime;
 use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\SetupFile;
 
@@ -52,8 +52,8 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 			return '';
 		}
 
-		$dateTime = new DateTime( $lastRun );
-		$daysDiff = (int)$dateTime->diff( new DateTime( 'now' ) )->format( '%R%a' );
+		$dateTime = new ExtendedDateTime( $lastRun );
+		$daysDiff = (int)$dateTime->diff( new ExtendedDateTime( 'now' ) )->format( '%R%a' );
 
 		return $this->buildHTML( $lastRun, $daysDiff );
 	}

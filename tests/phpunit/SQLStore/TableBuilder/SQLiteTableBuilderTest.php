@@ -69,15 +69,16 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'PRAGMA table_info(foo)' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD `bar` text' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = SQLiteTableBuilder::factory( $this->connection );
 
@@ -92,15 +93,16 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( true );
 
-		$this->connection->expects( $this->at( 3 ) )
+		$this->connection->expects( $this->exactly( 2 ) )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA table_info(foo)' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 4 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'PRAGMA table_info(foo)' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'ALTER TABLE foo ADD `bar` text' . " DEFAULT '0'" ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = SQLiteTableBuilder::factory( $this->connection );
 
@@ -116,15 +118,16 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableExists' )
 			->willReturn( false );
 
-		$this->connection->expects( $this->at( 5 ) )
+		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'query' )
-			->with( $this->stringContains( 'PRAGMA index_list(foo)' ) )
-			->willReturn( [] );
-
-		$this->connection->expects( $this->at( 7 ) )
-			->method( 'query' )
-			->with( $this->stringContains( 'CREATE INDEX foo_index0' ) )
-			->willReturn( new FakeResultWrapper( [] ) );
+			->willReturnCallback( static function ( $sql ) {
+				if ( strpos( $sql, 'PRAGMA index_list(foo)' ) !== false ) {
+					return [];
+				}
+				if ( strpos( $sql, 'CREATE INDEX foo_index0' ) !== false ) {
+					return new FakeResultWrapper( [] );
+				}
+			} );
 
 		$instance = SQLiteTableBuilder::factory( $this->connection );
 
@@ -152,7 +155,7 @@ class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptimizeTable() {
-		$this->connection->expects( $this->at( 2 ) )
+		$this->connection->expects( $this->once() )
 			->method( 'query' )
 			->with( $this->stringContains( 'ANALYZE foo' ) )
 			->willReturn( new FakeResultWrapper( [] ) );

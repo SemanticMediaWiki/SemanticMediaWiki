@@ -119,12 +119,12 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$this->webRequest->expects( $this->at( 0 ) )
+		$this->webRequest->expects( $this->once() )
 			->method( 'getVal' )
 			->with( 'smw-form' )
 			->willReturn( 'foo' );
 
-		$this->webRequest->expects( $this->at( 1 ) )
+		$this->webRequest->expects( $this->once() )
 			->method( 'getArray' )
 			->with( 'barproperty' )
 			->willReturn( [ 'Foobar' ] );
@@ -152,12 +152,12 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$this->webRequest->expects( $this->at( 0 ) )
+		$this->webRequest->expects( $this->once() )
 			->method( 'getVal' )
 			->with( 'smw-form' )
 			->willReturn( 'foo-2' );
 
-		$this->webRequest->expects( $this->at( 1 ) )
+		$this->webRequest->expects( $this->once() )
 			->method( 'getArray' )
 			->with( 'barproperty' )
 			->willReturn( [ '', 42 ] );
@@ -180,25 +180,21 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$this->webRequest->expects( $this->at( 0 ) )
+		$this->webRequest->expects( $this->once() )
 			->method( 'getVal' )
 			->with( 'smw-form' )
 			->willReturn( 'open' );
 
-		$this->webRequest->expects( $this->at( 1 ) )
+		$this->webRequest->expects( $this->exactly( 3 ) )
 			->method( 'getArray' )
-			->with( 'property' )
-			->willReturn( [ 'Bar' ] );
-
-		$this->webRequest->expects( $this->at( 2 ) )
-			->method( 'getArray' )
-			->with( 'pvalue' )
-			->willReturn( [ 42 ] );
-
-		$this->webRequest->expects( $this->at( 3 ) )
-			->method( 'getArray' )
-			->with( 'op' )
-			->willReturn( [ 'OR' ] );
+			->willReturnCallback( static function ( $key ) {
+				$map = [
+					'property' => [ 'Bar' ],
+					'pvalue'   => [ 42 ],
+					'op'       => [ 'OR' ],
+				];
+				return $map[$key] ?? [];
+			} );
 
 		$instance = new QueryBuilder(
 			$this->webRequest,

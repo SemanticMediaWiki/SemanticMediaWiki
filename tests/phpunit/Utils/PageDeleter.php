@@ -38,9 +38,11 @@ class PageDeleter {
 
 		try {
 			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-			$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
-		} catch ( \Exception $e ) {
-			//
+			if ( $user !== null ) {
+				$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
+			}
+		} catch ( \Throwable $e ) {
+			error_log( 'PageDeleter::deletePage failed for "' . $title->getPrefixedText() . '": ' . $e );
 		}
 
 		$this->testEnvironment->executePendingDeferredUpdates();

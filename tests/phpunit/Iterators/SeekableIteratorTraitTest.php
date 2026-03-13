@@ -3,7 +3,6 @@
 namespace SMW\Tests\Iterators;
 
 use SMW\Iterators\SeekableIteratorTrait;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Iterators\SeekableIteratorTrait
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testIterate_Indexed() {
 		$container = [

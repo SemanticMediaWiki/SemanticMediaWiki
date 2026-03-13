@@ -6,7 +6,6 @@ use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DuplicateFinder
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $connection;
@@ -134,7 +131,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 			$res
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'HAVING":"count(*) > 1',
 			$query->__toString()
 		);
@@ -183,7 +180,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 			$res
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'HAVING":"count(*) > 1',
 			$query->__toString()
 		);

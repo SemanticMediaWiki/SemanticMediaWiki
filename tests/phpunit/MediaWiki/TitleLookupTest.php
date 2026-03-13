@@ -2,8 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\TitleLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\TitleLookup
@@ -15,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class TitleLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
@@ -238,7 +236,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->assertIsArray( $arrayOfTitles );
 
 		foreach ( $arrayOfTitles as $title ) {
-			$this->assertInstanceOf( 'Title', $title );
+			$this->assertInstanceOf( Title::class, $title );
 		}
 	}
 

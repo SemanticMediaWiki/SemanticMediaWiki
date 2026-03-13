@@ -4,7 +4,6 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use SMW\Query\QueryResult;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWQuery as Query;
 
@@ -18,8 +17,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QueryResultFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\Store' )

@@ -86,7 +86,7 @@
 			"assert-output": {
 				"to-contain": [
 					"title=\"Transclude-Template\">Transclude-Template</a>",
-					"<td class=\"Paragraph smwtype_txt\">Test1 Lorem ipsum.</td>"
+					"<td class=\"Paragraph smwtype&#95;txt\">Test1 Lorem ipsum.</td>"
 				]
 			}
 		}

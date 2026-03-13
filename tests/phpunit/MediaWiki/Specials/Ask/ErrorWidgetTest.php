@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\ErrorWidget
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ErrorWidgetTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testSessionFailure() {
 		$this->assertIsString(

@@ -38,7 +38,7 @@ var smw = ( function ( $, undefined ) {
 	var i;
 
 	for ( i = 0; i < x.length; i++ ) {
-		x[i].innerHTML = JSON.parse( x[i].dataset.subtab ) + x[i].innerHTML;
+		x[i].innerHTML = JSON.parse( x[i].dataset.mwSubtab ) + x[i].innerHTML;
 	}
 
 	/*global console:true message:true */

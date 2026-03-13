@@ -4,7 +4,6 @@ namespace SMW\Tests\Elastic\Jobs;
 
 use SMW\DIWikiPage;
 use SMW\Elastic\Jobs\FileIngestJob;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $fileIndexer;

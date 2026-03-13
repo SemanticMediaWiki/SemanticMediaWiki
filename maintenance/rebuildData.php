@@ -2,8 +2,10 @@
 
 namespace SMW\Maintenance;
 
+use DateTimeZone;
 use InvalidArgumentException;
 use MediaWiki\Maintenance\Maintenance;
+use SMW\MediaWiki\ExtendedDateTime;
 use SMW\Options;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
@@ -178,7 +180,7 @@ class rebuildData extends Maintenance {
 		);
 
 		if ( $this->getOption( 'auto-recovery' ) && !$autoRecovery->get( $dataRebuilder::AUTO_RECOVERY_LAST_START ) ) {
-			$dateTimeUtc = new \DateTime( 'now', new \DateTimeZone( 'UTC' ) );
+			$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 			$autoRecovery->set( $dataRebuilder::AUTO_RECOVERY_LAST_START, $dateTimeUtc->format( 'Y-m-d h:i' ) );
 		}
 

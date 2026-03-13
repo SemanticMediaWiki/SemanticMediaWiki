@@ -71,7 +71,6 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 		// etc.)
 		$reflector = new ReflectionClass( '\SMW\Deserializers\SemanticDataDeserializer' );
 		$property  = $reflector->getProperty( 'dataItemTypeIdCache' );
-		$property->setAccessible( true );
 		$property->setValue( $deserializer, [ $type => 2 ] );
 
 		$deserialized = $deserializer->deserialize( $serialized );

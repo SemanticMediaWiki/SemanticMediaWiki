@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsListValue;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AllowsListValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -62,7 +59,7 @@ class AllowsListValueTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIBlob( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[[MediaWiki:Smw_allows_list_Foo|Foo]]',
 			$instance->getShortWikiText()
 		);
@@ -79,7 +76,7 @@ class AllowsListValueTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIBlob( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'MediaWiki:Smw_allows_list_Foo',
 			$instance->getLongHtmlText()
 		);
@@ -96,7 +93,7 @@ class AllowsListValueTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIBlob( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'MediaWiki:Smw_allows_list_Foo',
 			$instance->getShortHtmlText()
 		);

@@ -62,7 +62,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"<td class=\"Has-text smwtype&#95;txt\">Some text with annotation <a href=",
 					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></tbody></table>"
 				]
 			}
@@ -84,7 +84,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"<td class=\"Has-text smwtype&#95;txt\">Some text with annotation <a href=",
 					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></tbody></table>"
 				]
 			}
@@ -106,7 +106,7 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">Some text with annotation <a href=",
+					"<td class=\"Has-text smwtype&#95;txt\">Some text with annotation <a href=",
 					"title=\"Example/P0913/1\">Example/P0913/1</a></td></tr></tbody></table>"
 				]
 			}

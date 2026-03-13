@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,8 +18,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyLogger;
 	private $testEnvironment;
@@ -99,7 +96,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->process( $protections, $reason );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'No changes required, invoked by own process',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -148,7 +145,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->process( $protections, $reason );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'ArticleProtectComplete addProperty `Is edit protected`',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -213,7 +210,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->process( $protections, $reason );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'ArticleProtectComplete removeProperty `Is edit protected`',
 			$this->spyLogger->getMessagesAsString()
 		);

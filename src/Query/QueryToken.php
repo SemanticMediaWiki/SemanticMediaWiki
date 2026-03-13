@@ -75,15 +75,15 @@ class QueryToken {
 	 *
 	 * @param Description $description
 	 */
-	public function addFromDesciption( Description $description ) {
+	public function addFromDescription( Description $description ) {
 		if ( $description instanceof Conjunction ) {
 			foreach ( $description->getDescriptions() as $desc ) {
-				return $this->addFromDesciption( $desc );
+				return $this->addFromDescription( $desc );
 			}
 		}
 
 		if ( $description instanceof SomeProperty ) {
-			return $this->addFromDesciption( $description->getDescription() );
+			return $this->addFromDescription( $description->getDescription() );
 		}
 
 		if ( !$description instanceof ValueDescription ) {

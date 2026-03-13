@@ -5,7 +5,6 @@ namespace SMW\Tests\SQLStore;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -21,8 +20,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	protected $statsTable = null;
 

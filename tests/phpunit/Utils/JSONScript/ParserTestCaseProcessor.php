@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use Article;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Parser\ParserOptions;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use RuntimeException;
@@ -192,7 +193,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			Article::newFromTitle( $title, $context )->view();
 			$output = $context->getOutput()->getHtml();
 		} else {
-			$output = $parserOutput->getText();
+			$output = $parserOutput->runOutputPipeline( ParserOptions::newFromAnon() )->getContentHolderText();
 		}
 
 		if ( isset( $case['assert-output']['include-head-items'] ) && $case['assert-output']['include-head-items'] ) {

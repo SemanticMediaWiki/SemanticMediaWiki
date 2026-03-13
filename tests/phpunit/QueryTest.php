@@ -15,8 +15,6 @@ use SMWQuery as Query;
  */
 class QueryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $smwgQMaxLimit;
 	private $smwgQMaxInlineLimit;
 

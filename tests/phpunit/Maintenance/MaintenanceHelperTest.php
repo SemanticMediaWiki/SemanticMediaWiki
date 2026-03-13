@@ -3,7 +3,6 @@
 namespace SMW\Tests\Maintenance;
 
 use SMW\Maintenance\MaintenanceHelper;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Maintenance\MaintenanceHelper
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class MaintenanceHelperTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -80,7 +77,7 @@ class MaintenanceHelperTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceHelper();
 		$instance->initRuntimeValues();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'sec',
 			$instance->getFormattedRuntimeValues()
 		);

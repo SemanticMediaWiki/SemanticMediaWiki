@@ -7,7 +7,6 @@ use SMW\Importer\ImportContents;
 use SMW\Importer\Importer;
 use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,8 +19,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ImporterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $testEnvironment;
@@ -68,7 +65,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->runImport();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Import support was not enabled (or skipped), stopping the task',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -165,7 +162,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->runImport();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'BarError from create',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

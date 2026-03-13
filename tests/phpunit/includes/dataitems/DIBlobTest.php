@@ -18,10 +18,10 @@ namespace SMW\Tests;
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIBlobTest extends DataItemTest {
+class DIBlobTest extends AbstractDataItem {
 
 	/**
-	 * @see DataItemTest::getClass
+	 * @see AbstractDataItem::getClass
 	 *
 	 * @since 1.8
 	 *
@@ -32,7 +32,7 @@ class DIBlobTest extends DataItemTest {
 	}
 
 	/**
-	 * @see DataItemTest::constructorProvider
+	 * @see AbstractDataItem::constructorProvider
 	 *
 	 * @since 1.8
 	 *

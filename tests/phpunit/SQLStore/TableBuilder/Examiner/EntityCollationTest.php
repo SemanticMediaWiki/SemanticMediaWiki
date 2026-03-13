@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EntityCollationTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
@@ -60,7 +57,7 @@ class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 		$instance->setSetupFile( $this->setupFile );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'adding incomplete task for entity collation conversion',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -82,7 +79,7 @@ class EntityCollationTest extends \PHPUnit\Framework\TestCase {
 		$instance->setSetupFile( $this->setupFile );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Checking entity collation type',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

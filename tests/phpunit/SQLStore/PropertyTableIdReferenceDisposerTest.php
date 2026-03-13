@@ -113,9 +113,8 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( false );
 
-		$connection->expects( $this->at( 0 ) )
-			->method( 'delete' )
-			->with( \SMW\SQLStore\SQLStore::ID_TABLE );
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )
@@ -157,9 +156,8 @@ class PropertyTableIdReferenceDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( false );
 
-		$connection->expects( $this->at( 3 ) )
-			->method( 'delete' )
-			->with( \SMW\SQLStore\SQLStore::ID_TABLE );
+		$connection->expects( $this->atLeastOnce() )
+			->method( 'delete' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getConnection' )

@@ -106,13 +106,13 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1><span id=\"Format/Embedded/A/1\"></span><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F1\">",
-					"<h1><span id=\"Format/Embedded/A/2\"></span><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA.2F2\">",
+					"id=\"Format.2FEmbedded.2FA.2F1\"",
+					"id=\"Format.2FEmbedded.2FA.2F2\"",
 					"ABC",
 					"DEF"
 				],
 				"not-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FA\">.*selflink\">Format/Embedded/A.*</h1>"
+					"selflink\">Format/Embedded/A.*</h1>"
 				]
 			}
 		},
@@ -137,13 +137,13 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
-					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F2\">",
+					"id=\"Format.2FEmbedded.2FB.2F1\"",
+					"id=\"Format.2FEmbedded.2FB.2F2\"",
 					"ABC",
 					"DEF"
 				],
 				"not-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB\">.*selflink\">Format/Embedded/B.*</h1>"
+					"selflink\">Format/Embedded/B.*</h1>"
 				]
 			}
 		},
@@ -191,14 +191,14 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F1\">",
-					"<h1>.*<span class=\"mw-headline\" id=\"Format.2FEmbedded.2FB.2F2\">",
+					"id=\"Format.2FEmbedded.2FB.2F1\"",
+					"id=\"Format.2FEmbedded.2FB.2F2\"",
 					"A123",
 					"ABC",
 					"DEF"
 				],
 				"not-contain": [
-					"<h1><span class=\"mw-headline\" id=\"Format.2FEmbedded.2FD\">.*selflink\">Format/Embedded/D.*</h1>"
+					"selflink\">Format/Embedded/D.*</h1>"
 				]
 			}
 		},

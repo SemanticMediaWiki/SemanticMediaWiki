@@ -5,7 +5,6 @@ namespace SMW\Tests\SQLStore;
 use SMW\DIProperty;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\SQLStore\SQLStore;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceFinder
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PropertyTableIdReferenceFinderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 

@@ -199,7 +199,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_HELP );
 		$parserOutput = $this->createMock( ParserOutput::class );
 		$parserOutput->expects( $this->any() )
-			->method( 'getTemplates' )
+			->method( 'getLinkList' )
 			->willReturn( [ NS_TEMPLATE => [ 'Foo' => 1 ] ] );
 
 		$parserData = $this->getMockBuilder( '\SMW\ParserData' )

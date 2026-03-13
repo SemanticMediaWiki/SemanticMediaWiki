@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Options;
 use SMW\Query\DescriptionFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $conditionBuilder;
 	private $descriptionFactory;

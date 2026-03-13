@@ -15,8 +15,6 @@ use SMW\Highlighter;
  */
 class HighlighterTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * @dataProvider getTypeDataProvider
 	 */
