@@ -2,7 +2,6 @@
 
 namespace SMW\MediaWiki\Search;
 
-use MediaWiki\Title\Title;
 use SearchEngine;
 
 /**
