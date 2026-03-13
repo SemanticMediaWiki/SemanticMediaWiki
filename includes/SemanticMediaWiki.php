@@ -522,8 +522,7 @@ class SemanticMediaWiki {
 
 	/**
 	 * Get the array that DefaultSettings.php is supposed to return.  We did not put it inline here
-	 * as we did with Aliases.php and Defines.php because there are references to that file online
-	 * for documentation.
+	 * and Defines.php because there are references to that file online for documentation.
 	 */
 	public static function getDefaultSettings(): array {
 		static $settings = null;
