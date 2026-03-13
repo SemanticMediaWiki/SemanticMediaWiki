@@ -6,6 +6,7 @@ use ImportReporter;
 use ImportStreamSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\User\User;
 use RuntimeException;
 use SMW\Tests\TestEnvironment;
 
@@ -79,9 +80,17 @@ class XmlImportRunner {
 
 		$services = MediaWikiServices::getInstance();
 
+		// Use a system user when temporary accounts are enabled (MW 1.44+)
+		// to avoid CannotCreateActorException for anonymous users
+		if ( $services->getTempUserCreator()->isEnabled() ) {
+			$authority = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		} else {
+			$authority = RequestContext::getMain()->getAuthority();
+		}
+
 		$importer = $services->getWikiImporterFactory()->getWikiImporter(
 			$source->value,
-			RequestContext::getMain()->getAuthority()
+			$authority
 		);
 		$importer->setDebug( $this->verbose );
 
@@ -146,6 +155,11 @@ class XmlImportRunner {
 	protected function acquireRequestContext() {
 		if ( $this->requestContext === null ) {
 			$this->requestContext = new RequestContext();
+
+			if ( MediaWikiServices::getInstance()->getTempUserCreator()->isEnabled() ) {
+				$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+				$this->requestContext->setUser( $user );
+			}
 		}
 
 		return $this->requestContext;
