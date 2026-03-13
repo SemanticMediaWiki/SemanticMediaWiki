@@ -113,7 +113,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		$this->testEnvironment->disableSoftwareChangeTags();
 		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
-		$this->testEnvironment->resetDBLoadBalancer();
 
 		PropertyRegistry::clear();
 

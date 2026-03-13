@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use Exception;
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
@@ -50,7 +52,7 @@ class TestEnvironment {
 	 */
 	public static function executePendingDeferredUpdates() {
 		CallableUpdate::releasePendingUpdates();
-		\DeferredUpdates::doUpdates();
+		DeferredUpdates::doUpdates();
 	}
 
 	/**
@@ -58,7 +60,7 @@ class TestEnvironment {
 	 */
 	public static function clearPendingDeferredUpdates() {
 		CallableUpdate::clearPendingUpdates();
-		\DeferredUpdates::clearPendingUpdates();
+		DeferredUpdates::clearPendingUpdates();
 	}
 
 	/**
@@ -138,7 +140,7 @@ class TestEnvironment {
 	public function resetMediaWikiService( $name ) {
 		try {
 			MediaWikiServices::getInstance()->resetServiceForTesting( $name );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
@@ -157,25 +159,10 @@ class TestEnvironment {
 
 		try {
 			MediaWikiServices::getInstance()->redefineService( $name, $service );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
-	}
-
-	/**
-	 * @since 3.1
-	 */
-	public static function changePrefix( $prefix ) {
-		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
-			throw new \RuntimeException( "Your are trying to change the `DomainPrefix` while not being in test!" );
-		}
-
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-
-		$lbFactory->setLocalDomainPrefix( $prefix );
-
-		$GLOBALS['wgDBprefix'] = $prefix;
 	}
 
 	/**
@@ -185,24 +172,6 @@ class TestEnvironment {
 	public static function overrideUserPermissions( $user, $permissions = [] ) {
 		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
 		$permissionManager->overrideUserRightsForTesting( $user, $permissions );
-	}
-
-	public function resetDBLoadBalancer() {
-		try {
-			// Get the MediaWiki service container
-			$services = MediaWikiServices::getInstance();
-
-			// Check if DBLoadBalancer is available
-			if ( $services->has( 'DBLoadBalancer' ) ) {
-				return;  // DBLoadBalancer is already initialized
-			}
-
-			// Reinitialize DBLoadBalancer if missing
-			$services->set( 'DBLoadBalancer', new DBLoadBalancer() );
-		} catch ( \Exception $e ) {
-			// Handle exception or log
-			error_log( 'Error resetting DBLoadBalancer: ' . $e->getMessage() );
-		}
 	}
 
 	/**
