@@ -417,9 +417,10 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 		$user = RequestContext::getMain()->getUser();
 		$parserOptions = new ParserOptions( $user );
+		$parserOptions->setSuppressSectionEditLinks( true );
 
 		return MediaWikiServices::getInstance()
-			->getParser()->parse( $text, $title, $parserOptions )->getText( [ 'enableSectionEditLinks' => false ] );
+			->getParser()->parse( $text, $title, $parserOptions )->getContentHolderText();
 	}
 
 	private function getFeedLink( QueryResult $res, $outputMode ) {

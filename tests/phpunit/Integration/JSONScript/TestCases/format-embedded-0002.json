@@ -50,8 +50,8 @@
 			},
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F1\"><a href=.* title=\"Example/FE0002/1\">Example/FE0002/1</a></span>",
-					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F2\"><a href=.* title=\"Example/FE0002/2\">Example/FE0002/2</a></span>"
+					"id=\"Example.2FFE0002.2F1\".*Example/FE0002/1",
+					"id=\"Example.2FFE0002.2F2\".*Example/FE0002/2"
 				]
 			}
 		},
@@ -61,8 +61,8 @@
 			"subject": "Example/FE0002/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F3\"><a href=.* title=\"Example/FE0002/3\">Example/FE0002/3</a></span>",
-					"<span class=\"mw-headline\" id=\"Example.2FFE0002.2F2\"><a href=.* title=\"Example/FE0002/2\">Example/FE0002/2</a></span>"
+					"id=\"Example.2FFE0002.2F3\".*Example/FE0002/3",
+					"id=\"Example.2FFE0002.2F2\".*Example/FE0002/2"
 				]
 			}
 		}

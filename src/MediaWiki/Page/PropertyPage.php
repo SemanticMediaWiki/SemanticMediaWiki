@@ -23,7 +23,6 @@ use SMW\Store;
 use SMW\StringCondition;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
-use SMW\Utils\ParserOutputHelper;
 use SMWDataValue;
 
 /**
@@ -222,7 +221,7 @@ class PropertyPage extends Page {
 		if ( $this->mParserOutput instanceof ParserOutput ) {
 			preg_match_all(
 				"/" . "<section class=\"smw-property-specification\"(.*)?>([\s\S]*?)<\/section>" . "/m",
-				ParserOutputHelper::getText( $this->mParserOutput ),
+				$this->mParserOutput->getContentHolderText(),
 				$matches
 			);
 		}
