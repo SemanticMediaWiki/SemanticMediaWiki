@@ -45,10 +45,10 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/P0431/1",
-					"<td class=\"Has-record smwtype_txt\">Foo</td>"
+					"<td class=\"Has-record smwtype&#95;txt\">Foo</td>"
 				],
 				"not-contain": [
-					"<td class=\"Has-record smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"Has-record smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
@@ -59,8 +59,8 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/P0431/1",
-					"<td class=\"Has-record smwtype_txt\">Foo</td>",
-					"<td class=\"Has-record smwtype_num\" data-sort-value=\"123\">123</td>"
+					"<td class=\"Has-record smwtype&#95;txt\">Foo</td>",
+					"<td class=\"Has-record smwtype&#95;num\" data-sort-value=\"123\">123</td>"
 				]
 			}
 		},
