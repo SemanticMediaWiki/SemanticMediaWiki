@@ -73,7 +73,7 @@
 			"subject": "Example/P0440/Q.0",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-alternative-label smwtype_mlt_rec\">トリアシルグリセロールリパーゼ (ja)<br />ليباز ثلاثي اسيل الغليسيرول (ar)<br />Triglyceride lipase (en)<br />Tributyrase (en)<br />Triacylglycérol lipase (fr)<br />Triacilglicerol lipaza (sr)<br />Triacilglicerol lipaza (sh)<br />Lipase (en)</td>"
+					"<td class=\"Has-alternative-label smwtype&#95;mlt&#95;rec\">トリアシルグリセロールリパーゼ (ja)<br />ليباز ثلاثي اسيل الغليسيرول (ar)<br />Triglyceride lipase (en)<br />Tributyrase (en)<br />Triacylglycérol lipase (fr)<br />Triacilglicerol lipaza (sr)<br />Triacilglicerol lipaza (sh)<br />Lipase (en)</td>"
 				]
 			}
 		},
@@ -83,7 +83,7 @@
 			"subject": "Example/P0440/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-alternative-label smwtype_mlt_rec\">Lipase (en)<br />Triacilglicerol lipaza (sh)<br />Triacilglicerol lipaza (sr)<br />Triacylglycérol lipase (fr)<br />Tributyrase (en)<br />Triglyceride lipase (en)<br />ليباز ثلاثي اسيل الغليسيرول (ar)<br />トリアシルグリセロールリパーゼ (ja)</td>"
+					"<td class=\"Has-alternative-label smwtype&#95;mlt&#95;rec\">Lipase (en)<br />Triacilglicerol lipaza (sh)<br />Triacilglicerol lipaza (sr)<br />Triacylglycérol lipase (fr)<br />Tributyrase (en)<br />Triglyceride lipase (en)<br />ليباز ثلاثي اسيل الغليسيرول (ar)<br />トリアシルグリセロールリパーゼ (ja)</td>"
 				]
 			}
 		},
@@ -93,7 +93,7 @@
 			"subject": "Example/P0440/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-alternative-label smwtype_txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td>"
+					"<td class=\"Has-alternative-label smwtype&#95;txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td>"
 				]
 			}
 		},
@@ -103,7 +103,7 @@
 			"subject": "Example/P0440/Q.3",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-alternative-label smwtype_txt\">Lipase</td>"
+					"<td class=\"Has-alternative-label smwtype&#95;txt\">Lipase</td>"
 				]
 			}
 		},
@@ -123,7 +123,7 @@
 			"subject": "Example/P0440/Q.5",
 			"assert-output": {
 				"not-contain": [
-					"<td class=\"Has-alternative-label smwtype_txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td>"
+					"<td class=\"Has-alternative-label smwtype&#95;txt\">Lipase<br />Tributyrase<br />Triglyceride lipase</td>"
 				]
 			}
 		},
@@ -153,11 +153,11 @@
 			"subject": "Example/P0440/Q.8",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Property-description smwtype_txt\">Something else ...</td>",
-					"<td class=\"Property-description smwtype_txt\">Something ...</td>"
+					"<td class=\"Property-description smwtype&#95;txt\">Something else ...</td>",
+					"<td class=\"Property-description smwtype&#95;txt\">Something ...</td>"
 				],
 				"not-contain": [
-					"<td class=\"Property-description smwtype_txt\">Something ...<br />何かあるもの。。。</td>"
+					"<td class=\"Property-description smwtype&#95;txt\">Something ...<br />何かあるもの。。。</td>"
 				]
 			}
 		},
