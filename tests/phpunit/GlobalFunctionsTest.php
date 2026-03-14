@@ -16,7 +16,6 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers ::smwfGetLinker
-	 * @test smwfGetLinker
 	 *
 	 * @since 1.9
 	 */
@@ -28,7 +27,6 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers ::smwfNormalTitleDBKey
-	 * @test smwfNormalTitleDBKey
 	 *
 	 * @since 1.9
 	 */
@@ -42,7 +40,6 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers ::smwfHTMLtoUTF8
-	 * @test smwfHTMLtoUTF8
 	 *
 	 * @since 1.9
 	 */
@@ -54,7 +51,6 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test Test if global functions are accessible
 	 * @dataProvider getGlobalFunctionsProvider
 	 *
 	 * @param $function
@@ -65,7 +61,6 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	/**
 	 * @covers ::smwfEncodeMessages
-	 * @test smwfEncodeMessages
 	 * @dataProvider getEncodeMessagesDataProvider
 	 *
 	 * @param $message

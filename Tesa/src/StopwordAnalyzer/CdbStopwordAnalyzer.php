@@ -52,8 +52,6 @@ class CdbStopwordAnalyzer implements StopwordAnalyzer {
 	/**
 	 * @since 0.1
 	 *
-	 * @param string $language
-	 *
 	 * @return string
 	 */
 	public static function getLocation() {
