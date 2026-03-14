@@ -94,23 +94,13 @@ class XmlImportRunner {
 		);
 		$importer->setDebug( $this->verbose );
 
-		if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
-			$reporter = new ImportReporter(
-				$importer,
-				false,
-				'',
-				false,
-				$this->acquireRequestContext()
-			);
-		} else {
-			$reporter = new ImportReporter(
-				$importer,
-				false,
-				'',
-				false
-			);
-			$reporter->setContext( $this->acquireRequestContext() );
-		}
+		$reporter = new ImportReporter(
+			$importer,
+			false,
+			'',
+			false,
+			$this->acquireRequestContext()
+		);
 		$reporter->open();
 		$this->exception = false;
 
