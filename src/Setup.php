@@ -179,10 +179,6 @@ final class Setup {
 		$vars['smwgMasterStore'] = null;
 		$vars['smwgIQRunningNumber'] = 0;
 
-		if ( !isset( $vars['smwgNamespace'] ) ) {
-			$vars['smwgNamespace'] = parse_url( $vars['wgServer'], PHP_URL_HOST );
-		}
-
 		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
 			if ( is_readable( $file ) ) {
 				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include $file );
