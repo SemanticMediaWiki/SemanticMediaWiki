@@ -39,15 +39,9 @@ class SearchInPageDBIntegrationTest extends SMWIntegrationTestCase {
 		$propertyPage = $titleFactory->newFromText( 'Has some page value', SMW_NS_PROPERTY );
 		$targetPage = $titleFactory->newFromText( __METHOD__ );
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-		} else {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-		}
 
 		$pageCreator = new PageCreator();
 
