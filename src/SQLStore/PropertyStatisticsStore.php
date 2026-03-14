@@ -122,16 +122,8 @@ class PropertyStatisticsStore {
 	 */
 	private function safeIncrement( string $field, int $delta ) {
 		if ( $delta < 0 ) {
-			if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
-				return $field . '=' . $this->connection->conditional(
-					$this->connection->expr( $field, '>=', abs( $delta ) ),
-					$field . ' - ' . $this->connection->addQuotes( abs( $delta ) ),
-					0
-				);
-			}
-
 			return $field . '=' . $this->connection->conditional(
-				$field . ' >= ' . $this->connection->addQuotes( abs( $delta ) ),
+				$this->connection->expr( $field, '>=', abs( $delta ) ),
 				$field . ' - ' . $this->connection->addQuotes( abs( $delta ) ),
 				0
 			);
