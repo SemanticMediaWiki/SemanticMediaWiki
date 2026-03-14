@@ -3,7 +3,6 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\MediaWikiServices;
-use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
@@ -99,13 +98,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		// Use $queryResult->getQuery()->getContextPage()
 		// No page should embed itself, find out who we are:
 		$parser = MediaWikiServices::getInstance()->getParser();
-		if ( $parser->getTitle() instanceof Title ) {
-			// NOTE: this will always be true on MW >= 1.35
-			$title = $parser->getTitle()->getPrefixedText();
-		} else { // this is likely to be in vain -- this case is typical if we run on special pages
-			global $wgTitle;
-			$title = $wgTitle->getPrefixedText();
-		}
+		$title = $parser->getTitle()->getPrefixedText();
 
 		// print header
 		$result = '';
@@ -122,8 +115,8 @@ class EmbeddedResultPrinter extends ResultPrinter {
 			case 'h4':
 			case 'h5':
 			case 'h6':
-							$headstart = '<' . $this->params['embedformat'] . '>';
-							$headend = '</' . $this->params['embedformat'] . ">\n";
+				$headstart = '<' . $this->params['embedformat'] . '>';
+				$headend = '</' . $this->params['embedformat'] . ">\n";
 				break;
 			case 'ul':
 			case 'ol':
