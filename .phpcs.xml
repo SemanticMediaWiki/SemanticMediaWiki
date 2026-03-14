@@ -21,7 +21,6 @@
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.WrongStyle" />
 		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
 		<exclude name="MediaWiki.Commenting.LicenseComment.InvalidLicenseTag" />
-		<exclude name="MediaWiki.PHPUnit.DeprecatedPHPUnitMethods.AssertInternalTypeGeneric" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
 		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers" />
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
