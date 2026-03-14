@@ -151,7 +151,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			$item = [];
 			$subject = '';
 
-			foreach ( $row as /* ResultArray */ $field ) {
+			foreach ( $row as $field ) {
 				$label = $field->getPrintRequest()->getLabel();
 
 				if ( $label === '' ) {
@@ -164,6 +164,7 @@ class JsonResultPrinter extends FileExportPrinter {
 				$dataValue = $field->getNextDataValue();
 				while ( $dataValue !== false ) {
 					$values[] = $dataValue->getWikiValue();
+					$dataValue = $field->getNextDataValue();
 				}
 
 				$item[$label] = $values;
@@ -174,6 +175,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			} else {
 				$result[$subject] = $item;
 			}
+			$row = $res->getNext();
 		}
 
 		return $result;
