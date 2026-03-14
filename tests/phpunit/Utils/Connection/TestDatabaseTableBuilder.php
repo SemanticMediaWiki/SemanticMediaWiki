@@ -158,22 +158,6 @@ class TestDatabaseTableBuilder {
 			__METHOD__
 		);
 
-		// MW < 1.42
-		if (
-			version_compare( MW_VERSION, '1.42', '<' ) &&
-			$dbConnection->getType() === 'mysql' &&
-			method_exists( $dbConnection, 'listViews' )
-		) {
-
-			# bug 43571: cannot clone VIEWs under MySQL
-			$views = $dbConnection->listViews(
-				self::$MWDB_PREFIX,
-				__METHOD__
-			);
-
-			$tables = array_diff( $tables, $views );
-		}
-
 		$tables = array_map( [ $this, 'unprefixTable' ], $tables );
 
 		// Don't duplicate test tables from the previous failed run
