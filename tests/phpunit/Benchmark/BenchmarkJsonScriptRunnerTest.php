@@ -55,7 +55,7 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	/**
 	 * @see JSONScriptTestCaseRunner::$deletePagesOnTearDown
 	 */
-	protected $deletePagesOnTearDown = true;
+	protected bool $deletePagesOnTearDown = true;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -113,21 +113,21 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	/**
 	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
-	protected function getTestCaseLocation() {
+	protected function getTestCaseLocation(): string {
 		return __DIR__ . '/TestCases';
 	}
 
 	/**
 	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
-	protected function getRequiredJsonTestCaseMinVersion() {
+	protected function getRequiredJsonTestCaseMinVersion(): string {
 		return '1';
 	}
 
 	/**
 	 * @see JSONScriptTestCaseRunner::getAllowedTestCaseFiles
 	 */
-	protected function getAllowedTestCaseFiles() {
+	protected function getAllowedTestCaseFiles(): array {
 		return [];
 	}
 
@@ -136,7 +136,7 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 	 *
 	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
-	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void {
 		$this->pageImportBenchmarkRunner->setTestCaseLocation(
 			$this->getTestCaseLocation()
 		);
@@ -163,7 +163,7 @@ class BenchmarkJsonScriptRunnerTest extends JSONScriptTestCaseRunner {
 			CliOutputFormatter::FORMAT_JSON
 		);
 
-		return print "\n\n" . $cliOutputFormatter->format( $report );
+		print "\n\n" . $cliOutputFormatter->format( $report );
 	}
 
 	private function doRunImportBenchmarks( $jsonTestCaseFileHandler ) {

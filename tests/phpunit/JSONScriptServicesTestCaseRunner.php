@@ -15,6 +15,9 @@ use SMW\Tests\Utils\JSONScript\QueryTestCaseInterpreter;
 use SMW\Tests\Utils\JSONScript\QueryTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\RdfTestCaseProcessor;
 use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
+use SMW\Tests\Utils\MwApiFactory;
+use SMW\Tests\Utils\Runners\RunnerFactory;
+use SMW\Tests\Utils\Validators\ValidatorFactory;
 
 /**
  * It is provided for external extensions that seek a simple way of creating tests
@@ -31,30 +34,19 @@ use SMW\Tests\Utils\JSONScript\SpecialPageTestCaseProcessor;
  */
 abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner {
 
-	/**
-	 * @var ValidatorFactory
-	 */
-	protected $validatorFactory;
-
-	/**
-	 * @var RunnerFactory
-	 */
-	protected $runnerFactory;
-
-	/**
-	 * @var ApiFactory
-	 */
-	private $apiFactory;
+	protected ValidatorFactory $validatorFactory;
+	protected RunnerFactory $runnerFactory;
+	private MwApiFactory $apiFactory;
 
 	/**
 	 * @see JSONScriptTestCaseRunner::$deletePagesOnTearDown
 	 */
-	protected $deletePagesOnTearDown = true;
+	protected bool $deletePagesOnTearDown = true;
 
 	/**
 	 * Defines set of assertation services to be available by the runner
 	 */
-	protected $defaultAssertionTypes = [
+	protected array $defaultAssertionTypes = [
 		'parser',
 		'parser-html',
 		'special'
@@ -92,21 +84,14 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		);
 	}
 
-	/**
-	 * @param string $type
-	 *
-	 * @return bool
-	 */
 	protected function runTestAssertionForType( string $type ): bool {
 		return in_array( $type, $this->defaultAssertionTypes );
 	}
 
 	/**
 	 * @see JSONScriptTestCaseRunner::runTestCaseFile
-	 *
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
-	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+	protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void {
 		$this->checkEnvironmentToSkipCurrentTest( $jsonTestCaseFileHandler );
 
 		// Setup
@@ -152,7 +137,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 	/**
 	 * @see JSONScriptTestCaseRunner::getPermittedSettings
 	 */
-	protected function getPermittedSettings() {
+	protected function getPermittedSettings(): array {
 		parent::getPermittedSettings();
 
 		$elasticsearchConfig = function ( $val ) {
@@ -437,7 +422,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		}
 	}
 
-	private function doRunQueryTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+	private function doRunQueryTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
 		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'query' );
 		$count += count( $testCases );
 
@@ -445,20 +430,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
-		$queryTestCaseProcessor = new QueryTestCaseProcessor(
-			$this->getStore(),
-			$this->validatorFactory->newQueryResultValidator(),
-			$this->validatorFactory->newStringValidator(),
-			$this->validatorFactory->newNumberValidator()
-		);
-
-		$queryTestCaseProcessor->setQueryParser(
-			$queryParser
-		);
-
-		$queryTestCaseProcessor->setDebugMode(
-			$jsonTestCaseFileHandler->getDebugMode()
-		);
+		$queryTestCaseProcessor = $this->newQueryTestCaseProcessor( $queryParser, $jsonTestCaseFileHandler );
 
 		foreach ( $testCases as $case ) {
 
@@ -471,7 +443,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		}
 	}
 
-	private function doRunConceptTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+	private function doRunConceptTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
 		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'concept' );
 		$count += count( $testCases );
 
@@ -479,20 +451,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
-		$queryTestCaseProcessor = new QueryTestCaseProcessor(
-			$this->getStore(),
-			$this->validatorFactory->newQueryResultValidator(),
-			$this->validatorFactory->newStringValidator(),
-			$this->validatorFactory->newNumberValidator()
-		);
-
-		$queryTestCaseProcessor->setQueryParser(
-			$queryParser
-		);
-
-		$queryTestCaseProcessor->setDebugMode(
-			$jsonTestCaseFileHandler->getDebugMode()
-		);
+		$queryTestCaseProcessor = $this->newQueryTestCaseProcessor( $queryParser, $jsonTestCaseFileHandler );
 
 		foreach ( $testCases as $case ) {
 			$queryTestCaseProcessor->processConceptCase( new QueryTestCaseInterpreter( $case ) );
@@ -500,7 +459,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 		}
 	}
 
-	private function doRunFormatTests( $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
+	private function doRunFormatTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler, $queryParser, &$i, &$count ) {
 		$testCases = $jsonTestCaseFileHandler->findTestCasesByType( 'format' );
 		$count += count( $testCases );
 
@@ -508,20 +467,7 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			return;
 		}
 
-		$queryTestCaseProcessor = new QueryTestCaseProcessor(
-			$this->getStore(),
-			$this->validatorFactory->newQueryResultValidator(),
-			$this->validatorFactory->newStringValidator(),
-			$this->validatorFactory->newNumberValidator()
-		);
-
-		$queryTestCaseProcessor->setQueryParser(
-			$queryParser
-		);
-
-		$queryTestCaseProcessor->setDebugMode(
-			$jsonTestCaseFileHandler->getDebugMode()
-		);
+		$queryTestCaseProcessor = $this->newQueryTestCaseProcessor( $queryParser, $jsonTestCaseFileHandler );
 
 		foreach ( $testCases as $case ) {
 
@@ -532,6 +478,23 @@ abstract class JSONScriptServicesTestCaseRunner extends JSONScriptTestCaseRunner
 			$queryTestCaseProcessor->processFormatCase( new QueryTestCaseInterpreter( $case ) );
 			$i++;
 		}
+	}
+
+	private function newQueryTestCaseProcessor(
+		$queryParser,
+		JsonTestCaseFileHandler $jsonTestCaseFileHandler
+	): QueryTestCaseProcessor {
+		$queryTestCaseProcessor = new QueryTestCaseProcessor(
+			$this->getStore(),
+			$this->validatorFactory->newQueryResultValidator(),
+			$this->validatorFactory->newStringValidator(),
+			$this->validatorFactory->newNumberValidator()
+		);
+
+		$queryTestCaseProcessor->setQueryParser( $queryParser );
+		$queryTestCaseProcessor->setDebugMode( $jsonTestCaseFileHandler->getDebugMode() );
+
+		return $queryTestCaseProcessor;
 	}
 
 	private function doRunApiTests( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
