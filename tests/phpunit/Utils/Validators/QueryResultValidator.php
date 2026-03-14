@@ -74,8 +74,10 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 							unset( $expected[$key] );
 						}
 					}
+					$dataValue = $result->getNextDataValue();
 				}
 			}
+			$resultArray = $queryResult->getNext();
 		}
 
 		$this->assertEmpty(
