@@ -81,8 +81,6 @@
 	"smw-upgrade-error-title": "Ошибка » Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Почему я вижу эту страницу?",
 	"smw-upgrade-error-how-title": "Как исправить эту ошибку?",
-	"smw-extensionload-error-why-title": "Почему я вижу эту страницу?",
-	"smw-extensionload-error-how-title": "Как исправить эту ошибку?",
 	"smw-upgrade-maintenance-why-title": "Почему я вижу эту страницу?",
 	"smw-semantics-not-enabled": "Функциональность Semantic MediaWiki не подключена на этой вики.",
 	"smw_viewasrdf": "RDF источник",
