@@ -30,7 +30,7 @@ class SemanticMediaWiki {
 			require_once dirname( __DIR__ ) . "/includes/GlobalFunctions.php";
 		}
 
-		// We're moving away from enableSemantics, so set this here.
+		// enableSemantics is deprecated; SMW_EXTENSION_LOADED is set here.
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			define( 'SMW_EXTENSION_LOADED', true );
 		}

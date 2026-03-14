@@ -52,8 +52,8 @@ final class Setup {
 		);
 
 		// Register an exception handler to fetch the "Uncaught Exception" which
-		// is can be thrown by the `ExtensionRegistry` in case `enableSemantics`
-		// and `wfLoadExtension( 'SemanticMediaWiki' )` were used simultaneously
+		// can be thrown by the `ExtensionRegistry` in case the deprecated
+		// `enableSemantics` and `wfLoadExtension` were used simultaneously
 		// by emitting something like:
 		//
 		// "... It was attempted to load SemanticMediaWiki twice ..."

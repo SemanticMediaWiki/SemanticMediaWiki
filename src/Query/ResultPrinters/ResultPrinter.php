@@ -138,7 +138,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	private static $mRecursionDepth = 0;
 
 	/// This public variable can be set to higher values to allow more recursion; do this at your own risk!
-	/// This can be set in LocalSettings.php, but only after enableSemantics().
+	/// This can be set in LocalSettings.php, but only after wfLoadExtension.
 	public static $maxRecursionDepth = 2;
 
 	/**
