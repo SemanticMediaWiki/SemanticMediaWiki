@@ -58,16 +58,10 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			// Mock the IReadableDatabase interface
-			$db = $this->getMockBuilder( \Wikimedia\Rdbms\IReadableDatabase::class )
+		// Mock the IReadableDatabase interface
+		$db = $this->getMockBuilder( \Wikimedia\Rdbms\IReadableDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
-		} else {
-			$db = $this->getMockBuilder( '\Database' )
-			->disableOriginalConstructor()
-			->getMock();
-		}
 
 		$localRepo = $this->getMockBuilder( '\LocalRepo' )
 			->disableOriginalConstructor()
