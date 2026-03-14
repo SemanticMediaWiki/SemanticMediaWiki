@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @covers \SMW\MediaWiki\Search\ExtendedSearchEngine
@@ -22,7 +23,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$this->connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -51,7 +52,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			}
 		}
 
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
