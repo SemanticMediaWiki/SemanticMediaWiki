@@ -45,8 +45,6 @@
 	"smw-upgrade-error-title": "Fel » Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Varför ser jag denna sida?",
 	"smw-upgrade-error-how-title": "Hur kan jag åtgärda felet?",
-	"smw-extensionload-error-why-title": "Varför ser jag denna sida?",
-	"smw-extensionload-error-how-title": "Hur kan jag åtgärda felet?",
 	"smw-upgrade-maintenance-why-title": "Varför ser jag denna sida?",
 	"smw-semantics-not-enabled": "Semantic MediaWiki-funktionalitet är inte aktiverad på denna wiki.",
 	"smw_viewasrdf": "RDF-matning",

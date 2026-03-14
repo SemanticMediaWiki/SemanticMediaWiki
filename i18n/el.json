@@ -35,8 +35,6 @@
 	"smw-upgrade-error-title": "Σφάλμα » Σημασιολογικό MediaWiki",
 	"smw-upgrade-error-why-title": "Γιατί βλέπω αυτήν τη σελίδα;",
 	"smw-upgrade-error-how-title": "Πώς διορθώνω αυτό το σφάλμα;",
-	"smw-extensionload-error-why-title": "Γιατί βλέπω αυτήν τη σελίδα;",
-	"smw-extensionload-error-how-title": "Πώς διορθώνω αυτό το σφάλμα;",
 	"smw-upgrade-maintenance-title": "Συντήρηση » Σημασιολογικό MediaWiki",
 	"smw-upgrade-maintenance-why-title": "Γιατί βλέπω αυτήν τη σελίδα;",
 	"smw-semantics-not-enabled": "Η λειτουργικότητα Σημασιολογικού MediaWiki δεν είναι ενεργοποιημένη για αυτό το wiki.",
