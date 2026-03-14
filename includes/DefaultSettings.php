@@ -8,9 +8,8 @@ use SMW\SQLStore\SQLStore;
  * The following default settings are to be used by the extension itself,
  * please modify settings in the LocalSettings file.
  *
- * Most settings should be make  between including this file and the call
- * to enableSemantics(). Exceptions that need to be set before are
- * documented below.
+ * Most settings should be made in LocalSettings.php after the call to
+ * wfLoadExtension( 'SemanticMediaWiki' ).
  *
  * @codeCoverageIgnore
  */
@@ -119,8 +118,9 @@ return ( static function () {
 		# not.
 		#
 		# SMW 3.2 added an additional validation to check that `wfLoadExtension(
-		# 'SemanticMediaWiki')` isn't used given its conflict with `enableSemantics`.
-		# If the setting is set to `false` then this check is disabled as well.
+		# 'SemanticMediaWiki')` isn't used together with the deprecated
+		# `enableSemantics`. If the setting is set to `false` then this check
+		# is disabled as well.
 		#
 		# To ignore the check and suppress the error, set the value to `true`.
 		#
