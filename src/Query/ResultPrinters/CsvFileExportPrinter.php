@@ -157,12 +157,14 @@ class CsvFileExportPrinter extends FileExportPrinter {
 				$object = $field->getNextDataValue();
 				while ( $object !== false ) {
 					$growing[] = Sanitizer::decodeCharReferences( $object->getShortWikiText() );
+					$object = $field->getNextDataValue();
 				}
 
 				$row_items[] = implode( $vsep, $growing );
 			}
 
 			$rows[] = $row_items;
+			$row = $res->getNext();
 		}
 
 		if ( $this->params['merge'] === true ) {
