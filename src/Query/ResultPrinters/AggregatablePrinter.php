@@ -187,7 +187,7 @@ abstract class AggregatablePrinter extends ResultPrinter {
 					$dataValue = $row[$i]->getNextDataValue();
 				}
 			}
-		   $row = $queryResult->getNext();
+			$row = $queryResult->getNext();
 		}
 
 		return $values;
