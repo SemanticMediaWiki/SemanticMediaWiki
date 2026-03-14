@@ -34,40 +34,13 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
-	/**
-	 * @var JsonFileReader
-	 */
-	private $fileReader;
-
-	/**
-	 * @var JsonTestCaseContentHandler
-	 */
-	private $jsonTestCaseContentHandler;
-
-	/**
-	 * @var array
-	 */
-	private $itemsMarkedForDeletion = [];
-
-	/**
-	 * @var array
-	 */
-	private $configValueCallback = [];
-
-	/**
-	 * @var bool
-	 */
-	protected $deletePagesOnTearDown = true;
-
-	/**
-	 * @var string
-	 */
-	protected $searchByFileExtension = 'json';
-
-	/**
-	 * @var string
-	 */
-	protected $connectorId = '';
+	private JsonFileReader $fileReader;
+	private JsonTestCaseContentHandler $jsonTestCaseContentHandler;
+	private array $itemsMarkedForDeletion = [];
+	private array $configValueCallback = [];
+	protected bool $deletePagesOnTearDown = true;
+	protected string $searchByFileExtension = 'json';
+	protected string $connectorId = '';
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -113,36 +86,22 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		}
 	}
 
-	/**
-	 * @return string
-	 */
-	abstract protected function getTestCaseLocation();
+	abstract protected function getTestCaseLocation(): string;
 
-	/**
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
-	 */
-	abstract protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler );
+	abstract protected function runTestCaseFile( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void;
 
-	/**
-	 * @return string
-	 */
-	protected function getRequiredJsonTestCaseMinVersion() {
+	protected function getRequiredJsonTestCaseMinVersion(): string {
 		return '0.1';
 	}
 
-	/**
-	 * @return array
-	 */
-	protected function getAllowedTestCaseFiles() {
+	protected function getAllowedTestCaseFiles(): array {
 		return [];
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return
 	 */
-	protected function getDependencyDefinitions() {
+	protected function getDependencyDefinitions(): array {
 		return [];
 	}
 
@@ -153,10 +112,8 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 * For a configuration that requires special treatment (i.e. where a simple
 	 * assignment isn't sufficient), a callback can be assigned to a settings
 	 * key in order to sort out required manipulation (constants etc.).
-	 *
-	 * @return array
 	 */
-	protected function getPermittedSettings() {
+	protected function getPermittedSettings(): array {
 		// Ensure that the context is set for a selected language
 		// and dependent objects are reset
 		$this->registerConfigValueCallback( 'wgContLang', function ( $val ) {
@@ -192,19 +149,12 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		return [];
 	}
 
-	/**
-	 * @param string $key
-	 * @param Closure $callback
-	 */
-	protected function registerConfigValueCallback( $key, Closure $callback ) {
+	protected function registerConfigValueCallback( string $key, Closure $callback ): void {
 		$this->configValueCallback[$key] = $callback;
 	}
 
-	/**
-	 * @return callable|null
-	 */
-	protected function getConfigValueCallback( $key ) {
-		return isset( $this->configValueCallback[$key] ) ? $this->configValueCallback[$key] : null;
+	protected function getConfigValueCallback( string $key ): ?callable {
+		return $this->configValueCallback[$key] ?? null;
 	}
 
 	/**
@@ -212,12 +162,8 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	 * JsonTestCaseScriptRunner::getAllowedTestCaseFiles (or hereof) to filter
 	 * selected files and help fine tune a setup or debug a potential issue
 	 * without having to run all test files at once.
-	 *
-	 * @param string $file
-	 *
-	 * @return bool
 	 */
-	protected function canTestCaseFile( $file ) {
+	protected function canTestCaseFile( string $file ): bool {
 		// Filter specific files on-the-fly
 		$allowedTestCaseFiles = $this->getAllowedTestCaseFiles();
 
@@ -238,7 +184,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 	/**
 	 * @dataProvider jsonFileProvider
 	 */
-	public function testCaseFile( $file ) {
+	public function testCaseFile( string $file ): void {
 		if ( !$this->canTestCaseFile( $file ) ) {
 			$this->markTestSkipped( $file . ' excluded from the test run' );
 		}
@@ -247,10 +193,7 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 		$this->runTestCaseFile( new JsonTestCaseFileHandler( $this->fileReader ) );
 	}
 
-	/**
-	 * @return array
-	 */
-	public function jsonFileProvider() {
+	public function jsonFileProvider(): array {
 		$provider = [];
 
 		$bulkFileProvider = UtilityFactory::getInstance()->newBulkFileProvider(
@@ -268,20 +211,15 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param mixed $key
-	 * @param mixed $value
 	 */
-	protected function changeGlobalSettingTo( $key, $value ) {
+	protected function changeGlobalSettingTo( string $key, $value ): void {
 		$this->testEnvironment->addConfiguration( $key, $value );
 	}
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param JsonTestCaseFileHandler $jsonTestCaseFileHandler
 	 */
-	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ) {
+	protected function checkEnvironmentToSkipCurrentTest( JsonTestCaseFileHandler $jsonTestCaseFileHandler ): void {
 		if ( $jsonTestCaseFileHandler->isIncomplete() ) {
 			$this->markTestIncomplete( $jsonTestCaseFileHandler->getReasonForSkip() );
 		}
@@ -309,11 +247,8 @@ abstract class JSONScriptTestCaseRunner extends SMWIntegrationTestCase {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $pages
-	 * @param int $defaultNamespace
 	 */
-	protected function createPagesFrom( array $pages, $defaultNamespace = NS_MAIN ) {
+	protected function createPagesFrom( array $pages, int $defaultNamespace = NS_MAIN ): void {
 		$this->jsonTestCaseContentHandler->skipOn(
 			$this->connectorId
 		);

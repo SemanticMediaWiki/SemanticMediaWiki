@@ -36,21 +36,21 @@ class JSONScriptTestCaseRunnerTest extends JSONScriptServicesTestCaseRunner {
 	/**
 	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
-	protected function getTestCaseLocation() {
+	protected function getTestCaseLocation(): string {
 		return __DIR__ . '/TestCases';
 	}
 
 	/**
 	 * @see JSONScriptTestCaseRunner::getTestCaseLocation
 	 */
-	protected function getRequiredJsonTestCaseMinVersion() {
+	protected function getRequiredJsonTestCaseMinVersion(): string {
 		return '2';
 	}
 
 	/**
 	 * @see JSONScriptTestCaseRunner::getDependencyDefinitions
 	 */
-	protected function getDependencyDefinitions() {
+	protected function getDependencyDefinitions(): array {
 		return [
 			'Maps' => static function ( $val, &$reason ) {
 				if ( !ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
