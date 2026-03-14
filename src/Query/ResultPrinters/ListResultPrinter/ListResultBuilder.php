@@ -224,6 +224,7 @@ class ListResultBuilder {
 				$this->get( 'row-close-tag' );
 
 			$num++;
+			$row = $queryResult->getNext();
 		}
 
 		return $rowTexts;
