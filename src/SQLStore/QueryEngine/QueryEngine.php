@@ -482,7 +482,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 				$missedCount++;
 				$logToTable[$row->t] = "skip result for {$row->t} due to an internal `{$row->iw}` pointer / query " . $query->getHash();
 			}
-			$row = $res->fetchObject();
+			if ( $count < $query->getLimit() ) {
+				$row = $res->fetchObject();
+			}
 		}
 
 		if ( $res->fetchObject() ) {
