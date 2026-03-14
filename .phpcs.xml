@@ -43,7 +43,6 @@
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec" />
 		<exclude name="MediaWiki.Files.ClassMatchesFilename.WrongCase" />
 		<exclude name="MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals" />
-		<exclude name="MediaWiki.Commenting.FunctionComment.ExtraParamComment" />
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVarType" />
 		<exclude name="MediaWiki.Commenting.VariadicArgument.SuperfluousVariadicArgComment" />
