@@ -183,6 +183,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$template->field( '#userparam', $this->params['userparam'] );
 			$this->addFields( $template, $row );
 			$templateSet->addTemplate( $template );
+			$row = $queryResult->getNext();
 		}
 
 		if ( $this->params['outrotemplate'] !== '' ) {
