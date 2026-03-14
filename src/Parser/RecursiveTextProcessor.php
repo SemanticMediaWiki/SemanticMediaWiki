@@ -302,7 +302,7 @@ class RecursiveTextProcessor {
 			 *
 			 * @see Parser::resetOutput
 			 */
-			if ( version_compare( MW_VERSION, '1.42', '>=' ) && $this->parser->getOptions() === null ) {
+			if ( $this->parser->getOptions() === null ) {
 				return null;
 			}
 			return $this->parser->getOutput();
