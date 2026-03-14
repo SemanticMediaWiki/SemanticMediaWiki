@@ -87,7 +87,7 @@ class CompoundConstraintValueValidator implements ConstraintValueValidator {
 		}
 	}
 
-	function __destruct() {
+	public function __destruct() {
 		$this->logger->info(
 			[ 'CompoundConstraintValueValidator', 'Page: {contextPage}', 'Validation count: {count}', 'procTime (total in sec.): {procTime}' ],
 			[ 'role' => 'developer', 'count' => $this->count, 'procTime' => $this->time, 'contextPage' => $this->contextPage ]
