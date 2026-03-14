@@ -65,7 +65,7 @@ class PropertiesQueryPage extends QueryPage {
 	/**
 	 * @return string
 	 */
-	function getPageHeader() {
+	public function getPageHeader() {
 		return Html::rawElement(
 			'p',
 			[ 'class' => 'smw-sp-properties-docu' ],
@@ -82,7 +82,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return 'Properties';
 	}
 
@@ -97,7 +97,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @return string
 	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
-	function formatResult( $skin, $result ) {
+	public function formatResult( $skin, $result ) {
 		[ $dataItem, $useCount ] = $result;
 
 		if ( $dataItem instanceof DIProperty ) {
@@ -266,7 +266,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @param RequestOptions $requestOptions
 	 * @return array of array( \SMW\DIProperty|SMWDIError, integer )
 	 */
-	function getResults( $requestOptions ) {
+	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}

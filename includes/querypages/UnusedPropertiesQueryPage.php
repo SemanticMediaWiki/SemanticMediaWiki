@@ -49,7 +49,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return "UnusedProperties";
 	}
 
@@ -57,16 +57,18 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	function isExpensive() {
-		return false; // Disables caching for now
+	public function isExpensive() {
+		// Disables caching for now
+		return false;
 	}
 
 	/**
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	function isSyndicated() {
-		return false; // TODO: why not?
+	public function isSyndicated() {
+		// TODO: why not?
+		return false;
 	}
 
 	/**
@@ -92,7 +94,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getPageHeader() {
+	public function getPageHeader() {
 		return Html::rawElement(
 			'p',
 			[ 'class' => 'smw-unusedproperties-docu' ],
@@ -116,7 +118,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @return string
 	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
-	function formatResult( $skin, $result ) {
+	public function formatResult( $skin, $result ) {
 		if ( $result instanceof DIProperty ) {
 			return $this->formatPropertyItem( $result );
 		} elseif ( $result instanceof SMWDIError ) {
@@ -190,7 +192,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @param RequestOptions $requestOptions
 	 * @return array of DIProperty|SMWDIError
 	 */
-	function getResults( $requestOptions ) {
+	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}

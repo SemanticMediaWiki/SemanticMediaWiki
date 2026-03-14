@@ -981,7 +981,7 @@ abstract class SMWDataValue {
 		$this->dataValueServiceFactory->getConstraintValueValidator()->validate( $this );
 	}
 
-	function __destruct() {
+	public function __destruct() {
 		$this->callables = [];
 	}
 

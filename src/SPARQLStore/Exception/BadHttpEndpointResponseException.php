@@ -51,7 +51,7 @@ class BadHttpEndpointResponseException extends Exception {
 	 * @param $endpoint string URL of the endpoint
 	 * @param $httpCode mixed integer HTTP error code or some string to print there
 	 */
-	function __construct( $errorCode, $queryText, $endpoint, $httpCode = '<not given>' ) {
+	public function __construct( $errorCode, $queryText, $endpoint, $httpCode = '<not given>' ) {
 		switch ( $errorCode ) {
 			case self::ERROR_MALFORMED:
 				$errorName = 'Malformed query';

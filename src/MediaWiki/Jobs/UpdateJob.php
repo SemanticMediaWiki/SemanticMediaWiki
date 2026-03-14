@@ -60,7 +60,7 @@ class UpdateJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	function __construct( Title $title, $params = [] ) {
+	public function __construct( Title $title, $params = [] ) {
 		parent::__construct( 'smw.update', $title, $params );
 		$this->title = $title;
 		$this->removeDuplicates = true;

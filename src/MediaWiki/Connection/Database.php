@@ -441,7 +441,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	function affectedRows() {
+	public function affectedRows() {
 		return $this->connRef->getConnection( 'read' )->affectedRows();
 	}
 
@@ -494,7 +494,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	function insertId() {
+	public function insertId() {
 		if ( $this->insertId !== null ) {
 			return $this->insertId;
 		}
@@ -507,7 +507,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function clearFlag( $flag ) {
+	public function clearFlag( $flag ) {
 		$this->connRef->getConnection( 'write' )->clearFlag( $flag );
 	}
 
@@ -516,7 +516,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function getFlag( $flag ) {
+	public function getFlag( $flag ) {
 		return $this->connRef->getConnection( 'write' )->getFlag( $flag );
 	}
 
@@ -525,7 +525,7 @@ class Database {
 	 *
 	 * @since 2.4
 	 */
-	function setFlag( $flag ) {
+	public function setFlag( $flag ) {
 		if ( $flag === self::AUTO_COMMIT ) {
 			return $this->flags = self::AUTO_COMMIT;
 		}
@@ -553,7 +553,7 @@ class Database {
 	 *
 	 * @since 1.9
 	 */
-	function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
+	public function update( $table, $values, $conds, $fname = __METHOD__, $options = [] ) {
 		$scope = $this->transactionHandler->muteTransactionProfiler();
 
 		$res = $this->connRef->getConnection( 'write' )->update( $table, $values, $conds, $fname, $options );
