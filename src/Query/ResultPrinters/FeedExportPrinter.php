@@ -304,6 +304,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 				} else {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $dataValue->getWikiValue() );
 				}
+				$dataValue = $field->getNextDataValue();
 			}
 
 			// Join all property values into a single string, separated by a comma
