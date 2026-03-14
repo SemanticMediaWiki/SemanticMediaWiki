@@ -56,6 +56,7 @@ class ValueTextsBuilder {
 				$this->get( 'value-open-tag' ) .
 				$this->getValueText( $dataValue, $column ) .
 				$this->get( 'value-close-tag' );
+			$dataValue = $field->getNextDataValue();
 		}
 
 		return $valueTexts;
