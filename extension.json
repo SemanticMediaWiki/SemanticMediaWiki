@@ -23,7 +23,7 @@
 	},
 	"AutoloadNamespaces": {
 		"SMW\\": "src/",
-		"SMW\\Maintenance": "maintenance/",
+		"SMW\\Maintenance\\": "maintenance/",
 		"Onoi\\Tesa\\": "Tesa/src/"
 	},
 	"TestAutoloadNamespaces": {

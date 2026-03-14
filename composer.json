@@ -81,12 +81,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SMW\\": "src/",
-			"SMW\\Maintenance\\": "maintenance/",
 			"Onoi\\Tesa\\": "Tesa/src/"
-		},
-		"psr-0": {
-			"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
 		},
 		"files": [
 			"includes/GlobalFunctions.php"
