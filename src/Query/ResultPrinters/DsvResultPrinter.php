@@ -149,6 +149,7 @@ class DsvResultPrinter extends FileExportPrinter {
 				$object = $field->getNextDataValue();
 				while ( $object !== false ) {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
+					$object = $field->getNextDataValue();
 				}
 
 				// Join all values into a single string, separating them with comma's.
@@ -156,6 +157,7 @@ class DsvResultPrinter extends FileExportPrinter {
 			}
 
 			$lines[] = $this->getDSVLine( $rowItems );
+			$row = $queryResult->getNext();
 		}
 
 		return implode( "\n", $lines );

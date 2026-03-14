@@ -253,6 +253,7 @@ class TableResultPrinter extends ResultPrinter {
 		$dv = $resultArray->getNextDataValue();
 		while ( $dv !== false ) {
 			$dataValues[] = $dv;
+			$dv = $resultArray->getNextDataValue();
 		}
 
 		$printRequest = $resultArray->getPrintRequest();

@@ -219,6 +219,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
 			while ( $text !== false ) {
 				$value .= $value === '' ? $text : $this->params['valuesep'] . ' ' . $text;
+				$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
 			}
 
 			$template->field( $fieldName, $value );

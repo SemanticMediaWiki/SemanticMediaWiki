@@ -281,6 +281,8 @@ class CategoryResultPrinter extends ResultPrinter {
 				}
 
 				$fieldValues[] = $text;
+
+				$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
 			}
 
 			$first_col = false;
@@ -319,6 +321,7 @@ class CategoryResultPrinter extends ResultPrinter {
 			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
 			while ( $text !== false ) {
 				$fieldValues[] = $text;
+				$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
 			}
 
 			natsort( $fieldValues );

@@ -213,6 +213,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		$row = $results->getNext();
 		while ( $row ) {
 			$feed->outItem( $this->feedItem( $row ) );
+			$row = $results->getNext();
 		}
 
 		// Create feed footer
