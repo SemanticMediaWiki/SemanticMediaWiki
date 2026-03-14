@@ -26,6 +26,9 @@
 		"SMW\\Maintenance": "maintenance/",
 		"Onoi\\Tesa\\": "Tesa/src/"
 	},
+	"TestAutoloadNamespaces": {
+		"SMW\\Tests\\": "tests/phpunit/"
+	},
 	"Hooks": {
 		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
