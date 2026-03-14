@@ -48,7 +48,6 @@
 		<exclude name="MediaWiki.Usage.DeprecatedGlobalVariables.Deprecated$wgTitle" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVarType" />
 		<exclude name="MediaWiki.Commenting.VariadicArgument.SuperfluousVariadicArgComment" />
-		<exclude name="MediaWiki.Usage.ForbiddenFunctions.assert" />
 		<exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
 		<exclude name="PSR2.Methods.MethodDeclaration.Underscore" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
