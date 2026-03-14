@@ -187,6 +187,7 @@ class ParametersWidget {
 				$rowHtml = '';
 				$n++;
 			}
+			$option = array_shift( $optionList );
 		}
 
 		// Ensure left over elements are collected as well
