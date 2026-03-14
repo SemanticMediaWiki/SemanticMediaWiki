@@ -134,7 +134,8 @@ class DsvResultPrinter extends FileExportPrinter {
 		}
 
 		// Loop over the result objects (pages).
-		while ( $row = $queryResult->getNext() ) {
+		$row = $queryResult->getNext();
+		while ( $row ) {
 			$rowItems = [];
 
 			/**
@@ -145,7 +146,8 @@ class DsvResultPrinter extends FileExportPrinter {
 				$itemSegments = [];
 
 				// Loop over all values for the property.
-				while ( ( $object = $field->getNextDataValue() ) !== false ) {
+				$object = $field->getNextDataValue();
+				while ( $object !== false ) {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
 				}
 

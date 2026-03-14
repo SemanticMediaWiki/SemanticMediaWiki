@@ -163,9 +163,11 @@ abstract class AggregatablePrinter extends ResultPrinter {
 	protected function getDistributionResults( QueryResult $queryResult, $outputMode ) {
 		$values = [];
 
-		while ( /* array of ResultArray */ $row = $queryResult->getNext() ) { // Objects (pages)
+		$row = $queryResult->getNext();
+		while ( /* array of ResultArray */ $row ) { // Objects (pages)
 			for ( $i = 0, $n = count( $row ); $i < $n; $i++ ) { // ResultArray for a sinlge property
-				while ( ( /* SMWDataValue */ $dataValue = $row[$i]->getNextDataValue() ) !== false ) { // Data values
+				$dataValue = $row[$i]->getNextDataValue();
+				while ( /* SMWDataValue */ $dataValue !== false ) { // Data values
 
 					// Get the HTML for the tag content. Pages are linked, other stuff is just plaintext.
 					if ( $dataValue->getTypeID() == '_wpg' ) {
@@ -200,7 +202,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 		$values = [];
 
 		// print all result rows
-		while ( $subject = $queryResult->getNext() ) {
+		$subject = $queryResult->getNext();
+		while ( $subject ) {
 			$dataValue = $subject[0]->getNextDataValue();
 
 			if ( $dataValue !== false ) {
@@ -228,7 +231,8 @@ abstract class AggregatablePrinter extends ResultPrinter {
 						}
 					}
 
-					while ( ( /* DataItem */ $dataItem = $field->getNextDataItem() ) !== false ) {
+					$dataItem = $field->getNextDataItem();
+					while ( /* DataItem */ $dataItem !== false ) {
 						$this->addNumbersForDataItem( $dataItem, $values, $name );
 					}
 				}

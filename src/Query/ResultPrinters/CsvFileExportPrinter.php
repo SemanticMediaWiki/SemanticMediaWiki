@@ -147,13 +147,15 @@ class CsvFileExportPrinter extends FileExportPrinter {
 			}
 		}
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$row_items = [];
 
 			foreach ( $row as /* ResultArray */ $field ) {
 				$growing = [];
 
-				while ( ( $object = $field->getNextDataValue() ) !== false ) {
+				$object = $field->getNextDataValue();
+				while ( $object !== false ) {
 					$growing[] = Sanitizer::decodeCharReferences( $object->getShortWikiText() );
 				}
 

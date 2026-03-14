@@ -210,7 +210,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		}
 
 		// Create feed items
-		while ( $row = $results->getNext() ) {
+		$row = $results->getNext();
+		while ( $row ) {
 			$feed->outItem( $this->feedItem( $row ) );
 		}
 
@@ -288,7 +289,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			$subject = $field->getResultSubject()->getTitle();
 
 			// Loop over all values for the property.
-			while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+			$dataValue = $field->getNextDataValue();
+			while ( $dataValue !== false ) {
 				if ( $dataValue->getDataItem() instanceof DIWikiPage ) {
 
 					$linker = null;

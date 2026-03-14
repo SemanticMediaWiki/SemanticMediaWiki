@@ -64,9 +64,11 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 			$this->useWikiValueForDataValueValidation();
 		}
 
-		while ( $resultArray = $queryResult->getNext() ) {
+		$resultArray = $queryResult->getNext();
+		while ( $resultArray ) {
 			foreach ( $resultArray as $result ) {
-				while ( ( $dataValue = $result->getNextDataValue() ) !== false ) {
+				$dataValue = $result->getNextDataValue();
+				while ( $dataValue !== false ) {
 					foreach ( $expected as $key => $exp ) {
 						if ( call_user_func_array( $this->dataValueValidationMethod, [ $exp, $dataValue ] ) ) {
 							unset( $expected[$key] );
@@ -107,9 +109,11 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 			"Failed on {$message} with error(s): " . implode( ',', $errors )
 		);
 
-		while ( $resultArray = $queryResult->getNext() ) {
+		$resultArray = $queryResult->getNext();
+		while ( $resultArray ) {
 			foreach ( $resultArray as $k => $result ) {
-				while ( ( $dataItem = $result->getNextDataItem() ) !== false ) {
+				$dataItem = $result->getNextDataItem();
+				while ( $dataItem !== false ) {
 					$sorting[] = $dataItem;
 					foreach ( $expected as $key => $exp ) {
 						if ( $exp->equals( $dataItem ) ) {

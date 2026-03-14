@@ -136,7 +136,8 @@ class TableResultPrinter extends ResultPrinter {
 
 		$rowNumber = 0;
 
-		while ( $subject = $res->getNext() ) {
+		$subject = $res->getNext();
+		while ( $subject ) {
 			$rowNumber++;
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 
@@ -249,7 +250,8 @@ class TableResultPrinter extends ResultPrinter {
 		/** @var SMWDataValue[] $dataValues */
 		$dataValues = [];
 
-		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
+		$dv = $resultArray->getNextDataValue();
+		while ( $dv !== false ) {
 			$dataValues[] = $dv;
 		}
 

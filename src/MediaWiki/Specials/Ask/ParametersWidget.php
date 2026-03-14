@@ -169,7 +169,8 @@ class ParametersWidget {
 			]
 		);
 
-		while ( $option = array_shift( $optionList ) ) {
+		$option = array_shift( $optionList );
+		while ( $option ) {
 			$i++;
 
 			// Collect elements for a row

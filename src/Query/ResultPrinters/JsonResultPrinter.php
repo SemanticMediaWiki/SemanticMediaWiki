@@ -146,7 +146,8 @@ class JsonResultPrinter extends FileExportPrinter {
 	private function buildSimpleList( $res ) {
 		$result = [];
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$item = [];
 			$subject = '';
 
@@ -160,7 +161,8 @@ class JsonResultPrinter extends FileExportPrinter {
 				$values = [];
 				$subject = $field->getResultSubject()->getHash();
 
-				while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+				$dataValue = $field->getNextDataValue();
+				while ( $dataValue !== false ) {
 					$values[] = $dataValue->getWikiValue();
 				}
 

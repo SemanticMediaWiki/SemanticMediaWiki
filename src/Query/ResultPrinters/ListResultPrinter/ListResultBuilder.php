@@ -216,8 +216,8 @@ class ListResultBuilder {
 		$num = $queryResult->getQuery()->getOffset();
 		$rowBuilder = $this->getRowBuilder();
 
-		while ( ( $row = $queryResult->getNext() ) !== false ) {
-
+		$row = $queryResult->getNext();
+		while ( $row !== false ) {
 			$rowTexts[] =
 				$this->get( 'row-open-tag' ) .
 				$rowBuilder->getRowText( $row, $num ) .

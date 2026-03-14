@@ -259,7 +259,8 @@ class CategoryResultPrinter extends ResultPrinter {
 			$first_value = true;
 			$fieldValues = [];
 
-			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
+			while ( $text !== false ) {
 
 				// first values after first column
 				if ( !$first_col && !$found_values ) {
@@ -315,7 +316,8 @@ class CategoryResultPrinter extends ResultPrinter {
 
 			$fieldValues = [];
 
-			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) ) ) !== false ) {
+			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $first_col ) );
+			while ( $text !== false ) {
 				$fieldValues[] = $text;
 			}
 

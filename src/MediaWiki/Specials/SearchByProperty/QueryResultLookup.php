@@ -181,7 +181,8 @@ class QueryResultLookup {
 
 		$result = [];
 
-		while ( $resultArrays = $queryResults->getNext() ) {
+		$resultArrays = $queryResults->getNext();
+		while ( $resultArrays ) {
 			$r = [];
 
 			foreach ( $resultArrays as $resultArray ) {

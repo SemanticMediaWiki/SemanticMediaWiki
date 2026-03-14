@@ -174,7 +174,8 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$templateSet->addTemplate( $template );
 		}
 
-		while ( $row = $queryResult->getNext() ) {
+		$row = $queryResult->getNext();
+		while ( $row ) {
 			$template = new Template(
 				$this->params['template']
 			);
@@ -215,7 +216,8 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 				$fieldName = intval( $i + 1 );
 			}
 
-			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
+			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
+			while ( $text !== false ) {
 				$value .= $value === '' ? $text : $this->params['valuesep'] . ' ' . $text;
 			}
 
