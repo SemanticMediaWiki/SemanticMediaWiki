@@ -82,7 +82,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function addFromKey( $key /*...*/ ) {
+	public function addFromKey( $key ) {
 		$params = func_get_args();
 		array_shift( $params );
 		$this->addFromArray( [ new Message( $key, $params ) ] );
