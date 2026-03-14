@@ -40,9 +40,6 @@ class DIConceptTest extends AbstractDataItem {
 	}
 
 	/**
-	 * @test DIConcept::setCacheStatus
-	 * @test DIConcept::setCacheDate
-	 * @test DIConcept::setCacheCount
 	 * @dataProvider conceptCacheDataProvider
 	 *
 	 * @since 1.9

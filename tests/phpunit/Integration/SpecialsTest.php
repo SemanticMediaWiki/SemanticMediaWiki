@@ -68,7 +68,6 @@ class SpecialsTest extends SMWIntegrationTestCase {
 	}
 
 	/**
-	 * @test SpecialPageFactory::getLocalNameFor
 	 * @dataProvider specialPageProvider
 	 *
 	 * Test created in response to bug 44191

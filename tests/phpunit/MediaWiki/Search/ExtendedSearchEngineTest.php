@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @covers \SMW\MediaWiki\Search\ExtendedSearchEngine
@@ -22,15 +23,9 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$this->connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-		} else {
-			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-		}
 	}
 
 	protected function tearDown(): void {
@@ -57,17 +52,10 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			}
 		}
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
-		} else {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
-			->getMockForAbstractClass();
-		}
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
