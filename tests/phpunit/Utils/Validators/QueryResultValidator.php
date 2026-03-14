@@ -120,8 +120,10 @@ class QueryResultValidator extends \PHPUnit\Framework\Assert {
 							unset( $expected[$key] );
 						}
 					}
+					$dataItem = $result->getNextDataItem();
 				}
 			}
+			$resultArray = $queryResult->getNext();
 		}
 
 		if ( $checkSorting && $expected === [] ) {
