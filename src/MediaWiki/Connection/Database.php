@@ -80,10 +80,6 @@ class Database {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $type
-	 *
-	 * @return bool
 	 */
 	public function releaseConnection() {
 		$this->connRef->releaseConnections();

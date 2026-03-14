@@ -71,8 +71,6 @@ class SummaryTable {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $thumbImage
 	 */
 	public function noImage() {
 		$this->thumbImage = Html::rawElement(

@@ -343,8 +343,6 @@ abstract class SMWDataValue {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $caption
 	 */
 	public function getCaption() {
 		return $this->m_caption;

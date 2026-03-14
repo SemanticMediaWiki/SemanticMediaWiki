@@ -110,8 +110,6 @@ class PageUpdater implements DeferrableUpdate {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param booloan $isPending
 	 */
 	public function markAsPending() {
 		$this->isPending = true;

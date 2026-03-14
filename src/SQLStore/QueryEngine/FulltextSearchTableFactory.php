@@ -51,8 +51,6 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Store $store
-	 *
 	 * @return SearchTable
 	 */
 	public function newTextSanitizer() {

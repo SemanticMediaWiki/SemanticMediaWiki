@@ -106,8 +106,6 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title $title
 	 */
 	public function deleteEntireReplicationTrail() {
 		$this->entityCache->delete( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
