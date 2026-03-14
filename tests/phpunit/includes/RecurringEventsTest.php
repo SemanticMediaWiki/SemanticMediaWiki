@@ -131,8 +131,6 @@ class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test RecurringEvents::getJulianDay
-	 *
 	 * @since 1.9
 	 */
 	public function testGetJulianDay() {

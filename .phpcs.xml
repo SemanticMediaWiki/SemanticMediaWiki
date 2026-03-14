@@ -29,7 +29,6 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.WrongStyle" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCapitalLinks" />
 		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
-		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTest" />
 		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
