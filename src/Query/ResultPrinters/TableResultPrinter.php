@@ -146,6 +146,7 @@ class TableResultPrinter extends ResultPrinter {
 					'data-row-number' => $rowNumber
 				]
 			);
+			$subject = $res->getNext();
 		}
 
 		// print further results footer
