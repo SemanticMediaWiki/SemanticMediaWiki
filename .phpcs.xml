@@ -51,7 +51,6 @@
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.assert" />
 		<exclude name="Squiz.Scope.MethodScope.Missing" />
 		<exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
-		<exclude name="PSR2.Methods.MethodDeclaration.Underscore" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
 		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
 		<exclude name="MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix" />
