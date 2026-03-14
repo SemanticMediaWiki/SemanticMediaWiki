@@ -51,7 +51,7 @@
 	</rule>
 	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
 		<properties>
-			<property name="allowedPrefixes[]" value="eg,wg,,smwg,sfg" />
+			<property name="allowedPrefixes[]" value="eg,wg,smwg,sfg" />
 		</properties>
 	</rule>
 	<rule ref="MediaWiki.Commenting.FunctionComment.ObjectTypeHintReturn">

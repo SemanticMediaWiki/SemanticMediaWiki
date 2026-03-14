@@ -63,7 +63,7 @@
 		"wikimedia/textcat": "^2|^1.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "50.0.0",
+		"mediawiki/mediawiki-codesniffer": "48.0.0",
 		"mediawiki/mediawiki-phan-config": "0.17.0",
 		"mediawiki/minus-x": "1.1.3",
 		"phpmd/phpmd": "~2.1",
