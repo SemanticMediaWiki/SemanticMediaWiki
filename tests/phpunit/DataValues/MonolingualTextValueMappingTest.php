@@ -6,6 +6,8 @@ use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * @covers \SMW\DataValues\MonolingualTextValue
  * @group semantic-mediawiki

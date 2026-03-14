@@ -127,7 +127,7 @@ class TimeValueParser implements ValueParser {
 	 * @param &$seconds integer set to a value between 0 and 59, or false if not given
 	 * @param &$microseconds
 	 * @param &$timeoffset double set to a value for time offset (e.g. 3.5), or false if not given
-	 * @param &timezone
+	 * @param &$timezone
 	 *
 	 * @return bool stating if the parsing succeeded
 	 */

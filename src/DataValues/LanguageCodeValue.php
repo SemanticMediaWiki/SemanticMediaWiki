@@ -6,6 +6,8 @@ use MediaWiki\Language\LanguageCode;
 use SMW\Localizer\Localizer;
 use SMWDIBlob as DIBlob;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * Handles a string value to adhere the BCP47 normative content declaration for
  * a language code tag

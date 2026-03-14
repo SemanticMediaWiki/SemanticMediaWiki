@@ -9,7 +9,6 @@ use SMW\SemanticData;
 use SMWDataItem as DataItem;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

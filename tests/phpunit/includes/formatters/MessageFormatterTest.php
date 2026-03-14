@@ -204,7 +204,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	/**
 	 * Message from different sources could have different depth therefore
 	 * objects need to be resolved recursively in order to ensure a 1-n array
-	 *
 	 */
 	public function getDataProvider() {
 		return [

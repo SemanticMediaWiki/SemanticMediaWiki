@@ -53,10 +53,11 @@
 		<exclude name="MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix" />
 		<exclude name="MediaWiki.Commenting.LicenseComment.LicenseTagNonFileComment" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
+		<exclude name="MediaWiki.Usage.ForbiddenFunctions.xml_set_object" />
 	</rule>
 	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
 		<properties>
-			<property name="allowedPrefixes" type="array" value="eg,wg" />
+			<property name="allowedPrefixes[]" value="eg,wg" />
 		</properties>
 	</rule>
 	<rule ref="MediaWiki.Commenting.FunctionComment.ObjectTypeHintReturn">

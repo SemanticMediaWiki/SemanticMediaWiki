@@ -1184,7 +1184,6 @@ class Hooks {
 	/**
 	 * @see https://github.com/wikimedia/mediawiki-extensions-UserMerge/blob/master/includes/MergeUser.php#L654
 	 * @provided by Extension:UserMerge
-	 *
 	 */
 	public function onDeleteAccount( $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
