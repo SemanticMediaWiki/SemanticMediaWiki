@@ -3,8 +3,6 @@
 namespace SMW\Tests\Benchmark;
 
 /**
- * @group semantic-mediawiki-benchmark
- *
  * @license GPL-2.0-or-later
  * @since 2.5
  *

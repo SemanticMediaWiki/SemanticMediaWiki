@@ -86,8 +86,6 @@ class Sanitizer {
 	 * @see Localizer::convertDoubleWidth
 	 *
 	 * @since 0.1
-	 *
-	 * @param int $flag
 	 */
 	public function convertDoubleWidth() {
 		$this->string = Normalizer::convertDoubleWidth( $this->string );

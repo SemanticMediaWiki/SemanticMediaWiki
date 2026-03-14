@@ -343,8 +343,6 @@ abstract class SMWDataValue {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $caption
 	 */
 	public function getCaption() {
 		return $this->m_caption;
@@ -981,7 +979,7 @@ abstract class SMWDataValue {
 		$this->dataValueServiceFactory->getConstraintValueValidator()->validate( $this );
 	}
 
-	function __destruct() {
+	public function __destruct() {
 		$this->callables = [];
 	}
 

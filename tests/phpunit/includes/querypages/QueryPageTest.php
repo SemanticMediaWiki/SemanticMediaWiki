@@ -43,8 +43,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test QueryPage::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -52,7 +50,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test QueryPage::linkParameters
 	 * @dataProvider linkParametersDataProvider
 	 *
 	 * @since 1.9
@@ -69,8 +66,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test QueryPage::getSearchForm
-	 *
 	 * @since 1.9
 	 */
 	public function testGetSearchForm() {

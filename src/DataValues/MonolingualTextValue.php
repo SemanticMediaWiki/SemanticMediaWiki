@@ -73,8 +73,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @see AbstractMultiValue::getProperties
-	 *
-	 * @param DIProperty[] $properties
 	 */
 	public function getProperties() {
 		self::$properties;

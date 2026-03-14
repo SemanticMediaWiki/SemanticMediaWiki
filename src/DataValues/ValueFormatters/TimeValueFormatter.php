@@ -77,7 +77,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	public function getISO8601Date( $mindefault = true ) {
-		return $this->_getISO8601Date( $mindefault ? 'minimize' : 'maximize' );
+		return $this->getISO8601DateInternal( $mindefault ? 'minimize' : 'maximize' );
 	}
 
 	/**
@@ -89,7 +89,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * @return string
 	 */
 	public function getPartialISO8601Date() {
-		return $this->_getISO8601Date( 'cut' );
+		return $this->getISO8601DateInternal( 'cut' );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * * 'maximize': complete the value with maximal conceivable value
 	 * @return string
 	 */
-	private function _getISO8601Date( $belowPrecisionHandling ) {
+	private function getISO8601DateInternal( $belowPrecisionHandling ) {
 		$cut = $belowPrecisionHandling === 'cut';
 		$minimize = $belowPrecisionHandling === 'minimize';
 

@@ -192,8 +192,6 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param QueryEngine $queryEngine
 	 */
 	public function disableCache() {
 		$this->enabledCache = false;

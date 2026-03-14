@@ -144,7 +144,6 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @param int $id
-	 * @param User|null $use
 	 */
 	private function doDispose( $id ) {
 		$applicationFactory = ApplicationFactory::getInstance();

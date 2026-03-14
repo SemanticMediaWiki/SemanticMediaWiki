@@ -288,7 +288,9 @@ class PropertyStatisticsStore {
 		$usageCounts = [];
 
 		foreach ( $propertyStatistics as $propertyStatistic ) {
+			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.assert
 			assert( ctype_digit( $propertyStatistic->p_id ) );
+			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.assert
 			assert( ctype_digit( $propertyStatistic->usage_count ) );
 
 			$usageCounts[(int)$propertyStatistic->p_id] = (int)$propertyStatistic->usage_count;
