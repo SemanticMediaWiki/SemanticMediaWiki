@@ -125,13 +125,12 @@
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
 		"phpcs": "phpcs -sp --cache --parallel=$(nproc || sysctl -n hw.logicalcpu || powershell \"Get-WmiObject Win32_Processor | Select-Object -ExpandProperty NumberOfCores .trim()\" || echo 4 )",
 		"phpcs-fix": "phpcbf",
-		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --bootstrap tests/bootstrap.php",
+		"phpunit": "cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/phpunit.xml.dist --bootstrap tests/phpunit/bootstrap.php",
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
 		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
-		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover coverage/php/coverage.xml",
-		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage.xml",
 		"minus-x": "minus-x check .",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
-		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark"
+		"quick-benchmark": "cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/tests/phpunit/Benchmark/phpunit.quick.xml.dist --bootstrap tests/phpunit/bootstrap.php --group semantic-mediawiki-benchmark"
 	}
 }

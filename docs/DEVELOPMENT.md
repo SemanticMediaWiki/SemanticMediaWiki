@@ -135,19 +135,16 @@ To run individual test suites or classes from your host machine (the container n
 
 ```sh
 # Unit tests
-docker exec semanticmediawiki-mysql-wiki-1 php /var/www/html/tests/phpunit/phpunit.php \
-  -c /var/www/html/extensions/SemanticMediaWiki/phpunit.xml.dist \
-  --testsuite=semantic-mediawiki-unit --no-coverage
+docker exec semanticmediawiki-mysql-wiki-1 bash -c \
+  "cd /var/www/html/extensions/SemanticMediaWiki && composer phpunit:unit -- --no-coverage"
 
 # Integration tests
-docker exec semanticmediawiki-mysql-wiki-1 php /var/www/html/tests/phpunit/phpunit.php \
-  -c /var/www/html/extensions/SemanticMediaWiki/phpunit.xml.dist \
-  --testsuite=semantic-mediawiki-integration --no-coverage
+docker exec semanticmediawiki-mysql-wiki-1 bash -c \
+  "cd /var/www/html/extensions/SemanticMediaWiki && composer phpunit:integration -- --no-coverage"
 
 # Single test class
-docker exec semanticmediawiki-mysql-wiki-1 php /var/www/html/tests/phpunit/phpunit.php \
-  -c /var/www/html/extensions/SemanticMediaWiki/phpunit.xml.dist \
-  --no-coverage --filter 'TestClassName'
+docker exec semanticmediawiki-mysql-wiki-1 bash -c \
+  "cd /var/www/html/extensions/SemanticMediaWiki && composer phpunit -- --no-coverage --filter 'TestClassName'"
 ```
 
 ## PHPCS
