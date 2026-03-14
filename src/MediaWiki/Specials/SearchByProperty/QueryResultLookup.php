@@ -193,6 +193,7 @@ class QueryResultLookup {
 			// the reason why the result is shown here, i.e., it could
 			// be out of order.
 			$result[] = $r;
+			$resultArrays = $queryResults->getNext();
 		}
 
 		if ( !$greater ) {
