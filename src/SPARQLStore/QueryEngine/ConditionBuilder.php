@@ -451,7 +451,8 @@ class ConditionBuilder {
 	 */
 	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
-			return $condition->orderByVariable = $mainVariable;
+			$condition->orderByVariable = $mainVariable;
+			return;
 		}
 
 		$condition->orderByVariable = $mainVariable . 'sk';

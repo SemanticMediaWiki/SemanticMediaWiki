@@ -117,10 +117,12 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 		$servicesFactory = ServicesFactory::getInstance();
 
 		if ( $wiki === false ) {
-			return $this->loadBalancer = $servicesFactory->create( 'DBLoadBalancer' );
+			$this->loadBalancer = $servicesFactory->create( 'DBLoadBalancer' );
+			return $this->loadBalancer;
 		}
 
-		return $this->loadBalancer = $servicesFactory->create( 'DBLoadBalancerFactory' )->getMainLB( $wiki );
+		$this->loadBalancer = $servicesFactory->create( 'DBLoadBalancerFactory' )->getMainLB( $wiki );
+		return $this->loadBalancer;
 	}
 
 }

@@ -220,7 +220,8 @@ class Stats {
 	 */
 	public function recordStats( $asPending = false ) {
 		if ( $this->shouldRecord === false ) {
-			return $this->stats = [];
+			$this->stats = [];
+			return $this->stats;
 		}
 
 		// #2046

@@ -64,7 +64,8 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( !isset( self::$updateList[$sid] ) ) {
-			return self::$updateList[$sid] = $dependencyList;
+			self::$updateList[$sid] = $dependencyList;
+			return self::$updateList[$sid];
 		}
 
 		self::$updateList[$sid] = array_merge( self::$updateList[$sid], $dependencyList );

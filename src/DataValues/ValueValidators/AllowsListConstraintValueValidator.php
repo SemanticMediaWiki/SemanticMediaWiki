@@ -259,10 +259,11 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		[ $lower, $upper ] = explode( '...', $v );
 
 		if ( $value >= intval( $lower ) && $value <= intval( $upper ) ) {
-			return $isAllowed = true;
-		} else {
-			$allowedValueList[$allowedValue->getString()] = true;
+			$isAllowed = true;
+			return true;
 		}
+
+		$allowedValueList[$allowedValue->getString()] = true;
 
 		$this->errorMsg = 'smw-constraint-error-allows-value-range';
 

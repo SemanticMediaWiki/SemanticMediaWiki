@@ -278,11 +278,13 @@ class CallableUpdate implements DeferrableUpdate {
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fingerprint' => $this->fingerprint ]
 			);
 
-			return self::$pendingUpdates[] = $this;
+			self::$pendingUpdates[] = $this;
+			return;
 		}
 
 		if ( !$this->isCommandLineMode && $this->isDeferrableUpdate ) {
-			return $this->registerUpdate( $this );
+			$this->registerUpdate( $this );
+			return;
 		}
 
 		$this->doUpdate();

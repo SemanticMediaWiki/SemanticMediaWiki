@@ -288,7 +288,8 @@ class SearchTableRebuilder {
 			$property = new DIProperty( $proptable->getFixedProperty() );
 
 			if ( $property->getLabel() === '' ) {
-				return $this->skippedTables[$table] = '[FIXED]';
+				$this->skippedTables[$table] = '[FIXED]';
+				return $this->skippedTables[$table];
 			}
 
 			$pid = $searchTable->getIdByProperty(
@@ -296,7 +297,8 @@ class SearchTableRebuilder {
 			);
 
 			if ( $searchTable->isExemptedPropertyById( $pid ) ) {
-				return $this->skippedTables[$table] = '[EXEMPT]';
+				$this->skippedTables[$table] = '[EXEMPT]';
+				return $this->skippedTables[$table];
 			}
 		}
 
@@ -308,7 +310,8 @@ class SearchTableRebuilder {
 		);
 
 		if ( $rows === false || $rows === null ) {
-			return $this->skippedTables[$table] = '[EMPTY]';
+			$this->skippedTables[$table] = '[EMPTY]';
+			return $this->skippedTables[$table];
 		}
 
 		$this->doRebuildFromRows( $searchTable, $table, $pid, $rows );
@@ -321,7 +324,8 @@ class SearchTableRebuilder {
 		$expected = $rows->numRows();
 
 		if ( $expected == 0 ) {
-			return $this->skippedTables[$table] = '[EMPTY]';
+			$this->skippedTables[$table] = '[EMPTY]';
+			return $this->skippedTables[$table];
 		}
 
 		foreach ( $rows as $row ) {

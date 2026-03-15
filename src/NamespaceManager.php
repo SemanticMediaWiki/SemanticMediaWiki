@@ -206,9 +206,11 @@ class NamespaceManager {
 
 	private function getNamespaceIndex( $vars ) {
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
-			return self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
+			self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
+			return self::$initNamespaceIndex;
 		} elseif ( self::$initNamespaceIndex === null ) {
-			return self::$initNamespaceIndex = $vars['smwgNamespaceIndex'];
+			self::$initNamespaceIndex = $vars['smwgNamespaceIndex'];
+			return self::$initNamespaceIndex;
 		} elseif ( self::$initNamespaceIndex !== null && self::$initNamespaceIndex === $vars['smwgNamespaceIndex'] ) {
 			return self::$initNamespaceIndex;
 		}
@@ -218,7 +220,8 @@ class NamespaceManager {
 
 	private function getLanguageCode( $vars ) {
 		if ( self::$initLanguageCode === '' ) {
-			return self::$initLanguageCode = $vars['wgLanguageCode'];
+			self::$initLanguageCode = $vars['wgLanguageCode'];
+			return self::$initLanguageCode;
 		} elseif ( self::$initLanguageCode !== '' && self::$initLanguageCode === $vars['wgLanguageCode'] ) {
 			return self::$initLanguageCode;
 		}

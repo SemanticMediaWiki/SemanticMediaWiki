@@ -224,7 +224,8 @@ class ProtectionValidator {
 			->getCreator();
 
 		if ( !$creator instanceof User ) {
-			return $this->importPerformerProtectionLookupCache[$key] = false;
+			$this->importPerformerProtectionLookupCache[$key] = false;
+			return $this->importPerformerProtectionLookupCache[$key];
 		}
 
 		$importPerformers = array_flip( $this->importPerformers );
@@ -232,10 +233,12 @@ class ProtectionValidator {
 		// Was the creator a dedicated import performer?, if yes, it means
 		// only this user is allowed to alter the content
 		if ( !isset( $importPerformers[$creator->getName()] ) ) {
-			return $this->importPerformerProtectionLookupCache[$key] = false;
+			$this->importPerformerProtectionLookupCache[$key] = false;
+			return $this->importPerformerProtectionLookupCache[$key];
 		}
 
-		return $this->importPerformerProtectionLookupCache[$key] = !$creator->equals( $user );
+		$this->importPerformerProtectionLookupCache[$key] = !$creator->equals( $user );
+		return $this->importPerformerProtectionLookupCache[$key];
 	}
 
 	/**

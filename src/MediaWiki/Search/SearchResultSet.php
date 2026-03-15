@@ -133,7 +133,8 @@ class SearchResultSet extends \SearchResultSet {
 		//   method to avoid constructor work
 
 		if ( $this->pages === [] ) {
-			return $this->results = [];
+			$this->results = [];
+			return [];
 		}
 
 		foreach ( $this->pages as $page ) {

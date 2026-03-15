@@ -177,7 +177,8 @@ class RDFXMLSerializer extends Serializer {
 
 		// nothing else to export
 		if ( count( $expData->getProperties() ) == 0 ) {
-			return $this->post_ns_buffer .= " />\n";
+			$this->post_ns_buffer .= " />\n";
+			return $this->post_ns_buffer;
 		}
 
 		$this->post_ns_buffer .= ">\n";
