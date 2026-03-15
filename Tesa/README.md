@@ -1,11 +1,10 @@
 # Tesa (text sanitizer)
 
-[![Build Status](https://secure.travis-ci.org/onoi/tesa.svg?branch=master)](http://travis-ci.org/onoi/tesa)
+[![Build](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/tesa.yml/badge.svg)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/tesa.yml)
 [![Code Coverage](https://scrutinizer-ci.com/g/onoi/tesa/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/onoi/tesa/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/onoi/tesa/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/onoi/tesa/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/onoi/tesa/version.png)](https://packagist.org/packages/onoi/tesa)
 [![Packagist download count](https://poser.pugx.org/onoi/tesa/d/total.png)](https://packagist.org/packages/onoi/tesa)
-[![Dependency Status](https://www.versioneye.com/php/onoi:tesa/badge.png)](https://www.versioneye.com/php/onoi:tesa)
 
 The library contains a small collection of helper classes to support sanitization
 of text or string elements of arbitrary length with the aim to improve
@@ -14,7 +13,7 @@ project and is deployed independently.
 
 ## Requirements
 
-- PHP 7.4
+- PHP 8.1
 - Recommended to enable the [ICU][icu] extension
 
 ## Installation
@@ -79,13 +78,13 @@ If you want to contribute work to the project please subscribe to the
 developers mailing list and have a look at the [contribution guidelinee](/CONTRIBUTING.md). A list
 of people who have made contributions in the past can be found [here][contributors].
 
-* [File an issue](https://github.com/onoi/tesa/issues)
-* [Submit a pull request](https://github.com/onoi/tesa/pulls)
+* [File an issue](https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues)
+* [Submit a pull request](https://github.com/SemanticMediaWiki/SemanticMediaWiki/pulls)
 
 ## Tests
 
 The library provides unit tests that covers the core-functionality normally run by the
-[continues integration platform][travis]. Tests can also be executed manually using the
+[continuous integration platform][GitHub Actions for Continuous Integration (CI)]. Tests can also be executed manually using the
 `composer phpunit` command from the root directory.
 
 ## Release notes
@@ -112,7 +111,7 @@ The library provides unit tests that covers the core-functionality normally run 
 [composer]: https://getcomposer.org/
 [contributors]: https://github.com/onoi/tesa/graphs/contributors
 [license]: https://www.gnu.org/copyleft/gpl.html
-[travis]: https://travis-ci.org/onoi/tesa
+[GitHub Actions for Continuous Integration (CI)]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions
 [smw]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/
 [icu]: http://php.net/manual/en/intro.intl.php
 [textcat]: https://github.com/wikimedia/wikimedia-textcat
