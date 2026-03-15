@@ -1,11 +1,10 @@
 # Tesa (text sanitizer)
 
-[![Build Status](https://secure.travis-ci.org/onoi/tesa.svg?branch=master)](http://travis-ci.org/onoi/tesa)
+[![Build](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/tesa.yml/badge.svg)](https://github.com/SemanticMediaWiki/SemanticMediaWiki/actions/workflows/tesa.yml)
 [![Code Coverage](https://scrutinizer-ci.com/g/onoi/tesa/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/onoi/tesa/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/onoi/tesa/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/onoi/tesa/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/onoi/tesa/version.png)](https://packagist.org/packages/onoi/tesa)
 [![Packagist download count](https://poser.pugx.org/onoi/tesa/d/total.png)](https://packagist.org/packages/onoi/tesa)
-[![Dependency Status](https://www.versioneye.com/php/onoi:tesa/badge.png)](https://www.versioneye.com/php/onoi:tesa)
 
 The library contains a small collection of helper classes to support sanitization
 of text or string elements of arbitrary length with the aim to improve
