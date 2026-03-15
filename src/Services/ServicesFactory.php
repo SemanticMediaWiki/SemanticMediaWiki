@@ -7,7 +7,7 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use Onoi\Cache\Cache;
 use Onoi\CallbackContainer\CallbackContainerFactory;
-use Onoi\CallbackContainer\ContainerBuilder;
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 use Onoi\EventDispatcher\EventDispatcher;
 use Psr\Log\LoggerInterface;
 use SMW\CacheFactory;
@@ -67,7 +67,7 @@ class ServicesFactory {
 	private static $instance = null;
 
 	/**
-	 * @var ContainerBuilder
+	 * @var CallbackContainerBuilder
 	 */
 	private $containerBuilder;
 
@@ -79,10 +79,10 @@ class ServicesFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param ContainerBuilder|null $containerBuilder
+	 * @param CallbackContainerBuilder|null $containerBuilder
 	 * @param string $servicesFileDir
 	 */
-	public function __construct( ?ContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
+	public function __construct( ?CallbackContainerBuilder $containerBuilder = null, $servicesFileDir = '' ) {
 		$this->containerBuilder = $containerBuilder;
 		$this->servicesFileDir = $servicesFileDir;
 	}
