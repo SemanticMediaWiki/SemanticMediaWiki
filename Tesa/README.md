@@ -84,7 +84,7 @@ of people who have made contributions in the past can be found [here][contributo
 ## Tests
 
 The library provides unit tests that covers the core-functionality normally run by the
-[continues integration platform][GitHub Actions for Continuous Integration (CI)]. Tests can also be executed manually using the
+[continuous integration platform][GitHub Actions for Continuous Integration (CI)]. Tests can also be executed manually using the
 `composer phpunit` command from the root directory.
 
 ## Release notes
