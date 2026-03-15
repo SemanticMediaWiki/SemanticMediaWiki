@@ -31,7 +31,6 @@
 		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
 		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
-		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.is_resource" />
