@@ -20,15 +20,13 @@ class Lru {
 	 */
 	private $cache = [];
 
-	/**
-	 * @var array
-	 */
+	/** @var int */
 	private $count = 0;
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param integer size
+	 * @param int $size
 	 */
 	public function __construct( $size = 1000 ) {
 		$this->size = $size;
@@ -60,6 +58,7 @@ class Lru {
 	 * @since 3.0
 	 *
 	 * @param string|int $key
+	 * @param mixed|null $default
 	 *
 	 * @return mixed
 	 */
@@ -91,6 +90,8 @@ class Lru {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return array
 	 */
 	public function toArray() {
 		return $this->cache;
