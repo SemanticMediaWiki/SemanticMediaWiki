@@ -43,7 +43,6 @@
 		<exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
 		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
-		<exclude name="MediaWiki.Commenting.LicenseComment.LicenseTagNonFileComment" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.xml_set_object" />
 	</rule>
