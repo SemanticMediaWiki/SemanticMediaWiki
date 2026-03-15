@@ -9,7 +9,6 @@ use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration

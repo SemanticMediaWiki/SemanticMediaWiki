@@ -10,7 +10,6 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
 use User;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

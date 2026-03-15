@@ -5,7 +5,6 @@ namespace SMW\Tests\Utils\Fixtures\Results;
 use RuntimeException;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-sparql

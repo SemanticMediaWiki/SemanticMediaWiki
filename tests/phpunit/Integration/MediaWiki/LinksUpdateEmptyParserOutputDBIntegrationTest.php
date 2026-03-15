@@ -10,7 +10,6 @@ use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration

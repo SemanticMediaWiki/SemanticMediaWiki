@@ -11,7 +11,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use WikiPage;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

@@ -12,7 +12,6 @@ use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\SemanticDataValidator;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration

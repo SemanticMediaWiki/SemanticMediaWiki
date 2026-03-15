@@ -12,7 +12,6 @@ use SMW\Store;
 use UnexpectedValueException;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

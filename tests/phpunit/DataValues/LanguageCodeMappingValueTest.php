@@ -4,6 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataValues\LanguageCodeValue;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * @covers \SMW\DataValues\LanguageCodeValue
  * @group semantic-mediawiki

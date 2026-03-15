@@ -3,7 +3,6 @@
 namespace SMW\Tests\Utils\Mock;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

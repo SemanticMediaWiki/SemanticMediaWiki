@@ -14,6 +14,8 @@ use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * @license GPL-2.0-or-later
  * @since   2.1
