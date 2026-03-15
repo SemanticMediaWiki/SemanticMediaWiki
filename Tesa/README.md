@@ -14,7 +14,7 @@ project and is deployed independently.
 
 ## Requirements
 
-- PHP 7.4
+- PHP 8.2
 - Recommended to enable the [ICU][icu] extension
 
 ## Installation
