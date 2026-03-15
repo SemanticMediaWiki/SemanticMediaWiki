@@ -79,7 +79,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.0
 	 *
-	 * @param CallbackContainerBuilder|null $containerBuilder
+	 * @param CallbackContainerBuilder|null $callbackContainerBuilder
 	 * @param string $servicesFileDir
 	 */
 	public function __construct( ?CallbackContainerBuilder $callbackContainerBuilder = null, $servicesFileDir = '' ) {
