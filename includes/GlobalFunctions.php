@@ -220,6 +220,7 @@ function smwfGetLinker() {
  *
  * @codeCoverageIgnore
  */
+// phpcs:ignore MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 

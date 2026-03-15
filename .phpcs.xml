@@ -31,7 +31,6 @@
 		<exclude name="MediaWiki.Usage.AssignmentInReturn.AssignmentInReturn" />
 		<exclude name="MediaWiki.Commenting.FunctionAnnotations.UnrecognizedAnnotation" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestClass" />
-		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.NotTestFunction" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingParamName" />
 		<exclude name="MediaWiki.Commenting.PhpunitAnnotations.ForbiddenTestdox" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.is_resource" />
@@ -44,13 +43,17 @@
 		<exclude name="Generic.NamingConventions.UpperCaseConstantName.ClassConstantNotUpperCase" />
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
 		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
-		<exclude name="MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.xml_set_object" />
 	</rule>
 	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
 		<properties>
 			<property name="allowedPrefixes[]" value="eg,wg,smwg,sfg" />
+		</properties>
+	</rule>
+	<rule ref="MediaWiki.NamingConventions.PrefixedGlobalFunctions">
+		<properties>
+			<property name="allowedPrefixes[]" value="wf,smwf" />
 		</properties>
 	</rule>
 	<rule ref="MediaWiki.Commenting.FunctionComment.ObjectTypeHintReturn">
