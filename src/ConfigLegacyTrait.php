@@ -20,7 +20,6 @@ trait ConfigLegacyTrait {
 
 	/**
 	 * @since 3.2
-	 *
 	 */
 	public function loadLegacyMappings( &$configuration ) {
 		self::setLegacyMappings( $configuration );

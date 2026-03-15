@@ -16,6 +16,8 @@ use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * MonolingualTextValue requires two components, a language code and a
  * text.

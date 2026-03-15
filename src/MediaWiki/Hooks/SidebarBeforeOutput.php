@@ -29,7 +29,6 @@ class SidebarBeforeOutput implements HookListener {
 	private $namespaceExaminer;
 
 	/**
-	 *
 	 * @param NamespaceExaminer $namespaceExaminer
 	 */
 	public function __construct( NamespaceExaminer $namespaceExaminer ) {
@@ -37,7 +36,6 @@ class SidebarBeforeOutput implements HookListener {
 	}
 
 	/**
-	 *
 	 * @param $skin
 	 * @param &$sidebar
 	 *

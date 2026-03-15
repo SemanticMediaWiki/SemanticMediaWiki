@@ -5,6 +5,8 @@ namespace SMW\DataValues\ValueParsers;
 use MediaWiki\Language\LanguageCode;
 use SMW\Localizer\Localizer;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * @private
  *

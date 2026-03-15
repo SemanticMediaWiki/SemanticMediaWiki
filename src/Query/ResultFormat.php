@@ -136,7 +136,6 @@ class ResultFormat extends StringParam {
 	}
 
 	/**
-	 *
 	 * @since 3.0
 	 *
 	 * @param bool $showMode
