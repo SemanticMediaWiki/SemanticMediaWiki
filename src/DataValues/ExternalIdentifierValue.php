@@ -194,7 +194,8 @@ class ExternalIdentifierValue extends StringValue {
 			}
 		}
 
-		return $this->uri = $dataValue->substituteAndFormatUri( $value, $parameters );
+		$this->uri = $dataValue->substituteAndFormatUri( $value, $parameters );
+		return $this->uri;
 	}
 
 	private function filterParameters( &$value ) {

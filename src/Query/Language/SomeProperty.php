@@ -95,7 +95,8 @@ class SomeProperty extends Description {
 		// member to distinguish Foo.Bar.Foobar.Bam from Foo.Bar.Foobar
 		$membership = $this->getMembership() . $subDescription->getMembership();
 
-		return $this->fingerprint = 'S:' . md5( $property . '|' . $membership . '|' . $this->description->getFingerprint() . $this->hierarchyDepth );
+		$this->fingerprint = 'S:' . md5( $property . '|' . $membership . '|' . $this->description->getFingerprint() . $this->hierarchyDepth );
+		return $this->fingerprint;
 	}
 
 	/**

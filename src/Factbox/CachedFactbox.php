@@ -352,22 +352,27 @@ class CachedFactbox {
 
 	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
-			return $this->isCached = false;
+			$this->isCached = false;
+			return false;
 		}
 
 		if ( $rev_id == 0 || !isset( $content['rev_id'] ) || $content['text'] === null ) {
-			return $this->isCached = false;
+			$this->isCached = false;
+			return false;
 		}
 
 		if ( !isset( $content['lang'] ) || !isset( $content['feature_set'] ) ) {
-			return $this->isCached = false;
+			$this->isCached = false;
+			return false;
 		}
 
 		if ( $subKey === $this->makeSubCacheKey( $content['rev_id'], $content['lang'], $content['feature_set'] ) ) {
-			return $this->isCached = true;
+			$this->isCached = true;
+			return true;
 		}
 
-		return $this->isCached = false;
+		$this->isCached = false;
+		return false;
 	}
 
 	private function findContentFromCache( $data ) {

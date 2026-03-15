@@ -1172,7 +1172,8 @@ class SQLStoreFactory {
 				],
 				'PropertyTableIdReferenceFinder' => function () {
 					static $singleton;
-					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
+					$singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
+					return $singleton;
 				},
 				'PrefetchCache' => [
 					'_service' => [ $this, 'newPrefetchCache' ],

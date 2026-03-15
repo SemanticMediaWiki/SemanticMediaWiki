@@ -180,9 +180,10 @@ class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
 		$configuration = new Options( $config );
 
 		if ( $this->configuration instanceof Options ) {
-			return $this->configuration = new Options(
+			$this->configuration = new Options(
 				array_merge( $this->configuration->getOptions(), $configuration->getOptions() )
 			);
+			return $this->configuration;
 		}
 
 		$this->configuration = $configuration;

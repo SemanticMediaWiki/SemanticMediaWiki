@@ -57,13 +57,15 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		// In case the filter was marked as elective, allow sets to remain in
 		// the match pool.
 		if ( $conditions === null && $this->getOption( self::FILTER_CONDITION_NOT_REQUIRED ) === true ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		// No condition to test means it is allowed to remain in the pool
 		// of matches
 		if ( $this->properties === [] && $conditions === null ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		$matchedCondition = false;

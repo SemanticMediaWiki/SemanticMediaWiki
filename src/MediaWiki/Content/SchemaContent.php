@@ -220,7 +220,8 @@ class SchemaContent extends JsonContent {
 				$this->parse = null;
 			}
 
-			return $this->isValid = $this->isYaml;
+			$this->isValid = $this->isYaml;
+			return $this->isValid;
 		} elseif ( $this->mText !== '' ) {
 
 			// Note that this parses it without casting objects to associative arrays.

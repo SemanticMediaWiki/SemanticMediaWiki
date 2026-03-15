@@ -160,7 +160,8 @@ class UnitConverter {
 		$numberValue->setContextPage( $property->getDiWikiPage() );
 
 		if ( $factors === null || $factors === [] ) { // no custom type
-			return $this->errors[] = 'smw_nounitsdeclared';
+			$this->errors[] = 'smw_nounitsdeclared';
+			return [ 'smw_nounitsdeclared' ];
 		}
 
 		$number = '';

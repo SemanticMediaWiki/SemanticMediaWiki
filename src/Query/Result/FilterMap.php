@@ -65,7 +65,8 @@ class FilterMap {
 	}
 
 	private function loadList() {
-		return $this->fieldList = $this->store->getObjectIds()->preload( $this->results );
+		$this->fieldList = $this->store->getObjectIds()->preload( $this->results );
+		return $this->fieldList;
 	}
 
 }

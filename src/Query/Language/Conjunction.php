@@ -53,7 +53,8 @@ class Conjunction extends Description {
 		// position within a conjunction ( [Foo]][[Bar]], [[Bar]][[Foo]])
 		ksort( $fingerprint );
 
-		return $this->fingerprint = 'C:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		$this->fingerprint = 'C:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		return $this->fingerprint;
 	}
 
 	public function getDescriptions() {

@@ -113,7 +113,8 @@ class ServicesFactory {
 			$servicesFileDir
 		);
 
-		return self::$instance = new self( $containerBuilder, $servicesFileDir );
+		self::$instance = new self( $containerBuilder, $servicesFileDir );
+		return self::$instance;
 	}
 
 	/**

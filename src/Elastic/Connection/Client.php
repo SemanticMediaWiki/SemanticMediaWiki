@@ -287,7 +287,8 @@ class Client {
 		$index = $this->getIndexName( $type );
 		$result = $this->indexExists( $index );
 
-		return self::$hasIndex[$type] = $result;
+		self::$hasIndex[$type] = $result;
+		return self::$hasIndex[$type];
 	}
 
 	/**
@@ -434,10 +435,12 @@ class Client {
 		}
 
 		if ( $this->options->dotGet( 'connection.quick_ping' ) ) {
-			return self::$ping = $this->quick_ping();
+			self::$ping = $this->quick_ping();
+			return self::$ping;
 		}
 
-		return self::$ping = $this->client->ping( [] );
+		self::$ping = $this->client->ping( [] );
+		return self::$ping;
 	}
 
 	/**

@@ -52,12 +52,14 @@ class SequenceMap {
 		);
 
 		if ( $schemaList === null ) {
-			return self::$canMap[$key] = false;
+			self::$canMap[$key] = false;
+			return self::$canMap[$key];
 		}
 
 		$profile = $schemaList->get( 'profile' );
 
-		return self::$canMap[$key] = $profile['sequence_map'] ?? false;
+		self::$canMap[$key] = $profile['sequence_map'] ?? false;
+		return self::$canMap[$key];
 	}
 
 }

@@ -112,7 +112,8 @@ class ProfileForm {
 			self::SCHEMA_TYPE
 		);
 
-		return $data = $schemaList->merge( $schemaList );
+		$data = $schemaList->merge( $schemaList );
+		return $data;
 	}
 
 	/**

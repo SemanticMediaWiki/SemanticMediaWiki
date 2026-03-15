@@ -61,7 +61,8 @@ class Disjunction extends Description {
 
 		ksort( $fingerprint );
 
-		return $this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		$this->fingerprint = 'D:' . md5( implode( '|', array_keys( $fingerprint ) ) );
+		return $this->fingerprint;
 	}
 
 	/**

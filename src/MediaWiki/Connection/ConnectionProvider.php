@@ -75,7 +75,8 @@ class ConnectionProvider implements IConnectionProvider {
 			$conf = $this->localConnectionConf[$this->provider];
 		}
 
-		return $this->connection = $this->createConnection( $conf );
+		$this->connection = $this->createConnection( $conf );
+		return $this->connection;
 	}
 
 	/**

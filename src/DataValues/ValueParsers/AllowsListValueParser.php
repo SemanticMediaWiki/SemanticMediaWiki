@@ -80,7 +80,9 @@ class AllowsListValueParser implements ValueParser {
 
 	private function parse_contents( $userValue, $contents ) {
 		if ( $contents === '' ) {
-			return $this->errors[] = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
+			$error = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
+			$this->errors[] = $error;
+			return $error;
 		}
 
 		if ( $contents[0] === '{' && ( $list = json_decode( $contents, true ) ) && is_array( $list ) ) {

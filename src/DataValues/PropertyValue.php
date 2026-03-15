@@ -278,7 +278,8 @@ class PropertyValue extends SMWDataValue {
 	}
 
 	public function setInverse( $isinverse ) {
-		return $this->m_dataitem = new DIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
+		$this->m_dataitem = new DIProperty( $this->m_dataitem->getKey(), ( $isinverse == true ) );
+		return $this->m_dataitem;
 	}
 
 	/**

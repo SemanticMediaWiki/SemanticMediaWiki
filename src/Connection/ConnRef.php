@@ -56,7 +56,8 @@ class ConnRef {
 		}
 
 		if ( isset( $this->connectionProviders[$key] ) && $this->connectionProviders[$key] instanceof ConnectionProvider ) {
-			return $this->connections[$key] = $this->connectionProviders[$key]->getConnection();
+			$this->connections[$key] = $this->connectionProviders[$key]->getConnection();
+			return $this->connections[$key];
 		}
 
 		throw new RuntimeException( "$key is unknown" );
