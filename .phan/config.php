@@ -41,9 +41,18 @@ $config['suppress_issue_types'] = array_merge(
 		'SecurityCheck-DoubleEscaped',
 		'SecurityCheck-SQLInjection',
 		'SecurityCheck-XSS',
-		// Required php8+
-		'PhanUnusedVariableCaughtException',
+
+		// Both local and global vendor directories have to be analysed
+		'PhanRedefinedClassReference',
+		'PhanRedefinedExtendedClass',
+		'PhanRedefinedInheritedInterface',
+		'PhanRedefinedUsedTrait',
 	]
 );
+
+if ( is_dir( 'vendor' ) ) {
+	$config['directory_list'][] = 'vendor';
+	$config['exclude_analysis_directory_list'][] = 'vendor';
+}
 
 return $config;
