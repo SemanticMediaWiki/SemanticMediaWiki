@@ -1,4 +1,4 @@
-# Semantic MediaWiki 7.0.0.0
+# Semantic MediaWiki 7.0.0
 
 Released on TBD.
 
