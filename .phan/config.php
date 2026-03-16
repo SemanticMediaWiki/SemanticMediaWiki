@@ -46,30 +46,4 @@ $config['suppress_issue_types'] = array_merge(
 	]
 );
 
-// Include only direct production dependencies in vendor/
-// Omit dev dependencies and most indirect dependencies
-
-$composerJson = json_decode(
-	file_get_contents( __DIR__ . '/../composer.json' ),
-	true
-);
-
-$directDeps = [];
-foreach ( $composerJson['require'] as $dep => $version ) {
-	$parts = explode( '/', $dep );
-	if ( count( $parts ) === 2 ) {
-		$directDeps[] = $dep;
-	}
-}
-
-foreach ( [ ...$directDeps ] as $dep ) {
-	$config['directory_list'][] = "vendor/$dep";
-}
-
-$config['exclude_analysis_directory_list'] = [
-	'vendor/',
-	'.phan/',
-	'tests/phpunit/',
-];
-
 return $config;
