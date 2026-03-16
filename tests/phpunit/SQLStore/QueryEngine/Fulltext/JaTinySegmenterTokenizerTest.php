@@ -10,7 +10,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\JaTinySegmenterTokenizer;
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
- * @since 6.1.0
+ * @since 7.0.0
  */
 class JaTinySegmenterTokenizerTest extends TestCase {
 
