@@ -1,6 +1,8 @@
 <?php
 $config = require __DIR__ . '/../vendor/mediawiki/mediawiki-phan-config/src/config.php';
 
+$config['minimum_target_php_version'] = '8.1';
+
 $config['suppress_issue_types'] = array_merge(
 	$config['suppress_issue_types'],
 	[
