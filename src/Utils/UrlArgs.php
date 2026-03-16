@@ -48,7 +48,11 @@ class UrlArgs {
 	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
-		return $this->args[$key] ?? $default;
+		if ( isset( $this->args[$key] ) ) {
+			return $this->args[$key];
+		}
+
+		return $default;
 	}
 
 	/**
