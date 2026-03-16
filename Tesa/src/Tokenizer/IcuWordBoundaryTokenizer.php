@@ -62,8 +62,7 @@ class IcuWordBoundaryTokenizer implements Tokenizer {
 	 * {@inheritDoc}
 	 */
 	public function setWordTokenizerAttribute( $usesWordBoundaries ) {
-		$this->isWordTokenizer = $usesWordBoundaries;
-		return $this->isWordTokenizer;
+		return $this->isWordTokenizer = $usesWordBoundaries;
 	}
 
 	/**
