@@ -11,12 +11,12 @@ namespace SMW\Utils;
 class Url {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $info = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $flag = [];
 
@@ -59,12 +59,12 @@ class Url {
 
 		// https://www.php.net/manual/en/function.parse-url.php#106731
 		$scheme = isset( $this->info['scheme'] ) ? $this->info['scheme'] . '://' : '';
-		$host = isset( $this->info['host'] ) ? $this->info['host'] : '';
+		$host = $this->info['host'] ?? '';
 		$port = isset( $this->info['port'] ) ? ':' . $this->info['port'] : '';
-		$user = isset( $this->info['user'] ) ? $this->info['user'] : '';
+		$user = $this->info['user'] ?? '';
 		$pass = isset( $this->info['pass'] ) ? ':' . $this->info['pass'] : '';
 		$pass = ( $user || $pass ) ? "$pass@" : '';
-		$path = isset( $this->info['path'] ) ? $this->info['path'] : '';
+		$path = $this->info['path'] ?? '';
 		$query = isset( $this->info['query'] ) ? '?' . $this->info['query'] : '';
 		$fragment = isset( $this->info['fragment'] ) ? '#' . $this->info['fragment'] : '';
 
