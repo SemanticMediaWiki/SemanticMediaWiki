@@ -79,9 +79,6 @@
 		}
 	},
 	"autoload": {
-		"psr-4": {
-			"Onoi\\Tesa\\": "Tesa/src/"
-		},
 		"files": [
 			"includes/GlobalFunctions.php"
 		],
