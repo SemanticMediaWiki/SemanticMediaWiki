@@ -151,7 +151,7 @@ class ServicesFactory {
 	 *
 	 *
 	 * @param string $serviceName
-	 * @param string|null ...$args
+	 * @param mixed ...$args
 	 *
 	 * @return mixed
 	 */
@@ -168,7 +168,7 @@ class ServicesFactory {
 	 * @since 2.5
 	 *
 	 * @param string $serviceName
-	 * @param string|null ...$args
+	 * @param mixed ...$args
 	 *
 	 * @return mixed
 	 */
