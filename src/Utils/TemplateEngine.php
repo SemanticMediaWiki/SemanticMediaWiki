@@ -89,7 +89,8 @@ class TemplateEngine {
 	 */
 	public function load( $file, $target ) {
 		if ( isset( self::$templates[$file] ) ) {
-			return $this->container[$target] = self::$templates[$file];
+			$this->container[$target] = self::$templates[$file];
+			return $this->container[$target];
 		}
 
 		$_file = str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, $this->templateDir . '/' . $file );

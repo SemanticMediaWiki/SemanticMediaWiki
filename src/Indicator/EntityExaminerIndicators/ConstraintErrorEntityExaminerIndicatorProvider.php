@@ -154,10 +154,11 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		$top = '';
 
 		if ( $errors === [] ) {
-			return $this->indicators = [
+			$this->indicators = [
 				'id'      => $this->getName(),
 				'content' => '',
 			];
+			return $this->indicators;
 		}
 
 		$this->errorTitle = 'smw-constraint-error';

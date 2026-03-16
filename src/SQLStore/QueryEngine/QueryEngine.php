@@ -278,7 +278,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
 		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
-			return $entries['SQL Query'] = 'Empty result, no SQL query created.';
+			$entries['SQL Query'] = 'Empty result, no SQL query created.';
+			return $entries['SQL Query'];
 		}
 
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );

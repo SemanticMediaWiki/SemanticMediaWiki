@@ -157,7 +157,8 @@ class PropertySubjectsLookup {
 			$this->store->getObjectIds()->warmupCache( $warmupCache );
 		}
 
-		return $this->prefetch[$hash] = $result;
+		$this->prefetch[$hash] = $result;
+		return $this->prefetch[$hash];
 	}
 
 	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {

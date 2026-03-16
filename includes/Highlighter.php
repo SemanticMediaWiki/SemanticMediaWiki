@@ -181,7 +181,8 @@ class Highlighter {
 		 * $content['caption'] = a text or null
 		 * $content['context'] = a text or null
 		 */
-		return $this->options = array_merge( $this->getTypeConfiguration( $this->type ), $content );
+		$this->options = array_merge( $this->getTypeConfiguration( $this->type ), $content );
+		return $this->options;
 	}
 
 	/**

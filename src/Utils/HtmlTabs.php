@@ -158,12 +158,11 @@ class HtmlTabs {
 	 * @param string $id
 	 * @param string $name
 	 * @param array $params
-	 *
-	 * @return string
 	 */
 	public function tab( $id, $name = '', array $params = [] ) {
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
-			return $this->hidden[$id] = true;
+			$this->hidden[$id] = true;
+			return;
 		}
 
 		$isChecked = false;
@@ -232,7 +231,8 @@ class HtmlTabs {
 			$attributes['class'] = $class;
 		}
 
-		return $attributes += $attr;
+		$attributes += $attr;
+		return $attributes;
 	}
 
 }

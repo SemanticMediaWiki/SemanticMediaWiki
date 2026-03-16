@@ -115,7 +115,8 @@ class ServicesFactory {
 			$servicesFileDir
 		);
 
-		return self::$instance = new self( $callbackContainerBuilder, $servicesFileDir );
+		self::$instance = new self( $callbackContainerBuilder, $servicesFileDir );
+		return self::$instance;
 	}
 
 	/**

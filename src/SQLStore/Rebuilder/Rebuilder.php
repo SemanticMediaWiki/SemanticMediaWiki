@@ -246,7 +246,8 @@ class Rebuilder {
 		// -1 means that no next position is available
 		$this->next_position( $id, $emptyRange );
 
-		return $this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
+		$this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
+		return $this->progress;
 	}
 
 	private function matchAsTitle( $id ) {
@@ -488,7 +489,8 @@ class Rebuilder {
 		$this->lru->set( $hash, true );
 
 		if ( $this->hasSkippableRevision( $title, $row = false ) ) {
-			return $this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
+			$this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
+			return;
 		}
 
 		$params = [

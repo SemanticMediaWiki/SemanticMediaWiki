@@ -227,7 +227,8 @@ class PageUpdater implements DeferrableUpdate {
 		$method = __METHOD__;
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeParserCache'] = true;
+			$this->pendingUpdates['doPurgeParserCache'] = true;
+			return $this->pendingUpdates['doPurgeParserCache'];
 		}
 
 		foreach ( $this->titles as $title ) {
@@ -244,7 +245,8 @@ class PageUpdater implements DeferrableUpdate {
 		}
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeHtmlCache'] = true;
+			$this->pendingUpdates['doPurgeHtmlCache'] = true;
+			return $this->pendingUpdates['doPurgeHtmlCache'];
 		}
 
 		$method = __METHOD__;

@@ -237,7 +237,8 @@ class CachingSemanticDataLookup {
 			$requestOptions
 		);
 
-		return self::$prefetch[$hash] = $data;
+		self::$prefetch[$hash] = $data;
+		return self::$prefetch[$hash];
 	}
 
 	/**

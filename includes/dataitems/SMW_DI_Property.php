@@ -399,7 +399,8 @@ class DIProperty extends SMWDataItem {
 		}
 
 		if ( !$this->isUserDefined() ) {
-			return $this->propertyValueType = PropertyRegistry::getInstance()->getPropertyValueTypeById( $this->m_key );
+			$this->propertyValueType = PropertyRegistry::getInstance()->getPropertyValueTypeById( $this->m_key );
+			return $this->propertyValueType;
 		}
 
 		$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );

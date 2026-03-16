@@ -482,7 +482,8 @@ class Database {
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
-		return $this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $row[0] === null ? null : (int)$row[0];
+		return $this->insertId;
 	}
 
 	/**
@@ -525,7 +526,8 @@ class Database {
 	 */
 	public function setFlag( $flag ) {
 		if ( $flag === self::AUTO_COMMIT ) {
-			return $this->flags = self::AUTO_COMMIT;
+			$this->flags = self::AUTO_COMMIT;
+			return;
 		}
 
 		$this->connRef->getConnection( 'write' )->setFlag( $flag );

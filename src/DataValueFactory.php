@@ -100,7 +100,8 @@ class DataValueFactory {
 			$settings->get( 'smwgDefaultOutputFormatters' )
 		);
 
-		return self::$instance = $instance;
+		self::$instance = $instance;
+		return self::$instance;
 	}
 
 	/**

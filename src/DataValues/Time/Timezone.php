@@ -251,7 +251,8 @@ class Timezone {
 			//
 		}
 
-		return self::$offsetCache[$abbreviation] = $offset;
+		self::$offsetCache[$abbreviation] = $offset;
+		return self::$offsetCache[$abbreviation];
 	}
 
 	/**

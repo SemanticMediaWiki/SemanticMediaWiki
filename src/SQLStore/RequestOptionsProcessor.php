@@ -294,7 +294,8 @@ class RequestOptionsProcessor {
 		}
 
 		if ( $requestOptions->limit > 0 ) {
-			return $result = array_slice( $result, $requestOptions->offset, $requestOptions->limit );
+			$result = array_slice( $result, $requestOptions->offset, $requestOptions->limit );
+			return;
 		}
 
 		$result = array_slice( $result, $requestOptions->offset );

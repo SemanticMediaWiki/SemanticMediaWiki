@@ -143,13 +143,14 @@ class RestrictionExaminer {
 			return false;
 		}
 
-		return $this->error = Message::encode(
+		$this->error = Message::encode(
 			[
 				'smw-datavalue-property-restricted-declarative-use',
 				$property->getLabel()
 			],
 			Message::PARSE
 		);
+		return $this->error;
 	}
 
 	private function isAnnotationRestricted( $property ) {
@@ -161,10 +162,11 @@ class RestrictionExaminer {
 			return false;
 		}
 
-		return $this->error = [
+		$this->error = [
 			'smw-datavalue-property-restricted-annotation-use',
 			$property->getLabel()
 		];
+		return $this->error;
 	}
 
 	private function isCreateProtected( $property ) {
@@ -184,7 +186,7 @@ class RestrictionExaminer {
 		}
 
 		// A user without the appropriate right cannot use a non-existing property
-		return $this->error = Message::encode(
+		$this->error = Message::encode(
 			[
 				self::CREATE_RESTRICTION,
 				$property->getLabel(),
@@ -192,6 +194,7 @@ class RestrictionExaminer {
 			],
 			Message::PARSE
 		);
+		return $this->error;
 	}
 
 }

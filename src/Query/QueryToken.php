@@ -156,7 +156,8 @@ class QueryToken {
 			$text
 		);
 
-		return $this->tokens += array_flip( Tokenizer::tokenize( $text ) );
+		$this->tokens += array_flip( Tokenizer::tokenize( $text ) );
+		return $this->tokens;
 	}
 
 }

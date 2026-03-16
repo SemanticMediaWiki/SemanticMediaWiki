@@ -171,7 +171,8 @@ class TermParser {
 			$k++;
 		}
 
-		return self::$cache[$hash] = $this->normalize( $term );
+		self::$cache[$hash] = $this->normalize( $term );
+		return self::$cache[$hash];
 	}
 
 	private function close( &$custom, $prefix ) {
