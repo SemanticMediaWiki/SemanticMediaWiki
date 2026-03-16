@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Jobs\NullJob;
 
 /**
@@ -13,11 +14,11 @@ use SMW\MediaWiki\Jobs\NullJob;
  *
  * @author mwjames
  */
-class NullJobTest extends \PHPUnit\Framework\TestCase {
+class NullJobTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\NullJob',
+			NullJob::class,
 			new NullJob( null )
 		);
 	}

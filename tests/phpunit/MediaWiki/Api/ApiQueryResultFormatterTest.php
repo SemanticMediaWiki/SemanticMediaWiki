@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\ApiQueryResultFormatter;
+use SMW\Query\QueryResult;
 
 /**
  * @covers \SMW\MediaWiki\Api\ApiQueryResultFormatter
@@ -13,21 +15,21 @@ use SMW\MediaWiki\Api\ApiQueryResultFormatter;
  *
  * @author mwjames
  */
-class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
+class ApiQueryResultFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Api\ApiQueryResultFormatter',
+			ApiQueryResultFormatter::class,
 			new ApiQueryResultFormatter( $queryResult )
 		);
 	}
 
 	public function testInvalidSetIndexedTagNameThrowsException() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +52,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider resultDataProvider
 	 */
 	public function testResultFormat( array $parameters, array $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +90,7 @@ class ApiQueryResultFormatterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider errorDataProvider
 	 */
 	public function testErrorFormat( array $parameters, array $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,13 @@
 
 namespace SMW\Tests\Services;
 
+use Onoi\CallbackContainer\ContainerBuilder;
+use PHPUnit\Framework\TestCase;
+use SMW\DataValueFactory;
+use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\Property\RestrictionExaminer;
+use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Services\DataValueServiceFactory;
 
 /**
@@ -13,14 +20,14 @@ use SMW\Services\DataValueServiceFactory;
  *
  * @author mwjames
  */
-class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
+class DataValueServiceFactoryTest extends TestCase {
 
 	private $containerBuilder;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->containerBuilder = $this->getMockBuilder( '\Onoi\CallbackContainer\ContainerBuilder' )
+		$this->containerBuilder = $this->getMockBuilder( ContainerBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -62,7 +69,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DataValueFactory',
+			DataValueFactory::class,
 			$instance->getDataValueFactory()
 		);
 	}
@@ -84,7 +91,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetValueFormatterOnRegisteredFormatters() {
-		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
+		$dataValueFormatter = $this->getMockBuilder( DataValueFormatter::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -109,7 +116,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetValueFormatterOnNonRegisteredFormatters() {
-		$dataValueFormatter = $this->getMockBuilder( '\SMW\DataValues\ValueFormatters\DataValueFormatter' )
+		$dataValueFormatter = $this->getMockBuilder( DataValueFormatter::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -134,7 +141,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPropertyRestrictionExaminer() {
-		$propertyRestrictionExaminer = $this->getMockBuilder( '\SMW\Property\RestrictionExaminer' )
+		$propertyRestrictionExaminer = $this->getMockBuilder( RestrictionExaminer::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -151,7 +158,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetDescriptionBuilderRegistry() {
-		$descriptionBuilderRegistry = $this->getMockBuilder( '\SMW\Query\DescriptionBuilderRegistry' )
+		$descriptionBuilderRegistry = $this->getMockBuilder( DescriptionBuilderRegistry::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -168,7 +175,7 @@ class DataValueServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetUnitConverter() {
-		$unitConverter = $this->getMockBuilder( '\SMW\DataValues\Number\UnitConverter' )
+		$unitConverter = $this->getMockBuilder( UnitConverter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

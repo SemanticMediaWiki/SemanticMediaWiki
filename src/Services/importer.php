@@ -32,7 +32,7 @@ return [
 	 * @return callable
 	 */
 	'ImporterServiceFactory' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
+		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
 		return new ImporterServiceFactory( $containerBuilder );
 	},
 
@@ -42,7 +42,7 @@ return [
 	 * @return callable
 	 */
 	'XmlContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
+		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', XmlContentCreator::class );
 		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
 	},
 
@@ -52,7 +52,7 @@ return [
 	 * @return callable
 	 */
 	'TextContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
+		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', TextContentCreator::class );
 
 		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
 
@@ -70,7 +70,7 @@ return [
 	 * @return callable
 	 */
 	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ) {
-		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
+		$containerBuilder->registerExpectedReturnType( 'Importer', Importer::class );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(
 			[
@@ -97,7 +97,7 @@ return [
 	 * @return callable
 	 */
 	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ) {
-		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
+		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', JsonContentIterator::class );
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
 			new ContentModeller(),

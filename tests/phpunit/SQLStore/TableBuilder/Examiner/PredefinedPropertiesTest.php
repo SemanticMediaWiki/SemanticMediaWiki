@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
+class PredefinedPropertiesTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $store;
@@ -23,7 +26,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -53,7 +56,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyInterwiki' )
 			->willReturn( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,7 +67,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'replace' );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
@@ -103,7 +106,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'moveSMWPageID', 'getPropertyInterwiki' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +121,7 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 				return (object)$row;
 			} );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
@@ -151,11 +154,11 @@ class PredefinedPropertiesTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->never() )
 			->method( 'getPropertyInterwiki' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();

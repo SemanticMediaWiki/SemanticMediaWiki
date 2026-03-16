@@ -7,8 +7,10 @@ use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\Database as MWDatabase;
+use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
@@ -187,7 +189,7 @@ class Database {
 		// https://github.com/wikimedia/mediawiki/commit/6ab57b9c2424d9cc01b29908658b273a6ce75489
 		// Avoid "DBUnexpectedError ... DBConnRef.php: Database selection is
 		// disallowed to enable reuse ..."
-		if ( $connection instanceof \Wikimedia\Rdbms\DBConnRef ) {
+		if ( $connection instanceof DBConnRef ) {
 			return $connection->__call( __FUNCTION__, [ $prefix ] );
 		}
 
@@ -305,7 +307,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param string $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
@@ -326,7 +328,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {

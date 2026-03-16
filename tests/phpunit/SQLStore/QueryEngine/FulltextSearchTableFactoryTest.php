@@ -2,7 +2,17 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\FulltextSearchTableFactory
@@ -13,18 +23,18 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
  *
  * @author mwjames
  */
-class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
+class FulltextSearchTableFactoryTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstructValueMatchConditionBuilderOnUnknownConnectionType() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,13 +45,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder',
+			ValueMatchConditionBuilder::class,
 			$instance->newValueMatchConditionBuilderByType( $this->store )
 		);
 	}
 
 	public function testCanConstructValueMatchConditionBuilderOnMySQLConnectionType() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +66,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder',
+			MySQLValueMatchConditionBuilder::class,
 			$instance->newValueMatchConditionBuilderByType( $this->store )
 		);
 	}
@@ -65,7 +75,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer',
+			TextSanitizer::class,
 			$instance->newTextSanitizer()
 		);
 	}
@@ -74,13 +84,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTable',
+			SearchTable::class,
 			$instance->newSearchTable( $this->store )
 		);
 	}
 
 	public function testCanConstructSearchTableUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,13 +101,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater',
+			SearchTableUpdater::class,
 			$instance->newSearchTableUpdater( $this->store )
 		);
 	}
 
 	public function testCanConstructTextChangeUpdater() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,13 +118,13 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater',
+			TextChangeUpdater::class,
 			$instance->newTextChangeUpdater( $this->store )
 		);
 	}
 
 	public function testCanConstructSearchTableRebuilder() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +135,7 @@ class FulltextSearchTableFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FulltextSearchTableFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder',
+			SearchTableRebuilder::class,
 			$instance->newSearchTableRebuilder( $this->store )
 		);
 	}

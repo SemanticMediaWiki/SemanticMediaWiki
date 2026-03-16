@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\DescriptionFactory;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class DisjunctionConjunctionInterpreterTest extends TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -26,11 +30,11 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +42,7 @@ class DisjunctionConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 

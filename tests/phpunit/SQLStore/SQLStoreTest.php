@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\SQLStore
@@ -15,7 +18,7 @@ use SMW\SQLStore\SQLStore;
  *
  * @author mwjames
  */
-class SQLStoreTest extends \PHPUnit\Framework\TestCase {
+class SQLStoreTest extends TestCase {
 
 	private $store;
 
@@ -43,12 +46,12 @@ class SQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Store',
+			Store::class,
 			$this->store
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\SQLStore',
+			SQLStore::class,
 			$this->store
 		);
 	}
@@ -66,7 +69,7 @@ class SQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $this->store->getPropertyTables() as $tid => $propTable ) {
 			$this->assertInstanceOf(
-				'\SMW\SQLStore\PropertyTableDefinition',
+				PropertyTableDefinition::class,
 				$propTable
 			);
 		}

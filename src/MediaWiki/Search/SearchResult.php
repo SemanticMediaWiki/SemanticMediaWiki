@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Search;
 
+use File;
 use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -49,7 +50,7 @@ class SearchResult extends \SearchResult {
 	}
 
 	/**
-	 * @return \File|null
+	 * @return File|null
 	 */
 	public function getFile() {
 		return null;

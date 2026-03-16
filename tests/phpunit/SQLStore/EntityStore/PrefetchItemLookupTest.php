@@ -2,10 +2,19 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataModel\SequenceMap;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\LinkBatch;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
+use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PrefetchItemLookup
@@ -16,7 +25,7 @@ use SMW\SQLStore\EntityStore\PrefetchItemLookup;
  *
  * @author mwjames
  */
-class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
+class PrefetchItemLookupTest extends TestCase {
 
 	private $store;
 	private $semanticDataLookup;
@@ -24,19 +33,19 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 	private $requestOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+		$this->semanticDataLookup = $this->getMockBuilder( CachingSemanticDataLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySubjectsLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PropertySubjectsLookup' )
+		$this->propertySubjectsLookup = $this->getMockBuilder( PropertySubjectsLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -59,11 +68,11 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Bar_3' )
 		];
 
-		$linkBatch = $this->getMockBuilder( '\SMW\MediaWiki\LinkBatch' )
+		$linkBatch = $this->getMockBuilder( LinkBatch::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$sequenceMap = $this->getMockBuilder( '\SMW\DataModel\SequenceMap' )
+		$sequenceMap = $this->getMockBuilder( SequenceMap::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +80,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasSequenceMap' )
 			->willReturn( true );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +88,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSequenceMap' )
 			->willReturn( [] );
 
-		$diHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$diHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +96,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newFromDBKeys' )
 			->willReturnOnConsecutiveCalls( $expected[0], $expected[1], $expected[2] );
 
-		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDef = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,7 +146,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -145,7 +154,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDef = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +191,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( __METHOD__ ),
 		];
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -195,7 +204,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$propertyTableDef = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDef = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -217,7 +226,7 @@ class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
 			$this->propertySubjectsLookup
 		);
 
-		$requestOptions = new \SMW\RequestOptions();
+		$requestOptions = new RequestOptions();
 		$requestOptions->setOption( PrefetchItemLookup::HASH_INDEX, true );
 
 		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo', true ), $requestOptions );

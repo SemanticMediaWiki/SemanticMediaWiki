@@ -3,7 +3,9 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\DeepRedirectTargetResolver;
+use SMW\MediaWiki\PageCreator;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -15,15 +17,15 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
+class DeepRedirectTargetResolverTest extends TestCase {
 
 	public function testCanConstruct() {
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\DeepRedirectTargetResolver',
+			DeepRedirectTargetResolver::class,
 			 new DeepRedirectTargetResolver( $pageCreator )
 		);
 	}
@@ -39,7 +41,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRedirectTarget' )
 			->willReturn( MockTitle::buildMock( 'Ooooooo' ) );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +49,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\DeepRedirectTargetResolver' )
+		$instance = $this->getMockBuilder( DeepRedirectTargetResolver::class )
 			->setConstructorArgs( [ $pageCreator ] )
 			->setMethods( [ 'isValidRedirectTarget', 'isRedirect' ] )
 			->getMock();
@@ -79,7 +81,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 		$wikiPage->expects( $this->never() )
 			->method( 'getRedirectTarget' );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +89,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\DeepRedirectTargetResolver' )
+		$instance = $this->getMockBuilder( DeepRedirectTargetResolver::class )
 			->setConstructorArgs( [ $pageCreator ] )
 			->setMethods( [ 'isValidRedirectTarget', 'isRedirect' ] )
 			->getMock();
@@ -115,7 +117,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRedirectTarget' )
 			->willReturn( $title );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -123,7 +125,7 @@ class DeepRedirectTargetResolverTest extends \PHPUnit\Framework\TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\DeepRedirectTargetResolver' )
+		$instance = $this->getMockBuilder( DeepRedirectTargetResolver::class )
 			->setConstructorArgs( [ $pageCreator ] )
 			->setMethods( [ 'isRedirect' ] )
 			->getMock();

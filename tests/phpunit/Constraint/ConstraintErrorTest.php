@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Constraint;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintError;
+use SMW\ProcessingError;
 
 /**
  * @covers \SMW\Constraint\ConstraintError
@@ -13,7 +15,7 @@ use SMW\Constraint\ConstraintError;
  *
  * @author mwjames
  */
-class ConstraintErrorTest extends \PHPUnit\Framework\TestCase {
+class ConstraintErrorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -22,7 +24,7 @@ class ConstraintErrorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ProcessingError',
+			ProcessingError::class,
 			new ConstraintError( 'Foo' )
 		);
 	}

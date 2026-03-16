@@ -2,9 +2,17 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\ErrorLookup;
+use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ErrorLookup
@@ -15,18 +23,18 @@ use SMW\SQLStore\Lookup\ErrorLookup;
  *
  * @author mwjames
  */
-class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
+class ErrorLookupTest extends TestCase {
 
 	private $store;
 	private $connection;
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -35,7 +43,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -71,11 +79,11 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindErrorsByType() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
@@ -104,9 +112,9 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
 
-		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
+		$query = new Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +126,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 			$store
 		);
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -144,11 +152,11 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 		$requestOptions = new RequestOptions();
 		$requestOptions->setOption( 'checkConstraintErrors', SMW_CONSTRAINT_ERR_CHECK_ALL );
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getPropertyTables', 'findDiTypeTableId', 'getObjectIds', 'findPropertyTableID' ] )
 			->getMock();
@@ -177,9 +185,9 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
 
-		$query = new \SMW\MediaWiki\Connection\Query( $this->connection );
+		$query = new Query( $this->connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -191,7 +199,7 @@ class ErrorLookupTest extends \PHPUnit\Framework\TestCase {
 			$store
 		);
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 

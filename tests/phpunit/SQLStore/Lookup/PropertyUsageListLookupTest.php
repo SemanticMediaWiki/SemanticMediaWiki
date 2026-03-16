@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
@@ -15,29 +19,29 @@ use SMW\SQLStore\Lookup\PropertyUsageListLookup;
  *
  * @author mwjames
  */
-class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
+class PropertyUsageListLookupTest extends TestCase {
 
 	private $store;
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\PropertyUsageListLookup',
+			PropertyUsageListLookup::class,
 			new PropertyUsageListLookup( $this->store, $this->propertyStatisticsStore, $this->requestOptions )
 		);
 	}
@@ -108,7 +112,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_id = 42;
 		$row->usage_count = $expectedCount;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,7 +124,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -157,7 +161,7 @@ class PropertyUsageListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_id = 42;
 		$row->usage_count = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

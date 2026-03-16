@@ -2,11 +2,19 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DIProperty;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\ValueDescription;
+use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngineFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
@@ -19,7 +27,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
+class SomePropertyInterpreterTest extends TestCase {
 
 	private $store;
 	private $connection;
@@ -32,11 +40,11 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,11 +52,11 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->valueMatchConditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder' )
+		$this->valueMatchConditionBuilder = $this->getMockBuilder( ValueMatchConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -141,7 +149,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testinterpretDescriptionForNonWikiPageTypeInverseProperty() {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -198,7 +206,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testinterpretDescription( $description, $isFixedPropertyTable, $indexField, $sortKeys, $expected ) {
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -434,7 +442,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$property = $dataItemFactory->newDIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSQLCondition', 'getDataItem' ] )
 			->getMock();

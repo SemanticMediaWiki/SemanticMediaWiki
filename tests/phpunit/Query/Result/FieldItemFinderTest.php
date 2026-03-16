@@ -2,10 +2,14 @@
 
 namespace SMW\Tests\Query\Result;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\Result\FieldItemFinder;
+use SMW\Query\Result\ItemFetcher;
+use SMW\RequestOptions;
+use SMW\Store;
 
 /**
  * @covers SMW\Query\Result\FieldItemFinder
@@ -16,7 +20,7 @@ use SMW\Query\Result\FieldItemFinder;
  *
  * @author mwjames
  */
-class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
+class FieldItemFinderTest extends TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
@@ -29,15 +33,15 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->itemFetcher = $this->getMockBuilder( '\SMW\Query\Result\ItemFetcher' )
+		$this->itemFetcher = $this->getMockBuilder( ItemFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+		$this->printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -61,7 +65,7 @@ class FieldItemFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\RequestOptions',
+			RequestOptions::class,
 			$instance->getRequestOptions()
 		);
 	}

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataValues\PropertyValue;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 
 /**
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
  *
  * @author mwjames
  */
-class PageRequestOptionsTest extends \PHPUnit\Framework\TestCase {
+class PageRequestOptionsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$queryString = '';
 		$requestOptions = [];
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions',
+			PageRequestOptions::class,
 			new PageRequestOptions( $queryString, $requestOptions )
 		);
 	}
@@ -37,7 +39,7 @@ class PageRequestOptionsTest extends \PHPUnit\Framework\TestCase {
 		}
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\PropertyValue',
+			PropertyValue::class,
 			$instance->property
 		);
 	}

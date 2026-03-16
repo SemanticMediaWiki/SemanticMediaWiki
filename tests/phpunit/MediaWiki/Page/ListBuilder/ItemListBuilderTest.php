@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
+use SMW\RequestOptions;
+use SMW\SortLetter;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
+class ItemListBuilderTest extends TestCase {
 
 	private $store;
 	private $stringValidator;
@@ -26,7 +30,7 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -39,7 +43,7 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreateEmptyList() {
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,11 +59,11 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreateHtml() {
-		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+		$sortLetter = $this->getMockBuilder( SortLetter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertySubjects', 'service' ] )
 			->getMockForAbstractClass();
@@ -73,7 +77,7 @@ class ItemListBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertySubjects' )
 			->willReturn( [ DIWikiPage::newFromText( __METHOD__ ) ] );
 
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 

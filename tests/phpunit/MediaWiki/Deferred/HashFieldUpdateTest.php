@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Deferred;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
+class HashFieldUpdateTest extends TestCase {
 
 	private $testEnvironment;
 	private $connection;
@@ -26,7 +28,7 @@ class HashFieldUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\Elastic\Admin;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Admin\MappingsInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
 
 /**
  * @covers \SMW\Elastic\Admin\MappingsInfoProvider
@@ -14,14 +18,14 @@ use SMW\Elastic\Connection\DummyClient;
  *
  * @author mwjames
  */
-class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
+class MappingsInfoProviderTest extends TestCase {
 
 	private $outputFormatter;
 	private $webRequest;
 	private $store;
 
 	protected function setUp(): void {
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -29,11 +33,11 @@ class MappingsInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'encodeAsJson' )
 			->willReturn( '' );
 
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();

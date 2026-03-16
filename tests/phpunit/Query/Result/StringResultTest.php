@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Result;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Result\StringResult;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Query\Result\StringResult;
  *
  * @author mwjames
  */
-class StringResultTest extends \PHPUnit\Framework\TestCase {
+class StringResultTest extends TestCase {
 
 	private $query;
 

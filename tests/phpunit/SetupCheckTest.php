@@ -2,8 +2,11 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\Exception\FileNotReadableException;
 use SMW\SetupCheck;
+use SMW\SetupFile;
 
 /**
  * @covers \SMW\SetupCheck
@@ -14,14 +17,14 @@ use SMW\SetupCheck;
  *
  * @author mwjames
  */
-class SetupCheckTest extends \PHPUnit\Framework\TestCase {
+class SetupCheckTest extends TestCase {
 
 	private $setupFile;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -63,7 +66,7 @@ class SetupCheckTest extends \PHPUnit\Framework\TestCase {
 	public function testReadFromFile_ThrowsException() {
 		$instance = new SetupCheck( [], $this->setupFile );
 
-		$this->expectException( '\SMW\Exception\FileNotReadableException' );
+		$this->expectException( FileNotReadableException::class );
 		$instance->readFromFile( 'File' );
 	}
 

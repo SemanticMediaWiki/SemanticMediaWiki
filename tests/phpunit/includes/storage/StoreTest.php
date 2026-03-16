@@ -6,7 +6,11 @@ use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\SQLStore\Lookup\ListLookup;
+use SMW\Store;
 use SMW\StoreFactory;
 
 /**
@@ -41,7 +45,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$store->getSemanticData( $subject, $filter ),
 			"Result should be instance of SMWSemanticData."
 		);
@@ -88,7 +92,7 @@ class StoreTest extends SMWIntegrationTestCase {
 
 		foreach ( $result as $page ) {
 			$this->assertInstanceOf(
-				'\SMW\DIWikiPage',
+				DIWikiPage::class,
 				$page,
 				"Result should be instance of DIWikiPage."
 			);
@@ -135,7 +139,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertiesSpecial( new RequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
+		$this->assertInstanceOf( ListLookup::class, $result );
 		foreach ( $result->fetchList() as $row ) {
 			$this->assertCount( 2, $row );
 
@@ -151,7 +155,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getUnusedPropertiesSpecial( new RequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
+		$this->assertInstanceOf( ListLookup::class, $result );
 		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
 				'\SMWDataItem',
@@ -165,10 +169,10 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store = StoreFactory::getStore();
 		$result = $store->getWantedPropertiesSpecial( new RequestOptions() );
 
-		$this->assertInstanceOf( '\SMW\SQLStore\Lookup\ListLookup', $result );
+		$this->assertInstanceOf( ListLookup::class, $result );
 		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
-				'\SMW\DIProperty',
+				DIProperty::class,
 				$row[0],
 				"Result should be instance of DIProperty."
 			);
@@ -190,7 +194,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$store->setConnectionManager( new ConnectionManager() );
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\Database',
+			Database::class,
 			$store->getConnection( 'mw.db' )
 		);
 	}
@@ -199,7 +203,7 @@ class StoreTest extends SMWIntegrationTestCase {
 		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
 		$expected = new DIWikiPage( 'Bar', NS_MAIN );
 
-		$instance = $this->getMockBuilder( '\SMW\Store' )
+		$instance = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyValues' ] )
 			->getMockForAbstractClass();

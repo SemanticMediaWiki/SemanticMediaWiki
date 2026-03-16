@@ -2,7 +2,15 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
+use SMW\Indicator\IndicatorProvider;
 use SMW\MediaWiki\IndicatorRegistry;
+use SMW\MediaWiki\Permission\PermissionAware;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminerAware;
 
 /**
  * @covers \SMW\MediaWiki\IndicatorRegistry
@@ -13,17 +21,17 @@ use SMW\MediaWiki\IndicatorRegistry;
  *
  * @author mwjames
  */
-class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
+class IndicatorRegistryTest extends TestCase {
 
 	private $indicatorProvider;
 	private $permissionExaminer;
 
 	protected function setUp(): void {
-		$this->indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
+		$this->indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +44,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddIndicatorProvider() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +71,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAttachIndicators() {
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +83,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoPermissionOnIndicatorProvider() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +102,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPermissionAwareIndicatorProvider() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +121,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newPermissionAwareIndicatorProvider() {
-		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
+		return new class() implements IndicatorProvider, PermissionAware {
 
 			public function getName(): string {
 				return '';
@@ -123,7 +131,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
+			public function hasIndicator( DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -135,14 +143,14 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 				return [];
 			}
 
-			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ): bool {
+			public function hasPermission( PermissionExaminer $permissionExaminer ): bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};
 	}
 
 	private function newPermissionExaminerAwareIndicatorProvider() {
-		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionExaminerAware {
+		return new class() implements IndicatorProvider, PermissionExaminerAware {
 
 			public function getName(): string {
 				return '';
@@ -152,7 +160,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
+			public function hasIndicator( DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -164,7 +172,7 @@ class IndicatorRegistryTest extends \PHPUnit\Framework\TestCase {
 				return [];
 			}
 
-			public function setPermissionExaminer( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ) {
+			public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
 				// Just used as an example to check that the setter is run
 				$permissionExaminer->hasPermissionOf( 'Foo' );
 			}

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Elastic\Connection;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Connection\LockManager;
 
 /**
@@ -13,12 +15,12 @@ use SMW\Elastic\Connection\LockManager;
  *
  * @author mwjames
  */
-class LockManagerTest extends \PHPUnit\Framework\TestCase {
+class LockManagerTest extends TestCase {
 
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

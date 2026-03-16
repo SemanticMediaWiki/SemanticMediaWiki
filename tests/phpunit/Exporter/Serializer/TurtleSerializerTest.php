@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\Serializer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -16,7 +17,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class TurtleSerializerTest extends \PHPUnit\Framework\TestCase {
+class TurtleSerializerTest extends TestCase {
 
 	public function testFlushContent_Empty() {
 		$instance = new TurtleSerializer();

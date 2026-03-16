@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Connection;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
+use SMW\Connection\ConnectionProvider;
+use SMW\MediaWiki\Connection\Database;
 
 /**
  * @covers \SMW\Connection\ConnectionManager
@@ -13,7 +16,7 @@ use SMW\Connection\ConnectionManager;
  *
  * @author mwjames
  */
-class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
+class ConnectionManagerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -34,7 +37,7 @@ class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\Database',
+			Database::class,
 			$connection
 		);
 
@@ -54,7 +57,7 @@ class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterConnectionProvider() {
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +71,7 @@ class ConnectionManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterCallbackConnection() {
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 

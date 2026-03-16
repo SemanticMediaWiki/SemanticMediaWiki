@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\Examiner\HashField
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HashFieldTest extends \PHPUnit\Framework\TestCase {
+class HashFieldTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $store;
@@ -24,7 +27,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +44,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheck_Populate() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +74,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheck_Incomplete() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 

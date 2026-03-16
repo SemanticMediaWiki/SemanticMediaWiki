@@ -2,7 +2,17 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder;
+use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\HashField;
+use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
+use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
+class TableBuildExaminerTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $hashField;
@@ -29,31 +39,31 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hashField = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\HashField' )
+		$this->hashField = $this->getMockBuilder( HashField::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fixedProperties = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\FixedProperties' )
+		$this->fixedProperties = $this->getMockBuilder( FixedProperties::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->touchedField = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\TouchedField' )
+		$this->touchedField = $this->getMockBuilder( TouchedField::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idBorder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\IdBorder' )
+		$this->idBorder = $this->getMockBuilder( IdBorder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->predefinedProperties = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties' )
+		$this->predefinedProperties = $this->getMockBuilder( PredefinedProperties::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuildExaminerFactory = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuildExaminerFactory' )
+		$this->tableBuildExaminerFactory = $this->getMockBuilder( TableBuildExaminerFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +96,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckOnActivitiesPostCreationForID_TABLE() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,7 +112,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getObjectIds' ] )
 			->getMock();
@@ -115,7 +125,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,7 +162,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'listTables' )
 			->willReturn( [ 'abcsmw_foo' ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -161,7 +171,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -194,7 +204,7 @@ class TableBuildExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getServerInfo' )
 			->willReturn( 2 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();

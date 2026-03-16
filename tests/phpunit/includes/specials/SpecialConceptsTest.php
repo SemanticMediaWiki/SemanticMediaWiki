@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\SpecialConcepts;
 
@@ -14,7 +16,7 @@ use SMW\SpecialConcepts;
  *
  * @author mwjames
  */
-class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
+class SpecialConceptsTest extends TestCase {
 
 	private $stringValidator;
 	private $testEnvironment;
@@ -36,7 +38,7 @@ class SpecialConceptsTest extends \PHPUnit\Framework\TestCase {
 	public function testExecute() {
 		$expected = 'p class="smw-special-concept-docu plainlinks"';
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

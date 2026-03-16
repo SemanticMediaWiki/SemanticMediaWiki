@@ -19,6 +19,7 @@ use SMWDataValue as DataValue;
 use SMWDITime as DITime;
 use SMWInfolink as Infolink;
 use SMWPageLister as PageLister;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -161,7 +162,7 @@ class ValueListBuilder {
 			$dataItems = $this->store->getAllPropertySubjects( $property, $options );
 		}
 
-		if ( $dataItems instanceof \Traversable ) {
+		if ( $dataItems instanceof Traversable ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
 
@@ -331,7 +332,7 @@ class ValueListBuilder {
 			}
 
 			// May return an iterator
-			if ( $values instanceof \Iterator ) {
+			if ( $values instanceof Iterator ) {
 				$values = iterator_to_array( $values );
 			}
 

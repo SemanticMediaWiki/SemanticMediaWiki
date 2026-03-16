@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
@@ -16,11 +17,11 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  * @author mwjames
  * @reviewer thomas-topway-it
  */
-class MonolingualTextValueMappingParserTest extends \PHPUnit\Framework\TestCase {
+class MonolingualTextValueMappingParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\MonolingualTextValueParser',
+			MonolingualTextValueParser::class,
 			new MonolingualTextValueParser()
 		);
 	}

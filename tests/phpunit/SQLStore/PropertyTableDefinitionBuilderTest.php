@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
+use SMW\SQLStore\PropertyTypeFinder;
 use SMW\Tests\Utils\MwHooksHandler;
 use SMWDataItem as DataItem;
 
@@ -16,7 +18,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableDefinitionBuilderTest extends TestCase {
 
 	private $propertyTypeFinder;
 	private $mwHooksHandler;
@@ -27,7 +29,7 @@ class PropertyTableDefinitionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->mwHooksHandler = new MwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$this->propertyTypeFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTypeFinder' )
+		$this->propertyTypeFinder = $this->getMockBuilder( PropertyTypeFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

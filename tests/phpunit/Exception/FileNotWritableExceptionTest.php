@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\FileNotWritableException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\FileNotWritableException;
  *
  * @author mwjames
  */
-class FileNotWritableExceptionTest extends \PHPUnit\Framework\TestCase {
+class FileNotWritableExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new FileNotWritableException( 'Foo' );

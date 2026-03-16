@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Specials\FacetedSearch\ParametersProcessor;
  *
  * @author mwjames
  */
-class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
+class ParametersProcessorTest extends TestCase {
 
 	private $profile;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
+		$this->profile = $this->getMockBuilder( Profile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

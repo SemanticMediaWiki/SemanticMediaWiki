@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Constraint;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintCheckRunner;
+use SMW\Constraint\ConstraintRegistry;
 use SMW\Schema\SchemaDefinition;
 
 /**
@@ -15,12 +17,12 @@ use SMW\Schema\SchemaDefinition;
  *
  * @author mwjames
  */
-class ConstraintCheckRunnerTest extends \PHPUnit\Framework\TestCase {
+class ConstraintCheckRunnerTest extends TestCase {
 
 	private $constraintRegistry;
 
 	protected function setUp(): void {
-		$this->constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
+		$this->constraintRegistry = $this->getMockBuilder( ConstraintRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -33,7 +35,7 @@ class ConstraintCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheck_Instance() {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +82,7 @@ class ConstraintCheckRunnerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheck_Deferred() {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 

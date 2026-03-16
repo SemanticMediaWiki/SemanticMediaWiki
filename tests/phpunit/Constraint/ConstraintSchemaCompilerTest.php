@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\Constraint;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintSchemaCompiler;
+use SMW\DIProperty;
 use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
+use SMW\Schema\SchemaFinder;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -15,7 +19,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
+class ConstraintSchemaCompilerTest extends TestCase {
 
 	private $schemaFinder;
 	private $propertySpecificationLookup;
@@ -23,11 +27,11 @@ class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+		$this->schemaFinder = $this->getMockBuilder( SchemaFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -80,7 +84,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [ new DIBlob( 'bar' ) ] );
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -128,7 +132,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -170,7 +174,7 @@ class ConstraintSchemaCompilerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 

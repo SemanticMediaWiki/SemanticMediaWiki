@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
 /**
@@ -13,11 +14,11 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  *
  * @author mwjames
  */
-class MonolingualTextValueParserTest extends \PHPUnit\Framework\TestCase {
+class MonolingualTextValueParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\MonolingualTextValueParser',
+			MonolingualTextValueParser::class,
 			new MonolingualTextValueParser()
 		);
 	}

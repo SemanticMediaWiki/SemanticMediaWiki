@@ -83,7 +83,7 @@ class ValueTextsBuilder {
 	 *
 	 * @param int $columnNumber Column number
 	 *
-	 * @return \Linker|null
+	 * @return Linker|null
 	 */
 	private function getLinkerForColumn( $columnNumber ) {
 		if ( ( $columnNumber === 0 && $this->get( 'link-first' ) ) ||

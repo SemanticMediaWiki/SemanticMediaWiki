@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\FallbackFinder;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 
@@ -14,7 +15,7 @@ use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
  *
  * @author mwjames
  */
-class FallbackFinderTest extends \PHPUnit\Framework\TestCase {
+class FallbackFinderTest extends TestCase {
 
 	private $jsonContentsFileReader;
 

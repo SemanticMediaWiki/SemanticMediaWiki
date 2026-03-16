@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
+use SMW\SetupFile;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
 use SMW\Tests\TestEnvironment;
 
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
+class CountMapFieldTest extends TestCase {
 
 	private $spyMessageReporter;
 	private Database $connection;
@@ -30,7 +33,7 @@ class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +41,7 @@ class CountMapFieldTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

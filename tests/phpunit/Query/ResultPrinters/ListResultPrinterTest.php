@@ -1,6 +1,7 @@
 <?php
 namespace SMW\Tests\Query\ResultPrinters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\Message;
 use SMW\Query\ResultPrinters\ListResultPrinter;
 
@@ -14,7 +15,7 @@ use SMW\Query\ResultPrinters\ListResultPrinter;
  * @author Máté Szabó
  * @author Stephan Gambke
  */
-class ListResultPrinterTest extends \PHPUnit\Framework\TestCase {
+class ListResultPrinterTest extends TestCase {
 
 	/**
 	 * @dataProvider allFormatsProvider
@@ -23,7 +24,7 @@ class ListResultPrinterTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct( $format ) {
 		$listResultPrinter = new ListResultPrinter( $format );
 
-		$this->assertInstanceOf( '\SMW\Query\ResultPrinters\ListResultPrinter', $listResultPrinter );
+		$this->assertInstanceOf( ListResultPrinter::class, $listResultPrinter );
 	}
 
 	/**

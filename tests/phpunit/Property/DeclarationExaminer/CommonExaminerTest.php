@@ -2,10 +2,13 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\Property\DeclarationExaminer\CommonExaminer
@@ -16,7 +19,7 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
+class CommonExaminerTest extends TestCase {
 
 	private $store;
 	private $entityManager;
@@ -25,11 +28,11 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->entityManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->entityManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +40,7 @@ class CommonExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $this->entityManager );
 
-		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$this->semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

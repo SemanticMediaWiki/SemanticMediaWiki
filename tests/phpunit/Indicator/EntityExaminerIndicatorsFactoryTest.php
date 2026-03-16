@@ -2,7 +2,17 @@
 
 namespace SMW\Tests\Indicator;
 
+use PHPUnit\Framework\TestCase;
+use SMW\EntityCache;
+use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
+class EntityExaminerIndicatorsFactoryTest extends TestCase {
 
 	private $store;
 	private $entityCache;
@@ -25,15 +35,15 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,12 +60,12 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider',
+			EntityExaminerCompositeIndicatorProvider::class,
 			$instance->newEntityExaminerIndicatorProvider( $this->store )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider',
+			CompositeIndicatorProvider::class,
 			$instance->newEntityExaminerIndicatorProvider( $this->store )
 		);
 	}
@@ -64,7 +74,7 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider',
+			AssociatedRevisionMismatchEntityExaminerIndicatorProvider::class,
 			$instance->newAssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
 		);
 	}
@@ -73,7 +83,7 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider',
+			ConstraintErrorEntityExaminerDeferrableIndicatorProvider::class,
 			$instance->newConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
 		);
 	}
@@ -82,17 +92,17 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new EntityExaminerIndicatorsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider',
+			EntityExaminerDeferrableCompositeIndicatorProvider::class,
 			$instance->newEntityExaminerDeferrableCompositeIndicatorProvider( $this->store )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider',
+			DeferrableIndicatorProvider::class,
 			$instance->newEntityExaminerDeferrableCompositeIndicatorProvider( $this->store )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider',
+			CompositeIndicatorProvider::class,
 			$instance->newEntityExaminerDeferrableCompositeIndicatorProvider( $this->store )
 		);
 	}
@@ -102,12 +112,12 @@ class EntityExaminerIndicatorsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$indicatorProviders = [];
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider',
+			EntityExaminerCompositeIndicatorProvider::class,
 			$instance->newEntityExaminerCompositeIndicatorProvider( $indicatorProviders )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider',
+			CompositeIndicatorProvider::class,
 			$instance->newEntityExaminerCompositeIndicatorProvider( $indicatorProviders )
 		);
 	}

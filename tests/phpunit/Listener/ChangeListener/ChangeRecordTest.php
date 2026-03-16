@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Listener\ChangeListener;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Listener\ChangeListener\ChangeRecord;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Listener\ChangeListener\ChangeRecord;
  *
  * @author mwjames
  */
-class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
+class ChangeRecordTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

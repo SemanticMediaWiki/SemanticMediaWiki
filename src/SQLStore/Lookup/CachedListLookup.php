@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -51,7 +52,7 @@ class CachedListLookup implements ListLookup {
 	 * @param Cache $cache
 	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( ListLookup $listLookup, Cache $cache, \stdClass $cacheOptions ) {
+	public function __construct( ListLookup $listLookup, Cache $cache, stdClass $cacheOptions ) {
 		$this->listLookup = $listLookup;
 		$this->cache = $cache;
 		$this->cacheOptions = $cacheOptions;

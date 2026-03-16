@@ -3,6 +3,7 @@
 namespace SMW\Query\Parser;
 
 use MediaWiki\Title\Title;
+use RuntimeException;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -212,7 +213,7 @@ class LegacyParser implements Parser {
 	 * @return string
 	 */
 	public function getErrorString() {
-		throw new \RuntimeException( "Shouldnot be used, remove getErrorString usage!" );
+		throw new RuntimeException( "Shouldnot be used, remove getErrorString usage!" );
 	}
 
 	/**

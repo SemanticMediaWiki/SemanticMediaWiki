@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
+use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Tests\TestEnvironment;
@@ -18,7 +20,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class SchemaLinkProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class SchemaLinkProfileAnnotatorTest extends TestCase {
 
 	private $semanticDataValidator;
 
@@ -29,7 +31,7 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( ProfileAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +42,7 @@ class SchemaLinkProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddAnnotationOnInvalidSchemaLinkTypeThrowsException() {
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( ProfileAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

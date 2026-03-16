@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Site;
 
 /**
@@ -14,7 +15,7 @@ use SMW\Site;
  *
  * @author mwjames
  */
-class SiteTest extends \PHPUnit\Framework\TestCase {
+class SiteTest extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();

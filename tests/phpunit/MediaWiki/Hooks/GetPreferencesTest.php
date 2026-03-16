@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\Schema\SchemaFactory;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\GetPreferences
@@ -13,7 +18,7 @@ use SMW\MediaWiki\Hooks\GetPreferences;
  *
  * @author mwjames
  */
-class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
+class GetPreferencesTest extends TestCase {
 
 	private $hookDispatcher;
 	private $permissionExaminer;
@@ -22,21 +27,21 @@ class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +61,7 @@ class GetPreferencesTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasPermissionOf' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 

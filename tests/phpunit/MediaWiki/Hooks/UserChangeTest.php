@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\UserChange;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\NamespaceExaminer;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UserChangeTest extends \PHPUnit\Framework\TestCase {
+class UserChangeTest extends TestCase {
 
 	private $namespaceExaminer;
 	private $testEnvironment;
@@ -25,11 +30,11 @@ class UserChangeTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +54,7 @@ class UserChangeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOnEnabledUserNamespace() {
-		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
+		$job = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +79,7 @@ class UserChangeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOnEnabledUserNamespace_User() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -82,7 +87,7 @@ class UserChangeTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getName' )
 			->willReturn( 'Foo' );
 
-		$job = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
+		$job = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 

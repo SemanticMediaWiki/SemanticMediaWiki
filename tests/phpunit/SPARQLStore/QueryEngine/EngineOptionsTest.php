@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SPARQLStore\QueryEngine\EngineOptions;
  *
  * @author mwjames
  */
-class EngineOptionsTest extends \PHPUnit\Framework\TestCase {
+class EngineOptionsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\EngineOptions',
+			EngineOptions::class,
 			new EngineOptions()
 		);
 	}

@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Schema\Filters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\ChainableFilter;
+use SMW\Schema\Compartment;
 use SMW\Schema\Filters\CompositeFilter;
+use SMW\Schema\Rule;
+use SMW\Schema\SchemaFilter;
 
 /**
  * @covers \SMW\Schema\Filters\CompositeFilter
@@ -13,7 +18,7 @@ use SMW\Schema\Filters\CompositeFilter;
  *
  * @author mwjames
  */
-class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
+class CompositeFilterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -23,15 +28,15 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFilter() {
-		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+		$compartment = $this->getMockBuilder( Compartment::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$filter_1 = $this->getMockBuilder( '\SMW\Schema\SchemaFilter' )
+		$filter_1 = $this->getMockBuilder( SchemaFilter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$filter_2 = $this->getMockBuilder( '\SMW\Schema\ChainableFilter' )
+		$filter_2 = $this->getMockBuilder( ChainableFilter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +73,7 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSortMatches() {
-		$rule_1 = $this->getMockBuilder( '\SMW\Schema\Rule' )
+		$rule_1 = $this->getMockBuilder( Rule::class )
 			->disableOriginalConstructor()
 			->setMethods( null )
 			->getMock();
@@ -76,19 +81,19 @@ class CompositeFilterTest extends \PHPUnit\Framework\TestCase {
 		$rule_1->incrFilterScore();
 		$rule_1->incrFilterScore();
 
-		$rule_2 = $this->getMockBuilder( '\SMW\Schema\Rule' )
+		$rule_2 = $this->getMockBuilder( Rule::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+		$compartment = $this->getMockBuilder( Compartment::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$filter_1 = $this->getMockBuilder( '\SMW\Schema\SchemaFilter' )
+		$filter_1 = $this->getMockBuilder( SchemaFilter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$filter_2 = $this->getMockBuilder( '\SMW\Schema\ChainableFilter' )
+		$filter_2 = $this->getMockBuilder( ChainableFilter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

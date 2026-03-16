@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDIUri as DIUri;
 
@@ -15,18 +19,18 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
+class DIUriHandlerTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,7 +40,7 @@ class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -140,7 +144,7 @@ class DIUriHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->expectException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( DataItemHandlerException::class );
 		$instance->dataItemFromDBKeys( $dbKeys );
 	}
 

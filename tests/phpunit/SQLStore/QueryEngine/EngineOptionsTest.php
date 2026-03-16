@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SQLStore\QueryEngine\EngineOptions;
  *
  * @author mwjames
  */
-class EngineOptionsTest extends \PHPUnit\Framework\TestCase {
+class EngineOptionsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\EngineOptions',
+			EngineOptions::class,
 			new EngineOptions()
 		);
 	}

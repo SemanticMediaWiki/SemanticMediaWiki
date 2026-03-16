@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTypeFinder;
 
 /**
@@ -13,14 +15,14 @@ use SMW\SQLStore\PropertyTypeFinder;
  *
  * @author mwjames
  */
-class PropertyTypeFinderTest extends \PHPUnit\Framework\TestCase {
+class PropertyTypeFinderTest extends TestCase {
 
 	private $connection;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

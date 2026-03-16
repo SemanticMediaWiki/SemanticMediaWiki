@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
@@ -18,19 +20,19 @@ use SMW\Query\Language\ValueDescription;
  *
  * @author mwjames
  */
-class SomePropertyTest extends \PHPUnit\Framework\TestCase {
+class SomePropertyTest extends TestCase {
 
 	public function testCanConstruct() {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\SomeProperty',
+			SomeProperty::class,
 			new SomeProperty( $property, $description )
 		);
 	}

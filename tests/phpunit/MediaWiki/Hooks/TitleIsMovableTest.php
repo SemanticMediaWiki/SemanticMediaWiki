@@ -3,6 +3,8 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\TitleIsMovable;
 
 /**
@@ -14,15 +16,15 @@ use SMW\MediaWiki\Hooks\TitleIsMovable;
  *
  * @author mwjames
  */
-class TitleIsMovableTest extends \PHPUnit\Framework\TestCase {
+class TitleIsMovableTest extends TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\TitleIsMovable',
+			TitleIsMovable::class,
 			new TitleIsMovable( $title )
 		);
 	}

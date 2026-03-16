@@ -5,7 +5,9 @@ namespace SMW\Tests\MediaWiki\Content;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Content\SchemaContent;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @covers \SMW\MediaWiki\Content\SchemaContent
@@ -16,7 +18,7 @@ use SMW\MediaWiki\Content\SchemaContent;
  *
  * @author mwjames
  */
-class SchemaContentTest extends \PHPUnit\Framework\TestCase {
+class SchemaContentTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(
@@ -37,7 +39,7 @@ class SchemaContentTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsYaml() {
-		if ( !class_exists( '\Symfony\Component\Yaml\Yaml' ) ) {
+		if ( !class_exists( Yaml::class ) ) {
 			$this->markTestSkipped( 'Skipping because `Symfony\Component\Yaml\Yaml` is not available!' );
 		}
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\ClassNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\ClassNotFoundException;
  *
  * @author mwjames
  */
-class ClassNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class ClassNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ClassNotFoundException( 'Foo' );

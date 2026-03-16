@@ -2,8 +2,10 @@
 
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use InvalidArgumentException;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreter;
+use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
  * @private

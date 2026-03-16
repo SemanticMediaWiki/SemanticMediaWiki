@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Query\Excerpts;
 
@@ -14,7 +15,7 @@ use SMW\Query\Excerpts;
  *
  * @author mwjames
  */
-class ExcerptsTest extends \PHPUnit\Framework\TestCase {
+class ExcerptsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

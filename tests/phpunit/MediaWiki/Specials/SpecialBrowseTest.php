@@ -3,7 +3,9 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialBrowse;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SpecialBrowseTest extends \PHPUnit\Framework\TestCase {
+class SpecialBrowseTest extends TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;
@@ -27,7 +29,7 @@ class SpecialBrowseTest extends \PHPUnit\Framework\TestCase {
 			'smwgBrowseFeatures' => SMW_BROWSE_SHOW_INCOMING | SMW_BROWSE_USE_API
 		] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

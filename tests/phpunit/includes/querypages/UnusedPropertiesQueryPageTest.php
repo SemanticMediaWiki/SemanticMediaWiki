@@ -2,8 +2,11 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Exception\PropertyNotFoundException;
 use SMW\Settings;
+use SMW\Store;
 use SMW\UnusedPropertiesQueryPage;
 
 /**
@@ -15,7 +18,7 @@ use SMW\UnusedPropertiesQueryPage;
  *
  * @author mwjames
  */
-class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
+class UnusedPropertiesQueryPageTest extends TestCase {
 
 	private $store;
 	private $skin;
@@ -28,7 +31,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -47,7 +50,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\UnusedPropertiesQueryPage',
+			UnusedPropertiesQueryPage::class,
 			new UnusedPropertiesQueryPage( $this->store, $this->settings )
 		);
 	}
@@ -82,7 +85,7 @@ class UnusedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			$this->settings
 		);
 
-		$this->expectException( '\SMW\Exception\PropertyNotFoundException' );
+		$this->expectException( PropertyNotFoundException::class );
 		$instance->formatResult( $this->skin, null );
 	}
 

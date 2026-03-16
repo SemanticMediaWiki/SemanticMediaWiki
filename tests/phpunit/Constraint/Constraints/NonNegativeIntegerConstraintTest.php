@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
 use SMW\DataItemFactory;
 
@@ -14,7 +15,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class NonNegativeIntegerConstraintTest extends \PHPUnit\Framework\TestCase {
+class NonNegativeIntegerConstraintTest extends TestCase {
 
 	private $dataItemFactory;
 

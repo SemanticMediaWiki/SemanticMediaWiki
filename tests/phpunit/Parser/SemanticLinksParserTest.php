@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Parser\LinksProcessor;
 use SMW\Parser\SemanticLinksParser;
 
@@ -14,17 +15,17 @@ use SMW\Parser\SemanticLinksParser;
  *
  * @author mwjames
  */
-class SemanticLinksParserTest extends \PHPUnit\Framework\TestCase {
+class SemanticLinksParserTest extends TestCase {
 
 	public function testCanConstruct() {
-		$linksProcessor = $this->getMockBuilder( 'SMW\Parser\LinksProcessor' )
+		$linksProcessor = $this->getMockBuilder( LinksProcessor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new SemanticLinksParser( $linksProcessor );
 
 		$this->assertInstanceOf(
-			'SMW\Parser\SemanticLinksParser',
+			SemanticLinksParser::class,
 			$instance
 		);
 	}

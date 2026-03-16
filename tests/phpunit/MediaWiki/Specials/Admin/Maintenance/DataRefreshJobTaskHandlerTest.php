@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\RefreshJob;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Maintenance\DataRefreshJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class DataRefreshJobTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
@@ -26,11 +32,11 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +87,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDoRefreshOn_Yes() {
-		$refreshJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\RefreshJob' )
+		$refreshJob = $this->getMockBuilder( RefreshJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +101,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw.refresh' )
 			->willReturn( false );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +111,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +133,7 @@ class DataRefreshJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'delete' )
 			->with( 'smw.refresh' );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

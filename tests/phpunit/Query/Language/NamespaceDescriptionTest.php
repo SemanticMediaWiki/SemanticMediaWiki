@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
@@ -15,13 +16,13 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class NamespaceDescriptionTest extends \PHPUnit\Framework\TestCase {
+class NamespaceDescriptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$namespace = NS_MAIN;
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\NamespaceDescription',
+			NamespaceDescription::class,
 			new NamespaceDescription( $namespace )
 		);
 	}

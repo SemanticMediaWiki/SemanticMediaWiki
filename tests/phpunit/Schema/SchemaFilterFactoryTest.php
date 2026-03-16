@@ -2,6 +2,11 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\Filters\CategoryFilter;
+use SMW\Schema\Filters\CompositeFilter;
+use SMW\Schema\Filters\NamespaceFilter;
+use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\SchemaFilterFactory;
 
 /**
@@ -13,13 +18,13 @@ use SMW\Schema\SchemaFilterFactory;
  *
  * @author mwjames
  */
-class SchemaFilterFactoryTest extends \PHPUnit\Framework\TestCase {
+class SchemaFilterFactoryTest extends TestCase {
 
 	public function testCanConstructCompositeFilter() {
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\Filters\CompositeFilter',
+			CompositeFilter::class,
 			$instance->newCompositeFilter( [] )
 		);
 	}
@@ -28,7 +33,7 @@ class SchemaFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\Filters\NamespaceFilter',
+			NamespaceFilter::class,
 			$instance->newNamespaceFilter( NS_MAIN )
 		);
 	}
@@ -37,7 +42,7 @@ class SchemaFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\Filters\CategoryFilter',
+			CategoryFilter::class,
 			$instance->newCategoryFilter( 'Foo' )
 		);
 	}
@@ -46,7 +51,7 @@ class SchemaFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SchemaFilterFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\Filters\PropertyFilter',
+			PropertyFilter::class,
 			$instance->newPropertyFilter( 'Foo' )
 		);
 	}

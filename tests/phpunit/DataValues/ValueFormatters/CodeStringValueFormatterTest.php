@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 
@@ -14,7 +15,7 @@ use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
  *
  * @author mwjames
  */
-class CodeStringValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class CodeStringValueFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

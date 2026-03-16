@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Schema\Exception\SchemaConstructionFailedException;
  *
  * @author mwjames
  */
-class SchemaConstructionFailedExceptionTest extends \PHPUnit\Framework\TestCase {
+class SchemaConstructionFailedExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaConstructionFailedException( 'foo' );

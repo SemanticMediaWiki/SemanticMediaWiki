@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Integration\Query\ProfileAnnotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
 use SMWQueryProcessor;
@@ -17,7 +19,7 @@ use SMWQueryProcessor;
  *
  * @author mwjames
  */
-class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framework\TestCase {
+class ProfileAnnotatorWithQueryProcessorIntegrationTest extends TestCase {
 
 	private $semanticDataValidator;
 
@@ -57,7 +59,7 @@ class ProfileAnnotatorWithQueryProcessorIntegrationTest extends \PHPUnit\Framewo
 		$profileAnnotator->addAnnotation();
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$profileAnnotator->getSemanticData()
 		);
 

@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client;
+use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
+use SMW\Options;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IndexerTest extends \PHPUnit\Framework\TestCase {
+class IndexerTest extends TestCase {
 
 	private $store;
 	private $bulk;
@@ -28,19 +34,19 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$options = $this->getMockBuilder( '\SMW\Options' )
+		$options = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->bulk = $this->getMockBuilder( '\SMW\Elastic\Indexer\Bulk' )
+		$this->bulk = $this->getMockBuilder( Bulk::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +58,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
+		$this->logger = $this->getMockBuilder( NullLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +188,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -214,7 +220,7 @@ class IndexerTest extends \PHPUnit\Framework\TestCase {
 	public function testIndexDocument_FailedConnection_PushJob() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 

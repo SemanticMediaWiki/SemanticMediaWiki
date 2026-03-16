@@ -3,6 +3,16 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
+use SMW\Importer\ContentCreators\TextContentCreator;
+use SMW\Importer\ContentCreators\XmlContentCreator;
+use SMW\Importer\ContentIterator;
+use SMW\Importer\Importer;
+use SMW\Importer\JsonContentIterator;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\TitleFactory;
+use SMW\Services\ImporterServiceFactory;
 use SMW\Settings;
 
 /**
@@ -13,7 +23,7 @@ use SMW\Settings;
  *
  * @author mwjames
  */
-class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
+class ImporterServicesContainerBuildTest extends TestCase {
 
 	private $callbackContainerFactory;
 	private $connectionManager;
@@ -23,15 +33,15 @@ class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$this->connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,38 +78,38 @@ class ImporterServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function servicesProvider() {
-		$contentIterator = $this->getMockBuilder( '\SMW\Importer\ContentIterator' )
+		$contentIterator = $this->getMockBuilder( ContentIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$provider[] = [
 			'Importer',
 			[ $contentIterator ],
-			'\SMW\Importer\Importer'
+			Importer::class
 		];
 
 		$provider[] = [
 			'JsonContentIterator',
 			[ 'SomeDirectory' ],
-			'\SMW\Importer\JsonContentIterator'
+			JsonContentIterator::class
 		];
 
 		$provider[] = [
 			'ImporterServiceFactory',
 			[],
-			'\SMW\Services\ImporterServiceFactory'
+			ImporterServiceFactory::class
 		];
 
 		$provider[] = [
 			'XmlContentCreator',
 			[],
-			'\SMW\Importer\ContentCreators\XmlContentCreator'
+			XmlContentCreator::class
 		];
 
 		$provider[] = [
 			'TextContentCreator',
 			[],
-			'\SMW\Importer\ContentCreators\TextContentCreator'
+			TextContentCreator::class
 		];
 
 		return $provider;

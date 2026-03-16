@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Property\Annotators\DisplayTitlePropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class DisplayTitlePropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -31,7 +33,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +42,7 @@ class DisplayTitlePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\DisplayTitlePropertyAnnotator',
+			DisplayTitlePropertyAnnotator::class,
 			$instance
 		);
 	}

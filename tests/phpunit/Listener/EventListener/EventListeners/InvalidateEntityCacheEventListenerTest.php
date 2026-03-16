@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
+use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\DispatchContext;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Tests\TestEnvironment;
 
@@ -16,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InvalidateEntityCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
+class InvalidateEntityCacheEventListenerTest extends TestCase {
 
 	private $entityCache;
 	private $spyLogger;
@@ -26,7 +29,7 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit\Framework\TestCase
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -65,7 +68,7 @@ class InvalidateEntityCacheEventListenerTest extends \PHPUnit\Framework\TestCase
 	}
 
 	public function testExecute_OnTitle() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

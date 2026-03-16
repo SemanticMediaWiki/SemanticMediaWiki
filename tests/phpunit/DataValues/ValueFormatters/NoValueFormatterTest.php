@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 
 /**
@@ -13,11 +14,11 @@ use SMW\DataValues\ValueFormatters\NoValueFormatter;
  *
  * @author mwjames
  */
-class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class NoValueFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\NoValueFormatter',
+			NoValueFormatter::class,
 			new NoValueFormatter()
 		);
 	}

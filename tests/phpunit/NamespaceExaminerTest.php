@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\NamespaceExaminer;
 
 /**
@@ -14,7 +16,7 @@ use SMW\NamespaceExaminer;
  *
  * @author mwjames
  */
-class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
+class NamespaceExaminerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -47,7 +49,7 @@ class NamespaceExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInNamespace_DIWikiPage() {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

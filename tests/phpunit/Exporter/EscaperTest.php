@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\Escaper;
 use SMW\Tests\TestEnvironment;
@@ -15,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EscaperTest extends \PHPUnit\Framework\TestCase {
+class EscaperTest extends TestCase {
 
 	private $testEnvironment;
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Factbox;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Factbox\FactboxText;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Factbox\FactboxText;
  *
  * @author Morne Alberts
  */
-class FactboxTextTest extends \PHPUnit\Framework\TestCase {
+class FactboxTextTest extends TestCase {
 
 	public function testSetText(): void {
 		$factboxText = new FactboxText();

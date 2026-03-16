@@ -3,8 +3,17 @@
 namespace SMW\Tests\SQLStore;
 
 use Onoi\MessageReporter\MessageReporterFactory;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobQueue;
+use SMW\SetupFile;
 use SMW\SQLStore\Installer;
+use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\Table;
+use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\SQLStore\TableBuilder\TableBuildExaminer;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +25,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InstallerTest extends \PHPUnit\Framework\TestCase {
+class InstallerTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $testEnvironment;
@@ -34,23 +43,23 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyMessageReporter = MessageReporterFactory::getInstance()->newSpyMessageReporter();
 
-		$this->tableSchemaManager = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableSchemaManager' )
+		$this->tableSchemaManager = $this->getMockBuilder( TableSchemaManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
+		$this->tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuildExaminer = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuildExaminer' )
+		$this->tableBuildExaminer = $this->getMockBuilder( TableBuildExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->versionExaminer = $this->getMockBuilder( '\SMW\SQLStore\Installer\VersionExaminer' )
+		$this->versionExaminer = $this->getMockBuilder( VersionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableOptimizer = $this->getMockBuilder( '\SMW\SQLStore\Installer\TableOptimizer' )
+		$this->tableOptimizer = $this->getMockBuilder( TableOptimizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,11 +67,11 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +94,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInstall() {
-		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
+		$table = $this->getMockBuilder( Table::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +106,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTables' )
 			->willReturn( [ $table ] );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'create' ] )
 			->getMockForAbstractClass();
@@ -149,7 +158,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 		$this->jobQueue->expects( $this->exactly( 2 ) )
 			->method( 'push' );
 
-		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
+		$table = $this->getMockBuilder( Table::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -161,7 +170,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTables' )
 			->willReturn( [ $table ] );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'create' ] )
 			->getMockForAbstractClass();
@@ -194,7 +203,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInstallNonVerbose() {
-		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
+		$table = $this->getMockBuilder( Table::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -206,7 +215,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTables' )
 			->willReturn( [ $table ] );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'create' ] )
 			->getMockForAbstractClass();
@@ -229,7 +238,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUninstall() {
-		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
+		$table = $this->getMockBuilder( Table::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -237,7 +246,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTables' )
 			->willReturn( [ $table ] );
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'drop' ] )
 			->getMockForAbstractClass();

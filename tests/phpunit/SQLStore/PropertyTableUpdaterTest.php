@@ -2,8 +2,16 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Parameters;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\Exception\TableMissingIdFieldException;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableUpdater;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableUpdater
@@ -14,7 +22,7 @@ use SMW\SQLStore\PropertyTableUpdater;
  *
  * @author mwjames
  */
-class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableUpdaterTest extends TestCase {
 
 	private $store;
 	private $idTable;
@@ -26,15 +34,15 @@ class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,15 +54,15 @@ class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$this->propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+		$this->propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -210,7 +218,7 @@ class PropertyTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->expectException( '\SMW\SQLStore\Exception\TableMissingIdFieldException' );
+		$this->expectException( TableMissingIdFieldException::class );
 		$instance->update( 42, $params );
 	}
 

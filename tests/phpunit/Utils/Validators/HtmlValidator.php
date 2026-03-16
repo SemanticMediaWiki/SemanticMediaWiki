@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils\Validators;
 
 use DOMDocument;
+use PHPUnit\Framework\Assert;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 
 /**
@@ -11,7 +12,7 @@ use Symfony\Component\CssSelector\CssSelectorConverter;
  *
  * @author Stephan Gambke
  */
-class HtmlValidator extends \PHPUnit\Framework\Assert {
+class HtmlValidator extends Assert {
 
 	/**
 	 * @var array
@@ -38,7 +39,7 @@ class HtmlValidator extends \PHPUnit\Framework\Assert {
 	 */
 	public function canUse() {
 		if ( $this->canUse === null ) {
-			$this->canUse = class_exists( '\Symfony\Component\CssSelector\CssSelectorConverter' );
+			$this->canUse = class_exists( CssSelectorConverter::class );
 		}
 
 		return $this->canUse;

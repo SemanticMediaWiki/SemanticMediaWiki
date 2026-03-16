@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\NamespaceManager;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\MwHooksHandler;
@@ -15,7 +16,7 @@ use SMW\Tests\Utils\MwHooksHandler;
  *
  * @author mwjames
  */
-class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
+class NamespaceInfoCanonicalNameMatchTest extends TestCase {
 
 	private $mwHooksHandler;
 
@@ -44,7 +45,7 @@ class NamespaceInfoCanonicalNameMatchTest extends \PHPUnit\Framework\TestCase {
 			'wgLanguageCode'      => 'en'
 		];
 
-		$instance = $this->getMockBuilder( '\SMW\NamespaceManager' )
+		$instance = $this->getMockBuilder( NamespaceManager::class )
 			->setMethods( [ 'isDefinedConstant' ] )
 			->getMock();
 

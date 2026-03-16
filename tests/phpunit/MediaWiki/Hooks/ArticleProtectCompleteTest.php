@@ -2,10 +2,17 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
+use SMW\Property\SpecificationLookup;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
+class ArticleProtectCompleteTest extends TestCase {
 
 	private $spyLogger;
 	private $testEnvironment;
@@ -34,11 +41,11 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,7 +53,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
@@ -58,7 +65,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'Store', $store );
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
-		$this->editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
+		$this->editInfo = $this->getMockBuilder( EditInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -69,7 +76,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +87,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnSelfInvokedReason() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -103,11 +110,11 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnMatchableEditProtectionToAddAnnotation() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -164,7 +171,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 			$dataItem
 		);
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +179,7 @@ class ArticleProtectCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getExtensionData' )
 			->willReturn( $semanticData );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

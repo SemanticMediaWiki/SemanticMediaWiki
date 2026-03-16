@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\SettingNotFoundException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\SettingNotFoundException;
  *
  * @author mwjames
  */
-class SettingNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class SettingNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SettingNotFoundException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\SettingNotFoundException',
+			SettingNotFoundException::class,
 			$instance
 		);
 

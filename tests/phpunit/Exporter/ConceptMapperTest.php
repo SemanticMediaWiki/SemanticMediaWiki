@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIConcept;
 use SMW\DIWikiPage;
 use SMW\Exporter\ConceptMapper;
 use SMW\Exporter\Element\ExpNsResource;
@@ -16,7 +18,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ConceptMapperTest extends \PHPUnit\Framework\TestCase {
+class ConceptMapperTest extends TestCase {
 
 	private $descriptionFactory;
 
@@ -32,7 +34,7 @@ class ConceptMapperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsMapperFor() {
-		$dataItem = $this->getMockBuilder( '\SMW\DIConcept' )
+		$dataItem = $this->getMockBuilder( DIConcept::class )
 			->disableOriginalConstructor()
 			->getMock();
 

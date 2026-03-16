@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\DisplayTitleLookup
@@ -14,12 +19,12 @@ use SMW\SQLStore\Lookup\DisplayTitleLookup;
  *
  * @author mwjames
  */
-class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
+class DisplayTitleLookupTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -42,11 +47,11 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 			(object)[ 's_id' => 1001, 'o_blob' => 'abc_blob', 'o_hash' => 'abc_hash' ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +59,7 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 42, 1001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +81,7 @@ class DisplayTitleLookupTest extends \PHPUnit\Framework\TestCase {
 				return [];
 			} );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

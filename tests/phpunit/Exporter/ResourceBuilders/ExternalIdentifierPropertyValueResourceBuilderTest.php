@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilders\ExternalIdentifierPropertyValueResourceBuilder;
@@ -17,7 +18,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ExternalIdentifierPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
+class ExternalIdentifierPropertyValueResourceBuilderTest extends TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;

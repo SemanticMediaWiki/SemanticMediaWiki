@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\TableBuilder\Table;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SQLStore\TableBuilder\Table;
  *
  * @author mwjames
  */
-class TableTest extends \PHPUnit\Framework\TestCase {
+class TableTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

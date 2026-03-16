@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Maintenance;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\MaintenanceLogger;
+use SMW\MediaWiki\ManualEntryLogger;
 
 /**
  * @covers \SMW\Maintenance\MaintenanceLogger
@@ -13,21 +15,21 @@ use SMW\Maintenance\MaintenanceLogger;
  *
  * @author mwjames
  */
-class MaintenanceLoggerTest extends \PHPUnit\Framework\TestCase {
+class MaintenanceLoggerTest extends TestCase {
 
 	public function testCanConstruct() {
-		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+		$manualEntryLogger = $this->getMockBuilder( ManualEntryLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\MaintenanceLogger',
+			MaintenanceLogger::class,
 			new MaintenanceLogger( 'Foo', $manualEntryLogger )
 		);
 	}
 
 	public function testLog() {
-		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+		$manualEntryLogger = $this->getMockBuilder( ManualEntryLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +46,7 @@ class MaintenanceLoggerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLogWithInvalidNameLengthThrowsException() {
-		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+		$manualEntryLogger = $this->getMockBuilder( ManualEntryLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 

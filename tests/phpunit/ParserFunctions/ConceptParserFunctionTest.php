@@ -4,6 +4,9 @@ namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
+use SMW\MessageFormatter;
+use SMW\ParserData;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
@@ -18,7 +21,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class ConceptParserFunctionTest extends TestCase {
 
 	private $applicationFactory;
 
@@ -35,16 +38,16 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\ConceptParserFunction',
+			ConceptParserFunction::class,
 			new ConceptParserFunction( $parserData, $messageFormatter )
 		);
 	}
@@ -58,7 +61,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +83,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +108,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -138,7 +141,7 @@ class ConceptParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

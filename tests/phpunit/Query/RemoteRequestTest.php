@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Query;
 
+use Onoi\HttpRequest\HttpRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\Query\RemoteRequest;
+use SMW\Query\Result\StringResult;
 
 /**
  * @covers \SMW\Query\RemoteRequest
@@ -13,13 +16,13 @@ use SMW\Query\RemoteRequest;
  *
  * @author mwjames
  */
-class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
+class RemoteRequestTest extends TestCase {
 
 	private $httpRequest;
 	private $query;
 
 	protected function setUp(): void {
-		$this->httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$this->httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +86,7 @@ class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->getQueryResult( $this->query );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Result\StringResult',
+			StringResult::class,
 			$res
 		);
 

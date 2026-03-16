@@ -2,7 +2,18 @@
 
 namespace SMW\Tests\Elastic;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Admin\ElasticClientTaskHandler;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\ElasticFactory;
+use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Hooks;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\EntityCache;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +25,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HooksTest extends \PHPUnit\Framework\TestCase {
+class HooksTest extends TestCase {
 
 	private $testEnvironment;
 	private $elasticFactory;
@@ -24,11 +35,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
+		$this->elasticFactory = $this->getMockBuilder( ElasticFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +70,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOnRegisterTaskHandlers() {
-		$infoTaskHandler = $this->getMockBuilder( '\SMW\Elastic\Admin\ElasticClientTaskHandler' )
+		$infoTaskHandler = $this->getMockBuilder( ElasticClientTaskHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,23 +78,23 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newInfoTaskHandler' )
 			->willReturn( $infoTaskHandler );
 
-		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
+		$taskHandlerRegistry = $this->getMockBuilder( TaskHandlerRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+		$store = $this->getMockBuilder( ElasticStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,7 +112,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
 		$indicatorProviders = [];
 
-		$replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
+		$replicationCheck = $this->getMockBuilder( ReplicationCheck::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,11 +120,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newReplicationCheck' )
 			->willReturn( $replicationCheck );
 
-		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +132,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConfig' )
 			->willReturn( $config );
 
-		$store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+		$store = $this->getMockBuilder( ElasticStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

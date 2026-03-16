@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Localizer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\CopyLocalMessages;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Localizer\CopyLocalMessages;
  *
  * @author mwjames
  */
-class CopyLocalMessagesTest extends \PHPUnit\Framework\TestCase {
+class CopyLocalMessagesTest extends TestCase {
 
 	private $canonicalMessages;
 	private $translatedMessages;

@@ -2,10 +2,19 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
+use SMW\SQLStore\EntityStore\PropertiesLookup;
+use SMW\SQLStore\EntityStore\PropertySubjectsLookup;
+use SMW\SQLStore\EntityStore\StubSemanticData;
+use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreFactory;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityLookup
@@ -16,7 +25,7 @@ use SMW\SQLStore\EntityStore\EntityLookup;
  *
  * @author mwjames
  */
-class EntityLookupTest extends \PHPUnit\Framework\TestCase {
+class EntityLookupTest extends TestCase {
 
 	private $store;
 	private $factory;
@@ -27,27 +36,27 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 	private $semanticDataLookup;
 
 	protected function setUp(): void {
-		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->traversalPropertyLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\TraversalPropertyLookup' )
+		$this->traversalPropertyLookup = $this->getMockBuilder( TraversalPropertyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySubjectsLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PropertySubjectsLookup' )
+		$this->propertySubjectsLookup = $this->getMockBuilder( PropertySubjectsLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertiesLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PropertiesLookup' )
+		$this->propertiesLookup = $this->getMockBuilder( PropertiesLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+		$this->semanticDataLookup = $this->getMockBuilder( CachingSemanticDataLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,7 +64,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $this->idTable );
 
-		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+		$this->factory = $this->getMockBuilder( SQLStoreFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +95,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSemanticData() {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+		$semanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -114,7 +123,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetProperties() {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +159,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+		$semanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +167,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -190,7 +199,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Bar', true );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -222,7 +231,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Bar' );
 		$subject = null;
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -254,7 +263,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 		$property = new DIProperty( 'Bar' );
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -285,7 +294,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetAllPropertySubjects() {
 		$property = new DIProperty( 'Bar' );
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -316,7 +325,7 @@ class EntityLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetInProperties() {
 		$subject = new DIWikiPage( 'Foo', NS_MAIN );
 
-		$propTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

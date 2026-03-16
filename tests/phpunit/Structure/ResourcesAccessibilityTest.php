@@ -4,6 +4,7 @@ namespace SMW\Tests\Structure;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\ResourceLoader\Context;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @group semantic-mediawiki
@@ -13,7 +14,7 @@ use MediaWiki\ResourceLoader\Context;
  *
  * @author mwjames
  */
-class ResourcesAccessibilityTest extends \PHPUnit\Framework\TestCase {
+class ResourcesAccessibilityTest extends TestCase {
 
 	/**
 	 * @covers \MediaWiki\ResourceLoader\Module

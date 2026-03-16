@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Serializers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
@@ -17,11 +18,11 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
+class ExpDataSerializerTest extends TestCase {
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(
-			'\SMW\Serializers\ExpDataSerializer',
+			ExpDataSerializer::class,
 			new ExpDataSerializer()
 		);
 	}
@@ -58,7 +59,7 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 					'dataitem' => null
 				],
 				'data' => [],
-				'serializer' => 'SMW\Serializers\ExpDataSerializer',
+				'serializer' => ExpDataSerializer::class,
 				'version' => 0.1
 			]
 		];
@@ -97,7 +98,7 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 						 ]
 					]
 				],
-				'serializer' => 'SMW\Serializers\ExpDataSerializer',
+				'serializer' => ExpDataSerializer::class,
 				'version' => 0.1
 			]
 		];
@@ -155,7 +156,7 @@ class ExpDataSerializerTest extends \PHPUnit\Framework\TestCase {
 						 ]
 					]
 				],
-				'serializer' => 'SMW\Serializers\ExpDataSerializer',
+				'serializer' => ExpDataSerializer::class,
 				'version' => 0.1
 			]
 		];

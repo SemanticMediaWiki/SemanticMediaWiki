@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundExcepti
  *
  * @author mwjames
  */
-class DefaultProfileNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class DefaultProfileNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DefaultProfileNotFoundException();

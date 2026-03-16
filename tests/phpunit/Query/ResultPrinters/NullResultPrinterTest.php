@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\NullResultPrinter;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Query\ResultPrinters\NullResultPrinter;
  *
  * @author mwjames
  */
-class NullResultPrinterTest extends \PHPUnit\Framework\TestCase {
+class NullResultPrinterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -23,7 +25,7 @@ class NullResultPrinterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetResult_Empty() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

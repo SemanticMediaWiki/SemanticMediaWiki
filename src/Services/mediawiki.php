@@ -9,6 +9,7 @@ use MediaWiki\Logger\LoggerFactory;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
+use Psr\Log\LoggerInterface;
 use SMW\MediaWiki\FileRepoFinder;
 use SMW\MediaWiki\PermissionManager;
 use SMW\Utils\Logger;
@@ -142,7 +143,7 @@ return [
 	 * @return callable
 	 */
 	'MediaWikiLogger' => static function ( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ) {
-		$containerBuilder->registerExpectedReturnType( 'MediaWikiLogger', '\Psr\Log\LoggerInterface' );
+		$containerBuilder->registerExpectedReturnType( 'MediaWikiLogger', LoggerInterface::class );
 
 		$logger = LoggerFactory::getInstance( $channel );
 

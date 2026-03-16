@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
  *
  * @author mwjames
  */
-class SchemaTypeAlreadyExistsExceptionTest extends \PHPUnit\Framework\TestCase {
+class SchemaTypeAlreadyExistsExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaTypeAlreadyExistsException( 'foo' );

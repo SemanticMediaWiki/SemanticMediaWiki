@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Exception;
 
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\Elastic\Exception\MissingEndpointConfigException;
 
@@ -14,7 +15,7 @@ use SMW\Elastic\Exception\MissingEndpointConfigException;
  *
  * @author mwjames
  */
-class MissingEndpointConfigExceptionTest extends \PHPUnit\Framework\TestCase {
+class MissingEndpointConfigExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

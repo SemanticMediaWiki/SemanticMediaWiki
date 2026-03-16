@@ -8,6 +8,7 @@ use MediaWiki\Page\PageIdentityValue;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Content\SchemaContent;
 use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\Schema\SchemaDefinition;
@@ -24,7 +25,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
+class SchemaContentHandlerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

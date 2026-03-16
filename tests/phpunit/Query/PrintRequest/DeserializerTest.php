@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\PrintRequest;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
@@ -17,7 +18,7 @@ use SMW\Query\PrintRequest\Deserializer;
  *
  * @author mwjames
  */
-class DeserializerTest extends \PHPUnit\Framework\TestCase {
+class DeserializerTest extends TestCase {
 
 	/**
 	 * @dataProvider textProvider

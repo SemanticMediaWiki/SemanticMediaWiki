@@ -2,7 +2,9 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\GroupPermissions;
+use SMW\MediaWiki\HookDispatcher;
 
 /**
  * @covers \SMW\GroupPermissions
@@ -13,14 +15,14 @@ use SMW\GroupPermissions;
  *
  * @author mwjames
  */
-class GroupPermissionsTest extends \PHPUnit\Framework\TestCase {
+class GroupPermissionsTest extends TestCase {
 
 	private $hookDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

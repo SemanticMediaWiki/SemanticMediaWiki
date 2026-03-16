@@ -3,9 +3,15 @@
 namespace SMW\Tests\Serializers;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
+use SMW\Query\PrintRequestFactory;
+use SMW\SemanticData;
 use SMW\Serializers\QueryResultSerializer;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
@@ -21,7 +27,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
+class QueryResultSerializerTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -45,7 +51,7 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(
-			'\SMW\Serializers\QueryResultSerializer',
+			QueryResultSerializer::class,
 			new QueryResultSerializer()
 		);
 	}
@@ -76,7 +82,7 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryResultSerializerForRecordType() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +94,7 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ) ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -102,13 +108,13 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
+		$property = DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_rec' );
 
-		$printRequestFactory = new \SMW\Query\PrintRequestFactory();
+		$printRequestFactory = new PrintRequestFactory();
 
 		$serialization = QueryResultSerializer::getSerialization(
-			\SMW\DIWikiPage::newFromText( 'ABC' ),
+			DIWikiPage::newFromText( 'ABC' ),
 			$printRequestFactory->newFromProperty( $property )
 		);
 
@@ -134,10 +140,10 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSerializeFormatForTimeValue() {
-		$property = \SMW\DIProperty::newFromUserLabel( 'Foo' );
+		$property = DIProperty::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_dat' );
 
-		$printRequestFactory = new \SMW\Query\PrintRequestFactory();
+		$printRequestFactory = new PrintRequestFactory();
 
 		$serialization = QueryResultSerializer::getSerialization(
 			\SMWDITime::doUnserialize( '2/1393/1/1' ),
@@ -227,7 +233,7 @@ class QueryResultSerializerTest extends \PHPUnit\Framework\TestCase {
 			] );
 
 			$printRequests[] = $printRequest;
-			$getResults[] = \SMW\DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $value['printRequest'], NS_MAIN ) );
+			$getResults[] = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $value['printRequest'], NS_MAIN ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 				'getDIType' => DataItem::TYPE_NUMBER,

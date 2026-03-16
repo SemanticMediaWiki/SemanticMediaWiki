@@ -4,7 +4,12 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Hooks\EditPageForm;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
+use SMW\NamespaceExaminer;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\EditPageForm
@@ -15,7 +20,7 @@ use SMW\MediaWiki\Hooks\EditPageForm;
  *
  * @author mwjames
  */
-class EditPageFormTest extends \PHPUnit\Framework\TestCase {
+class EditPageFormTest extends TestCase {
 
 	private $namespaceExaminer;
 	private $permissionExaminer;
@@ -25,19 +30,19 @@ class EditPageFormTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+		$this->preferenceExaminer = $this->getMockBuilder( PreferenceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

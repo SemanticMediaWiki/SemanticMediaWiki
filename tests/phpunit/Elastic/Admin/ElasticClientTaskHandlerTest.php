@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\Elastic\Admin;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
 
 /**
  * @covers \SMW\Elastic\Admin\ElasticClientTaskHandler
@@ -14,22 +19,22 @@ use SMW\Elastic\Connection\DummyClient;
  *
  * @author mwjames
  */
-class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class ElasticClientTaskHandlerTest extends TestCase {
 
 	private $outputFormatter;
 	private $webRequest;
 	private $store;
 
 	protected function setUp(): void {
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -47,7 +52,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsTask() {
-		$task = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
+		$task = $this->getMockBuilder( ActionableTask::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +76,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$this->outputFormatter->expects( $this->once() )
 			->method( 'createSpecialPageLink' );
 
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+		$client = $this->getMockBuilder( DummyClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +84,7 @@ class ElasticClientTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'ping' )
 			->willReturn( true );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();

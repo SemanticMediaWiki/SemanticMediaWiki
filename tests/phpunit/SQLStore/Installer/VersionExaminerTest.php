@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\SQLStore\Installer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\VersionExaminer;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\Database;
 
 /**
  * @covers \SMW\SQLStore\Installer\VersionExaminer
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
+class VersionExaminerTest extends TestCase {
 
 	private $spyMessageReporter;
 	private SetupFile $setupFile;
@@ -31,7 +33,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -42,7 +44,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRequirements() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
@@ -72,7 +74,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRequirements_InvalidDefined() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
@@ -93,7 +95,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMeetsVersionMinRequirement() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();
@@ -122,7 +124,7 @@ class VersionExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMeetsVersionMinRequirement_FailsMinimumRequirement() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getServerInfo' ] )
 			->getMockForAbstractClass();

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
 
 /**
@@ -13,7 +15,7 @@ use SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText;
  *
  * @author mwjames
  */
-class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
+class BeforeDisplayNoArticleTextTest extends TestCase {
 
 	public function testCanConstruct() {
 		$wikiPage = $this->getMockBuilder( '\WikiPage' )
@@ -21,7 +23,7 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\BeforeDisplayNoArticleText',
+			BeforeDisplayNoArticleText::class,
 			new BeforeDisplayNoArticleText( $wikiPage )
 		);
 	}
@@ -30,7 +32,7 @@ class BeforeDisplayNoArticleTextTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testPerformUpdate( $namespace, $text, $expected ) {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

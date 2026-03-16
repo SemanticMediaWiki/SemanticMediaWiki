@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
+use SMW\SQLStore\EntityStore\PrefetchItemLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
 
@@ -17,7 +20,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
+class ValueListBuilderTest extends TestCase {
 
 	private $store;
 	private $prefetchItemLookup;
@@ -30,11 +33,11 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment( [ 'smwgCompactLinkSupport' => false ] );
 		$this->stringValidator = $this->testEnvironment->newValidatorFactory()->newStringValidator();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->prefetchItemLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PrefetchItemLookup' )
+		$this->prefetchItemLookup = $this->getMockBuilder( PrefetchItemLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -70,7 +73,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
@@ -110,7 +113,7 @@ class ValueListBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $subject->getHash() => [ new DITime( DITime::CM_GREGORIAN, 1970 ) ] ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getAllPropertySubjects', 'getPropertyValues', 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();

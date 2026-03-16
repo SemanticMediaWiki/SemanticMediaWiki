@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
@@ -18,7 +20,7 @@ use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
+class FulltextSearchTableRebuildJobTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -56,12 +58,12 @@ class FulltextSearchTableRebuildJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob',
+			FulltextSearchTableRebuildJob::class,
 			new FulltextSearchTableRebuildJob( $title )
 		);
 	}

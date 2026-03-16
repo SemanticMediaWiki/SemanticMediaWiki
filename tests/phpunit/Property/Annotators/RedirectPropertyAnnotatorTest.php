@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\RedirectPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class RedirectPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class RedirectPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -29,11 +31,11 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectTargetFinder = $this->getMockBuilder( '\SMW\MediaWiki\RedirectTargetFinder' )
+		$redirectTargetFinder = $this->getMockBuilder( RedirectTargetFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +45,7 @@ class RedirectPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\RedirectPropertyAnnotator',
+			RedirectPropertyAnnotator::class,
 			$instance
 		);
 	}

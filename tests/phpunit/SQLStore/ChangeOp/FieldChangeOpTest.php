@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\ChangeOp;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\ChangeOp\FieldChangeOp;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SQLStore\ChangeOp\FieldChangeOp;
  *
  * @author mwjames
  */
-class FieldChangeOpTest extends \PHPUnit\Framework\TestCase {
+class FieldChangeOpTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

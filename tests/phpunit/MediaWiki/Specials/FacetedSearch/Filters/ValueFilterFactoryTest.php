@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
+use MediaWiki\Html\TemplateParser;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxRangeGroupValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\ListValueFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter;
+use SMW\Schema\CompartmentIterator;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory
@@ -13,14 +20,14 @@ use SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilterFactory;
  *
  * @author mwjames
  */
-class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
+class ValueFilterFactoryTest extends TestCase {
 
 	private $templateParser;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -38,7 +45,7 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\ListValueFilter',
+			ListValueFilter::class,
 			$instance->newListValueFilter( [] )
 		);
 	}
@@ -49,13 +56,13 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxValueFilter',
+			CheckboxValueFilter::class,
 			$instance->newCheckboxValueFilter( [] )
 		);
 	}
 
 	public function testCanConstructCheckboxRangeGroupValueFilter() {
-		$compartmentIterator = $this->getMockBuilder( '\SMW\Schema\CompartmentIterator' )
+		$compartmentIterator = $this->getMockBuilder( CompartmentIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,13 +71,13 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\CheckboxRangeGroupValueFilter',
+			CheckboxRangeGroupValueFilter::class,
 			$instance->newCheckboxRangeGroupValueFilter( $compartmentIterator, [] )
 		);
 	}
 
 	public function testCanConstructRangeValueFilter() {
-		$compartmentIterator = $this->getMockBuilder( '\SMW\Schema\CompartmentIterator' )
+		$compartmentIterator = $this->getMockBuilder( CompartmentIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +86,7 @@ class ValueFilterFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters\RangeValueFilter',
+			RangeValueFilter::class,
 			$instance->newRangeValueFilter( $compartmentIterator, [] )
 		);
 	}

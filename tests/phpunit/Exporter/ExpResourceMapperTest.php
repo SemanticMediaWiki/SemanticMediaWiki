@@ -2,12 +2,15 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpResourceMapper;
 use SMW\InMemoryPoolCache;
+use SMW\Store;
 
 /**
  * @covers \SMW\Exporter\ExpResourceMapper
@@ -18,7 +21,7 @@ use SMW\InMemoryPoolCache;
  *
  * @author mwjames
  */
-class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
+class ExpResourceMapperTest extends TestCase {
 
 	private $inMemoryPoolCache;
 
@@ -45,7 +48,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 			true
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -63,7 +66,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMapPropertyToResourceElement() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -72,7 +75,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Element\ExpNsResource',
+			ExpNsResource::class,
 			$instance->mapPropertyToResourceElement( new DIProperty( 'Foo' ) )
 		);
 	}
@@ -81,7 +84,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider diWikiPageProvider
 	 */
 	public function testMapWikiPageToResourceElement( $dataItem, $modifier, $expected ) {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -101,7 +104,7 @@ class ExpResourceMapperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider importDataProvider
 	 */
 	public function testMapWikiPageToResourceElementForImportMatch( $dataItem, $expected ) {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

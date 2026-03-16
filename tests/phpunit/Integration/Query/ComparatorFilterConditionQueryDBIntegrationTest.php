@@ -6,6 +6,8 @@ use SMW\DIProperty;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
@@ -68,8 +70,8 @@ class ComparatorFilterConditionQueryDBIntegrationTest extends SMWIntegrationTest
 	 * @dataProvider dateConjunctionFilterProvider
 	 */
 	public function testDateConjunctionConstraints( $range, $parameters, $expected ) {
-		if ( is_a( $this->getStore(), '\SMW\SPARQLStore\SPARQLStore' )
-			&& is_a( $this->getStore()->getConnection( 'sparql' ), '\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector' ) ) {
+		if ( is_a( $this->getStore(), SPARQLStore::class )
+			&& is_a( $this->getStore()->getConnection( 'sparql' ), VirtuosoRepositoryConnector::class ) ) {
 			$this->markTestSkipped( "Date filter constraints do not work properly in Virtuoso" );
 		}
 

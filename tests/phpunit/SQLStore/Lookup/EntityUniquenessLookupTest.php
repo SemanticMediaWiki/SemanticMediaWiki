@@ -2,7 +2,18 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIProperty;
+use SMW\IteratorFactory;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
+use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\EntityUniquenessLookup;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\Lookup\EntityUniquenessLookup
@@ -13,18 +24,18 @@ use SMW\SQLStore\Lookup\EntityUniquenessLookup;
  *
  * @author mwjames
  */
-class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
+class EntityUniquenessLookupTest extends TestCase {
 
 	private $store;
 	private $connection;
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -33,7 +44,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -46,7 +57,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckConstraint() {
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -54,7 +65,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getWhereConds' )
 			->willReturn( [ 'o_hash' => '' ] );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +73,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findTableIdForProperty' )
 			->willReturn( '_foo' );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getDataItemHandlerForDIType' ] )
 			->getMock();
@@ -79,7 +90,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->willReturn( $propertyTableInfoFetcher );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +118,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ '_foo' => $propertyTable ] );
 
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +130,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -131,9 +142,9 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
 
-		$query = new \SMW\MediaWiki\Connection\Query( $connection );
+		$query = new Query( $connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +161,7 @@ class EntityUniquenessLookupTest extends \PHPUnit\Framework\TestCase {
 			$this->iteratorFactory
 		);
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 

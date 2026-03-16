@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
@@ -20,7 +21,7 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework\TestCase {
+class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 
 	private function newSerializerInstance() {
 		return new SemanticDataSerializer();
@@ -54,7 +55,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 		$serialized = $this->newSerializerInstance()->serialize( $data );
 
 		$this->assertInstanceOf(
-			'SMW\SemanticData',
+			SemanticData::class,
 			$this->newDeserializerInstance()->deserialize( $serialized )
 		);
 	}
@@ -69,14 +70,14 @@ class SemanticDataSerializerDeserializerRoundtripTest extends \PHPUnit\Framework
 		// Injects a different type to cause an error (this would normally
 		// happen when a property definition is changed such as page -> text
 		// etc.)
-		$reflector = new ReflectionClass( '\SMW\Deserializers\SemanticDataDeserializer' );
+		$reflector = new ReflectionClass( SemanticDataDeserializer::class );
 		$property  = $reflector->getProperty( 'dataItemTypeIdCache' );
 		$property->setValue( $deserializer, [ $type => 2 ] );
 
 		$deserialized = $deserializer->deserialize( $serialized );
 
 		$this->assertInstanceOf(
-			'SMW\SemanticData',
+			SemanticData::class,
 			$deserialized
 		);
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
  *
  * @author mwjames
  */
-class FalseConditionTest extends \PHPUnit\Framework\TestCase {
+class FalseConditionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\SPARQLStore\QueryEngine\Condition\FalseCondition',
+			FalseCondition::class,
 			new FalseCondition()
 		);
 	}

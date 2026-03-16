@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler
@@ -13,7 +15,7 @@ use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
  *
  * @author mwjames
  */
-class MaintenanceAlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class MaintenanceAlertsTaskHandlerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -23,7 +25,7 @@ class MaintenanceAlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtml() {
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getHtml' ] )
 			->getMockForAbstractClass();

@@ -2,9 +2,16 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\ArticleDelete;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
+class ArticleDeleteTest extends TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;
@@ -32,7 +39,7 @@ class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +50,7 @@ class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->registerObject( 'JobFactory', $this->jobFactory );
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -54,7 +61,7 @@ class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -67,11 +74,11 @@ class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$updateDispatcherJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateDispatcherJob' )
+		$updateDispatcherJob = $this->getMockBuilder( UpdateDispatcherJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +88,7 @@ class ArticleDeleteTest extends \PHPUnit\Framework\TestCase {
 
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

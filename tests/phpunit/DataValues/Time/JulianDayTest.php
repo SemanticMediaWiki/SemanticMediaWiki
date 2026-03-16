@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\Time;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\Time\JulianDay;
 
 /**
@@ -13,7 +14,7 @@ use SMW\DataValues\Time\JulianDay;
  *
  * @author mwjames
  */
-class JulianDayTest extends \PHPUnit\Framework\TestCase {
+class JulianDayTest extends TestCase {
 
 	/**
 	 * @dataProvider valueProvider

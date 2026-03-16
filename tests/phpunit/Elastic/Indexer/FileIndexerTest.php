@@ -2,8 +2,17 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\Indexer\Attachment\FileAttachment;
+use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\Elastic\Indexer\FileIndexer;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\EntityCache;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -16,7 +25,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileIndexerTest extends \PHPUnit\Framework\TestCase {
+class FileIndexerTest extends TestCase {
 
 	private $testEnvironment;
 	private $indexer;
@@ -30,32 +39,32 @@ class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$this->indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fileHandler = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\FileHandler' )
+		$this->fileHandler = $this->getMockBuilder( FileHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fileAttachment = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\FileAttachment' )
+		$this->fileAttachment = $this->getMockBuilder( FileAttachment::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
+		$this->logger = $this->getMockBuilder( NullLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'save', 'associate', 'fetch' ] )
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +98,7 @@ class FileIndexerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFile' )
 			->willReturn( $file );
 
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 

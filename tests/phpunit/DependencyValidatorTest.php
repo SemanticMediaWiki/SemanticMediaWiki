@@ -2,8 +2,14 @@
 
 namespace SMW\Tests;
 
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\DependencyValidator;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
+use SMW\NamespaceExaminer;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 
 /**
  * @covers \SMW\DependencyValidator
@@ -14,7 +20,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
+class DependencyValidatorTest extends TestCase {
 
 	private $testEnvironment;
 	private $dependencyLinksValidator;
@@ -27,19 +33,19 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->dependencyLinksValidator = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksValidator' )
+		$this->dependencyLinksValidator = $this->getMockBuilder( DependencyLinksValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -67,7 +73,7 @@ class DependencyValidatorTest extends \PHPUnit\Framework\TestCase {
 				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
 				$this->stringContains( 'foo-etag' ) );
 
-		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMWURIValue as UriValue;
 
 /**
@@ -15,7 +16,7 @@ use SMWURIValue as UriValue;
  *
  * @author mwjames
  */
-class UriValueTest extends \PHPUnit\Framework\TestCase {
+class UriValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

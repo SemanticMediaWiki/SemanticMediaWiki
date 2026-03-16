@@ -25,7 +25,7 @@ class DIWikiPageTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'SMW\DIWikiPage';
+		return DIWikiPage::class;
 	}
 
 	/**

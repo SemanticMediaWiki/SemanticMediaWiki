@@ -70,7 +70,7 @@ class ValueDescription extends Description {
 	}
 
 	/**
-	 * @deprecated Use getDataItem() and \SMW\DataValueFactory::getInstance()->newDataValueByItem() if needed. Vanishes before SMW 1.7
+	 * @deprecated Use getDataItem() and DataValueFactory::getInstance()->newDataValueByItem() if needed. Vanishes before SMW 1.7
 	 * @return DataItem
 	 */
 	public function getDataValue() {

@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 
 /**
  * @covers \SMW\DataValues\ValueParsers\AllowsPatternValueParser
@@ -13,19 +15,19 @@ use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
  *
  * @author mwjames
  */
-class AllowsPatternValueParserTest extends \PHPUnit\Framework\TestCase {
+class AllowsPatternValueParserTest extends TestCase {
 
 	private $mediaWikiNsContentReader;
 
 	protected function setUp(): void {
-		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+		$this->mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueParsers\AllowsPatternValueParser',
+			AllowsPatternValueParser::class,
 			new AllowsPatternValueParser( $this->mediaWikiNsContentReader )
 		);
 	}

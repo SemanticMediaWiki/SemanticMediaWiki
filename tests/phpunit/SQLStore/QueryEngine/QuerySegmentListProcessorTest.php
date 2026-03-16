@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QuerySegmentListProcessor
@@ -13,37 +17,37 @@ use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
  *
  * @author mwjames
  */
-class QuerySegmentListProcessorTest extends \PHPUnit\Framework\TestCase {
+class QuerySegmentListProcessorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$temporaryTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TemporaryTableBuilder' )
+		$temporaryTableBuilder = $this->getMockBuilder( TemporaryTableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$hierarchyTempTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder' )
+		$hierarchyTempTableBuilder = $this->getMockBuilder( HierarchyTempTableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor',
+			QuerySegmentListProcessor::class,
 			new QuerySegmentListProcessor( $connection, $temporaryTableBuilder, $hierarchyTempTableBuilder )
 		);
 	}
 
 	public function testTryResolveSegmentForInvalidIdThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$temporaryTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TemporaryTableBuilder' )
+		$temporaryTableBuilder = $this->getMockBuilder( TemporaryTableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$hierarchyTempTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder' )
+		$hierarchyTempTableBuilder = $this->getMockBuilder( HierarchyTempTableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 

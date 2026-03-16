@@ -2,7 +2,21 @@
 
 namespace SMW\Tests\Property;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\PageInfo;
+use SMW\Property\Annotator;
 use SMW\Property\AnnotatorFactory;
+use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
+use SMW\Property\Annotators\CategoryPropertyAnnotator;
+use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\PredefinedPropertyAnnotator;
+use SMW\Property\Annotators\RedirectPropertyAnnotator;
+use SMW\Property\Annotators\SchemaPropertyAnnotator;
+use SMW\Property\Annotators\SortKeyPropertyAnnotator;
+use SMW\Property\Annotators\TranslationPropertyAnnotator;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Property\AnnotatorFactory
@@ -13,7 +27,7 @@ use SMW\Property\AnnotatorFactory;
  *
  * @author mwjames
  */
-class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
+class AnnotatorFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -23,126 +37,126 @@ class AnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewNullPropertyAnnotator() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\NullPropertyAnnotator',
+			NullPropertyAnnotator::class,
 			$instance->newNullPropertyAnnotator( $semanticData )
 		);
 	}
 
 	public function testNewRedirectPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectTargetFinder = $this->getMockBuilder( '\SMW\MediaWiki\RedirectTargetFinder' )
+		$redirectTargetFinder = $this->getMockBuilder( RedirectTargetFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\RedirectPropertyAnnotator',
+			RedirectPropertyAnnotator::class,
 			$instance->newRedirectPropertyAnnotator( $propertyAnnotator, $redirectTargetFinder )
 		);
 	}
 
 	public function testNewPredefinedPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfo = $this->getMockBuilder( '\SMW\PageInfo' )
+		$pageInfo = $this->getMockBuilder( PageInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\PredefinedPropertyAnnotator',
+			PredefinedPropertyAnnotator::class,
 			$instance->newPredefinedPropertyAnnotator( $propertyAnnotator, $pageInfo )
 		);
 	}
 
 	public function testNewSortKeyPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\SortKeyPropertyAnnotator',
+			SortKeyPropertyAnnotator::class,
 			$instance->newSortKeyPropertyAnnotator( $propertyAnnotator, 'Foo' )
 		);
 	}
 
 	public function testNewTranslationPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\TranslationPropertyAnnotator',
+			TranslationPropertyAnnotator::class,
 			$instance->newTranslationPropertyAnnotator( $propertyAnnotator, [] )
 		);
 	}
 
 	public function testNewCategoryPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\CategoryPropertyAnnotator',
+			CategoryPropertyAnnotator::class,
 			$instance->newCategoryPropertyAnnotator( $propertyAnnotator, [] )
 		);
 	}
 
 	public function testCanConstructMandatoryTypePropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\MandatoryTypePropertyAnnotator',
+			MandatoryTypePropertyAnnotator::class,
 			$instance->newMandatoryTypePropertyAnnotator( $propertyAnnotator )
 		);
 	}
 
 	public function testCanConstructSchemaPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\SchemaPropertyAnnotator',
+			SchemaPropertyAnnotator::class,
 			$instance->newSchemaPropertyAnnotator( $propertyAnnotator )
 		);
 	}
 
 	public function testCanConstructAttachmentLinkPropertyAnnotator() {
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new AnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\AttachmentLinkPropertyAnnotator',
+			AttachmentLinkPropertyAnnotator::class,
 			$instance->newAttachmentLinkPropertyAnnotator( $propertyAnnotator )
 		);
 	}

@@ -4,8 +4,12 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
+use SMW\SQLStore\EntityStore\FieldList;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\Utils\HmacSerializer;
 
 /**
@@ -17,18 +21,18 @@ use SMW\Utils\HmacSerializer;
  *
  * @author mwjames
  */
-class AuxiliaryFieldsTest extends \PHPUnit\Framework\TestCase {
+class AuxiliaryFieldsTest extends TestCase {
 
 	private $connection;
 	private $idCacheManager;
 	private Cache $cache;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +74,7 @@ class AuxiliaryFieldsTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\SQLStore\EntityStore\FieldList',
+			FieldList::class,
 			$instance->prefetchFieldList( $subjects )
 		);
 	}

@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\RequestOptionsProcessor;
+use SMW\SQLStore\SQLStore;
 use SMW\StringCondition;
 
 /**
@@ -15,12 +18,12 @@ use SMW\StringCondition;
  *
  * @author mwjames
  */
-class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
+class RequestOptionsProcessorTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -66,7 +69,7 @@ class RequestOptionsProcessorTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider requestOptionsToSqlConditionsProvider
 	 */
 	public function testGetSQLConditions( $requestOptions, $valueCol, $labelCol, $expected ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,8 +2,18 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\Browse;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse
@@ -14,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BrowseTest extends \PHPUnit\Framework\TestCase {
+class BrowseTest extends TestCase {
 
 	private $store;
 	private $apiFactory;
@@ -31,11 +41,11 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 
 		$this->apiFactory = $this->testEnvironment->getUtilityFactory()->newMwApiFactory();
 
-		$proximityPropertyValueLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ProximityPropertyValueLookup' )
+		$proximityPropertyValueLookup = $this->getMockBuilder( ProximityPropertyValueLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +85,7 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( false );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,15 +93,15 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'fetch' )
 			->willReturn( false );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( FakeResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +117,7 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [] );
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -153,11 +163,11 @@ class BrowseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExecute_Subject() {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

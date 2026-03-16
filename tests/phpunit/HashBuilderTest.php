@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -18,7 +19,7 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class HashBuilderTest extends \PHPUnit\Framework\TestCase {
+class HashBuilderTest extends TestCase {
 
 	/**
 	 * @dataProvider segmentProvider

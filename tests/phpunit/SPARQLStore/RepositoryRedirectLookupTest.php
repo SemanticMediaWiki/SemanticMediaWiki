@@ -2,11 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\InMemoryPoolCache;
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
+use SMW\SPARQLStore\RepositoryConnection;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMWExporter as Exporter;
 
@@ -19,21 +22,21 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
+class RepositoryRedirectLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryRedirectLookup',
+			RepositoryRedirectLookup::class,
 			new RepositoryRedirectLookup( $repositoryConnection )
 		);
 	}
 
 	public function testRedirectTargetForBlankNode() {
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +54,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRedirectTargetForDataItemWithSubobject() {
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -197,7 +200,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 			$expNsResource
 		);
 
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -215,7 +218,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider nonRedirectableResourceProvider
 	 */
 	public function testRedirectTargetForNonRedirectableResource( $expNsResource ) {
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -231,7 +234,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function createRepositoryConnectionMockToUse( $listReturnValue ) {
-		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -239,7 +242,7 @@ class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'current' )
 			->willReturn( $listReturnValue );
 
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 

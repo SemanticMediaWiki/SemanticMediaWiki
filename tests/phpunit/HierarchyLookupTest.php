@@ -2,9 +2,13 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Store;
 
 /**
  * @covers \SMW\HierarchyLookup
@@ -15,7 +19,7 @@ use SMW\HierarchyLookup;
  *
  * @author mwjames
  */
-class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
+class HierarchyLookupTest extends TestCase {
 
 	private $store;
 	private $cache;
@@ -24,11 +28,11 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -41,7 +45,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterPropertyChangeListener() {
-		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+		$propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +74,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testVerifySubpropertyForOnNonCachedLookup() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -78,7 +82,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +111,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -119,7 +123,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( $expected );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -379,7 +383,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -391,7 +395,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( $expected );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -417,7 +421,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -429,7 +433,7 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( $expected );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -449,11 +453,11 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDisabledSubpropertyLookup() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -470,11 +474,11 @@ class HierarchyLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDisabledSubcategoryLookup() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 

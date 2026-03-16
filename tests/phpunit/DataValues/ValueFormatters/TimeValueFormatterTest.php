@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMW\DataValues\ValueParsers\TimeValueParser;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
+use SMW\Services\DataValueServiceFactory;
 use SMWTimeValue as TimeValue;
 
 /**
@@ -15,18 +18,18 @@ use SMWTimeValue as TimeValue;
  *
  * @author mwjames
  */
-class TimeValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class TimeValueFormatterTest extends TestCase {
 
 	private $dataValueServiceFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +44,7 @@ class TimeValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\TimeValueFormatter',
+			TimeValueFormatter::class,
 			new TimeValueFormatter()
 		);
 	}

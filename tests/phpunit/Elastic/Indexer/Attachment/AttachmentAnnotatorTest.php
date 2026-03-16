@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\DIProperty;
 use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
 
 /**
@@ -13,12 +16,12 @@ use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
  *
  * @author mwjames
  */
-class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class AttachmentAnnotatorTest extends TestCase {
 
 	private $containerSemanticData;
 
 	protected function setUp(): void {
-		$this->containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
+		$this->containerSemanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +39,7 @@ class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIProperty',
+			DIProperty::class,
 			$instance->getProperty()
 		);
 	}
@@ -69,7 +72,7 @@ class AttachmentAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function testAddAnnotation( $document, $expected ) {
 		$this->containerSemanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' )
-			->with( new \SMW\DIProperty( $expected ) );
+			->with( new DIProperty( $expected ) );
 
 		$instance = new AttachmentAnnotator(
 			$this->containerSemanticData,

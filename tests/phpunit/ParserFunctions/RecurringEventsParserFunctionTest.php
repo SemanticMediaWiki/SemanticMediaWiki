@@ -4,6 +4,7 @@ namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
@@ -20,16 +21,16 @@ use SMW\Subobject;
  *
  * @author mwjames
  */
-class RecurringEventsParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class RecurringEventsParserFunctionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

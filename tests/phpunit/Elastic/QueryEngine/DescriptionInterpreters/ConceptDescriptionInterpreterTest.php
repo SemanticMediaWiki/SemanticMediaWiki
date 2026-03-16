@@ -2,10 +2,16 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIConcept;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\TermsLookup;
+use SMW\Elastic\QueryEngine\TermsLookup\Parameters;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\Description;
+use SMW\Query\Parser;
 use SMW\Store;
 
 /**
@@ -17,7 +23,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ConceptDescriptionInterpreterTest extends TestCase {
 
 	private $conditionBuilder;
 	private $descriptionFactory;
@@ -28,15 +34,15 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parameters = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\TermsLookup\Parameters' )
+		$parameters = $this->getMockBuilder( Parameters::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->termsLookup = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\TermsLookup' )
+		$this->termsLookup = $this->getMockBuilder( TermsLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +50,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newParameters' )
 			->willReturn( $parameters );
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getTermsLookup', 'getStore', 'getID', 'interpretDescription' ] )
 			->getMock();
@@ -57,7 +63,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTermsLookup' )
 			->willReturn( $this->termsLookup );
 
-		$this->queryParser = $this->getMockBuilder( '\SMW\Query\Parser' )
+		$this->queryParser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -90,11 +96,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'interpretDescription' )
 			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$concept = $this->getMockBuilder( '\SMW\DIConcept' )
+		$concept = $this->getMockBuilder( DIConcept::class )
 			->disableOriginalConstructor()
 			->getMock();
 

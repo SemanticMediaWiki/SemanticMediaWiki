@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintError;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\DataItemFactory;
+use SMW\Property\SpecificationLookup;
+use SMW\SQLStore\Lookup\EntityUniquenessLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
+class UniqueValueConstraintTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -28,11 +32,11 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->entityUniquenessLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\EntityUniquenessLookup' )
+		$this->entityUniquenessLookup = $this->getMockBuilder( EntityUniquenessLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
@@ -42,7 +46,7 @@ class UniqueValueConstraintTest extends \PHPUnit\Framework\TestCase {
 			->with( 'EntityUniquenessLookup' )
 			->willReturn( $this->entityUniquenessLookup );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

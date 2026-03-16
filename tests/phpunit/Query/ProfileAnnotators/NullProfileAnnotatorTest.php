@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMWDIContainer as DIContainer;
@@ -16,7 +18,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class NullProfileAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$container = $this->getMockBuilder( '\SMWDIContainer' )
@@ -24,7 +26,7 @@ class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\NullProfileAnnotator',
+			NullProfileAnnotator::class,
 			new NullProfileAnnotator( $container )
 		);
 	}
@@ -43,7 +45,7 @@ class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		$instance->addAnnotation();
 
 		$this->assertInstanceOf(
-			'\SMW\DIProperty',
+			DIProperty::class,
 			$instance->getProperty()
 		);
 
@@ -53,7 +55,7 @@ class NullProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DataModel\ContainerSemanticData',
+			ContainerSemanticData::class,
 			$instance->getSemanticData()
 		);
 

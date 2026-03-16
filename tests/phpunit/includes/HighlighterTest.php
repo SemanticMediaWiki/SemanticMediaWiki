@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Highlighter;
 
 /**
@@ -13,14 +14,14 @@ use SMW\Highlighter;
  *
  * @author mwjames
  */
-class HighlighterTest extends \PHPUnit\Framework\TestCase {
+class HighlighterTest extends TestCase {
 
 	/**
 	 * @dataProvider getTypeDataProvider
 	 */
 	public function testCanConstruct( $type ) {
 		$this->assertInstanceOf(
-			'\SMW\Highlighter',
+			Highlighter::class,
 			Highlighter::factory( $type )
 		);
 	}

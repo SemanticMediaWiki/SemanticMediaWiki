@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Importer;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Importer\ContentIterator;
 use SMW\Importer\JsonContentIterator;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Tests\TestEnvironment;
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class JsonContentIteratorTest extends \PHPUnit\Framework\TestCase {
+class JsonContentIteratorTest extends TestCase {
 
 	private $testEnvironment;
 	private $jsonImportContentsFileDirReader;
@@ -32,12 +34,12 @@ class JsonContentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Importer\JsonContentIterator',
+			JsonContentIterator::class,
 			new JsonContentIterator( $this->jsonImportContentsFileDirReader )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Importer\ContentIterator',
+			ContentIterator::class,
 			new JsonContentIterator( $this->jsonImportContentsFileDirReader )
 		);
 	}

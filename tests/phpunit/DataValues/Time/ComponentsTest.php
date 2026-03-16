@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\Time;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\Time\Components;
 
 /**
@@ -13,7 +14,7 @@ use SMW\DataValues\Time\Components;
  *
  * @author mwjames
  */
-class ComponentsTest extends \PHPUnit\Framework\TestCase {
+class ComponentsTest extends TestCase {
 
 	public function testPublicProperties() {
 		$this->assertIsArray(

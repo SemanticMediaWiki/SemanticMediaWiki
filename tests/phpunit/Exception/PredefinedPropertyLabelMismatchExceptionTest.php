@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
 
 /**
  * @covers \SMW\Exception\PredefinedPropertyLabelMismatchException
@@ -13,18 +15,18 @@ use SMW\Exception\PredefinedPropertyLabelMismatchException;
  *
  * @author mwjames
  */
-class PredefinedPropertyLabelMismatchExceptionTest extends \PHPUnit\Framework\TestCase {
+class PredefinedPropertyLabelMismatchExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PredefinedPropertyLabelMismatchException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\PredefinedPropertyLabelMismatchException',
+			PredefinedPropertyLabelMismatchException::class,
 			$instance
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Exception\PropertyLabelNotResolvedException',
+			PropertyLabelNotResolvedException::class,
 			$instance
 		);
 	}

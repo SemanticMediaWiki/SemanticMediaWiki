@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Options;
 use SMW\Query\DescriptionFactory;
@@ -16,7 +18,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
+class SomeValueInterpreterTest extends TestCase {
 
 	private $conditionBuilder;
 	private $descriptionFactory;
@@ -26,7 +28,7 @@ class SomeValueInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getID' ] )
 			->getMock();

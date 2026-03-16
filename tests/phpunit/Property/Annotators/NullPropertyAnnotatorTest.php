@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Property\Annotators\NullPropertyAnnotator
@@ -13,33 +15,33 @@ use SMW\Property\Annotators\NullPropertyAnnotator;
  *
  * @author mwjames
  */
-class NullPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class NullPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\NullPropertyAnnotator',
+			NullPropertyAnnotator::class,
 			new NullPropertyAnnotator( $semanticData )
 		);
 	}
 
 	public function testMethodAccess() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new NullPropertyAnnotator( $semanticData );
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$instance->getSemanticData()
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\NullPropertyAnnotator',
+			NullPropertyAnnotator::class,
 			$instance->addAnnotation()
 		);
 	}

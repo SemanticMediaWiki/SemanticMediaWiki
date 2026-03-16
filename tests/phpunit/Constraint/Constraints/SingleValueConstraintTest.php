@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\DataItemFactory;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Constraint\Constraints\SingleValueConstraint
@@ -14,7 +16,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
+class SingleValueConstraintTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -53,7 +55,7 @@ class SingleValueConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-single-value';
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

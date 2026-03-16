@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\HtmlTabs;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\HtmlTabs;
  *
  * @author mwjames
  */
-class HtmlTabsTest extends \PHPUnit\Framework\TestCase {
+class HtmlTabsTest extends TestCase {
 
 	public function testHasContents() {
 		$instance = new HtmlTabs();

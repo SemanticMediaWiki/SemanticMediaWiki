@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\Language\Description;
+use SMW\Query\Parser;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder
@@ -13,7 +18,7 @@ use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
  *
  * @author mwjames
  */
-class ConceptQuerySegmentBuilderTest extends \PHPUnit\Framework\TestCase {
+class ConceptQuerySegmentBuilderTest extends TestCase {
 
 	private $conditionBuilder;
 	private $querySegmentListProcessor;
@@ -22,28 +27,28 @@ class ConceptQuerySegmentBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->querySegmentListProcessor = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor' )
+		$this->querySegmentListProcessor = $this->getMockBuilder( QuerySegmentListProcessor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->queryParser = $this->getMockBuilder( '\SMW\Query\Parser' )
+		$this->queryParser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder',
+			ConceptQuerySegmentBuilder::class,
 			new ConceptQuerySegmentBuilder( $this->conditionBuilder, $this->querySegmentListProcessor )
 		);
 	}
 
 	public function testGetQuerySegmentFromOnNull() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 

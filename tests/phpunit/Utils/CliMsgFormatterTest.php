@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\CliMsgFormatter;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\CliMsgFormatter;
  *
  * @author mwjames
  */
-class CliMsgFormatterTest extends \PHPUnit\Framework\TestCase {
+class CliMsgFormatterTest extends TestCase {
 
 	public function testHead() {
 		$instance = new CliMsgFormatter();

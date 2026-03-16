@@ -3,7 +3,12 @@
 namespace SMW\Tests;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\DIConcept;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
 
@@ -16,11 +21,11 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
+class DataItemFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataItemFactory',
+			DataItemFactory::class,
 			new DataItemFactory()
 		);
 	}
@@ -38,7 +43,7 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\DIProperty',
+			DIProperty::class,
 			$instance->newDIProperty( 'Foo bar' )
 		);
 	}
@@ -47,7 +52,7 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->newDIWikiPage( 'Foo' )
 		);
 	}
@@ -64,13 +69,13 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->newDIWikiPage( $title )
 		);
 	}
 
 	public function testCanConstructDIContainer() {
-		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,14 +88,14 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructContainerSemanticData() {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\DataModel\ContainerSemanticData',
+			ContainerSemanticData::class,
 			$instance->newContainerSemanticData( $subject )
 		);
 	}
@@ -126,7 +131,7 @@ class DataItemFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\DIConcept',
+			DIConcept::class,
 			$instance->newDIConcept( 'Foo' )
 		);
 	}

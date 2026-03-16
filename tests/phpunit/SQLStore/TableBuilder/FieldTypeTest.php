@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\TableBuilder\FieldType;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SQLStore\TableBuilder\FieldType;
  *
  * @author mwjames
  */
-class FieldTypeTest extends \PHPUnit\Framework\TestCase {
+class FieldTypeTest extends TestCase {
 
 	/**
 	 * @dataProvider fieldTypeProvider

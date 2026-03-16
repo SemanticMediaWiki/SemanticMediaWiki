@@ -6,10 +6,14 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\ParserData;
 use SMW\SemanticData;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\ParserData
@@ -21,7 +25,7 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class ParserDataTest extends \PHPUnit\Framework\TestCase {
+class ParserDataTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
@@ -36,7 +40,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +53,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +66,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserData',
+			ParserData::class,
 			new ParserData( $title, $parserOutput )
 		);
 	}
@@ -108,7 +112,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->getSubject()
 		);
 	}
@@ -244,7 +248,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findAssociatedRev' )
 			->willReturn( 42 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
@@ -287,7 +291,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 42 );
 
-		$logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -449,7 +453,7 @@ class ParserDataTest extends \PHPUnit\Framework\TestCase {
 			->method( 'addExtraKey' )
 			->with( $this->stringContains( 'Foo' ) );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

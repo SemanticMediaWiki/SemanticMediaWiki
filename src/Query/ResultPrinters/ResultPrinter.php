@@ -267,7 +267,7 @@ abstract class ResultPrinter implements IResultPrinter {
 		$styles = [];
 
 		/**
-		 * @var \ParamProcessor\Param $param
+		 * @var Param $param
 		 */
 		foreach ( $fullParams as $param ) {
 			$params[$param->getName()] = $param->getValue();

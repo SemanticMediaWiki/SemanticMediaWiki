@@ -2,9 +2,17 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
+use SMW\EntityCache;
+use SMW\Localizer\MessageLocalizer;
+use SMW\Options;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\Store;
 use SMWDITime as DITime;
 
 /**
@@ -16,7 +24,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
+class ReplicationCheckTest extends TestCase {
 
 	private $store;
 	private $documentReplicationExaminer;
@@ -26,11 +34,11 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 	private $idTable;
 
 	protected function setUp(): void {
-		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -39,15 +47,15 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $this->idTable );
 
-		$this->documentReplicationExaminer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer' )
+		$this->documentReplicationExaminer = $this->getMockBuilder( DocumentReplicationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+		$this->elasticClient = $this->getMockBuilder( DummyClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,7 +63,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			->method( 'ping' )
 			->willReturn( true );
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -169,7 +177,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckReplication_NoConnection() {
-		$elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+		$elasticClient = $this->getMockBuilder( DummyClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -208,7 +216,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckReplication_ConnectionHasMaintenanceLock() {
-		$elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+		$elasticClient = $this->getMockBuilder( DummyClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -256,7 +264,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( '\SMW\Options' )
+		$config = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -311,7 +319,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( '\SMW\Options' )
+		$config = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -371,7 +379,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( '\SMW\Options' )
+		$config = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -429,7 +437,7 @@ class ReplicationCheckTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( '\SMW\Options' )
+		$config = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,11 +2,14 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\PropertyAliasFinder;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRegistry;
+use SMW\Store;
 
 /**
  * @covers \SMW\PropertyRegistry
@@ -17,7 +20,7 @@ use SMW\PropertyRegistry;
  *
  * @author mwjames
  */
-class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
+class PropertyRegistryTest extends TestCase {
 
 	private $cache;
 	private $store;
@@ -25,7 +28,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -38,7 +41,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,16 +53,16 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyAliasFinder = $this->getMockBuilder( '\SMW\PropertyAliasFinder' )
+		$propertyAliasFinder = $this->getMockBuilder( PropertyAliasFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyRegistry',
+			PropertyRegistry::class,
 			new PropertyRegistry( $datatypeRegistry, $propertyLabelFinder, $propertyAliasFinder )
 		);
 	}
@@ -81,7 +84,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLanguageIndependantPropertyLabelAliasInvocation() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +96,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [ 'URI' => '_uri' ] );
 
-		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -117,7 +120,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterProperty() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +132,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -170,7 +173,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterProperty_DifferentSignatureThrowsException() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +185,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -203,7 +206,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUnregisterProperty() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -215,7 +218,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -243,7 +246,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindPropertyId() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -255,7 +258,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -298,7 +301,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindPropertyLabelForRegisteredId() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -310,7 +313,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -359,7 +362,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindPropertyInfoForUnregisteredId() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -371,7 +374,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -407,7 +410,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testfindPropertyIdFromLabelByLanguageCode() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -419,7 +422,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -442,7 +445,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindPropertyLabelByLanguageCode() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -454,7 +457,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -477,7 +480,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPropertyDescriptionMsgKey() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -489,7 +492,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -518,7 +521,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDataTypePropertyExemptionList() {
-		$datatypeRegistry = $this->getMockBuilder( '\SMW\DataTypeRegistry' )
+		$datatypeRegistry = $this->getMockBuilder( DataTypeRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -530,7 +533,7 @@ class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getKnownTypeAliases' )
 			->willReturn( [ 'Bar' => '_bar' ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

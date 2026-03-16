@@ -4,6 +4,7 @@ namespace SMW\Maintenance;
 
 use Onoi\Cache\Cache;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
@@ -68,7 +69,7 @@ class DuplicateEntitiesDisposer {
 		}
 
 		if ( $this->cache !== null ) {
-			$this->cache->delete( \SMW\MediaWiki\Api\Tasks\Task::makeCacheKey( 'duplicate-lookup' ) );
+			$this->cache->delete( Task::makeCacheKey( 'duplicate-lookup' ) );
 		}
 	}
 

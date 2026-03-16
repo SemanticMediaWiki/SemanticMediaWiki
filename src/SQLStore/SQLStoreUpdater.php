@@ -12,6 +12,7 @@ use SMW\Parameters;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
+use SMW\Store;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -31,7 +32,7 @@ class SQLStoreUpdater {
 	 * The store used by this store writer.
 	 *
 	 * @since 1.8
-	 * @var \SMW\SQLStore\SQLStore
+	 * @var SQLStore
 	 */
 	private $store;
 
@@ -87,7 +88,7 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see \SMW\Store::deleteSubject
+	 * @see Store::deleteSubject
 	 *
 	 * @since 1.8
 	 *
@@ -183,7 +184,7 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see \SMW\Store::doDataUpdate
+	 * @see Store::doDataUpdate
 	 *
 	 * @since 1.8
 	 *

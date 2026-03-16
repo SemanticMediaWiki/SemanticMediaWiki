@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SubobjectListFinder
@@ -15,7 +20,7 @@ use SMW\SQLStore\EntityStore\SubobjectListFinder;
  *
  * @author mwjames
  */
-class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
+class SubobjectListFinderTest extends TestCase {
 
 	private $iteratorFactory;
 
@@ -26,11 +31,11 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +49,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testNewMappingIterator( $subject ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +57,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -67,7 +72,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\MappingIterator',
+			MappingIterator::class,
 			$instance->find( $subject )
 		);
 	}
@@ -86,7 +91,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 			'Foo', 0, '', 'sort', '10000000001'
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +103,7 @@ class SubobjectListFinderTest extends \PHPUnit\Framework\TestCase {
 				'smw_title= AND smw_namespace= AND smw_iw= AND smw_subobject!=' )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getDataItemHandlerForDIType' ] )
 			->getMock();

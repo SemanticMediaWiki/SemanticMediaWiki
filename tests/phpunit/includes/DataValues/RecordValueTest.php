@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Property\SpecificationLookup;
+use SMW\Query\DescriptionBuilderRegistry;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWRecordValue as RecordValue;
 
@@ -15,7 +19,7 @@ use SMWRecordValue as RecordValue;
  *
  * @author mwjames
  */
-class RecordValueTest extends \PHPUnit\Framework\TestCase {
+class RecordValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -28,7 +32,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +57,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIProperty( 'Foobar' )
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
@@ -85,7 +89,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParseValue() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
@@ -135,7 +139,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParseValueWithErroredDv() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
@@ -187,7 +191,7 @@ class RecordValueTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
+			->willReturn( new DescriptionBuilderRegistry() );
 
 		$instance = new RecordValue( '_rec' );
 		$instance->setFieldProperties( $properties );

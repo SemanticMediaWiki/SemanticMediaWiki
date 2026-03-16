@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\DataItemFactory;
+use SMW\DIWikiPage;
 
 /**
  * @covers \SMW\Constraint\Constraints\MustExistsConstraint
@@ -14,7 +17,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
+class MustExistsConstraintTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -53,7 +56,7 @@ class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-must-exists';
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +64,7 @@ class MustExistsConstraintTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( false );
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,7 +2,10 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
+use SMW\DataValues\PropertyValue;
+use SMW\DataValues\StringValue;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMWDataItem;
@@ -17,7 +20,7 @@ use SMWDataItem;
  *
  * @author mwjames
  */
-class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
+class DataValueFactoryTest extends TestCase {
 
 	protected function tearDown(): void {
 		DataValueFactory::getInstance()->clear();
@@ -110,7 +113,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === [] ) {
-			$this->assertInstanceOf( '\SMW\DIProperty', $dataValue->getProperty() );
+			$this->assertInstanceOf( DIProperty::class, $dataValue->getProperty() );
 			$this->assertStringContainsString( $propertyName, $dataValue->getProperty()->getLabel() );
 			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
@@ -143,7 +146,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === [] ) {
-			$this->assertInstanceOf( '\SMW\DIProperty', $dataValue->getProperty() );
+			$this->assertInstanceOf( DIProperty::class, $dataValue->getProperty() );
 			$this->assertStringContainsString( $propertyName, $dataValue->getProperty()->getLabel() );
 			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
@@ -220,7 +223,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\PropertyValue',
+			PropertyValue::class,
 			$dataValue
 		);
 
@@ -238,7 +241,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DataValues\PropertyValue',
+			PropertyValue::class,
 			$dataValue
 		);
 
@@ -336,13 +339,13 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function typeIdValueDataProvider() {
 		return [
-			[ '_txt', 'Bar', 'Bar', '\SMW\DataValues\StringValue' ], // #0
-			[ '_txt', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', '\SMW\DataValues\StringValue' ], // #1
-			[ '_txt', '9001', '9001', '\SMW\DataValues\StringValue' ], // #2
-			[ '_txt', 1001, '1001', '\SMW\DataValues\StringValue' ], // #3
-			[ '_txt', '-%&$*', '-%&$*', '\SMW\DataValues\StringValue' ], // #4
-			[ '_txt', '_Bar', '_Bar', '\SMW\DataValues\StringValue' ], // #5
-			[ '_txt', 'bar', 'bar', '\SMW\DataValues\StringValue' ], // #6
+			[ '_txt', 'Bar', 'Bar', StringValue::class ], // #0
+			[ '_txt', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', StringValue::class ], // #1
+			[ '_txt', '9001', '9001', StringValue::class ], // #2
+			[ '_txt', 1001, '1001', StringValue::class ], // #3
+			[ '_txt', '-%&$*', '-%&$*', StringValue::class ], // #4
+			[ '_txt', '_Bar', '_Bar', StringValue::class ], // #5
+			[ '_txt', 'bar', 'bar', StringValue::class ], // #6
 			[ '-_txt', 'Bar', 'Bar', 'SMWErrorValue' ], // #7
 
 			[ '_wpg', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #8
@@ -372,7 +375,7 @@ class DataValueFactoryTest extends \PHPUnit\Framework\TestCase {
 			[ 'Foo', '_Bar', 'Bar', 'SMWDataValue' ], // #5
 			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
 			[ '-Foo', 'Bar', '', 'SMWErrorValue' ], // #7
-			[ '_Foo', 'Bar', '', '\SMW\DataValues\PropertyValue' ], // #8
+			[ '_Foo', 'Bar', '', PropertyValue::class ], // #8
 		];
 	}
 

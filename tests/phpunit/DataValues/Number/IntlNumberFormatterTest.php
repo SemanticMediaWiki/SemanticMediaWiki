@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\Number;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\Number\IntlNumberFormatter;
 
 /**
@@ -13,7 +14,7 @@ use SMW\DataValues\Number\IntlNumberFormatter;
  *
  * @author mwjames
  */
-class IntlNumberFormatterTest extends \PHPUnit\Framework\TestCase {
+class IntlNumberFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

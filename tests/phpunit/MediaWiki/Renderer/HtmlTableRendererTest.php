@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Renderer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Renderer\HtmlTableRenderer;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -14,7 +15,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class HtmlTableRendererTest extends \PHPUnit\Framework\TestCase {
+class HtmlTableRendererTest extends TestCase {
 
 	private $stringValidator;
 
@@ -26,7 +27,7 @@ class HtmlTableRendererTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlTableRenderer',
+			HtmlTableRenderer::class,
 			new HtmlTableRenderer()
 		);
 	}

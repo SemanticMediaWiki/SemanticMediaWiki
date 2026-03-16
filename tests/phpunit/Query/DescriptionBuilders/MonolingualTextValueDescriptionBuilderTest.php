@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder
@@ -15,7 +19,7 @@ use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
  *
  * @author mwjames
  */
-class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
+class MonolingualTextValueDescriptionBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -25,7 +29,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 	}
 
 	public function testIsBuilderForTimeValue() {
-		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+		$dataValue = $this->getMockBuilder( MonolingualTextValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -37,7 +41,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 	}
 
 	public function testNonStringThrowsException() {
-		$recordValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+		$recordValue = $this->getMockBuilder( MonolingualTextValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +78,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 0
 		$provider[] = [
 			'Jan;1970',
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			'[[Text::Jan;1970]] [[Language code::+]]',
 			SMW_DV_MLTV_LCODE
 		];
@@ -82,7 +86,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 1
 		$provider[] = [
 			'Jan;1970',
-			'\SMW\Query\Language\SomeProperty',
+			SomeProperty::class,
 			'[[Text::Jan;1970]]',
 			SMW_DV_NONE
 		];
@@ -90,7 +94,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 2
 		$provider[] = [
 			'Jan@en',
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			'[[Text::Jan]] [[Language code::en]]',
 			SMW_DV_MLTV_LCODE
 		];
@@ -98,7 +102,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 3
 		$provider[] = [
 			'@en',
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			'[[Text::+]] [[Language code::en]]',
 			SMW_DV_MLTV_LCODE
 		];
@@ -106,7 +110,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 4
 		$provider[] = [
 			'@EN',
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			'[[Text::+]] [[Language code::en]]',
 			SMW_DV_MLTV_LCODE
 		];
@@ -114,7 +118,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 5
 		$provider[] = [
 			'@~zh*',
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			'[[Text::+]] [[Language code::~zh*]]',
 			SMW_DV_MLTV_LCODE
 		];
@@ -122,7 +126,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 6
 		$provider[] = [
 			'?',
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			'[[Text::+]] [[Language code::+]]',
 			SMW_DV_MLTV_LCODE
 		];
@@ -130,7 +134,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 7
 		$provider[] = [
 			'?',
-			'\SMW\Query\Language\SomeProperty',
+			SomeProperty::class,
 			'[[Text::+]]',
 			SMW_DV_NONE
 		];
@@ -138,7 +142,7 @@ class MonolingualTextValueDescriptionBuilderTest extends \PHPUnit\Framework\Test
 		# 8
 		$provider[] = [
 			'',
-			'\SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			'',
 			SMW_DV_MLTV_LCODE
 		];

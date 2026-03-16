@@ -4,8 +4,11 @@ namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
+use SMW\MessageFormatter;
 use SMW\ParameterProcessorFactory;
+use SMW\ParserData;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
@@ -19,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class SetParserFunctionTest extends TestCase {
 
 	private $testEnvironment;
 	private $semanticDataValidator;
@@ -37,20 +40,20 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( WikitextTemplateRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\SetParserFunction',
+			SetParserFunction::class,
 			new SetParserFunction( $parserData, $messageFormatter, $templateRenderer )
 		);
 	}
@@ -64,7 +67,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +79,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHtml' )
 			->willReturn( 'Foo' );
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( WikitextTemplateRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,7 +104,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +112,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'addFromArray' )
 			->willReturnSelf();
 
-		$templateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
+		$templateRenderer = $this->getMockBuilder( WikitextTemplateRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -142,7 +145,7 @@ class SetParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

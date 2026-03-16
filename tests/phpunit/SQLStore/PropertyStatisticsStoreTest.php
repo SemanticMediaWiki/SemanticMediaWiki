@@ -3,6 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -102,7 +103,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 			'foo'
 		);
 
-		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException' );
+		$this->expectException( PropertyStatisticsInvalidArgumentException::class );
 		$instance->addToUsageCount( 12, 'foo' );
 	}
 
@@ -113,7 +114,7 @@ class PropertyStatisticsStoreTest extends SMWIntegrationTestCase {
 			$connection
 		);
 
-		$this->expectException( '\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException' );
+		$this->expectException( PropertyStatisticsInvalidArgumentException::class );
 		$instance->addToUsageCount( 'Foo', 12 );
 	}
 

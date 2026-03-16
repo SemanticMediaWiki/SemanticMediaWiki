@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\PageCreator;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -14,11 +15,11 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class PageCreatorTest extends \PHPUnit\Framework\TestCase {
+class PageCreatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageCreator',
+			PageCreator::class,
 			 new PageCreator()
 		);
 	}

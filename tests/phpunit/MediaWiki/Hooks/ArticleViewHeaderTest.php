@@ -2,9 +2,17 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Output\OutputPage;
+use PHPUnit\Framework\TestCase;
+use SMW\DependencyValidator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
+use SMW\NamespaceExaminer;
+use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
+class ArticleViewHeaderTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -28,15 +36,15 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -45,7 +53,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $entityIdManager );
 
-		$this->dependencyValidator = $this->getMockBuilder( '\SMW\DependencyValidator' )
+		$this->dependencyValidator = $this->getMockBuilder( DependencyValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +80,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,14 +93,14 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSemanticData' )
 			->willReturn( $semanticData );
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$output->expects( $this->once() )
 			->method( 'addHtml' );
 
-		$context = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
+		$context = $this->getMockBuilder( RequestContext::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +149,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,7 +195,7 @@ class ArticleViewHeaderTest extends \PHPUnit\Framework\TestCase {
 
 		$title = $subject->getTitle();
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

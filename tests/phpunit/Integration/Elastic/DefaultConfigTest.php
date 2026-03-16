@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Elastic;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\JSONParseException;
 
 /**
@@ -10,7 +11,7 @@ use SMW\Exception\JSONParseException;
  *
  * @author mwjames
  */
-class DefaultConfigTest extends \PHPUnit\Framework\TestCase {
+class DefaultConfigTest extends TestCase {
 
 	private $contents;
 

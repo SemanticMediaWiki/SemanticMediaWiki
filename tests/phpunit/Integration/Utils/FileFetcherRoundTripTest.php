@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -12,7 +13,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class FileFetcherRoundTripTest extends \PHPUnit\Framework\TestCase {
+class FileFetcherRoundTripTest extends TestCase {
 
 	public function testRoundTrip() {
 		$found = false;

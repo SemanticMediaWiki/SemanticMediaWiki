@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\Element;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
@@ -16,11 +17,11 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class ExpNsResourceTest extends \PHPUnit\Framework\TestCase {
+class ExpNsResourceTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Element\ExpNsResource',
+			ExpNsResource::class,
 			new ExpNsResource( '', '', '', null )
 		);
 	}

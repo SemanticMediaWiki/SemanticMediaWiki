@@ -2,7 +2,28 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler;
+use SMW\MediaWiki\Specials\Admin\AlertsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\DataRefreshJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler;
+use SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
+use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
+use SMW\MediaWiki\Specials\Admin\SupplementTaskHandler;
+use SMW\MediaWiki\Specials\Admin\SupportListTaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerFactory;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +35,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
+class TaskHandlerFactoryTest extends TestCase {
 
 	private $testEnvironment;
 	private $hookDispatcher;
@@ -27,19 +48,19 @@ class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +75,7 @@ class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewTaskHandlerRegistry() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +92,7 @@ class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry',
+			TaskHandlerRegistry::class,
 			$instance->newTaskHandlerRegistry( $user, $adminFeatures )
 		);
 	}
@@ -95,72 +116,72 @@ class TaskHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function methodProvider() {
 		$provider[] = [
 			'newTableSchemaTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler'
+			TableSchemaTaskHandler::class
 		];
 
 		$provider[] = [
 			'newSupportListTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\SupportListTaskHandler'
+			SupportListTaskHandler::class
 		];
 
 		$provider[] = [
 			'newConfigurationListTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Supplement\ConfigurationListTaskHandler'
+			ConfigurationListTaskHandler::class
 		];
 
 		$provider[] = [
 			'newOperationalStatisticsListTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler'
+			OperationalStatisticsListTaskHandler::class
 		];
 
 		$provider[] = [
 			'newEntityLookupTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler'
+			EntityLookupTaskHandler::class
 		];
 
 		$provider[] = [
 			'newDataRefreshJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Maintenance\DataRefreshJobTaskHandler'
+			DataRefreshJobTaskHandler::class
 		];
 
 		$provider[] = [
 			'newDisposeJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler'
+			DisposeJobTaskHandler::class
 		];
 
 		$provider[] = [
 			'newPropertyStatsRebuildJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Maintenance\PropertyStatsRebuildJobTaskHandler'
+			PropertyStatsRebuildJobTaskHandler::class
 		];
 
 		$provider[] = [
 			'newFulltextSearchTableRebuildJobTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Maintenance\FulltextSearchTableRebuildJobTaskHandler'
+			FulltextSearchTableRebuildJobTaskHandler::class
 		];
 
 		$provider[] = [
 			'newDeprecationNoticeTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Alerts\DeprecationNoticeTaskHandler'
+			DeprecationNoticeTaskHandler::class
 		];
 
 		$provider[] = [
 			'newAlertsTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\AlertsTaskHandler'
+			AlertsTaskHandler::class
 		];
 
 		$provider[] = [
 			'newDuplicateLookupTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\Supplement\DuplicateLookupTaskHandler'
+			DuplicateLookupTaskHandler::class
 		];
 
 		$provider[] = [
 			'newMaintenanceTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\MaintenanceTaskHandler'
+			MaintenanceTaskHandler::class
 		];
 
 		$provider[] = [
 			'newSupplementTaskHandler',
-			'\SMW\MediaWiki\Specials\Admin\SupplementTaskHandler'
+			SupplementTaskHandler::class
 		];
 
 		return $provider;

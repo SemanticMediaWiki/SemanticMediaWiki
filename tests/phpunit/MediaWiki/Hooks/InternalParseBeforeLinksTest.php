@@ -3,9 +3,14 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\InternalParseBeforeLinks;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -18,7 +23,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
+class InternalParseBeforeLinksTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $parserFactory;
@@ -37,7 +42,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -50,12 +55,12 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\InternalParseBeforeLinks',
+			InternalParseBeforeLinks::class,
 			new InternalParseBeforeLinks( $parser, $this->stripState )
 		);
 	}
@@ -63,7 +68,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testNonProcessForEmptyText() {
 		$text = '';
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +89,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testDisableProcessOfInterfaceMessageOnNonSpecialPage() {
 		$text = 'Foo';
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +105,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInterfaceMessage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +130,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOfInterfaceMessageOnEnabledSpecialPage() {
 		$text = 'Foo';
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +155,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +163,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInterfaceMessage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,7 +188,7 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 	public function testProcessOfInterfaceMessageOnSpecialPageWithOnOffMarker() {
 		$text = '[[SMW::off]]Foo[[SMW::on]]';
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -208,11 +213,11 @@ class InternalParseBeforeLinksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 

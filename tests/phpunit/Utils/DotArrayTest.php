@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\DotArray;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\DotArray;
  *
  * @author mwjames
  */
-class DotArrayTest extends \PHPUnit\Framework\TestCase {
+class DotArrayTest extends TestCase {
 
 	/**
 	 * @dataProvider dotProvider

@@ -65,7 +65,7 @@ class StringValueFormatter extends DataValueFormatter {
 	}
 
 	/**
-	 * @param \SMW\DataValues\StringValue $dataValue
+	 * @param StringValue $dataValue
 	 * @param int $type
 	 * @param mixed $linker
 	 *

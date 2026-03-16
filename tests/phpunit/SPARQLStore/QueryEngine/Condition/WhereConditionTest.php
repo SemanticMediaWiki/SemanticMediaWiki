@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
  *
  * @author mwjames
  */
-class WhereConditionTest extends \PHPUnit\Framework\TestCase {
+class WhereConditionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			new WhereCondition( 'condition', true )
 		);
 	}

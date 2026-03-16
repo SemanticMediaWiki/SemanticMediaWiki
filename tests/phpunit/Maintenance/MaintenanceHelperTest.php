@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Maintenance;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\MaintenanceHelper;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Maintenance\MaintenanceHelper;
  *
  * @author mwjames
  */
-class MaintenanceHelperTest extends \PHPUnit\Framework\TestCase {
+class MaintenanceHelperTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\MaintenanceHelper',
+			MaintenanceHelper::class,
 			new MaintenanceHelper()
 		);
 	}

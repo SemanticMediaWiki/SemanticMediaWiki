@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -14,7 +18,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
+class SomeValueDescriptionBuilderTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -111,7 +115,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SomeValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			$instance->newDescription( $dataValue, 'Foo' )
 		);
 	}
@@ -154,7 +158,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SomeValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->newDescription( $dataValue, 'Help:~Foo' )
 		);
 	}
@@ -162,7 +166,7 @@ class SomeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function valueProvider() {
 		$provider[] = [
 			'Foo',
-			'\SMW\Query\Language\ValueDescription'
+			ValueDescription::class
 		];
 
 		return $provider;

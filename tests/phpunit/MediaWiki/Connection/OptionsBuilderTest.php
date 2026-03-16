@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\OptionsBuilder;
 
 /**
@@ -13,7 +15,7 @@ use SMW\MediaWiki\Connection\OptionsBuilder;
  *
  * @author mwjames
  */
-class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
+class OptionsBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -26,7 +28,7 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testMakeSelectOptions( $options ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +42,7 @@ class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider optionsProvider
 	 */
 	public function testToString( $options ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

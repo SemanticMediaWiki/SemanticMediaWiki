@@ -2,8 +2,16 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Query\Language\Description;
+use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotatorFactory;
+use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
+use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
+use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
+use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
+use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
 use SMWQuery as Query;
 
 /**
@@ -15,17 +23,17 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
+class ProfileAnnotatorFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotatorFactory',
+			ProfileAnnotatorFactory::class,
 			new ProfileAnnotatorFactory()
 		);
 	}
 
 	public function testConstructDescriptionProfileAnnotator() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,13 +52,13 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator',
+			DescriptionProfileAnnotator::class,
 			$instance->newDescriptionProfileAnnotator( $query )
 		);
 	}
 
 	public function testConstructCombinedProfileAnnotator() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -69,13 +77,13 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator',
+			ProfileAnnotator::class,
 			$instance->newProfileAnnotator( $query, '' )
 		);
 	}
 
 	public function testConstructProfileAnnotatorsWithSourceAnnotator() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,13 +106,13 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\SourceProfileAnnotator',
+			SourceProfileAnnotator::class,
 			$instance->newProfileAnnotator( $query, 'SomeFormat' )
 		);
 	}
 
 	public function testConstructProfileAnnotatorsWithDurationAnnotator() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,13 +140,13 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\DurationProfileAnnotator',
+			DurationProfileAnnotator::class,
 			$instance->newProfileAnnotator( $query, 'SomeFormat' )
 		);
 	}
 
 	public function testConstructProfileAnnotatorsWithStatCodeAnnotator() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,13 +174,13 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator',
+			StatusCodeProfileAnnotator::class,
 			$instance->newProfileAnnotator( $query, 'SomeFormat' )
 		);
 	}
 
 	public function testConstructCombinedProfileAnnotatorOnNullContextPage() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -191,13 +199,13 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotator',
+			ProfileAnnotator::class,
 			$instance->newProfileAnnotator( $query, '' )
 		);
 	}
 
 	public function testConstructProfileAnnotators_SchemaLink() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -225,7 +233,7 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ProfileAnnotatorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator',
+			SchemaLinkProfileAnnotator::class,
 			$instance->newProfileAnnotator( $query, 'SomeFormat' )
 		);
 	}

@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup
@@ -15,7 +19,7 @@ use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
  *
  * @author mwjames
  */
-class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
+class PropertyLabelSimilarityLookupTest extends TestCase {
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -25,18 +29,18 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup',
+			PropertyLabelSimilarityLookup::class,
 			new PropertyLabelSimilarityLookup( $this->store )
 		);
 	}
@@ -46,7 +50,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStatistics' )
 			->willReturn( [ 'TOTALPROPS' => 42 ] );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +69,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +81,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -103,7 +107,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 		$row2 = new \stdClass;
 		$row2->smw_title = 'Foobar';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -115,7 +119,7 @@ class PropertyLabelSimilarityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

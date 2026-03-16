@@ -2,7 +2,17 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Parser\Parser;
+use PHPUnit\Framework\TestCase;
+use SMW\ParserData;
 use SMW\ParserFunctionFactory;
+use SMW\ParserFunctions\AskParserFunction;
+use SMW\ParserFunctions\ConceptParserFunction;
+use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\ParserFunctions\RecurringEventsParserFunction;
+use SMW\ParserFunctions\SetParserFunction;
+use SMW\ParserFunctions\ShowParserFunction;
+use SMW\ParserFunctions\SubobjectParserFunction;
 
 /**
  * @covers \SMW\ParserFunctionFactory
@@ -14,7 +24,7 @@ use SMW\ParserFunctionFactory;
  *
  * @author mwjames
  */
-class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
+class ParserFunctionFactoryTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -27,7 +37,7 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$this->parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,17 +52,17 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctionFactory',
+			ParserFunctionFactory::class,
 			new ParserFunctionFactory( $parser )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctionFactory',
+			ParserFunctionFactory::class,
 			ParserFunctionFactory::newFromParser( $parser )
 		);
 	}
@@ -102,47 +112,47 @@ class ParserFunctionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function parserFunctionProvider() {
 		$provider[] = [
-			'\SMW\ParserFunctions\RecurringEventsParserFunction',
+			RecurringEventsParserFunction::class,
 			'getRecurringEventsParser'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\SubobjectParserFunction',
+			SubobjectParserFunction::class,
 			'getSubobjectParser'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\RecurringEventsParserFunction',
+			RecurringEventsParserFunction::class,
 			'newRecurringEventsParserFunction'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\SubobjectParserFunction',
+			SubobjectParserFunction::class,
 			'newSubobjectParserFunction'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\AskParserFunction',
+			AskParserFunction::class,
 			'newAskParserFunction'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\ShowParserFunction',
+			ShowParserFunction::class,
 			'newShowParserFunction'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\SetParserFunction',
+			SetParserFunction::class,
 			'newSetParserFunction'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\ConceptParserFunction',
+			ConceptParserFunction::class,
 			'newConceptParserFunction'
 		];
 
 		$provider[] = [
-			'\SMW\ParserFunctions\DeclareParserFunction',
+			DeclareParserFunction::class,
 			'newDeclareParserFunction'
 		];
 

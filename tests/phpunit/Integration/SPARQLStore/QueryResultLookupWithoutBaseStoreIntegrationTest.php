@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -25,7 +26,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultLookupWithoutBaseStoreIntegrationTest extends \PHPUnit\Framework\TestCase {
+class QueryResultLookupWithoutBaseStoreIntegrationTest extends TestCase {
 
 	private $store = null;
 	private $queryResultValidator;

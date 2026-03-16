@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\Browse;
 
+use MediaWiki\User\User;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
@@ -64,7 +65,7 @@ class ValueFormatter {
 	 * @param DataValue $dataValue
 	 * @param PropertyValue $propertyValue
 	 * @param bool $incoming
-	 * @param \User|null $user
+	 * @param User|null $user
 	 *
 	 * @return string
 	 */

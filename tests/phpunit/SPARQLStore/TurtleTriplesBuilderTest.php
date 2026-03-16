@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\SemanticData;
+use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
 use SMWExporter as Exporter;
 
@@ -17,21 +19,21 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class TurtleTriplesBuilderTest extends \PHPUnit\Framework\TestCase {
+class TurtleTriplesBuilderTest extends TestCase {
 
 	private $repositoryRedirectLookup;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->repositoryRedirectLookup = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryRedirectLookup' )
+		$this->repositoryRedirectLookup = $this->getMockBuilder( RepositoryRedirectLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\TurtleTriplesBuilder',
+			TurtleTriplesBuilder::class,
 			new TurtleTriplesBuilder( $this->repositoryRedirectLookup )
 		);
 	}

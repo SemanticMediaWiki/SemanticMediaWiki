@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder
@@ -14,7 +18,7 @@ use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
  *
  * @author mwjames
  */
-class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
+class RecordValueDescriptionBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -78,7 +82,7 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new RecordValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			$instance->newDescription( $recordValue, 'Foo' )
 		);
 	}
@@ -98,25 +102,25 @@ class RecordValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			'Jan;1970',
 			[ new DIProperty( 'Foo' ) ],
-			'\SMW\Query\Language\SomeProperty'
+			SomeProperty::class
 		];
 
 		$provider[] = [
 			'Jan;1970',
 			[ new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ],
-			'\SMW\Query\Language\Conjunction'
+			Conjunction::class
 		];
 
 		$provider[] = [
 			'?',
 			[ new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ],
-			'\SMW\Query\Language\ThingDescription'
+			ThingDescription::class
 		];
 
 		$provider[] = [
 			'',
 			[],
-			'\SMW\Query\Language\ThingDescription'
+			ThingDescription::class
 		];
 
 		return $provider;

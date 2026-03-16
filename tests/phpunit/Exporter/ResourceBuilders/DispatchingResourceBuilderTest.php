@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Exporter\ResourceBuilder;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
@@ -15,7 +16,7 @@ use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
  *
  * @author mwjames
  */
-class DispatchingResourceBuilderTest extends \PHPUnit\Framework\TestCase {
+class DispatchingResourceBuilderTest extends TestCase {
 
 	private $dataItemFactory;
 

@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
+use SMW\MediaWiki\Connection\Database;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ArticleLookup
@@ -13,14 +16,14 @@ use SMW\MediaWiki\Api\Browse\ArticleLookup;
  *
  * @author mwjames
  */
-class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
+class ArticleLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$articleAugmentor = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ArticleAugmentor' )
+		$articleAugmentor = $this->getMockBuilder( ArticleAugmentor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,11 +37,11 @@ class ArticleLookupTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider articleSearchProvider
 	 */
 	public function testLookup( $search, $row, $condition, $expected ) {
-		$articleAugmentor = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\ArticleAugmentor' )
+		$articleAugmentor = $this->getMockBuilder( ArticleAugmentor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

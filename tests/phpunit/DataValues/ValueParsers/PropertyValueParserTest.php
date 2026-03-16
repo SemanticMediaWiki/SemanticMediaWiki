@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 
 /**
@@ -13,7 +14,7 @@ use SMW\DataValues\ValueParsers\PropertyValueParser;
  *
  * @author mwjames
  */
-class PropertyValueParserTest extends \PHPUnit\Framework\TestCase {
+class PropertyValueParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

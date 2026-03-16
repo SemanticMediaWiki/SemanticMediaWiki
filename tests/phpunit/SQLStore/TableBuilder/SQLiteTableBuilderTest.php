@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
 use Wikimedia\Rdbms\FakeResultWrapper;
@@ -16,7 +17,7 @@ use Wikimedia\Rdbms\IMaintainableDatabase;
  *
  * @author mwjames
  */
-class SQLiteTableBuilderTest extends \PHPUnit\Framework\TestCase {
+class SQLiteTableBuilderTest extends TestCase {
 
 	private $connection;
 

@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIProperty;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMW\Query\QueryResult;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup
@@ -14,15 +19,15 @@ use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
  *
  * @author mwjames
  */
-class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
+class QueryResultLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup',
+			QueryResultLookup::class,
 			new QueryResultLookup( $store )
 		);
 	}
@@ -31,7 +36,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 		$pageRequestOptions = new PageRequestOptions( 'Foo', [] );
 		$pageRequestOptions->initialize();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -39,7 +44,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->with(
 				$this->isType( 'null' ),
-				$this->isInstanceOf( '\SMW\DIProperty' ),
+				$this->isInstanceOf( DIProperty::class ),
 				$this->anything() )
 			->willReturn( [] );
 
@@ -55,14 +60,14 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->isInstanceOf( '\SMW\DIProperty' ),
+				$this->isInstanceOf( DIProperty::class ),
 				$this->anything(),
 				$this->anything() )
 			->willReturn( [] );
@@ -78,7 +83,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 		$pageRequestOptions = new PageRequestOptions( 'Foo/Bar', [] );
 		$pageRequestOptions->initialize();
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +91,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNext' )
 			->willReturn( false );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -111,7 +116,7 @@ class QueryResultLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 42 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();

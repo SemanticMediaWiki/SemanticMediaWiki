@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Pipetrick;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Pipetrick;
  *
  * @author Morgon Kanter
  */
-class PipetrickTest extends \PHPUnit\Framework\TestCase {
+class PipetrickTest extends TestCase {
 
 	/**
 	 * @dataProvider textProvider

@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\CleanUpTables;
+use Wikimedia\Rdbms\Database;
 
 /**
  * @covers \SMW\MediaWiki\Connection\CleanUpTables
@@ -13,12 +15,12 @@ use SMW\MediaWiki\Connection\CleanUpTables;
  *
  * @author mwjames
  */
-class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
+class CleanUpTablesTest extends TestCase {
 
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +38,7 @@ class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNonPostgres() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables', 'query', 'tableExists' ] )
 			->getMockForAbstractClass();
@@ -61,7 +63,7 @@ class CleanUpTablesTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPostgres() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'listTables', 'query', 'getType', 'tableExists' ] )
 			->getMockForAbstractClass();

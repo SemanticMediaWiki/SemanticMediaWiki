@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Schema\Exception\SchemaTypeNotFoundException;
  *
  * @author mwjames
  */
-class SchemaTypeNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class SchemaTypeNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaTypeNotFoundException( 'foo' );

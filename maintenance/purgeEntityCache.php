@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use Iterator;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\DIProperty;
@@ -181,7 +182,7 @@ class purgeEntityCache extends Maintenance {
 		return true;
 	}
 
-	private function doPurge( \Iterator $rows ) {
+	private function doPurge( Iterator $rows ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$connection = $this->store->getConnection( 'mw.db' );

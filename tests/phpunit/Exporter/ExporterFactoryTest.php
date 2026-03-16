@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\ExporterFactory;
+use SMW\Exporter\Serializer\RDFXMLSerializer;
+use SMW\Exporter\Serializer\Serializer;
+use SMW\Exporter\Serializer\TurtleSerializer;
 
 /**
  * @covers \SMW\Exporter\ExporterFactory
@@ -13,7 +18,7 @@ use SMW\Exporter\ExporterFactory;
  *
  * @author mwjames
  */
-class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
+class ExporterFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -32,7 +37,7 @@ class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructExportController() {
-		$serializer = $this->getMockBuilder( '\SMW\Exporter\Serializer\Serializer' )
+		$serializer = $this->getMockBuilder( Serializer::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -51,7 +56,7 @@ class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Serializer\Serializer',
+			Serializer::class,
 			$instance->newSerializerByType( $type )
 		);
 	}
@@ -67,7 +72,7 @@ class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Serializer\RDFXMLSerializer',
+			RDFXMLSerializer::class,
 			$instance->newRDFXMLSerializer()
 		);
 	}
@@ -76,7 +81,7 @@ class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Serializer\TurtleSerializer',
+			TurtleSerializer::class,
 			$instance->newTurtleSerializer()
 		);
 	}
@@ -89,7 +94,7 @@ class ExporterFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ExporterFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\ExpDataFactory',
+			ExpDataFactory::class,
 			$instance->newExpDataFactory( $exporter )
 		);
 	}

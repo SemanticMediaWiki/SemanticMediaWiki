@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Query\Cache;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Cache\CacheStats;
 
 /**
@@ -13,12 +15,12 @@ use SMW\Query\Cache\CacheStats;
  *
  * @author mwjames
  */
-class CacheStatsTest extends \PHPUnit\Framework\TestCase {
+class CacheStatsTest extends TestCase {
 
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

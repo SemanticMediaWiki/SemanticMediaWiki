@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
@@ -15,29 +20,29 @@ use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
  *
  * @author mwjames
  */
-class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
+class UnusedPropertyListLookupTest extends TestCase {
 
 	private $store;
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\UnusedPropertyListLookup',
+			UnusedPropertyListLookup::class,
 			new UnusedPropertyListLookup( $this->store, $this->propertyStatisticsStore, null )
 		);
 	}
@@ -100,14 +105,14 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$row = new \stdClass;
 		$row->smw_title = 'Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,14 +152,14 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$row = new \stdClass;
 		$row->smw_title = '-Foo';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -177,7 +182,7 @@ class UnusedPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 

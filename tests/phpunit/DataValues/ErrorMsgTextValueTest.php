@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\ErrorMsgTextValue;
 
@@ -14,7 +15,7 @@ use SMW\DataValues\ErrorMsgTextValue;
  *
  * @author mwjames
  */
-class ErrorMsgTextValueTest extends \PHPUnit\Framework\TestCase {
+class ErrorMsgTextValueTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -24,7 +25,7 @@ class ErrorMsgTextValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ErrorMsgTextValue',
+			ErrorMsgTextValue::class,
 			new ErrorMsgTextValue()
 		);
 	}

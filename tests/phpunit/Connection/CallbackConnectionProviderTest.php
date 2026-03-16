@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Connection;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Connection\CallbackConnectionProvider;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Connection\CallbackConnectionProvider;
  *
  * @author mwjames
  */
-class CallbackConnectionProviderTest extends \PHPUnit\Framework\TestCase {
+class CallbackConnectionProviderTest extends TestCase {
 
 	private $connection;
 

@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Renderer;
 
+use MediaWiki\Message\Message;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -14,7 +18,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
+class HtmlFormRendererTest extends TestCase {
 
 	private $stringValidator;
 
@@ -25,26 +29,26 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlFormRenderer',
+			HtmlFormRenderer::class,
 			new HtmlFormRenderer( $title, $messageBuilder )
 		);
 	}
 
 	public function testGetMessageBuilder() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -57,11 +61,11 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetForm() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +85,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 			->method( 'text' )
 			->willReturn( 'SomeText' );
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,11 +124,11 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOptionsSelecList() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +136,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 			->method( 'text' )
 			->willReturn( 'SomeText' );
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,11 +173,11 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckbox() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -181,7 +185,7 @@ class HtmlFormRendererTest extends \PHPUnit\Framework\TestCase {
 			->method( 'text' )
 			->willReturn( 'SomeText' );
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 

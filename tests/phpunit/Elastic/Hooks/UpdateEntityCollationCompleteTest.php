@@ -2,7 +2,15 @@
 
 namespace SMW\Tests\Elastic\Hooks;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
+use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -15,7 +23,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
+class UpdateEntityCollationCompleteTest extends TestCase {
 
 	private TestEnvironment $testEnvironment;
 	private $store;
@@ -28,15 +36,15 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
 
-		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,15 +56,15 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSemanticData' )
 			->willReturn( $semanticData );
 
-		$this->rebuilder = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rebuilder' )
+		$this->rebuilder = $this->getMockBuilder( Rebuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +96,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunUpdate() {
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,12 +2,18 @@
 
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
+use MediaWiki\Message\Message;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\SearchByProperty\PageBuilder;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMW\Query\QueryResult;
+use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -19,7 +25,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class PageBuilderTest extends \PHPUnit\Framework\TestCase {
+class PageBuilderTest extends TestCase {
 
 	private $stringValidator;
 	private $localizer;
@@ -32,30 +38,30 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$HtmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$HtmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$PageRequestOptions = $this->getMockBuilder( '\SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions' )
+		$PageRequestOptions = $this->getMockBuilder( PageRequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$QueryResultLookup = $this->getMockBuilder( '\SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup' )
+		$QueryResultLookup = $this->getMockBuilder( QueryResultLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SearchByProperty\PageBuilder',
+			PageBuilder::class,
 			new PageBuilder( $HtmlFormRenderer, $PageRequestOptions, $QueryResultLookup )
 		);
 	}
 
 	public function testGetHtmlForExactValueSearch() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +69,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'numParams' )
 			->willReturnSelf();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +77,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessage' )
 			->willReturn( $message );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -101,11 +107,11 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtmlForNearbyResultsSearch() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -117,7 +123,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'rawParams' )
 			->willReturnSelf();
 
-		$messageBuilder = $this->getMockBuilder( '\SMW\MediaWiki\MessageBuilder' )
+		$messageBuilder = $this->getMockBuilder( MessageBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +131,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessage' )
 			->willReturn( $message );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,7 +139,7 @@ class PageBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNext' )
 			->willReturn( false );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

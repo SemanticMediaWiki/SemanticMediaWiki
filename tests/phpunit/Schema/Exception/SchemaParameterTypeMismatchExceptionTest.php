@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Schema\Exception\SchemaParameterTypeMismatchException;
  *
  * @author mwjames
  */
-class SchemaParameterTypeMismatchExceptionTest extends \PHPUnit\Framework\TestCase {
+class SchemaParameterTypeMismatchExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaParameterTypeMismatchException( 'foo', 'array' );

@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\SQLStore\ChangeOp;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\SQLStore\ChangeOp\TableChangeOp;
 
 /**
  * @covers \SMW\SQLStore\ChangeOp\ChangeDiff
@@ -15,7 +18,7 @@ use SMW\SQLStore\ChangeOp\ChangeDiff;
  *
  * @author mwjames
  */
-class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
+class ChangeDiffTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -73,11 +76,11 @@ class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSave() {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TableChangeOp' )
+		$tableChangeOp = $this->getMockBuilder( TableChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,11 +103,11 @@ class ChangeDiffTest extends \PHPUnit\Framework\TestCase {
 	public function testFetch() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tableChangeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\TableChangeOp' )
+		$tableChangeOp = $this->getMockBuilder( TableChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 

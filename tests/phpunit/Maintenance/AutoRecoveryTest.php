@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Maintenance;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\AutoRecovery;
+use SMW\Site;
 use SMW\Tests\TestEnvironment;
+use SMW\Utils\File;
 
 /**
  * @covers \SMW\Maintenance\AutoRecovery
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
+class AutoRecoveryTest extends TestCase {
 
 	private $testEnvironment;
 	private $file;
@@ -22,9 +25,9 @@ class AutoRecoveryTest extends \PHPUnit\Framework\TestCase {
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
-		$this->site = \SMW\Site::id();
+		$this->site = Site::id();
 
-		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$this->file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

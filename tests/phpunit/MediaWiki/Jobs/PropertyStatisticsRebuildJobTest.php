@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob
@@ -15,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuildJobTest extends \PHPUnit\Framework\TestCase {
+class PropertyStatisticsRebuildJobTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -28,15 +33,15 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$connection->expects( $this->any() )
 			->method( 'select' )
-			->willReturn( new \Wikimedia\Rdbms\FakeResultWrapper( [ $row ] ) );
+			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -57,12 +62,12 @@ class PropertyStatisticsRebuildJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
+			PropertyStatisticsRebuildJob::class,
 			new PropertyStatisticsRebuildJob( $title )
 		);
 	}

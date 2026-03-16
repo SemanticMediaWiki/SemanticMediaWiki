@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Elastic;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Config;
+use SMW\Elastic\ElasticStore;
 
 /**
  * @covers \SMW\Elastic\Config
@@ -13,7 +15,7 @@ use SMW\Elastic\Config;
  *
  * @author mwjames
  */
-class ConfigTest extends \PHPUnit\Framework\TestCase {
+class ConfigTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -34,7 +36,7 @@ class ConfigTest extends \PHPUnit\Framework\TestCase {
 
 	public function testIsDefaultStore_True() {
 		$instance = new Config(
-			[ Config::DEFAULT_STORE => 'SMW\Elastic\ElasticStore' ]
+			[ Config::DEFAULT_STORE => ElasticStore::class ]
 		);
 
 		$this->assertTrue(

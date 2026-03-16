@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
+class BrowseBySubjectTest extends TestCase {
 
 	private $testEnvironment;
 	private $apiFactory;
@@ -57,7 +59,7 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 			new DIWikiPage( 'Foo', NS_MAIN )
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -104,7 +106,7 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( $dataItem );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -157,7 +159,7 @@ class BrowseBySubjectTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( $dataItem );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

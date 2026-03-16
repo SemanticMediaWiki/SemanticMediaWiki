@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
+use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 
@@ -23,7 +24,7 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testShouldPing() {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +51,7 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	 * @dataProvider endpointProvider
 	 */
 	public function testGetEndpoint( $endpoint, $expected ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +72,7 @@ class GenericRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	}
 
 	public function testGetLastErrorCode() {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

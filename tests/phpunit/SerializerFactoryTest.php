@@ -2,7 +2,17 @@
 
 namespace SMW\Tests;
 
+use Deserializers\Deserializer;
+use PHPUnit\Framework\TestCase;
+use Serializers\Serializer;
+use SMW\Deserializers\ExpDataDeserializer;
+use SMW\Deserializers\SemanticDataDeserializer;
+use SMW\Query\QueryResult;
+use SMW\SemanticData;
 use SMW\SerializerFactory;
+use SMW\Serializers\ExpDataSerializer;
+use SMW\Serializers\QueryResultSerializer;
+use SMW\Serializers\SemanticDataSerializer;
 
 /**
  * @covers \SMW\SerializerFactory
@@ -13,11 +23,11 @@ use SMW\SerializerFactory;
  *
  * @author mwjames
  */
-class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
+class SerializerFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SerializerFactory',
+			SerializerFactory::class,
 			new SerializerFactory()
 		);
 	}
@@ -26,7 +36,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Serializers\SemanticDataSerializer',
+			SemanticDataSerializer::class,
 			$instance->newSemanticDataSerializer()
 		);
 	}
@@ -35,7 +45,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\SemanticDataDeserializer',
+			SemanticDataDeserializer::class,
 			$instance->newSemanticDataDeserializer()
 		);
 	}
@@ -44,7 +54,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Serializers\QueryResultSerializer',
+			QueryResultSerializer::class,
 			$instance->newQueryResultSerializer()
 		);
 	}
@@ -53,7 +63,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Serializers\ExpDataSerializer',
+			ExpDataSerializer::class,
 			$instance->newExpDataSerializer()
 		);
 	}
@@ -62,7 +72,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\ExpDataDeserializer',
+			ExpDataDeserializer::class,
 			$instance->newExpDataDeserializer()
 		);
 	}
@@ -74,7 +84,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\Serializers\Serializer',
+			Serializer::class,
 			$instance->getSerializerFor( $object )
 		);
 	}
@@ -86,7 +96,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SerializerFactory();
 
 		$this->assertInstanceOf(
-			'\Deserializers\Deserializer',
+			Deserializer::class,
 			$instance->getDeserializerFor( $serialization )
 		);
 	}
@@ -107,7 +117,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function objectToSerializerProvider() {
 		# 0
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +126,7 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,12 +151,12 @@ class SerializerFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		# 0
 		$provider[] = [
-			[ 'serializer' => 'SMW\Serializers\SemanticDataSerializer', 'subject' => 'Foo#0##' ]
+			[ 'serializer' => SemanticDataSerializer::class, 'subject' => 'Foo#0##' ]
 		];
 
 		# 1
 		$provider[] = [
-			[ 'serializer' => 'SMW\Serializers\ExpDataSerializer' ]
+			[ 'serializer' => ExpDataSerializer::class ]
 		];
 
 		return $provider;

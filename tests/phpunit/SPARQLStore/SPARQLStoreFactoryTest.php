@@ -2,7 +2,15 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
+use SMW\QueryEngine;
+use SMW\SPARQLStore\ReplicationDataTruncator;
+use SMW\SPARQLStore\RepositoryConnection;
+use SMW\SPARQLStore\RepositoryRedirectLookup;
+use SMW\SPARQLStore\SPARQLStore;
 use SMW\SPARQLStore\SPARQLStoreFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SPARQLStore\SPARQLStoreFactory
@@ -13,18 +21,18 @@ use SMW\SPARQLStore\SPARQLStoreFactory;
  *
  * @author mwjames
  */
-class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
+class SPARQLStoreFactoryTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$this->store = $this->getMockBuilder( SPARQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +43,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\SPARQLStoreFactory',
+			SPARQLStoreFactory::class,
 			new SPARQLStoreFactory( $this->store )
 		);
 	}
@@ -44,8 +52,8 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\SQLStore',
-			$instance->getBaseStore( '\SMW\SQLStore\SQLStore' )
+			SQLStore::class,
+			$instance->getBaseStore( SQLStore::class )
 		);
 	}
 
@@ -53,7 +61,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\QueryEngine',
+			QueryEngine::class,
 			$instance->newMasterQueryEngine()
 		);
 	}
@@ -62,7 +70,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\Connection\ConnectionManager',
+			ConnectionManager::class,
 			$instance->getConnectionManager()
 		);
 	}
@@ -71,7 +79,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryRedirectLookup',
+			RepositoryRedirectLookup::class,
 			$instance->newRepositoryRedirectLookup()
 		);
 	}
@@ -80,7 +88,7 @@ class SPARQLStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStoreFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\ReplicationDataTruncator',
+			ReplicationDataTruncator::class,
 			$instance->newReplicationDataTruncator()
 		);
 	}

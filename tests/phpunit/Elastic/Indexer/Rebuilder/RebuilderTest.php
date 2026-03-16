@@ -2,7 +2,20 @@
 
 namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
+use Onoi\MessageReporter\NullMessageReporter;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\Indexer\Document;
+use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\Elastic\Indexer\FileIndexer;
+use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
+use SMW\Elastic\Installer;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Options;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
  * @covers \SMW\Elastic\Indexer\Rebuilder\Rebuilder
@@ -13,7 +26,7 @@ use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
  *
  * @author mwjames
  */
-class RebuilderTest extends \PHPUnit\Framework\TestCase {
+class RebuilderTest extends TestCase {
 
 	private $connection;
 	private $fileIndexer;
@@ -23,27 +36,27 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	private $messageReporter;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$this->indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fileIndexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\FileIndexer' )
+		$this->fileIndexer = $this->getMockBuilder( FileIndexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->documentCreator = $this->getMockBuilder( '\SMW\Elastic\Indexer\DocumentCreator' )
+		$this->documentCreator = $this->getMockBuilder( DocumentCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
+		$this->installer = $this->getMockBuilder( Installer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\NullMessageReporter' )
+		$this->messageReporter = $this->getMockBuilder( NullMessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,11 +73,11 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelect() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -196,19 +209,19 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRebuild() {
-		$options = $this->getMockBuilder( '\SMW\Options' )
+		$options = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

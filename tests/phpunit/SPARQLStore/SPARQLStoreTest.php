@@ -3,11 +3,22 @@
 namespace SMW\Tests\SPARQLStore;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\Query\Language\Description;
 use SMW\SemanticData;
+use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
+use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnection;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
+use SMW\SPARQLStore\RespositoryConnection;
 use SMW\SPARQLStore\SPARQLStore;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Subobject;
 use SMW\Tests\TestEnvironment;
 use SMWExporter as Exporter;
@@ -21,7 +32,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
+class SPARQLStoreTest extends TestCase {
 
 	private $semanticDataFactory;
 
@@ -34,7 +45,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\SPARQLStore',
+			SPARQLStore::class,
 			new SPARQLStore()
 		);
 	}
@@ -42,11 +53,11 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSemanticDataOnMockBaseStore() {
 		$subject = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$baseStore = $this->getMockBuilder( '\SMW\Store' )
+		$baseStore = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -58,7 +69,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SPARQLStore( $baseStore );
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$instance->getSemanticData( $subject )
 		);
 	}
@@ -73,7 +84,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			$expResource->getNamespaceId() => $expResource->getNamespace()
 		];
 
-		$baseStore = $this->getMockBuilder( '\SMW\Store' )
+		$baseStore = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -82,7 +93,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->with( $title )
 			->willReturn( true );
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
+		$sparqlDatabase = $this->getMockBuilder( GenericRepositoryConnector::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +109,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 				$extraNamespaces )
 			->willReturn( true );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,15 +131,15 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			$semanticData->getSubject()
 		);
 
-		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$baseStore = $this->getMockBuilder( '\SMW\Store' )
+		$baseStore = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$sparqlDatabase = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
+		$sparqlDatabase = $this->getMockBuilder( GenericRepositoryConnector::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -139,7 +150,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 		$sparqlDatabase->expects( $this->once() )
 			->method( 'insertData' );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,19 +169,19 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 		$oldTitle = $titleFactory->newFromText( __METHOD__ . '-old' );
 		$newTitle = $titleFactory->newFromText( __METHOD__ . '-new' );
 
-		$respositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RespositoryConnection' )
+		$respositoryConnection = $this->getMockBuilder( RespositoryConnection::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'insertDelete' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'changeTitle' );
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$instance = $this->getMockBuilder( SPARQLStore::class )
 			->setConstructorArgs( [ $store ] )
 			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
@@ -201,11 +212,11 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			$subobject->getContainer()
 		);
 
-		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
+		$connection = $this->getMockBuilder( GenericRepositoryConnector::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +227,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->atLeastOnce() )
 			->method( 'insertData' );
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$instance = $this->getMockBuilder( SPARQLStore::class )
 			->setMethods( [ 'doSparqlDataDelete', 'getConnection' ] )
 			->getMock();
 
@@ -232,15 +243,15 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDoSparqlDataUpdate_FailedPingThrowsException() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector' )
+		$connection = $this->getMockBuilder( GenericRepositoryConnector::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -255,7 +266,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->never() )
 			->method( 'insertData' );
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$instance = $this->getMockBuilder( SPARQLStore::class )
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
 
@@ -263,13 +274,13 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
+		$this->expectException( HttpEndpointConnectionException::class );
 
 		$instance->doSparqlDataUpdate( $semanticData );
 	}
 
 	public function testGetQueryResult() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -290,7 +301,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'warmUpCache' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
 
@@ -298,11 +309,11 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idLookup );
 
-		$repositoryClient = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryClient' )
+		$repositoryClient = $this->getMockBuilder( RepositoryClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$connection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -310,7 +321,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRepositoryClient' )
 			->willReturn( $repositoryClient );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -329,14 +340,14 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$store->expects( $this->once() )
 			->method( 'getQueryResult' );
 
-		$repositoryClient = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryClient' )
+		$repositoryClient = $this->getMockBuilder( RepositoryClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -344,7 +355,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryEndpoint' )
 			->willReturn( false );
 
-		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$connection = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -352,7 +363,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRepositoryClient' )
 			->willReturn( $repositoryClient );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -367,7 +378,7 @@ class SPARQLStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPropertyTableIdReferenceFinder() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

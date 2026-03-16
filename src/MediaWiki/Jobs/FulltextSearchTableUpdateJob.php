@@ -7,6 +7,7 @@ use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GPL-2.0-or-later
@@ -36,7 +37,7 @@ class FulltextSearchTableUpdateJob extends Job {
 		$fulltextSearchTableFactory = new FulltextSearchTableFactory();
 
 		$textChangeUpdater = $fulltextSearchTableFactory->newTextChangeUpdater(
-			ApplicationFactory::getInstance()->getStore( '\SMW\SQLStore\SQLStore' )
+			ApplicationFactory::getInstance()->getStore( SQLStore::class )
 		);
 
 		$textChangeUpdater->pushUpdatesFromJobParameters(

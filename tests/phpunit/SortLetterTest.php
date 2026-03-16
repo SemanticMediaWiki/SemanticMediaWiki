@@ -2,7 +2,11 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
+use SMW\MediaWiki\Collator;
 use SMW\SortLetter;
+use SMW\Store;
 
 /**
  * @covers \SMW\SortLetter
@@ -13,18 +17,18 @@ use SMW\SortLetter;
  *
  * @author mwjames
  */
-class SortLetterTest extends \PHPUnit\Framework\TestCase {
+class SortLetterTest extends TestCase {
 
 	private $store;
 	private $collator;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getWikiPageSortKey' ] )
 			->getMockForAbstractClass();
 
-		$this->collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
+		$this->collator = $this->getMockBuilder( Collator::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -37,7 +41,7 @@ class SortLetterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindFirstLetter() {
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

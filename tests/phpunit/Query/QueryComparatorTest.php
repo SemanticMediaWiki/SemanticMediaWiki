@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\QueryComparator;
 
 /**
@@ -13,18 +14,18 @@ use SMW\Query\QueryComparator;
  *
  * @author mwjames
  */
-class QueryComparatorTest extends \PHPUnit\Framework\TestCase {
+class QueryComparatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$comparatorList = '';
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryComparator',
+			QueryComparator::class,
 			new QueryComparator( $comparatorList, false )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryComparator',
+			QueryComparator::class,
 			QueryComparator::getInstance()
 		);
 	}

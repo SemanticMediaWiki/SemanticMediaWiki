@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\EntityStore\FieldList;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SQLStore\EntityStore\FieldList;
  *
  * @author mwjames
  */
-class FieldListTest extends \PHPUnit\Framework\TestCase {
+class FieldListTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

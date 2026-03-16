@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\LanguageCodeValue;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
@@ -16,11 +17,11 @@ use SMW\DataValues\LanguageCodeValue;
  * @author mwjames
  * @reviewer thomas-topway-it
  */
-class LanguageCodeMappingValueTest extends \PHPUnit\Framework\TestCase {
+class LanguageCodeMappingValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\LanguageCodeValue',
+			LanguageCodeValue::class,
 			new LanguageCodeValue()
 		);
 	}

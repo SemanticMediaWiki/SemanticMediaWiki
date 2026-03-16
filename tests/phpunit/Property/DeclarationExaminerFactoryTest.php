@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\Property;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminerFactory;
+use SMW\Property\DeclarationExaminerMsgBuilder;
+use SMW\Store;
 
 /**
  * @covers \SMW\Property\DeclarationExaminerFactory
@@ -13,7 +17,7 @@ use SMW\Property\DeclarationExaminerFactory;
  *
  * @author mwjames
  */
-class DeclarationExaminerFactoryTest extends \PHPUnit\Framework\TestCase {
+class DeclarationExaminerFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -26,20 +30,20 @@ class DeclarationExaminerFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DeclarationExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\DeclarationExaminerMsgBuilder',
+			DeclarationExaminerMsgBuilder::class,
 			$instance->newDeclarationExaminerMsgBuilder()
 		);
 	}
 
 	public function testCanConstructDeclarationExaminer() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new DeclarationExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Property\DeclarationExaminer',
+			DeclarationExaminer::class,
 			$instance->newDeclarationExaminer( $store )
 		);
 	}

@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Filters;
 
+use MediaWiki\Html\TemplateParser;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
+use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter
@@ -13,7 +18,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Filters\PropertyFilter;
  *
  * @author mwjames
  */
-class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
+class PropertyFilterTest extends TestCase {
 
 	private $templateParser;
 	private $treeBuilder;
@@ -23,19 +28,19 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->treeBuilder = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder' )
+		$this->treeBuilder = $this->getMockBuilder( TreeBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$this->urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\ProfileForm\Forms\Field;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\Field;
  *
  * @author mwjames
  */
-class FieldTest extends \PHPUnit\Framework\TestCase {
+class FieldTest extends TestCase {
 
 	public function testTooltip() {
 		$instance = new Field();

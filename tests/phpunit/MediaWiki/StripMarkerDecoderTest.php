@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\StripMarkerDecoder;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\StripMarkerDecoder;
  *
  * @author mwjames
  */
-class StripMarkerDecoderTest extends \PHPUnit\Framework\TestCase {
+class StripMarkerDecoderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$stripState = $this->getMockBuilder( '\StripState' )
