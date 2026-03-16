@@ -2,9 +2,17 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Content\Content;
 use MediaWiki\Content\Renderer\ContentRenderer;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\ContentParser;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\ContentParser
@@ -15,7 +23,7 @@ use SMW\ContentParser;
  *
  * @author mwjames
  */
-class ContentParserTest extends \PHPUnit\Framework\TestCase {
+class ContentParserTest extends TestCase {
 
 	private $revisionGuard;
 	private $title;
@@ -32,19 +40,19 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$this->parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$this->parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +70,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,12 +106,12 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunParseFromRevision() {
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->redefineMediaWikiService( 'ContentRenderer', function () {
-			$contentRenderer = $this->getMockBuilder( '\MediaWiki\Content\Renderer\ContentRenderer' )
+			$contentRenderer = $this->getMockBuilder( ContentRenderer::class )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -114,7 +122,7 @@ class ContentParserTest extends \PHPUnit\Framework\TestCase {
 			return $contentRenderer;
 		} );
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 

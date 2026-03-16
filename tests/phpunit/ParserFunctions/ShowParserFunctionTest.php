@@ -4,10 +4,18 @@ namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\MessageFormatter;
+use SMW\ParserData;
 use SMW\ParserFunctions\AskParserFunction;
+use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 use SMW\ParserFunctions\ShowParserFunction;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @covers \SMW\ParserFunctions\ShowParserFunction
@@ -18,7 +26,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class ShowParserFunctionTest extends TestCase {
 
 	private $testEnvironment;
 	private $semanticDataValidator;
@@ -36,15 +44,15 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->addConfiguration( 'smwgQueryResultCacheType', false );
 		$this->testEnvironment->addConfiguration( 'smwgQFilterDuplicates', false );
 
-		$this->messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$this->messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+		$this->circularReferenceGuard = $this->getMockBuilder( CircularReferenceGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->expensiveFuncExecutionWatcher = $this->getMockBuilder( '\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher' )
+		$this->expensiveFuncExecutionWatcher = $this->getMockBuilder( ExpensiveFuncExecutionWatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +60,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasReachedExpensiveLimit' )
 			->willReturn( false );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +68,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrors' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -77,7 +85,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +97,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\ShowParserFunction',
+			ShowParserFunction::class,
 			new ShowParserFunction( $askParserFunction )
 		);
 	}
@@ -122,7 +130,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsQueryDisabled() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,7 +174,7 @@ class ShowParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance->parse( $params );
 
 		foreach ( $parserData->getSemanticData()->getSubSemanticData() as $containerSemanticData ) {
-			$this->assertInstanceOf( '\SMW\DataModel\ContainerSemanticData', $containerSemanticData );
+			$this->assertInstanceOf( ContainerSemanticData::class, $containerSemanticData );
 
 			$this->semanticDataValidator->assertThatPropertiesAreSet(
 				$expected,

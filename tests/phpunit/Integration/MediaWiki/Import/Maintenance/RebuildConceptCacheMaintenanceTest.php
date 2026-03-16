@@ -3,6 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DIConcept;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -88,7 +89,7 @@ class RebuildConceptCacheMaintenanceTest extends SMWIntegrationTestCase {
 			->run();
 
 		$this->assertInstanceOf(
-			'SMW\DIConcept',
+			DIConcept::class,
 			$this->getStore()->getConceptCacheStatus( $conceptPage->getTitle() )
 		);
 

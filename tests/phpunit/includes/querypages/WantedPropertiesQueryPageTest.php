@@ -2,8 +2,10 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Settings;
+use SMW\Store;
 use SMW\WantedPropertiesQueryPage;
 
 /**
@@ -15,7 +17,7 @@ use SMW\WantedPropertiesQueryPage;
  *
  * @author mwjames
  */
-class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
+class WantedPropertiesQueryPageTest extends TestCase {
 
 	private $store;
 	private $skin;
@@ -25,7 +27,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -40,7 +42,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\WantedPropertiesQueryPage',
+			WantedPropertiesQueryPage::class,
 			new WantedPropertiesQueryPage( $this->store, $this->settings )
 		);
 	}

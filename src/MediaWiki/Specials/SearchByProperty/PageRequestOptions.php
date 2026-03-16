@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\Encoder;
+use SMWDataValue as DataValue;
 use SMWNumberValue as NumberValue;
 
 /**
@@ -47,7 +48,7 @@ class PageRequestOptions {
 	public $valueString;
 
 	/**
-	 * @var \SMWDataValue
+	 * @var DataValue
 	 */
 	public $value;
 

@@ -5,7 +5,12 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\FileUpload;
+use SMW\MediaWiki\PageCreator;
+use SMW\NamespaceExaminer;
+use SMW\Property\SpecificationLookup;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileUploadTest extends \PHPUnit\Framework\TestCase {
+class FileUploadTest extends TestCase {
 
 	private $testEnvironment;
 	private $propertySpecificationLookup;
@@ -36,7 +41,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
@@ -47,7 +52,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +65,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$hookContainer = $this->getMockBuilder( HookContainer::class )
@@ -76,7 +81,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 	public function testprocessEnabledNamespace() {
 		$title = Title::newFromText( __METHOD__, NS_FILE );
 
-		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -104,7 +109,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFile' )
 			->willReturn( $file );
 
-		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'createFilePage' ] )
 			->getMock();
@@ -133,7 +138,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 	public function testTryToProcessDisabledNamespace() {
 		$title = Title::newFromText( __METHOD__, NS_MAIN );
 
-		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +154,7 @@ class FileUploadTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$pageCreator = $this->getMockBuilder( 'SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Importer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Importer\ImportContents;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Importer\ImportContents;
  *
  * @author mwjames
  */
-class ImportContentsTest extends \PHPUnit\Framework\TestCase {
+class ImportContentsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Importer\ImportContents',
+			ImportContents::class,
 			new ImportContents()
 		);
 	}

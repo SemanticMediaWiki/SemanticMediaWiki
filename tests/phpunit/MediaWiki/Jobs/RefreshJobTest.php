@@ -3,8 +3,12 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Jobs\RefreshJob;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\RefreshJob
@@ -15,7 +19,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class RefreshJobTest extends \PHPUnit\Framework\TestCase {
+class RefreshJobTest extends TestCase {
 
 	/** @var int */
 	protected $controlRefreshDataIndex;
@@ -27,7 +31,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -41,12 +45,12 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\RefreshJob',
+			RefreshJob::class,
 			new RefreshJob( $title )
 		);
 	}
@@ -59,7 +63,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedToRun = $expected['spos'] === null ? $this->once() : $this->once();
 
-		$rebuilder = $this->getMockBuilder( '\SMW\SQLStore\Rebuilder\Rebuilder' )
+		$rebuilder = $this->getMockBuilder( Rebuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +71,7 @@ class RefreshJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'rebuild' )
 			->willReturn( $parameters['spos'] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->setMethods( [ 'refreshData' ] )
 			->getMockForAbstractClass();
 

@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\Query\Language\ThingDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter;
@@ -18,7 +20,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ThingDescriptionInterpreterTest extends TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -29,22 +31,22 @@ class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter',
+			ThingDescriptionInterpreter::class,
 			new ThingDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanBuildConditionFor() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
+		$description = $this->getMockBuilder( ThingDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +87,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = TrueCondition::class;
 
 		$description = new ThingDescription();
 		$orderByProperty = null;
@@ -102,7 +104,7 @@ class ThingDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = TrueCondition::class;
 
 		$description = new ThingDescription();
 		$orderByProperty = new DIProperty( 'Foo' );

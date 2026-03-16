@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ListAugmentor
@@ -13,10 +16,10 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
  *
  * @author mwjames
  */
-class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
+class ListAugmentorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +63,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -110,7 +113,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -159,7 +162,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->usage_count = 1111;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +170,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $row );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

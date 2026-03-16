@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\DIProperty;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener
@@ -14,7 +20,7 @@ use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
  *
  * @author mwjames
  */
-class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
+class PropertyChangeListenerTest extends TestCase {
 
 	private $store;
 	private $logger;
@@ -25,15 +31,15 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -48,7 +54,7 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 	public function testCanTrigger() {
 		$property = new DIProperty( 'Foo' );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +81,7 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 	public function testRecordAndMatch() {
 		$property = new DIProperty( 'Foo' );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -115,7 +121,7 @@ class PropertyChangeListenerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunChangeListeners() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

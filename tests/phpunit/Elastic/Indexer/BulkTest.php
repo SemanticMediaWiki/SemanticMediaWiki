@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\Document;
 
 /**
  * @covers \SMW\Elastic\Indexer\Bulk
@@ -13,12 +16,12 @@ use SMW\Elastic\Indexer\Bulk;
  *
  * @author mwjames
  */
-class BulkTest extends \PHPUnit\Framework\TestCase {
+class BulkTest extends TestCase {
 
 	private $client;
 
 	protected function setUp(): void {
-		$this->client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -135,7 +138,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInfuseDocument_Insert() {
-		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$subDocument = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,7 +150,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubDocuments' )
 			->willReturn( [] );
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -193,7 +196,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInfuseDocument_Delete_Index() {
-		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$subDocument = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -205,7 +208,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubDocuments' )
 			->willReturn( [] );
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -252,7 +255,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInfuseDocument_Delete_Upsert_Index() {
-		$subDocument = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$subDocument = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -264,7 +267,7 @@ class BulkTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubDocuments' )
 			->willReturn( [] );
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 

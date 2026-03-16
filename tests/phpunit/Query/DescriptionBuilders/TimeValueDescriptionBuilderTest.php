@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIProperty;
 use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder
@@ -13,7 +19,7 @@ use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
  *
  * @author mwjames
  */
-class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
+class TimeValueDescriptionBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -52,7 +58,7 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$timeValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->willReturn( new \SMW\DIProperty( 'Foo' ) );
+			->willReturn( new DIProperty( 'Foo' ) );
 
 		$instance = new TimeValueDescriptionBuilder();
 
@@ -74,7 +80,7 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new TimeValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			$instance->newDescription( $timeValue, 'Foo' )
 		);
 	}
@@ -93,17 +99,17 @@ class TimeValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function valueProvider() {
 		$provider[] = [
 			'Jan 1970',
-			'\SMW\Query\Language\ValueDescription'
+			ValueDescription::class
 		];
 
 		$provider[] = [
 			'~Jan 1970',
-			'\SMW\Query\Language\Conjunction'
+			Conjunction::class
 		];
 
 		$provider[] = [
 			'!~Jan 1970',
-			'\SMW\Query\Language\Disjunction'
+			Disjunction::class
 		];
 
 		return $provider;

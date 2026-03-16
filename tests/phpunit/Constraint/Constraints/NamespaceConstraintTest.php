@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\NamespaceConstraint;
 use SMW\DataItemFactory;
 use SMW\Tests\TestEnvironment;
@@ -15,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class NamespaceConstraintTest extends \PHPUnit\Framework\TestCase {
+class NamespaceConstraintTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

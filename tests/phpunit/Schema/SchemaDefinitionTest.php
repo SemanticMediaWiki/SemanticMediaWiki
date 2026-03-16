@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\Schema;
 use SMW\Schema\SchemaDefinition;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Schema\SchemaDefinition;
  *
  * @author mwjames
  */
-class SchemaDefinitionTest extends \PHPUnit\Framework\TestCase {
+class SchemaDefinitionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SchemaDefinition( 'foo', [] );
@@ -24,7 +26,7 @@ class SchemaDefinitionTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Schema\Schema',
+			Schema::class,
 			$instance
 		);
 

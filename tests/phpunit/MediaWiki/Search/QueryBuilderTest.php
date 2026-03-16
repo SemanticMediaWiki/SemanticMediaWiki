@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\QueryBuilder;
+use SMW\Query\Language\ThingDescription;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Search\QueryBuilder
@@ -13,17 +17,17 @@ use SMW\MediaWiki\Search\QueryBuilder;
  *
  * @author mwjames
  */
-class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
+class QueryBuilderTest extends TestCase {
 
 	private $webRequest;
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -60,7 +64,7 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->webRequest
 		);
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
+		$description = $this->getMockBuilder( ThingDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 

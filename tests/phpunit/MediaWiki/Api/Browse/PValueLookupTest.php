@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
+use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -16,19 +21,19 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class PValueLookupTest extends \PHPUnit\Framework\TestCase {
+class PValueLookupTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->store->expects( $this->any() )
 			->method( 'service' )
 			->with( 'ProximityPropertyValueLookup' )
-			->willReturn( new \SMW\SQLStore\Lookup\ProximityPropertyValueLookup( $this->store ) );
+			->willReturn( new ProximityPropertyValueLookup( $this->store ) );
 	}
 
 	public function testCanConstruct() {
@@ -43,7 +48,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +79,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -123,11 +128,11 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
-		$query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -149,7 +154,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 			->with( new DIProperty( 'Foobar' ) )
 			->willReturn( 42 );
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -193,7 +198,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -224,7 +229,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( false );
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

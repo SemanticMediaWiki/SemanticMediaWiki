@@ -2,7 +2,10 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\PropertyAliasFinder;
+use SMW\Store;
 
 /**
  * @covers \SMW\PropertyAliasFinder
@@ -13,7 +16,7 @@ use SMW\PropertyAliasFinder;
  *
  * @author mwjames
  */
-class PropertyAliasFinderTest extends \PHPUnit\Framework\TestCase {
+class PropertyAliasFinderTest extends TestCase {
 
 	private $cache;
 	private $store;
@@ -21,11 +24,11 @@ class PropertyAliasFinderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}

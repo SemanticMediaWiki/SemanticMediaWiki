@@ -5,6 +5,7 @@ namespace SMW\DataValues\Time;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
+use Exception;
 
 /**
  * @private
@@ -246,7 +247,7 @@ class Timezone {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
 			$offset = $dateTimeZone->getOffset( new DateTime() );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			//
 		}
 
@@ -307,7 +308,7 @@ class Timezone {
 	public static function newDateTimeZone( $abbreviation ) {
 		try {
 			$dateTimeZone = new DateTimeZone( $abbreviation );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			if ( ( $name = self::getNameByAbbreviation( $abbreviation ) ) !== false ) {
 				return new DateTimeZone( $name );
 			}

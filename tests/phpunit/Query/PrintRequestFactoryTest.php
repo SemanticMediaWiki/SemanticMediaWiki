@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
@@ -15,11 +16,11 @@ use SMW\Query\PrintRequestFactory;
  *
  * @author mwjames
  */
-class PrintRequestFactoryTest extends \PHPUnit\Framework\TestCase {
+class PrintRequestFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Query\PrintRequestFactory',
+			PrintRequestFactory::class,
 			new PrintRequestFactory()
 		);
 	}
@@ -32,7 +33,7 @@ class PrintRequestFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Query\PrintRequest',
+			PrintRequest::class,
 			$printRequest
 		);
 
@@ -50,7 +51,7 @@ class PrintRequestFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Query\PrintRequest',
+			PrintRequest::class,
 			$printRequest
 		);
 	}

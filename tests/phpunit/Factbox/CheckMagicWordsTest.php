@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Factbox;
 
+use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\Factbox\CheckMagicWords;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Factbox\CheckMagicWords;
  *
  * @author mwjames
  */
-class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
+class CheckMagicWordsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -26,7 +28,7 @@ class CheckMagicWordsTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider magicWordsProvider
 	 */
 	public function testGetMagicWords( $magicWords, $options, $expected ) {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 

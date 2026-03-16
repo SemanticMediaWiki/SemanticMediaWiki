@@ -2,10 +2,17 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\PropertyTableRowMapper;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowDiffer
@@ -17,12 +24,12 @@ use SMW\SQLStore\PropertyTableRowDiffer;
  *
  * @author mwjames
  */
-class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableRowDifferTest extends TestCase {
 
 	private $propertyTableRowMapper;
 
 	protected function setUp(): void {
-		$this->propertyTableRowMapper = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowMapper' )
+		$this->propertyTableRowMapper = $this->getMockBuilder( PropertyTableRowMapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -32,12 +39,12 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableRowDiffer',
+			PropertyTableRowDiffer::class,
 			new PropertyTableRowDiffer( $store, $this->propertyTableRowMapper )
 		);
 	}
@@ -48,7 +55,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
@@ -78,7 +85,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
@@ -99,13 +106,13 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			ChangeOp::class,
 			$instance->getChangeOp()
 		);
 	}
 
 	public function testChangeOpWithUnknownFixedProperty() {
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,7 +133,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [ $propertyTable ];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
@@ -151,7 +158,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			ChangeOp::class,
 			$instance->getChangeOp()
 		);
 
@@ -165,7 +172,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 			'smw_proptable_hash' => null
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -177,7 +184,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( (object)$row );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -198,7 +205,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [ $propertyTable ];
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -206,7 +213,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTableHashes' )
 			->willReturn( [ 'foo' => 'abcdef10001' ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables', 'getConnection', 'getObjectIds' ] )
 			->getMock();
@@ -241,7 +248,7 @@ class PropertyTableRowDifferTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			ChangeOp::class,
 			$instance->getChangeOp()
 		);
 

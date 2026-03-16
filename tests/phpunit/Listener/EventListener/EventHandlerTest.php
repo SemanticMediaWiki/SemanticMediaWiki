@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\Listener\EventListener;
 
+use Onoi\EventDispatcher\DispatchContext;
+use Onoi\EventDispatcher\Dispatcher\GenericEventDispatcher;
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
 use SMW\Listener\EventListener\EventHandler;
 
 /**
@@ -13,7 +17,7 @@ use SMW\Listener\EventListener\EventHandler;
  *
  * @author mwjames
  */
-class EventHandlerTest extends \PHPUnit\Framework\TestCase {
+class EventHandlerTest extends TestCase {
 
 	protected function tearDown(): void {
 		EventHandler::clear();
@@ -22,7 +26,7 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +42,7 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetEventDispatcher() {
-		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,26 +54,26 @@ class EventHandlerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Onoi\EventDispatcher\EventDispatcher',
+			EventDispatcher::class,
 			EventHandler::getInstance()->getEventDispatcher()
 		);
 	}
 
 	public function testCanConstructDispatchContext() {
-		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EventHandler( $eventDispatcher );
 
 		$this->assertInstanceOf(
-			'\Onoi\EventDispatcher\DispatchContext',
+			DispatchContext::class,
 			$instance->newDispatchContext()
 		);
 	}
 
 	public function testAddCallbackListenerForAdhocRegistration() {
-		$eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\Dispatcher\GenericEventDispatcher' )
+		$eventDispatcher = $this->getMockBuilder( GenericEventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

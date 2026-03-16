@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Result;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Result\ItemJournal;
@@ -15,7 +16,7 @@ use SMW\Query\Result\ItemJournal;
  *
  * @author mwjames
  */
-class ItemJournalTest extends \PHPUnit\Framework\TestCase {
+class ItemJournalTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Collator;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableFieldUpdater;
 
 /**
@@ -13,10 +17,10 @@ use SMW\SQLStore\TableFieldUpdater;
  *
  * @author mwjames
  */
-class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
+class TableFieldUpdaterTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,7 +31,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateSortField() {
-		$collator = $this->getMockBuilder( '\SMW\MediaWiki\Collator' )
+		$collator = $this->getMockBuilder( Collator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +39,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSortKey' )
 			->willReturn( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +54,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 					$this->equalTo( [ 'smw_sortkey' => 'Foo', 'smw_sort' => 'Foo', 'smw_touched' => 1970 ] ),
 					[ 'smw_id' => 42 ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +71,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateRevField() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -82,7 +86,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 					$this->equalTo( [ 'smw_rev' => 1001, 'smw_touched' => 1970 ] ),
 					[ 'smw_id'  => 42 ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +102,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateTouchedField() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +117,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 					[ 'smw_touched' => 1970 ],
 					[ 'smw_id'  => 42 ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +133,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateIwField() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -140,7 +144,7 @@ class TableFieldUpdaterTest extends \PHPUnit\Framework\TestCase {
 					$this->equalTo( [ 'smw_iw' => 'foo', 'smw_hash' => 'abc1234' ] ),
 					[ 'smw_id'  => 42 ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

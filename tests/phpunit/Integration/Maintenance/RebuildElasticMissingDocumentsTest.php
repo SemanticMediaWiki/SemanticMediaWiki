@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
+use SMW\Elastic\ElasticStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
@@ -26,7 +27,7 @@ class RebuildElasticMissingDocumentsTest extends SMWIntegrationTestCase {
 
 		$store = ApplicationFactory::getInstance()->getStore();
 
-		if ( !$store instanceof \SMW\Elastic\ElasticStore ) {
+		if ( !$store instanceof ElasticStore ) {
 			$this->markTestSkipped( "Skipping test because a ElasticStore instance is required." );
 		}
 

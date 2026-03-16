@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
+use Onoi\HttpRequest\HttpRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\RepositoryClient;
+use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
+use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector
@@ -17,15 +24,15 @@ use SMW\SPARQLStore\RepositoryClient;
  *
  * @author mwjames
  */
-class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
+class RepositoryConnectorsExceptionTest extends TestCase {
 
 	private $defaultGraph;
 
 	private $databaseConnectors = [
-		'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector',
-		'\SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector',
+		GenericRepositoryConnector::class,
+		FusekiRepositoryConnector::class,
+		FourstoreRepositoryConnector::class,
+		VirtuosoRepositoryConnector::class,
 	];
 
 	protected function setUp(): void {
@@ -38,12 +45,12 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testCanConstruct( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector',
+			GenericRepositoryConnector::class,
 			new $httpConnector( new RepositoryClient( $this->defaultGraph, '' ), $httpRequest )
 		);
 	}
@@ -52,7 +59,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoQueryForEmptyQueryEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +68,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 			$httpRequest
 		);
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( BadHttpEndpointResponseException::class );
 		$instance->doQuery( '' );
 	}
 
@@ -69,7 +76,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoUpdateForEmptyUpdateEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -78,7 +85,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 			$httpRequest
 		);
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( BadHttpEndpointResponseException::class );
 		$instance->doUpdate( '' );
 	}
 
@@ -86,7 +93,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForEmptyDataEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +102,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 			$httpRequest
 		);
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( BadHttpEndpointResponseException::class );
 		$instance->doHttpPost( '' );
 	}
 
@@ -103,7 +110,7 @@ class RepositoryConnectorsExceptionTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForUnreachableDataEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

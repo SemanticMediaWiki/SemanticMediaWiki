@@ -2,7 +2,16 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\Description;
+use SMW\Query\Parser;
+use SMW\Query\PrintRequestFactory;
+use SMW\Query\ProfileAnnotatorFactory;
+use SMW\Query\QueryResult;
 use SMW\QueryFactory;
+use SMW\RequestOptions;
+use SMW\Store;
 use SMW\StringCondition;
 
 /**
@@ -14,11 +23,11 @@ use SMW\StringCondition;
  *
  * @author mwjames
  */
-class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
+class QueryFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\QueryFactory',
+			QueryFactory::class,
 			new QueryFactory()
 		);
 	}
@@ -27,13 +36,13 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotatorFactory',
+			ProfileAnnotatorFactory::class,
 			$instance->newProfileAnnotatorFactory()
 		);
 	}
 
 	public function testCanConstructQuery() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -49,7 +58,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\DescriptionFactory',
+			DescriptionFactory::class,
 			$instance->newDescriptionFactory()
 		);
 	}
@@ -58,7 +67,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\PrintRequestFactory',
+			PrintRequestFactory::class,
 			$instance->newPrintRequestFactory()
 		);
 	}
@@ -67,7 +76,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\RequestOptions',
+			RequestOptions::class,
 			$instance->newRequestOptions()
 		);
 	}
@@ -76,7 +85,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\StringCondition',
+			StringCondition::class,
 			$instance->newStringCondition( '', StringCondition::STRCOND_PRE )
 		);
 	}
@@ -85,17 +94,17 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Parser',
+			Parser::class,
 			$instance->newQueryParser()
 		);
 	}
 
 	public function testCanConstructQueryResult() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -110,7 +119,7 @@ class QueryFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$instance->newQueryResult( $store, $query )
 		);
 	}

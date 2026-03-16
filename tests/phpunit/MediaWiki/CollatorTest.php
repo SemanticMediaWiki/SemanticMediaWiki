@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Collator;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Collator;
  *
  * @author mwjames
  */
-class CollatorTest extends \PHPUnit\Framework\TestCase {
+class CollatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

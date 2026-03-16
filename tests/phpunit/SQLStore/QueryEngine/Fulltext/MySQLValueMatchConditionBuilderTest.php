@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder
@@ -14,7 +18,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
  *
  * @author mwjames
  */
-class MySQLValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
+class MySQLValueMatchConditionBuilderTest extends TestCase {
 
 	private $textSanitizer;
 	private $searchTable;
@@ -23,18 +27,18 @@ class MySQLValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
+		$this->textSanitizer = $this->getMockBuilder( TextSanitizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+		$this->searchTable = $this->getMockBuilder( SearchTable::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder',
+			MySQLValueMatchConditionBuilder::class,
 			new MySQLValueMatchConditionBuilder( $this->textSanitizer, $this->searchTable )
 		);
 	}
@@ -108,7 +112,7 @@ class MySQLValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->searchTable
 		);
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -156,7 +160,7 @@ class MySQLValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->searchTable
 		);
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,8 +2,20 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\NullJob;
+use SMW\Options;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\EntityStore\IdChanger;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectUpdater;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableFieldUpdater;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +27,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
+class RedirectUpdaterTest extends TestCase {
 
 	private $store;
 	private $tableFieldUpdater;
@@ -25,23 +37,23 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 	private $jobFactory;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idChanger = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdChanger' )
+		$this->idChanger = $this->getMockBuilder( IdChanger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableFieldUpdater = $this->getMockBuilder( '\SMW\SQLStore\TableFieldUpdater' )
+		$this->tableFieldUpdater = $this->getMockBuilder( TableFieldUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +73,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTriggerChangeTitleUpdate() {
-		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+		$nullJob = $this->getMockBuilder( NullJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +96,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidateLookupCache() {
-		$cachingSemanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+		$cachingSemanticDataLookup = $this->getMockBuilder( CachingSemanticDataLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +108,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 				[ $this->equalTo( 1001 ) ]
 			 );
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -131,7 +143,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChangeTitleForMainNamespaceWithoutRedirectId() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +162,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->never() )
 			->method( 'deleteRedirect' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,11 +170,11 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'query' )
 			->willReturn( true );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +196,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new RedirectUpdater(
 			$store,
@@ -201,7 +213,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChangeTitleForMainNamespaceWithRedirectId() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -213,7 +225,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPageID' )
 			->willReturnOnConsecutiveCalls( 1, 5 );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -221,11 +233,11 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'query' )
 			->willReturn( true );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -247,7 +259,7 @@ class RedirectUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new RedirectUpdater(
 			$store,

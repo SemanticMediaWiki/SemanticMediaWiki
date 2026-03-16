@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Schema;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
@@ -20,7 +21,7 @@ use SMW\Schema\SchemaList;
  *
  * @author mwjames
  */
-class FilteredSchemaListTest extends \PHPUnit\Framework\TestCase {
+class FilteredSchemaListTest extends TestCase {
 
 	private $schemaList;
 

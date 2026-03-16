@@ -5,6 +5,8 @@ namespace SMW\SQLStore\EntityStore;
 use Iterator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
@@ -519,9 +521,9 @@ class EntityIdManager {
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
 				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
-			} catch ( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				return 0;
-			} catch ( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
+			} catch ( PropertyLabelNotResolvedException $e ) {
 				return 0;
 			}
 

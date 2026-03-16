@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ImportValue;
 use SMW\DataValues\ValueParsers\ImportValueParser;
+use SMW\MediaWiki\MediaWikiNsContentReader;
 
 /**
  * @covers \SMW\DataValues\ValueParsers\ImportValueParser
@@ -14,14 +16,14 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  *
  * @author mwjames
  */
-class ImportValueParserTest extends \PHPUnit\Framework\TestCase {
+class ImportValueParserTest extends TestCase {
 
 	private $mediaWikiNsContentReader;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+		$this->mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

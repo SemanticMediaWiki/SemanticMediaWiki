@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataValues\PropertyValue;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\ValueFormatter;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class ValueFormatterTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -24,7 +28,7 @@ class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -37,7 +41,7 @@ class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetFormattedSubject() {
-		$dataItem = \SMW\DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
+		$dataItem = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
 			->disableOriginalConstructor()
@@ -67,7 +71,7 @@ class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLongHTMLText' )
 			->willReturn( 'Foo' );
 
-		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
+		$propertyValue = $this->getMockBuilder( PropertyValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -78,7 +82,7 @@ class ValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetPropertyLabel() {
-		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
+		$propertyValue = $this->getMockBuilder( PropertyValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

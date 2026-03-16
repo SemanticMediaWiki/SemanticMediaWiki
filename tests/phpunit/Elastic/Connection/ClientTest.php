@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Elastic\Connection;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
+use SMW\Elastic\Connection\LockManager;
+use SMW\Elastic\Exception\ReplicationException;
 
 /**
  * @covers \SMW\Elastic\Connection\Client
@@ -14,7 +17,7 @@ use SMW\Elastic\Connection\Client;
  *
  * @author mwjames
  */
-class ClientTest extends \PHPUnit\Framework\TestCase {
+class ClientTest extends TestCase {
 
 	private $elasticClient;
 	private $lockManager;
@@ -28,7 +31,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->lockManager = $this->getMockBuilder( '\SMW\Elastic\Connection\LockManager' )
+		$this->lockManager = $this->getMockBuilder( LockManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -89,7 +92,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase {
 			'index' => 'foo'
 		];
 
-		$this->expectException( '\SMW\Elastic\Exception\ReplicationException' );
+		$this->expectException( ReplicationException::class );
 		$instance->bulk( $params );
 	}
 

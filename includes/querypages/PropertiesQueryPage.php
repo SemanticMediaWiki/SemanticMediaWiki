@@ -10,6 +10,7 @@ use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMWDIError;
+use SMWInfolink;
 
 /**
  * Query class that provides content for the Special:Properties page
@@ -151,7 +152,7 @@ class PropertiesQueryPage extends QueryPage {
 			// Add a link to SearchByProperty to hopefully identify the
 			// "hidden" reference
 			if ( $useCount < 1 ) {
-				$infoLink = '&#160;' . \SMWInfolink::newPropertySearchLink( '+', $property->getLabel(), '' )->getHTML( $this->getLinker() );
+				$infoLink = '&#160;' . SMWInfolink::newPropertySearchLink( '+', $property->getLabel(), '' )->getHTML( $this->getLinker() );
 			}
 
 			$proplink .= $infoLink;
@@ -264,7 +265,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param RequestOptions $requestOptions
-	 * @return array of array( \SMW\DIProperty|SMWDIError, integer )
+	 * @return array of array( DIProperty|SMWDIError, integer )
 	 */
 	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );

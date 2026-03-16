@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ExtensionTypes;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Hooks\ExtensionTypes;
  *
  * @author mwjames
  */
-class ExtensionTypesTest extends \PHPUnit\Framework\TestCase {
+class ExtensionTypesTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

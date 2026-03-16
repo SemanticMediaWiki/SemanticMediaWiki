@@ -2,7 +2,18 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
+use SMW\MediaWiki\PageInfoProvider;
+use SMW\Property\Annotator;
+use SMW\Property\AnnotatorFactory;
+use SMW\Schema\SchemaFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +25,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
+class RevisionFromEditCompleteTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -30,25 +41,25 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->editInfo = $this->getMockBuilder( '\SMW\MediaWiki\EditInfo' )
+		$this->editInfo = $this->getMockBuilder( EditInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$annotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$annotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyAnnotatorFactory = $this->getMockBuilder( '\SMW\Property\AnnotatorFactory' )
+		$this->propertyAnnotatorFactory = $this->getMockBuilder( AnnotatorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,7 +75,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSchemaPropertyAnnotator' )
 			->willReturn( $annotator );
 
-		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -75,7 +86,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+		$pageInfoProvider = $this->getMockBuilder( PageInfoProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,11 +97,11 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess_NoParserOutput() {
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+		$pageInfoProvider = $this->getMockBuilder( PageInfoProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,15 +130,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+		$pageInfoProvider = $this->getMockBuilder( PageInfoProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,15 +178,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess_OnSchemaNamespace_InvalidSchema() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+		$pageInfoProvider = $this->getMockBuilder( PageInfoProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +227,7 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess_OnConceptNamespace() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -225,15 +236,15 @@ class RevisionFromEditCompleteTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfoProvider = $this->getMockBuilder( '\SMW\MediaWiki\PageInfoProvider' )
+		$pageInfoProvider = $this->getMockBuilder( PageInfoProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

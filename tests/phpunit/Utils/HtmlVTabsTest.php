@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\HtmlVTabs;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\HtmlVTabs;
  *
  * @author mwjames
  */
-class HtmlVTabsTest extends \PHPUnit\Framework\TestCase {
+class HtmlVTabsTest extends TestCase {
 
 	protected function setUp(): void {
 		HtmlVTabs::init();

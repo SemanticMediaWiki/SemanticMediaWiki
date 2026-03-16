@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationUpdateJob;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangePropagationUpdateJobTest extends \PHPUnit\Framework\TestCase {
+class ChangePropagationUpdateJobTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -24,7 +27,7 @@ class ChangePropagationUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +40,7 @@ class ChangePropagationUpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

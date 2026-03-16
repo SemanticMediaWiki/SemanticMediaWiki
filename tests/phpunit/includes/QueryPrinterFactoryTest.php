@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\Exception\ResultFormatNotFoundException;
 use SMW\Query\ResultPrinter;
 use SMW\Query\ResultPrinters\ListResultPrinter;
 use SMW\QueryPrinterFactory;
@@ -16,7 +18,7 @@ use SMW\TableResultPrinter;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
+class QueryPrinterFactoryTest extends TestCase {
 
 	public function testSingleton() {
 		$instance = QueryPrinterFactory::singleton();
@@ -135,7 +137,7 @@ class QueryPrinterFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testGetPrinterThrowsException() {
 		$factory = new QueryPrinterFactory();
 
-		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
+		$this->expectException( ResultFormatNotFoundException::class );
 		$factory->getPrinter( 'lula' );
 	}
 

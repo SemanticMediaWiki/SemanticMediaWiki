@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Template;
 
+use MediaWiki\Parser\Parser;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Template\Template;
 use SMW\MediaWiki\Template\TemplateExpander;
 
@@ -14,14 +16,14 @@ use SMW\MediaWiki\Template\TemplateExpander;
  *
  * @author mwjames
  */
-class TemplateExpanderTest extends \PHPUnit\Framework\TestCase {
+class TemplateExpanderTest extends TestCase {
 
 	private $parser;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$this->parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

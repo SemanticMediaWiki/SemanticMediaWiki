@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 
@@ -14,11 +15,11 @@ use SMW\SPARQLStore\QueryEngine\RepositoryResult;
  *
  * @author mwjames
  */
-class RepositoryResultTest extends \PHPUnit\Framework\TestCase {
+class RepositoryResultTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\RepositoryResult',
+			RepositoryResult::class,
 			new RepositoryResult()
 		);
 

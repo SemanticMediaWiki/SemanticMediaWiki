@@ -2,11 +2,22 @@
 
 namespace SMW\Tests\Updater;
 
+use MediaWiki\Content\Content;
+use MediaWiki\Revision\RevisionRecord;
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
 use SMW\DataUpdater;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\SemanticData;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,7 +30,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
+class DataUpdaterTest extends TestCase {
 
 	private $testEnvironment;
 	private $transactionalCallableUpdate;
@@ -43,23 +54,23 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$this->revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->changePropagationNotifier = $this->getMockBuilder( '\SMW\Property\ChangePropagationNotifier' )
+		$this->changePropagationNotifier = $this->getMockBuilder( ChangePropagationNotifier::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,11 +78,11 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getConnection', 'getPropertyValues', 'updateData' ] )
 			->getMock();
@@ -104,7 +115,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +132,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->eventDispatcher->expects( $this->once() )
 			->method( 'dispatch' )
-			->with( \SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID );
+			->with( InvalidatePropertySpecificationLookupCacheEventListener::EVENT_ID );
 
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
@@ -181,7 +192,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testDoUpdateForValidRevision( $updateJobStatus ) {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -189,11 +200,11 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$store->expects( $this->once() )
 			->method( 'updateData' );
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -205,7 +216,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContent' )
 			->willReturn( $content );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -260,7 +271,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
@@ -277,7 +288,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -376,7 +387,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMock();
@@ -388,11 +399,11 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -404,7 +415,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContent' )
 			->willReturn( $content );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -442,11 +453,11 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testForYetUnknownRedirectTarget() {
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -458,7 +469,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContent' )
 			->willReturn( $content );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -466,7 +477,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'createPage' )
 			->willReturn( $wikiPage );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -477,7 +488,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRevision' )
 			->willReturn( $revision );
 
-		$source = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$source = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -491,7 +502,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 			NS_MAIN
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

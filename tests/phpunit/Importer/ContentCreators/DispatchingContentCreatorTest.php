@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Importer\ContentCreators;
 
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
+use SMW\Importer\ContentCreator;
 use SMW\Importer\ContentCreators\DispatchingContentCreator;
 use SMW\Importer\ImportContents;
 
@@ -14,7 +17,7 @@ use SMW\Importer\ImportContents;
  *
  * @author mwjames
  */
-class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
+class DispatchingContentCreatorTest extends TestCase {
 
 	private $wikiImporter;
 	private $messageReporter;
@@ -30,14 +33,14 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$this->messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Importer\ContentCreators\DispatchingContentCreator',
+			DispatchingContentCreator::class,
 			new DispatchingContentCreator( [] )
 		);
 	}
@@ -46,7 +49,7 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
-		$contentCreator = $this->getMockBuilder( '\SMW\Importer\ContentCreator' )
+		$contentCreator = $this->getMockBuilder( ContentCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,7 +73,7 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
-		$contentCreator = $this->getMockBuilder( '\SMW\Importer\ContentCreator' )
+		$contentCreator = $this->getMockBuilder( ContentCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,7 +105,7 @@ class DispatchingContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$importContents = new ImportContents();
 		$importContents->setContentType( 'Foo' );
 
-		$contentCreator = $this->getMockBuilder( '\SMW\Importer\ContentCreator' )
+		$contentCreator = $this->getMockBuilder( ContentCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

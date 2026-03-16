@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Deserializers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
@@ -18,11 +19,11 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ExpDataDeserializerTest extends \PHPUnit\Framework\TestCase {
+class ExpDataDeserializerTest extends TestCase {
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\ExpDataDeserializer',
+			ExpDataDeserializer::class,
 			new ExpDataDeserializer()
 		);
 	}

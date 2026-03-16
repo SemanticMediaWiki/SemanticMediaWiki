@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\QueryEngine\Aggregations;
 use SMW\Elastic\QueryEngine\FieldMapper;
 
@@ -14,7 +15,7 @@ use SMW\Elastic\QueryEngine\FieldMapper;
  *
  * @author mwjames
  */
-class AggregationsTest extends \PHPUnit\Framework\TestCase {
+class AggregationsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

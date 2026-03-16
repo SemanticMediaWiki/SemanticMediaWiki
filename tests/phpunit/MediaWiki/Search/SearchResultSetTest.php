@@ -3,7 +3,12 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Search\SearchResultSet;
+use SMW\Query\Excerpts;
+use SMW\Query\QueryResult;
+use SMW\Query\QueryToken;
 
 /**
  * @covers \SMW\MediaWiki\Search\SearchResultSet
@@ -14,7 +19,7 @@ use SMW\MediaWiki\Search\SearchResultSet;
  *
  * @author Stephan Gambke
  */
-class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
+class SearchResultSetTest extends TestCase {
 
 	/**
 	 * @var SearchResultSet The search result set under test
@@ -23,7 +28,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	private $queryResult;
 
 	protected function setUp(): void {
-		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+		$queryToken = $this->getMockBuilder( QueryToken::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,12 +44,12 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryToken' )
 			->willReturn( $queryToken );
 
-		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$this->queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
 
-		$pageMock = $this->getMockBuilder( 'SMW\DIWikiPage' )
+		$pageMock = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,7 +69,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$this->assertInstanceOf( '\SMW\MediaWiki\Search\SearchResultSet', $this->resultSet );
+		$this->assertInstanceOf( SearchResultSet::class, $this->resultSet );
 	}
 
 	public function testNumRows() {
@@ -112,7 +117,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExcerpt() {
-		$excerpts = $this->getMockBuilder( 'SMW\Query\Excerpts' )
+		$excerpts = $this->getMockBuilder( Excerpts::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +137,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTermMatches() {
-		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+		$queryToken = $this->getMockBuilder( QueryToken::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -148,7 +153,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryToken' )
 			->willReturn( $queryToken );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
@@ -182,7 +187,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFullURL' )
 			->willReturn( 'https://example.com/mock-page-title' );
 
-		$page = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$page = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -190,7 +195,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+		$queryToken = $this->getMockBuilder( QueryToken::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -202,7 +207,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQueryToken' )
 			->willReturn( $queryToken );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -243,7 +248,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFullURL' )
 			->willReturn( 'https://example.com/mock-page-title' );
 
-		$page_1 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$page_1 = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -251,7 +256,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$page_2 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$page_2 = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -259,7 +264,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$page_3 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$page_3 = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -267,7 +272,7 @@ class SearchResultSetTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

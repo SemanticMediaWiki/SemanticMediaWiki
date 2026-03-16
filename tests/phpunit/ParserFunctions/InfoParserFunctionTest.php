@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
+use ParamProcessor\ProcessedParam;
+use ParamProcessor\ProcessingResult;
+use PHPUnit\Framework\TestCase;
 use SMW\ParserFunctions\InfoParserFunction;
 
 /**
@@ -13,11 +17,11 @@ use SMW\ParserFunctions\InfoParserFunction;
  *
  * @author mwjames
  */
-class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class InfoParserFunctionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\InfoParserFunction',
+			InfoParserFunction::class,
 			new InfoParserFunction()
 		);
 	}
@@ -25,15 +29,15 @@ class InfoParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	public function testHandle() {
 		$instance = new InfoParserFunction();
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$processedParam = $this->getMockBuilder( '\ParamProcessor\ProcessedParam' )
+		$processedParam = $this->getMockBuilder( ProcessedParam::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$processingResult = $this->getMockBuilder( '\ParamProcessor\ProcessingResult' )
+		$processingResult = $this->getMockBuilder( ProcessingResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

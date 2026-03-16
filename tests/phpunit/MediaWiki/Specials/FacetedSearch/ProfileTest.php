@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\Schema\Compartment;
+use SMW\Schema\CompartmentIterator;
+use SMW\Schema\SchemaFactory;
+use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
 /**
@@ -14,14 +20,14 @@ use SMW\Tests\Utils\Mock\IteratorMockBuilder;
  *
  * @author mwjames
  */
-class ProfileTest extends \PHPUnit\Framework\TestCase {
+class ProfileTest extends TestCase {
 
 	private $schemaFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -46,7 +52,7 @@ class ProfileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetProfileCount() {
-		$profile = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+		$profile = $this->getMockBuilder( Compartment::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,12 +61,12 @@ class ProfileTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'default' );
 
 		$iteratorMockBuilder = new IteratorMockBuilder();
-		$iteratorMockBuilder->setClass( '\SMW\Schema\CompartmentIterator' );
+		$iteratorMockBuilder->setClass( CompartmentIterator::class );
 		$iteratorMockBuilder->with( [ [ $profile ] ] );
 
 		$compartmentIterator = $iteratorMockBuilder->getMockForIterator();
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +74,7 @@ class ProfileTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newCompartmentIteratorByKey' )
 			->willReturn( $compartmentIterator );
 
-		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+		$schemaFinder = $this->getMockBuilder( SchemaFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
+use SMW\Services\DataValueServiceFactory;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -18,18 +21,18 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  * @author mwjames
  * @reviewer thomas-topway-it
  */
-class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
+class MonolingualTextValueMappingTest extends TestCase {
 
 	private $dataValueServiceFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +47,7 @@ class MonolingualTextValueMappingTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\MonolingualTextValue',
+			MonolingualTextValue::class,
 			new MonolingualTextValue()
 		);
 	}

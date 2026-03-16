@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Api\Tasks;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
+use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Api\Tasks\EntityExaminerTask;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
+class EntityExaminerTaskTest extends TestCase {
 
 	private $store;
 	private $entityExaminerIndicatorsFactory;
@@ -26,15 +32,15 @@ class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityExaminerIndicatorsFactory = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicatorsFactory' )
+		$this->entityExaminerIndicatorsFactory = $this->getMockBuilder( EntityExaminerIndicatorsFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -64,7 +70,7 @@ class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$entityExaminerDeferrableCompositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider' )
+		$entityExaminerDeferrableCompositeIndicatorProvider = $this->getMockBuilder( EntityExaminerDeferrableCompositeIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,14 +97,14 @@ class EntityExaminerTaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess_Placeholder() {
-		$entityExaminerDeferrableCompositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider' )
+		$entityExaminerDeferrableCompositeIndicatorProvider = $this->getMockBuilder( EntityExaminerDeferrableCompositeIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$entityExaminerDeferrableCompositeIndicatorProvider->expects( $this->atLeastOnce() )
 			->method( 'setPermissionExaminer' );
 
-		$compositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider' )
+		$compositeIndicatorProvider = $this->getMockBuilder( EntityExaminerCompositeIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 

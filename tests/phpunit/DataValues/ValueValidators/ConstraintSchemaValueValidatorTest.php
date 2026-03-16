@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Constraint\ConstraintCheckRunner;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueValidators\ConstraintSchemaValueValidator;
+use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
+use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
+class ConstraintSchemaValueValidatorTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -33,15 +39,15 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		$this->constraintCheckRunner = $this->getMockBuilder( '\SMW\Constraint\ConstraintCheckRunner' )
+		$this->constraintCheckRunner = $this->getMockBuilder( ConstraintCheckRunner::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->schemafinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+		$this->schemafinder = $this->getMockBuilder( SchemaFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +118,7 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN )
 		);
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -156,7 +162,7 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 			$subject
 		);
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -198,7 +204,7 @@ class ConstraintSchemaValueValidatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function checkPushedJobInstance( array $jobs ) {
 		foreach ( $jobs as $job ) {
-			if ( is_a( $job, '\SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob' ) ) {
+			if ( is_a( $job, DeferredConstraintCheckUpdateJob::class ) ) {
 				return true;
 			}
 		}

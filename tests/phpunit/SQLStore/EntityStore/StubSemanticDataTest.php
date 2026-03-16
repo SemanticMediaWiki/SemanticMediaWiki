@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\StubSemanticData;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMWDITime as DITime;
 
@@ -17,7 +19,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
+class StubSemanticDataTest extends TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -25,7 +27,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +45,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +91,7 @@ class StubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->getSubject()
 		);
 

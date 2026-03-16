@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\LanguageContents;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 
@@ -14,7 +15,7 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  *
  * @author mwjames
  */
-class LocalLanguageTest extends \PHPUnit\Framework\TestCase {
+class LocalLanguageTest extends TestCase {
 
 	private $languageContents;
 

@@ -3,6 +3,8 @@
 namespace SMW\Tests;
 
 use MediaWiki\Linker\Linker;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
  * @group semantic-mediawiki
@@ -12,7 +14,7 @@ use MediaWiki\Linker\Linker;
  *
  * @author mwjames
  */
-class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
+class GlobalFunctionsTest extends TestCase {
 
 	/**
 	 * @covers ::smwfGetLinker
@@ -95,7 +97,7 @@ class GlobalFunctionsTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSmwfContLang() {
 		$this->assertInstanceOf(
-			'\SMW\Localizer\LocalLanguage\LocalLanguage',
+			LocalLanguage::class,
 			smwfContLang()
 		);
 	}

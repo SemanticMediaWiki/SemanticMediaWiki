@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
+use SMW\SQLStore\QueryDependency\QueryLinksTableDisposer;
+use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
+use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\QueryDependencyLinksStoreFactory
@@ -13,11 +20,11 @@ use SMW\SQLStore\QueryDependencyLinksStoreFactory;
  *
  * @author mwjames
  */
-class QueryDependencyLinksStoreFactoryTest extends \PHPUnit\Framework\TestCase {
+class QueryDependencyLinksStoreFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependencyLinksStoreFactory',
+			QueryDependencyLinksStoreFactory::class,
 			new QueryDependencyLinksStoreFactory()
 		);
 	}
@@ -26,59 +33,59 @@ class QueryDependencyLinksStoreFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryDependencyLinksStoreFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
+			QueryResultDependencyListResolver::class,
 			$instance->newQueryResultDependencyListResolver()
 		);
 	}
 
 	public function testCanConstructQueryDependencyLinksStore() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new QueryDependencyLinksStoreFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore',
+			QueryDependencyLinksStore::class,
 			$instance->newQueryDependencyLinksStore( $store )
 		);
 	}
 
 	public function testCanConstructQueryReferenceBacklinks() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new QueryDependencyLinksStoreFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryReferenceBacklinks',
+			QueryReferenceBacklinks::class,
 			$instance->newQueryReferenceBacklinks( $store )
 		);
 	}
 
 	public function testCanConstructDependencyLinksValidator() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new QueryDependencyLinksStoreFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\DependencyLinksValidator',
+			DependencyLinksValidator::class,
 			$instance->newDependencyLinksValidator()
 		);
 	}
 
 	public function testCanConstructQueryLinksTableDisposer() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new QueryDependencyLinksStoreFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryLinksTableDisposer',
+			QueryLinksTableDisposer::class,
 			$instance->newQueryLinksTableDisposer( $store )
 		);
 	}

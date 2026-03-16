@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\ProtectionExaminer;
+use SMW\Protection\ProtectionValidator;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
+class ProtectionExaminerTest extends TestCase {
 
 	private $declarationExaminer;
 	private $protectionValidator;
@@ -26,7 +29,7 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$this->declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,7 +37,7 @@ class ProtectionExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessages' )
 			->willReturn( [] );
 
-		$this->protectionValidator = $this->getMockBuilder( '\SMW\Protection\ProtectionValidator' )
+		$this->protectionValidator = $this->getMockBuilder( ProtectionValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

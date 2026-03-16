@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Query\Result;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Result\FilterMap;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\Store;
 
 /**
  * @covers \SMW\Query\Result\FilterMap
@@ -13,7 +16,7 @@ use SMW\Query\Result\FilterMap;
  *
  * @author mwjames
  */
-class FilterMapTest extends \PHPUnit\Framework\TestCase {
+class FilterMapTest extends TestCase {
 
 	private $store;
 	private $entityIdManager;
@@ -21,11 +24,11 @@ class FilterMapTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();

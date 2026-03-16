@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\RepositoryClient;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SPARQLStore\RepositoryClient;
  *
  * @author mwjames
  */
-class RepositoryClientTest extends \PHPUnit\Framework\TestCase {
+class RepositoryClientTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

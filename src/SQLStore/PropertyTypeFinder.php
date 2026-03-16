@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use Exception;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\MediaWiki\Connection\Database;
@@ -91,7 +92,7 @@ class PropertyTypeFinder {
 				],
 				__METHOD__
 			);
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$row = false;
 		}
 

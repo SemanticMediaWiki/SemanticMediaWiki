@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
+use SMW\Elastic\ElasticStore;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\TestEnvironment;
@@ -27,7 +28,7 @@ class RebuildElasticIndexTest extends SMWIntegrationTestCase {
 
 		$this->store = ApplicationFactory::getInstance()->getStore();
 
-		if ( !$this->store instanceof \SMW\Elastic\ElasticStore ) {
+		if ( !$this->store instanceof ElasticStore ) {
 			$this->markTestSkipped( "Skipping test because it requires a `ElasticStore` instance." );
 		}
 

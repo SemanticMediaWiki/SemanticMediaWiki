@@ -3,7 +3,9 @@
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
 use Onoi\EventDispatcher\DispatchContext;
+use PHPUnit\Framework\TestCase;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
+use SMW\Query\Cache\ResultCache;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InvalidateResultCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
+class InvalidateResultCacheEventListenerTest extends TestCase {
 
 	private $resultCache;
 	private $spyLogger;
@@ -25,7 +27,7 @@ class InvalidateResultCacheEventListenerTest extends \PHPUnit\Framework\TestCase
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->resultCache = $this->getMockBuilder( '\SMW\Query\Cache\ResultCache' )
+		$this->resultCache = $this->getMockBuilder( ResultCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\LinksWidget
@@ -13,7 +16,7 @@ use SMW\MediaWiki\Specials\Ask\LinksWidget;
  *
  * @author mwjames
  */
-class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
+class LinksWidgetTest extends TestCase {
 
 	public function testFieldset() {
 		$this->assertIsString(
@@ -51,11 +54,11 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testShowHideLink() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,11 +69,11 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDebugLink() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,11 +84,11 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoQCacheLink() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,11 +99,11 @@ class LinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoQCacheLinkOnFalseFromCache() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 

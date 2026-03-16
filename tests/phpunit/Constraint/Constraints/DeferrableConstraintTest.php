@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\DeferrableConstraint;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Constraint\Constraints\DeferrableConstraint;
  *
  * @author mwjames
  */
-class DeferrableConstraintTest extends \PHPUnit\Framework\TestCase {
+class DeferrableConstraintTest extends TestCase {
 
 	public function testCanConstruct() {
 		$deferrableConstraint = $this->getMockBuilder( DeferrableConstraint::class )

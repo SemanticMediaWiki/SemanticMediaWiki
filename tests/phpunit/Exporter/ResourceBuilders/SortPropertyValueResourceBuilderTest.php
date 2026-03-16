@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\ResourceBuilders;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
@@ -18,7 +19,7 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class SortPropertyValueResourceBuilderTest extends \PHPUnit\Framework\TestCase {
+class SortPropertyValueResourceBuilderTest extends TestCase {
 
 	private $dataItemFactory;
 	private $testEnvironment;

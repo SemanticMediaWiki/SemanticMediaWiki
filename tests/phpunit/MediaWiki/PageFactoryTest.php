@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Page\ConceptPage;
+use SMW\MediaWiki\Page\PropertyPage;
 use SMW\MediaWiki\PageFactory;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\PageFactory
@@ -13,14 +18,14 @@ use SMW\MediaWiki\PageFactory;
  *
  * @author mwjames
  */
-class PageFactoryTest extends \PHPUnit\Framework\TestCase {
+class PageFactoryTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -33,7 +38,7 @@ class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewPageFromNotRegisteredNamespaceThrowsException() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +56,7 @@ class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testNewPageFromTitle( $namespace, $expected ) {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,12 +79,12 @@ class PageFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function namespaceProvider() {
 		$provider[] = [
 			SMW_NS_PROPERTY,
-			'SMW\MediaWiki\Page\PropertyPage'
+			PropertyPage::class
 		];
 
 		$provider[] = [
 			SMW_NS_CONCEPT,
-			'SMW\MediaWiki\Page\ConceptPage'
+			ConceptPage::class
 		];
 
 		return $provider;

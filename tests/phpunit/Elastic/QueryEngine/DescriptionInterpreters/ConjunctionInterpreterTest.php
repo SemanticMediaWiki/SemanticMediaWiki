@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\Description;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
@@ -14,7 +17,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ConjunctionInterpreterTest extends TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
@@ -22,7 +25,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'interpretDescription' ] )
 			->getMock();
@@ -55,7 +58,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'interpretDescription' )
 			->willReturn( $this->conditionBuilder->newCondition( [ 'Foo' ] ) );
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 

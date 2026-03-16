@@ -2,7 +2,10 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
+use SMW\Store;
 
 /**
  * @covers \SMW\PropertyLabelFinder
@@ -13,7 +16,7 @@ use SMW\PropertyLabelFinder;
  *
  * @author mwjames
  */
-class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
+class PropertyLabelFinderTest extends TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -24,11 +27,11 @@ class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +43,7 @@ class PropertyLabelFinderTest extends \PHPUnit\Framework\TestCase {
 		$canonicalPropertyLabels = [];
 
 		$this->assertInstanceOf(
-			'\SMW\PropertyLabelFinder',
+			PropertyLabelFinder::class,
 			new PropertyLabelFinder( $this->store, $languageIndependentPropertyLabels, $canonicalPropertyLabels )
 		);
 	}

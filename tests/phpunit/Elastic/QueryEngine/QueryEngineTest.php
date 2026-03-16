@@ -2,9 +2,16 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Query\Language\Description;
 use SMW\Query\QueryResult;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
 
 /**
@@ -16,7 +23,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryEngineTest extends \PHPUnit\Framework\TestCase {
+class QueryEngineTest extends TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -26,15 +33,15 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+		$this->elasticClient = $this->getMockBuilder( DummyClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +53,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			return $this->elasticClient;
 		};
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +65,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $this->idTable );
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -71,7 +78,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testgetQueryResult_MODE_NONE() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -125,7 +132,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$errors = [];
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

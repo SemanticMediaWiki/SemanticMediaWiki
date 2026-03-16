@@ -2,18 +2,27 @@
 
 namespace SMW\Tests\SQLStore;
 
+use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\CacheWarmer;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
 use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\EntityStore\FieldList;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
+use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreFactory;
+use SMW\SQLStore\TableFieldUpdater;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityIdManager
@@ -24,7 +33,7 @@ use SMW\SQLStore\RedirectStore;
  *
  * @author mwjames
  */
-class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
+class EntityIdManagerTest extends TestCase {
 
 	private $store;
 	private $cache;
@@ -49,39 +58,39 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idEntityFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdEntityFinder' )
+		$this->idEntityFinder = $this->getMockBuilder( IdEntityFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cacheWarmer = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CacheWarmer' )
+		$this->cacheWarmer = $this->getMockBuilder( CacheWarmer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->duplicateFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DuplicateFinder' )
+		$this->duplicateFinder = $this->getMockBuilder( DuplicateFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableFieldUpdater = $this->getMockBuilder( '\SMW\SQLStore\TableFieldUpdater' )
+		$this->tableFieldUpdater = $this->getMockBuilder( TableFieldUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyTableHashes = $this->getMockBuilder( '\SMW\SQLStore\PropertyTable\PropertyTableHashes' )
+		$this->propertyTableHashes = $this->getMockBuilder( PropertyTableHashes::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->sequenceMapFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SequenceMapFinder' )
+		$this->sequenceMapFinder = $this->getMockBuilder( SequenceMapFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->auxiliaryFields = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\AuxiliaryFields' )
+		$this->auxiliaryFields = $this->getMockBuilder( AuxiliaryFields::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +98,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +108,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$redirectStore = new RedirectStore( $this->store );
 
-		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+		$this->factory = $this->getMockBuilder( SQLStoreFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -143,7 +152,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newAuxiliaryFields' )
 			->willReturn( $this->auxiliaryFields );
 
-		$this->entityIdFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdFinder' )
+		$this->entityIdFinder = $this->getMockBuilder( EntityIdFinder::class )
 			->setConstructorArgs( [ $this->connection, $this->propertyTableHashes, $idCacheManager ] )
 			->setMethods( null )
 			->getMock();
@@ -155,7 +164,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\EntityIdManager',
+			EntityIdManager::class,
 			new EntityIdManager( $this->store, $this->factory )
 		);
 	}
@@ -206,7 +215,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $selectRow );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -239,7 +248,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $selectRow );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -287,7 +296,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'insertId' )
 			->willReturn( 9999 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -337,7 +346,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
 	}
@@ -375,7 +384,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 		$this->duplicateFinder->expects( $this->atLeastOnce() )
 			->method( 'findDuplicates' )
 			->willReturnCallback( static function ( $table ) use ( $row ) {
-				if ( $table === \SMW\SQLStore\SQLStore::ID_TABLE ) {
+				if ( $table === SQLStore::ID_TABLE ) {
 					return [ $row ];
 				}
 				return null;
@@ -392,7 +401,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 				'smw_fpt_redi' => null,
 				'smw_di_wikipage' => null
 			],
-			$instance->findDuplicates( \SMW\SQLStore\SQLStore::ID_TABLE )
+			$instance->findDuplicates( SQLStore::ID_TABLE )
 		);
 	}
 
@@ -404,7 +413,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -437,7 +446,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			new DIWikiPage( 'Bar', NS_MAIN )
 		];
 
-		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -445,7 +454,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'prepareCache' )
 			->with( $list );
 
-		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+		$factory = $this->getMockBuilder( SQLStoreFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -461,7 +470,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newCacheWarmer' )
 			->willReturn( $this->cacheWarmer );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -485,7 +494,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			'smw_rev' => 1001,
 		];
 
-		$idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -493,7 +502,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+		$factory = $this->getMockBuilder( SQLStoreFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -513,7 +522,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( (object)$row );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -537,7 +546,7 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Foo' )
 		];
 
-		$fieldList = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\FieldList' )
+		$fieldList = $this->getMockBuilder( FieldList::class )
 			->disableOriginalConstructor()
 			->getMock();
 

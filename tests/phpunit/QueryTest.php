@@ -2,6 +2,9 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\Language\Description;
+use SMW\Query\PrintRequest;
 use SMWQuery as Query;
 
 /**
@@ -13,7 +16,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit\Framework\TestCase {
+class QueryTest extends TestCase {
 
 	private $smwgQMaxLimit;
 	private $smwgQMaxInlineLimit;
@@ -26,7 +29,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
 		$this->assertInstanceOf(
 			'\SMWQuery',
@@ -35,7 +38,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetLimitForLowerbound() {
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
 
@@ -67,7 +70,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsRestrictedByGLOBALRequirements() {
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
 
@@ -99,7 +102,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetLimitForUpperboundWhereLimitIsUnrestricted() {
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
 		$instance = new Query( $description, Query::INLINE_QUERY );
 
@@ -124,9 +127,9 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testToArray() {
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
-		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
+		$printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -164,7 +167,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHash() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getFingerprint' ] )
 			->getMockForAbstractClass();

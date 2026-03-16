@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Importer;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Importer\ContentModeller;
+use SMW\Importer\ImportContents;
 use SMW\Importer\JsonImportContentsFileDirReader;
+use SMW\Utils\File;
+use SMW\Utils\FileFetcher;
 
 /**
  * @covers \SMW\Importer\JsonImportContentsFileDirReader
@@ -13,7 +18,7 @@ use SMW\Importer\JsonImportContentsFileDirReader;
  *
  * @author mwjames
  */
-class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
+class JsonImportContentsFileDirReaderTest extends TestCase {
 
 	private $contentModeller;
 	private $fileFetcher;
@@ -22,15 +27,15 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->contentModeller = $this->getMockBuilder( '\SMW\Importer\ContentModeller' )
+		$this->contentModeller = $this->getMockBuilder( ContentModeller::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fileFetcher = $this->getMockBuilder( '\SMW\Utils\FileFetcher' )
+		$this->fileFetcher = $this->getMockBuilder( FileFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$this->file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -43,7 +48,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function tesGetContentList() {
-		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
+		$importContents = $this->getMockBuilder( ImportContents::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +81,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $contents as $content ) {
 			foreach ( $content as $importContents ) {
 				$this->assertInstanceOf(
-					'\SMW\Importer\ImportContents',
+					ImportContents::class,
 					$importContents
 				);
 			}
@@ -84,7 +89,7 @@ class JsonImportContentsFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetContentList_WithError() {
-		$importContents = $this->getMockBuilder( '\SMW\Importer\ImportContents' )
+		$importContents = $this->getMockBuilder( ImportContents::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -12,6 +14,10 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
+use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\Tests\Utils\UtilityFactory;
@@ -30,7 +36,7 @@ use SMWExporter;
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
+class ConditionBuilderTest extends TestCase {
 
 	private $stringBuilder;
 	private $descriptionInterpreterFactory;
@@ -62,7 +68,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -93,7 +99,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -126,7 +132,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -160,7 +166,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -203,7 +209,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition',
+			SingletonCondition::class,
 			$condition
 		);
 
@@ -232,7 +238,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -262,7 +268,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -294,7 +300,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -327,7 +333,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -351,7 +357,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -382,7 +388,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -414,7 +420,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -444,7 +450,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -480,7 +486,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $conjunction );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -516,7 +522,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -546,7 +552,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -584,7 +590,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -635,7 +641,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -675,7 +681,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -694,7 +700,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddOrderByData_ForNonWikiPageType() {
-		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' )
+		$condition = $this->getMockBuilder( Condition::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -708,7 +714,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddOrderByData_ForWikiPageType() {
-		$condition = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\Condition\Condition' )
+		$condition = $this->getMockBuilder( Condition::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -748,7 +754,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExtendConditionUsingPropertyPathForWpgPropertyValueRedirect() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -756,7 +762,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isRedirect' )
 			->willReturn( true );
 
-		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$diWikiPage = $this->getMockBuilder( DIWikiPage::class )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
 			->setMethods( [ 'getTitle' ] )
 			->getMock();
@@ -773,7 +779,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			new ValueDescription( $diWikiPage, $property )
 		);
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$instance = $this->getMockBuilder( ConditionBuilder::class )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
@@ -793,7 +799,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -811,7 +817,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExtendConditionUsingPropertyPathForWpgValueRedirect() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -819,7 +825,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isRedirect' )
 			->willReturn( true );
 
-		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$diWikiPage = $this->getMockBuilder( DIWikiPage::class )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
 			->setMethods( [ 'getTitle' ] )
 			->getMock();
@@ -830,7 +836,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$description = new ValueDescription( $diWikiPage, null );
 
-		$instance = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$instance = $this->getMockBuilder( ConditionBuilder::class )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
@@ -850,7 +856,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition',
+			FilterCondition::class,
 			$condition
 		);
 
@@ -878,7 +884,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$condition = $instance->getConditionFrom( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition',
+			SingletonCondition::class,
 			$condition
 		);
 

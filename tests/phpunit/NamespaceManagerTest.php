@@ -2,6 +2,10 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\NamespaceIndexChangeException;
+use SMW\Exception\SiteLanguageChangeException;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\NamespaceManager;
 
 /**
@@ -13,7 +17,7 @@ use SMW\NamespaceManager;
  *
  * @author mwjames
  */
-class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
+class NamespaceManagerTest extends TestCase {
 
 	private $varsEnvironment;
 	private $localLanguage;
@@ -23,7 +27,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$this->localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -153,7 +157,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			'wgContentNamespaces' => []
 		];
 
-		$this->expectException( '\SMW\Exception\SiteLanguageChangeException' );
+		$this->expectException( SiteLanguageChangeException::class );
 		NamespaceManager::initCustomNamespace( $vars );
 	}
 
@@ -171,7 +175,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			'smwgNamespaceIndex' => 2001
 		];
 
-		$this->expectException( '\SMW\Exception\NamespaceIndexChangeException' );
+		$this->expectException( NamespaceIndexChangeException::class );
 		NamespaceManager::initCustomNamespace( $vars );
 	}
 
@@ -190,7 +194,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 			'smwgNamespaceIndex' => 2001
 		];
 
-		$this->expectException( '\SMW\Exception\NamespaceIndexChangeException' );
+		$this->expectException( NamespaceIndexChangeException::class );
 		NamespaceManager::initCustomNamespace( $vars );
 	}
 
@@ -239,7 +243,7 @@ class NamespaceManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInitCustomNamespace_NamespaceAliases() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

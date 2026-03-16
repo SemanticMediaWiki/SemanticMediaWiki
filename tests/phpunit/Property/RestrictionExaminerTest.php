@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Property;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\RestrictionExaminer;
@@ -15,14 +17,14 @@ use SMW\Property\RestrictionExaminer;
  *
  * @author mwjames
  */
-class RestrictionExaminerTest extends \PHPUnit\Framework\TestCase {
+class RestrictionExaminerTest extends TestCase {
 
 	private $user;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

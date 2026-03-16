@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
+use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
+class EntityIdFinderTest extends TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -26,11 +31,11 @@ class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +47,7 @@ class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyTableHashes = $this->getMockBuilder( '\SMW\SQLStore\PropertyTable\PropertyTableHashes' )
+		$this->propertyTableHashes = $this->getMockBuilder( PropertyTableHashes::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -59,7 +64,7 @@ class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 			'smw_id' => 42
 		];
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +99,7 @@ class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 			'smw_sortkey' => 'sort_b'
 		];
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +132,7 @@ class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 			'smw_sortkey' => 'sort_b'
 		];
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +163,7 @@ class EntityIdFinderTest extends \PHPUnit\Framework\TestCase {
 			(object)[ 'smw_id' => 1001 ],
 		];
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

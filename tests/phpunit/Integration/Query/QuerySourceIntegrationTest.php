@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryResult;
+use SMW\Store;
+use SMW\Tests\NonExistentQueryStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Tests\Utils\Mock\FakeQueryStore;
 use SMWQueryProcessor;
 
 /**
@@ -14,7 +19,7 @@ use SMWQueryProcessor;
  *
  * @author mwjames
  */
-class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
+class QuerySourceIntegrationTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -27,13 +32,13 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment->addConfiguration(
 			'smwgQuerySources',
 			[
-				'foo'    => 'SMW\Tests\Utils\Mock\FakeQueryStore',
-				'foobar' => 'SMW\Tests\Integration\Query\AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface',
-				'bar'    => 'SMW\Tests\NonExistentQueryStore',
+				'foo'    => FakeQueryStore::class,
+				'foobar' => AnotherFakeQueryStoreWhichDoesNotImplentTheQueryEngineInterface::class,
+				'bar'    => NonExistentQueryStore::class,
 			]
 		);
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,7 +51,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryProcessorWithDefaultSource() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +77,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryProcessorWithValidSource() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +103,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQueryProcessorWithInvalidSourceSwitchesToDefault() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,7 +129,7 @@ class QuerySourceIntegrationTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testQuerySourceOnCount() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

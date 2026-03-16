@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Services\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Services\Exception\ServiceNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Services\Exception\ServiceNotFoundException;
  *
  * @author mwjames
  */
-class ServiceNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class ServiceNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ServiceNotFoundException( 'foo' );

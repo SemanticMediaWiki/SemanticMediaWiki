@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConflictException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\ProfileSourceDefinitionConfli
  *
  * @author mwjames
  */
-class ProfileSourceDefinitionConflictExceptionTest extends \PHPUnit\Framework\TestCase {
+class ProfileSourceDefinitionConflictExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ProfileSourceDefinitionConflictException( 'Foo', 'a', 'b' );

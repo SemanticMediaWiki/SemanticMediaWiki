@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
+use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 
@@ -25,7 +26,7 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 	public function testGetVersion() {
 		$data = json_encode( [ 'version' => '3.2' ] );
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

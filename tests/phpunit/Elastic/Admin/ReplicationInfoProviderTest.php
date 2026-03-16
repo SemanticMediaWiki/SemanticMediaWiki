@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\Elastic\Admin;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Admin\ReplicationInfoProvider;
 use SMW\Elastic\Connection\DummyClient;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\EntityCache;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
 
 /**
  * @covers \SMW\Elastic\Admin\ReplicationInfoProvider
@@ -14,7 +20,7 @@ use SMW\Elastic\Connection\DummyClient;
  *
  * @author mwjames
  */
-class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
+class ReplicationInfoProviderTest extends TestCase {
 
 	private $outputFormatter;
 	private $webRequest;
@@ -23,24 +29,24 @@ class ReplicationInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	private $store;
 
 	protected function setUp(): void {
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
+		$this->replicationCheck = $this->getMockBuilder( ReplicationCheck::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'fetch' ] )
 			->getMock();
 
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();

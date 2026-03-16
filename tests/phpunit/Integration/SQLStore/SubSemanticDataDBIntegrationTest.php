@@ -5,6 +5,7 @@ namespace SMW\Tests\Integration\SQLStore;
 use MediaWiki\MediaWikiServices;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\SemanticData;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\PageCreator;
 use SMW\Tests\Utils\PageDeleter;
@@ -57,7 +58,7 @@ class SubSemanticDataDBIntegrationTest extends SMWIntegrationTestCase {
 		$semanticData = $this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) );
 
 		$this->assertInstanceOf(
-			'SMW\SemanticData',
+			SemanticData::class,
 			$semanticData->findSubSemanticData( 'namedSubobject' )
 		);
 

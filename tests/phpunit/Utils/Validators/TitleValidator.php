@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Validators;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\Assert;
 
 /**
  * @license GPL-2.0-or-later
@@ -11,7 +12,7 @@ use MediaWiki\Title\Title;
  *
  * @author mwjames
  */
-class TitleValidator extends \PHPUnit\Framework\Assert {
+class TitleValidator extends Assert {
 
 	/**
 	 * @since 2.1

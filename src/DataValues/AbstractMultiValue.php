@@ -81,7 +81,7 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by \SMW\Query\Result\ResultArray::loadContent for matching an index as denoted
+	 * @note called by ResultArray::loadContent for matching an index as denoted
 	 * in |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @see https://www.semantic-mediawiki.org/wiki/Help:Type_Record#Semantic_search
@@ -108,7 +108,7 @@ abstract class AbstractMultiValue extends DataValue {
 	}
 
 	/**
-	 * @note called by \SMW\Query\Result\ResultArray::getNextDataValue to match an index
+	 * @note called by ResultArray::getNextDataValue to match an index
 	 * that has been denoted using |?Foo=Bar|+index=1 OR |?Foo=Bar|+index=Bar
 	 *
 	 * @since 2.5

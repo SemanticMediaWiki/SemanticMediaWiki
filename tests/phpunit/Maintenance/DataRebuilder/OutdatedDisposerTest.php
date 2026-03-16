@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Maintenance\DataRebuilder;
 
+use PHPUnit\Framework\TestCase;
+use SMW\IteratorFactory;
+use SMW\Iterators\ChunkedIterator;
+use SMW\Iterators\ResultIterator;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
@@ -15,7 +20,7 @@ use SMW\Tests\Utils\Mock\IteratorMockBuilder;
  *
  * @author mwjames
  */
-class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
+class OutdatedDisposerTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $entityIdDisposerJob;
@@ -27,17 +32,17 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
+		$this->entityIdDisposerJob = $this->getMockBuilder( EntityIdDisposerJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->iteratorMockBuilder = new IteratorMockBuilder();
 
-		$this->resultIterator = $this->getMockBuilder( '\SMW\Iterators\ResultIterator' )
+		$this->resultIterator = $this->getMockBuilder( ResultIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -53,11 +58,11 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->smw_id = 1001;
 
-		$chunkedIterator = $this->iteratorMockBuilder->setClass( '\SMW\Iterators\ChunkedIterator' )
+		$chunkedIterator = $this->iteratorMockBuilder->setClass( ChunkedIterator::class )
 			->with( [ [ $row ] ] )
 			->getMockForIterator();
 
-		$resultIterator = $this->getMockBuilder( '\SMW\Iterators\ResultIterator' )
+		$resultIterator = $this->getMockBuilder( ResultIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +123,7 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->id = 1002;
 
-		$resultIterator = $this->iteratorMockBuilder->setClass( '\SMW\Iterators\ResultIterator' )
+		$resultIterator = $this->iteratorMockBuilder->setClass( ResultIterator::class )
 			->with( [ $row ] )
 			->incrementInvokedCounterBy( 1 )
 			->getMockForIterator();
@@ -181,7 +186,7 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->id = 3333;
 
-		$resultIterator = $this->iteratorMockBuilder->setClass( '\SMW\Iterators\ResultIterator' )
+		$resultIterator = $this->iteratorMockBuilder->setClass( ResultIterator::class )
 			->with( [ $row ] )
 			->incrementInvokedCounterBy( 1 )
 			->getMockForIterator();

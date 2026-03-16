@@ -877,7 +877,7 @@ class SemanticData implements JsonUnserializable {
 	}
 
 	/**
-	 * Implements \JsonSerializable.
+	 * Implements JsonSerializable.
 	 *
 	 * @since 4.0.0
 	 *

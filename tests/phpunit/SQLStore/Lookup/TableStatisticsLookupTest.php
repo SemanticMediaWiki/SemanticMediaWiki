@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\TableStatisticsLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\TableStatisticsLookup
@@ -13,18 +18,18 @@ use SMW\SQLStore\Lookup\TableStatisticsLookup;
  *
  * @author mwjames
  */
-class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
+class TableStatisticsLookupTest extends TestCase {
 
 	private $store;
 	private $connection;
 	private $query;
 
 	protected function setUp(): void {
-		$this->query = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Query' )
+		$this->query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -32,11 +37,11 @@ class TableStatisticsLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newQuery' )
 			->willReturn( $this->query );
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

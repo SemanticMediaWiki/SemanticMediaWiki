@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Importer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Importer\ContentModeller;
+use SMW\Importer\ImportContents;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ContentModellerTest extends \PHPUnit\Framework\TestCase {
+class ContentModellerTest extends TestCase {
 
 	private $contentModeller;
 	private $testEnvironment;
@@ -49,7 +51,7 @@ class ContentModellerTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $contents as $content ) {
 			$this->assertInstanceOf(
-				'\SMW\Importer\ImportContents',
+				ImportContents::class,
 				$content
 			);
 		}

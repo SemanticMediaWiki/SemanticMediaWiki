@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException;
  *
  * @author mwjames
  */
-class PropertyStatisticsInvalidArgumentExceptionTest extends \PHPUnit\Framework\TestCase {
+class PropertyStatisticsInvalidArgumentExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PropertyStatisticsInvalidArgumentException();
 
 		$this->assertInstanceof(
-			'\SMW\SQLStore\Exception\PropertyStatisticsInvalidArgumentException',
+			PropertyStatisticsInvalidArgumentException::class,
 			$instance
 		);
 

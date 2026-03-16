@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
  *
  * @author mwjames
  */
-class DownloadLinksWidgetTest extends \PHPUnit\Framework\TestCase {
+class DownloadLinksWidgetTest extends TestCase {
 
 	public function testOnNull() {
 		$this->assertEmpty(

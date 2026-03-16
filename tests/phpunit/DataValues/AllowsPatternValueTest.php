@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
+use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Property\SpecificationLookup;
+use SMW\Services\DataValueServiceFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
+class AllowsPatternValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -28,23 +33,23 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+		$this->mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'MediaWikiNsContentReader', $this->mediaWikiNsContentReader );
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
-		$this->constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$this->constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +68,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\AllowsPatternValue',
+			AllowsPatternValue::class,
 			new AllowsPatternValue()
 		);
 	}
@@ -139,7 +144,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetShortWikiText() {
-		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
+		$allowsPatternValueParser = $this->getMockBuilder( AllowsPatternValueParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,7 +152,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 			->method( 'parse' )
 			->willReturn( 'Foo' );
 
-		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +180,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetShortHtmlText() {
-		$allowsPatternValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsPatternValueParser' )
+		$allowsPatternValueParser = $this->getMockBuilder( AllowsPatternValueParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,7 +188,7 @@ class AllowsPatternValueTest extends \PHPUnit\Framework\TestCase {
 			->method( 'parse' )
 			->willReturn( 'Foo' );
 
-		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

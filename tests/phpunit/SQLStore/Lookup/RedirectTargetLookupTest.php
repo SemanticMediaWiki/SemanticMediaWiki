@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\Lookup\RedirectTargetLookup
@@ -14,7 +19,7 @@ use SMW\SQLStore\Lookup\RedirectTargetLookup;
  *
  * @author mwjames
  */
-class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
+class RedirectTargetLookupTest extends TestCase {
 
 	private $store;
 	private $idCacheManager;
@@ -22,11 +27,11 @@ class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -35,11 +40,11 @@ class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -127,7 +132,7 @@ class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
-			->with( \SMW\SQLStore\EntityStore\IdCacheManager::REDIRECT_SOURCE )
+			->with( IdCacheManager::REDIRECT_SOURCE )
 			->willReturn( $this->cache );
 
 		$this->cache->expects( $this->atLeastOnce() )
@@ -141,7 +146,7 @@ class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->findRedirectSource( $target, $flag )
 		);
 	}

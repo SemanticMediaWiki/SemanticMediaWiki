@@ -2,7 +2,17 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
+use MediaWiki\Request\WebRequest;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\ManualEntryLogger;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\EntityLookupTaskHandler;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class EntityLookupTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -27,11 +37,11 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -40,11 +50,11 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -108,7 +118,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->outputFormatter
 		);
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,7 +130,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$user
 		);
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +142,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [] );
 
-		$manualEntryLogger = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+		$manualEntryLogger = $this->getMockBuilder( ManualEntryLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,11 +151,11 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'ManualEntryLogger', $manualEntryLogger );
 
-		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
+		$entityIdDisposerJob = $this->getMockBuilder( EntityIdDisposerJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -176,7 +186,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$this->htmlFormRenderer->expects( $this->atLeastOnce() )
 			->method( 'getForm' );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +194,7 @@ class EntityLookupTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'matchEditToken' )
 			->willReturn( true );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

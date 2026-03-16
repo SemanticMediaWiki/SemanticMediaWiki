@@ -2,9 +2,17 @@
 
 namespace SMW\Tests\Elastic\Jobs;
 
+use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
+use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
+use SMW\Options;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
+class IndexerRecoveryJobTest extends TestCase {
 
 	private TestEnvironment $testEnvironment;
 	private $connection;
@@ -34,19 +42,19 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store = $this->createMock( ElasticStore::class );
 
-		$this->config = $this->getMockBuilder( '\SMW\Elastic\Config' )
+		$this->config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,11 +66,11 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );
 
-		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$this->indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
+		$elasticFactory = $this->getMockBuilder( ElasticFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +113,7 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->willReturn( ( new \SMW\Options() ) );
+			->willReturn( ( new Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -131,7 +139,7 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->willReturn( ( new \SMW\Options() ) );
+			->willReturn( ( new Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -154,7 +162,7 @@ class IndexerRecoveryJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->willReturn( ( new \SMW\Options() ) );
+			->willReturn( ( new Options() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )

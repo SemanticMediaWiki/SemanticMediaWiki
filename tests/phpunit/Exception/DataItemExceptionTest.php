@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\DataItemException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\DataItemException;
  *
  * @author mwjames
  */
-class DataItemExceptionTest extends \PHPUnit\Framework\TestCase {
+class DataItemExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DataItemException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\DataItemException',
+			DataItemException::class,
 			$instance
 		);
 

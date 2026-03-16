@@ -14,6 +14,7 @@ use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use Skin;
 use SkinTemplate;
 use WikiFilePage;
@@ -32,7 +33,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
+class MediaWikiMockObjectRepository extends TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;
@@ -393,7 +394,7 @@ class MediaWikiMockObjectRepository extends \PHPUnit\Framework\TestCase implemen
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->setMethods( $methods )
 			->getMock();

@@ -2,10 +2,17 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
+use SMW\DIProperty;
+use SMW\Property\SpecificationLookup;
+use SMW\PropertyLabelFinder;
+use SMW\PropertyRegistry;
+use SMW\Services\DataValueServiceFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class PropertyValueFormatterTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -31,23 +38,23 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$this->propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertyLabelFinder', $this->propertyLabelFinder );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,13 +69,13 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\PropertyValueFormatter',
+			PropertyValueFormatter::class,
 			new PropertyValueFormatter( $this->propertySpecificationLookup )
 		);
 	}
 
 	public function testIsFormatterForValidation() {
-		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
+		$propertyValue = $this->getMockBuilder( PropertyValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,9 +194,9 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFormatWithPreferredLabel( $property, $preferredLabel, $type, $linker, $expected ) {
 		// Ensures the mocked instance is injected and registered with the
 		// PropertyRegistry instance
-		\SMW\PropertyRegistry::clear();
+		PropertyRegistry::clear();
 
-		$this->propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$this->propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -234,7 +241,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 			$instance->format( $propertyValue, [ $type, $linker ] )
 		);
 
-		\SMW\PropertyRegistry::clear();
+		PropertyRegistry::clear();
 	}
 
 	/**
@@ -243,9 +250,9 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testFormatWithPreferredLabelAndCaption( $property, $caption, $preferredLabel, $type, $linker, $expected ) {
 		// Ensures the mocked instance is injected and registered with the
 		// PropertyRegistry instance
-		\SMW\PropertyRegistry::clear();
+		PropertyRegistry::clear();
 
-		$this->propertyLabelFinder = $this->getMockBuilder( '\SMW\PropertyLabelFinder' )
+		$this->propertyLabelFinder = $this->getMockBuilder( PropertyLabelFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -295,7 +302,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 			$actual
 		);
 
-		\SMW\PropertyRegistry::clear();
+		PropertyRegistry::clear();
 	}
 
 	/**
@@ -476,7 +483,7 @@ class PropertyValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function formattedLabelProvider() {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 

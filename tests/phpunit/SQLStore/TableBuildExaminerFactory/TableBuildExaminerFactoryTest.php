@@ -2,6 +2,15 @@
 
 namespace SMW\Tests\SQLStore\TableBuildExaminerFactory;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\Examiner\CountMapField;
+use SMW\SQLStore\TableBuilder\Examiner\EntityCollation;
+use SMW\SQLStore\TableBuilder\Examiner\FixedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\HashField;
+use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
+use SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties;
+use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
 
 /**
@@ -13,95 +22,95 @@ use SMW\SQLStore\TableBuilder\TableBuildExaminerFactory;
  *
  * @author mwjames
  */
-class TableBuildExaminerFactoryTest extends \PHPUnit\Framework\TestCase {
+class TableBuildExaminerFactoryTest extends TestCase {
 
 	public function testCanConstructEntityCollation() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\EntityCollation',
+			EntityCollation::class,
 			$instance->newEntityCollation( $store )
 		);
 	}
 
 	public function testCanConstructCountMapField() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\CountMapField',
+			CountMapField::class,
 			$instance->newCountMapField( $store )
 		);
 	}
 
 	public function testCanConstructHashField() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\HashField',
+			HashField::class,
 			$instance->newHashField( $store )
 		);
 	}
 
 	public function testCanConstructFixedProperties() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\FixedProperties',
+			FixedProperties::class,
 			$instance->newFixedProperties( $store )
 		);
 	}
 
 	public function testCanConstructTouchedField() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\TouchedField',
+			TouchedField::class,
 			$instance->newTouchedField( $store )
 		);
 	}
 
 	public function testCanConstructIdBorder() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\IdBorder',
+			IdBorder::class,
 			$instance->newIdBorder( $store )
 		);
 	}
 
 	public function testCanConstructPredefinedProperties() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new TableBuildExaminerFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Examiner\PredefinedProperties',
+			PredefinedProperties::class,
 			$instance->newPredefinedProperties( $store )
 		);
 	}

@@ -2,8 +2,16 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\NullJob;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextChangeUpdater;
 use SMW\Tests\TestEnvironment;
 
@@ -16,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
+class TextChangeUpdaterTest extends TestCase {
 
 	private $dataItemFactory;
 	private $connection;
@@ -32,19 +40,19 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->logger = TestEnvironment::newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->searchTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater' )
+		$this->searchTableUpdater = $this->getMockBuilder( SearchTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,11 +71,11 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isEnabled' )
 			->willReturn( true );
 
-		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+		$changeDiff = $this->getMockBuilder( ChangeDiff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +104,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testPushUpdates() {
 		$dataItem = $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN );
 
-		$searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+		$searchTable = $this->getMockBuilder( SearchTable::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +120,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSearchTable' )
 			->willReturn( $searchTable );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,7 +132,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubject' )
 			->willReturn( $dataItem );
 
-		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+		$nullJob = $this->getMockBuilder( NullJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +163,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isEnabled' )
 			->willReturn( true );
 
-		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+		$changeDiff = $this->getMockBuilder( ChangeDiff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +175,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTextItems' )
 			->willReturn( [] );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -200,7 +208,7 @@ class TextChangeUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isEnabled' )
 			->willReturn( true );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 

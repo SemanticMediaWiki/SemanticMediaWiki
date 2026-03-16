@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\FilterFactory;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder
@@ -13,7 +18,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
  *
  * @author mwjames
  */
-class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
+class FacetBuilderTest extends TestCase {
 
 	private $profile;
 	private $templateParser;
@@ -23,19 +28,19 @@ class FacetBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
+		$this->profile = $this->getMockBuilder( Profile::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->filterFactory = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\FilterFactory' )
+		$this->filterFactory = $this->getMockBuilder( FilterFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->resultFetcher = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher' )
+		$this->resultFetcher = $this->getMockBuilder( ResultFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

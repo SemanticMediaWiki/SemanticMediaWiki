@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\ConfigPreloadFileNotReadableException;
  *
  * @author mwjames
  */
-class ConfigPreloadFileNotReadableExceptionTest extends \PHPUnit\Framework\TestCase {
+class ConfigPreloadFileNotReadableExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ConfigPreloadFileNotReadableException( 'Foo' );

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\ParameterNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\ParameterNotFoundException;
  *
  * @author mwjames
  */
-class ParameterNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class ParameterNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ParameterNotFoundException( 'foo' );

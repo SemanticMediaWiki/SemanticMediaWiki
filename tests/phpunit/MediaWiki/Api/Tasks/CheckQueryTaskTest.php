@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Tasks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Tasks\CheckQueryTask;
+use SMW\Query\QueryResult;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CheckQueryTaskTest extends \PHPUnit\Framework\TestCase {
+class CheckQueryTaskTest extends TestCase {
 
 	private $store;
 	private $testEnvironment;
@@ -24,7 +27,7 @@ class CheckQueryTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -44,7 +47,7 @@ class CheckQueryTaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

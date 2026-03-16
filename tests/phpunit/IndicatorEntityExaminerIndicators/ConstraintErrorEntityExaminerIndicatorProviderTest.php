@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider;
+use SMW\Indicator\IndicatorProvider;
+use SMW\Localizer\MessageLocalizer;
+use SMW\SQLStore\Lookup\ErrorLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
+class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 
 	private $store;
 	private $errorLookup;
@@ -28,11 +34,11 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framew
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->errorLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ErrorLookup' )
+		$this->errorLookup = $this->getMockBuilder( ErrorLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'service' ] )
 			->getMockForAbstractClass();
@@ -41,11 +47,11 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framew
 			->method( 'service' )
 			->willReturn( $this->errorLookup );
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,12 +67,12 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends \PHPUnit\Framew
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider',
+			ConstraintErrorEntityExaminerIndicatorProvider::class,
 			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProvider',
+			IndicatorProvider::class,
 			new ConstraintErrorEntityExaminerIndicatorProvider( $this->store, $this->entityCache )
 		);
 	}

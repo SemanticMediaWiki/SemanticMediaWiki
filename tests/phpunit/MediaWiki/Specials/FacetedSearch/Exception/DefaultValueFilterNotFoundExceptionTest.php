@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundExc
  *
  * @author mwjames
  */
-class DefaultValueFilterNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class DefaultValueFilterNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DefaultValueFilterNotFoundException( 'Foo' );

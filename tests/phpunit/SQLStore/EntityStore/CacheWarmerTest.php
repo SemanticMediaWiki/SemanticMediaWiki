@@ -3,9 +3,14 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
+use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\CacheWarmer;
+use SMW\SQLStore\EntityStore\IdCacheManager;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CacheWarmer
@@ -16,18 +21,18 @@ use SMW\SQLStore\EntityStore\CacheWarmer;
  *
  * @author mwjames
  */
-class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
+class CacheWarmerTest extends TestCase {
 
 	private $idCacheManager;
 	private $store;
 	private $cache;
 
 	protected function setUp(): void {
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +68,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +80,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 				[ 'smw_hash' => [ '7b6b944694382bfab461675f40a2bda7e71e68e3' ] ] )
 			->willReturn( [ (object)$row ] );
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +98,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrepareCache_DisplayTitleFinder() {
-		$displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+		$displayTitleFinder = $this->getMockBuilder( DisplayTitleFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -135,7 +140,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,7 +152,7 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 				[ 'smw_hash' => [ '909d8ab26ea49adb7e1b106bc47602050d07d19f' ] ] )
 			->willReturn( [ (object)$row ] );
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,11 +177,11 @@ class CacheWarmerTest extends \PHPUnit\Framework\TestCase {
 		$this->idCacheManager->expects( $this->never() )
 			->method( 'setCache' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

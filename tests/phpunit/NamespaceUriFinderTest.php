@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\NamespaceUriFinder;
 
 /**
@@ -13,7 +14,7 @@ use SMW\NamespaceUriFinder;
  *
  * @author mwjames
  */
-class NamespaceUriFinderTest extends \PHPUnit\Framework\TestCase {
+class NamespaceUriFinderTest extends TestCase {
 
 	public function testGetUriForUnknownNamespaceKeyReturnsBool() {
 		$this->assertIsBool(

@@ -9,6 +9,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use SMWDIContainer;
 
 /**
  * @license GNU GPL v2
@@ -374,7 +375,7 @@ class PropertySubjectsLookup {
 	private function getWhereConds( $query, $dataItem ) {
 		$conds = '';
 
-		if ( $dataItem instanceof \SMWDIContainer ) {
+		if ( $dataItem instanceof SMWDIContainer ) {
 			throw new RuntimeException( 'SMWDIContainer support is missing!' );
 		}
 

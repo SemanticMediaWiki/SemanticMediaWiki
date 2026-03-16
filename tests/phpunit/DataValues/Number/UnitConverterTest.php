@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues\Number;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\Number\UnitConverter;
+use SMW\EntityCache;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 
@@ -16,7 +19,7 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class UnitConverterTest extends \PHPUnit\Framework\TestCase {
+class UnitConverterTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -27,11 +30,11 @@ class UnitConverterTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'fetch', 'save', 'associate' ] )
 			->getMock();

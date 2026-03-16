@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder
@@ -13,7 +16,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
  *
  * @author mwjames
  */
-class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
+class ExtraFieldBuilderTest extends TestCase {
 
 	private $profile;
 	private $templateParser;
@@ -21,11 +24,11 @@ class ExtraFieldBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
+		$this->profile = $this->getMockBuilder( Profile::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

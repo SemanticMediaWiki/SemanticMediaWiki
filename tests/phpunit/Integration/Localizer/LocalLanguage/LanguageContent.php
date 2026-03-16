@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Localizer\LocalLanguage;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
@@ -12,7 +13,7 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  *
  * @author mwjames
  */
-class LanguageContent extends \PHPUnit\Framework\TestCase {
+class LanguageContent extends TestCase {
 
 	protected function tearDown(): void {
 		LocalLanguage::clear();

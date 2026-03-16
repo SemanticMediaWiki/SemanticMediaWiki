@@ -2,6 +2,8 @@
 
 namespace SMW;
 
+use SMW\MediaWiki\JobQueue;
+
 /**
  * @private
  *
@@ -225,7 +227,7 @@ trait ConfigLegacyTrait {
 		// FIXME Remove with 3.1
 		foreach ( $GLOBALS['smwgJobQueueWatchlist'] as $job ) {
 			if ( strpos( $job, 'SMW\\' ) !== false ) {
-				$jobQueueWatchlist[$job] = \SMW\MediaWiki\JobQueue::mapLegacyType( $job );
+				$jobQueueWatchlist[$job] = JobQueue::mapLegacyType( $job );
 			}
 		}
 

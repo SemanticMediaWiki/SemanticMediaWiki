@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Maintenance\TableSchemaTaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class TableSchemaTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -26,15 +31,15 @@ class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +91,7 @@ class TableSchemaTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'setup' );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

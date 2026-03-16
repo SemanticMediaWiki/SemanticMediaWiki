@@ -4,6 +4,8 @@ namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
+use SMW\ParserData;
 use SMW\ParserFunctions\DeclareParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
@@ -17,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class DeclareParserFunctionTest extends TestCase {
 
 	private $testEnvironment;
 	private $semanticDataValidator;
@@ -35,12 +37,12 @@ class DeclareParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\DeclareParserFunction',
+			DeclareParserFunction::class,
 			new DeclareParserFunction( $parserData )
 		);
 	}

@@ -2,10 +2,14 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\DescriptionFactory;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 
@@ -18,7 +22,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ValueDescriptionInterpreterTest extends TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -27,11 +31,11 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +62,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPageID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

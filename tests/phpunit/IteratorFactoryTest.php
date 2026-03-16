@@ -2,7 +2,15 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\FileNotFoundException;
 use SMW\IteratorFactory;
+use SMW\Iterators\AppendIterator;
+use SMW\Iterators\ChunkedIterator;
+use SMW\Iterators\CsvFileIterator;
+use SMW\Iterators\MappingIterator;
+use SMW\Iterators\ResultIterator;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\IteratorFactory
@@ -13,17 +21,17 @@ use SMW\IteratorFactory;
  *
  * @author mwjames
  */
-class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
+class IteratorFactoryTest extends TestCase {
 
 	public function testCanConstructResultIterator() {
 		$instance = new IteratorFactory();
 
-		$result = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$result = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\ResultIterator',
+			ResultIterator::class,
 			$instance->newResultIterator( $result )
 		);
 	}
@@ -34,7 +42,7 @@ class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$iterator = new \ArrayIterator( [] );
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\MappingIterator',
+			MappingIterator::class,
 			$instance->newMappingIterator( $iterator, static function (){
 			} )
 		);
@@ -48,7 +56,7 @@ class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\ChunkedIterator',
+			ChunkedIterator::class,
 			$instance->newChunkedIterator( $iterator )
 		);
 	}
@@ -57,7 +65,7 @@ class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new IteratorFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\AppendIterator',
+			AppendIterator::class,
 			$instance->newAppendIterator()
 		);
 	}
@@ -65,10 +73,10 @@ class IteratorFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructCsvFileIterator() {
 		$instance = new IteratorFactory();
 
-		$this->expectException( 'SMW\Exception\FileNotFoundException' );
+		$this->expectException( FileNotFoundException::class );
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\CsvFileIterator',
+			CsvFileIterator::class,
 			$instance->newCsvFileIterator( 'Foo' )
 		);
 	}

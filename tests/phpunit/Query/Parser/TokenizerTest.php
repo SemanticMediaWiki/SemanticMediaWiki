@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Parser\Tokenizer;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Query\Parser\Tokenizer;
  *
  * @author mwjames
  */
-class TokenizerTest extends \PHPUnit\Framework\TestCase {
+class TokenizerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

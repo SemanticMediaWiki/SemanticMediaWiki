@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
+use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder
@@ -13,17 +16,17 @@ use SMW\SQLStore\QueryEngine\HierarchyTempTableBuilder;
  *
  * @author mwjames
  */
-class HierarchyTempTableBuilderTest extends \PHPUnit\Framework\TestCase {
+class HierarchyTempTableBuilderTest extends TestCase {
 
 	private $connection;
 	private $temporaryTableBuilder;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->temporaryTableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\TemporaryTableBuilder' )
+		$this->temporaryTableBuilder = $this->getMockBuilder( TemporaryTableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

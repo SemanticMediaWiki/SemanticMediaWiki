@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
+use SMW\SPARQLStore\SPARQLStore;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\StoreAware;
 use SMW\Tests\TestEnvironment;
@@ -18,7 +21,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
+class QuerySourceFactoryTest extends TestCase {
 
 	private $testEnvironment;
 	private Store $store;
@@ -26,7 +29,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -54,7 +57,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\QueryEngine',
+			QueryEngine::class,
 			$instance->get( 'foo' )
 		);
 	}
@@ -66,7 +69,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\SQLStore',
+			SQLStore::class,
 			$instance->get( 'sql_store' )
 		);
 
@@ -77,7 +80,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetAsString() {
-		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$store = $this->getMockBuilder( SPARQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +100,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetFromAnotherFakeSourceThatImplementsStoreAware() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -114,7 +117,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\QueryEngine',
+			QueryEngine::class,
 			$instance->get( 'bar' )
 		);
 	}

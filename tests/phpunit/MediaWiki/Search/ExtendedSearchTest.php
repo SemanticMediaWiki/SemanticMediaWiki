@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\ExtendedSearch;
+use SMW\MediaWiki\Search\QueryBuilder;
+use SMW\MediaWiki\Search\SearchResultSet;
+use SMW\Query\QueryResult;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWQuery;
 
@@ -15,7 +20,7 @@ use SMWQuery;
  *
  * @author Stephan Gambke
  */
-class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
+class ExtendedSearchTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -24,7 +29,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -145,7 +150,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +180,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 		$result = $instance->searchText( $term );
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Search\SearchResultSet',
+			SearchResultSet::class,
 			$result
 		);
 
@@ -229,7 +234,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryBuilder = $this->getMockBuilder( '\SMW\MediaWiki\Search\QueryBuilder' )
+		$queryBuilder = $this->getMockBuilder( QueryBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -237,7 +242,7 @@ class ExtendedSearchTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getQuery' )
 			->willReturn( $query );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

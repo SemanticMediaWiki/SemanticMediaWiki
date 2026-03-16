@@ -3,9 +3,12 @@
 namespace SMW\Tests;
 
 use MediaWiki\Title\Title;
+use Onoi\BlobStore\BlobStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
+use PHPUnit\Framework\TestCase;
 use SMW\CacheFactory;
+use SMW\MediaWiki\Hooks\ArticlePurge;
 
 /**
  * @covers \SMW\CacheFactory
@@ -16,11 +19,11 @@ use SMW\CacheFactory;
  *
  * @author mwjames
  */
-class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
+class CacheFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\CacheFactory',
+			CacheFactory::class,
 			new CacheFactory( 'hash' )
 		);
 	}
@@ -72,7 +75,7 @@ class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertSame(
-			smwfCacheKey( \SMW\MediaWiki\Hooks\ArticlePurge::CACHE_NAMESPACE, 42 ),
+			smwfCacheKey( ArticlePurge::CACHE_NAMESPACE, 42 ),
 			$instance->getPurgeCacheKey( $title )
 		);
 	}
@@ -104,7 +107,7 @@ class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
-			'Onoi\Cache\Cache',
+			Cache::class,
 			$instance->newFixedInMemoryCache()
 		);
 	}
@@ -113,7 +116,7 @@ class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
-			'Onoi\Cache\Cache',
+			Cache::class,
 			$instance->newNullCache()
 		);
 	}
@@ -122,12 +125,12 @@ class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
-			'Onoi\Cache\Cache',
+			Cache::class,
 			$instance->newMediaWikiCompositeCache( CACHE_NONE )
 		);
 
 		$this->assertInstanceOf(
-			'Onoi\Cache\Cache',
+			Cache::class,
 			$instance->newMediaWikiCompositeCache( $instance->getMainCacheType() )
 		);
 	}
@@ -159,7 +162,7 @@ class CacheFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new CacheFactory( 'hash' );
 
 		$this->assertInstanceOf(
-			'Onoi\BlobStore\BlobStore',
+			BlobStore::class,
 			$instance->newBlobStore( 'foo', CACHE_NONE )
 		);
 	}

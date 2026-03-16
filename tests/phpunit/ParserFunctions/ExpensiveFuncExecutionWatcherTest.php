@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\ParserFunctions;
 
+use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
+use SMW\ParserData;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
 
 /**
@@ -13,27 +16,27 @@ use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
  *
  * @author mwjames
  */
-class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
+class ExpensiveFuncExecutionWatcherTest extends TestCase {
 
 	private $parserData;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$this->parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\ExpensiveFuncExecutionWatcher',
+			ExpensiveFuncExecutionWatcher::class,
 			new ExpensiveFuncExecutionWatcher( $this->parserData )
 		);
 	}
 
 	public function testHasReachedExpensiveLimit() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +68,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnExsitingCounter() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +109,7 @@ class ExpensiveFuncExecutionWatcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIncrementExpensiveCountOnNull() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 

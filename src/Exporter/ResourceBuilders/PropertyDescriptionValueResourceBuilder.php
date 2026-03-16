@@ -3,6 +3,7 @@
 namespace SMW\Exporter\ResourceBuilders;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\MonolingualTextValue;
 use SMW\DIProperty;
 use SMW\Exporter\Element\ExpLiteral;
 use SMWDataItem as DataItem;
@@ -35,7 +36,7 @@ class PropertyDescriptionValueResourceBuilder extends PropertyValueResourceBuild
 	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
-		/** @var \SMW\DataValues\MonolingualTextValue $dataValue */
+		/** @var MonolingualTextValue $dataValue */
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$property

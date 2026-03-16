@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
  *
  * @author mwjames
  */
-class ExploreListBuilderTest extends \PHPUnit\Framework\TestCase {
+class ExploreListBuilderTest extends TestCase {
 
 	private $profile;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
+		$this->profile = $this->getMockBuilder( Profile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -6,6 +6,7 @@ use RuntimeException;
 use SMW\DIProperty;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\QueryEngine\FieldMapper;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMWDITime as DITime;
 
 /**
@@ -91,7 +92,7 @@ class ReplicationStatus {
 			return [ 'modification_date' => false, 'associated_revision' => 0 ];
 		}
 
-		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
+		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
 		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field", "subject.rev_id" ] ] );
@@ -130,7 +131,7 @@ class ReplicationStatus {
 			return false;
 		}
 
-		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
+		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
 		$doc = $this->connection->get( $params + [ '_source_includes' => [ "$pid.$field" ] ] );
@@ -199,7 +200,7 @@ class ReplicationStatus {
 	 * @since 3.0
 	 */
 	private function last_update() {
-		$pid = $this->fieldMapper->getPID( \SMW\SQLStore\EntityStore\EntityIdManager::$special_ids['_MDAT'] );
+		$pid = $this->fieldMapper->getPID( EntityIdManager::$special_ids['_MDAT'] );
 		$field = $this->fieldMapper->getField( new DIProperty( '_MDAT' ) );
 
 		$params = $this->fieldMapper->exists( "$pid.$field" );

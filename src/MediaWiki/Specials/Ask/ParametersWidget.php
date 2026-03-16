@@ -207,7 +207,7 @@ class ParametersWidget {
 		$html = [];
 
 		/**
-		 * @var \ParamProcessor\ParamDefinition $definition
+		 * @var ParamDefinition $definition
 		 */
 		foreach ( $definitions as $name => $definition ) {
 

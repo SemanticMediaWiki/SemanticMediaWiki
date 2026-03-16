@@ -3,7 +3,11 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
+use MediaWiki\Output\OutputPage;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
+use SMW\NamespaceExaminer;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -11,14 +15,14 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @license GPL-2.0-or-later
  */
-class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
+class SidebarBeforeOutputTest extends TestCase {
 
 	private $namespaceExaminer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -152,11 +156,11 @@ class SidebarBeforeOutputTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newSkinStub( bool $isArticle ) {
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\PropertyValue;
 
 /**
@@ -13,7 +14,7 @@ use SMW\DataValues\PropertyValue;
  *
  * @author mwjames
  */
-class PropertyValueTest extends \PHPUnit\Framework\TestCase {
+class PropertyValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

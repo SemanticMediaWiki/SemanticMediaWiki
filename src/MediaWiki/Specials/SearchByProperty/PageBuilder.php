@@ -13,6 +13,7 @@ use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
+use SMWDIError;
 use SMWInfolink as Infolink;
 
 /**
@@ -301,7 +302,7 @@ class PageBuilder {
 			// or if the current results are to be highlighted:
 			if ( array_key_exists( 1, $result ) &&
 				( $result[1] instanceof DataValue ) &&
-				( !$result[1]->getDataItem() instanceof \SMWDIError ) &&
+				( !$result[1]->getDataItem() instanceof SMWDIError ) &&
 				( !$this->pageRequestOptions->value->getDataItem()->equals( $result[1]->getDataItem() )
 					|| $highlight ) ) {
 

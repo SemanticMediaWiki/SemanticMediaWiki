@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
+use SMW\SemanticData;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\SubjectLookup
@@ -13,12 +16,12 @@ use SMW\MediaWiki\Api\Browse\SubjectLookup;
  *
  * @author mwjames
  */
-class SubjectLookupTest extends \PHPUnit\Framework\TestCase {
+class SubjectLookupTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -31,7 +34,7 @@ class SubjectLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLookup_HTML() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +75,7 @@ class SubjectLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLookup_JSON() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

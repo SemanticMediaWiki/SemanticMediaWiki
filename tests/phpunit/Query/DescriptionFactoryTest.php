@@ -2,9 +2,27 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
+use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\DIProperty;
+use SMW\DIWikiPage;
+use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\ConceptDescription;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\NamespaceDescription;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Services\DataValueServiceFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +34,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
+class DescriptionFactoryTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -25,7 +43,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -38,7 +56,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\Query\DescriptionFactory',
+			DescriptionFactory::class,
 			new DescriptionFactory()
 		);
 	}
@@ -51,24 +69,24 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			$instance->newValueDescription( $dataItem )
 		);
 	}
 
 	public function testCanConstructSomeProperty() {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\SomeProperty',
+			SomeProperty::class,
 			$instance->newSomeProperty( $property, $description )
 		);
 	}
@@ -77,7 +95,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			$instance->newThingDescription()
 		);
 	}
@@ -85,7 +103,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructDisjunction() {
 		$descriptions = [];
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
+		$description = $this->getMockBuilder( SomeProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +113,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$descriptions[] = $description;
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,7 +126,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
+			Disjunction::class,
 			$instance->newDisjunction( $descriptions )
 		);
 	}
@@ -116,7 +134,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstructConjunction() {
 		$descriptions = [];
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
+		$description = $this->getMockBuilder( SomeProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,7 +144,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$descriptions[] = $description;
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -139,7 +157,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->newConjunction( $descriptions )
 		);
 	}
@@ -148,50 +166,50 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\NamespaceDescription',
+			NamespaceDescription::class,
 			$instance->newNamespaceDescription( SMW_NS_PROPERTY )
 		);
 	}
 
 	public function testCanConstructClassDescription() {
-		$category = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$category = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ClassDescription',
+			ClassDescription::class,
 			$instance->newClassDescription( $category )
 		);
 	}
 
 	public function testCanConstructClassDescription_Categories() {
-		$category_1 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$category_1 = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$category_2 = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$category_2 = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ClassDescription',
+			ClassDescription::class,
 			$instance->newClassDescription( [ $category_1, $category_2 ] )
 		);
 	}
 
 	public function testCanConstructConceptDescription() {
-		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$concept = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ConceptDescription',
+			ConceptDescription::class,
 			$instance->newConceptDescription( $concept )
 		);
 	}
@@ -209,7 +227,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			$instance->newFromDataValue( $dataValue )
 		);
 	}
@@ -236,13 +254,13 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getWikiValue' )
 			->willReturn( 'Bar' );
 
-		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
+			->willReturn( new DescriptionBuilderRegistry() );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory
@@ -251,13 +269,13 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\SomeProperty',
+			SomeProperty::class,
 			$instance->newFromDataValue( $dataValue )
 		);
 	}
 
 	public function testCanConstructDescriptionFromMonolingualTextValue() {
-		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -265,7 +283,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] );
 
-		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+		$dataValue = $this->getMockBuilder( MonolingualTextValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
@@ -281,11 +299,11 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
 		$monolingualTextValueFormatter->setDataValue( $dataValue );
 
-		$monolingualTextValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\MonolingualTextValueParser' )
+		$monolingualTextValueParser = $this->getMockBuilder( MonolingualTextValueParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -299,7 +317,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
+			->willReturn( new DescriptionBuilderRegistry() );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory
@@ -308,13 +326,13 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->newFromDataValue( $dataValue )
 		);
 	}
 
 	public function testCanConstructDescriptionFromMonolingualTextValueWithProperty() {
-		$containerSemanticData = $this->getMockBuilder( '\SMW\DataModel\ContainerSemanticData' )
+		$containerSemanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -322,7 +340,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $this->dataItemFactory->newDIBlob( 'Bar' ) ] );
 
-		$dataValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+		$dataValue = $this->getMockBuilder( MonolingualTextValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getProperty', 'getDataItem' ] )
 			->getMock();
@@ -342,11 +360,11 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$monolingualTextValueFormatter = new MonolingualTextValueFormatter();
 		$monolingualTextValueFormatter->setDataValue( $dataValue );
 
-		$monolingualTextValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\MonolingualTextValueParser' )
+		$monolingualTextValueParser = $this->getMockBuilder( MonolingualTextValueParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -360,7 +378,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$dataValueServiceFactory->expects( $this->atLeastOnce() )
 			->method( 'getDescriptionBuilderRegistry' )
-			->willReturn( new \SMW\Query\DescriptionBuilderRegistry() );
+			->willReturn( new DescriptionBuilderRegistry() );
 
 		$dataValue->setDataValueServiceFactory(
 			$dataValueServiceFactory
@@ -369,7 +387,7 @@ class DescriptionFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionFactory();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\SomeProperty',
+			SomeProperty::class,
 			$instance->newFromDataValue( $dataValue )
 		);
 	}

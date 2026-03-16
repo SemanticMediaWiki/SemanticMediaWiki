@@ -2,8 +2,17 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
+use SMW\Elastic\Indexer\Bulk;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\SemanticData;
+use SMW\Store;
 
 /**
  * @covers \SMW\Elastic\Indexer\Attachment\FileAttachment
@@ -14,7 +23,7 @@ use SMW\Elastic\Indexer\Attachment\FileAttachment;
  *
  * @author mwjames
  */
-class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
+class FileAttachmentTest extends TestCase {
 
 	private $store;
 	private $indexer;
@@ -23,23 +32,23 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 	private $logger;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$this->indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->bulk = $this->getMockBuilder( '\SMW\Elastic\Indexer\Bulk' )
+		$this->bulk = $this->getMockBuilder( Bulk::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
+		$this->logger = $this->getMockBuilder( NullLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -60,7 +69,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +176,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIndexAttachmentInfo() {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +184,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCanonicalDiWikiPage' )
 			->willReturn( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) );
 
-		$attachmentAnnotator = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\AttachmentAnnotator' )
+		$attachmentAnnotator = $this->getMockBuilder( AttachmentAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,7 +192,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getProperty' )
 			->willReturn( $property );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -228,11 +237,11 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIndexAttachmentInfo_MissingId_ThrowsException() {
-		$attachmentAnnotator = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\AttachmentAnnotator' )
+		$attachmentAnnotator = $this->getMockBuilder( AttachmentAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -259,11 +268,11 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIndexAttachmentInfo_MissingIdOnConsecutiveCalls_ThrowsException() {
-		$attachmentAnnotator = $this->getMockBuilder( '\SMW\Elastic\Indexer\Attachment\AttachmentAnnotator' )
+		$attachmentAnnotator = $this->getMockBuilder( AttachmentAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -290,7 +299,7 @@ class FileAttachmentTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCreateAttachment_MissingId_ThrowsException() {
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

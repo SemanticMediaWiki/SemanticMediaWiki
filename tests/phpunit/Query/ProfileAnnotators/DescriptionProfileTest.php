@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
+use SMW\Query\Language\Description;
+use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
@@ -18,7 +21,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
+class DescriptionProfileTest extends TestCase {
 
 	private $semanticDataValidator;
 
@@ -29,16 +32,16 @@ class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( ProfileAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator',
+			DescriptionProfileAnnotator::class,
 			new DescriptionProfileAnnotator( $profileAnnotator, $description )
 		);
 	}
@@ -50,7 +53,7 @@ class DescriptionProfileTest extends \PHPUnit\Framework\TestCase {
 			new ContainerSemanticData( $subject	)
 		);
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 

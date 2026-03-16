@@ -3,6 +3,8 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleLookup;
 
 /**
@@ -14,15 +16,15 @@ use SMW\MediaWiki\TitleLookup;
  *
  * @author mwjames
  */
-class TitleLookupTest extends \PHPUnit\Framework\TestCase {
+class TitleLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\TitleLookup',
+			TitleLookup::class,
 			new TitleLookup( $database )
 		);
 	}
@@ -31,7 +33,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +58,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +82,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +107,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,7 +128,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectAllOnMainNamespaceWithEmptyResult() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,7 +149,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectAllRedirectPages() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,7 +171,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMaxIdForMainNamespace() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -190,7 +192,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testgetMaxIdForCategoryNamespace() {
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -213,7 +215,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectAllOnMissingNamespaceThrowsException() {
 		$this->expectException( 'RuntimeException' );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -224,7 +226,7 @@ class TitleLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testSelectByRangeOnMissingNamespaceThrowsException() {
 		$this->expectException( 'RuntimeException' );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

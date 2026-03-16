@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\MediaWiki\Api\Query;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\MwApiFactory;
 
@@ -15,7 +18,7 @@ use SMW\Tests\Utils\MwApiFactory;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit\Framework\TestCase {
+class QueryTest extends TestCase {
 
 	private $apiFactory;
 	private $applicationFactory;
@@ -34,22 +37,22 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Api\Query' )
+		$instance = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Api\Query',
+			Query::class,
 			$instance
 		);
 	}
 
 	public function testQueryAndQueryResult() {
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Api\Query' )
+		$instance = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\Query' );
+		$reflector = new ReflectionClass( Query::class );
 		$getQuery  = $reflector->getMethod( 'getQuery' );
 		$query = $getQuery->invoke( $instance, '[[Modification date::+]]', [], [] );
 
@@ -61,7 +64,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 		$getQueryResult = $reflector->getMethod( 'getQueryResult' );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$getQueryResult->invoke( $instance, $query )
 		);
 	}
@@ -79,7 +82,7 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 			'meta' => [ 'count' => 5, 'offset' => 5 ]
 		];
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,10 +100,10 @@ class QueryTest extends \PHPUnit\Framework\TestCase {
 
 		$apiResult = $this->apiFactory->newApiResult( [] );
 
-		$reflector = new ReflectionClass( '\SMW\MediaWiki\Api\Query' );
+		$reflector = new ReflectionClass( Query::class );
 		$method = $reflector->getMethod( 'addQueryResult' );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\Api\Query' )
+		$instance = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

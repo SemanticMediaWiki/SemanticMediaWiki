@@ -2,18 +2,24 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\Result\ItemJournal;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 use SMWQuery as Query;
@@ -27,7 +33,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase {
+class QueryResultDependencyListResolverTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -38,11 +44,11 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -57,7 +63,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver',
+			QueryResultDependencyListResolver::class,
 			new QueryResultDependencyListResolver( $this->hierarchyLookup )
 		);
 	}
@@ -75,7 +81,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 	public function testTryTogetDependencyListFromForLimitZeroQuery() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +90,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 
 		$query->setUnboundLimit( 0 );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +102,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getStore' )
 			->willReturn( $this->store );
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -124,7 +130,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( $subject );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -140,7 +146,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getStore' )
 			->willReturn( $this->store );
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -177,7 +183,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 	 * @dataProvider queryProvider
 	 */
 	public function testgetDependencyListFrom( $query, $expected ) {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -193,7 +199,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getStore' )
 			->willReturn( $this->store );
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -217,7 +223,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( DIWikiPage::newFromText( 'Foo' ) );
 
-		$itemJournal = $this->getMockBuilder( '\SMW\Query\Result\ItemJournal' )
+		$itemJournal = $this->getMockBuilder( ItemJournal::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -225,7 +231,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getEntityList' )
 			->willReturn( [ $subject ] );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -237,7 +243,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getQuery' )
 			->willReturn( $query );
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -262,7 +268,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( $subject );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -278,7 +284,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getStore' )
 			->willReturn( $this->store );
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -319,7 +325,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 		$query = new Query( $description );
 		$query->setContextPage( $subject );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -335,7 +341,7 @@ class QueryResultDependencyListResolverTest extends \PHPUnit\Framework\TestCase 
 			->method( 'getStore' )
 			->willReturn( $this->store );
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

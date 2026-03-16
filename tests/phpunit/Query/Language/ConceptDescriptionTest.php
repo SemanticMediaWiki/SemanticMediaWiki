@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ConceptDescription;
@@ -16,15 +17,15 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ConceptDescriptionTest extends \PHPUnit\Framework\TestCase {
+class ConceptDescriptionTest extends TestCase {
 
 	public function testCanConstruct() {
-		$concept = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$concept = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ConceptDescription',
+			ConceptDescription::class,
 			new ConceptDescription( $concept )
 		);
 	}

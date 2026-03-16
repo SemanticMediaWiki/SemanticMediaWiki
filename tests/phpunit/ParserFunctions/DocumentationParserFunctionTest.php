@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingResult;
+use PHPUnit\Framework\TestCase;
 use SMW\ParserFunctions\DocumentationParserFunction;
 
 /**
@@ -15,12 +17,12 @@ use SMW\ParserFunctions\DocumentationParserFunction;
  *
  * @author mwjames
  */
-class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class DocumentationParserFunctionTest extends TestCase {
 
 	public function testHandle() {
 		$instance = new DocumentationParserFunction();
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 

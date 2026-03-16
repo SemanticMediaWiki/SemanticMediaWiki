@@ -3,9 +3,14 @@
 namespace SMW\Tests\Property\DeclarationExaminer;
 
 use MediaWiki\Registration\ExtensionRegistry;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
+use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
 use SMW\SemanticData;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
+class UserdefinedPropertyExaminerTest extends TestCase {
 
 	private $declarationExaminer;
 	private $semanticData;
@@ -30,11 +35,11 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$this->semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$this->declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,11 +51,11 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSemanticData' )
 			->willReturn( $this->semanticData );
 
-		$this->propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$this->propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -244,7 +249,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 		$this->semanticData->expects( $this->any() )
 			->method( 'getOption' )
 			->willReturnCallback( static function ( $key ) use ( $imported_type ) {
-				if ( $key === \SMW\Property\Annotators\MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) {
+				if ( $key === MandatoryTypePropertyAnnotator::IMPO_REMOVED_TYPE ) {
 					return $imported_type;
 				}
 				return null;
@@ -274,7 +279,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckSubpropertyParentTypeMismatch_ForcedInheritance() {
-		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -292,7 +297,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$semanticData->setOption(
-			\SMW\Property\Annotators\MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE,
+			MandatoryTypePropertyAnnotator::ENFORCED_PARENTTYPE_INHERITANCE,
 			$dataItemFactory->newDIWikiPage( 'Bar' )
 		);
 
@@ -326,7 +331,7 @@ class UserdefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckSubpropertyParentTypeMismatch() {
-		$declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 

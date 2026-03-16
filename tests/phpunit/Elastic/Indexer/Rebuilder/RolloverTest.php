@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\Exception\NoConnectionException;
 use SMW\Elastic\Indexer\Rebuilder\Rollover;
 
 /**
@@ -13,12 +16,12 @@ use SMW\Elastic\Indexer\Rebuilder\Rollover;
  *
  * @author mwjames
  */
-class RolloverTest extends \PHPUnit\Framework\TestCase {
+class RolloverTest extends TestCase {
 
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -87,7 +90,7 @@ class RolloverTest extends \PHPUnit\Framework\TestCase {
 			$this->connection
 		);
 
-		$this->expectException( '\SMW\Elastic\Exception\NoConnectionException' );
+		$this->expectException( NoConnectionException::class );
 		$instance->update( 'Foo' );
 	}
 
@@ -100,7 +103,7 @@ class RolloverTest extends \PHPUnit\Framework\TestCase {
 			$this->connection
 		);
 
-		$this->expectException( '\SMW\Elastic\Exception\NoConnectionException' );
+		$this->expectException( NoConnectionException::class );
 		$instance->delete( 'Foo' );
 	}
 

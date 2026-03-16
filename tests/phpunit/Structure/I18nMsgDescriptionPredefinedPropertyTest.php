@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\TypesRegistry;
 
 /**
@@ -13,7 +14,7 @@ use SMW\TypesRegistry;
  *
  * @author mwjames
  */
-class I18nMsgDescriptionPredefinedPropertyTest extends \PHPUnit\Framework\TestCase {
+class I18nMsgDescriptionPredefinedPropertyTest extends TestCase {
 
 	const MSG_KEY_PREFIX = 'smw-property-predefined';
 

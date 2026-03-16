@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Stats;
 
 /**
@@ -13,12 +15,12 @@ use SMW\Utils\Stats;
  *
  * @author mwjames
  */
-class StatsTest extends \PHPUnit\Framework\TestCase {
+class StatsTest extends TestCase {
 
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

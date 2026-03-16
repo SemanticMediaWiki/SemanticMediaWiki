@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\PrintRequest;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
@@ -16,7 +17,7 @@ use SMW\Query\PrintRequest\Formatter;
  *
  * @author mwjames
  */
-class FormatterTest extends \PHPUnit\Framework\TestCase {
+class FormatterTest extends TestCase {
 
 	/**
 	 * @dataProvider printRequestProvider

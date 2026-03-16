@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\StatsFormatter;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\StatsFormatter;
  *
  * @author mwjames
  */
-class StatsFormatterTest extends \PHPUnit\Framework\TestCase {
+class StatsFormatterTest extends TestCase {
 
 	/**
 	 * @dataProvider statsProvider

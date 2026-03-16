@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Localizer\LocalLanguage;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
  *
  * @author mwjames
  */
-class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
+class JsonContentsFileReaderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -38,7 +40,7 @@ class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testReadByLanguageCodeWithCache( $languageCode ) {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

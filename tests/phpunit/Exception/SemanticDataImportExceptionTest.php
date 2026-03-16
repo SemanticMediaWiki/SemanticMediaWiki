@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\SemanticDataImportException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\SemanticDataImportException;
  *
  * @author mwjames
  */
-class SemanticDataImportExceptionTest extends \PHPUnit\Framework\TestCase {
+class SemanticDataImportExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SemanticDataImportException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\SemanticDataImportException',
+			SemanticDataImportException::class,
 			$instance
 		);
 

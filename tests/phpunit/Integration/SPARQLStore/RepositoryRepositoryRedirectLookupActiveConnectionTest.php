@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -20,7 +21,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class RepositoryRepositoryRedirectLookupActiveConnectionTest extends \PHPUnit\Framework\TestCase {
+class RepositoryRepositoryRedirectLookupActiveConnectionTest extends TestCase {
 
 	private $repositoryConnection;
 	private $store;

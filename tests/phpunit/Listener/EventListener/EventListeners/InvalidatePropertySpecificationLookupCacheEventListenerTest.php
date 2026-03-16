@@ -3,8 +3,10 @@
 namespace SMW\Tests\Listener\EventListener\EventListeners;
 
 use Onoi\EventDispatcher\DispatchContext;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUnit\Framework\TestCase {
+class InvalidatePropertySpecificationLookupCacheEventListenerTest extends TestCase {
 
 	private $specificationLookup;
 	private $spyLogger;
@@ -26,7 +28,7 @@ class InvalidatePropertySpecificationLookupCacheEventListenerTest extends \PHPUn
 
 		$this->spyLogger = TestEnvironment::newSpyLogger();
 
-		$this->specificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->specificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

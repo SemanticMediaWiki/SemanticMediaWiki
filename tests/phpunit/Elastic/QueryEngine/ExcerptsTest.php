@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\QueryEngine\Excerpts;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Elastic\QueryEngine\Excerpts;
  *
  * @author mwjames
  */
-class ExcerptsTest extends \PHPUnit\Framework\TestCase {
+class ExcerptsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

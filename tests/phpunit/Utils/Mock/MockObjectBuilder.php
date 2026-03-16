@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Mock;
 
 use InvalidArgumentException;
 use OutOfBoundsException;
+use PHPUnit\Framework\TestCase;
 use SMW\ObjectDictionary;
 use SMW\Options;
 
@@ -27,7 +28,7 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class MockObjectBuilder extends \PHPUnit\Framework\TestCase {
+class MockObjectBuilder extends TestCase {
 
 	/** @var ObjectDictionary */
 	protected $configuration;

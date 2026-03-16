@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\CachingLookup;
+use SMW\MediaWiki\Api\Browse\Lookup;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\CachingLookup
@@ -13,14 +16,14 @@ use SMW\MediaWiki\Api\Browse\CachingLookup;
  *
  * @author mwjames
  */
-class CachingLookupTest extends \PHPUnit\Framework\TestCase {
+class CachingLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
+		$lookup = $this->getMockBuilder( Lookup::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -33,7 +36,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testLookupWithoutCache() {
 		$cacheTTL = 42;
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +51,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 				$this->anything(),
 				$cacheTTL );
 
-		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
+		$lookup = $this->getMockBuilder( Lookup::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
@@ -70,7 +73,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLookupWithCache() {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +84,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->never() )
 			->method( 'save' );
 
-		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
+		$lookup = $this->getMockBuilder( Lookup::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();
@@ -100,7 +103,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLookupWithCacheBeingDisabled() {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -110,7 +113,7 @@ class CachingLookupTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->never() )
 			->method( 'save' );
 
-		$lookup = $this->getMockBuilder( '\SMW\MediaWiki\Api\Browse\Lookup' )
+		$lookup = $this->getMockBuilder( Lookup::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getVersion', 'lookup' ] )
 			->getMockForAbstractClass();

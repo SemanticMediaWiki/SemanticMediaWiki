@@ -2,13 +2,16 @@
 
 namespace SMW\Tests\Query\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
+use SMW\Query\Parser;
 use SMW\Query\Parser\DescriptionProcessor;
 use SMW\Query\Parser\LegacyParser as QueryParser;
 use SMW\Query\Parser\Tokenizer;
 use SMW\Query\QueryToken;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class LegacyParserTest extends \PHPUnit\Framework\TestCase {
+class LegacyParserTest extends TestCase {
 
 	private $testEnvironment;
 	private $descriptionFactory;
@@ -32,7 +35,7 @@ class LegacyParserTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->descriptionFactory = new DescriptionFactory();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -51,20 +54,20 @@ class LegacyParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$descriptionProcessor = $this->getMockBuilder( '\SMW\Query\Parser\DescriptionProcessor' )
+		$descriptionProcessor = $this->getMockBuilder( DescriptionProcessor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$tokenizer = $this->getMockBuilder( '\SMW\Query\Parser\Tokenizer' )
+		$tokenizer = $this->getMockBuilder( Tokenizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+		$queryToken = $this->getMockBuilder( QueryToken::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Parser',
+			Parser::class,
 			new QueryParser( $descriptionProcessor, $tokenizer, $queryToken )
 		);
 	}

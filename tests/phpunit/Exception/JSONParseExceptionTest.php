@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\JSONParseException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\JSONParseException;
  *
  * @author mwjames
  */
-class JSONParseExceptionTest extends \PHPUnit\Framework\TestCase {
+class JSONParseExceptionTest extends TestCase {
 
 	public function testGetMessage() {
 		$json = '{ "test": 123, }';

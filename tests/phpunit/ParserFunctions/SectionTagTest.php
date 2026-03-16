@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\ParserFunctions;
 
+use MediaWiki\Parser\Parser;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\ParserFunctions\SectionTag;
 
 /**
@@ -13,7 +16,7 @@ use SMW\ParserFunctions\SectionTag;
  *
  * @author mwjames
  */
-class SectionTagTest extends \PHPUnit\Framework\TestCase {
+class SectionTagTest extends TestCase {
 
 	private $frame;
 	private $parser;
@@ -23,7 +26,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$this->parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -54,7 +57,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParse() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -80,7 +83,7 @@ class SectionTagTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParse_PropertyNamespace() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

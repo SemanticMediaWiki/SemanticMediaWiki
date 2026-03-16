@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use ALTree;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Linker\LinkTarget;
@@ -10,6 +11,7 @@ use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
 use ParserHooks\HookRegistrant;
 use SMW\DataTypeRegistry;
+use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\MediaWiki\Hooks\AdminLinks;
 use SMW\MediaWiki\Hooks\ApiModuleManager;
 use SMW\MediaWiki\Hooks\ArticleDelete;
@@ -52,7 +54,9 @@ use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SetupFile;
 use SMW\Site;
+use SMW\SQLStore\Installer;
 use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
+use SMW\Utils\CliMsgFormatter;
 
 /**
  * @license GPL-2.0-or-later
@@ -829,7 +833,7 @@ class Hooks {
 	public function onContentHandlerForModelID( $modelId, &$contentHandler ) {
 		// 'rule-json' being a legacy model, remove with 3.1
 		if ( $modelId === 'rule-json' || $modelId === 'smw/schema' ) {
-			$contentHandler = new \SMW\MediaWiki\Content\SchemaContentHandler();
+			$contentHandler = new SchemaContentHandler();
 		}
 
 		return true;
@@ -1399,7 +1403,7 @@ class Hooks {
 	 */
 	public function onAfterCreateTablesComplete( $tableBuilder, $messageReporter, $options ) {
 		$messageReporter->reportMessage(
-			( new \SMW\Utils\CliMsgFormatter() )->section( 'Import task(s)', 3, '-', true )
+			( new CliMsgFormatter() )->section( 'Import task(s)', 3, '-', true )
 		);
 
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -1420,7 +1424,7 @@ class Hooks {
 			$maintenanceUser = 'Maintenance script';
 		}
 
-		$importer->isEnabled( $options->safeGet( \SMW\SQLStore\Installer::RUN_IMPORT, false ) );
+		$importer->isEnabled( $options->safeGet( Installer::RUN_IMPORT, false ) );
 		$importer->setMessageReporter( $messageReporter );
 		$importer->setImporter( $maintenanceUser );
 		$importer->runImport();
@@ -1428,7 +1432,7 @@ class Hooks {
 		return true;
 	}
 
-	public function onAdminLinks( \ALTree $admin_links_tree ) {
+	public function onAdminLinks( ALTree $admin_links_tree ) {
 		$adminLinks = new AdminLinks();
 		$adminLinks->process( $admin_links_tree );
 

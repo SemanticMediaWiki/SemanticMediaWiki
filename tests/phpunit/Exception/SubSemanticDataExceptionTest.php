@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\SubSemanticDataException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\SubSemanticDataException;
  *
  * @author mwjames
  */
-class SubSemanticDataExceptionTest extends \PHPUnit\Framework\TestCase {
+class SubSemanticDataExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SubSemanticDataException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\SubSemanticDataException',
+			SubSemanticDataException::class,
 			$instance
 		);
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\CompartmentIterator;
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaList;
 
@@ -14,7 +16,7 @@ use SMW\Schema\SchemaList;
  *
  * @author mwjames
  */
-class SchemaListTest extends \PHPUnit\Framework\TestCase {
+class SchemaListTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -161,7 +163,7 @@ class SchemaListTest extends \PHPUnit\Framework\TestCase {
 		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foo' );
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\CompartmentIterator',
+			CompartmentIterator::class,
 			$compartmentIterator
 		);
 
@@ -181,7 +183,7 @@ class SchemaListTest extends \PHPUnit\Framework\TestCase {
 		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foobar' );
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\CompartmentIterator',
+			CompartmentIterator::class,
 			$compartmentIterator
 		);
 
@@ -196,7 +198,7 @@ class SchemaListTest extends \PHPUnit\Framework\TestCase {
 		$compartmentIterator = $instance->newCompartmentIteratorByKey( 'Foo' );
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\CompartmentIterator',
+			CompartmentIterator::class,
 			$compartmentIterator
 		);
 

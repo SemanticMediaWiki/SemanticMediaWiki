@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\DeleteAccount;
+use SMW\NamespaceExaminer;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\DeleteAccount
@@ -13,7 +17,7 @@ use SMW\MediaWiki\Hooks\DeleteAccount;
  *
  * @author mwjames
  */
-class DeleteAccountTest extends \PHPUnit\Framework\TestCase {
+class DeleteAccountTest extends TestCase {
 
 	private $namespaceExaminer;
 	private $articleDelete;
@@ -21,11 +25,11 @@ class DeleteAccountTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->articleDelete = $this->getMockBuilder( '\SMW\MediaWiki\Hooks\ArticleDelete' )
+		$this->articleDelete = $this->getMockBuilder( ArticleDelete::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -65,7 +69,7 @@ class DeleteAccountTest extends \PHPUnit\Framework\TestCase {
 		$this->articleDelete->expects( $this->atLeastOnce() )
 			->method( 'process' );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 

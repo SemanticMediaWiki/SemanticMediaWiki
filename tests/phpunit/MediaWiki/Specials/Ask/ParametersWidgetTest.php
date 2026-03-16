@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\Tests\TestEnvironment;
 
@@ -15,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ParametersWidgetTest extends \PHPUnit\Framework\TestCase {
+class ParametersWidgetTest extends TestCase {
 
 	private $stringValidator;
 

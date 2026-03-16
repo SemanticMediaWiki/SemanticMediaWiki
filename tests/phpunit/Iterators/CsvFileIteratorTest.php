@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Iterators;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\FileNotFoundException;
 use SMW\Iterators\CsvFileIterator;
 use SMW\Utils\TempFile;
 
@@ -14,7 +16,7 @@ use SMW\Utils\TempFile;
  *
  * @author mwjames
  */
-class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
+class CsvFileIteratorTest extends TestCase {
 
 	private $file;
 	private $tempFile;
@@ -41,7 +43,7 @@ class CsvFileIteratorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidFileThrowsException() {
-		$this->expectException( '\SMW\Exception\FileNotFoundException' );
+		$this->expectException( FileNotFoundException::class );
 		new CsvFileIterator( 'Foo' );
 	}
 

@@ -12,6 +12,7 @@ use SMW\Options;
 use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
@@ -46,7 +47,7 @@ class SPARQLStore extends Store {
 	 * @since 1.8
 	 * @var string
 	 */
-	public static $baseStoreClass = '\SMW\SQLStore\SQLStore';
+	public static $baseStoreClass = SQLStore::class;
 
 	/**
 	 * Underlying store to use for basic read operations.

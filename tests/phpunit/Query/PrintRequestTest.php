@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\PropertyValue;
 use SMW\DIProperty;
 use SMW\Query\PrintRequest;
@@ -15,10 +16,10 @@ use SMW\Query\PrintRequest;
  *
  * @author mwjames
  */
-class PrintRequestTest extends \PHPUnit\Framework\TestCase {
+class PrintRequestTest extends TestCase {
 
 	public function testCanConstructPropertyPrintRequest() {
-		$propertyValue = $this->getMockBuilder( '\SMW\DataValues\PropertyValue' )
+		$propertyValue = $this->getMockBuilder( PropertyValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,7 +28,7 @@ class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( true );
 
 		$this->assertInstanceOf(
-			'SMW\Query\PrintRequest',
+			PrintRequest::class,
 			new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue )
 		);
 	}
@@ -76,7 +77,7 @@ class PrintRequestTest extends \PHPUnit\Framework\TestCase {
 		$instance = PrintRequest::newFromText( $text, $showMode );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\PrintRequest',
+			PrintRequest::class,
 			$instance
 		);
 

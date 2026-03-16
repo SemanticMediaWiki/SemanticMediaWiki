@@ -2,10 +2,16 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DuplicateFinder
@@ -16,18 +22,18 @@ use SMW\SQLStore\EntityStore\DuplicateFinder;
  *
  * @author mwjames
  */
-class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
+class DuplicateFinderTest extends TestCase {
 
 	private $store;
 	private $connection;
 	private $iteratorFactory;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -36,7 +42,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -49,7 +55,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasDuplicate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,9 +67,9 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
 
-		$query = new \SMW\MediaWiki\Connection\Query( $connection );
+		$query = new Query( $connection );
 
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +133,7 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->findDuplicates();
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\MappingIterator',
+			MappingIterator::class,
 			$res
 		);
 
@@ -172,11 +178,11 @@ class DuplicateFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$res = $instance->findDuplicates(
-			\SMW\SQLStore\RedirectStore::TABLE_NAME
+			RedirectStore::TABLE_NAME
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\MappingIterator',
+			MappingIterator::class,
 			$res
 		);
 

@@ -2,10 +2,14 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
+use SMW\DataValues\ExternalFormatterUriValue;
 use SMW\DataValues\ExternalIdentifierValue;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\SpecificationLookup;
+use SMW\Services\DataValueServiceFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ExternalIdentifierValueTest extends \PHPUnit\Framework\TestCase {
+class ExternalIdentifierValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -34,15 +38,15 @@ class ExternalIdentifierValueTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$externalFormatterUriValue = $this->getMockBuilder( '\SMW\DataValues\ExternalFormatterUriValue' )
+		$externalFormatterUriValue = $this->getMockBuilder( ExternalFormatterUriValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
 
 /**
@@ -13,17 +15,17 @@ use SMW\MediaWiki\Hooks\TitleIsAlwaysKnown;
  *
  * @author mwjames
  */
-class TitleIsAlwaysKnownTest extends \PHPUnit\Framework\TestCase {
+class TitleIsAlwaysKnownTest extends TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$result = '';
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\TitleIsAlwaysKnown',
+			TitleIsAlwaysKnown::class,
 			new TitleIsAlwaysKnown( $title, $result )
 		);
 	}
@@ -32,7 +34,7 @@ class TitleIsAlwaysKnownTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testPerformUpdate( $namespace, $text, $expected ) {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

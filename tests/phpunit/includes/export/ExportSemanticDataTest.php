@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Export;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -26,7 +27,7 @@ use SMWExporter as Exporter;
  *
  * @author mwjames
  */
-class ExportSemanticDataTest extends \PHPUnit\Framework\TestCase {
+class ExportSemanticDataTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $dataValueFactory;

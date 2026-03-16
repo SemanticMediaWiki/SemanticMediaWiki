@@ -3,6 +3,13 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Api\ApiModuleManager as mwApiModuleManager;
+use SMW\MediaWiki\Api\Ask;
+use SMW\MediaWiki\Api\AskArgs;
+use SMW\MediaWiki\Api\Browse;
+use SMW\MediaWiki\Api\BrowseByProperty;
+use SMW\MediaWiki\Api\BrowseBySubject;
+use SMW\MediaWiki\Api\Info;
+use SMW\MediaWiki\Api\Task;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 
@@ -27,13 +34,13 @@ class ApiModuleManager implements HookListener {
 		}
 
 		$modules = [
-			'smwinfo' => '\SMW\MediaWiki\Api\Info',
-			'smwtask' => '\SMW\MediaWiki\Api\Task',
-			'smwbrowse' => '\SMW\MediaWiki\Api\Browse',
-			'ask' => '\SMW\MediaWiki\Api\Ask',
-			'askargs' => '\SMW\MediaWiki\Api\AskArgs',
-			'browsebysubject' => '\SMW\MediaWiki\Api\BrowseBySubject',
-			'browsebyproperty' => '\SMW\MediaWiki\Api\BrowseByProperty'
+			'smwinfo' => Info::class,
+			'smwtask' => Task::class,
+			'smwbrowse' => Browse::class,
+			'ask' => Ask::class,
+			'askargs' => AskArgs::class,
+			'browsebysubject' => BrowseBySubject::class,
+			'browsebyproperty' => BrowseByProperty::class
 		];
 
 		$apiModuleManager->addModules( $modules, 'action' );

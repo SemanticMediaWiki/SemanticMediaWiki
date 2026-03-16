@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\ManualEntryLogger;
 
 /**
@@ -13,11 +15,11 @@ use SMW\MediaWiki\ManualEntryLogger;
  *
  * @author mwjames
  */
-class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
+class ManualEntryLoggerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\ManualEntryLogger',
+			ManualEntryLogger::class,
 			new ManualEntryLogger()
 		);
 	}
@@ -57,7 +59,7 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'insert' )
 			->willReturn( 42 );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+		$instance = $this->getMockBuilder( ManualEntryLogger::class )
 			->setMethods( [ 'newManualLogEntryForType' ] )
 			->getMock();
 
@@ -75,7 +77,7 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testLogToTableForLoggableEventWithPerformer() {
-		$performer = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$performer = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +89,7 @@ class ManualEntryLoggerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'insert' )
 			->willReturn( 42 );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\ManualEntryLogger' )
+		$instance = $this->getMockBuilder( ManualEntryLogger::class )
 			->setMethods( [ 'newManualLogEntryForType' ] )
 			->getMock();
 

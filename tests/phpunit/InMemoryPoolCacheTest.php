@@ -2,6 +2,9 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\CacheFactory;
 use SMW\InMemoryPoolCache;
 
 /**
@@ -13,7 +16,7 @@ use SMW\InMemoryPoolCache;
  *
  * @author mwjames
  */
-class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
+class InMemoryPoolCacheTest extends TestCase {
 
 	protected function tearDown(): void {
 		InMemoryPoolCache::getInstance()->clear();
@@ -21,17 +24,17 @@ class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$cacheFactory = $this->getMockBuilder( '\SMW\CacheFactory' )
+		$cacheFactory = $this->getMockBuilder( CacheFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\InMemoryPoolCache',
+			InMemoryPoolCache::class,
 			new InMemoryPoolCache( $cacheFactory )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\InMemoryPoolCache',
+			InMemoryPoolCache::class,
 			InMemoryPoolCache::getInstance()
 		);
 	}
@@ -40,7 +43,7 @@ class InMemoryPoolCacheTest extends \PHPUnit\Framework\TestCase {
 		$instance = InMemoryPoolCache::getInstance();
 
 		$this->assertInstanceOf(
-			'\Onoi\Cache\Cache',
+			Cache::class,
 			$instance->getPoolCacheById( 'Foo' )
 		);
 

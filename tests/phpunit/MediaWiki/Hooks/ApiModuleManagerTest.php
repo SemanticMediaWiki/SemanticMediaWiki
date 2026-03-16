@@ -2,7 +2,16 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Api\Ask;
+use SMW\MediaWiki\Api\AskArgs;
+use SMW\MediaWiki\Api\Browse;
+use SMW\MediaWiki\Api\BrowseByProperty;
+use SMW\MediaWiki\Api\BrowseBySubject;
+use SMW\MediaWiki\Api\Info;
+use SMW\MediaWiki\Api\Task;
 use SMW\MediaWiki\Hooks\ApiModuleManager;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ApiModuleManager
@@ -13,14 +22,14 @@ use SMW\MediaWiki\Hooks\ApiModuleManager;
  *
  * @author mwjames
  */
-class ApiModuleManagerTest extends \PHPUnit\Framework\TestCase {
+class ApiModuleManagerTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -34,13 +43,13 @@ class ApiModuleManagerTest extends \PHPUnit\Framework\TestCase {
 
 	public function testApiModuleManager() {
 		$modules = [
-			'smwinfo' => '\SMW\MediaWiki\Api\Info',
-			'smwtask' => '\SMW\MediaWiki\Api\Task',
-			'smwbrowse' => '\SMW\MediaWiki\Api\Browse',
-			'ask' => '\SMW\MediaWiki\Api\Ask',
-			'askargs' => '\SMW\MediaWiki\Api\AskArgs',
-			'browsebysubject' => '\SMW\MediaWiki\Api\BrowseBySubject',
-			'browsebyproperty' => '\SMW\MediaWiki\Api\BrowseByProperty'
+			'smwinfo' => Info::class,
+			'smwtask' => Task::class,
+			'smwbrowse' => Browse::class,
+			'ask' => Ask::class,
+			'askargs' => AskArgs::class,
+			'browsebysubject' => BrowseBySubject::class,
+			'browsebyproperty' => BrowseByProperty::class
 		];
 
 		$apiModuleManager = $this->getMockBuilder( '\ApiModuleManager' )

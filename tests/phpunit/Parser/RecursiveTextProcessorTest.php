@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Parser;
 
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\Parser\RecursiveTextProcessor;
+use SMW\ParserData;
 
 /**
  * @covers \SMW\Parser\RecursiveTextProcessor
@@ -13,7 +18,7 @@ use SMW\Parser\RecursiveTextProcessor;
  *
  * @author mwjames
  */
-class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
+class RecursiveTextProcessorTest extends TestCase {
 
 	private $parser;
 	private $parserOptions;
@@ -23,7 +28,7 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$this->parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -31,7 +36,7 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$this->parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +44,7 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHeadItems' )
 			->willReturn( [] );
 
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -78,7 +83,7 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 	public function testRecursivePreprocess_NO_RecursiveAnnotationWithAnnotationBlockToRemoveCategories() {
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'getExtensionData' )
-			->with(	\SMW\ParserData::ANNOTATION_BLOCK )
+			->with(	ParserData::ANNOTATION_BLOCK )
 			->willReturn( [ '123' => true ] );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -290,7 +295,7 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'setExtensionData' )
 			->with(
-				\SMW\ParserData::ANNOTATION_BLOCK,
+				ParserData::ANNOTATION_BLOCK,
 				[ '123' => true ] );
 
 		$this->parser->expects( $this->atLeastOnce() )
@@ -312,13 +317,13 @@ class RecursiveTextProcessorTest extends \PHPUnit\Framework\TestCase {
 	public function testReleaseAnnotationBlock() {
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'getExtensionData' )
-			->with(	\SMW\ParserData::ANNOTATION_BLOCK )
+			->with(	ParserData::ANNOTATION_BLOCK )
 			->willReturn( [ '123' => true ] );
 
 		$this->parserOutput->expects( $this->atLeastOnce() )
 			->method( 'setExtensionData' )
 			->with(
-				\SMW\ParserData::ANNOTATION_BLOCK,
+				ParserData::ANNOTATION_BLOCK,
 				false );
 
 		$this->parser->expects( $this->atLeastOnce() )

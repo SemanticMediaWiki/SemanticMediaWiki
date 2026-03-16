@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use SMW\DIConcept;
+
 /**
  * @covers \SMW\DIConcept
  *
@@ -23,7 +25,7 @@ class DIConceptTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return 'SMW\DIConcept';
+		return DIConcept::class;
 	}
 
 	/**

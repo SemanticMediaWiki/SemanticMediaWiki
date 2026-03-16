@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
+use SMW\MediaWiki\FileRepoFinder;
 
 /**
  * @covers \SMW\Elastic\Indexer\Attachment\FileHandler
@@ -13,12 +16,12 @@ use SMW\Elastic\Indexer\Attachment\FileHandler;
  *
  * @author mwjames
  */
-class FileHandlerTest extends \PHPUnit\Framework\TestCase {
+class FileHandlerTest extends TestCase {
 
 	private $fileRepoFinder;
 
 	protected function setUp(): void {
-		$this->fileRepoFinder = $this->getMockBuilder( '\SMW\MediaWiki\FileRepoFinder' )
+		$this->fileRepoFinder = $this->getMockBuilder( FileRepoFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -31,7 +34,7 @@ class FileHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindFileByTitle() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

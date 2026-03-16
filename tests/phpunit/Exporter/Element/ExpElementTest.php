@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Exporter\Element;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
@@ -16,20 +18,20 @@ use SMW\Exporter\Element\ExpResource;
  *
  * @author mwjames
  */
-class ExpElementTest extends \PHPUnit\Framework\TestCase {
+class ExpElementTest extends TestCase {
 
 	public function testCanConstruct() {
-		$instance = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
+		$instance = $this->getMockBuilder( ExpElement::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Element',
+			Element::class,
 			$instance
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Element\ExpElement',
+			ExpElement::class,
 			$instance
 		);
 	}

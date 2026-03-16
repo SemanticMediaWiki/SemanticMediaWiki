@@ -157,7 +157,7 @@ class SQLStore extends Store {
 	 * Object to access the SMW IDs table.
 	 *
 	 * @since 1.8
-	 * @var \SMW\SQLStore\EntityStore\EntityIdManager
+	 * @var EntityIdManager
 	 */
 	public $smwIds;
 
@@ -592,7 +592,7 @@ class SQLStore extends Store {
 	/**
 	 * PropertyTableInfoFetcher::getPropertyTableDefinitions
 	 *
-	 * @return \SMW\SQLStore\PropertyTableDefinition[]
+	 * @return PropertyTableDefinition[]
 	 */
 	public function getPropertyTables() {
 		return $this->getPropertyTableInfoFetcher()->getPropertyTableDefinitions();
@@ -603,7 +603,7 @@ class SQLStore extends Store {
 	 *
 	 * @since 1.9
 	 *
-	 * @return \SMW\SQLStore\EntityStore\EntityIdManager
+	 * @return EntityIdManager
 	 */
 	public function getObjectIds() {
 		return $this->smwIds;

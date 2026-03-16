@@ -5,6 +5,7 @@ namespace SMW\Maintenance;
 use MediaWiki\Maintenance\Maintenance;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * Load the required class
@@ -48,7 +49,7 @@ class rebuildPropertyStatistics extends Maintenance {
 		$maintenanceHelper->initRuntimeValues();
 
 		$statisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
-			$applicationFactory->getStore( 'SMW\SQLStore\SQLStore' ),
+			$applicationFactory->getStore( SQLStore::class ),
 			[ $this, 'reportMessage' ]
 		);
 

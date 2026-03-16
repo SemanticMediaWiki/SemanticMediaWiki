@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\OperationalStatisticsListTaskHandler;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class OperationalStatisticsListTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -25,11 +30,11 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +101,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 
 		$instance->setStore( $this->store );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -104,7 +109,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 	}
 
 	public function testHandleSubRequest() {
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +118,7 @@ class OperationalStatisticsListTaskHandlerTest extends \PHPUnit\Framework\TestCa
 			->with( 'action' )
 			->willReturn( 'foo' );
 
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
+		$taskHandler = $this->getMockBuilder( ActionableTask::class )
 			->disableOriginalConstructor()
 			->getMock();
 

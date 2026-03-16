@@ -3,8 +3,16 @@
 namespace SMW\Tests\Maintenance;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
+use SMW\DIWikiPage;
 use SMW\Maintenance\DistinctEntityDataRebuilder;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
+use SMW\Query\QueryResult;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +25,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
+class DistinctEntityDataRebuilderTest extends TestCase {
 
 	protected $obLevel;
 	private $connectionManager;
@@ -27,7 +35,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 	// inappropriate buffer settings which can cause interference during unit
 	// testing, we clean the output buffer
 	protected function setUp(): void {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -40,7 +48,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +56,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [] );
 
-		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$this->connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,16 +80,16 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\DistinctEntityDataRebuilder',
+			DistinctEntityDataRebuilder::class,
 			new DistinctEntityDataRebuilder( $store, $titleFactory )
 		);
 	}
@@ -90,7 +98,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @depends testCanConstruct
 	 */
 	public function testRebuildSelectedPagesWithQueryOption() {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +106,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +114,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getResults' )
 			->willReturn( [ $subject ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -120,7 +128,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$store->setConnectionManager( $this->connectionManager );
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -142,7 +150,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->cat_title = 'Foo';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +163,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -163,7 +171,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $database );
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -186,7 +194,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = SMW_NS_PROPERTY;
 		$row->page_title = 'Bar';
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -199,7 +207,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -207,7 +215,7 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $database );
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -226,11 +234,11 @@ class DistinctEntityDataRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRebuildSelectedPagesWithPageOption() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

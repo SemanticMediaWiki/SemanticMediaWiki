@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 
 /**
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Connection\Query;
  *
  * @author mwjames
  */
-class QueryTest extends \PHPUnit\Framework\TestCase {
+class QueryTest extends TestCase {
 
 	private $connection;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

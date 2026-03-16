@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 
 /**
@@ -13,12 +15,12 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
  *
  * @author mwjames
  */
-class OpenFormTest extends \PHPUnit\Framework\TestCase {
+class OpenFormTest extends TestCase {
 
 	private $webRequest;
 
 	protected function setUp(): void {
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

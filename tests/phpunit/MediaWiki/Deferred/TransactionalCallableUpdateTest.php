@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Deferred;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
+class TransactionalCallableUpdateTest extends TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -25,7 +27,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->getUtilityFactory()->newSpyLogger();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -238,7 +240,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 			return call_user_func( $callback );
 		};
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -274,7 +276,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnDeferrableUpdate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -310,7 +312,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCommitWithTransactionTicketOnNonDeferrableUpdate() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -346,7 +348,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCancelOnRollback() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -378,7 +380,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 		$instance->commitWithTransactionTicket();
 
 		// #3765
-		$instance->cancelOnRollback( \SMW\MediaWiki\Connection\Database::TRIGGER_ROLLBACK );
+		$instance->cancelOnRollback( Database::TRIGGER_ROLLBACK );
 
 		$instance->pushUpdate();
 

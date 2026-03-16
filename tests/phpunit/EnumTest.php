@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Enum;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Enum;
  *
  * @author mwjames
  */
-class EnumTest extends \PHPUnit\Framework\TestCase {
+class EnumTest extends TestCase {
 
 	/**
 	 * @dataProvider constProvider

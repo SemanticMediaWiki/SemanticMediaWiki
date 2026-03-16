@@ -60,7 +60,7 @@ class TestEnvironment {
 	 * last read") caused by ChangeTagsStore::updateTags reading and then
 	 * updating change_tag_def within the same transaction.
 	 *
-	 * @since 6.1.0
+	 * @since 7.0.0
 	 */
 	public function disableSoftwareChangeTags(): void {
 		$GLOBALS['wgSoftwareTags'] = [

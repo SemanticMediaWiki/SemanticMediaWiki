@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\HtmlModal;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\HtmlModal;
  *
  * @author mwjames
  */
-class HtmlModalTest extends \PHPUnit\Framework\TestCase {
+class HtmlModalTest extends TestCase {
 
 	public function testGetModules() {
 		$this->assertIsArray(

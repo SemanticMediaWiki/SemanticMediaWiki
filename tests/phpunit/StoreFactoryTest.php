@@ -2,6 +2,11 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\StoreNotFoundException;
+use SMW\SPARQLStore\SPARQLStore;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\StoreFactory;
 
 /**
@@ -13,7 +18,7 @@ use SMW\StoreFactory;
  *
  * @author mwjames
  */
-class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
+class StoreFactoryTest extends TestCase {
 
 	protected function tearDown(): void {
 		StoreFactory::clear();
@@ -42,18 +47,18 @@ class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDifferentStoreIdInstanceInvocation() {
-		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ) );
-		$this->assertInstanceOf( 'SMW\Store', StoreFactory::getStore( '\SMW\SPARQLStore\SPARQLStore' ) );
+		$this->assertInstanceOf( Store::class, StoreFactory::getStore( SQLStore::class ) );
+		$this->assertInstanceOf( Store::class, StoreFactory::getStore( SPARQLStore::class ) );
 
 		$this->assertNotSame(
-			StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ),
-			StoreFactory::getStore( '\SMW\SPARQLStore\SPARQLStore' )
+			StoreFactory::getStore( SQLStore::class ),
+			StoreFactory::getStore( SPARQLStore::class )
 		);
 	}
 
 	public function testStoreInstanceException() {
-		$this->expectException( '\SMW\Exception\StoreNotFoundException' );
-		StoreFactory::getStore( '\SMW\StoreFactory' );
+		$this->expectException( StoreNotFoundException::class );
+		StoreFactory::getStore( StoreFactory::class );
 	}
 
 	public function testStoreWithInvalidClassThrowsException() {
@@ -69,7 +74,7 @@ class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testSmwfGetStore() {
 		$store = smwfGetStore();
 
-		$this->assertInstanceOf( 'SMW\Store', $store );
+		$this->assertInstanceOf( Store::class, $store );
 	}
 
 }

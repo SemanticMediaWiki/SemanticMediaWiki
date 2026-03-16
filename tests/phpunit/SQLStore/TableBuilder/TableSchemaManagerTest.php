@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\SQLStore\TableBuilder\Table;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 
 /**
@@ -14,17 +20,17 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
  *
  * @author mwjames
  */
-class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
+class TableSchemaManagerTest extends TestCase {
 
 	private $store;
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,11 +47,11 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTablesWithEmptyPropertyTableDefinition() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -77,11 +83,11 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindTableDefinitionWithNoCaseFeature() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -105,7 +111,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 			SMW_FIELDT_CHAR_NOCASE
 		);
 
-		$table = $instance->findTable( \SMW\SQLStore\SQLStore::ID_TABLE );
+		$table = $instance->findTable( SQLStore::ID_TABLE );
 		$fields = $table->get( 'fields' );
 
 		$this->assertContains(
@@ -124,7 +130,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertNull(
-			$instance->findTable( \SMW\SQLStore\SQLStore::FT_SEARCH_TABLE )
+			$instance->findTable( SQLStore::FT_SEARCH_TABLE )
 		);
 	}
 
@@ -144,13 +150,13 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\Table',
-			$instance->findTable( \SMW\SQLStore\SQLStore::FT_SEARCH_TABLE )
+			Table::class,
+			$instance->findTable( SQLStore::FT_SEARCH_TABLE )
 		);
 	}
 
 	public function testPropertyTable_UniqueIndex() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -162,7 +168,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'usesIdSubject' )
 			->willReturn( true );
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getTableIndexes' ] )
 			->getMockForAbstractClass();
@@ -204,7 +210,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPropertyTable_FixedTable() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -220,7 +226,7 @@ class TableSchemaManagerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getTableIndexes' ] )
 			->getMockForAbstractClass();

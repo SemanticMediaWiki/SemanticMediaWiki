@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\PrintRequest;
 use SMW\Query\QueryStringifier;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Query\QueryStringifier;
  *
  * @author mwjames
  */
-class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
+class QueryStringifierTest extends TestCase {
 
 	/**
 	 * @dataProvider queryProvider
@@ -202,7 +204,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 4
-		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+		$printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -248,7 +250,7 @@ class QueryStringifierTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 5 (#show returns with an extra =)
-		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+		$printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

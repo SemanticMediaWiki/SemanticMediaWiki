@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ExternalFormatterUriValue;
 
 /**
@@ -13,7 +14,7 @@ use SMW\DataValues\ExternalFormatterUriValue;
  *
  * @author mwjames
  */
-class ExternalFormatterUriValueTest extends \PHPUnit\Framework\TestCase {
+class ExternalFormatterUriValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

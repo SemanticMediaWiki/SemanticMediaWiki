@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizer;
 use SMW\Tests\TestEnvironment;
 use SMW\Utils\TemplateEngine;
@@ -17,7 +21,7 @@ use SMW\Utils\TemplateEngine;
  *
  * @author mwjames
  */
-class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
+class CompositeIndicatorHtmlBuilderTest extends TestCase {
 
 	private $testEnvironment;
 	private $templateEngine;
@@ -30,7 +34,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->templateEngine = new TemplateEngine();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -84,7 +88,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_ERROR() {
-		$typableSeverityIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider' )
+		$typableSeverityIndicatorProvider = $this->getMockBuilder( TypableSeverityIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +133,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildHTML_TypedIndicator_SEVERITY_WARNING() {
-		$typableSeverityIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider' )
+		$typableSeverityIndicatorProvider = $this->getMockBuilder( TypableSeverityIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -176,7 +180,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildHTML_Deferrable() {
-		$deferrableIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider' )
+		$deferrableIndicatorProvider = $this->getMockBuilder( DeferrableIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -220,7 +224,7 @@ class CompositeIndicatorHtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 			'abc_123' => [ 'content' => '__content_123', 'title' => '_title_123' ]
 		];
 
-		$compositeIndicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider' )
+		$compositeIndicatorProvider = $this->getMockBuilder( CompositeIndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 

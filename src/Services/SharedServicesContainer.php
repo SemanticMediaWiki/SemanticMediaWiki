@@ -9,6 +9,7 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use Onoi\BlobStore\BlobStore;
+use Onoi\Cache\Cache;
 use Onoi\CallbackContainer\CallbackContainer;
 use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\CacheFactory;
@@ -35,6 +36,7 @@ use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\JobQueue;
+use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\ManualEntryLogger;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\MediaWiki\PageCreator;
@@ -99,7 +101,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 * @return Store
 	 */
 	public function newStore( ContainerBuilder $containerBuilder, $storeClass = null ) {
-		$containerBuilder->registerExpectedReturnType( 'Store', '\SMW\Store' );
+		$containerBuilder->registerExpectedReturnType( 'Store', Store::class );
 		$settings = $containerBuilder->singleton( 'Settings' );
 
 		if ( $storeClass === null || $storeClass === '' ) {
@@ -154,7 +156,7 @@ class SharedServicesContainer implements CallbackContainer {
 
 	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ) {
 		$containerBuilder->registerCallback( 'Settings', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'Settings', '\SMW\Settings' );
+			$containerBuilder->registerExpectedReturnType( 'Settings', Settings::class );
 
 			$settings = new Settings();
 
@@ -188,7 +190,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'Cache', static function ( $containerBuilder, $cacheType = null ) {
-			$containerBuilder->registerExpectedReturnType( 'Cache', '\Onoi\Cache\Cache' );
+			$containerBuilder->registerExpectedReturnType( 'Cache', Cache::class );
 			return $containerBuilder->create( 'CacheFactory' )->newMediaWikiCompositeCache( $cacheType );
 		} );
 
@@ -220,17 +222,17 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'LinksProcessor', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'LinksProcessor', '\SMW\Parser\LinksProcessor' );
+			$containerBuilder->registerExpectedReturnType( 'LinksProcessor', LinksProcessor::class );
 			return new LinksProcessor();
 		} );
 
 		$containerBuilder->registerCallback( 'MessageFormatter', static function ( $containerBuilder, Language $language ) {
-			$containerBuilder->registerExpectedReturnType( 'MessageFormatter', '\SMW\MessageFormatter' );
+			$containerBuilder->registerExpectedReturnType( 'MessageFormatter', MessageFormatter::class );
 			return new MessageFormatter( $language );
 		} );
 
 		$containerBuilder->registerCallback( 'MediaWikiNsContentReader', static function () use ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'MediaWikiNsContentReader', '\SMW\MediaWiki\MediaWikiNsContentReader' );
+			$containerBuilder->registerExpectedReturnType( 'MediaWikiNsContentReader', MediaWikiNsContentReader::class );
 
 			$mediaWikiNsContentReader = new MediaWikiNsContentReader();
 
@@ -242,17 +244,17 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'PageCreator', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PageCreator', '\SMW\MediaWiki\PageCreator' );
+			$containerBuilder->registerExpectedReturnType( 'PageCreator', PageCreator::class );
 			return new PageCreator();
 		} );
 
 		$containerBuilder->registerCallback( 'PageUpdater', static function ( $containerBuilder, $connection, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
-			$containerBuilder->registerExpectedReturnType( 'PageUpdater', '\SMW\MediaWiki\PageUpdater' );
+			$containerBuilder->registerExpectedReturnType( 'PageUpdater', PageUpdater::class );
 			return new PageUpdater( $connection, $transactionalCallableUpdate );
 		} );
 
 		$containerBuilder->registerCallback( 'EntityCache', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'EntityCache', '\SMW\EntityCache' );
+			$containerBuilder->registerExpectedReturnType( 'EntityCache', EntityCache::class );
 			return new EntityCache( $containerBuilder->singleton( 'Cache', $GLOBALS['smwgMainCacheType'] ) );
 		} );
 
@@ -264,7 +266,7 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'JobQueue', static function ( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType(
 				'JobQueue',
-				'\SMW\MediaWiki\JobQueue'
+				JobQueue::class
 			);
 
 			return new JobQueue(
@@ -273,12 +275,12 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'ManualEntryLogger', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'ManualEntryLogger', '\SMW\MediaWiki\ManualEntryLogger' );
+			$containerBuilder->registerExpectedReturnType( 'ManualEntryLogger', ManualEntryLogger::class );
 			return new ManualEntryLogger();
 		} );
 
 		$containerBuilder->registerCallback( 'TitleFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'TitleFactory', '\SMW\MediaWiki\TitleFactory' );
+			$containerBuilder->registerExpectedReturnType( 'TitleFactory', TitleFactory::class );
 			return new TitleFactory();
 		} );
 
@@ -302,7 +304,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'ContentParser', static function ( $containerBuilder, Title $title ) {
-			$containerBuilder->registerExpectedReturnType( 'ContentParser', '\SMW\ContentParser' );
+			$containerBuilder->registerExpectedReturnType( 'ContentParser', ContentParser::class );
 
 			$contentParser = new ContentParser(
 				$title,
@@ -317,14 +319,14 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 
 		$containerBuilder->registerCallback( 'DeferredCallableUpdate', static function ( $containerBuilder, ?callable $callback = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', '\SMW\MediaWiki\Deferred\CallableUpdate' );
+			$containerBuilder->registerExpectedReturnType( 'DeferredCallableUpdate', CallableUpdate::class );
 			$containerBuilder->registerAlias( 'CallableUpdate', CallableUpdate::class );
 
 			return new CallableUpdate( $callback );
 		} );
 
 		$containerBuilder->registerCallback( 'DeferredTransactionalCallableUpdate', static function ( $containerBuilder, ?callable $callback = null, ?Database $connection = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', '\SMW\MediaWiki\Deferred\TransactionalCallableUpdate' );
+			$containerBuilder->registerExpectedReturnType( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
 			$containerBuilder->registerAlias( 'DeferredTransactionalUpdate', TransactionalCallableUpdate::class );
 
 			return new TransactionalCallableUpdate( $callback, $connection );
@@ -334,7 +336,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var InMemoryPoolCache
 		 */
 		$containerBuilder->registerCallback( 'InMemoryPoolCache', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'InMemoryPoolCache', '\SMW\InMemoryPoolCache' );
+			$containerBuilder->registerExpectedReturnType( 'InMemoryPoolCache', InMemoryPoolCache::class );
 			return InMemoryPoolCache::getInstance();
 		} );
 
@@ -367,7 +369,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var TempFile
 		 */
 		$containerBuilder->registerCallback( 'TempFile', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'TempFile', '\SMW\Utils\TempFile' );
+			$containerBuilder->registerExpectedReturnType( 'TempFile', TempFile::class );
 			return new TempFile();
 		} );
 
@@ -498,7 +500,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var CacheFactory
 		 */
 		$containerBuilder->registerCallback( 'CacheFactory', static function ( $containerBuilder, $mainCacheType = null ) {
-			$containerBuilder->registerExpectedReturnType( 'CacheFactory', '\SMW\CacheFactory' );
+			$containerBuilder->registerExpectedReturnType( 'CacheFactory', CacheFactory::class );
 			return new CacheFactory( $mainCacheType );
 		} );
 
@@ -506,7 +508,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var IteratorFactory
 		 */
 		$containerBuilder->registerCallback( 'IteratorFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'IteratorFactory', '\SMW\IteratorFactory' );
+			$containerBuilder->registerExpectedReturnType( 'IteratorFactory', IteratorFactory::class );
 			return new IteratorFactory();
 		} );
 
@@ -514,7 +516,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var JobFactory
 		 */
 		$containerBuilder->registerCallback( 'JobFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'JobFactory', '\SMW\MediaWiki\JobFactory' );
+			$containerBuilder->registerExpectedReturnType( 'JobFactory', JobFactory::class );
 			return new JobFactory();
 		} );
 
@@ -522,7 +524,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var FactboxFactory
 		 */
 		$containerBuilder->registerCallback( 'FactboxFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'FactboxFactory', '\SMW\Factbox\FactboxFactory' );
+			$containerBuilder->registerExpectedReturnType( 'FactboxFactory', FactboxFactory::class );
 			return new FactboxFactory();
 		} );
 
@@ -530,7 +532,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var QuerySourceFactory
 		 */
 		$containerBuilder->registerCallback( 'QuerySourceFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'QuerySourceFactory', '\SMW\Query\QuerySourceFactory' );
+			$containerBuilder->registerExpectedReturnType( 'QuerySourceFactory', QuerySourceFactory::class );
 
 			return new QuerySourceFactory(
 				$containerBuilder->singleton( 'Store', null ),
@@ -542,7 +544,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var QueryFactory
 		 */
 		$containerBuilder->registerCallback( 'QueryFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'QueryFactory', '\SMW\QueryFactory' );
+			$containerBuilder->registerExpectedReturnType( 'QueryFactory', QueryFactory::class );
 			return new QueryFactory();
 		} );
 
@@ -550,7 +552,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var DataItemFactory
 		 */
 		$containerBuilder->registerCallback( 'DataItemFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'DataItemFactory', '\SMW\DataItemFactory' );
+			$containerBuilder->registerExpectedReturnType( 'DataItemFactory', DataItemFactory::class );
 			return new DataItemFactory();
 		} );
 
@@ -558,7 +560,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var DataValueServiceFactory
 		 */
 		$containerBuilder->registerCallback( 'DataValueServiceFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'DataValueServiceFactory', '\SMW\Services\DataValueServiceFactory' );
+			$containerBuilder->registerExpectedReturnType( 'DataValueServiceFactory', DataValueServiceFactory::class );
 
 			$containerBuilder->registerFromFile(
 				$containerBuilder->singleton( 'Settings' )->get( 'smwgServicesFileDir' ) . '/' . DataValueServiceFactory::SERVICE_FILE
@@ -575,7 +577,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var QueryDependencyLinksStoreFactory
 		 */
 		$containerBuilder->registerCallback( 'QueryDependencyLinksStoreFactory', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'QueryDependencyLinksStoreFactory', '\SMW\SQLStore\QueryDependencyLinksStoreFactory' );
+			$containerBuilder->registerExpectedReturnType( 'QueryDependencyLinksStoreFactory', QueryDependencyLinksStoreFactory::class );
 			return new QueryDependencyLinksStoreFactory();
 		} );
 	}
@@ -585,7 +587,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var BlobStore
 		 */
 		$containerBuilder->registerCallback( 'BlobStore', static function ( $containerBuilder, $namespace, $cacheType = null, $ttl = 0 ) {
-			$containerBuilder->registerExpectedReturnType( 'BlobStore', '\Onoi\BlobStore\BlobStore' );
+			$containerBuilder->registerExpectedReturnType( 'BlobStore', BlobStore::class );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 
@@ -613,7 +615,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var ResultCache
 		 */
 		$containerBuilder->registerCallback( 'ResultCache', static function ( $containerBuilder, $cacheType = null ) {
-			$containerBuilder->registerExpectedReturnType( 'ResultCache', '\SMW\Query\Cache\ResultCache' );
+			$containerBuilder->registerExpectedReturnType( 'ResultCache', ResultCache::class );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 
@@ -667,7 +669,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var Stats
 		 */
 		$containerBuilder->registerCallback( 'Stats', static function ( $containerBuilder, $id ) {
-			$containerBuilder->registerExpectedReturnType( 'Stats', '\SMW\Utils\Stats' );
+			$containerBuilder->registerExpectedReturnType( 'Stats', Stats::class );
 
 			$cacheFactory = $containerBuilder->create( 'CacheFactory' );
 
@@ -684,7 +686,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var SpecificationLookup
 		 */
 		$containerBuilder->registerCallback( 'PropertySpecificationLookup', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', '\SMW\Property\SpecificationLookup' );
+			$containerBuilder->registerExpectedReturnType( 'PropertySpecificationLookup', SpecificationLookup::class );
 
 			$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
@@ -704,7 +706,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var ProtectionValidator
 		 */
 		$containerBuilder->registerCallback( 'ProtectionValidator', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', '\SMW\Protection\ProtectionValidator' );
+			$containerBuilder->registerExpectedReturnType( 'ProtectionValidator', ProtectionValidator::class );
 
 			$settings = $containerBuilder->singleton( 'Settings' );
 
@@ -737,7 +739,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var TitlePermissions
 		 */
 		$containerBuilder->registerCallback( 'TitlePermissions', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'TitlePermissions', '\SMW\MediaWiki\Permission\TitlePermissions' );
+			$containerBuilder->registerExpectedReturnType( 'TitlePermissions', TitlePermissions::class );
 
 			$titlePermissions = new TitlePermissions(
 				$containerBuilder->create( 'ProtectionValidator' ),
@@ -751,7 +753,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var EditProtectionUpdater
 		 */
 		$containerBuilder->registerCallback( 'EditProtectionUpdater', static function ( $containerBuilder, WikiPage $wikiPage, ?User $user = null ) {
-			$containerBuilder->registerExpectedReturnType( 'EditProtectionUpdater', '\SMW\Protection\EditProtectionUpdater' );
+			$containerBuilder->registerExpectedReturnType( 'EditProtectionUpdater', EditProtectionUpdater::class );
 
 			$editProtectionUpdater = new EditProtectionUpdater(
 				$wikiPage,
@@ -773,7 +775,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var RestrictionExaminer
 		 */
 		$containerBuilder->registerCallback( 'PropertyRestrictionExaminer', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PropertyRestrictionExaminer', '\SMW\Property\RestrictionExaminer' );
+			$containerBuilder->registerExpectedReturnType( 'PropertyRestrictionExaminer', RestrictionExaminer::class );
 
 			$propertyRestrictionExaminer = new RestrictionExaminer();
 
@@ -788,7 +790,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var HierarchyLookup
 		 */
 		$containerBuilder->registerCallback( 'HierarchyLookup', static function ( $containerBuilder, $store = null, $cacheType = null ) {
-			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', '\SMW\HierarchyLookup' );
+			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', HierarchyLookup::class );
 
 			$hierarchyLookup = new HierarchyLookup(
 				$containerBuilder->singleton( 'Store', null ),
@@ -814,7 +816,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var PropertyLabelFinder
 		 */
 		$containerBuilder->registerCallback( 'PropertyLabelFinder', static function ( $containerBuilder ) {
-			$containerBuilder->registerExpectedReturnType( 'PropertyLabelFinder', '\SMW\PropertyLabelFinder' );
+			$containerBuilder->registerExpectedReturnType( 'PropertyLabelFinder', PropertyLabelFinder::class );
 
 			$lang = Localizer::getInstance()->getLang();
 
@@ -832,7 +834,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var DisplayTitleFinder
 		 */
 		$containerBuilder->registerCallback( 'DisplayTitleFinder', static function ( $containerBuilder, $store = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DisplayTitleFinder', '\SMW\DisplayTitleFinder' );
+			$containerBuilder->registerExpectedReturnType( 'DisplayTitleFinder', DisplayTitleFinder::class );
 
 			$store = $store === null ? $containerBuilder->singleton( 'Store', null ) : $store;
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -853,9 +855,9 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var MagicWordsFinder
 		 */
 		$containerBuilder->registerCallback( 'MagicWordsFinder', static function ( $containerBuilder, $parserOutput = null ) {
-			$containerBuilder->registerExpectedReturnType( 'MagicWordsFinder', '\SMW\MediaWiki\MagicWordsFinder' );
+			$containerBuilder->registerExpectedReturnType( 'MagicWordsFinder', MagicWordsFinder::class );
 
-			$magicWordsFinder = new \SMW\MediaWiki\MagicWordsFinder(
+			$magicWordsFinder = new MagicWordsFinder(
 				$parserOutput,
 				$containerBuilder->singleton( 'MagicWordFactory' )
 			);
@@ -867,7 +869,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var DependencyValidator
 		 */
 		$containerBuilder->registerCallback( 'DependencyValidator', static function ( $containerBuilder, $store = null ) {
-			$containerBuilder->registerExpectedReturnType( 'DependencyValidator', '\SMW\DependencyValidator' );
+			$containerBuilder->registerExpectedReturnType( 'DependencyValidator', DependencyValidator::class );
 
 			$store = $store === null ? $containerBuilder->singleton( 'Store', null ) : $store;
 			$settings = $containerBuilder->singleton( 'Settings' );
@@ -887,7 +889,7 @@ class SharedServicesContainer implements CallbackContainer {
 		 * @var PreferenceExaminer
 		 */
 		$containerBuilder->registerCallback( 'PreferenceExaminer', static function ( $containerBuilder, User $user ) {
-			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', '\SMW\MediaWiki\Preference\PreferenceExaminer' );
+			$containerBuilder->registerExpectedReturnType( 'PreferenceExaminer', PreferenceExaminer::class );
 
 			$preferenceExaminer = new PreferenceExaminer(
 				$user,

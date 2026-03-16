@@ -2,15 +2,21 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Language\ClassDescription;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
+use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QuerySegment;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConditionBuilder
@@ -21,7 +27,7 @@ use SMW\Tests\Utils\Validators\QuerySegmentValidator;
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
+class ConditionBuilderTest extends TestCase {
 
 	private $store;
 	private $connection;
@@ -33,11 +39,11 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,11 +51,11 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->orderCondition = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\OrderCondition' )
+		$this->orderCondition = $this->getMockBuilder( OrderCondition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+		$this->circularReferenceGuard = $this->getMockBuilder( CircularReferenceGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +69,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$descriptionInterpreterFactory = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory' )
+		$descriptionInterpreterFactory = $this->getMockBuilder( DescriptionInterpreterFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +80,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildCondition() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
 			->getMock();
 

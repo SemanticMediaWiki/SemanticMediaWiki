@@ -2,10 +2,22 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\JobFactory;
+use SMW\NamespaceExaminer;
+use SMW\Query\QueryResult;
 use SMW\RequestOptions;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
+use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,7 +30,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
+class QueryDependencyLinksStoreTest extends TestCase {
 
 	private $store;
 	private $spyLogger;
@@ -32,7 +44,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -40,7 +52,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			$this->spyLogger
 		);
 
-		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,11 +60,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( true );
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +72,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$this->subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$this->subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +97,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,22 +105,22 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $this->store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore',
+			QueryDependencyLinksStore::class,
 			new QueryDependencyLinksStore( $queryResultDependencyListResolver, $dependencyLinksTableUpdater )
 		);
 	}
 
 	public function testPruneOutdatedTargetLinks() {
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +128,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->willReturn( $propertyTableInfoFetcher );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -128,7 +140,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTableChangeOps' )
 			->willReturn( [] );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -136,7 +148,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,11 +167,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPruneOutdatedTargetLinksBeingDisabled() {
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +179,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTableInfoFetcher' )
 			->willReturn( $propertyTableInfoFetcher );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +187,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubject' )
 			->willReturn( $this->subject );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,7 +195,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -210,7 +222,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->once() )
 			->method( 'getDataItemPoolHashListFor' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -222,7 +234,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 				[ 'o_id' => [ 42 ] ] )
 			->willReturn( [ $row ] );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -230,7 +242,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -241,7 +253,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -249,7 +261,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -276,7 +288,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$idTable->expects( $this->once() )
 			->method( 'getDataItemPoolHashListFor' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -288,7 +300,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 				[ 'o_id' => [ 42 ] ] )
 			->willReturn( [ $row ] );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -296,7 +308,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -307,11 +319,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -339,15 +351,15 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->count = 1001;
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -359,7 +371,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 				[ 'o_id' => [ 42 ] ] )
 			->willReturn( $row );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -381,11 +393,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTryDoUpdateDependenciesByWhileBeingDisabled() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -393,7 +405,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -421,11 +433,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateDependencies_ExcludedRequestAction() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -433,7 +445,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -465,7 +477,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->with(	'request.action' )
 			->willReturn( 'parse' );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -487,7 +499,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 42, 1001 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -496,7 +508,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -504,7 +516,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -539,7 +551,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 1 );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -553,7 +565,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDisabledDependenciesUpdateOnNotSupportedNamespace() {
-		$namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -563,11 +575,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'NamespaceExaminer', $namespaceExaminer );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -575,7 +587,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getStore' )
 			->willReturn( $store );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -600,7 +612,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContextPage' )
 			->willReturn( $this->subject );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -612,7 +624,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResult() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -624,7 +636,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTouched' )
 			->willReturn( 10 );
 
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -636,11 +648,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo' );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -648,7 +660,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
@@ -659,7 +671,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -671,7 +683,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDependencyListFrom' )
 			->willReturn( [ null, DIWikiPage::newFromText( __METHOD__ ) ] );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -710,7 +722,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 1 );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -724,7 +736,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testdoUpdateDependenciesByFromQueryResultWhereObjectIdIsYetUnknownWhichRequiresToCreateTheIdOnTheFly() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -732,7 +744,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -744,7 +756,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDependencyListFrom' )
 			->willReturn( [ DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ] );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -787,7 +799,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 1 );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -804,7 +816,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testTryDoUpdateDependenciesByWithinSkewedTime( $title ) {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -816,11 +828,11 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -828,13 +840,13 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$store->setConnectionManager( $connectionManager );
 
-		$queryResultDependencyListResolver = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver' )
+		$queryResultDependencyListResolver = $this->getMockBuilder( QueryResultDependencyListResolver::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -842,7 +854,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDependencyListByLateRetrievalFrom' )
 			->willReturn( [] );
 
-		$dependencyLinksTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater' )
+		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -875,7 +887,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLimit' )
 			->willReturn( 1 );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -887,7 +899,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleProvider() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -903,7 +915,7 @@ class QueryDependencyLinksStoreTest extends \PHPUnit\Framework\TestCase {
 			$title
 		];
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

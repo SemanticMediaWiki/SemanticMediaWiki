@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ExtensionSchemaUpdates
@@ -13,7 +15,7 @@ use SMW\MediaWiki\Hooks\ExtensionSchemaUpdates;
  *
  * @author mwjames
  */
-class ExtensionSchemaUpdatesTest extends \PHPUnit\Framework\TestCase {
+class ExtensionSchemaUpdatesTest extends TestCase {
 
 	private $databaseUpdater;
 	private $store;
@@ -23,7 +25,7 @@ class ExtensionSchemaUpdatesTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}

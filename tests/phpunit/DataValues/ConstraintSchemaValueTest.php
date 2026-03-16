@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DIWikiPage;
@@ -17,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
+class ConstraintSchemaValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
@@ -16,7 +17,7 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
+class ClassDescriptionTest extends TestCase {
 
 	private $cat_name;
 
@@ -26,12 +27,12 @@ class ClassDescriptionTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$class = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$class = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ClassDescription',
+			ClassDescription::class,
 			new ClassDescription( $class )
 		);
 	}

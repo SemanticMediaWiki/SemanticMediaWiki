@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Factbox;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\Factbox\AttachmentFormatter;
+use SMW\Store;
 
 /**
  * @covers \SMW\Factbox\AttachmentFormatter
@@ -13,14 +16,14 @@ use SMW\Factbox\AttachmentFormatter;
  *
  * @author mwjames
  */
-class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
+class AttachmentFormatterTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -44,7 +47,7 @@ class AttachmentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildHTML_OnAttachments() {
-		$item = \SMW\DIWikiPage::newFromText( 'Foo', NS_FILE );
+		$item = DIWikiPage::newFromText( 'Foo', NS_FILE );
 
 		$instance = new AttachmentFormatter(
 			$this->store

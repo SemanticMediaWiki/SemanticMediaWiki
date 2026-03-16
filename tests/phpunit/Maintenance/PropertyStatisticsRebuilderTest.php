@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\Maintenance;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\PropertyStatisticsRebuilder;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -14,14 +21,14 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
+class PropertyStatisticsRebuilderTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -49,7 +56,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 			[ (object)$res ]
 		);
 
-		$dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -57,7 +64,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTableFields' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +81,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 				$this->anything() )
 			->willReturnOnConsecutiveCalls( $uRow, $nRow );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -90,7 +97,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ $this->newPropertyTable( $tableName ) ] );
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +116,7 @@ class PropertyStatisticsRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	protected function newPropertyTable( $propertyTableName, $fixedPropertyTable = false ) {
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isFixedPropertyTable', 'getName' ] )
 			->getMock();

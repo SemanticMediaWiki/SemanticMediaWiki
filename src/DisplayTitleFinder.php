@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\Services\Exception\ServiceNotFoundException;
 use SMWDataItem as DataItem;
 
 /**
@@ -146,7 +147,7 @@ class DisplayTitleFinder {
 
 		try {
 			$displayTitleLookup = $this->store->service( 'DisplayTitleLookup' );
-		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException $e ) {
 			return;
 		}
 

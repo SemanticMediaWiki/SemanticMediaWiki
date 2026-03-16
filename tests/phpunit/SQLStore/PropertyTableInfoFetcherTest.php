@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\PropertyTypeFinder;
 use SMWDataItem as DataItem;
 
 /**
@@ -16,21 +18,21 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class PropertyTableInfoFetcherTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableInfoFetcherTest extends TestCase {
 
 	private $propertyTypeFinder;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->propertyTypeFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTypeFinder' )
+		$this->propertyTypeFinder = $this->getMockBuilder( PropertyTypeFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableInfoFetcher',
+			PropertyTableInfoFetcher::class,
 			new PropertyTableInfoFetcher( $this->propertyTypeFinder )
 		);
 	}

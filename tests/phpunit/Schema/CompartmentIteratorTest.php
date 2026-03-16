@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
+use SMW\Schema\Rule;
 
 /**
  * @covers \SMW\Schema\CompartmentIterator
@@ -13,7 +16,7 @@ use SMW\Schema\CompartmentIterator;
  *
  * @author mwjames
  */
-class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
+class CompartmentIteratorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -120,7 +123,7 @@ class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $instance as $compartment ) {
 			$this->assertInstanceOf(
-				'\SMW\Schema\Compartment',
+				Compartment::class,
 				$compartment
 			);
 		}
@@ -167,7 +170,7 @@ class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $instance as $compartment ) {
 			$this->assertInstanceOf(
-				'\SMW\Schema\Compartment',
+				Compartment::class,
 				$compartment
 			);
 		}
@@ -186,7 +189,7 @@ class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $instance as $compartment ) {
 			$this->assertInstanceOf(
-				'\SMW\Schema\Rule',
+				Rule::class,
 				$compartment
 			);
 		}
@@ -212,7 +215,7 @@ class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $compartmentIterator as $compartment ) {
 
 			$this->assertInstanceOf(
-				'\SMW\Schema\Compartment',
+				Compartment::class,
 				$compartment
 			);
 
@@ -243,7 +246,7 @@ class CompartmentIteratorTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $compartmentIterator as $compartment ) {
 
 			$this->assertInstanceOf(
-				'\SMW\Schema\Compartment',
+				Compartment::class,
 				$compartment
 			);
 

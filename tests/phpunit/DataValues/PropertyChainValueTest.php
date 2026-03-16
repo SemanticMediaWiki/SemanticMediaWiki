@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DIProperty;
 use SMW\Tests\TestEnvironment;
@@ -15,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PropertyChainValueTest extends \PHPUnit\Framework\TestCase {
+class PropertyChainValueTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -25,7 +26,7 @@ class PropertyChainValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\PropertyChainValue',
+			PropertyChainValue::class,
 			new PropertyChainValue()
 		);
 	}

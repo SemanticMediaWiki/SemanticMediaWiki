@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Integration\Importer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Importer\ContentModeller;
+use SMW\Importer\ImportContents;
 use SMW\Importer\JsonImportContentsFileDirReader;
 use SMW\Utils\File;
 use SMW\Utils\FileFetcher;
@@ -15,7 +17,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class JsonFileDirReaderTest extends \PHPUnit\Framework\TestCase {
+class JsonFileDirReaderTest extends TestCase {
 
 	private $contentModeller;
 	private $fileFetcher;
@@ -54,7 +56,7 @@ class JsonFileDirReaderTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $contents as $content ) {
 			foreach ( $content as $importContents ) {
 				$this->assertInstanceOf(
-					'\SMW\Importer\ImportContents',
+					ImportContents::class,
 					$importContents
 				);
 			}

@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
 use SMW\DataItemFactory;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Constraint\Constraints\MandatoryPropertiesConstraint
@@ -14,7 +16,7 @@ use SMW\DataItemFactory;
  *
  * @author mwjames
  */
-class MandatoryPropertiesConstraintTest extends \PHPUnit\Framework\TestCase {
+class MandatoryPropertiesConstraintTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -53,7 +55,7 @@ class MandatoryPropertiesConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-class-mandatory-properties-constraint';
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

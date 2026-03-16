@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryResult;
+use SMW\Query\ResultPrinters\FileExportPrinter;
+
 /**
  * @covers \SMW\Query\ResultPrinters\FileExportPrinter
  * @group semantic-mediawiki
@@ -11,14 +15,14 @@ namespace SMW\Tests\Query\ResultPrinters;
  *
  * @author mwjames
  */
-class FileExportPrinterTest extends \PHPUnit\Framework\TestCase {
+class FileExportPrinterTest extends TestCase {
 
 	public function testOutputAsFile_AccessSequence() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$fileExportPrinter = $this->getMockBuilder( '\SMW\Query\ResultPrinters\FileExportPrinter' )
+		$fileExportPrinter = $this->getMockBuilder( FileExportPrinter::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getFileResult', 'getMimeType', 'getFileName' ] )
 			->getMockForAbstractClass();

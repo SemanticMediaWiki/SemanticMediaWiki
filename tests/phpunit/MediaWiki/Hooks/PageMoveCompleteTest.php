@@ -3,7 +3,11 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\PageMoveComplete;
+use SMW\NamespaceExaminer;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
@@ -16,7 +20,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  *
  * @author mwjames
  */
-class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
+class PageMoveCompleteTest extends TestCase {
 
 	private $user;
 	private $testEnvironment;
@@ -39,11 +43,11 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 			$settings
 		);
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -73,7 +77,7 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 		$oldTitle = $titleFactory->newFromText( 'Old' );
 		$newTitle = $titleFactory->newFromText( 'New' );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -108,7 +112,7 @@ class PageMoveCompleteTest extends \PHPUnit\Framework\TestCase {
 		$oldTitle = $titleFactory->newFromText( 'Old' );
 		$newTitle = $titleFactory->newFromText( 'New', NS_HELP );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\Mock;
 
 use DataValues\DataValue;
 use OutOfBoundsException;
+use PHPUnit\Framework\TestCase;
 use SMW\ContentParser;
 use SMW\DependencyContainer;
 use SMW\DependencyObject;
@@ -11,6 +12,7 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Factbox\Factbox;
 use SMW\MediaWiki\PageInfoProvider;
+use SMW\NullDependencyContainer;
 use SMW\ParserData;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
@@ -36,7 +38,7 @@ use SMWQuery;
  *
  * @author mwjames
  */
-class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements MockObjectRepository {
+class CoreMockObjectRepository extends TestCase implements MockObjectRepository {
 
 	/** @var MockObjectBuilder */
 	protected $builder;
@@ -56,7 +58,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return SemanticData
 	 */
 	public function SemanticData() {
-		$semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +90,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 			$methods[] = 'getResults';
 		}
 
-		$collector = $this->getMockBuilder( '\SMW\Store\CacheableResultCollector' )
+		$collector = $this->getMockBuilder( CacheableResultCollector::class )
 			->setMethods( $methods )
 			->getMock();
 
@@ -115,7 +117,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	public function DependencyObject() {
 		$methods = $this->builder->getInvokedMethods();
 
-		$dependencyObject = $this->getMockBuilder( 'SMW\DependencyObject' )
+		$dependencyObject = $this->getMockBuilder( DependencyObject::class )
 			->setMethods( $methods )
 			->getMock();
 
@@ -138,7 +140,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	public function FakeDependencyContainer() {
 		$methods = $this->builder->getInvokedMethods();
 
-		$dependencyObject = $this->getMockBuilder( 'SMW\NullDependencyContainer' )
+		$dependencyObject = $this->getMockBuilder( NullDependencyContainer::class )
 			->setMethods( $methods )
 			->getMock();
 
@@ -161,7 +163,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	public function ParserData() {
 		$methods = $this->builder->getInvokedMethods();
 
-		$parserData = $this->getMockBuilder( 'SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +184,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return Factbox
 	 */
 	public function Factbox() {
-		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
+		$factbox = $this->getMockBuilder( Factbox::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -216,7 +218,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return ContentParser
 	 */
 	public function ContentParser() {
-		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+		$contentParser = $this->getMockBuilder( ContentParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -303,7 +305,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return DIWikiPage
 	 */
 	public function DIWikiPage() {
-		$diWikiPage = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$diWikiPage = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -340,7 +342,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return DIProperty
 	 */
 	public function DIProperty() {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -419,7 +421,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 			->method( 'getIdTable' )
 			->willReturn( 'smw_id_table_test' );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( $methods )
 			->getMock();
@@ -527,7 +529,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 	 * @return PrintRequest
 	 */
 	public function PrintRequest() {
-		$printRequest = $this->getMockBuilder( 'SMW\Query\PrintRequest' )
+		$printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -600,7 +602,7 @@ class CoreMockObjectRepository extends \PHPUnit\Framework\TestCase implements Mo
 
 		$methods = array_unique( array_merge( $requiredAbstractMethods, $this->builder->getInvokedMethods() ) );
 
-		$queryDescription = $this->getMockBuilder( '\SMW\Query\Language\Description' )
+		$queryDescription = $this->getMockBuilder( Description::class )
 			->setMethods( $methods )
 			->getMock();
 

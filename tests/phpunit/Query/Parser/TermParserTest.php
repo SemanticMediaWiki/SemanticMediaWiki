@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Parser\TermParser;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Query\Parser\TermParser;
  *
  * @author mwjames
  */
-class TermParserTest extends \PHPUnit\Framework\TestCase {
+class TermParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

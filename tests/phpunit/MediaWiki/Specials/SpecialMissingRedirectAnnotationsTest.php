@@ -3,8 +3,13 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations;
+use SMW\SortLetter;
+use SMW\SQLStore\Lookup\MissingRedirectLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialMissingRedirectAnnotations
@@ -15,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase {
+class SpecialMissingRedirectAnnotationsTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -25,7 +30,7 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase 
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
@@ -39,15 +44,15 @@ class SpecialMissingRedirectAnnotationsTest extends \PHPUnit\Framework\TestCase 
 	}
 
 	public function testCanExecute() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\FakeResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( FakeResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+		$sortLetter = $this->getMockBuilder( SortLetter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$missingRedirectLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MissingRedirectLookup' )
+		$missingRedirectLookup = $this->getMockBuilder( MissingRedirectLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

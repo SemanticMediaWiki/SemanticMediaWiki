@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Specials\Ask\HelpWidget;
  *
  * @author mwjames
  */
-class HelpWidgetTest extends \PHPUnit\Framework\TestCase {
+class HelpWidgetTest extends TestCase {
 
 	public function testSessionFailure() {
 		$this->assertStringContainsString(
