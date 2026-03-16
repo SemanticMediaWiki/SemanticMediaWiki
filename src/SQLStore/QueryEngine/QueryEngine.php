@@ -444,7 +444,8 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			DataItem::TYPE_WIKIPAGE
 		);
 
-		while ( ( $count < $query->getLimit() ) && ( $row = $res->fetchObject() ) ) {
+		$row = $res->fetchObject();
+		while ( ( $count < $query->getLimit() ) && $row ) {
 			if ( $row->iw === '' || $row->iw[0] != ':' ) {
 
 				// Catch exception for non-existing predefined properties that
@@ -480,6 +481,9 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 			} else {
 				$missedCount++;
 				$logToTable[$row->t] = "skip result for {$row->t} due to an internal `{$row->iw}` pointer / query " . $query->getHash();
+			}
+			if ( $count < $query->getLimit() ) {
+				$row = $res->fetchObject();
 			}
 		}
 
