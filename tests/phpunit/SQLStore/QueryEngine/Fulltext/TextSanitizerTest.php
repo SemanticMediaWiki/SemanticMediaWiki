@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 
 /**
@@ -13,66 +14,29 @@ use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
  *
  * @author mwjames
  */
-class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
-
-	private $sanitizerFactory;
-
-	protected function setUp(): void {
-		$this->sanitizerFactory = $this->getMockBuilder( '\Onoi\Tesa\SanitizerFactory' )
-			->disableOriginalConstructor()
-			->getMock();
-	}
+class TextSanitizerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer',
-			new TextSanitizer( $this->sanitizerFactory )
+			TextSanitizer::class,
+			new TextSanitizer()
 		);
 	}
 
+	public function testGetVersions() {
+		$instance = new TextSanitizer();
+		$versions = $instance->getVersions();
+
+		$this->assertArrayHasKey( 'ICU (Intl) PHP-extension', $versions );
+		$this->assertArrayHasKey( 'LanguageDetector', $versions );
+	}
+
 	/**
-	 * @dataProvider textOnMockProvider
+	 * @dataProvider sanitizeProvider
 	 */
-	public function testSanitizs( $text, $expected ) {
-		$sanitizer = $this->getMockBuilder( '\Onoi\Tesa\Sanitizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$sanitizer->expects( $this->atLeastOnce() )
-			->method( 'sanitizeWith' )
-			->willReturn( $text );
-
-		$stopwordAnalyzer = $this->getMockBuilder( '\Onoi\Tesa\StopwordAnalyzer\StopwordAnalyzer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$synonymizer = $this->getMockBuilder( '\Onoi\Tesa\Synonymizer\Synonymizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$tokenizer = $this->getMockBuilder( '\Onoi\Tesa\Tokenizer\Tokenizer' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$this->sanitizerFactory->expects( $this->atLeastOnce() )
-			->method( 'newSanitizer' )
-			->willReturn( $sanitizer );
-
-		$this->sanitizerFactory->expects( $this->atLeastOnce() )
-			->method( 'newPreferredTokenizerByLanguage' )
-			->willReturn( $tokenizer );
-
-		$this->sanitizerFactory->expects( $this->atLeastOnce() )
-			->method( 'newStopwordAnalyzerByLanguage' )
-			->willReturn( $stopwordAnalyzer );
-
-		$this->sanitizerFactory->expects( $this->atLeastOnce() )
-			->method( 'newSynonymizerByLanguage' )
-			->willReturn( $synonymizer );
-
-		$instance = new TextSanitizer(
-			$this->sanitizerFactory
-		);
+	public function testSanitize( $text, $expected ) {
+		$instance = new TextSanitizer();
+		$instance->setMinTokenSize( 3 );
 
 		$this->assertEquals(
 			$expected,
@@ -80,53 +44,126 @@ class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
-	public function textOnMockProvider() {
-		$provider[] = [
-			'foo',
-			'foo'
+	public function testSanitizeGreekTransliteration() {
+		$instance = new TextSanitizer();
+		$instance->setMinTokenSize( 3 );
+
+		$result = $instance->sanitize( 'Ελληνική' );
+
+		$this->assertDoesNotMatchRegularExpression(
+			'/\p{Greek}/u',
+			$result,
+			'Greek characters should be transliterated to Latin'
+		);
+	}
+
+	public function testSanitizeWithStopwords() {
+		$instance = new TextSanitizer();
+		$instance->setMinTokenSize( 3 );
+		$instance->setLanguageDetection( [
+			'TextCatLanguageDetector' => [ 'en', 'de', 'fr', 'es' ]
+		] );
+
+		$result = $instance->sanitize(
+			'In computing, stop words are words which are filtered out before or after processing'
+		);
+
+		// Common English stopwords like "are", "which", "or" should be removed
+		$this->assertStringNotContainsString( ' are ', ' ' . $result . ' ' );
+	}
+
+	/**
+	 * @dataProvider operatorSpacingProvider
+	 */
+	public function testOperatorSpacing( $text, $expected ) {
+		$instance = new TextSanitizer();
+		$instance->setMinTokenSize( 3 );
+
+		$this->assertEquals(
+			$expected,
+			$instance->sanitize( $text, true )
+		);
+	}
+
+	public static function sanitizeProvider() {
+		yield 'basic latin' => [
+			'Hello World',
+			'hello world'
 		];
 
-		$provider[] = [
+		yield 'diacritics' => [
+			'café résumé',
+			'cafe resume'
+		];
+
+		// The generic regex tokenizer splits on non-numeric dots,
+		// so example.com becomes "example com"
+		yield 'URL stripping' => [
+			'visit http://example.com today',
+			'visit example com today'
+		];
+
+		yield 'fullwidth ASCII to halfwidth lowercase' => [
+			'Ｈｅｌｌｏ Ｗｏｒｌｄ',
+			'hello world'
+		];
+
+		yield 'diacritics ß and umlaut' => [
+			'Straße München',
+			'strasse munchen'
+		];
+
+		yield 'empty string' => [
+			'',
+			''
+		];
+
+		yield 'min token filtering' => [
+			'I am a test',
+			'test'
+		];
+	}
+
+	public static function operatorSpacingProvider() {
+		yield 'wildcard minus' => [
 			'foo* - bar',
 			'foo* -bar'
 		];
 
-		$provider[] = [
+		yield 'wildcard plus' => [
 			'foo* + bar',
 			'foo* +bar'
 		];
 
-		$provider[] = [
+		yield 'trailing wildcard' => [
 			'foo *',
 			'foo*'
 		];
 
-		$provider[] = [
+		yield 'surrounding wildcards' => [
 			'* foo *',
 			'*foo*'
 		];
 
-		$provider[] = [
-			'*foo* bar',
-			'*foo*bar'
-		];
-
-		$provider[] = [
-			'+foo*, *bar',
-			'+foo*,*bar'
-		];
-
-		$provider[] = [
+		yield 'plus and wildcard combo' => [
 			'+foo* -bar',
 			'+foo* -bar'
 		];
 
-		$provider[] = [
+		yield 'wildcard tilde' => [
 			'+foo* ~ bar',
 			'+foo* ~bar'
 		];
 
-		return $provider;
+		yield 'adjacent wildcards' => [
+			'*foo* bar',
+			'*foo*bar'
+		];
+
+		yield 'plus wildcard combo' => [
+			'+foo*, *bar',
+			'+foo*,*bar'
+		];
 	}
 
 }
