@@ -31,9 +31,9 @@ return [
 	 *
 	 * @return callable
 	 */
-	'ImporterServiceFactory' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
-		return new ImporterServiceFactory( $containerBuilder );
+	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ) {
+		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
+		return new ImporterServiceFactory( $callbackContainerBuilder );
 	},
 
 	/**
