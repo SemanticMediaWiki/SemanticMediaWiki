@@ -50,6 +50,7 @@ use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
 use SMW\Store;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * Application instances access for internal and external use
@@ -62,7 +63,7 @@ use SMW\Store;
 class ServicesFactory {
 
 	/**
-	 * @var ServicesFactory
+	 * @var ServicesFactory|null
 	 */
 	private static $instance = null;
 
@@ -149,12 +150,13 @@ class ServicesFactory {
 	 * not to be relied upon for external access.
 	 *
 	 *
-	 * @param string ...$service
+	 * @param string $serviceName
+	 * @param string|null ...$args
 	 *
 	 * @return mixed
 	 */
-	public function singleton( ...$service ) {
-		return $this->callbackContainerBuilder->singleton( ...$service );
+	public function singleton( $serviceName, ...$args ) {
+		return $this->callbackContainerBuilder->singleton( $serviceName, ...$args );
 	}
 
 	/**
@@ -165,12 +167,13 @@ class ServicesFactory {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string ...$service
+	 * @param string $serviceName
+	 * @param string ...$args
 	 *
 	 * @return mixed
 	 */
-	public function create( ...$service ) {
-		return $this->callbackContainerBuilder->create( ...$service );
+	public function create( $serviceName, ...$args ) {
+		return $this->callbackContainerBuilder->create( $serviceName, ...$args );
 	}
 
 	/**
@@ -526,7 +529,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return \createBalancer
+	 * @return ILoadBalancer
 	 */
 	public function getLoadBalancer() {
 		return $this->callbackContainerBuilder->singleton( 'DBLoadBalancer' );
