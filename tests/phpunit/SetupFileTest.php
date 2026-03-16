@@ -16,8 +16,6 @@ use SMW\Utils\File;
  */
 class SetupFileTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testIsGoodSchema() {
 		$this->assertIsBool(
 

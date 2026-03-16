@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMWDataItem as DataItem;
 
 /**
@@ -16,8 +15,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class DataItemHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )

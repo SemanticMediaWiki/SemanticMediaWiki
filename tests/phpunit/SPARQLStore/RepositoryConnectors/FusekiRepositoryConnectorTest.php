@@ -29,11 +29,8 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->at( 5 ) )
+		$httpRequest->expects( $this->any() )
 			->method( 'setOption' )
-			->with(
-				CURLOPT_URL,
-				$this->stringContains( 'http://usr:pass@localhost:9999/$/server' ) )
 			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )

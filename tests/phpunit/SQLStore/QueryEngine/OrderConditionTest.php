@@ -4,7 +4,6 @@ namespace SMW\Tests\SQLStore\QueryEngine;
 
 use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QuerySegment;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\OrderCondition
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class OrderConditionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $conditionBuilder;
 

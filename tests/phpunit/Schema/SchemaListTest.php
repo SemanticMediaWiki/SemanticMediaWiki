@@ -4,7 +4,6 @@ namespace SMW\Tests\Schema;
 
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaList;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\SchemaList
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SchemaListTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

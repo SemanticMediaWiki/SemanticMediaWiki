@@ -64,17 +64,19 @@ class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$this->cache->expects( $this->at( 0 ) )
+		$this->cache->expects( $this->exactly( 2 ) )
 			->method( 'save' )
-			->with(
-				'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
-				'Bar#0##' );
-
-		$this->cache->expects( $this->at( 1 ) )
-			->method( 'save' )
-			->with(
-				'7b6b944694382bfab461675f40a2bda7e71e68e3',
-				'Foo#0##' );
+			->willReturnCallback( function ( $key, $value ) {
+				static $calls = [];
+				$calls[] = [ $key, $value ];
+				if ( count( $calls ) === 1 ) {
+					$this->assertEquals( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', $key );
+					$this->assertEquals( 'Bar#0##', $value );
+				} elseif ( count( $calls ) === 2 ) {
+					$this->assertEquals( '7b6b944694382bfab461675f40a2bda7e71e68e3', $key );
+					$this->assertEquals( 'Foo#0##', $value );
+				}
+			} );
 
 		$instance = new RedirectTargetLookup(
 			$this->store,
@@ -97,17 +99,19 @@ class RedirectTargetLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$this->cache->expects( $this->at( 0 ) )
+		$this->cache->expects( $this->exactly( 2 ) )
 			->method( 'save' )
-			->with(
-				'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6',
-				'Bar#0##' );
-
-		$this->cache->expects( $this->at( 1 ) )
-			->method( 'save' )
-			->with(
-				'7b6b944694382bfab461675f40a2bda7e71e68e3',
-				'Foo#0##' );
+			->willReturnCallback( function ( $key, $value ) {
+				static $calls = [];
+				$calls[] = [ $key, $value ];
+				if ( count( $calls ) === 1 ) {
+					$this->assertEquals( 'ebb1b47f7cf43a5a58d3c6cc58f3c3bb8b9246e6', $key );
+					$this->assertEquals( 'Bar#0##', $value );
+				} elseif ( count( $calls ) === 2 ) {
+					$this->assertEquals( '7b6b944694382bfab461675f40a2bda7e71e68e3', $key );
+					$this->assertEquals( 'Foo#0##', $value );
+				}
+			} );
 
 		$instance = new RedirectTargetLookup(
 			$this->store,

@@ -9,6 +9,8 @@ use SMWDataItem as DataItem;
 use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * This datavalue implements datavalues used by special property '_IMPO' used
  * for assigning imported vocabulary to some page of the wiki. It looks up a

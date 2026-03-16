@@ -15,8 +15,6 @@ use SMW\StoreFactory;
  */
 class StoreFactoryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	protected function tearDown(): void {
 		StoreFactory::clear();
 		parent::tearDown();

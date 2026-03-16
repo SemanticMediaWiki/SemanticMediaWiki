@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Permission;
 
 use SMW\MediaWiki\Permission\PermissionExaminer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Permission\PermissionExaminer
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $permissionManager;
 	private $user;

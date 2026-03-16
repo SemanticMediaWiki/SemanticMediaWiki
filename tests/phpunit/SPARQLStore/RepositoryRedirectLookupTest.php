@@ -8,7 +8,6 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\InMemoryPoolCache;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMWExporter as Exporter;
 
 /**
@@ -21,8 +20,6 @@ use SMWExporter as Exporter;
  * @author mwjames
  */
 class RepositoryRedirectLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$repositoryConnection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )

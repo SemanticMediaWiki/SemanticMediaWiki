@@ -14,6 +14,8 @@ use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWQuery as Query;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * @license GPL-2.0-or-later
  * @since   2.1
@@ -181,7 +183,8 @@ class QueryResultLookup {
 
 		$result = [];
 
-		while ( $resultArrays = $queryResults->getNext() ) {
+		$resultArrays = $queryResults->getNext();
+		while ( $resultArrays ) {
 			$r = [];
 
 			foreach ( $resultArrays as $resultArray ) {
@@ -192,6 +195,7 @@ class QueryResultLookup {
 			// the reason why the result is shown here, i.e., it could
 			// be out of order.
 			$result[] = $r;
+			$resultArrays = $queryResults->getNext();
 		}
 
 		if ( !$greater ) {

@@ -188,7 +188,7 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/P0409/3/2#_4d3b4405d3a60255e63cde196092a367",
-					"<td class=\"Has-record-two-mlt smwtype_rec\">one (en) (two (fr) (123))</td>"
+					"<td class=\"Has-record-two-mlt smwtype&#95;rec\">one (en) (two (fr) (123))</td>"
 				]
 			}
 		},
@@ -199,8 +199,8 @@
 			"assert-output": {
 				"to-contain": [
 					"Example/P0409/3/2#_4d3b4405d3a60255e63cde196092a367",
-					"<td class=\"Has-record-two-mlt smwtype_mlt_rec\">one (en)</td>",
-					"<td class=\"Has-record-two-mlt smwtype_rec\">two (fr) (123)</td>"
+					"<td class=\"Has-record-two-mlt smwtype&#95;mlt&#95;rec\">one (en)</td>",
+					"<td class=\"Has-record-two-mlt smwtype&#95;rec\">two (fr) (123)</td>"
 				]
 			}
 		}

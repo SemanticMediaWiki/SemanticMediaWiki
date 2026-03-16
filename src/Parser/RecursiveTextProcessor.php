@@ -252,13 +252,14 @@ class RecursiveTextProcessor {
 
 			$user = RequestContext::getMain()->getUser();
 			$popt = new ParserOptions( $user );
+			$popt->setSuppressSectionEditLinks( true );
 
 			// Maybe better to use Parser::recursiveTagParseFully ??
 			/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 			$parserOutput = $this->parser->parse( $text . '__NOTOC__', $title, $popt );
 
 			SMWOutputs::requireFromParserOutput( $parserOutput );
-			$text = $parserOutput->getText( [ 'enableSectionEditLinks' => false ] );
+			$text = $parserOutput->getContentHolderText();
 		} else {
 			$this->error = [ 'smw-parser-recursion-level-exceeded', $this->maxRecursionDepth ];
 			$text = '';
@@ -301,7 +302,7 @@ class RecursiveTextProcessor {
 			 *
 			 * @see Parser::resetOutput
 			 */
-			if ( version_compare( MW_VERSION, '1.42', '>=' ) && $this->parser->getOptions() === null ) {
+			if ( $this->parser->getOptions() === null ) {
 				return null;
 			}
 			return $this->parser->getOutput();

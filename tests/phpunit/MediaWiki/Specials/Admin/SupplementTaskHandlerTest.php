@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
 use SMW\MediaWiki\Specials\Admin\SupplementTaskHandler;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $store;

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Listener\ChangeListener;
 
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeRecord
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

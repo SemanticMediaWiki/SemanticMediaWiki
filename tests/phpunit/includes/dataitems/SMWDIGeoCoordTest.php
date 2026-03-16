@@ -13,8 +13,6 @@ use SMWDIGeoCoord;
  */
 class SMWDIGeoCoordTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testConstructorWithArrayArgumentForm() {
 		$coordinate = new SMWDIGeoCoord( [ 'lat' => 13.37, 'lon' => 42.42 ] );
 

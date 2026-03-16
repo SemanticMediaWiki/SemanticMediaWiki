@@ -27,6 +27,7 @@ MediaWiki installation first. This is also required if you use a symbolic link f
   - [removeDuplicateEntities.php](#removeduplicateentitiesphp)
   - [runImport.php](#runimportphp)
   - [runLocalMessageCopy.php](#runlocalmessagecopyphp)
+  - [seedDemoData.php](#seeddemodataphp)
   - [setupStore.php](#setupstorephp)
   - [updateEntityCollation.php](#updateentitycollationphp)
   - [updateEntityCountMap.php](#updateentitycountmapphp)
@@ -206,6 +207,24 @@ See also: [Help:Maintenance_script_runLocalMessageCopy.php](https://www.semantic
 Usage:
 ```sh
 php maintenance/run.php SemanticMediaWiki:runLocalMessageCopy [--file|--copy-canonicalmessages|--copy-translatedmessages]
+```
+
+### seedDemoData.php
+
+Allows to seed the wiki with demo pages and SMW annotations for development and testing. Creates
+property definitions, category pages, breed articles with typed semantic annotations, topic pages,
+and a Main Page. All created pages are tracked in `Category:Seed data` for scoped cleanup.
+
+The script requires the `--force` flag and an interactive `YES` confirmation before making any
+changes. Re-running the script will clear previously seeded pages before re-creating them.
+Use `--clear-only` together with `--force` to remove seeded pages without recreating them.
+
+Available since SMW 6.1.0
+
+Usage:
+```sh
+php maintenance/run.php SemanticMediaWiki:seedDemoData --force
+php maintenance/run.php SemanticMediaWiki:seedDemoData --force --clear-only
 ```
 
 ### setupStore.php

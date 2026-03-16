@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\Interwiki\ClassicInterwikiLookup;
 use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 use SMW\Exporter\ExporterFactory;
@@ -31,6 +32,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 	private $queryParser;
 	private $semanticDataFactory;
 	private $pageCreator;
+	private $oldInterwikiCache;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -49,39 +51,29 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			->deregisterListedHooks()
 			->invokeHooksFromRegistry();
 
-		// Manipulate the interwiki prefix on-the-fly
-		MediaWikiServices::getInstance()->getHookContainer()->register(
-			'InterwikiLoadPrefix',
-			static function ( $prefix, &$interwiki ) {
-				if ( $prefix !== 'iw-test' ) {
-					return true;
-				}
-
-				$interwiki = [
-					'iw_prefix' => 'iw-test',
-					'iw_url' => 'http://www.example.org/$1',
-					'iw_api' => false,
-					'iw_wikiid' => 'foo',
-					'iw_local' => true,
-					'iw_trans' => false,
-				];
-
-				return false;
-			}
-		);
+		// Register a test interwiki prefix via the interwiki cache.
+		// Must be set after deregisterListedHooks()/invokeHooksFromRegistry()
+		// which call resetGlobalInstance() and disable the old service container,
+		// making overrideConfigValue() unusable.
+		$this->oldInterwikiCache = $GLOBALS['wgInterwikiCache'] ?? false;
+		$GLOBALS['wgInterwikiCache'] = ClassicInterwikiLookup::buildCdbHash( [
+			[
+				'iw_prefix' => 'iw-test',
+				'iw_url' => 'http://www.example.org/$1',
+				'iw_api' => '',
+				'iw_wikiid' => 'foo',
+				'iw_local' => 1,
+			],
+		] );
+		MediaWikiServices::getInstance()->resetServiceForTesting( 'InterwikiLookup' );
 	}
 
 	protected function tearDown(): void {
-		MediaWikiServices::getInstance()->getHookContainer()->clear( 'InterwikiLoadPrefix' );
-
+		$GLOBALS['wgInterwikiCache'] = $this->oldInterwikiCache;
 		parent::tearDown();
 	}
 
 	public function testRdfSerializationForInterwikiAnnotation() {
-		if ( version_compare( MW_VERSION, '1.40', '>=' ) ) {
-			$this->markTestSkipped( 'The Serialization for interwiki needs to be checked for MW 1.40 and newer.' );
-		}
-
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 
 		$this->stringBuilder
@@ -107,7 +99,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$expectedOutputContent = [
 			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Interwiki_link"/>',
-			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;iw-2Dtest-3AInterwiki_link"/>'
+			'<property:Use_for_interwiki_annotation rdf:resource="&wiki;Iw-2Dtest-3AInterwiki_link"/>'
 		];
 
 		$this->stringValidator->assertThatStringContains(

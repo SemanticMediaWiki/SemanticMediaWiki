@@ -6,9 +6,7 @@ namespace SMW\Tests;
  * @covers SMWDIBlob
  * @covers SMWDataItem
  *
- * @file
  * @since 1.8
- *
  *
  * @group SMW
  * @group SMWExtension

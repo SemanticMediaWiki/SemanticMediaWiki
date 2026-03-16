@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use PHPUnit\Framework\TestResult;
@@ -29,40 +30,13 @@ use Wikimedia\ObjectCache\HashBagOStuff;
  */
 abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
-	/**
-	 * @var TestEnvironment
-	 */
-	protected $testEnvironment;
+	protected ?TestEnvironment $testEnvironment = null;
 
-	/**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
+	protected ?TestDatabaseTableBuilder $testDatabaseTableBuilder = null;
 
-	/**
-	 * @var array|null
-	 */
-	protected $databaseToBeExcluded = null;
+	protected bool $destroyDatabaseTablesBeforeRun = false;
 
-	/**
-	 * @var array|null
-	 */
-	protected $storesToBeExcluded = null;
-
-	/**
-	 * @var bool
-	 */
-	protected $destroyDatabaseTablesBeforeRun = false;
-
-	/**
-	 * @var bool
-	 */
-	protected $destroyDatabaseTablesAfterRun = false;
-
-	/**
-	 * @var bool
-	 */
-	protected $isUsableUnitTestDatabase = true;
+	protected bool $isUsableUnitTestDatabase = true;
 
 	/**
 	 * Setup configuration required for SMW integration tests.
@@ -76,10 +50,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		// Clear any cached user to ensure a clean state for each test
-		// $user = $this->getTestUser()->getUser();
-		// $user->clearInstanceCache( $user->mFrom );
 
 		// Reset services and caches that SMW tests rely on
 		$this->resetSMWServices();
@@ -110,13 +80,13 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgEnabledDeferredUpdate', false );
+		$this->testEnvironment->disableSoftwareChangeTags();
 		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
 		$this->testEnvironment->registerObject( 'Cache', $fixedInMemoryLruCache );
-		$this->testEnvironment->resetDBLoadBalancer();
 
 		PropertyRegistry::clear();
 
-		$this->clearPendingDeferredUpdates();
+		$this->testEnvironment->clearPendingDeferredUpdates();
 
 		// Set cache to avoid unexpected database interactions
 		$this->disableGlobalCaches();
@@ -141,22 +111,29 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		$GLOBALS['wgUseDatabaseMessages'] = false;
 	}
 
-	/**
-	 * Clear pending deferred updates to ensure no state leaks between tests.
-	 */
-	private function clearPendingDeferredUpdates(): void {
-		$this->testEnvironment->clearPendingDeferredUpdates();
-	}
-
 	protected function tearDown(): void {
-		if ( $this->testEnvironment !== null ) {
-			$this->testEnvironment->tearDown();
-		}
-		// Ensure all transactions are closed before ending the test
-		$dbw = $this->getDBConnection();
-		$dbw->rollback();
+		try {
+			if ( $this->testEnvironment !== null ) {
+				$this->testEnvironment->tearDown();
+			}
+		} finally {
+			try {
+				// Roll back all open database transactions to prevent lock
+				// contention when MediaWikiIntegrationTestCase::tearDown()
+				// truncates tables. Without this, page deletions from
+				// flushPages() can hold row locks that block TRUNCATE,
+				// causing "Lock wait timeout" errors.
+				if ( $this->testDatabaseTableBuilder !== null ) {
+					$this->getDBConnection()?->rollback();
+				}
 
-		parent::tearDown();
+				MediaWikiServices::getInstance()
+					->getDBLoadBalancerFactory()
+					->rollbackPrimaryChanges( __METHOD__ );
+			} finally {
+				parent::tearDown();
+			}
+		}
 	}
 
 	public function run( ?TestResult $result = null ): TestResult {
@@ -171,10 +148,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$this->getStore()
 		);
 
-		$this->testDatabaseTableBuilder->removeAvailableDatabaseType(
-			$this->databaseToBeExcluded
-		);
-
 		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
 
 		try {
@@ -185,8 +158,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		$testResult = parent::run( $result );
 
-		$this->destroyDatabaseTables( $this->destroyDatabaseTablesAfterRun );
-
 		return $testResult;
 	}
 
@@ -194,19 +165,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return StoreFactory::getStore();
 	}
 
-	protected function removeDatabaseTypeFromTest( $databaseToBeExcluded ) {
-		$this->databaseToBeExcluded = $databaseToBeExcluded;
-	}
-
-	protected function destroyDatabaseTablesAfterRun() {
-		$this->destroyDatabaseTablesAfterRun = true;
-	}
-
-	protected function setStoresToBeExcluded( array $storesToBeExcluded ) {
-		return $this->storesToBeExcluded = $storesToBeExcluded;
-	}
-
-	protected function skipTestForMediaWikiVersionLowerThan( $version, $message = '' ) {
+	protected function skipTestForMediaWikiVersionLowerThan( string $version, string $message = '' ): void {
 		if ( $message === '' ) {
 			$message = "This test is skipped for MediaWiki version " . MW_VERSION;
 		}
@@ -216,7 +175,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		}
 	}
 
-	protected function skipTestForDatabase( $excludedDatabase, $message = '' ) {
+	protected function skipTestForDatabase( string|array $excludedDatabase, string $message = '' ): void {
 		if ( is_string( $excludedDatabase ) ) {
 			$excludedDatabase = [ $excludedDatabase ];
 		}
@@ -230,16 +189,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		}
 	}
 
-	protected function skipTestForStore( $excludeStore ) {
-		$store = get_class( $this->getStore() );
-
-		if ( $store == $excludeStore ) {
-			$this->markTestSkipped(
-				"{$store} was excluded and is not expected to support the test"
-			);
-		}
-	}
-
 	protected function getDBConnection() {
 		return $this->testDatabaseTableBuilder->getDBConnection();
 	}
@@ -248,35 +197,13 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		return $this->testDatabaseTableBuilder->getConnectionProvider();
 	}
 
-	protected function isUsableUnitTestDatabase() {
-		return $this->isUsableUnitTestDatabase;
-	}
-
-	protected function checkIfDatabaseCanBeUsedOtherwiseSkipTest() {
-		if ( !$this->isUsableUnitTestDatabase ) {
-			$this->markTestSkipped(
-				"Database was excluded and is not expected to support the test"
-			);
-		}
-	}
-
-	protected function checkIfStoreCanBeUsedOtherwiseSkipTest() {
-		$store = get_class( $this->getStore() );
-
-		if ( in_array( $store, (array)$this->storesToBeExcluded ) ) {
-			$this->markTestSkipped(
-				"{$store} was excluded and is not expected to support the test"
-			);
-		}
-	}
-
-	private function destroyDatabaseTables( $destroyDatabaseTables ) {
+	private function destroyDatabaseTables( bool $destroyDatabaseTables ): void {
 		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
 			try {
 				$this->testDatabaseTableBuilder->doDestroy();
-			} catch ( \Exception $e ) { // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.EmptyStatement
+			} catch ( Exception $e ) {
 				// Do nothing because an instance was not available
-			} // @codingStandardsIgnoreEnd
+			}
 		}
 	}
 }

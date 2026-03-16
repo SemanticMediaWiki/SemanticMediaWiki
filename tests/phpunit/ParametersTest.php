@@ -15,8 +15,6 @@ use SMW\Parameters;
  */
 class ParametersTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			Parameters::class,

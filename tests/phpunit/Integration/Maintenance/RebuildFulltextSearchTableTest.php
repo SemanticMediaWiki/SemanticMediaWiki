@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\SMWIntegrationTestCase;
  * @author mwjames
  */
 class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
-
-	use PHPUnitCompat;
 
 	private $runnerFactory;
 	private $spyMessageReporter;
@@ -46,7 +43,7 @@ class RebuildFulltextSearchTableTest extends SMWIntegrationTestCase {
 
 		$maintenanceRunner->run();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'The script rebuilds the search index',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

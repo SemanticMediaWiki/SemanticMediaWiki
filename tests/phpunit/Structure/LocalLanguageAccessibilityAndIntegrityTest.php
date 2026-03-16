@@ -3,7 +3,6 @@
 namespace SMW\Tests\Structure;
 
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @group semantic-mediawiki-system
@@ -15,26 +14,24 @@ use SMW\Tests\PHPUnitCompat;
  */
 class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * @dataProvider languageCodeProvider
 	 */
 	public function testCommonInterfaceMethods( $langcode ) {
 		$methods = [
-			'getDateFormats' => 'array',
-			'getNamespaces'  => 'array',
-			'getNamespaceAliases' => 'array',
-			'getDatatypeLabels'   => 'array',
-			'getDatatypeAliases'  => 'array',
-			'getPropertyLabels'   => 'array',
-			'getPropertyAliases'  => 'array',
+			'getDateFormats',
+			'getNamespaces',
+			'getNamespaceAliases',
+			'getDatatypeLabels',
+			'getDatatypeAliases',
+			'getPropertyLabels',
+			'getPropertyAliases',
 		];
 
 		$class = $this->loadLanguageFileAndConstructClass( $langcode );
 
-		foreach ( $methods as $method => $type ) {
-			$this->assertInternalType( $type, call_user_func( [ $class, $method ] ) );
+		foreach ( $methods as $method ) {
+			$this->assertIsArray( call_user_func( [ $class, $method ] ) );
 		}
 	}
 

@@ -6,7 +6,7 @@ use SMW\DIWikiPage;
 use SMW\Exporter\Controller\Queue;
 
 /**
- * @covers \SMW\Exporter\Queue
+ * @covers \SMW\Exporter\Controller\Queue
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

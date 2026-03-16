@@ -5,7 +5,6 @@ namespace SMW\Tests\Elastic\Indexer;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Indexer\DocumentCreator
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 

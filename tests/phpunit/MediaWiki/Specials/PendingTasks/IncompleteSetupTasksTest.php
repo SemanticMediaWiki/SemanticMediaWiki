@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\PendingTasks;
 
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -47,7 +44,7 @@ class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
 			$setupFile
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<ul><li>⧼Foo⧽</li><li>⧼Bar⧽</li></ul>',
 			$instance->getHtml()
 		);

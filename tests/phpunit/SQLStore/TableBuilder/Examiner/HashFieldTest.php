@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
 use SMW\SQLStore\TableBuilder\Examiner\HashField;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class HashFieldTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $store;
@@ -67,7 +64,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Checking smw_hash field consistency',
 			$this->spyMessageReporter->getMessagesAsString()
 		);
@@ -97,7 +94,7 @@ class HashFieldTest extends \PHPUnit\Framework\TestCase {
 		$instance->setMessageReporter( $this->spyMessageReporter );
 		$instance->check();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Checking smw_hash field consistency',
 			$this->spyMessageReporter->getMessagesAsString()
 		);

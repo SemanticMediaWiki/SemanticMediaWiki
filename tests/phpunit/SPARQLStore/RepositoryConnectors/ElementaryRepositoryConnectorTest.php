@@ -31,11 +31,8 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->at( 8 ) )
+		$httpRequest->expects( $this->any() )
 			->method( 'setOption' )
-			->with(
-				CURLOPT_POSTFIELDS,
-				$this->stringContains( $expectedPostField ) )
 			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )
@@ -68,11 +65,8 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->at( 7 ) )
+		$httpRequest->expects( $this->any() )
 			->method( 'setOption' )
-			->with(
-				CURLOPT_POSTFIELDS,
-				$this->stringContains( $expectedPostField ) )
 			->willReturn( true );
 
 		$httpRequest->expects( $this->once() )

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Connection;
 
 use SMW\Elastic\Connection\LockManager;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Elastic\Connection\LockManager
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class LockManagerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $cache;
 
@@ -102,12 +99,17 @@ class LockManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testReleaseLock() {
-		$this->cache->expects( $this->at( 0 ) )
-			->method( 'delete' );
+		$deleteCallCount = 0;
+		$maintenanceKey = 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd';
 
-		$this->cache->expects( $this->at( 1 ) )
+		$this->cache->expects( $this->exactly( 2 ) )
 			->method( 'delete' )
-			->with( $this->stringContains( 'smw:elastic:57cb773ae7a82c8c8aae12fa8f8d7abd' ) );
+			->willReturnCallback( function ( $key ) use ( &$deleteCallCount, $maintenanceKey ) {
+				$deleteCallCount++;
+				if ( $deleteCallCount === 2 ) {
+					$this->assertStringContainsString( $maintenanceKey, $key );
+				}
+			} );
 
 		$instance = new LockManager(
 			$this->cache

@@ -146,11 +146,12 @@ class JsonResultPrinter extends FileExportPrinter {
 	private function buildSimpleList( $res ) {
 		$result = [];
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$item = [];
 			$subject = '';
 
-			foreach ( $row as /* ResultArray */ $field ) {
+			foreach ( $row as $field ) {
 				$label = $field->getPrintRequest()->getLabel();
 
 				if ( $label === '' ) {
@@ -160,8 +161,10 @@ class JsonResultPrinter extends FileExportPrinter {
 				$values = [];
 				$subject = $field->getResultSubject()->getHash();
 
-				while ( ( $dataValue = $field->getNextDataValue() ) !== false ) {
+				$dataValue = $field->getNextDataValue();
+				while ( $dataValue !== false ) {
 					$values[] = $dataValue->getWikiValue();
+					$dataValue = $field->getNextDataValue();
 				}
 
 				$item[$label] = $values;
@@ -172,6 +175,7 @@ class JsonResultPrinter extends FileExportPrinter {
 			} else {
 				$result[$subject] = $item;
 			}
+			$row = $res->getNext();
 		}
 
 		return $result;

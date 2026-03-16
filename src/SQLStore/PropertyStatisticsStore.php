@@ -122,16 +122,8 @@ class PropertyStatisticsStore {
 	 */
 	private function safeIncrement( string $field, int $delta ) {
 		if ( $delta < 0 ) {
-			if ( version_compare( MW_VERSION, '1.42', '>=' ) ) {
-				return $field . '=' . $this->connection->conditional(
-					$this->connection->expr( $field, '>=', abs( $delta ) ),
-					$field . ' - ' . $this->connection->addQuotes( abs( $delta ) ),
-					0
-				);
-			}
-
 			return $field . '=' . $this->connection->conditional(
-				$field . ' >= ' . $this->connection->addQuotes( abs( $delta ) ),
+				$this->connection->expr( $field, '>=', abs( $delta ) ),
 				$field . ' - ' . $this->connection->addQuotes( abs( $delta ) ),
 				0
 			);
@@ -296,7 +288,9 @@ class PropertyStatisticsStore {
 		$usageCounts = [];
 
 		foreach ( $propertyStatistics as $propertyStatistic ) {
+			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.assert
 			assert( ctype_digit( $propertyStatistic->p_id ) );
+			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.assert
 			assert( ctype_digit( $propertyStatistic->usage_count ) );
 
 			$usageCounts[(int)$propertyStatistic->p_id] = (int)$propertyStatistic->usage_count;

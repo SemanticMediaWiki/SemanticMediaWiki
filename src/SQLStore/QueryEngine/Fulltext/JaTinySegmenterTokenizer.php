@@ -1,6 +1,6 @@
 <?php
 
-namespace Onoi\Tesa\Tokenizer;
+namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use RuntimeException;
 
@@ -19,9 +19,10 @@ use RuntimeException;
  *
  * - https://github.com/shogo82148/TinySegmenterMaker
  *
- * @since 0.1
+ * @license GPL-2.0-or-later
+ * @since 6.1.0
  */
-class JaTinySegmenterTokenizer implements Tokenizer {
+class JaTinySegmenterTokenizer {
 
 	private $patterns_ = [
 		"[一二三四五六七八九十百千万億兆]" => "M", // numbers (japanese)
@@ -33,60 +34,19 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 	];
 
 	/**
-	 * @var Tokenizer
-	 */
-	private $tokenizer;
-
-	/**
 	 * This is kept static on purpose.
 	 * @var array
 	 */
 	private static $model;
 
 	/**
-	 * @var string
-	 */
-	private $modelFile;
-
-	/**
-	 * @since 0.1
+	 * @since 6.1.0
 	 *
-	 * @param Tokenizer|null $tokenizer
-	 */
-	public function __construct( ?Tokenizer $tokenizer = null ) {
-		$this->tokenizer = $tokenizer;
-	}
-
-	/**
-	 * @since 0.1
+	 * @param string $string
 	 *
-	 * {@inheritDoc}
-	 */
-	public function setOption( $name, $value ) {
-		if ( $this->tokenizer !== null ) {
-			$this->tokenizer->setOption( $name, $value );
-		}
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * {@inheritDoc}
-	 */
-	public function isWordTokenizer() {
-		return false;
-	}
-
-	/**
-	 * @since 0.1
-	 *
-	 * {@inheritDoc}
+	 * @return string[]
 	 */
 	public function tokenize( $string ) {
-		if ( $this->tokenizer !== null ) {
-			$string = implode( " ", $this->tokenizer->tokenize( $string ) );
-		}
-
 		return $this->loadModel()->segment( $string );
 	}
 
@@ -158,49 +118,49 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 			$c4 = $ctype[$i];
 			$c5 = $ctype[$i + 1];
 			$c6 = $ctype[$i + 2];
-			$score += $this->ts_( @self::$model["UP1"][$p1] );
-			$score += $this->ts_( @self::$model["UP2"][$p2] );
-			$score += $this->ts_( @self::$model["UP3"][$p3] );
-			$score += $this->ts_( @self::$model["BP1"][$p1 . $p2] );
-			$score += $this->ts_( @self::$model["BP2"][$p2 . $p3] );
-			$score += $this->ts_( @self::$model["UW1"][$w1] );
-			$score += $this->ts_( @self::$model["UW2"][$w2] );
-			$score += $this->ts_( @self::$model["UW3"][$w3] );
-			$score += $this->ts_( @self::$model["UW4"][$w4] );
-			$score += $this->ts_( @self::$model["UW5"][$w5] );
-			$score += $this->ts_( @self::$model["UW6"][$w6] );
-			$score += $this->ts_( @self::$model["BW1"][$w2 . $w3] );
-			$score += $this->ts_( @self::$model["BW2"][$w3 . $w4] );
-			$score += $this->ts_( @self::$model["BW3"][$w4 . $w5] );
-			$score += $this->ts_( @self::$model["TW1"][$w1 . $w2 . $w3] );
-			$score += $this->ts_( @self::$model["TW2"][$w2 . $w3 . $w4] );
-			$score += $this->ts_( @self::$model["TW3"][$w3 . $w4 . $w5] );
-			$score += $this->ts_( @self::$model["TW4"][$w4 . $w5 . $w6] );
-			$score += $this->ts_( @self::$model["UC1"][$c1] );
-			$score += $this->ts_( @self::$model["UC2"][$c2] );
-			$score += $this->ts_( @self::$model["UC3"][$c3] );
-			$score += $this->ts_( @self::$model["UC4"][$c4] );
-			$score += $this->ts_( @self::$model["UC5"][$c5] );
-			$score += $this->ts_( @self::$model["UC6"][$c6] );
-			$score += $this->ts_( @self::$model["BC1"][$c2 . $c3] );
-			$score += $this->ts_( @self::$model["BC2"][$c3 . $c4] );
-			$score += $this->ts_( @self::$model["BC3"][$c4 . $c5] );
-			$score += $this->ts_( @self::$model["TC1"][$c1 . $c2 . $c3] );
-			$score += $this->ts_( @self::$model["TC2"][$c2 . $c3 . $c4] );
-			$score += $this->ts_( @self::$model["TC3"][$c3 . $c4 . $c5] );
-			$score += $this->ts_( @self::$model["TC4"][$c4 . $c5 . $c6] );
-			// $score += $this->ts_(@self::$model["TC5"][$c4 . $c5 . $c6]);
-			$score += $this->ts_( @self::$model["UQ1"][$p1 . $c1] );
-			$score += $this->ts_( @self::$model["UQ2"][$p2 . $c2] );
-			$score += $this->ts_( @self::$model["UQ1"][$p3 . $c3] );
-			$score += $this->ts_( @self::$model["BQ1"][$p2 . $c2 . $c3] );
-			$score += $this->ts_( @self::$model["BQ2"][$p2 . $c3 . $c4] );
-			$score += $this->ts_( @self::$model["BQ3"][$p3 . $c2 . $c3] );
-			$score += $this->ts_( @self::$model["BQ4"][$p3 . $c3 . $c4] );
-			$score += $this->ts_( @self::$model["TQ1"][$p2 . $c1 . $c2 . $c3] );
-			$score += $this->ts_( @self::$model["TQ2"][$p2 . $c2 . $c3 . $c4] );
-			$score += $this->ts_( @self::$model["TQ3"][$p3 . $c1 . $c2 . $c3] );
-			$score += $this->ts_( @self::$model["TQ4"][$p3 . $c2 . $c3 . $c4] );
+			$score += self::$model["UP1"][$p1] ?? 0;
+			$score += self::$model["UP2"][$p2] ?? 0;
+			$score += self::$model["UP3"][$p3] ?? 0;
+			$score += self::$model["BP1"][$p1 . $p2] ?? 0;
+			$score += self::$model["BP2"][$p2 . $p3] ?? 0;
+			$score += self::$model["UW1"][$w1] ?? 0;
+			$score += self::$model["UW2"][$w2] ?? 0;
+			$score += self::$model["UW3"][$w3] ?? 0;
+			$score += self::$model["UW4"][$w4] ?? 0;
+			$score += self::$model["UW5"][$w5] ?? 0;
+			$score += self::$model["UW6"][$w6] ?? 0;
+			$score += self::$model["BW1"][$w2 . $w3] ?? 0;
+			$score += self::$model["BW2"][$w3 . $w4] ?? 0;
+			$score += self::$model["BW3"][$w4 . $w5] ?? 0;
+			$score += self::$model["TW1"][$w1 . $w2 . $w3] ?? 0;
+			$score += self::$model["TW2"][$w2 . $w3 . $w4] ?? 0;
+			$score += self::$model["TW3"][$w3 . $w4 . $w5] ?? 0;
+			$score += self::$model["TW4"][$w4 . $w5 . $w6] ?? 0;
+			$score += self::$model["UC1"][$c1] ?? 0;
+			$score += self::$model["UC2"][$c2] ?? 0;
+			$score += self::$model["UC3"][$c3] ?? 0;
+			$score += self::$model["UC4"][$c4] ?? 0;
+			$score += self::$model["UC5"][$c5] ?? 0;
+			$score += self::$model["UC6"][$c6] ?? 0;
+			$score += self::$model["BC1"][$c2 . $c3] ?? 0;
+			$score += self::$model["BC2"][$c3 . $c4] ?? 0;
+			$score += self::$model["BC3"][$c4 . $c5] ?? 0;
+			$score += self::$model["TC1"][$c1 . $c2 . $c3] ?? 0;
+			$score += self::$model["TC2"][$c2 . $c3 . $c4] ?? 0;
+			$score += self::$model["TC3"][$c3 . $c4 . $c5] ?? 0;
+			$score += self::$model["TC4"][$c4 . $c5 . $c6] ?? 0;
+			// $score += self::$model["TC5"][$c4 . $c5 . $c6] ?? 0;
+			$score += self::$model["UQ1"][$p1 . $c1] ?? 0;
+			$score += self::$model["UQ2"][$p2 . $c2] ?? 0;
+			$score += self::$model["UQ3"][$p3 . $c3] ?? 0;
+			$score += self::$model["BQ1"][$p2 . $c2 . $c3] ?? 0;
+			$score += self::$model["BQ2"][$p2 . $c3 . $c4] ?? 0;
+			$score += self::$model["BQ3"][$p3 . $c2 . $c3] ?? 0;
+			$score += self::$model["BQ4"][$p3 . $c3 . $c4] ?? 0;
+			$score += self::$model["TQ1"][$p2 . $c1 . $c2 . $c3] ?? 0;
+			$score += self::$model["TQ2"][$p2 . $c2 . $c3 . $c4] ?? 0;
+			$score += self::$model["TQ3"][$p3 . $c1 . $c2 . $c3] ?? 0;
+			$score += self::$model["TQ4"][$p3 . $c2 . $c3 . $c4] ?? 0;
 
 			$p = "O";
 
@@ -242,10 +202,6 @@ class JaTinySegmenterTokenizer implements Tokenizer {
 		}
 
 		return "O";
-	}
-
-	private function ts_( $v ) {
-		return $v ? $v : 0;
 	}
 
 	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ) {

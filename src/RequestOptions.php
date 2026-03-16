@@ -206,7 +206,6 @@ class RequestOptions {
 	 * @since 3.1
 	 *
 	 * @param string $key
-	 * @param string $value
 	 */
 	public function deleteOption( $key ) {
 		unset( $this->options[$key] );

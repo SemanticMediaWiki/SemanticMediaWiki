@@ -7,7 +7,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
 use SMW\SemanticData;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -21,8 +20,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $transactionalCallableUpdate;
@@ -172,7 +169,7 @@ class DataUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$instance->isDeferrableUpdate( true );
 		$instance->doUpdate();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'DeferrableUpdate',
 			$this->spyLogger->getMessagesAsString()
 		);

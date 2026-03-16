@@ -3,7 +3,6 @@
 namespace SMW\Tests\Elastic\Hooks;
 
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -17,8 +16,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private TestEnvironment $testEnvironment;
 	private $store;
@@ -125,7 +122,7 @@ class UpdateEntityCollationCompleteTest extends \PHPUnit\Framework\TestCase {
 		$instance->setCountDown( 0 );
 		$instance->runUpdate( $this->rebuilder );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'... updating document ...                                   1 / 1 (100%)',
 			$this->messageReporter->getMessagesAsString()
 		);

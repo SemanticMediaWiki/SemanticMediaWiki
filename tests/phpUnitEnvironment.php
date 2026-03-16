@@ -147,19 +147,6 @@ class PHPUnitEnvironment {
 
 			if ( $this->gitHead['mw'] ) {
 				$this->gitHead['mw'] = substr( $this->gitHead['mw'], 0, 7 );
-			} elseif ( $this->command_exists( 'git' ) ) {
-				// The download of a zip package will not provide any git sha1
-				// reference therefore try to fetch it from github; `MW` is
-				// exported by the Travis-CI environment to point to the selected
-				// release/branch
-				$refs = ( $env = getenv( 'MW' ) ) ? "refs/heads/$env" : "refs/tags/" . MW_VERSION;
-				$output = null;
-
-				if ( defined( 'SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB' ) && SMW_PHPUNIT_PULL_VERSION_FROM_GITHUB ) {
-					exec( "git ls-remote https://github.com/wikimedia/mediawiki $refs", $output );
-				}
-
-				$this->gitHead['mw'] = isset( $output[0] ) ? substr( $output[0], 0, 7 ) . " ($refs)" : 'n/a';
 			} else {
 				$this->gitHead['mw'] = 'N/A';
 			}

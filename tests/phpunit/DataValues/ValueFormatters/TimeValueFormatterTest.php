@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\TimeValueFormatter;
 use SMW\DataValues\ValueParsers\TimeValueParser;
-use SMW\Tests\PHPUnitCompat;
 use SMWTimeValue as TimeValue;
 
 /**
@@ -17,8 +16,6 @@ use SMWTimeValue as TimeValue;
  * @author mwjames
  */
 class TimeValueFormatterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataValueServiceFactory;
 

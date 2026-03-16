@@ -20,8 +20,6 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  */
 class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * Helper method that returns a QueryPage object
 	 *
@@ -45,8 +43,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test QueryPage::__construct
-	 *
 	 * @since 1.9
 	 */
 	public function testConstructor() {
@@ -54,7 +50,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test QueryPage::linkParameters
 	 * @dataProvider linkParametersDataProvider
 	 *
 	 * @since 1.9
@@ -71,8 +66,6 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @test QueryPage::getSearchForm
-	 *
 	 * @since 1.9
 	 */
 	public function testGetSearchForm() {
@@ -102,7 +95,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 
 		// https://github.com/sebastianbergmann/phpunit/issues/1380
 		// $this->assertTag( $matcher, $result );
-		$this->assertContains( $search, $result );
+		$this->assertStringContainsString( $search, $result );
 	}
 
 	/**

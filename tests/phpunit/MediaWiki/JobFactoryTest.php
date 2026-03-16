@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\JobFactory;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\JobFactory
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class JobFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -100,8 +100,14 @@ class PageCreator {
 			$this->getPage()->getTitle()
 		);
 
-		// Simplified implementation of WikiPage::doUserEditContent() from MW 1.36
-		$performer = RequestContext::getMain()->getUser();
+		// Use a system user when temporary accounts are enabled (MW 1.44+)
+		// to avoid CannotCreateActorException for anonymous users
+		$tempUserCreator = MediaWikiServices::getInstance()->getTempUserCreator();
+		if ( $tempUserCreator->isEnabled() ) {
+			$performer = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		} else {
+			$performer = RequestContext::getMain()->getUser();
+		}
 		$summary = CommentStoreComment::newUnsavedComment( trim( $editMessage ) );
 
 		$slotsUpdate = new RevisionSlotsUpdate();

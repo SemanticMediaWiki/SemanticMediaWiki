@@ -6,7 +6,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Iterators\AppendIterator;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ChangePropagationEntityLookup
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $iteratorFactory;

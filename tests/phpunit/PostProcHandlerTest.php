@@ -28,8 +28,6 @@ use SMWQuery;
  */
 class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $parserOutput;
 	private $cache;
 
@@ -79,7 +77,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCookie' )
 			->willReturn( 'FakeCookie' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);
@@ -132,7 +130,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCookie' )
 			->willReturn( 'FakeCookie' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]" data-query="[&quot;Foobar&quot;]"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);
@@ -187,7 +185,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'FakeCookie' );
 
 		// Check that the returned HTML does not contain the expected data attributes - inverse testing
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[&quot;Bar&quot;]" data-query="[&quot;Foobar&quot;]"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);
@@ -225,7 +223,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCookie' )
 			->willReturn( 'FakeCookie' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-jobs="{&quot;fooJob&quot;:2}"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);
@@ -271,7 +269,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$webRequest = $this->createMock( WebRequest::class );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-postproc page-purge" data-subject="#0##" data-title="Foo" data-msg="smw-purge-update-dependencies" data-forcelinkupdate="1"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);
@@ -334,7 +332,7 @@ class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getCookie' )
 			->willReturn( 'FakeCookie' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'<div class="smw-postproc" data-subject="Foo#0##" data-ref="[0]"></div>',
 			$instance->getHtml( $title, $webRequest )
 		);

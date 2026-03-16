@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
  * @covers \SMW\MediaWiki\Search\ExtendedSearchEngine
@@ -17,23 +17,15 @@ use SMW\Tests\TestEnvironment;
  */
 class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $testEnvironment;
 	private $connection;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$this->connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
-		} else {
-			$this->connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-		}
 	}
 
 	protected function tearDown(): void {
@@ -60,17 +52,10 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			}
 		}
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\IConnectionProvider' )
+		$connection = $this->getMockBuilder( IConnectionProvider::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSearchEngine' ] )
 			->getMockForAbstractClass();
-		} else {
-			$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
-			->disableOriginalConstructor()
-			->setMethods( [ 'getSearchEngine' ] )
-			->getMockForAbstractClass();
-		}
 
 		$connection->expects( $this->any() )
 			->method( 'getSearchEngine' )
@@ -145,67 +130,6 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 		$this->assertEquals(
 			'Some normalized text',
 			$searchEngine->normalizeText( 'Some text' )
-		);
-	}
-
-	public function testGetTextFromContent() {
-		if ( !method_exists( 'SearchEngine', 'getTextFromContent' ) ) {
-			$this->markTestSkipped( 'SearchEngine::getTextFromContent() is undefined. Probably not yet present in the tested MW version.' );
-		}
-
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
-			->disableOriginalConstructor()
-			->getMockForAbstractClass();
-
-		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'getTextFromContent' )
-			->with(
-				$title,
-				$content )
-			->willReturnMap( [ [ $title, $content, 'text from content for title' ] ] );
-
-		$searchEngine = new ExtendedSearchEngine(
-			$this->connection
-		);
-
-		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
-
-		$this->assertEquals(
-			'text from content for title',
-			$searchEngine->getTextFromContent( $title, $content )
-		);
-	}
-
-	public function testTextAlreadyUpdatedForIndex() {
-		if ( !method_exists( 'SearchEngine', 'textAlreadyUpdatedForIndex' ) ) {
-			$this->markTestSkipped( 'SearchEngine::textAlreadyUpdatedForIndex() is undefined. Probably not yet present in the tested MW version.' );
-		}
-
-		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$fallbackSearchEngine->expects( $this->once() )
-			->method( 'textAlreadyUpdatedForIndex' )
-			->with()
-			->willReturn( true );
-
-		$searchEngine = new ExtendedSearchEngine(
-			$this->connection
-		);
-
-		$searchEngine->setFallbackSearchEngine( $fallbackSearchEngine );
-
-		$this->assertTrue(
-			$searchEngine->textAlreadyUpdatedForIndex( 'Some text' )
 		);
 	}
 
@@ -300,17 +224,6 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertNull(
 			$searchEngine->getFeatureData( 'Some non-existent feature name' )
-		);
-	}
-
-	public function testReplacePrefixes() {
-		$searchEngine = new ExtendedSearchEngine(
-			$this->connection
-		);
-
-		$this->assertEquals(
-			'Some query',
-			$searchEngine->replacePrefixes( 'Some query' )
 		);
 	}
 

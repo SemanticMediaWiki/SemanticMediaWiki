@@ -19,8 +19,6 @@ use SMW\PropertyRegistry;
  */
 class PropertyRegistryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $cache;
 	private $store;
 

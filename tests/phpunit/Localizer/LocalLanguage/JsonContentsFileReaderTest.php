@@ -3,7 +3,6 @@
 namespace SMW\Tests\Localizer\LocalLanguage;
 
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Localizer\LocalLanguage\JsonContentsFileReader
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -112,7 +109,7 @@ class JsonContentsFileReaderTest extends \PHPUnit\Framework\TestCase {
 	 *
 	 * @dataProvider dataExtensionProvider
 	 */
-	public function WriteToFile( $topic, $extension ) {
+	public function testWriteToFile( $topic, $extension ) {
 		$instance = new JsonContentsFileReader();
 		$list = 'ar,arz,ca,de,es,fi,fr,he,hu,id,it,nb,nl,pl,pt,ru,sk,zh-cn,zh-tw';
 

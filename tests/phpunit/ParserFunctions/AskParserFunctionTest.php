@@ -8,7 +8,6 @@ use ReflectionClass;
 use SMW\Localizer\Localizer;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -21,8 +20,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class AskParserFunctionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $semanticDataValidator;

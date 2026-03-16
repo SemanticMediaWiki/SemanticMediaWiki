@@ -2,8 +2,6 @@
 
 namespace SMW\MediaWiki\Search;
 
-use MediaWiki\Content\Content;
-use MediaWiki\Title\Title;
 use SearchEngine;
 
 /**
@@ -131,24 +129,6 @@ class ExtendedSearchEngine extends SearchEngine {
 	}
 
 	/**
-	 * @see SearchEngine::getTextFromContent
-	 *
-	 * {@inheritDoc}
-	 */
-	public function getTextFromContent( Title $t, ?Content $c = null ) {
-		return $this->fallbackSearchEngine->getTextFromContent( $t, $c );
-	}
-
-	/**
-	 * @see SearchEngine::textAlreadyUpdatedForIndex
-	 *
-	 * {@inheritDoc}
-	 */
-	public function textAlreadyUpdatedForIndex() {
-		return $this->fallbackSearchEngine->textAlreadyUpdatedForIndex();
-	}
-
-	/**
 	 * @see SearchEngine::update
 	 *
 	 * {@inheritDoc}
@@ -198,15 +178,6 @@ class ExtendedSearchEngine extends SearchEngine {
 		}
 
 		return null;
-	}
-
-	/**
-	 * @see SearchEngine::replacePrefixes
-	 *
-	 * {@inheritDoc}
-	 */
-	public function replacePrefixes( $query ) {
-		return $query;
 	}
 
 	/**

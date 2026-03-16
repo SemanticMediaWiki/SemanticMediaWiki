@@ -49,7 +49,7 @@
 			"subject": "Example/P0435/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<td class=\"Has-text smwtype_txt\">TBgcHiQBTvpV3XkFiRpM …</td>"
+					"<td class=\"Has-text smwtype&#95;txt\">TBgcHiQBTvpV3XkFiRpM …</td>"
 				]
 			}
 		}

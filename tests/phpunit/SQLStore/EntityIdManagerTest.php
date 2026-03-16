@@ -372,10 +372,14 @@ class EntityIdManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$row = $expected;
 
-		$this->duplicateFinder->expects( $this->at( 0 ) )
+		$this->duplicateFinder->expects( $this->atLeastOnce() )
 			->method( 'findDuplicates' )
-			->with( \SMW\SQLStore\SQLStore::ID_TABLE )
-			->willReturn( [ $row ] );
+			->willReturnCallback( static function ( $table ) use ( $row ) {
+				if ( $table === \SMW\SQLStore\SQLStore::ID_TABLE ) {
+					return [ $row ];
+				}
+				return null;
+			} );
 
 		$instance = new EntityIdManager(
 			$this->store,

@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Utils;
 
-use SMW\Tests\PHPUnitCompat;
 use SMW\Utils\TempFile;
 
 /**
@@ -16,17 +15,15 @@ use SMW\Utils\TempFile;
  */
 class TempFileTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testGenerate() {
 		$instance = new TempFile();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'6na5ojj24og0',
 			$instance->generate( 'Foo' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Bar7vmi67tsvkb0',
 			$instance->generate( 'Bar', 'Foo' )
 		);

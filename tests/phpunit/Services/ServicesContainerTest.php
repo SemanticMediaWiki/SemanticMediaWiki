@@ -3,7 +3,6 @@
 namespace SMW\Tests\Services;
 
 use SMW\Services\ServicesContainer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Services\ServicesContainer
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -4,6 +4,7 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use Article;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Parser\ParserOptions;
 use MediaWikiIntegrationTestCase;
 use SMW\DIWikiPage;
 use SMW\Tests\Utils\UtilityFactory;
@@ -111,7 +112,7 @@ class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		);
 
 		if ( !$this->isSetAndTrueish( $case[ 'assert-output' ], [ 'withOutputPageContext', 'onPageView' ] ) ) {
-			return $parserOutput->getText();
+			return $parserOutput->runOutputPipeline( ParserOptions::newFromAnon() )->getContentHolderText();
 		}
 
 		$context = new RequestContext();

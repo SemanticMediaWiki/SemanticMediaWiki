@@ -64,7 +64,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	/**
 	 * Returns the set of SMW property data from the entire page schema.
 	 */
-	static function getAllPropertyData( $pageSchemaObj ) {
+	public static function getAllPropertyData( $pageSchemaObj ) {
 		$propertyDataArray = [];
 		$psTemplates = $pageSchemaObj->getTemplates();
 		foreach ( $psTemplates as $psTemplate ) {
@@ -103,7 +103,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 		return $xmlPerTemplate;
 	}
 
-	static function getConnectingPropertyName( $psTemplate ) {
+	public static function getConnectingPropertyName( $psTemplate ) {
 		// TODO - there should be a more direct way to get
 		// this data.
 		$smwConnectingPropertyArray = $psTemplate->getObject( 'semanticmediawiki_ConnectingProperty' );

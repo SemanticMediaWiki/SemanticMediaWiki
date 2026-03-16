@@ -58,7 +58,6 @@ class TextChangeUpdater {
 	 * @param Database $connection
 	 * @param Cache $cache
 	 * @param SearchTableUpdater $searchTableUpdater
-	 * @param TextSanitizer $textSanitizer
 	 */
 	public function __construct( Database $connection, Cache $cache, SearchTableUpdater $searchTableUpdater ) {
 		$this->connection = $connection;

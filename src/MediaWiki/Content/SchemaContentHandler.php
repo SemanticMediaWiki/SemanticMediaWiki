@@ -80,7 +80,6 @@ class SchemaContentHandler extends JsonContentHandler {
 	}
 
 	/**
-	 *
 	 * {@inheritDoc}
 	 */
 	public function preSaveTransform( Content $content, PreSaveTransformParams $pstParams ): Content {
@@ -178,7 +177,6 @@ class SchemaContentHandler extends JsonContentHandler {
 	}
 
 	/**
-	 *
 	 * {@inheritDoc}
 	 */
 	protected function fillParserOutput(

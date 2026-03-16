@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
@@ -22,8 +21,6 @@ use Wikimedia\Rdbms\IResultWrapper;
  * @author mwjames
  */
 class DatabaseTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $connRef;
 	private $transactionHandler;
@@ -276,14 +273,9 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'select' ] )
 			->getMockForAbstractClass();
 
-		if ( version_compare( MW_VERSION, '1.41', '>=' ) ) {
-			$database->expects( $this->once() )
-				->method( 'select' )
-				->willThrowException( new RuntimeException( 'Database error' ) );
-		} else {
-			$database->expects( $this->once() )
-				->method( 'select' );
-		}
+		$database->expects( $this->once() )
+			->method( 'select' )
+			->willThrowException( new RuntimeException( 'Database error' ) );
 
 		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
 			->disableOriginalConstructor()

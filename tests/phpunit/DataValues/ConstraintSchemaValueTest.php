@@ -6,7 +6,6 @@ use SMW\DataItemFactory;
 use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,8 +18,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -97,7 +94,7 @@ class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setUserValue( 'Foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[2,"smw-constraint-schema-property-invalid-type","Foo","PROPERTY_CONSTRAINT_SCHEMA"]',
 			implode( ',', $instance->getErrors() )
 		);
@@ -128,7 +125,7 @@ class ConstraintSchemaValueTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setUserValue( 'Foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[2,"smw-constraint-schema-category-invalid-type","Foo","CLASS_CONSTRAINT_SCHEMA"]',
 			implode( ',', $instance->getErrors() )
 		);

@@ -55,7 +55,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getName() {
+	public function getName() {
 		return "WantedProperties";
 	}
 
@@ -63,16 +63,18 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	function isExpensive() {
-		return false; /// disables caching for now
+	public function isExpensive() {
+		// disables caching for now
+		return false;
 	}
 
 	/**
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	function isSyndicated() {
-		return false; ///TODO: why not?
+	public function isSyndicated() {
+		// TODO: why not?
+		return false;
 	}
 
 	/**
@@ -95,7 +97,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	function getPageHeader() {
+	public function getPageHeader() {
 		$filer = $this->getRequest()->getVal( 'filter', '' );
 
 		if ( $filer !== 'unapprove' ) {
@@ -148,7 +150,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 *
 	 * @return string
 	 */
-	function formatResult( $skin, $result ) {
+	public function formatResult( $skin, $result ) {
 		// Only display user-defined properties because it can happen that
 		// custom predefined (fixed) properties are mixed within the result
 		// (did not use their own fixedProperty table and therefore were
@@ -182,7 +184,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @param RequestOptions $requestOptions
 	 * @return array of DIProperty|SMWDIError
 	 */
-	function getResults( $requestOptions ) {
+	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}

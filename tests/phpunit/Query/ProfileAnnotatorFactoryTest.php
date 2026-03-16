@@ -120,10 +120,14 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDescription' )
 			->willReturn( $description );
 
-		$query->expects( $this->at( 4 ) )
+		$query->expects( $this->atLeastOnce() )
 			->method( 'getOption' )
-			->with( Query::PROC_QUERY_TIME )
-			->willReturn( 42 );
+			->willReturnCallback( static function ( $key ) {
+				if ( $key === Query::PROC_QUERY_TIME ) {
+					return 42;
+				}
+				return false;
+			} );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -150,10 +154,14 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDescription' )
 			->willReturn( $description );
 
-		$query->expects( $this->at( 6 ) )
+		$query->expects( $this->atLeastOnce() )
 			->method( 'getOption' )
-			->with( Query::PROC_STATUS_CODE )
-			->willReturn( [ 100 ] );
+			->willReturnCallback( static function ( $key ) {
+				if ( $key === Query::PROC_STATUS_CODE ) {
+					return [ 100 ];
+				}
+				return false;
+			} );
 
 		$instance = new ProfileAnnotatorFactory();
 
@@ -205,10 +213,14 @@ class ProfileAnnotatorFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDescription' )
 			->willReturn( $description );
 
-		$query->expects( $this->at( 7 ) )
+		$query->expects( $this->atLeastOnce() )
 			->method( 'getOption' )
-			->with( 'schema_link' )
-			->willReturn( 'Foo' );
+			->willReturnCallback( static function ( $key ) {
+				if ( $key === 'schema_link' ) {
+					return 'Foo';
+				}
+				return false;
+			} );
 
 		$instance = new ProfileAnnotatorFactory();
 

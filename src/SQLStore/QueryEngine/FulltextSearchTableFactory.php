@@ -2,7 +2,6 @@
 
 namespace SMW\SQLStore\QueryEngine;
 
-use Onoi\Tesa\SanitizerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\MySQLValueMatchConditionBuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
@@ -51,16 +50,12 @@ class FulltextSearchTableFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param Store $store
-	 *
-	 * @return SearchTable
+	 * @return TextSanitizer
 	 */
 	public function newTextSanitizer() {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
-		$textSanitizer = new TextSanitizer(
-			new SanitizerFactory()
-		);
+		$textSanitizer = new TextSanitizer();
 
 		$textSanitizer->setLanguageDetection(
 			$settings->get( 'smwgFulltextLanguageDetection' )

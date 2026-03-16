@@ -16,7 +16,6 @@ class HtmlUtil {
 	 * @param bool $checked
 	 * @param array $attribs
 	 * @return string HTML
-	 *
 	 */
 	public static function checkLabel( $label, $name, $id, $checked = false, $attribs = [] ) {
 		$labelAttr = array_intersect_key( $attribs, array_flip( [ 'class', 'title' ] ) );

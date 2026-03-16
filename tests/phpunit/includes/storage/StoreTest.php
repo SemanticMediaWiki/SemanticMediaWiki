@@ -23,8 +23,6 @@ use SMW\StoreFactory;
  */
 class StoreTest extends SMWIntegrationTestCase {
 
-	use PHPUnitCompat;
-
 ///// Reading methods /////
 
 	public function getSemanticDataProvider() {

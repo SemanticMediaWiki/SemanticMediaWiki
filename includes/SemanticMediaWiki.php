@@ -14,8 +14,6 @@ use SMW\Setup;
  * For documenting extensions of SMW, please do not use groups starting with
  * "SMW" but make your own groups instead. Browsing at
  * https://doc.semantic-mediawiki.org/ is assumed to be easier this way.
- *
- * @defgroup SMW Semantic MediaWiki
  */
 class SemanticMediaWiki {
 
@@ -522,8 +520,7 @@ class SemanticMediaWiki {
 
 	/**
 	 * Get the array that DefaultSettings.php is supposed to return.  We did not put it inline here
-	 * as we did with Aliases.php and Defines.php because there are references to that file online
-	 * for documentation.
+	 * because there are references to that file online for documentation.
 	 */
 	public static function getDefaultSettings(): array {
 		static $settings = null;

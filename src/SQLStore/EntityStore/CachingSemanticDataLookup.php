@@ -173,7 +173,6 @@ class CachingSemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param int $id
-	 * @param DIWikiPage $subject
 	 */
 	public function getSemanticDataById( $id ) {
 		if ( !isset( self::$data[$id] ) ) {

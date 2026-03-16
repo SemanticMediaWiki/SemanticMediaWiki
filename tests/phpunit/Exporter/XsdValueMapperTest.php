@@ -7,7 +7,6 @@ use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\XsdValueMapper;
-use SMW\Tests\PHPUnitCompat;
 use SMWDIBlob;
 use SMWDIBoolean;
 use SMWDINumber;
@@ -24,8 +23,6 @@ use SMWDITime;
  */
 class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * @dataProvider supportedDataItemProvider
 	 */
@@ -37,7 +34,7 @@ class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
 			$value
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			$xsdType,
 			$type
 		);

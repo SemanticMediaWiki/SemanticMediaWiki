@@ -45,7 +45,7 @@
 		"php": ">=8.1",
 		"ext-mbstring": "*",
 		"composer/installers": "^2.2.0|^1.0.1",
-		"psr/log": "~1.0",
+		"psr/log": "1.1.4",
 		"mediawiki/parser-hooks": "~1.4",
 		"param-processor/param-processor": "~1.2",
 		"serialization/serialization": "~3.2|~4.0",
@@ -63,13 +63,12 @@
 		"wikimedia/textcat": "^2|^1.1"
 	},
 	"require-dev": {
-		"mediawiki/mediawiki-codesniffer": "47.0.0",
-		"mediawiki/mediawiki-phan-config": "0.17.0",
+		"mediawiki/mediawiki-codesniffer": "48.0.0",
+		"mediawiki/mediawiki-phan-config": "0.20.0",
 		"mediawiki/minus-x": "1.1.3",
 		"phpmd/phpmd": "~2.1",
 		"php-parallel-lint/php-console-highlighter": "1.0.0",
-		"php-parallel-lint/php-parallel-lint": "1.4.0",
-		"squizlabs/php_codesniffer": "~3.5"
+		"php-parallel-lint/php-parallel-lint": "1.4.0"
 	},
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
@@ -80,15 +79,6 @@
 		}
 	},
 	"autoload": {
-		"psr-4": {
-			"SMW\\": "src/",
-			"SMW\\Maintenance\\": "maintenance/",
-			"SMW\\Tests\\": "tests/phpunit/",
-			"Onoi\\Tesa\\": "Tesa/src/"
-		},
-		"psr-0": {
-			"SemanticMediaWiki": "includes/SemanticMediaWiki.php"
-		},
 		"files": [
 			"includes/GlobalFunctions.php"
 		],
@@ -123,15 +113,18 @@
 			"@phpcs-fix"
 		],
 		"lint": "parallel-lint . --exclude vendor --exclude node_modules",
+		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -sp --cache --parallel=$(nproc || sysctl -n hw.logicalcpu || powershell \"Get-WmiObject Win32_Processor | Select-Object -ExpandProperty NumberOfCores .trim()\" || echo 4 )",
 		"phpcs-fix": "phpcbf",
-		"phpunit": "php ${MW_INSTALL_PATH:-../..}/tests/phpunit/phpunit.php -c phpunit.xml.dist --bootstrap tests/bootstrap.php",
+		"phpunit": [
+			"Composer\\Config::disableProcessTimeout",
+			"cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/phpunit.xml.dist --bootstrap tests/phpunit/bootstrap.php"
+		],
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
 		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
-		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover coverage/php/coverage.xml",
-		"phpdbg": "phpdbg -qrr ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c phpunit.xml.dist",
+		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage.xml",
 		"minus-x": "minus-x check .",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
-		"quick-benchmark": "php ${MW_INSTALL_PATH}/tests/phpunit/phpunit.php -c ./tests/phpunit/Benchmark/phpunit.quick.xml.dist --group semantic-mediawiki-benchmark"
+		"quick-benchmark": "cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/tests/phpunit/Benchmark/phpunit.quick.xml.dist --bootstrap tests/phpunit/bootstrap.php --group semantic-mediawiki-benchmark"
 	}
 }

@@ -5,7 +5,6 @@ namespace SMW\Tests\MediaWiki\Api\Browse;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Query;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -18,8 +17,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class PValueLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 
@@ -115,7 +112,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 			$res['query']
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[{"OR":"smw_sortkey LIKE %Foo%"},{"OR":"smw_sortkey LIKE %Foo%"},{"OR":"smw_sortkey LIKE %FOO%"}]',
 			$query->__toString()
 		);
@@ -269,7 +266,7 @@ class PValueLookupTest extends \PHPUnit\Framework\TestCase {
 			$res['query']
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'[{"OR":"o_hash LIKE %Foo%"},{"OR":"o_hash LIKE %Foo%"},{"OR":"o_hash LIKE %FOO%"},{"AND":"p_id=42"}]',
 			$query->__toString()
 		);

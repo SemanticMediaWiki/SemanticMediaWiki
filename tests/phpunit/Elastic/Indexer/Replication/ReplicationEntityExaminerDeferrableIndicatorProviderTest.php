@@ -4,7 +4,6 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private TestEnvironment $testEnvironment;
 	private $store;

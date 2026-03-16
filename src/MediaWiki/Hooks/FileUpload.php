@@ -63,7 +63,7 @@ class FileUpload implements HookListener {
 
 	private function doProcess( $file, $reUploadStatus = false ) {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$filePage = $this->makeFilePage( $file, $reUploadStatus );
+		$filePage = $this->makeFilePage( $file );
 
 		// Avoid WikiPage.php: The supplied ParserOptions are not safe to cache.
 		// Fix the options or set $forceParse = true.
@@ -75,7 +75,10 @@ class FileUpload implements HookListener {
 		);
 
 		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(
-			$filePage
+			$filePage,
+			null,
+			null,
+			$reUploadStatus
 		);
 
 		$propertyAnnotatorFactory = $applicationFactory->singleton( 'PropertyAnnotatorFactory' );
@@ -105,14 +108,12 @@ class FileUpload implements HookListener {
 		return true;
 	}
 
-	private function makeFilePage( $file, $reUploadStatus ) {
+	private function makeFilePage( $file ) {
 		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
 			$file->getTitle()
 		);
 
 		$filePage->setFile( $file );
-		// TODO: Illegal dynamic property (#5421)
-		$filePage->smwFileReUploadStatus = $reUploadStatus;
 
 		return $filePage;
 	}
