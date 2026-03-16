@@ -129,7 +129,7 @@ class ListAugmentor {
 			$description = [];
 
 			foreach ( $languageCodes as $code ) {
-				$description[$code] = $propertySpecificationLookup->getPropertyDescriptionByLanguageCode( $property, $code );
+				$description[$code] = $propertySpecificationLookup->getPropertyDescriptionByLanguageCode( $property, $code, \smwfGetLinker() );
 			}
 
 			$list[$key] = $value + [
