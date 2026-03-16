@@ -3,8 +3,13 @@
 namespace SMW\Services;
 
 use ImportSource;
+use ImportStreamSource;
+use ImportStringSource;
 use Onoi\CallbackContainer\CallbackContainerBuilder;
 use SMW\Importer\ContentIterator;
+use SMW\Importer\Importer;
+use SMW\Importer\JsonContentIterator;
+use WikiImporter;
 
 /**
  * @private
