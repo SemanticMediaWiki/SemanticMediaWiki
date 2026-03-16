@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Registration\ExtensionDependencyError;
 use PHPUnit\Framework\TestCase;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
 use SMW\SetupCheck;
@@ -73,7 +74,7 @@ class UncaughtExceptionHandlerTest extends TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testExtensionDependencyError( $args, $expected ) {
-		$exception = $this->getMockBuilder( '\ExtensionDependencyError' )
+		$exception = $this->getMockBuilder( ExtensionDependencyError::class )
 			->setConstructorArgs( [ [ $args ] ] )
 			->getMock();
 
