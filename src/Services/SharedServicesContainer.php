@@ -478,7 +478,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'QuerySourceFactory', QuerySourceFactory::class );
 
 			return new QuerySourceFactory(
-				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Store' ),
 				$containerBuilder->singleton( 'Settings' )->get( 'smwgQuerySources' )
 			);
 		} );
@@ -555,7 +555,7 @@ class SharedServicesContainer implements CallbackContainer {
 			);
 
 			$resultCache = new ResultCache(
-				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Store' ),
 				$containerBuilder->singleton( 'QueryFactory' ),
 				$containerBuilder->create(
 					'BlobStore',
@@ -610,7 +610,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$contentLanguage = Localizer::getInstance()->getContentLanguage();
 
 			$propertySpecificationLookup = new SpecificationLookup(
-				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Store' ),
 				$containerBuilder->singleton( 'EntityCache' )
 			);
 
@@ -627,7 +627,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$settings = $containerBuilder->singleton( 'Settings' );
 
 			$protectionValidator = new ProtectionValidator(
-				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Store' ),
 				$containerBuilder->singleton( 'EntityCache' ),
 				$containerBuilder->singleton( 'PermissionManager' )
 			);
@@ -697,7 +697,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$containerBuilder->registerExpectedReturnType( 'HierarchyLookup', HierarchyLookup::class );
 
 			$hierarchyLookup = new HierarchyLookup(
-				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Store' ),
 				$containerBuilder->singleton( 'Cache', $cacheType )
 			);
 
@@ -722,7 +722,7 @@ class SharedServicesContainer implements CallbackContainer {
 			$lang = Localizer::getInstance()->getLang();
 
 			$propertyLabelFinder = new PropertyLabelFinder(
-				$containerBuilder->singleton( 'Store', null ),
+				$containerBuilder->singleton( 'Store' ),
 				$lang->getPropertyLabels(),
 				$lang->getCanonicalPropertyLabels(),
 				$lang->getCanonicalDatatypeLabels()
@@ -734,7 +734,7 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'DisplayTitleFinder', static function ( $containerBuilder, $store = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DisplayTitleFinder', DisplayTitleFinder::class );
 
-			$store = $store === null ? $containerBuilder->singleton( 'Store', null ) : $store;
+			$store = $store === null ? $containerBuilder->singleton( 'Store' ) : $store;
 			$settings = $containerBuilder->singleton( 'Settings' );
 
 			$displayTitleFinder = new DisplayTitleFinder(
@@ -763,7 +763,7 @@ class SharedServicesContainer implements CallbackContainer {
 		$containerBuilder->registerCallback( 'DependencyValidator', static function ( $containerBuilder, $store = null ) {
 			$containerBuilder->registerExpectedReturnType( 'DependencyValidator', DependencyValidator::class );
 
-			$store = $store === null ? $containerBuilder->singleton( 'Store', null ) : $store;
+			$store = $store === null ? $containerBuilder->singleton( 'Store' ) : $store;
 			$settings = $containerBuilder->singleton( 'Settings' );
 
 			$queryDependencyLinksStoreFactory = $containerBuilder->singleton( 'QueryDependencyLinksStoreFactory' );
