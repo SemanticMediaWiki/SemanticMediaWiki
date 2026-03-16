@@ -48,9 +48,9 @@ class HtmlColumns {
 	private $count = 0;
 
 	/**
-	 * @var int
+	 * @var string
 	 */
-	private $columnStyle = 0;
+	private $columnStyle = '';
 
 	/**
 	 * @var string
@@ -265,12 +265,11 @@ class HtmlColumns {
 				$key,
 				$items,
 				$rowsPerColumn,
-				$maxColumns,
 				$usedColumnCloser
 			);
 		}
 
-		if ( !$usedColumnCloser && !empty( $result ) ) {
+		if ( !$usedColumnCloser && $result ) {
 			$result .= "</{$this->listType}></div> <!-- end column -->";
 		}
 
@@ -284,10 +283,11 @@ class HtmlColumns {
 		);
 	}
 
-	private function makeList( $key, $items, $rowsPerColumn, $columns, &$usedColumnCloser ) {
+	private function makeList( $key, $items, $rowsPerColumn, &$usedColumnCloser ) {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';
+		$rowsPerColumn = (int)$rowsPerColumn;
 
 		foreach ( $items as $item ) {
 

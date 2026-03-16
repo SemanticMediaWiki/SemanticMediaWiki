@@ -162,7 +162,7 @@ function &smwfGetStore() {
  * @since 3.0
  *
  * @param string $namespace
- * @param string $key
+ * @param string|array $key
  *
  * @return string
  */

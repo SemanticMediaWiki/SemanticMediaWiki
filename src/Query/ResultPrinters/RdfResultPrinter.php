@@ -119,8 +119,10 @@ class RdfResultPrinter extends FileExportPrinter {
 			$expDataFactory->newOntologyExpData( '' )
 		);
 
-		while ( $row = $res->getNext() ) {
+		$row = $res->getNext();
+		while ( $row ) {
 			$serializer->serializeExpData( $this->makeExportData( $exporter, $row ) );
+			$row = $res->getNext();
 		}
 
 		$serializer->finishSerialization();

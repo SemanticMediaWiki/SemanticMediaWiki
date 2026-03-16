@@ -183,7 +183,8 @@ class QueryResultLookup {
 
 		$result = [];
 
-		while ( $resultArrays = $queryResults->getNext() ) {
+		$resultArrays = $queryResults->getNext();
+		while ( $resultArrays ) {
 			$r = [];
 
 			foreach ( $resultArrays as $resultArray ) {
@@ -194,6 +195,7 @@ class QueryResultLookup {
 			// the reason why the result is shown here, i.e., it could
 			// be out of order.
 			$result[] = $r;
+			$resultArrays = $queryResults->getNext();
 		}
 
 		if ( !$greater ) {
