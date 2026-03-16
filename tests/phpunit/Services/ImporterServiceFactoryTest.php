@@ -24,25 +24,25 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$callbackContainerFactory = new CallbackContainerFactory();
 
-		$this->containerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
+		$this->callbackContainerBuilder = $callbackContainerFactory->newCallbackContainerBuilder();
 
 		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->containerBuilder->registerObject( 'TitleFactory', $titleFactory );
+		$this->callbackContainerBuilder->registerObject( 'TitleFactory', $titleFactory );
 
 		$importStringSource = $this->getMockBuilder( '\ImportStringSource' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->containerBuilder->registerObject( 'ImportStringSource', $importStringSource );
+		$this->callbackContainerBuilder->registerObject( 'ImportStringSource', $importStringSource );
 
 		$wikiImporter = $this->getMockBuilder( '\WikiImporter' )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->containerBuilder->registerObject( 'WikiImporter', $wikiImporter );
+		$this->callbackContainerBuilder->registerObject( 'WikiImporter', $wikiImporter );
 
 		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
 			->disableOriginalConstructor()
@@ -56,26 +56,26 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$this->containerBuilder->registerObject( 'ConnectionManager', $connectionManager );
+		$this->callbackContainerBuilder->registerObject( 'ConnectionManager', $connectionManager );
 
 		$this->containerBuilder->registerObject( 'Settings', new Settings( [
 			'smwgImportReqVersion' => 1,
 			'smwgImportFileDirs' => 'foo'
 		] ) );
 
-		$this->containerBuilder->registerFromFile( $GLOBALS['smwgServicesFileDir'] . '/' . 'importer.php' );
+		$this->callbackContainerBuilder->registerFromFile( $GLOBALS['smwgServicesFileDir'] . '/' . 'importer.php' );
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ImporterServiceFactory::class,
-			new ImporterServiceFactory( $this->containerBuilder )
+			new ImporterServiceFactory( $this->callbackContainerBuilder )
 		);
 	}
 
 	public function testCanConstructImportStringSource() {
 		$instance = new ImporterServiceFactory(
-			$this->containerBuilder
+			$this->callbackContainerBuilder
 		);
 
 		$this->assertInstanceOf(
@@ -90,7 +90,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$instance = new ImporterServiceFactory(
-			$this->containerBuilder
+			$this->callbackContainerBuilder
 		);
 
 		$this->assertInstanceOf(
@@ -105,7 +105,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$instance = new ImporterServiceFactory(
-			$this->containerBuilder
+			$this->callbackContainerBuilder
 		);
 
 		$this->assertInstanceOf(
@@ -116,7 +116,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructJsonContentIterator() {
 		$instance = new ImporterServiceFactory(
-			$this->containerBuilder
+			$this->callbackContainerBuilder
 		);
 
 		$this->assertInstanceOf(
