@@ -24,7 +24,6 @@
 	"smw-upgrade-error-title": "Pogreška » Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Zašto mi se prikazuje ova stranica?",
 	"smw-upgrade-error-how-title": "Kako popraviti ovu pogrešku?",
-	"smw-extensionload-error-how-title": "Kako popraviti ovu pogrešku?",
 	"smw-semantics-not-enabled": "Funkcionalnost Semantičkoga MediaWikija nije omogućena na ovoj wiki.",
 	"smw_viewasrdf": "RDF feed",
 	"smw_finallistconjunct": ", i",

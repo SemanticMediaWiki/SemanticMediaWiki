@@ -3,7 +3,6 @@
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\WikiMap\WikiMap;
-use SMW\ConfigPreloader;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\Highlighter;
 use SMW\Localizer\Localizer;
@@ -204,37 +203,12 @@ function smwfGetLinker() {
 }
 
 /**
- * Function to switch on Semantic MediaWiki. This function must be called in
- * LocalSettings.php after including SMW_Settings.php. It is used to ensure
- * that required parameters for SMW are really provided explicitly. For
- * readability, this is the only global function that does not adhere to the
- * naming conventions.
- *
- * This function also sets up all autoloading, such that all SMW classes are
- * available as early on. Moreover, jobs and special pages are registered.
+ * @deprecated since 6.1.0. Use wfLoadExtension( 'SemanticMediaWiki' ) instead.
  *
  * @param mixed $namespace
  * @param bool $complete
- *
- * @return ConfigPreloader
- *
- * @codeCoverageIgnore
  */
 // phpcs:ignore MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix
 function enableSemantics( $namespace = null, $complete = false ) {
-	global $smwgNamespace;
-
-	SemanticMediaWiki::setupDefines();
-	SemanticMediaWiki::setupGlobals();
-
-	if ( !$complete && ( $smwgNamespace !== '' ) ) {
-		// The dot tells that the domain is not complete. It will be completed
-		// in the Export since we do not want to create a title object here when
-		// it is not needed in many cases.
-		$smwgNamespace = '.' . $namespace;
-	} else {
-		$smwgNamespace = $namespace;
-	}
-
-	return new ConfigPreloader();
+	wfDeprecated( __FUNCTION__, '6.1.0' );
 }

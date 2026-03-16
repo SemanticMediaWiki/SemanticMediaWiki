@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SemanticMediaWiki;
 use SMW\Exception\NamespaceIndexChangeException;
 use SMW\Exception\SiteLanguageChangeException;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
@@ -246,6 +247,15 @@ class NamespaceManager {
 			SMW_NS_SCHEMA => true,
 			SMW_NS_SCHEMA_TALK => false,
 		];
+
+		// When the CanonicalNamespaces hook fires before DefaultSettings.php
+		// has been applied, smwgNamespacesWithSemanticLinks may be empty.
+		// Load the defaults from DefaultSettings.php to ensure standard MW
+		// namespaces (NS_MAIN, NS_USER, etc.) are preserved. (#6302)
+		if ( $vars['smwgNamespacesWithSemanticLinks'] === [] ) {
+			$defaults = SemanticMediaWiki::getDefaultSettings();
+			$vars['smwgNamespacesWithSemanticLinks'] = $defaults['smwgNamespacesWithSemanticLinks'];
+		}
 
 		// Combine default values with values specified in other places
 		// (LocalSettings etc.)

@@ -9,7 +9,24 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
-* 
+### Deprecations
+
+* `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.
+
+  If you used configuration preloading via `enableSemantics`:
+
+  ```php
+  // Before (deprecated)
+  enableSemantics( 'example.org' )->loadDefaultConfigFrom( 'media.php' );
+  ```
+
+  Replace with a direct `require`:
+
+  ```php
+  // After
+  wfLoadExtension( 'SemanticMediaWiki' );
+  require "$IP/extensions/SemanticMediaWiki/data/config/media.php";
+  ```
 
 ## Upgrading
 
