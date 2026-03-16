@@ -7,6 +7,7 @@ use MediaWiki\Parser\Sanitizer;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
 use SMWDataValue;
+use SMWWikiPageValue;
 
 /**
  * Class ValueTextsBuilder
@@ -75,12 +76,14 @@ class ValueTextsBuilder {
 		$linker = $this->getLinkerForColumn( $column );
 
 		// @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/6305
-		$dataValue->setOption(
-			$useLongText
-				? $dataValue::PREFIXED_FORM
-				: $dataValue::SHORT_FORM,
-			true
-		);
+		if ( $dataValue instanceof SMWWikiPageValue ) {
+			$dataValue->setOption(
+				$useLongText
+					? $dataValue::PREFIXED_FORM
+					: $dataValue::SHORT_FORM,
+				true
+			);
+		}
 
 		$text = $dataValue->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
 		return $this->sanitizeValueText( $text );
