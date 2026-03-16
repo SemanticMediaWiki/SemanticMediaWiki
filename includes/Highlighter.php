@@ -176,6 +176,12 @@ class Highlighter {
 	 * @return array
 	 */
 	public function setContent( array $content ) {
+
+		/**
+		 * @var $content
+		 * $content['caption'] = a text or null
+		 * $content['context'] = a text or null
+		 */
 		$this->options = array_merge( $this->getTypeConfiguration( $this->type ), $content );
 		return $this->options;
 	}
