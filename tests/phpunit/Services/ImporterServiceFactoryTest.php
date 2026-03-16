@@ -58,7 +58,7 @@ class ImporterServiceFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->callbackContainerBuilder->registerObject( 'ConnectionManager', $connectionManager );
 
-		$this->containerBuilder->registerObject( 'Settings', new Settings( [
+		$this->callbackContainerBuilder->registerObject( 'Settings', new Settings( [
 			'smwgImportReqVersion' => 1,
 			'smwgImportFileDirs' => 'foo'
 		] ) );
