@@ -490,7 +490,7 @@ class Rebuilder {
 
 		if ( $this->hasSkippableRevision( $title, $row = false ) ) {
 			$this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
-			return [ 'skipped' => $title->getPrefixedDBKey() ];
+			return;
 		}
 
 		$params = [
