@@ -34,7 +34,6 @@ class Timer {
 	 * @return string|bool
 	 */
 	public static function getTimestamp( $outputType = TS_UNIX, $ts = 0 ) {
-		/* @phan-suppress-next-line PhanUndeclaredFunction Needs fixing to detect MW core functions */
 		return wfTimestamp( $outputType, $ts );
 	}
 
