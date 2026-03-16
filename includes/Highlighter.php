@@ -176,7 +176,6 @@ class Highlighter {
 	 * @return array
 	 */
 	public function setContent( array $content ) {
-
 		/**
 		 * @var $content
 		 * $content['caption'] = a text or null
