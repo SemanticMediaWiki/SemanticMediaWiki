@@ -27,9 +27,7 @@ use SMW\Utils\FileFetcher;
 return [
 
 	/**
-	 * ImporterServiceFactory
-	 *
-	 * @return callable
+	 * @return ImporterServiceFactory
 	 */
 	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ) {
 		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
@@ -37,9 +35,7 @@ return [
 	},
 
 	/**
-	 * XmlContentCreator
-	 *
-	 * @return callable
+	 * @return XmlContentCreator
 	 */
 	'XmlContentCreator' => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', XmlContentCreator::class );
@@ -47,9 +43,7 @@ return [
 	},
 
 	/**
-	 * TextContentCreator
-	 *
-	 * @return callable
+	 * @return TextContentCreator
 	 */
 	'TextContentCreator' => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', TextContentCreator::class );
@@ -65,9 +59,7 @@ return [
 	},
 
 	/**
-	 * Importer
-	 *
-	 * @return callable
+	 * @return Importer
 	 */
 	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ) {
 		$containerBuilder->registerExpectedReturnType( 'Importer', Importer::class );
@@ -92,9 +84,7 @@ return [
 	},
 
 	/**
-	 * JsonContentIterator
-	 *
-	 * @return callable
+	 * @return JsonContentIterator
 	 */
 	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ) {
 		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', JsonContentIterator::class );
