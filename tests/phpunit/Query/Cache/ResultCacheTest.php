@@ -7,7 +7,6 @@ use Onoi\BlobStore\Container;
 use SMW\DIWikiPage;
 use SMW\Query\Cache\CacheStats;
 use SMW\Query\Cache\ResultCache;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Cache\ResultCache
@@ -19,8 +18,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ResultCacheTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $queryFactory;
@@ -172,10 +169,14 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContextPage' )
 			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
-		$query->expects( $this->at( 2 ) )
+		$query->expects( $this->atLeastOnce() )
 			->method( 'getOption' )
-			->with( $query::NO_CACHE )
-			->willReturn( true );
+			->willReturnCallback( static function ( $key ) use ( $query ) {
+				if ( $key === $query::NO_CACHE ) {
+					return true;
+				}
+				return false;
+			} );
 
 		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
 			->disableOriginalConstructor()

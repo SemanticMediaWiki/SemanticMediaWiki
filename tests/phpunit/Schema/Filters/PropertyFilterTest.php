@@ -6,7 +6,6 @@ use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Filters\PropertyFilter;
 use SMW\Schema\Rule;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Schema\Filters\PropertyFilter
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

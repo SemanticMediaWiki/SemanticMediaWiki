@@ -17,8 +17,6 @@ use SMW\WantedPropertiesQueryPage;
  */
 class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	private $store;
 	private $skin;
 	private $settings;
@@ -83,7 +81,7 @@ class WantedPropertiesQueryPageTest extends \PHPUnit\Framework\TestCase {
 			[ $property, 42 ]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Foo',
 			$result
 		);

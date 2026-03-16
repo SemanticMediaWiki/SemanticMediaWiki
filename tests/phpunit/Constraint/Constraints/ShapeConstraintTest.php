@@ -4,7 +4,6 @@ namespace SMW\Tests\Constraint\Constraints;
 
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\DataItemFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMWDataValue;
 
 /**
@@ -17,8 +16,6 @@ use SMWDataValue;
  * @author mwjames
  */
 class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 

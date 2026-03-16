@@ -6,6 +6,7 @@
 			"Mechanizatar",
 			"No Sleep till Krupki",
 			"Plaga med",
+			"Ucukor",
 			"ZlyiLev",
 			"Тест",
 			"Чаховіч Уладзіслаў"
@@ -35,7 +36,9 @@
 	"smw-admin-smwhomepage": "Поўная дакументацыя Semantic MediaWiki знаходзіцца на <b><a href=\"https://www.semantic-mediawiki.org\">semantic-mediawiki.org</a></b>.",
 	"smw-ui-tooltip-title-property": "Уласцівасць",
 	"smw-livepreview-loading": "Счытваем…",
+	"smw-format-datatable-loadingrecords": "Ладаванне...",
 	"smw-help": "Даведка",
+	"smw-loading": "Ладаванне...",
 	"smw-listingcontinuesabbrev": "працяг",
 	"smw-showingresults": "Ніжэй {{PLURAL:$1|паказаны|паказаны|паказана|}} <strong>$1</strong> {{PLURAL:$1|вынік|вынікі|вынікаў|}}, пачынаючы з нумара <strong>$2</strong>."
 }

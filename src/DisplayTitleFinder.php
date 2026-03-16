@@ -40,8 +40,6 @@ class DisplayTitleFinder {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param bool $canUse
 	 */
 	public function getEntityCache() {
 		return $this->entityCache;

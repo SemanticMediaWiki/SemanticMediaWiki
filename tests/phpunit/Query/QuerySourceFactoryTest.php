@@ -6,7 +6,6 @@ use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMWQuery as Query;
 
@@ -20,8 +19,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private Store $store;
@@ -93,7 +90,7 @@ class QuerySourceFactoryTest extends \PHPUnit\Framework\TestCase {
 			[]
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'SPARQLStore',
 			$instance->toString()
 		);

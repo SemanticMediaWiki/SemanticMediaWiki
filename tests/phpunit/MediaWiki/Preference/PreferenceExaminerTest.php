@@ -4,7 +4,6 @@ namespace SMW\Tests\MediaWiki\Preference;
 
 use MediaWiki\User\Options\UserOptionsLookup;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Preference\PreferenceExaminer
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $user;
 

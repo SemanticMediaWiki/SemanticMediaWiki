@@ -17,7 +17,6 @@ use SMW\Utils\CliMsgFormatter;
  *
  * @since 3.2
  */
-
 class ConfigPreloadPrimaryKeyTableMutator {
 
 	// #3559

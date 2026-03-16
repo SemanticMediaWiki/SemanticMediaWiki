@@ -34,7 +34,6 @@ class ApiQueryResultFormatter {
 	protected $isRawMode = false;
 
 	/**
-	 *
 	 * @var QueryResult
 	 */
 	protected $queryResult = null;

@@ -86,7 +86,6 @@ class JsonContentsFileReader {
 	 * @since 2.5
 	 *
 	 * @param string $languageCode
-	 * @param bool $readFromFile
 	 *
 	 * @return bool
 	 */

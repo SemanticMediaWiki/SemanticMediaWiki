@@ -162,7 +162,7 @@ function &smwfGetStore() {
  * @since 3.0
  *
  * @param string $namespace
- * @param string $key
+ * @param string|array $key
  *
  * @return string
  */
@@ -220,6 +220,7 @@ function smwfGetLinker() {
  *
  * @codeCoverageIgnore
  */
+// phpcs:ignore MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix
 function enableSemantics( $namespace = null, $complete = false ) {
 	global $smwgNamespace;
 

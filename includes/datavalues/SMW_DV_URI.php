@@ -20,7 +20,6 @@ define( 'SMW_URI_MODE_TEL', 5 );
  * @author Nikolas Iwan
  * @author Markus Krötzsch
  * @ingroup SMWDataValues
- * @bug Correctly create safe HTML and Wiki text.
  */
 class SMWURIValue extends SMWDataValue {
 

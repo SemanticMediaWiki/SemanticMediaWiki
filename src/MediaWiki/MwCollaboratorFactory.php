@@ -162,15 +162,17 @@ class MwCollaboratorFactory {
 	 * @param WikiPage $wikiPage
 	 * @param ?RevisionRecord $revision
 	 * @param ?User $user
+	 * @param ?bool $isReUpload
 	 *
 	 * @return PageInfoProvider
 	 */
 	public function newPageInfoProvider(
 		WikiPage $wikiPage,
 		?RevisionRecord $revision = null,
-		?User $user = null
+		?User $user = null,
+		?bool $isReUpload = null
 	) {
-		$pageInfoProvider = new PageInfoProvider( $wikiPage, $revision, $user );
+		$pageInfoProvider = new PageInfoProvider( $wikiPage, $revision, $user, $isReUpload );
 
 		$pageInfoProvider->setRevisionGuard(
 			$this->applicationFactory->singleton( 'RevisionGuard' )

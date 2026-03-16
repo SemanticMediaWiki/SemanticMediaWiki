@@ -110,7 +110,6 @@ class EntityCache {
 	 * @since 3.1
 	 *
 	 * @param string $key
-	 * @param mixed $value
 	 */
 	public function fetch( $key ) {
 		return $this->cache->fetch( $key );

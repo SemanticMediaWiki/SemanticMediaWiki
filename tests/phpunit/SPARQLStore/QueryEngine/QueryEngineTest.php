@@ -5,7 +5,6 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\SPARQLStore\QueryEngine\QueryEngine;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMWQuery as Query;
 
 /**
@@ -18,8 +17,6 @@ use SMWQuery as Query;
  * @author mwjames
  */
 class QueryEngineTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$connection = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )

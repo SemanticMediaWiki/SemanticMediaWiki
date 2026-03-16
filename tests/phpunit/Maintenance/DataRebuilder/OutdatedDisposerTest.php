@@ -3,7 +3,6 @@
 namespace SMW\Tests\Maintenance\DataRebuilder;
 
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 
@@ -17,8 +16,6 @@ use SMW\Tests\Utils\Mock\IteratorMockBuilder;
  * @author mwjames
  */
 class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $spyMessageReporter;
 	private $entityIdDisposerJob;
@@ -84,7 +81,7 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newUnassignedQueryLinksResultIterator' )
 			->willReturn( $this->resultIterator );
 
-		$this->entityIdDisposerJob->expects( $this->once() )
+		$this->entityIdDisposerJob->expects( $this->exactly( 2 ) )
 			->method( 'dispose' );
 
 		$this->iteratorFactory->expects( $this->exactly( 2 ) )
@@ -101,17 +98,17 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$messages = $this->spyMessageReporter->getMessagesAsString();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'removed (IDs)',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'42',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'1001 (2%)',
 			$messages
 		);
@@ -159,22 +156,22 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$messages = $this->spyMessageReporter->getMessagesAsString();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'removed (IDs)',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'9999',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'cleaning up query links (invalid)',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'1002 (0%)',
 			$messages
 		);
@@ -222,22 +219,22 @@ class OutdatedDisposerTest extends \PHPUnit\Framework\TestCase {
 
 		$messages = $this->spyMessageReporter->getMessagesAsString();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'removed (IDs)',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'10',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'cleaning up query links (unassigned)',
 			$messages
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'3333 (10%)',
 			$messages
 		);

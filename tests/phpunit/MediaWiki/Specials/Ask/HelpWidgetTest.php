@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\HelpWidget
@@ -16,10 +15,8 @@ use SMW\Tests\PHPUnitCompat;
  */
 class HelpWidgetTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testSessionFailure() {
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'ask-help',
 			HelpWidget::html()
 		);

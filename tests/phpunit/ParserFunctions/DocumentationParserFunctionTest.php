@@ -5,7 +5,6 @@ namespace SMW\Tests\ParserFunctions;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingResult;
 use SMW\ParserFunctions\DocumentationParserFunction;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\ParserFunctions\DocumentationParserFunction
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class DocumentationParserFunctionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testHandle() {
 		$instance = new DocumentationParserFunction();

@@ -5,7 +5,6 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ByGroupPropertyValuesLookup
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ByGroupPropertyValuesLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 

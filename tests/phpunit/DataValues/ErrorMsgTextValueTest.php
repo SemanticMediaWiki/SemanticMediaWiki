@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues;
 
 use SMW\DataItemFactory;
 use SMW\DataValues\ErrorMsgTextValue;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ErrorMsgTextValue
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ErrorMsgTextValueTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 
@@ -46,22 +43,22 @@ class ErrorMsgTextValueTest extends \PHPUnit\Framework\TestCase {
 		$instance->setOption( ErrorMsgTextValue::OPT_USER_LANGUAGE, 'en' );
 		$instance->setUserValue( '[2,"smw-constraint-violation-uniqueness","Has Url","http:\/\/loremipsum.org\/2","Lorem ipsum\/2"]' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"''http://loremipsum.org/2''",
 			$instance->getShortWikiText( true )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"''http://loremipsum.org/2''",
 			$instance->getShortWikiText( null )
 		);
 
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'<a rel="nofollow" class="external free" href="http://loremipsum.org/2">http://loremipsum.org/2</a>',
 			$instance->getShortWikiText( true )
 		);
 
-		$this->assertNotContains(
+		$this->assertStringNotContainsString(
 			'<a rel="nofollow" class="external free" href="http://loremipsum.org/2">http://loremipsum.org/2</a>',
 			$instance->getShortWikiText( null )
 		);

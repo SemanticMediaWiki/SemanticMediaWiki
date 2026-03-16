@@ -6,7 +6,6 @@ use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PrefetchItemLookup
@@ -18,8 +17,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class PrefetchItemLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $semanticDataLookup;

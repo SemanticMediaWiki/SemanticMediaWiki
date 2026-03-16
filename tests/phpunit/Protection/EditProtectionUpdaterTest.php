@@ -4,7 +4,6 @@ namespace SMW\Tests\Protection;
 
 use SMW\DataItemFactory;
 use SMW\Protection\EditProtectionUpdater;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,8 +16,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $dataItemFactory;
 	private $wikiPage;
@@ -115,7 +112,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 			$instance->isRestrictedUpdate()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'add protection on edit, move',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -164,7 +161,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 			$instance->isRestrictedUpdate()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'remove protection on edit, move',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -216,7 +213,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 			$instance->isRestrictedUpdate()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Status already set, no update required',
 			$this->spyLogger->getMessagesAsString()
 		);

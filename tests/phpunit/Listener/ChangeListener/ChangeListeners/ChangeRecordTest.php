@@ -4,7 +4,6 @@ namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $logger;
 	private $key;

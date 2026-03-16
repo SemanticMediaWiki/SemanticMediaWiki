@@ -12,7 +12,6 @@ use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group medium

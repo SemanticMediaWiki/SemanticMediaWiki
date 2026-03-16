@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\FieldBuilder
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class FieldBuilderTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testGetQueryFormData() {
 		$this->assertIsArray(

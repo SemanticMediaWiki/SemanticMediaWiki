@@ -9,7 +9,6 @@ use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -22,8 +21,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $displayTitleFinder;

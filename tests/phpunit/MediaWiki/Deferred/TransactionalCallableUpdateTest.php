@@ -3,7 +3,6 @@
 namespace SMW\Tests\MediaWiki\Deferred;
 
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,8 +15,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -90,7 +87,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Empty callback',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -121,7 +118,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->executePendingDeferredUpdates();
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Added',
 			$this->spyLogger->getMessagesAsString()
 		);
@@ -192,7 +189,7 @@ class TransactionalCallableUpdateTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->setOrigin( 'Foo' );
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'Foo',
 			$instance->getOrigin()
 		);

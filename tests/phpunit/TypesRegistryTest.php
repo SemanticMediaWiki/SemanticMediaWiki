@@ -15,8 +15,6 @@ use SMW\TypesRegistry;
  */
 class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testGetDataTypeList() {
 		$this->assertIsArray(
 

@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query\Processor;
 
 use SMW\Query\Processor\ParamListProcessor;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\Processor\ParamListProcessor
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )

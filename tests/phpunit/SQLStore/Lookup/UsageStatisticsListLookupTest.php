@@ -3,7 +3,6 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
-use SMW\Tests\PHPUnitCompat;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -17,8 +16,6 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  * @author mwjames
  */
 class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $propertyStatisticsStore;
@@ -93,9 +90,41 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	/**
-	 * @dataProvider bySegmentDataProvider
+	 * @dataProvider integerSegmentProvider
 	 */
-	public function testfetchList( $segment, $type ) {
+	public function testfetchListReturnsIntegerForSegment( $segment ) {
+		$result = $this->fetchListResult();
+
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( $segment, $result );
+		$this->assertIsInt( $result[$segment] );
+	}
+
+	public function testfetchListReturnsArrayForQueryFormats() {
+		$result = $this->fetchListResult();
+
+		$this->assertIsArray( $result );
+		$this->assertArrayHasKey( 'QUERYFORMATS', $result );
+		$this->assertIsArray( $result['QUERYFORMATS'] );
+	}
+
+	public function integerSegmentProvider() {
+		return [
+			[ 'OWNPAGE' ],
+			[ 'QUERY' ],
+			[ 'QUERYSIZE' ],
+			[ 'CONCEPTS' ],
+			[ 'SUBOBJECTS' ],
+			[ 'DECLPROPS' ],
+			[ 'USEDPROPS' ],
+			[ 'TOTALPROPS' ],
+			[ 'PROPUSES' ],
+			[ 'ERRORUSES' ],
+			[ 'DELETECOUNT' ],
+		];
+	}
+
+	private function fetchListResult(): array {
 		$row = new \stdClass;
 		$row->o_hash = 42;
 		$row->count = 1001;
@@ -142,39 +171,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 			$this->propertyStatisticsStore
 		);
 
-		$result = $instance->fetchList();
-
-		$this->assertIsArray(
-
-			$result
-		);
-
-		$this->assertArrayHasKey(
-			$segment,
-			$result
-		);
-
-		$this->assertInternalType(
-			$type,
-			$result[$segment]
-		);
-	}
-
-	public function bySegmentDataProvider() {
-		return [
-			[ 'OWNPAGE', 'integer' ],
-			[ 'QUERY', 'integer' ],
-			[ 'QUERYSIZE', 'integer' ],
-			[ 'QUERYFORMATS', 'array' ],
-			[ 'CONCEPTS', 'integer' ],
-			[ 'SUBOBJECTS', 'integer' ],
-			[ 'DECLPROPS', 'integer' ],
-			[ 'USEDPROPS', 'integer' ],
-			[ 'TOTALPROPS', 'integer' ],
-			[ 'PROPUSES', 'integer' ],
-			[ 'ERRORUSES', 'integer' ],
-			[ 'DELETECOUNT', 'integer' ]
-		];
+		return $instance->fetchList();
 	}
 
 }

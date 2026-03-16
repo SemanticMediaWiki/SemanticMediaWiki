@@ -8,7 +8,6 @@ use SMW\SemanticData;
 use SMW\Store;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  *

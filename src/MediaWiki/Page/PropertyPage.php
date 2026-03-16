@@ -221,7 +221,7 @@ class PropertyPage extends Page {
 		if ( $this->mParserOutput instanceof ParserOutput ) {
 			preg_match_all(
 				"/" . "<section class=\"smw-property-specification\"(.*)?>([\s\S]*?)<\/section>" . "/m",
-				$this->mParserOutput->getText(),
+				$this->mParserOutput->getContentHolderText(),
 				$matches
 			);
 		}

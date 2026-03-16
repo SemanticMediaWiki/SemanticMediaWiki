@@ -16,6 +16,8 @@ use SMWDataValue as DataValue;
 use SMWDIBlob as DIBlob;
 use SMWDIContainer as DIContainer;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * MonolingualTextValue requires two components, a language code and a
  * text.
@@ -73,8 +75,6 @@ class MonolingualTextValue extends AbstractMultiValue {
 
 	/**
 	 * @see AbstractMultiValue::getProperties
-	 *
-	 * @param DIProperty[] $properties
 	 */
 	public function getProperties() {
 		self::$properties;

@@ -134,6 +134,10 @@ class SchemaContentHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSerializationOfClassInstance() {
+		if ( version_compare( MW_VERSION, '1.45', '>=' ) ) {
+			$this->markTestSkipped( 'ContentHandler is not serializable in MW 1.45+' );
+		}
+
 		$title = $this->createMock( Title::class );
 
 		$title->expects( $this->any() )

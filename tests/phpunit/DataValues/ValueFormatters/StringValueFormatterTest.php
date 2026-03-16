@@ -4,7 +4,6 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\StringValueFormatter
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class StringValueFormatterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

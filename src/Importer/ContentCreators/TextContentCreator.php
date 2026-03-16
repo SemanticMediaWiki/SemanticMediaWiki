@@ -3,7 +3,6 @@
 namespace SMW\Importer\ContentCreators;
 
 use MediaWiki\Content\ContentHandler;
-use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
@@ -151,8 +150,11 @@ class TextContentCreator implements ContentCreator {
 			$user = User::newSystemUser( $importContents->getImportPerformer(), [ 'steal' => true ] );
 		}
 
-		// Use the global user if necessary (same as doUserEditContent())
-		$user = $user ?? RequestContext::getMain()->getUser();
+		// Fall back to a system user to avoid CannotCreateActorException
+		// when temporary accounts are enabled (MW 1.44+)
+		if ( $user === null ) {
+			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		}
 		$status = $page->doUserEditContent(
 			$content,
 			$user,

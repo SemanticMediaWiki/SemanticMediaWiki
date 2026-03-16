@@ -26,8 +26,6 @@ use SMW\MessageFormatter;
  */
 class MessageFormatterTest extends SemanticMediaWikiTestCase {
 
-	use PHPUnitCompat;
-
 	/**
 	 * Returns the name of the class to be tested
 	 *
@@ -49,7 +47,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::__construct
 	 * @dataProvider getDataProvider
 	 *
 	 * @since 1.9
@@ -60,9 +57,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::newFromArray
-	 * @test MessageFormatter::setType
-	 * @test MessageFormatter::getHtml
 	 * @dataProvider getDataProvider
 	 *
 	 * @since  1.9
@@ -86,9 +80,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::addFromKey
-	 * @test MessageFormatter::getMessages
-	 *
 	 * @since 1.9
 	 */
 	public function testAddFromKey() {
@@ -115,9 +106,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::setLanguage
-	 * @test MessageFormatter::getPlain
-	 *
 	 * @since 1.9
 	 */
 	public function testSetLanguage() {
@@ -138,7 +126,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::format
 	 * @dataProvider getDataProvider
 	 *
 	 * @since  1.9
@@ -160,7 +147,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::getHtml
 	 * @dataProvider getDataProvider
 	 *
 	 * @since  1.9
@@ -175,7 +161,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::getPlain
 	 * @dataProvider getDataProvider
 	 *
 	 * @since  1.9
@@ -190,9 +175,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	}
 
 	/**
-	 * @test MessageFormatter::escape
-	 * @test MessageFormatter::getPlain
-	 *
 	 * @since  1.9
 	 */
 	public function testEscapedUnescaped() {
@@ -206,7 +188,6 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	/**
 	 * Message from different sources could have different depth therefore
 	 * objects need to be resolved recursively in order to ensure a 1-n array
-	 *
 	 */
 	public function getDataProvider() {
 		return [

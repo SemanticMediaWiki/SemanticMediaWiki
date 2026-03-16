@@ -4,6 +4,8 @@ namespace SMW\Tests\DataValues\ValueParsers;
 
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 
+// phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
+
 /**
  * @covers \SMW\DataValues\ValueParsers\MonolingualTextValueParser
  * @group semantic-mediawiki

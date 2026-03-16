@@ -62,9 +62,9 @@
 			"subject": "Q0910/Q.1",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/1\">Q0910/1</a></td><td class=\"Has-page smwtype_wpg\" data-sort-value=\"123\">",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/2\">Q0910/2</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\">ABC</td>",
-					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/3\">Q0910/3</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\" data-sort-value=\"345\">345</td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"Q0910/1\">Q0910/1</a></td><td class=\"Has-page smwtype&#95;wpg\" data-sort-value=\"123\">",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"Q0910/2\">Q0910/2</a></td><td class=\"Has-page smwtype&#95;wpg\"></td><td class=\"Has-text smwtype&#95;txt\">ABC</td>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"Q0910/3\">Q0910/3</a></td><td class=\"Has-page smwtype&#95;wpg\"></td><td class=\"Has-text smwtype&#95;txt\" data-sort-value=\"345\">345</td>"
 				]
 			}
 		},
@@ -77,9 +77,9 @@
 			"subject": "Q0910/Q.2",
 			"assert-output": {
 				"to-contain": [
-					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/1\">Q0910/1</a></td><td class=\"Has-page smwtype_wpg\" data-sort-value=\"123\">",
-					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/3\">Q0910/3</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\" data-sort-value=\"345\">345</td>",
-					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype_wpg\"><a href=.* title=\"Q0910/2\">Q0910/2</a></td><td class=\"Has-page smwtype_wpg\"></td><td class=\"Has-text smwtype_txt\">ABC</td>"
+					"<tr data-row-number=\"1\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"Q0910/1\">Q0910/1</a></td><td class=\"Has-page smwtype&#95;wpg\" data-sort-value=\"123\">",
+					"<tr data-row-number=\"2\" class=\"row-even\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"Q0910/3\">Q0910/3</a></td><td class=\"Has-page smwtype&#95;wpg\"></td><td class=\"Has-text smwtype&#95;txt\" data-sort-value=\"345\">345</td>",
+					"<tr data-row-number=\"3\" class=\"row-odd\"><td class=\"smwtype&#95;wpg\"><a href=.* title=\"Q0910/2\">Q0910/2</a></td><td class=\"Has-page smwtype&#95;wpg\"></td><td class=\"Has-text smwtype&#95;txt\">ABC</td>"
 				]
 			}
 		}

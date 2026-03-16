@@ -5,7 +5,6 @@ namespace SMW\Tests\SQLStore\Lookup;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
@@ -17,8 +16,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $store;
 	private $requestOptions;
@@ -64,7 +61,7 @@ class UndeclaredPropertyListLookupTest extends \PHPUnit\Framework\TestCase {
 			$instance->isFromCache()
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'UndeclaredPropertyListLookup',
 			$instance->getHash()
 		);

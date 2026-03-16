@@ -213,12 +213,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		if ( $uploadStatus !== null ) {
-			// TODO: Illegal dynamic property (#5421)
-			$wikiFilePage->smwFileReUploadStatus = $uploadStatus;
-		}
-
-		$instance = new PageInfoProvider( $wikiFilePage );
+		$instance = new PageInfoProvider( $wikiFilePage, null, null, $uploadStatus );
 
 		$this->assertEquals( $expected, $instance->isNewPage() );
 	}

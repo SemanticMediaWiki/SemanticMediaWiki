@@ -4,7 +4,6 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use SMW\Query\ResultPrinters\ResultPrinter;
-use SMW\Tests\PHPUnitCompat;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
@@ -17,8 +16,6 @@ use SMWQueryProcessor as QueryProcessor;
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
 class ResultPrintersTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	/**
 	 * @dataProvider constructorProvider

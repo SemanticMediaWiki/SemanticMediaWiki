@@ -3,7 +3,6 @@
 namespace SMW\Tests\Query;
 
 use SMW\Query\RemoteRequest;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Query\RemoteRequest
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $httpRequest;
 	private $query;
@@ -52,7 +49,7 @@ class RemoteRequestTest extends \PHPUnit\Framework\TestCase {
 			$this->httpRequest
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-remote-source-unavailable',
 			$instance->getQueryResult( $this->query )
 		);

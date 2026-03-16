@@ -5,7 +5,6 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 use SMW\DataItemFactory;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\SemanticData;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,8 +17,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $declarationExaminer;
 	private $store;
@@ -94,7 +91,7 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Bar' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["error","smw-property-req-violation-change-propagation-locked-error","Bar"]',
 			$instance->getMessagesAsString()
 		);
@@ -129,7 +126,7 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( 'Bar' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["warning","smw-property-req-violation-change-propagation-pending",6]',
 			$instance->getMessagesAsString()
 		);

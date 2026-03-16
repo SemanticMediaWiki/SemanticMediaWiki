@@ -5,7 +5,6 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 use MediaWiki\Registration\ExtensionRegistry;
 use SMW\DataItemFactory;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
-use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,8 +17,6 @@ use SMW\Tests\TestEnvironment;
  * @author mwjames
  */
 class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	private $declarationExaminer;
 	private $semanticData;
@@ -70,7 +67,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( '_MDAT' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'smw-property-predefined-mdat',
 			$instance->getMessagesAsString()
 		);
@@ -101,7 +98,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 			$dataItemFactory->newDIProperty( '_MDAT' )
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'"error","smw-property-req-violation-predefined-type"',
 			$instance->getMessagesAsString()
 		);
@@ -132,7 +129,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 			$property
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			'["error","smw-property-req-violation-missing-maps-extension","Geographic coordinates"]',
 			$instance->getMessagesAsString()
 		);

@@ -3,7 +3,6 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\NoValueFormatter
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class NoValueFormatterTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

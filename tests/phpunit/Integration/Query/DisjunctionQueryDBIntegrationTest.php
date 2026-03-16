@@ -14,7 +14,6 @@ use SMW\Tests\Utils\UtilityFactory;
 use SMWQuery as Query;
 
 /**
- *
  * @group SMW
  * @group SMWExtension
  * @group semantic-mediawiki-integration

@@ -7,6 +7,10 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   build:
 
@@ -17,7 +21,7 @@ jobs:
       matrix:
         include:
           - mediawiki_version: '1.43'
-            php_version: 8.1
+            php_version: 8.2
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: true
@@ -39,13 +43,19 @@ jobs:
             database_type: mysql
             database_image: "mariadb:11.2"
             coverage: false
-            experimental: true
+            experimental: false
           - mediawiki_version: '1.44'
             php_version: 8.3
             database_type: mysql
             database_image: "mariadb:11.8"
             coverage: false
-            experimental: true
+            experimental: false
+          - mediawiki_version: '1.45'
+            php_version: 8.4
+            database_type: mysql
+            database_image: "mariadb:11.8"
+            coverage: false
+            experimental: false
 
     env:
       MW_VERSION: ${{ matrix.mediawiki_version }}

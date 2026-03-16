@@ -3,7 +3,6 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
 
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition
@@ -15,8 +14,6 @@ use SMW\Tests\PHPUnitCompat;
  * @author mwjames
  */
 class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
-
-	use PHPUnitCompat;
 
 	public function testCanConstruct() {
 		$expElement = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )

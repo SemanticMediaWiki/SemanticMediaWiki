@@ -269,7 +269,7 @@ class PropertyTableRowMapper {
 	 * @since 1.8
 	 *
 	 * @param int $sid
-	 * @param &array &$insertData
+	 * @param array &$insertData
 	 */
 	private function mapConceptTable( $sid, &$insertData ) {
 		$connection = $this->store->getConnection( 'mw.db' );

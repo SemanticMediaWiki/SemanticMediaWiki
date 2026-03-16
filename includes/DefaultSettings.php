@@ -1727,7 +1727,6 @@ return ( static function () {
 		##
 		'smwgFulltextLanguageDetection' => [
 			// 'TextCatLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
-			//	'CdbNGramLanguageDetector' => array( 'en', 'de', 'fr', 'es', 'ja', 'zh' )
 		],
 		# #
 

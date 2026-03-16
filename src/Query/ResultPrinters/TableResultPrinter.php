@@ -130,13 +130,14 @@ class TableResultPrinter extends ResultPrinter {
 				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
 				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
 				$headerList[] = $pr->getCanonicalLabel();
-				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : htmlspecialchars( $text ) ), $attributes );
+				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
 		}
 
 		$rowNumber = 0;
 
-		while ( $subject = $res->getNext() ) {
+		$subject = $res->getNext();
+		while ( $subject ) {
 			$rowNumber++;
 			$this->getRowForSubject( $subject, $outputMode, $columnClasses );
 
@@ -145,6 +146,7 @@ class TableResultPrinter extends ResultPrinter {
 					'data-row-number' => $rowNumber
 				]
 			);
+			$subject = $res->getNext();
 		}
 
 		// print further results footer
@@ -249,8 +251,10 @@ class TableResultPrinter extends ResultPrinter {
 		/** @var SMWDataValue[] $dataValues */
 		$dataValues = [];
 
-		while ( ( $dv = $resultArray->getNextDataValue() ) !== false ) {
+		$dv = $resultArray->getNextDataValue();
+		while ( $dv !== false ) {
 			$dataValues[] = $dv;
+			$dv = $resultArray->getNextDataValue();
 		}
 
 		$printRequest = $resultArray->getPrintRequest();

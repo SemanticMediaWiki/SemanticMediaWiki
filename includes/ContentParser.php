@@ -6,6 +6,7 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
@@ -161,10 +162,6 @@ class ContentParser {
 		// Avoid "The content model 'xyz' is not registered on this wiki."
 		try {
 			$services = MediaWikiServices::getInstance();
-			// MW 1.42+
-			if ( version_compare( MW_VERSION, '1.42', '<' ) ) {
-				$revision = $revision->getId();
-			}
 			$contentRenderer = $services->getContentRenderer();
 			$this->parserOutput = $contentRenderer->getParserOutput(
 				$content,

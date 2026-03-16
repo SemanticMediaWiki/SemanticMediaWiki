@@ -3,7 +3,6 @@
 namespace SMW\Tests\Exception;
 
 use SMW\Exception\JSONParseException;
-use SMW\Tests\PHPUnitCompat;
 
 /**
  * @covers \SMW\Exception\JSONParseException
@@ -16,8 +15,6 @@ use SMW\Tests\PHPUnitCompat;
  */
 class JSONParseExceptionTest extends \PHPUnit\Framework\TestCase {
 
-	use PHPUnitCompat;
-
 	public function testGetMessage() {
 		$json = '{ "test": 123, }';
 
@@ -25,7 +22,7 @@ class JSONParseExceptionTest extends \PHPUnit\Framework\TestCase {
 			$json
 		);
 
-		$this->assertContains(
+		$this->assertStringContainsString(
 			"Expected: 'STRING' - It appears you have an extra trailing comma",
 			$instance->getMessage()
 		);

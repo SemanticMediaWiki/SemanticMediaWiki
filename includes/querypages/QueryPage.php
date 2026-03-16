@@ -44,22 +44,24 @@ abstract class QueryPage extends MWQueryPage {
 	/**
 	 * Implemented by subclasses to provide concrete functions.
 	 */
-	abstract function getResults( $requestoptions );
+	abstract public function getResults( $requestoptions );
 
 	/**
 	 * Clear the cache and save new results
 	 * @todo Implement caching for SMW query pages
 	 */
-	function recache( $limit, $ignoreErrors = true ) {
+	public function recache( $limit, $ignoreErrors = true ) {
 		/// TODO
 	}
 
-	function isExpensive() {
-		return false; // Disables caching for now
+	public function isExpensive() {
+		// Disables caching for now
+		return false;
 	}
 
-	function isSyndicated() {
-		return false; // TODO: why not?
+	public function isSyndicated() {
+		// TODO: why not?
+		return false;
 	}
 
 	/**
@@ -150,8 +152,17 @@ abstract class QueryPage extends MWQueryPage {
 
 		if ( $propertySearch ) {
 			$propertySearch = Xml::tags( 'hr', [ 'style' => 'margin-bottom:10px;' ], '' ) .
-				Xml::inputLabel( $this->msg( 'smw-special-property-searchform' )->text(), 'property', 'smw-property-input', 20, $property ) . ' ' .
-				Xml::submitButton( $this->msg( 'allpagessubmit' )->text() );
+				Html::label(
+					$this->msg( 'smw-special-property-searchform' )->text(),
+					'smw-property-input'
+				) . "\u{00A0}" .
+				Html::input(
+					'property',
+					$property,
+					'text',
+					[ 'id' => 'smw-property-input', 'size' => 20 ]
+				) . ' ' .
+				Html::submitButton( $this->msg( 'allpagessubmit' )->text() );
 		}
 
 		if ( $filter !== '' ) {
@@ -183,7 +194,7 @@ abstract class QueryPage extends MWQueryPage {
 	 * @param $limit database query limit
 	 * @param $property database string query
 	 */
-	function doQuery( $offset = false, $limit = false, $property = false ) {
+	public function doQuery( $offset = false, $limit = false, $property = false ) {
 		$out  = $this->getOutput();
 		$sk   = $this->getSkin();
 

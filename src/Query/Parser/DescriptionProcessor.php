@@ -123,7 +123,7 @@ class DescriptionProcessor {
 	 *
 	 * @param string $msgKey
 	 */
-	public function addErrorWithMsgKey( $msgKey /*...*/ ) {
+	public function addErrorWithMsgKey( $msgKey ) {
 		$this->errors[] = Message::encode( func_get_args() );
 	}
 

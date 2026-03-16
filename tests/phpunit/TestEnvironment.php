@@ -2,12 +2,16 @@
 
 namespace SMW\Tests;
 
+use Exception;
+use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\MediaWikiServices;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Tests\Utils\SpyLogger;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Validators\ValidatorFactory;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,25 +21,14 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class TestEnvironment {
 
-	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
+	private ApplicationFactory $applicationFactory;
 
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
+	private DataValueFactory $dataValueFactory;
 
-	/**
-	 * @var TestConfig
-	 */
-	private $testConfig;
+	private TestConfig $testConfig;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $configuration
 	 */
 	public function __construct( array $configuration = [] ) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
@@ -48,25 +41,47 @@ class TestEnvironment {
 	/**
 	 * @since 2.4
 	 */
-	public static function executePendingDeferredUpdates() {
+	public static function executePendingDeferredUpdates(): void {
 		CallableUpdate::releasePendingUpdates();
-		\DeferredUpdates::doUpdates();
+		DeferredUpdates::doUpdates();
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public static function clearPendingDeferredUpdates() {
+	public static function clearPendingDeferredUpdates(): void {
 		CallableUpdate::clearPendingUpdates();
-		\DeferredUpdates::clearPendingUpdates();
+		DeferredUpdates::clearPendingUpdates();
+	}
+
+	/**
+	 * Disable MediaWiki software change tags (mw-new-redirect, mw-blank,
+	 * etc.) to avoid MariaDB 11.8+ error 1020 ("Record has changed since
+	 * last read") caused by ChangeTagsStore::updateTags reading and then
+	 * updating change_tag_def within the same transaction.
+	 *
+	 * @since 6.1.0
+	 */
+	public function disableSoftwareChangeTags(): void {
+		$GLOBALS['wgSoftwareTags'] = [
+			'mw-contentmodelchange' => false,
+			'mw-new-redirect' => false,
+			'mw-removed-redirect' => false,
+			'mw-changed-redirect-target' => false,
+			'mw-blank' => false,
+			'mw-replace' => false,
+			'mw-rollback' => false,
+			'mw-undo' => false,
+			'mw-manual-revert' => false,
+			'mw-reverted' => false,
+			'mw-server-side-upload' => false,
+		];
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $defaultSettingKeys
 	 */
-	public static function loadDefaultSettings( array $defaultSettingKeys = [] ) {
+	public static function loadDefaultSettings( array $defaultSettingKeys = [] ): void {
 		$settings = require $GLOBALS['smwgIP'] . '/includes/DefaultSettings.php';
 
 		if ( $defaultSettingKeys !== [] ) {
@@ -84,37 +99,26 @@ class TestEnvironment {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 *
-	 * @return self
 	 */
-	public function addConfiguration( $key, $value ) {
+	public function addConfiguration( string $key, $value ): self {
 		return $this->withConfiguration( [ $key => $value ] );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param array $configuration
-	 *
-	 * @return self
 	 */
-	public function withConfiguration( array $configuration = [] ) {
+	public function withConfiguration( array $configuration = [] ): self {
 		$this->testConfig->set( $configuration );
 		return $this;
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $name
 	 */
-	public function resetMediaWikiService( $name ) {
+	public function resetMediaWikiService( string $name ): self {
 		try {
 			MediaWikiServices::getInstance()->resetServiceForTesting( $name );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
@@ -124,75 +128,37 @@ class TestEnvironment {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $name
-	 * @param callable $service
 	 */
-	public function redefineMediaWikiService( $name, callable $service ) {
+	public function redefineMediaWikiService( string $name, callable $service ): void {
 		$this->resetMediaWikiService( $name );
 
 		try {
 			MediaWikiServices::getInstance()->redefineService( $name, $service );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing just avoid a
 			// MediaWiki\Services\NoSuchServiceException: No such service ...
 		}
 	}
 
 	/**
-	 * @since 3.1
-	 */
-	public static function changePrefix( $prefix ) {
-		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
-			throw new \RuntimeException( "Your are trying to change the `DomainPrefix` while not being in test!" );
-		}
-
-		$lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-
-		$lbFactory->setLocalDomainPrefix( $prefix );
-
-		$GLOBALS['wgDBprefix'] = $prefix;
-	}
-
-	/**
 	 * @see https://github.com/wikimedia/mediawiki/commit/7b4eafda0d986180d20f37f2489b70e8eca00df4
 	 * @since 3.2
 	 */
-	public static function overrideUserPermissions( $user, $permissions = [] ) {
+	public static function overrideUserPermissions( $user, array $permissions = [] ): void {
 		$permissionManager = MediaWikiServices::getInstance()->getPermissionManager();
 		$permissionManager->overrideUserRightsForTesting( $user, $permissions );
 	}
 
-	public function resetDBLoadBalancer() {
-		try {
-			// Get the MediaWiki service container
-			$services = MediaWikiServices::getInstance();
-
-			// Check if DBLoadBalancer is available
-			if ( $services->has( 'DBLoadBalancer' ) ) {
-				return;  // DBLoadBalancer is already initialized
-			}
-
-			// Reinitialize DBLoadBalancer if missing
-			$services->set( 'DBLoadBalancer', new DBLoadBalancer() );
-		} catch ( \Exception $e ) {
-			// Handle exception or log
-			error_log( 'Error resetting DBLoadBalancer: ' . $e->getMessage() );
-		}
-	}
-
 	/**
 	 * @since 2.4
-	 *
-	 * @param string|array $poolCache
-	 *
-	 * @return self
 	 */
-	public function resetPoolCacheById( $poolCache ) {
+	public function resetPoolCacheById( string|array $poolCache ): self {
 		if ( is_array( $poolCache ) ) {
 			foreach ( $poolCache as $pc ) {
 				$this->resetPoolCacheById( $pc );
 			}
+
+			return $this;
 		}
 
 		$this->applicationFactory->getInMemoryPoolCache()->resetPoolCacheById( $poolCache );
@@ -202,13 +168,8 @@ class TestEnvironment {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $id
-	 * @param mixed $object
-	 *
-	 * @return self
 	 */
-	public function registerObject( $id, $object ) {
+	public function registerObject( string $id, $object ): self {
 		$this->applicationFactory->registerObject( $id, $object );
 		return $this;
 	}
@@ -224,12 +185,8 @@ class TestEnvironment {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param callable $callback
-	 *
-	 * @return string
 	 */
-	public function outputFromCallbackExec( callable $callback ) {
+	public function outputFromCallbackExec( callable $callback ): string {
 		ob_start();
 		call_user_func( $callback );
 		$output = ob_get_contents();
@@ -239,49 +196,36 @@ class TestEnvironment {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $pages
 	 */
-	public function flushPages( $pages ) {
+	public function flushPages( array $pages ): void {
 		self::getUtilityFactory()->newPageDeleter()->doDeletePoolOfPages( $pages );
 	}
 
 	/**
 	 * @since 2.4
-	 *
-	 * @return UtilityFactory
 	 */
-	public static function getUtilityFactory() {
+	public static function getUtilityFactory(): UtilityFactory {
 		return UtilityFactory::getInstance();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return ValidatorFactory
 	 */
-	public static function newValidatorFactory() {
+	public static function newValidatorFactory(): ValidatorFactory {
 		return UtilityFactory::getInstance()->newValidatorFactory();
 	}
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return SpyLogger
 	 */
-	public static function newSpyLogger() {
+	public static function newSpyLogger(): SpyLogger {
 		return self::getUtilityFactory()->newSpyLogger();
 	}
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param int $index
-	 * @param string $text
-	 *
-	 * @return string
 	 */
-	public function replaceNamespaceWithLocalizedText( $index, $text ) {
+	public function replaceNamespaceWithLocalizedText( int $index, string $text ): string {
 		$namespace = Localizer::getInstance()->getNsText( $index );
 
 		return str_replace(
