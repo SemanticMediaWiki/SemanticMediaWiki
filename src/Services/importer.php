@@ -32,7 +32,7 @@ return [
 	 * @return callable
 	 */
 	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ) {
-		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class' );
+		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
 		return new ImporterServiceFactory( $callbackContainerBuilder );
 	},
 
