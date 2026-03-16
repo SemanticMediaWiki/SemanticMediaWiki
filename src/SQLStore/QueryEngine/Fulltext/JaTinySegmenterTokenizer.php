@@ -20,7 +20,7 @@ use RuntimeException;
  * - https://github.com/shogo82148/TinySegmenterMaker
  *
  * @license GPL-2.0-or-later
- * @since 6.1.0
+ * @since 7.0.0
  */
 class JaTinySegmenterTokenizer {
 
@@ -40,7 +40,7 @@ class JaTinySegmenterTokenizer {
 	private static $model;
 
 	/**
-	 * @since 6.1.0
+	 * @since 7.0.0
 	 *
 	 * @param string $string
 	 *
