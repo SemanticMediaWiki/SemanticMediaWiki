@@ -38,7 +38,7 @@ class TextSanitizer {
 	private $stopwordReaders = [];
 
 	/**
-	 * @since 4.3
+	 * @since 6.1.0
 	 */
 	public function __construct() {
 	}
