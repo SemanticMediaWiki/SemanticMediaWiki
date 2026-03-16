@@ -84,7 +84,7 @@ class JsonSchemaValidator {
 
 	/**
 	 * @since 3.0
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function hasSchemaValidator() {
