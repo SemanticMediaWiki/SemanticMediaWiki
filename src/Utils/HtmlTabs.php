@@ -142,7 +142,7 @@ class HtmlTabs {
 	 * @param string $html
 	 * @param array $params
 	 *
-	 * @return null|void
+	 * @return void
 	 */
 	public function html( string $html, array $params = [] ) {
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
