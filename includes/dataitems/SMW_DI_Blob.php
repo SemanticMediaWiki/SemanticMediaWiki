@@ -1,7 +1,5 @@
 <?php
 
-use Onoi\Tesa\Normalizer;
-
 /**
  * @ingroup SMWDataItems
  */
@@ -35,11 +33,19 @@ class SMWDIBlob extends SMWDataItem {
 	}
 
 	public static function normalize( $text ) {
-		return Normalizer::convertDoubleWidth(
-			Normalizer::applyTransliteration(
-				Normalizer::toLowercase( $text )
-			)
-		);
+		$text = mb_strtolower( $text );
+
+		$transliterator = Transliterator::create( 'Any-Latin; Latin-ASCII' );
+
+		if ( $transliterator !== null ) {
+			$result = $transliterator->transliterate( $text );
+
+			if ( $result !== false ) {
+				$text = $result;
+			}
+		}
+
+		return mb_convert_kana( $text, 'a' );
 	}
 
 	public function getSortKey() {
