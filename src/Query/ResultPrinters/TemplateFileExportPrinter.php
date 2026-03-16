@@ -174,7 +174,8 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$templateSet->addTemplate( $template );
 		}
 
-		while ( $row = $queryResult->getNext() ) {
+		$row = $queryResult->getNext();
+		while ( $row ) {
 			$template = new Template(
 				$this->params['template']
 			);
@@ -182,6 +183,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 			$template->field( '#userparam', $this->params['userparam'] );
 			$this->addFields( $template, $row );
 			$templateSet->addTemplate( $template );
+			$row = $queryResult->getNext();
 		}
 
 		if ( $this->params['outrotemplate'] !== '' ) {
@@ -215,8 +217,10 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 				$fieldName = intval( $i + 1 );
 			}
 
-			while ( ( $text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) ) ) !== false ) {
+			$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
+			while ( $text !== false ) {
 				$value .= $value === '' ? $text : $this->params['valuesep'] . ' ' . $text;
+				$text = $field->getNextText( SMW_OUTPUT_WIKI, $this->getLinker( $i == 0 ) );
 			}
 
 			$template->field( $fieldName, $value );

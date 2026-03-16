@@ -23,8 +23,7 @@
 	},
 	"AutoloadNamespaces": {
 		"SMW\\": "src/",
-		"SMW\\Maintenance\\": "maintenance/",
-		"Onoi\\Tesa\\": "Tesa/src/"
+		"SMW\\Maintenance\\": "maintenance/"
 	},
 	"TestAutoloadNamespaces": {
 		"SMW\\Tests\\": "tests/phpunit/"

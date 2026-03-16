@@ -134,7 +134,8 @@ class DsvResultPrinter extends FileExportPrinter {
 		}
 
 		// Loop over the result objects (pages).
-		while ( $row = $queryResult->getNext() ) {
+		$row = $queryResult->getNext();
+		while ( $row ) {
 			$rowItems = [];
 
 			/**
@@ -145,8 +146,10 @@ class DsvResultPrinter extends FileExportPrinter {
 				$itemSegments = [];
 
 				// Loop over all values for the property.
-				while ( ( $object = $field->getNextDataValue() ) !== false ) {
+				$object = $field->getNextDataValue();
+				while ( $object !== false ) {
 					$itemSegments[] = Sanitizer::decodeCharReferences( $object->getWikiValue() );
+					$object = $field->getNextDataValue();
 				}
 
 				// Join all values into a single string, separating them with comma's.
@@ -154,6 +157,7 @@ class DsvResultPrinter extends FileExportPrinter {
 			}
 
 			$lines[] = $this->getDSVLine( $rowItems );
+			$row = $queryResult->getNext();
 		}
 
 		return implode( "\n", $lines );
