@@ -16,7 +16,7 @@ class UrlArgs {
 	private $args = [];
 
 	/**
-	 * @var array
+	 * @var string
 	 */
 	private $fragment = '';
 
@@ -43,12 +43,12 @@ class UrlArgs {
 	 * @since 3.0
 	 *
 	 * @param string $key
-	 * @param mixed $default
+	 * @param mixed|null $default
 	 *
-	 * @return mixed
+	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
-		return isset( $this->args[$key] ) ? $this->args[$key] : $default;
+		return $this->args[$key] ?? $default;
 	}
 
 	/**
