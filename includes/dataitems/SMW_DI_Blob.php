@@ -38,7 +38,11 @@ class SMWDIBlob extends SMWDataItem {
 		$transliterator = Transliterator::create( 'Any-Latin; Latin-ASCII' );
 
 		if ( $transliterator !== null ) {
-			$text = $transliterator->transliterate( $text );
+			$result = $transliterator->transliterate( $text );
+
+			if ( $result !== false ) {
+				$text = $result;
+			}
 		}
 
 		return mb_convert_kana( $text, 'a' );

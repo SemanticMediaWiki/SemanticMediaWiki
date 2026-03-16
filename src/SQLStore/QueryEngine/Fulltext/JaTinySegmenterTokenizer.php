@@ -152,7 +152,7 @@ class JaTinySegmenterTokenizer {
 			// $score += self::$model["TC5"][$c4 . $c5 . $c6] ?? 0;
 			$score += self::$model["UQ1"][$p1 . $c1] ?? 0;
 			$score += self::$model["UQ2"][$p2 . $c2] ?? 0;
-			$score += self::$model["UQ1"][$p3 . $c3] ?? 0;
+			$score += self::$model["UQ3"][$p3 . $c3] ?? 0;
 			$score += self::$model["BQ1"][$p2 . $c2 . $c3] ?? 0;
 			$score += self::$model["BQ2"][$p2 . $c3 . $c4] ?? 0;
 			$score += self::$model["BQ3"][$p3 . $c2 . $c3] ?? 0;
