@@ -48,8 +48,7 @@ class UrlArgs {
 	 * @return mixed|null
 	 */
 	public function get( $key, $default = null ) {
-		// @phan-suppress-next-line PhanPluginDuplicateConditionalNullCoalescing
-		return isset( $this->args[$key] ) ? $this->args[$key] : $default;
+		return $this->args[$key] ?? $default;
 	}
 
 	/**
