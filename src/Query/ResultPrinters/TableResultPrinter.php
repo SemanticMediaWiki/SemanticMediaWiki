@@ -12,6 +12,7 @@ use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
 use SMWDataValue;
 use SMWDIBlob as DIBlob;
+use SMWWikiPageValue;
 
 /**
  * Print query results in tables
@@ -344,12 +345,14 @@ class TableResultPrinter extends ResultPrinter {
 				);
 
 			// @see ListResultPrinter\ValueTextsBuilder -> getValueText
-			$dv->setOption(
-				$dataValueMethod === 'getLongText'
-					? $dv::PREFIXED_FORM
-					: $dv::SHORT_FORM,
-				true
-			);
+			if ( $dv instanceof SMWWikiPageValue ) {
+				$dv->setOption(
+					$dataValueMethod === 'getLongText'
+						? $dv::PREFIXED_FORM
+						: $dv::SHORT_FORM,
+					true
+				);
+			}
 
 			if ( $parseAsWikitext ) {
 				$raw = $dv->$dataValueMethod( SMW_OUTPUT_WIKI, $linker );
