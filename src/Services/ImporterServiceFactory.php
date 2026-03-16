@@ -3,7 +3,6 @@
 namespace SMW\Services;
 
 use ImportSource;
-use Onoi\CallbackContainer\ContainerBuilder;
 use Onoi\CallbackContainer\CallbackContainerBuilder;
 use SMW\Importer\ContentIterator;
 
