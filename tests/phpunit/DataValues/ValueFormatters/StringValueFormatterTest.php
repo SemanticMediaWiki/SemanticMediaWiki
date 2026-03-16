@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
 
@@ -14,7 +15,7 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
  *
  * @author mwjames
  */
-class StringValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class StringValueFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -24,7 +25,7 @@ class StringValueFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
+		$stringValue = $this->getMockBuilder( StringValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

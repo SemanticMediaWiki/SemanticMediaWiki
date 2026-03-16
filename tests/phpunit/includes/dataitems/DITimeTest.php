@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\DataItemException;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMWDITime as DITime;
 
@@ -13,7 +15,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class DITimeTest extends \PHPUnit\Framework\TestCase {
+class DITimeTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -121,12 +123,12 @@ class DITimeTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTryToDeserializeOnNonNumericElementsThrowsException() {
-		$this->expectException( '\SMW\Exception\DataItemException' );
+		$this->expectException( DataItemException::class );
 		DITime::doUnserialize( '1/2013/0/2/0/foo' );
 	}
 
 	public function testTryToDeserializeOnInvalidCountOfElementsThrowsException() {
-		$this->expectException( '\SMW\Exception\DataItemException' );
+		$this->expectException( DataItemException::class );
 		DITime::doUnserialize( '1' );
 	}
 

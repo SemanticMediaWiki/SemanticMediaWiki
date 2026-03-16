@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\TableBuilder\MySQLTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
+use Wikimedia\Rdbms\Database;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IMaintainableDatabase;
 
@@ -16,7 +18,7 @@ use Wikimedia\Rdbms\IMaintainableDatabase;
  *
  * @author mwjames
  */
-class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
+class MySQLTableBuilderTest extends TestCase {
 
 	private $connection;
 
@@ -47,7 +49,7 @@ class MySQLTableBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFactoryWithWrongTypeThrowsException() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

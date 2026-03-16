@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Lookup\MissingRedirectLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MissingRedirectLookup
@@ -13,12 +16,12 @@ use SMW\SQLStore\Lookup\MissingRedirectLookup;
  *
  * @author mwjames
  */
-class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
+class MissingRedirectLookupTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -52,7 +55,7 @@ class MissingRedirectLookupTest extends \PHPUnit\Framework\TestCase {
 			'page_namespace' => [ NS_MAIN, SMW_NS_PROPERTY ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

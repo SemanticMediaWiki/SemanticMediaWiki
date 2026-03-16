@@ -4,13 +4,16 @@ namespace SMW\Tests\Factbox;
 
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\DIProperty;
+use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
 use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\SemanticData;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -22,7 +25,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FactboxTest extends \PHPUnit\Framework\TestCase {
+class FactboxTest extends TestCase {
 
 	private $stringValidator;
 	private $testEnvironment;
@@ -36,7 +39,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->addConfiguration( 'smwgShowFactbox', SMW_FACTBOX_NONEMPTY );
 
-		$this->displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+		$this->displayTitleFinder = $this->getMockBuilder( DisplayTitleFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -59,7 +62,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -73,7 +76,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			$checkMagicWords
 		);
 
-		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
+		$reflector = new ReflectionClass( Factbox::class );
 		$buildHTML  = $reflector->getMethod( 'buildHTML' );
 
 		$this->assertIsString(
@@ -102,7 +105,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider fetchContentDataProvider
 	 */
 	public function testFetchContent( $parserData ) {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -112,7 +115,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			$this->displayTitleFinder
 		);
 
-		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
+		$reflector = new ReflectionClass( Factbox::class );
 
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 
@@ -136,7 +139,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,7 +155,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isEmpty' )
 			->willReturn( $setup['isEmpty'] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -160,7 +163,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSemanticData' )
 			->willReturn( $semanticData );
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -174,7 +177,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		// Build Factbox stub object to encapsulate the method
 		// without the need for other dependencies to occur
-		$factbox = $this->getMockBuilder( '\SMW\Factbox\Factbox' )
+		$factbox = $this->getMockBuilder( Factbox::class )
 			->setConstructorArgs( [
 				$store,
 				$parserData,
@@ -191,7 +194,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'buildHTML' )
 			->willReturn( $setup['invokedContent'] );
 
-		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
+		$reflector = new ReflectionClass( Factbox::class );
 		$fetchContent = $reflector->getMethod( 'fetchContent' );
 
 		$this->assertIsString(
@@ -293,7 +296,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromTitle( $title )
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -335,11 +338,11 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 			new ParserOutput()
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -436,7 +439,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$provider = [];
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -457,7 +460,7 @@ class FactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$provider[] = [ $parserData ];
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

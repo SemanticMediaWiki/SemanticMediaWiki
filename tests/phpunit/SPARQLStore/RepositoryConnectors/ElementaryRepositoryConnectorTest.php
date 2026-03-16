@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
+use Onoi\HttpRequest\HttpRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 
@@ -13,7 +16,7 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
  *
  * @author mwjames
  */
-class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
+class ElementaryRepositoryConnectorTest extends TestCase {
 
 	public function getRepositoryConnectors() {
 		return [];
@@ -27,7 +30,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 	public function testAskToQueryEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
 		$rawResultProvider = new FakeRawResultProvider();
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +53,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\RepositoryResult',
+			RepositoryResult::class,
 			$repositoryResult
 		);
 	}
@@ -61,7 +64,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 	 * @see http://www.w3.org/TR/sparql11-update/#deleteInsert
 	 */
 	public function testDeleteToUpdateEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +96,7 @@ class ElementaryRepositoryConnectorTest extends \PHPUnit\Framework\TestCase {
 	 * @see http://www.w3.org/TR/sparql11-http-rdf-update/#http-post
 	 */
 	public function testInsertViaHttpPostToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

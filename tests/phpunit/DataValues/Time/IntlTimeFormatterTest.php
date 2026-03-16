@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\DataValues\Time;
 
+use MediaWiki\Language\Language;
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\Time\IntlTimeFormatter;
 use SMW\Localizer\Localizer;
 use SMWDITime as DITime;
@@ -15,7 +17,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
+class IntlTimeFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$dataItem = $this->getMockBuilder( '\SMWDITime' )
@@ -32,7 +34,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider formatProvider
 	 */
 	public function testFormat( $serialization, $languageCode, $formatOption, $expected ) {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +67,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 	public function testContainsValidDateFormatRule() {
 		$formatOption = 'F Y/m/d H:i:s';
 
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +85,7 @@ class IntlTimeFormatterTest extends \PHPUnit\Framework\TestCase {
 		// F - A full textual representation of a month, such as January or March
 		$formatOption = 'F Y/m/d H:i:s';
 
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 

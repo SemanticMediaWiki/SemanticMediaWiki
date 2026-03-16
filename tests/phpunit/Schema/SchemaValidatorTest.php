@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaValidator;
+use SMW\Utils\JsonSchemaValidator;
 
 /**
  * @covers \SMW\Schema\SchemaValidator
@@ -14,10 +16,10 @@ use SMW\Schema\SchemaValidator;
  *
  * @author mwjames
  */
-class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
+class SchemaValidatorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
+		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -28,7 +30,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testValidate_InaccessibleFile() {
-		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
+		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +50,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testValidate_IsValid() {
-		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
+		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +74,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testValidate_Error() {
-		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
+		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +102,7 @@ class SchemaValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testValidate_EmptySchema() {
-		$jsonSchemaValidator = $this->getMockBuilder( '\SMW\Utils\JsonSchemaValidator' )
+		$jsonSchemaValidator = $this->getMockBuilder( JsonSchemaValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

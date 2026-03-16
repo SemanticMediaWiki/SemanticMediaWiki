@@ -40,6 +40,7 @@ use SMW\Parser\InTextAnnotationParser;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
+use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Query\Parser as QueryParser;
@@ -437,7 +438,7 @@ class ServicesFactory {
 	public function newDataUpdater( SemanticData $semanticData ) {
 		$settings = $this->getSettings();
 
-		$changePropagationNotifier = new \SMW\Property\ChangePropagationNotifier(
+		$changePropagationNotifier = new ChangePropagationNotifier(
 			$this->getStore(),
 			$this->newSerializerFactory()
 		);

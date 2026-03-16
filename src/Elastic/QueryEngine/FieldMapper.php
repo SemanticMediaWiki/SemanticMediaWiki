@@ -4,6 +4,7 @@ namespace SMW\Elastic\QueryEngine;
 
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
+use stdClass;
 
 /**
  * @private
@@ -127,7 +128,7 @@ class FieldMapper {
 			'function_score' => [
 				'query' => $query,
 				"boost" => $boost,
-				"random_score" => new \stdClass(),
+				"random_score" => new stdClass(),
 				"boost_mode" => "multiply"
 			]
 		];

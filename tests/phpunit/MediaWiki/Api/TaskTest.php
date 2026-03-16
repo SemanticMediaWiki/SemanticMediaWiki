@@ -2,7 +2,17 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Task;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\Query\QueryResult;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TaskTest extends \PHPUnit\Framework\TestCase {
+class TaskTest extends TestCase {
 
 	private $apiFactory;
 	private $testEnvironment;
@@ -44,14 +54,14 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateTask() {
-		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$updateJob->expects( $this->atLeastOnce() )
 			->method( 'run' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +86,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDupLookupTask() {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +97,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 		$cache->expects( $this->once() )
 			->method( 'save' );
 
-		$entityTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +105,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findDuplicates' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -122,14 +132,14 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGenericJobTask() {
-		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+		$nullJob = $this->getMockBuilder( NullJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$nullJob->expects( $this->atLeastOnce() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -164,7 +174,7 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunJobListTask() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -200,11 +210,11 @@ class TaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckQueryTask() {
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

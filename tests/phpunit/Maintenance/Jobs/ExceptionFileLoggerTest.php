@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Maintenance\Jobs;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\ExceptionFileLogger;
 use SMW\Options;
+use SMW\Utils\File;
 
 /**
  * @covers \SMW\Maintenance\ExceptionFileLogger
@@ -14,14 +16,14 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class ExceptionFileLoggerTest extends \PHPUnit\Framework\TestCase {
+class ExceptionFileLoggerTest extends TestCase {
 
 	private $file;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$this->file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

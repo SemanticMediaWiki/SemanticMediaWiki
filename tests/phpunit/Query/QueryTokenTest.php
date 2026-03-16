@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Query\Language\ValueDescription;
 use SMW\Query\QueryToken;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Query\QueryToken;
  *
  * @author mwjames
  */
-class QueryTokenTest extends \PHPUnit\Framework\TestCase {
+class QueryTokenTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -48,7 +50,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 	public function testMulitpleAddFromDescription() {
 		$instance = new QueryToken();
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +64,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->addFromDescription( $description );
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,7 +104,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 	public function descriptionProvider() {
 		$dataItemFactory = new DataItemFactory();
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +131,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 	public function highlightProvider() {
 		$dataItemFactory = new DataItemFactory();
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -162,7 +164,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 			"Lorem <u>abc</u> <u>foo</u>bar"
 		];
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -188,7 +190,7 @@ class QueryTokenTest extends \PHPUnit\Framework\TestCase {
 			"<span class='smw-query-token'>Integer</span> <span class='smw-query-token'>porttitor</span> mi id ante consequat consequat <b><span class='smw-query-token'>porttitor</span></b>"
 		];
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 

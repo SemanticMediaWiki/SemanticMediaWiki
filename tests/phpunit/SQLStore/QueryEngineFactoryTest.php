@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
+use SMW\SQLStore\QueryEngine\QueryEngine;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\QueryEngineFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\QueryEngineFactory
@@ -13,16 +20,16 @@ use SMW\SQLStore\QueryEngineFactory;
  *
  * @author mwjames
  */
-class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
+class QueryEngineFactoryTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +49,7 @@ class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\ConditionBuilder',
+			ConditionBuilder::class,
 			$instance->newConditionBuilder()
 		);
 	}
@@ -51,7 +58,7 @@ class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor',
+			QuerySegmentListProcessor::class,
 			$instance->newQuerySegmentListProcessor()
 		);
 	}
@@ -60,7 +67,7 @@ class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QueryEngine',
+			QueryEngine::class,
 			$instance->newQueryEngine()
 		);
 	}
@@ -69,7 +76,7 @@ class QueryEngineFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new QueryEngineFactory( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder',
+			ConceptQuerySegmentBuilder::class,
 			$instance->newConceptQuerySegmentBuilder()
 		);
 	}

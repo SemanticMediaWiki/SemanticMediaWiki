@@ -4,13 +4,18 @@ namespace SMW\Tests\Parser;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\DIProperty;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -22,7 +27,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
+class InTextAnnotationParserTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $stringValidator;
@@ -38,7 +43,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,11 +51,11 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 
 		$this->linksProcessor = new LinksProcessor();
 
-		$this->magicWordsFinder = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
+		$this->magicWordsFinder = $this->getMockBuilder( MagicWordsFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -64,11 +69,11 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider textDataProvider
 	 */
 	public function testCanConstruct( $namespace ) {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$redirectTargetFinder = $this->getMockBuilder( 'SMW\MediaWiki\RedirectTargetFinder' )
+		$redirectTargetFinder = $this->getMockBuilder( RedirectTargetFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -274,11 +279,11 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testStripMarkerDecoding() {
-		$redirectTargetFinder = $this->getMockBuilder( 'SMW\MediaWiki\RedirectTargetFinder' )
+		$redirectTargetFinder = $this->getMockBuilder( RedirectTargetFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$stripMarkerDecoder = $this->getMockBuilder( '\SMW\MediaWiki\StripMarkerDecoder' )
+		$stripMarkerDecoder = $this->getMockBuilder( StripMarkerDecoder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'canUse', 'hasStripMarker', 'unstrip' ] )
 			->getMock();
@@ -347,7 +352,7 @@ class InTextAnnotationParserTest extends \PHPUnit\Framework\TestCase {
 			new RedirectTargetFinder()
 		);
 
-		$reflector = new ReflectionClass( '\SMW\Parser\InTextAnnotationParser' );
+		$reflector = new ReflectionClass( InTextAnnotationParser::class );
 
 		$method = $reflector->getMethod( 'process' );
 

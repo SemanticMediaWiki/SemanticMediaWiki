@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Specials\Browse\FieldBuilder;
  *
  * @author mwjames
  */
-class FieldBuilderTest extends \PHPUnit\Framework\TestCase {
+class FieldBuilderTest extends TestCase {
 
 	public function testGetQueryFormData() {
 		$this->assertIsArray(

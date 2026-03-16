@@ -5,7 +5,13 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\LinksUpdateComplete;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\NamespaceExaminer;
+use SMW\ParserData;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
+class LinksUpdateCompleteTest extends TestCase {
 
 	private $testEnvironment;
 	private $namespaceExaminer;
@@ -30,7 +36,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +44,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSkippableUpdate' )
 			->willReturn( false );
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +52,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMock();
@@ -72,7 +78,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -115,7 +121,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findAssociatedRev' )
 			->willReturn( 42 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
@@ -155,7 +161,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_HELP );
 		$parserOutput = new ParserOutput();
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -202,7 +208,7 @@ class LinksUpdateCompleteTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLinkList' )
 			->willReturn( [ NS_TEMPLATE => [ 'Foo' => 1 ] ] );
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSemanticData', 'updateStore', 'markUpdate' ] )
 			->getMock();

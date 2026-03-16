@@ -2,10 +2,14 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
@@ -22,7 +26,7 @@ use SMWExporter;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ClassDescriptionInterpreterTest extends TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -33,22 +37,22 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter',
+			ClassDescriptionInterpreter::class,
 			new ClassDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanBuildConditionFor() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ClassDescription' )
+		$description = $this->getMockBuilder( ClassDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +99,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
-		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,7 +137,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
+		$conditionType = FalseCondition::class;
 
 		$description = new ClassDescription( [] );
 		$orderByProperty = null;
@@ -150,7 +154,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
 
@@ -173,7 +177,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 2
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$categoryFoo = new DIWikiPage( 'Foo', NS_CATEGORY );
 
@@ -208,7 +212,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 3
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new ClassDescription( [
 			$categoryFoo,

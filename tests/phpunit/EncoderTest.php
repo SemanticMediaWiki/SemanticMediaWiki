@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Encoder;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Encoder;
  *
  * @author mwjames
  */
-class EncoderTest extends \PHPUnit\Framework\TestCase {
+class EncoderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\Encoder',
+			Encoder::class,
 			new Encoder()
 		);
 	}

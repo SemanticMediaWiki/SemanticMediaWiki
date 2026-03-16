@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\HtmlForm;
+use SMW\Query\QueryResult;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\HtmlForm
@@ -13,10 +17,10 @@ use SMW\MediaWiki\Specials\Ask\HtmlForm;
  *
  * @author mwjames
  */
-class HtmlFormTest extends \PHPUnit\Framework\TestCase {
+class HtmlFormTest extends TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,11 +31,11 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetForm_IsEditMode() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +51,7 @@ class HtmlFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSortKeys' )
 			->willReturn( [] );
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use ParamProcessor\ParamDefinition;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\ParameterInput;
 use SMW\Tests\TestEnvironment;
 
@@ -14,10 +16,10 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ParameterInputTest extends \PHPUnit\Framework\TestCase {
+class ParameterInputTest extends TestCase {
 
 	public function testCanConstruct() {
-		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
+		$paramDefinition = $this->getMockBuilder( ParamDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -33,7 +35,7 @@ class ParameterInputTest extends \PHPUnit\Framework\TestCase {
 	public function testGetHtmlOnCheckboxList( $currentValue, $allowedValues, $expected ) {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$paramDefinition = $this->getMockBuilder( '\ParamProcessor\ParamDefinition' )
+		$paramDefinition = $this->getMockBuilder( ParamDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

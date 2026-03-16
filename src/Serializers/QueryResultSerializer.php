@@ -139,7 +139,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 				if ( $printRequest !== null && $printRequest->getTypeID() === '_qty' ) {
 					$diProperty = $printRequest->getData()->getDataItem();
 
-					if ( $printRequest->isMode( \SMW\Query\PrintRequest::PRINT_CHAIN ) ) {
+					if ( $printRequest->isMode( PrintRequest::PRINT_CHAIN ) ) {
 						$diProperty = $printRequest->getData()->getLastPropertyChainValue()->getDataItem();
 					}
 

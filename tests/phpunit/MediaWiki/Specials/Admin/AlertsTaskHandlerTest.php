@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Admin\AlertsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class AlertsTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $outputFormatter;
@@ -24,7 +27,7 @@ class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -42,7 +45,7 @@ class AlertsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtml() {
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getName', 'getHtml' ] )
 			->getMockForAbstractClass();

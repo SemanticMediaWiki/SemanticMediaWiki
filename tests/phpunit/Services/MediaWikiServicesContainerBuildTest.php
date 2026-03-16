@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Services;
 
+use MediaWiki\Title\Title;
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
@@ -13,7 +16,7 @@ use Wikimedia\Rdbms\ILoadBalancer;
  *
  * @author mwjames
  */
-class MediaWikiServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
+class MediaWikiServicesContainerBuildTest extends TestCase {
 
 	private $callbackContainerFactory;
 	private $servicesFileDir;
@@ -41,7 +44,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function servicesProvider() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$title->expects( $this->any() )
@@ -75,7 +78,7 @@ class MediaWikiServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			'MediaWikiLogger',
 			[],
-			'\Psr\Log\LoggerInterface'
+			LoggerInterface::class
 		];
 
 		$provider[] = [

@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
+class AllowsListConstraintValueValidatorTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -26,11 +29,11 @@ class AllowsListConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->allowsListValueParser = $this->getMockBuilder( '\SMW\DataValues\ValueParsers\AllowsListValueParser' )
+		$this->allowsListValueParser = $this->getMockBuilder( AllowsListValueParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

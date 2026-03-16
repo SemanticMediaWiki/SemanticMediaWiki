@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\TelephoneUriValue;
 
 /**
@@ -13,11 +14,11 @@ use SMW\DataValues\TelephoneUriValue;
  *
  * @author mwjames
  */
-class TelephoneUriValueTest extends \PHPUnit\Framework\TestCase {
+class TelephoneUriValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\TelephoneUriValue',
+			TelephoneUriValue::class,
 			new TelephoneUriValue()
 		);
 

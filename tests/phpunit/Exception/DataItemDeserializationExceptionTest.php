@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\DataItemDeserializationException;
+use SMW\Exception\DataItemException;
 
 /**
  * @covers \SMW\Exception\DataItemDeserializationException
@@ -13,18 +15,18 @@ use SMW\Exception\DataItemDeserializationException;
  *
  * @author mwjames
  */
-class DataItemDeserializationExceptionTest extends \PHPUnit\Framework\TestCase {
+class DataItemDeserializationExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DataItemDeserializationException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\DataItemDeserializationException',
+			DataItemDeserializationException::class,
 			$instance
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Exception\DataItemException',
+			DataItemException::class,
 			$instance
 		);
 	}

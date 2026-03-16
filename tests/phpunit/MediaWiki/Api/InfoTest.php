@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Info;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InfoTest extends \PHPUnit\Framework\TestCase {
+class InfoTest extends TestCase {
 
 	private $testEnvironment;
 	private $apiFactory;
@@ -45,7 +47,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Api\Info',
+			Info::class,
 			$instance
 		);
 	}
@@ -73,7 +75,7 @@ class InfoTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider countDataProvider
 	 */
 	public function testExecuteOnMockStore( $statistics, $type, $expected ) {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

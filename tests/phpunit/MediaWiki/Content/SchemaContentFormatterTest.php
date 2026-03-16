@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Content;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\MediaWiki\Content\SchemaContentFormatter;
 use SMW\Schema\Schema;
+use SMW\SortLetter;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Content\SchemaContentFormatter
@@ -14,14 +18,14 @@ use SMW\Schema\Schema;
  *
  * @author mwjames
  */
-class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
+class SchemaContentFormatterTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
@@ -35,7 +39,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHelpLink() {
-		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +54,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetText() {
-		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,7 +77,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetText_Errors() {
-		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +103,7 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetUsage_Empty() {
-		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,15 +124,15 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetUsage() {
-		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+		$sortLetter = $this->getMockBuilder( SortLetter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,15 +159,15 @@ class SchemaContentFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetUsage_MultipleProperties() {
-		$sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+		$sortLetter = $this->getMockBuilder( SortLetter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$schema = $this->getMockBuilder( '\SMW\Schema\Schema' )
+		$schema = $this->getMockBuilder( Schema::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use PHPUnit\Framework\Assert;
 use SMW\DIWikiPage;
 use SMW\Store;
 
@@ -13,7 +14,7 @@ use SMW\Store;
  *
  * @author mwjames
  */
-class IncomingSemanticDataValidator extends \PHPUnit\Framework\Assert {
+class IncomingSemanticDataValidator extends Assert {
 
 	/**
 	 * @var Store

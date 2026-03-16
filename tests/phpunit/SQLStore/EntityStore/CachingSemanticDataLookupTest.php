@@ -2,8 +2,15 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
+use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\SQLStore\EntityStore\StubSemanticData;
+use SMW\SQLStore\PropertyTableDefinition;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\CachingSemanticDataLookup
@@ -14,7 +21,7 @@ use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
  *
  * @author mwjames
  */
-class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
+class CachingSemanticDataLookupTest extends TestCase {
 
 	private $store;
 	private $connection;
@@ -23,7 +30,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SemanticDataLookup' )
+		$this->semanticDataLookup = $this->getMockBuilder( SemanticDataLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -42,7 +49,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testInitLookupCache() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+		$stubSemanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,7 +68,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 		$instance->initLookupCache( 42, $subject );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			StubSemanticData::class,
 			$instance->getSemanticDataById( 42 )
 		);
 	}
@@ -76,7 +83,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetLookupCache() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,11 +108,11 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetOptionsFromConstraint() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,7 +127,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,11 +144,11 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testNewStubSemanticData() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+		$stubSemanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -154,17 +161,17 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			StubSemanticData::class,
 			$instance->newStubSemanticData( $subject )
 		);
 	}
 
 	public function testGetSemanticData_Uncached() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -181,11 +188,11 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSemanticData_FreshFetch() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+		$stubSemanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -211,7 +218,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSemanticData_FromStaticCache() {
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -219,7 +226,7 @@ class CachingSemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getName' )
 			->willReturn( '__foo__' );
 
-		$stubSemanticData = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\StubSemanticData' )
+		$stubSemanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

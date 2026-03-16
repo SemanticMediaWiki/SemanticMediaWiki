@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\LoadBalancerConnectionProvider;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
@@ -15,7 +17,7 @@ use Wikimedia\Rdbms\ILoadBalancer;
  *
  * @author mwjames
  */
-class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
+class LoadBalancerConnectionProviderTest extends TestCase {
 
 	private $loadBalancer;
 
@@ -36,7 +38,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetAndReleaseConnection() {
-		$database = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
+		$database = $this->getMockBuilder( IDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +53,7 @@ class LoadBalancerConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\IDatabase',
+			IDatabase::class,
 			$instance->getConnection()
 		);
 

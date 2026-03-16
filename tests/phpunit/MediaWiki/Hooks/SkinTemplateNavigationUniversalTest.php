@@ -2,6 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Message\Message;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
 
 /**
@@ -13,7 +18,7 @@ use SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal;
  *
  * @author mwjames
  */
-class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
+class SkinTemplateNavigationUniversalTest extends TestCase {
 
 	public function testCanConstruct() {
 		$skinTemplate = $this->getMockBuilder( '\SkinTemplate' )
@@ -23,21 +28,21 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
 		$links = [];
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Hooks\SkinTemplateNavigationUniversal',
+			SkinTemplateNavigationUniversal::class,
 			new SkinTemplateNavigationUniversal( $skinTemplate, $links )
 		);
 	}
 
 	public function testProcess() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,7 +50,7 @@ class SkinTemplateNavigationUniversalTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isAllowed' )
 			->willReturn( true );
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

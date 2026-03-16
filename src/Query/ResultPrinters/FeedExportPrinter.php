@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Content\TextContent;
 use MediaWiki\Context\RequestContext;
+use MediaWiki\Feed\ChannelFeed;
 use MediaWiki\Feed\FeedItem;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
@@ -13,8 +14,12 @@ use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Query\ExportPrinter;
 use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
+use SMWDataValue;
+use SMWQuery;
+use SMWQueryProcessor;
 use WikiPage;
 
 /**
@@ -103,10 +108,10 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
-		if ( $mode == \SMWQueryProcessor::SPECIAL_PAGE ) {
-			return \SMWQuery::MODE_INSTANCES;
+		if ( $mode == SMWQueryProcessor::SPECIAL_PAGE ) {
+			return SMWQuery::MODE_INSTANCES;
 		}
-		return \SMWQuery::MODE_NONE;
+		return SMWQuery::MODE_NONE;
 	}
 
 	/**
@@ -196,7 +201,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		}
 
 		/**
-		 * @var \ChannelFeed $feed
+		 * @var ChannelFeed $feed
 		 */
 		$feed = new $wgFeedClasses[$type](
 			$this->feedTitle(),
@@ -281,8 +286,8 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		/**
 		 * Loop over all properties within a row
 		 *
-		 * @var \SMW\Query\Result\ResultArray $field
-		 * @var \SMWDataValue $object
+		 * @var ResultArray $field
+		 * @var SMWDataValue $object
 		 */
 		foreach ( $row as $field ) {
 			$itemSegments = [];

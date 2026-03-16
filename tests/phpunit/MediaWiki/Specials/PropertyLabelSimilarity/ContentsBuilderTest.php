@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\PropertyLabelSimilarity;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
+use SMW\RequestOptions;
+use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
+class ContentsBuilderTest extends TestCase {
 
 	private $testEnvironment;
 	private $propertyLabelSimilarityLookup;
@@ -25,11 +29,11 @@ class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->propertyLabelSimilarityLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup' )
+		$this->propertyLabelSimilarityLookup = $this->getMockBuilder( PropertyLabelSimilarityLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -47,7 +51,7 @@ class ContentsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtml() {
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 

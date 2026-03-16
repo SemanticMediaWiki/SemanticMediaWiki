@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Elastic\Indexer\Replication\ReplicationError;
  *
  * @author mwjames
  */
-class ReplicationErrorTest extends \PHPUnit\Framework\TestCase {
+class ReplicationErrorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

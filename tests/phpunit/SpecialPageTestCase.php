@@ -9,6 +9,7 @@ use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Request\WebResponse;
 use MediaWiki\SpecialPage\SpecialPage;
+use PHPUnit\Framework\TestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
@@ -21,7 +22,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  *
  * @author mwjames
  */
-abstract class SpecialPageTestCase extends \PHPUnit\Framework\TestCase {
+abstract class SpecialPageTestCase extends TestCase {
 
 	protected $obLevel;
 	protected $store = null;

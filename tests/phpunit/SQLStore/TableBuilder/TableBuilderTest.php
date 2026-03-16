@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SQLStore\TableBuilder\MySQLTableBuilder;
+use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
+use SMW\SQLStore\TableBuilder\SQLiteTableBuilder;
 use SMW\SQLStore\TableBuilder\TableBuilder;
+use Wikimedia\Rdbms\Database;
 
 /**
  * @covers \SMW\SQLStore\TableBuilder\TableBuilder
@@ -13,10 +18,10 @@ use SMW\SQLStore\TableBuilder\TableBuilder;
  *
  * @author mwjames
  */
-class TableBuilderTest extends \PHPUnit\Framework\TestCase {
+class TableBuilderTest extends TestCase {
 
 	public function testCanConstructForMySQL() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -25,13 +30,13 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'mysql' );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\MySQLTableBuilder',
+			MySQLTableBuilder::class,
 			TableBuilder::factory( $connection )
 		);
 	}
 
 	public function testCanConstructForSQLite() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -40,13 +45,13 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'sqlite' );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\SQLiteTableBuilder',
+			SQLiteTableBuilder::class,
 			TableBuilder::factory( $connection )
 		);
 	}
 
 	public function testCanConstructForPostgres() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -55,13 +60,13 @@ class TableBuilderTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( 'postgres' );
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\TableBuilder\PostgresTableBuilder',
+			PostgresTableBuilder::class,
 			TableBuilder::factory( $connection )
 		);
 	}
 
 	public function testConstructWithInvalidTypeThrowsException() {
-		$connection = $this->getMockBuilder( '\Wikimedia\Rdbms\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

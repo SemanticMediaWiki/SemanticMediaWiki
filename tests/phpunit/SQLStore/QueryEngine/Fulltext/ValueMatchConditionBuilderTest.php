@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Query\Language\ValueDescription;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
 
 /**
@@ -14,7 +18,7 @@ use SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder;
  *
  * @author mwjames
  */
-class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
+class ValueMatchConditionBuilderTest extends TestCase {
 
 	private $textSanitizer;
 	private $searchTable;
@@ -23,18 +27,18 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
+		$this->textSanitizer = $this->getMockBuilder( TextSanitizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+		$this->searchTable = $this->getMockBuilder( SearchTable::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\ValueMatchConditionBuilder',
+			ValueMatchConditionBuilder::class,
 			new ValueMatchConditionBuilder( $this->textSanitizer, $this->searchTable )
 		);
 	}
@@ -107,7 +111,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->searchTable
 		);
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -122,7 +126,7 @@ class ValueMatchConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			$this->searchTable
 		);
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SortWidgetTest extends \PHPUnit\Framework\TestCase {
+class SortWidgetTest extends TestCase {
 
 	private $stringValidator;
 

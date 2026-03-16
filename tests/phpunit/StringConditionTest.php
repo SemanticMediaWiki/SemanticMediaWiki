@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\StringCondition;
 
 /**
@@ -13,13 +14,13 @@ use SMW\StringCondition;
  *
  * @author mwjames
  */
-class StringConditionTest extends \PHPUnit\Framework\TestCase {
+class StringConditionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new StringCondition( 'Foo', StringCondition::STRCOND_PRE, true );
 
 		$this->assertInstanceOf(
-			'\SMW\StringCondition',
+			StringCondition::class,
 			$instance
 		);
 

@@ -2,10 +2,14 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
+class IdEntityFinderTest extends TestCase {
 
 	private $testEnvironment;
 	private $cache;
@@ -29,11 +33,11 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +45,7 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'get' )
 			->willReturn( $this->cache );
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +53,7 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();
@@ -102,7 +106,7 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
 	}
@@ -122,7 +126,7 @@ class IdEntityFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
 	}

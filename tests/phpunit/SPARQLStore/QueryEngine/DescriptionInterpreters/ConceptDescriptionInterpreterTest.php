@@ -2,15 +2,21 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
+use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
@@ -21,7 +27,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ConceptDescriptionInterpreterTest extends TestCase {
 
 	private $applicationFactory;
 	private $descriptionInterpreterFactory;
@@ -29,11 +35,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -54,22 +60,22 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter',
+			ConceptDescriptionInterpreter::class,
 			new ConceptDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanBuildConditionFor() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ConceptDescription' )
+		$description = $this->getMockBuilder( ConceptDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +92,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testConceptDescriptionInterpreter( $description, $orderByProperty, $expectedConditionType, $expectedConditionString ) {
 		$resultVariable = 'result';
 
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( CircularReferenceGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,11 +118,11 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testConceptDescriptionInterpreterForAnyValueConceptUsingMockedStore() {
-		$circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+		$circularReferenceGuard = $this->getMockBuilder( CircularReferenceGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,7 +132,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( [
 				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -157,7 +163,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->getString();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition',
+			WhereCondition::class,
 			$condition
 		);
 
@@ -171,7 +177,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
+		$conditionType = FalseCondition::class;
 
 		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
 		$orderByProperty = null;

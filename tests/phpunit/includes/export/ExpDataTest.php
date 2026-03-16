@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMWExpData as ExpData;
@@ -16,10 +17,10 @@ use SMWExpData as ExpData;
  *
  * @author mwjames
  */
-class ExpDataTest extends \PHPUnit\Framework\TestCase {
+class ExpDataTest extends TestCase {
 
 	public function testCanConstructor() {
-		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
+		$expNsResource = $this->getMockBuilder( ExpNsResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 

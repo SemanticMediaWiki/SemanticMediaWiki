@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Output\OutputPage;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend
@@ -13,17 +19,17 @@ use SMW\MediaWiki\Hooks\SpecialSearchResultsPrepend;
  *
  * @author mwjames
  */
-class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
+class SpecialSearchResultsPrependTest extends TestCase {
 
 	private $preferenceExaminer;
 	private $messageLocalizer;
 
 	protected function setUp(): void {
-		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+		$this->preferenceExaminer = $this->getMockBuilder( PreferenceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -33,7 +39,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,11 +56,11 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 				return $key === 'smw-prefs-general-options-suggester-textinput';
 			} );
 
-		$search = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
+		$search = $this->getMockBuilder( ExtendedSearchEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +72,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSearchEngine' )
 			->willReturn( $search );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,11 +101,11 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 				return $key === 'smw-prefs-general-options-disable-search-info';
 			} );
 
-		$search = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
+		$search = $this->getMockBuilder( ExtendedSearchEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,7 +117,7 @@ class SpecialSearchResultsPrependTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSearchEngine' )
 			->willReturn( $search );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

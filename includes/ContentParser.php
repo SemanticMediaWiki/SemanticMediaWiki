@@ -10,6 +10,7 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
+use MWUnknownContentModelException;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
@@ -168,7 +169,7 @@ class ContentParser {
 				$this->getTitle(),
 				$revision
 			);
-		} catch ( \MWUnknownContentModelException $e ) {
+		} catch ( MWUnknownContentModelException $e ) {
 			$this->parserOutput = null;
 		}
 

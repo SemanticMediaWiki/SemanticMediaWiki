@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler
@@ -14,10 +17,10 @@ use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
  *
  * @author mwjames
  */
-class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
+class DIWikiPageHandlerTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -28,7 +31,7 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testImmutableMethodAccess() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -74,7 +77,7 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,20 +102,20 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dbKeysProvider
 	 */
 	public function testDataItemFromDBKeys( $dbKeys ) {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DIWikiPageHandler( $store );
 
 		$this->assertInstanceOf(
-			'\SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->dataItemFromDBKeys( $dbKeys )
 		);
 	}
 
 	public function testDataItemFromDBKeys_Sort() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -131,13 +134,13 @@ class DIWikiPageHandlerTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dbKeysExceptionProvider
 	 */
 	public function testDataItemFromDBKeysThrowsException( $dbKeys ) {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DIWikiPageHandler( $store );
 
-		$this->expectException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( DataItemHandlerException::class );
 		$instance->dataItemFromDBKeys( $dbKeys );
 	}
 

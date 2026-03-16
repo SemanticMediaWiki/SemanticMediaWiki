@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\DataItemFactory;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UniquenessConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
+class UniquenessConstraintValueValidatorTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -26,11 +29,11 @@ class UniquenessConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->uniqueValueConstraint = $this->getMockBuilder( '\SMW\Constraint\Constraints\UniqueValueConstraint' )
+		$this->uniqueValueConstraint = $this->getMockBuilder( UniqueValueConstraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

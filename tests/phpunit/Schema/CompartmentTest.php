@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Compartment;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Schema\Compartment;
  *
  * @author mwjames
  */
-class CompartmentTest extends \PHPUnit\Framework\TestCase {
+class CompartmentTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

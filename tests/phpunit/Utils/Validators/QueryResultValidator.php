@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils\Validators;
 
 use Closure;
+use PHPUnit\Framework\Assert;
 use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\Query\QueryResult;
@@ -15,7 +16,7 @@ use SMWDataValue as DataValue;
  *
  * @author mwjames
  */
-class QueryResultValidator extends \PHPUnit\Framework\Assert {
+class QueryResultValidator extends Assert {
 
 	private $dataValueValidationMethod = null;
 

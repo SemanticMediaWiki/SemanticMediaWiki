@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Exception\ResultFormatNotFoundException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Query\Exception\ResultFormatNotFoundException;
  *
  * @author mwjames
  */
-class ResultFormatNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class ResultFormatNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new ResultFormatNotFoundException();
 
 		$this->assertInstanceof(
-			'\SMW\Query\Exception\ResultFormatNotFoundException',
+			ResultFormatNotFoundException::class,
 			$instance
 		);
 

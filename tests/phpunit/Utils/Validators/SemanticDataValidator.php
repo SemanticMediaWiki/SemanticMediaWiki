@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use PHPUnit\Framework\Assert;
 use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -17,7 +18,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class SemanticDataValidator extends \PHPUnit\Framework\Assert {
+class SemanticDataValidator extends Assert {
 
 	/**
 	 * @var bool
@@ -218,7 +219,7 @@ class SemanticDataValidator extends \PHPUnit\Framework\Assert {
 
 		foreach ( $properties as $property ) {
 
-			$this->assertInstanceOf( '\SMW\DIProperty', $property );
+			$this->assertInstanceOf( DIProperty::class, $property );
 
 			if ( isset( $expected['properties'] ) ) {
 				$this->assertContainsProperty( $expected['properties'], $property );

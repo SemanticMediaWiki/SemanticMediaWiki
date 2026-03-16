@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 use SMWWikiPageValue as WikiPageValue;
 
@@ -15,7 +17,7 @@ use SMWWikiPageValue as WikiPageValue;
  *
  * @author mwjames
  */
-class WikiPageValueTest extends \PHPUnit\Framework\TestCase {
+class WikiPageValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -28,7 +30,7 @@ class WikiPageValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

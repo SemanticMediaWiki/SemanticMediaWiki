@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\TitleFactory;
 
 /**
@@ -14,7 +15,7 @@ use SMW\MediaWiki\TitleFactory;
  *
  * @author mwjames
  */
-class TitleFactoryTest extends \PHPUnit\Framework\TestCase {
+class TitleFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -9,6 +9,7 @@ use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\PropertyLabelSimilarity\ContentsBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GPL-2.0-or-later
@@ -36,7 +37,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 		$output->addModuleStyles( [ 'ext.smw.styles' ] );
 
 		$applicationFactory = ApplicationFactory::getInstance();
-		$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		$store = $applicationFactory->getStore( SQLStore::class );
 
 		$propertyLabelSimilarityLookup = new PropertyLabelSimilarityLookup(
 			$store

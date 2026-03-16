@@ -2,7 +2,22 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Constraint\Constraint;
+use SMW\Constraint\ConstraintCheckRunner;
+use SMW\Constraint\ConstraintRegistry;
+use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
+use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\NullConstraint;
+use SMW\Constraint\Constraints\ShapeConstraint;
+use SMW\Constraint\Constraints\SingleValueConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\Constraint\ConstraintSchemaCompiler;
 use SMW\ConstraintFactory;
+use SMW\Exception\ClassNotFoundException;
+use SMW\Store;
 use SMW\Tests\Fixtures\PlainClass;
 
 /**
@@ -14,7 +29,7 @@ use SMW\Tests\Fixtures\PlainClass;
  *
  * @author mwjames
  */
-class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
+class ConstraintFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -27,7 +42,7 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\ConstraintRegistry',
+			ConstraintRegistry::class,
 			$instance->newConstraintRegistry()
 		);
 	}
@@ -36,7 +51,7 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\ConstraintCheckRunner',
+			ConstraintCheckRunner::class,
 			$instance->newConstraintCheckRunner()
 		);
 	}
@@ -45,20 +60,20 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\Constraints\NullConstraint',
+			NullConstraint::class,
 			$instance->newNullConstraint()
 		);
 	}
 
 	public function testCanConstructConstraintSchemaCompiler() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\ConstraintSchemaCompiler',
+			ConstraintSchemaCompiler::class,
 			$instance->newConstraintSchemaCompiler( $store )
 		);
 	}
@@ -66,7 +81,7 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testNewConstraintByClassInvalidClassThrowsException() {
 		$instance = new ConstraintFactory();
 
-		$this->expectException( '\SMW\Exception\ClassNotFoundException' );
+		$this->expectException( ClassNotFoundException::class );
 		$instance->newConstraintByClass( 'ThisIsNotAClass' );
 	}
 
@@ -84,7 +99,7 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ConstraintFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\Constraint',
+			Constraint::class,
 			$instance->newConstraintByClass( $class )
 		);
 
@@ -96,43 +111,43 @@ class ConstraintFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function constraintByClassProvider() {
 		yield [
-			'\SMW\Constraint\Constraints\NullConstraint',
-			'\SMW\Constraint\Constraints\NullConstraint'
+			NullConstraint::class,
+			NullConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\NamespaceConstraint',
-			'\SMW\Constraint\Constraints\NamespaceConstraint'
+			NamespaceConstraint::class,
+			NamespaceConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\UniqueValueConstraint',
-			'\SMW\Constraint\Constraints\UniqueValueConstraint'
+			UniqueValueConstraint::class,
+			UniqueValueConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint',
-			'\SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
+			NonNegativeIntegerConstraint::class,
+			NonNegativeIntegerConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\SingleValueConstraint',
-			'\SMW\Constraint\Constraints\SingleValueConstraint'
+			SingleValueConstraint::class,
+			SingleValueConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\MustExistsConstraint',
-			'\SMW\Constraint\Constraints\MustExistsConstraint'
+			MustExistsConstraint::class,
+			MustExistsConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\MandatoryPropertiesConstraint',
-			'\SMW\Constraint\Constraints\MandatoryPropertiesConstraint'
+			MandatoryPropertiesConstraint::class,
+			MandatoryPropertiesConstraint::class
 		];
 
 		yield [
-			'SMW\Constraint\Constraints\ShapeConstraint',
-			'\SMW\Constraint\Constraints\ShapeConstraint'
+			ShapeConstraint::class,
+			ShapeConstraint::class
 		];
 	}
 

@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Alerts;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler;
+use SMW\SetupFile;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskHandler
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Specials\Admin\Alerts\LastOptimizationRunMaintenanceAlertTaskH
  *
  * @author mwjames
  */
-class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class LastOptimizationRunMaintenanceAlertTaskHandlerTest extends TestCase {
 
 	private $setupFile;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

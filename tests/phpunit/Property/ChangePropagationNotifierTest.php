@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\Property;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\ChangePropagationNotifier;
+use SMW\SemanticData;
+use SMW\SerializerFactory;
+use SMW\Serializers\SemanticDataSerializer;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 
@@ -17,7 +22,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
+class ChangePropagationNotifierTest extends TestCase {
 
 	protected $mockedStoreValues;
 	private $semanticData;
@@ -36,11 +41,11 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$semanticDataSerializer = $this->getMockBuilder( '\SMW\Serializers\SemanticDataSerializer' )
+		$semanticDataSerializer = $this->getMockBuilder( SemanticDataSerializer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->serializerFactory = $this->getMockBuilder( '\SMW\SerializerFactory' )
+		$this->serializerFactory = $this->getMockBuilder( SerializerFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +53,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSemanticDataSerializer' )
 			->willReturn( $semanticDataSerializer );
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -111,11 +116,11 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyValues', 'getSemanticData' ] )
 			->getMockForAbstractClass();
@@ -128,7 +133,7 @@ class ChangePropagationNotifierTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

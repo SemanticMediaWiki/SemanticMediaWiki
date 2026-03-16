@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\QueryEngine\FieldMapper;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Elastic\QueryEngine\FieldMapper;
  *
  * @author mwjames
  */
-class FieldMapperTest extends \PHPUnit\Framework\TestCase {
+class FieldMapperTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

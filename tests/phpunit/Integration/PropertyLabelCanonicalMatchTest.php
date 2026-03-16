@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\PropertyRegistry;
 
@@ -13,7 +14,7 @@ use SMW\PropertyRegistry;
  *
  * @author mwjames
  */
-class PropertyLabelCanonicalMatchTest extends \PHPUnit\Framework\TestCase {
+class PropertyLabelCanonicalMatchTest extends TestCase {
 
 	/**
 	 * @dataProvider canonicalLabelProvider

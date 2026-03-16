@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Renderer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
 /**
@@ -13,11 +14,11 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
  *
  * @author mwjames
  */
-class WikitextTemplateRendererTest extends \PHPUnit\Framework\TestCase {
+class WikitextTemplateRendererTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\WikitextTemplateRenderer',
+			WikitextTemplateRenderer::class,
 			 new WikitextTemplateRenderer()
 		);
 	}

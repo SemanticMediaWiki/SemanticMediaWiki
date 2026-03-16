@@ -2,11 +2,13 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWQuery as Query;
 
@@ -19,7 +21,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class NullQueryResultTest extends \PHPUnit\Framework\TestCase {
+class NullQueryResultTest extends TestCase {
 
 	public function testNullQueryResult() {
 		$term = '[[Some_string_to_query]]';
@@ -50,7 +52,7 @@ class NullQueryResultTest extends \PHPUnit\Framework\TestCase {
 		$query->setDescription( $description );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			ApplicationFactory::getInstance()->getStore()->getQueryResult( $query )
 		);
 	}

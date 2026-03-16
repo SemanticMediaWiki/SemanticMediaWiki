@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\SQLStore\PropertyTable;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 
 /**
@@ -13,22 +17,22 @@ use SMW\SQLStore\PropertyTable\PropertyTableHashes;
  *
  * @author mwjames
  */
-class PropertyTableHashesTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableHashesTest extends TestCase {
 
 	private $connection;
 	private $idCacheManager;
 	private $cache;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

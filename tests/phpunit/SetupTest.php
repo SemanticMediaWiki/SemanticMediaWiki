@@ -2,7 +2,21 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Language\Language;
+use PHPUnit\Framework\TestCase;
+use SMW\ChangePropagationClassUpdateJob;
+use SMW\ChangePropagationDispatchJob;
+use SMW\ChangePropagationUpdateJob;
+use SMW\EntityIdDisposerJob;
+use SMW\FulltextSearchTableRebuildJob;
+use SMW\FulltextSearchTableUpdateJob;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\PropertyStatisticsRebuildJob;
+use SMW\RefreshJob;
 use SMW\Setup;
+use SMW\Store;
+use SMW\UpdateDispatcherJob;
+use SMW\UpdateJob;
 
 /**
  * @covers \SMW\Setup
@@ -13,7 +27,7 @@ use SMW\Setup;
  *
  * @author mwjames
  */
-class SetupTest extends \PHPUnit\Framework\TestCase {
+class SetupTest extends TestCase {
 
 	private $testEnvironment;
 	private $defaultConfig;
@@ -22,11 +36,11 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -38,7 +52,7 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getInProperties' )
 			->willReturn( [] );
 
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -253,16 +267,16 @@ class SetupTest extends \PHPUnit\Framework\TestCase {
 			'smw.elasticFileIngest',
 
 			// Legacy
-			'SMW\UpdateJob',
-			'SMW\RefreshJob',
-			'SMW\UpdateDispatcherJob',
-			'SMW\FulltextSearchTableUpdateJob',
-			'SMW\EntityIdDisposerJob',
-			'SMW\PropertyStatisticsRebuildJob',
-			'SMW\FulltextSearchTableRebuildJob',
-			'SMW\ChangePropagationDispatchJob',
-			'SMW\ChangePropagationUpdateJob',
-			'SMW\ChangePropagationClassUpdateJob',
+			UpdateJob::class,
+			RefreshJob::class,
+			UpdateDispatcherJob::class,
+			FulltextSearchTableUpdateJob::class,
+			EntityIdDisposerJob::class,
+			PropertyStatisticsRebuildJob::class,
+			FulltextSearchTableRebuildJob::class,
+			ChangePropagationDispatchJob::class,
+			ChangePropagationUpdateJob::class,
+			ChangePropagationClassUpdateJob::class,
 			'SMWUpdateJob',
 			'SMWRefreshJob',
 		];

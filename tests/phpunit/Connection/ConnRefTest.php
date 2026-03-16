@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Connection;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Connection\ConnRef;
  *
  * @author mwjames
  */
-class ConnRefTest extends \PHPUnit\Framework\TestCase {
+class ConnRefTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -23,7 +25,7 @@ class ConnRefTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetAndReleaseConnection() {
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 

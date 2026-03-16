@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Indexer\TextSanitizer;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Elastic\Indexer\TextSanitizer;
  *
  * @author mwjames
  */
-class TextSanitizerTest extends \PHPUnit\Framework\TestCase {
+class TextSanitizerTest extends TestCase {
 
 	/**
 	 * @dataProvider textLinksProvider

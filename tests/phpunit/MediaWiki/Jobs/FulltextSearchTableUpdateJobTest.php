@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FulltextSearchTableUpdateJobTest extends \PHPUnit\Framework\TestCase {
+class FulltextSearchTableUpdateJobTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -26,7 +29,7 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject(
 			'Store',
-			$this->getMockBuilder( '\SMW\SQLStore\SQLStore' )->getMockForAbstractClass()
+			$this->getMockBuilder( SQLStore::class )->getMockForAbstractClass()
 		);
 	}
 
@@ -36,12 +39,12 @@ class FulltextSearchTableUpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
+			FulltextSearchTableUpdateJob::class,
 			new FulltextSearchTableUpdateJob( $title )
 		);
 	}

@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\Importer\ContentCreators;
 
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
 use SMW\Importer\ContentCreators\XmlContentCreator;
 use SMW\Importer\ImportContents;
+use SMW\Services\ImporterServiceFactory;
 
 /**
  * @covers \SMW\Importer\ContentCreators\XmlContentCreator
@@ -14,7 +17,7 @@ use SMW\Importer\ImportContents;
  *
  * @author mwjames
  */
-class XmlContentCreatorTest extends \PHPUnit\Framework\TestCase {
+class XmlContentCreatorTest extends TestCase {
 
 	private $importerServiceFactory;
 	private $wikiImporter;
@@ -31,7 +34,7 @@ class XmlContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->importerServiceFactory = $this->getMockBuilder( '\SMW\Services\ImporterServiceFactory' )
+		$this->importerServiceFactory = $this->getMockBuilder( ImporterServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,14 +46,14 @@ class XmlContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newWikiImporter' )
 			->willReturn( $this->wikiImporter );
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$this->messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Importer\ContentCreators\XmlContentCreator',
+			XmlContentCreator::class,
 			new XmlContentCreator( $this->importerServiceFactory )
 		);
 	}

@@ -2,8 +2,17 @@
 
 namespace SMW\Tests\Elastic\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use SMW\DIWikiPage;
+use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\ElasticFactory;
+use SMW\Elastic\Indexer\FileIndexer;
+use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +24,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
+class FileIngestJobTest extends TestCase {
 
 	private $testEnvironment;
 	private $fileIndexer;
@@ -29,19 +38,19 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->fileIndexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\FileIndexer' )
+		$this->fileIndexer = $this->getMockBuilder( FileIndexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
+		$this->elasticFactory = $this->getMockBuilder( ElasticFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +58,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newIndexer' )
 			->willReturn( $indexer );
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\NullLogger' )
+		$this->logger = $this->getMockBuilder( NullLogger::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,15 +109,15 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newFileIndexer' )
 			->willReturn( $this->fileIndexer );
 
-		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -143,7 +152,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newFileIndexer' )
 			->willReturn( $this->fileIndexer );
 
-		$config = $this->getMockBuilder( '\SMW\Elastic\Config' )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,7 +161,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 			->with( 'indexer.job.file.ingest.retries' )
 			->willReturn( 1 );
 
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -160,7 +169,7 @@ class FileIngestJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConfig' )
 			->willReturn( $config );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

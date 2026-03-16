@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder;
  *
  * @author mwjames
  */
-class OptionsBuilderTest extends \PHPUnit\Framework\TestCase {
+class OptionsBuilderTest extends TestCase {
 
 	private $profile;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
+		$this->profile = $this->getMockBuilder( Profile::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

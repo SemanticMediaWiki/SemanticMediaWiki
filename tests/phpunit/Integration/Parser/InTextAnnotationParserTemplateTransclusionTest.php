@@ -7,7 +7,10 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -18,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\TestCase {
+class InTextAnnotationParserTemplateTransclusionTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -30,7 +33,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 		$this->testEnvironment = new TestEnvironment();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -104,7 +107,7 @@ class InTextAnnotationParserTemplateTransclusionTest extends \PHPUnit\Framework\
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$parserData->getSemanticData()
 		);
 

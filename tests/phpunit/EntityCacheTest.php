@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
 
@@ -14,12 +16,12 @@ use SMW\EntityCache;
  *
  * @author mwjames
  */
-class EntityCacheTest extends \PHPUnit\Framework\TestCase {
+class EntityCacheTest extends TestCase {
 
 	private $cache;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}

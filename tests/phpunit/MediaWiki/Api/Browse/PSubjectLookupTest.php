@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Api\Browse\PSubjectLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\PSubjectLookup
@@ -14,12 +16,12 @@ use SMW\MediaWiki\Api\Browse\PSubjectLookup;
  *
  * @author mwjames
  */
-class PSubjectLookupTest extends \PHPUnit\Framework\TestCase {
+class PSubjectLookupTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

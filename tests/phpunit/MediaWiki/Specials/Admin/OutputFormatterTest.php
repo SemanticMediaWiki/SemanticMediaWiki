@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
+use MediaWiki\Output\OutputPage;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
+class OutputFormatterTest extends TestCase {
 
 	private $testEnvironment;
 	private $outputPage;
@@ -24,7 +26,7 @@ class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +38,7 @@ class OutputFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\Admin\OutputFormatter',
+			OutputFormatter::class,
 			new OutputFormatter( $this->outputPage )
 		);
 	}

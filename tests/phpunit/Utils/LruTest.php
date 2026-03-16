@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Lru;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Lru;
  *
  * @author mwjames
  */
-class LruTest extends \PHPUnit\Framework\TestCase {
+class LruTest extends TestCase {
 
 	public function testSetGet() {
 		$instance = new Lru( 3 );

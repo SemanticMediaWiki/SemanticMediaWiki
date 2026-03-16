@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Admin;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
+use ReflectionClass;
 use SMW\Localizer\Message;
 use SMW\Utils\FileFetcher;
 use SMW\Utils\HtmlTabs;
@@ -174,7 +175,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 			$classes = get_declared_classes();
 			$class = end( $classes );
 
-			$reflectionClass = new \ReflectionClass( $class );
+			$reflectionClass = new ReflectionClass( $class );
 
 			if (
 				!$reflectionClass->getParentClass() ||

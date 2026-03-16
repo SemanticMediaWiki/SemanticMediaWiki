@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
  *
  * @author mwjames
  */
-class HttpEndpointConnectionExceptionTest extends \PHPUnit\Framework\TestCase {
+class HttpEndpointConnectionExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

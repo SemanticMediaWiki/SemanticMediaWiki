@@ -2,8 +2,15 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Localizer\MessageLocalizer;
+use SMW\SQLStore\Lookup\ErrorLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
+class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends TestCase {
 
 	private $store;
 	private $errorLookup;
@@ -28,11 +35,11 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->errorLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ErrorLookup' )
+		$this->errorLookup = $this->getMockBuilder( ErrorLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'service' ] )
 			->getMockForAbstractClass();
@@ -41,11 +48,11 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 			->method( 'service' )
 			->willReturn( $this->errorLookup );
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,17 +68,17 @@ class ConstraintErrorEntityExaminerDeferrableIndicatorProviderTest extends \PHPU
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerDeferrableIndicatorProvider',
+			ConstraintErrorEntityExaminerDeferrableIndicatorProvider::class,
 			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider',
+			DeferrableIndicatorProvider::class,
 			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProvider',
+			IndicatorProvider::class,
 			new ConstraintErrorEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache )
 		);
 	}

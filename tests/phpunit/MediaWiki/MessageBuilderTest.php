@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Language\Language;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\MessageBuilder;
 
 /**
@@ -13,21 +16,21 @@ use SMW\MediaWiki\MessageBuilder;
  *
  * @author mwjames
  */
-class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
+class MessageBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MessageBuilder',
+			MessageBuilder::class,
 			new MessageBuilder( $language )
 		);
 	}
 
 	public function testFormatNumberToText() {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +45,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testListToCommaSeparatedText() {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,11 +68,11 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrevNextToText() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +97,7 @@ class MessageBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetForm() {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 

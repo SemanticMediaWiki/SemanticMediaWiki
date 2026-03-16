@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
+use SMW\Factbox\CachedFactbox;
 use SMW\MediaWiki\Hooks\ArticlePurge;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\TestEnvironment;
@@ -17,7 +20,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
+class ArticlePurgeTest extends TestCase {
 
 	private $applicationFactory;
 	private $testEnvironment;
@@ -39,7 +42,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 		$this->cache = $this->applicationFactory->newCacheFactory()->newFixedInMemoryCache();
 		$this->applicationFactory->registerObject( 'Cache', $this->cache );
 
-		$this->eventDispatcher = $this->getMockBuilder( '\Onoi\EventDispatcher\EventDispatcher' )
+		$this->eventDispatcher = $this->getMockBuilder( EventDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -84,7 +87,7 @@ class ArticlePurgeTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$cacheFactory = $this->applicationFactory->newCacheFactory();
-		$factboxCacheKey = \SMW\Factbox\CachedFactbox::makeCacheKey( $pageId );
+		$factboxCacheKey = CachedFactbox::makeCacheKey( $pageId );
 		$purgeCacheKey = $cacheFactory->getPurgeCacheKey( $pageId );
 
 		$this->assertEquals(

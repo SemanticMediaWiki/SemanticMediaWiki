@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\SupplementTaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class SupplementTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -25,11 +31,11 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +55,7 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtml() {
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -67,7 +73,7 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsTaskFor() {
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
+		$taskHandler = $this->getMockBuilder( ActionableTask::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +95,7 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHandleSubRequest() {
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +104,7 @@ class SupplementTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->with( 'action' )
 			->willReturn( 'foo' );
 
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\ActionableTask' )
+		$taskHandler = $this->getMockBuilder( ActionableTask::class )
 			->disableOriginalConstructor()
 			->getMock();
 

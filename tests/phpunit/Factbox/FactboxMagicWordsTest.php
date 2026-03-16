@@ -4,11 +4,14 @@ namespace SMW\Tests\Factbox;
 
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\DisplayTitleFinder;
 use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -20,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
+class FactboxMagicWordsTest extends TestCase {
 
 	private $testEnvironment;
 	private $displayTitleFinder;
@@ -30,13 +33,13 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$this->displayTitleFinder = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+		$this->displayTitleFinder = $this->getMockBuilder( DisplayTitleFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -85,7 +88,7 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +96,7 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getExtensionData' )
 			->willReturn( $expected['magicWords'] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -115,7 +118,7 @@ class FactboxMagicWordsTest extends \PHPUnit\Framework\TestCase {
 			$checkMagicWords
 		);
 
-		$reflector = new ReflectionClass( '\SMW\Factbox\Factbox' );
+		$reflector = new ReflectionClass( Factbox::class );
 
 		$magic = $reflector->getMethod( 'getMagicWords' );
 

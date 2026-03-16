@@ -4,9 +4,13 @@ namespace SMW\Tests\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Query\Cache\CacheStats;
 use SMW\Query\Cache\ResultCache;
+use SMW\QueryEngine;
+use SMW\QueryFactory;
+use SMW\Store;
 
 /**
  * @covers \SMW\Query\Cache\ResultCache
@@ -17,7 +21,7 @@ use SMW\Query\Cache\ResultCache;
  *
  * @author mwjames
  */
-class ResultCacheTest extends \PHPUnit\Framework\TestCase {
+class ResultCacheTest extends TestCase {
 
 	private $store;
 	private $queryFactory;
@@ -26,11 +30,11 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 	private $cacheStats;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
+		$this->queryFactory = $this->getMockBuilder( QueryFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +63,7 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
+		$queryEngine = $this->getMockBuilder( QueryEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -104,7 +108,7 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContextPage' )
 			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
-		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
+		$queryEngine = $this->getMockBuilder( QueryEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -178,7 +182,7 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 				return false;
 			} );
 
-		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
+		$queryEngine = $this->getMockBuilder( QueryEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -267,7 +271,7 @@ class ResultCacheTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWith_QUERY() {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

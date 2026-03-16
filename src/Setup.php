@@ -7,6 +7,7 @@ use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\Hooks;
+use SMW\Query\ResultFormat;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Logo;
 
@@ -342,7 +343,7 @@ final class Setup {
 
 	private function registerParamDefinitions( &$vars ) {
 		$vars['wgParamDefinitions']['smwformat'] = [
-			'definition' => '\SMW\Query\ResultFormat',
+			'definition' => ResultFormat::class,
 		];
 	}
 

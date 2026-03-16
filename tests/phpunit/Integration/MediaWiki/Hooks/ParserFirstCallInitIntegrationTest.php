@@ -3,7 +3,13 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use SMW\Query\QueryResult;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
+use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
+use SMW\Store;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -28,11 +34,11 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		$this->mwHooksHandler = $this->testEnvironment->getUtilityFactory()->newMwHooksHandler();
 		$this->mwHooksHandler->deregisterListedHooks();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$this->queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +46,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			->method( 'getErrors' )
 			->willReturn( [] );
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getQueryResult', 'getObjectIds', 'service' ] )
 			->getMockForAbstractClass();
@@ -71,7 +77,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 	 * @dataProvider textToParseProvider
 	 */
 	public function testParseWithParserFunctionEnabled( $parserName, $text ) {
-		$singleEntityQueryLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\SingleEntityQueryLookup' )
+		$singleEntityQueryLookup = $this->getMockBuilder( SingleEntityQueryLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +85,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 			->method( 'getQueryResult' )
 			->willReturn( $this->queryResult );
 
-		$monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
+		$monolingualTextLookup = $this->getMockBuilder( MonolingualTextLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +119,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		}
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->findSemanticataFromOutput( $instance->getOutput() )
 		);
 	}
@@ -142,7 +148,7 @@ class ParserFirstCallInitIntegrationTest extends SMWIntegrationTestCase {
 		}
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$this->findSemanticataFromOutput( $instance->getOutput() )
 		);
 	}

@@ -2,6 +2,11 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\SettingNotFoundException;
+use SMW\Exception\SettingsAlreadyLoadedException;
+use SMW\Listener\ChangeListener\ChangeListener;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\Settings;
 
 /**
@@ -14,14 +19,14 @@ use SMW\Settings;
  * @author mwjames
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SettingsTest extends \PHPUnit\Framework\TestCase {
+class SettingsTest extends TestCase {
 
 	private $hookDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -62,7 +67,7 @@ class SettingsTest extends \PHPUnit\Framework\TestCase {
 	public function testUnknownSettingThrowsException() {
 		$instance = Settings::newFromArray( [ 'Foo' => 'bar' ] );
 
-		$this->expectException( '\SMW\Exception\SettingNotFoundException' );
+		$this->expectException( SettingNotFoundException::class );
 		$instance->get( 'foo' );
 	}
 
@@ -75,7 +80,7 @@ class SettingsTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterChangeListener() {
-		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )
+		$changeListener = $this->getMockBuilder( ChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +146,7 @@ class SettingsTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->loadFromGlobals();
 
-		$this->expectException( '\SMW\Exception\SettingsAlreadyLoadedException' );
+		$this->expectException( SettingsAlreadyLoadedException::class );
 		$instance->loadFromGlobals();
 	}
 

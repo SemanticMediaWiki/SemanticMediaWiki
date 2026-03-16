@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\RedirectTargetUnresolvableException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\RedirectTargetUnresolvableException;
  *
  * @author mwjames
  */
-class RedirectTargetUnresolvableExceptionTest extends \PHPUnit\Framework\TestCase {
+class RedirectTargetUnresolvableExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new RedirectTargetUnresolvableException();

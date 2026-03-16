@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
+use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory
@@ -13,24 +16,24 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
  *
  * @author mwjames
  */
-class DescriptionInterpreterFactoryTest extends \PHPUnit\Framework\TestCase {
+class DescriptionInterpreterFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory',
+			DescriptionInterpreterFactory::class,
 			new DescriptionInterpreterFactory()
 		);
 	}
 
 	public function testCanConstructDispatchingDescriptionInterpreter() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DescriptionInterpreterFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DispatchingDescriptionInterpreter',
+			DispatchingDescriptionInterpreter::class,
 			$instance->newDispatchingDescriptionInterpreter( $conditionBuilder )
 		);
 	}

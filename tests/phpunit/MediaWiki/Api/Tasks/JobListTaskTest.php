@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Api\Tasks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Tasks\JobListTask;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class JobListTaskTest extends \PHPUnit\Framework\TestCase {
+class JobListTaskTest extends TestCase {
 
 	private $jobQueue;
 	private $testEnvironment;

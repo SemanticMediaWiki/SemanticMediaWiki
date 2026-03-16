@@ -35,7 +35,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
 	 *
-	 * @var array of array of (\SMW\Exporter\Element\ExpElement or null)
+	 * @var array of array of (ExpElement or null)
 	 */
 	private $data;
 

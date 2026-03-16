@@ -3,8 +3,11 @@
 namespace SMW\Tests\Property\DeclarationExaminer;
 
 use MediaWiki\Registration\ExtensionRegistry;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
+class PredefinedPropertyExaminerTest extends TestCase {
 
 	private $declarationExaminer;
 	private $semanticData;
@@ -27,7 +30,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$this->declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +38,7 @@ class PredefinedPropertyExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessages' )
 			->willReturn( [] );
 
-		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$this->semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

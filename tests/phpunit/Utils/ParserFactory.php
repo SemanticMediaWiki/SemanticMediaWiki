@@ -35,7 +35,7 @@ class ParserFactory {
 			$user = new MockSuperUser();
 		}
 
-		$parser = \MediaWiki\MediaWikiServices::getInstance()->getParserFactory()->create();
+		$parser = MediaWikiServices::getInstance()->getParserFactory()->create();
 		$parser->setTitle( $title );
 		$parser->setUser( $user );
 		$parser->setOptions( new ParserOptions( $user ) );

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Content;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Content\HtmlBuilder;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Content\HtmlBuilder;
  *
  * @author mwjames
  */
-class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
+class HtmlBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

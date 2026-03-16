@@ -3,10 +3,14 @@
 namespace SMW\Tests\Property\Annotators;
 
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\PageCreator;
 use SMW\ParserData;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -19,7 +23,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class CategoryPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -33,7 +37,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		$this->semanticDataFactory = $this->testEnvironment->getUtilityFactory()->newSemanticDataFactory();
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,7 +50,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +60,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\CategoryPropertyAnnotator',
+			CategoryPropertyAnnotator::class,
 			$instance
 		);
 	}
@@ -156,7 +160,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHiddenCategories' )
 			->willReturn( $parameters['hidCategories'] );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -203,7 +207,7 @@ class CategoryPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddCategoryOnInvalidRedirect() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();

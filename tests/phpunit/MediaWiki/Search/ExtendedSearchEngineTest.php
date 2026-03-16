@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Search;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Search\ExtendedSearch;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\IConnectionProvider;
@@ -15,7 +17,7 @@ use Wikimedia\Rdbms\IConnectionProvider;
  *
  * @author Stephan Gambke
  */
-class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
+class ExtendedSearchEngineTest extends TestCase {
 
 	private $testEnvironment;
 	private $connection;
@@ -324,7 +326,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'map' )
 			->willReturn( [] );
 
-		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
+		$extendedSearch = $this->getMockBuilder( ExtendedSearch::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -359,7 +361,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'map' )
 			->willReturn( [] );
 
-		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
+		$extendedSearch = $this->getMockBuilder( ExtendedSearch::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -389,7 +391,7 @@ class ExtendedSearchEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'map' )
 			->willReturn( [] );
 
-		$extendedSearch = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearch' )
+		$extendedSearch = $this->getMockBuilder( ExtendedSearch::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -3,7 +3,9 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialProcessingErrorList;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SpecialProcessingErrorListTest extends \PHPUnit\Framework\TestCase {
+class SpecialProcessingErrorListTest extends TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;
@@ -25,7 +27,7 @@ class SpecialProcessingErrorListTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

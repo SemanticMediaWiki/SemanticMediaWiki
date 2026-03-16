@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Integration;
 
+use PHPUnit\Framework\TestCase;
 use SMW\ConfigPreloader;
+use SMW\Exception\ConfigPreloadFileNotReadableException;
 use SMW\Utils\FileFetcher;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Utils\FileFetcher;
  *
  * @author mwjames
  */
-class ConfigPreloaderTest extends \PHPUnit\Framework\TestCase {
+class ConfigPreloaderTest extends TestCase {
 
 	private $gl = [];
 
@@ -61,7 +63,7 @@ class ConfigPreloaderTest extends \PHPUnit\Framework\TestCase {
 	public function testLoadingInvalidConfigFile_ThrowsException() {
 		$instance = new ConfigPreloader();
 
-		$this->expectException( '\SMW\Exception\ConfigPreloadFileNotReadableException' );
+		$this->expectException( ConfigPreloadFileNotReadableException::class );
 		$instance->loadConfigFrom( 'foo.php' );
 	}
 

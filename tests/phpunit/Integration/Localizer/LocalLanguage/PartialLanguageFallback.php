@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Localizer\LocalLanguage;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\FallbackFinder;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 use SMW\Localizer\LocalLanguage\LanguageContents;
@@ -16,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PartialLanguageFallback extends \PHPUnit\Framework\TestCase {
+class PartialLanguageFallback extends TestCase {
 
 	private $testEnvironment;
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Options;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Options;
  *
  * @author mwjames
  */
-class OptionsTest extends \PHPUnit\Framework\TestCase {
+class OptionsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Options',
+			Options::class,
 			new Options()
 		);
 	}

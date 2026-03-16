@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Renderer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Renderer\HtmlColumnListRenderer;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -14,7 +15,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class HtmlColumnListRendererTest extends \PHPUnit\Framework\TestCase {
+class HtmlColumnListRendererTest extends TestCase {
 
 	private $stringValidator;
 
@@ -26,7 +27,7 @@ class HtmlColumnListRendererTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlColumnListRenderer',
+			HtmlColumnListRenderer::class,
 			new HtmlColumnListRenderer()
 		);
 	}

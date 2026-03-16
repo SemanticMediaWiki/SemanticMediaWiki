@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\ParserParameterProcessor;
 use SMW\RecurringEvents;
 
@@ -14,7 +15,7 @@ use SMW\RecurringEvents;
  *
  * @author mwjames
  */
-class RecurringEventsTest extends \PHPUnit\Framework\TestCase {
+class RecurringEventsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

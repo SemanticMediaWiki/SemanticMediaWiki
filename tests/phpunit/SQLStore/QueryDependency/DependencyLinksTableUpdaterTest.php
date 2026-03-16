@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
+class DependencyLinksTableUpdaterTest extends TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;
@@ -28,7 +32,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -42,7 +46,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater',
+			DependencyLinksTableUpdater::class,
 			new DependencyLinksTableUpdater( $this->store )
 		);
 	}
@@ -56,7 +60,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getId' )
 			->willReturnOnConsecutiveCalls( 1001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +81,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 				SQLStore::QUERY_LINKS_TABLE,
 				$insert );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +89,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -153,7 +157,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -174,7 +178,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 				SQLStore::QUERY_LINKS_TABLE,
 				$insert );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +186,7 @@ class DependencyLinksTableUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $connection );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();

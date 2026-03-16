@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Deferred;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +15,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CallableUpdateTest extends \PHPUnit\Framework\TestCase {
+class CallableUpdateTest extends TestCase {
 
 	private $testEnvironment;
 	private $spyLogger;

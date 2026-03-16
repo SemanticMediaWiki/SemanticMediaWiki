@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\DIWikiPage;
+use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
+class EntityIdDisposerJobTest extends TestCase {
 
 	private $testEnvironment;
 	private $connection;
@@ -25,7 +31,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -33,10 +39,10 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [ 'Foo' ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->getMockForAbstractClass();
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -55,7 +61,7 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,53 +72,53 @@ class EntityIdDisposerJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstructOutdatedEntitiesResultIterator() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EntityIdDisposerJob( $title );
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\ResultIterator',
+			ResultIterator::class,
 			$instance->newOutdatedEntitiesResultIterator()
 		);
 	}
 
 	public function testCanConstructByNamespaceInvalidEntitiesResultIterator() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EntityIdDisposerJob( $title );
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\ResultIterator',
+			ResultIterator::class,
 			$instance->newByNamespaceInvalidEntitiesResultIterator()
 		);
 	}
 
 	public function testCanConstructOutdatedQueryLinksResultIterator() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EntityIdDisposerJob( $title );
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\ResultIterator',
+			ResultIterator::class,
 			$instance->newOutdatedQueryLinksResultIterator()
 		);
 	}
 
 	public function testCanConstructUnassignedQueryLinksResultIterator() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new EntityIdDisposerJob( $title );
 
 		$this->assertInstanceOf(
-			'\SMW\Iterators\ResultIterator',
+			ResultIterator::class,
 			$instance->newUnassignedQueryLinksResultIterator()
 		);
 	}

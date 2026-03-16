@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\MediaWiki\Api\BrowseByProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\Store;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -16,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
+class BrowseByPropertyTest extends TestCase {
 
 	private $store;
 	private $apiFactory;
@@ -25,7 +28,7 @@ class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -47,7 +50,7 @@ class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Api\BrowseByProperty',
+			BrowseByProperty::class,
 			$instance
 		);
 	}
@@ -68,7 +71,7 @@ class BrowseByPropertyTest extends \PHPUnit\Framework\TestCase {
 			1001
 		];
 
-		$cachedListLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\CachedListLookup' )
+		$cachedListLookup = $this->getMockBuilder( CachedListLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

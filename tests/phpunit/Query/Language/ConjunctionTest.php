@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\Conjunction;
@@ -18,11 +19,11 @@ use SMW\Query\Language\ValueDescription;
  *
  * @author mwjames
  */
-class ConjunctionTest extends \PHPUnit\Framework\TestCase {
+class ConjunctionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			new Conjunction()
 		);
 	}

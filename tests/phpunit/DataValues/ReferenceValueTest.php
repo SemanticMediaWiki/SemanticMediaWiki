@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
+use SMW\Property\SpecificationLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
+class ReferenceValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -27,7 +30,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +44,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ReferenceValue',
+			ReferenceValue::class,
 			new ReferenceValue()
 		);
 	}
@@ -52,7 +55,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIProperty( 'Foobar' )
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
@@ -84,7 +87,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParseValue() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();
@@ -134,7 +137,7 @@ class ReferenceValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParseValueWithErroredDv() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getRedirectTarget' ] )
 			->getMockForAbstractClass();

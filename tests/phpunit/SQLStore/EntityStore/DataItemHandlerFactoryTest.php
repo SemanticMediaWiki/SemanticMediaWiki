@@ -2,7 +2,18 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIBooleanHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIConceptHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIGeoCoordinateHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DINumberHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DITimeHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
+use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
 /**
@@ -14,10 +25,10 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class DataItemHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
+class DataItemHandlerFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -31,7 +42,7 @@ class DataItemHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider dataItemTypeProvider
 	 */
 	public function testGetHandlerByType( $type, $expected ) {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,55 +58,55 @@ class DataItemHandlerFactoryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider invalidTypeProvider
 	 */
 	public function testGetHandlerByInvalidTypeThrowsException( $type ) {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new DataItemHandlerFactory( $store );
 
-		$this->expectException( 'SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( DataItemHandlerException::class );
 		$instance->getHandlerByType( $type );
 	}
 
 	public function dataItemTypeProvider() {
 		$provider[] = [
 			DataItem::TYPE_NUMBER,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DINumberHandler'
+			DINumberHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_BLOB,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler'
+			DIBlobHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_BOOLEAN,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIBooleanHandler'
+			DIBooleanHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_URI,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler'
+			DIUriHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_TIME,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DITimeHandler'
+			DITimeHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_GEO,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIGeoCoordinateHandler'
+			DIGeoCoordinateHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_WIKIPAGE,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler'
+			DIWikiPageHandler::class
 		];
 
 		$provider[] = [
 			DataItem::TYPE_CONCEPT,
-			'\SMW\SQLStore\EntityStore\DataItemHandlers\DIConceptHandler'
+			DIConceptHandler::class
 		];
 
 		return $provider;

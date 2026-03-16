@@ -5,6 +5,8 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMWQuery;
+use SMWQueryProcessor;
 
 /**
  * Class TemplateRendererFactory
@@ -101,8 +103,8 @@ class TemplateRendererFactory {
 
 			$queryResult = $this->getQueryResult();
 
-			$countQuery = \SMWQueryProcessor::createQuery( $queryResult->getQueryString(), \SMWQueryProcessor::getProcessedParams( [] ) );
-			$countQuery->querymode = \SMWQuery::MODE_COUNT;
+			$countQuery = SMWQueryProcessor::createQuery( $queryResult->getQueryString(), SMWQueryProcessor::getProcessedParams( [] ) );
+			$countQuery->querymode = SMWQuery::MODE_COUNT;
 
 			$countQueryResult = $queryResult->getStore()->getQueryResult( $countQuery );
 

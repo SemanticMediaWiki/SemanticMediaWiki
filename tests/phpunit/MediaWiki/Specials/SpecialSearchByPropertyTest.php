@@ -4,8 +4,11 @@ namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialSearchByProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\PropertyTableIdReferenceFinder;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -17,7 +20,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
+class SpecialSearchByPropertyTest extends TestCase {
 
 	private $applicationFactory;
 	private $stringValidator;
@@ -27,11 +30,11 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
+		$propertyTableIdReferenceFinder = $this->getMockBuilder( PropertyTableIdReferenceFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTableIdReferenceFinder', 'getPropertyValues', 'getPropertySubjects', 'service' ] )
 			->getMock();
@@ -61,7 +64,7 @@ class SpecialSearchByPropertyTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SpecialSearchByProperty',
+			SpecialSearchByProperty::class,
 			new SpecialSearchByProperty()
 		);
 	}

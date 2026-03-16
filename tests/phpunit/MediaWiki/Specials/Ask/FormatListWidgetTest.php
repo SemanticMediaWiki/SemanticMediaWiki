@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\Tests\TestEnvironment;
 
@@ -14,12 +16,12 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FormatListWidgetTest extends \PHPUnit\Framework\TestCase {
+class FormatListWidgetTest extends TestCase {
 
 	public function testEmptyParameters() {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -35,7 +37,7 @@ class FormatListWidgetTest extends \PHPUnit\Framework\TestCase {
 	public function testSetResultFormats() {
 		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,10 +2,14 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Permissions\RestrictionStore;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class EditProtectedPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -38,11 +42,11 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -52,7 +56,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\EditProtectedPropertyAnnotator',
+			EditProtectedPropertyAnnotator::class,
 			$instance
 		);
 	}
@@ -80,18 +84,18 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddTopIndicatorToFromMatchableRestriction() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$parserOutput->expects( $this->once() )
 			->method( 'setIndicator' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -109,7 +113,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function titleProvider() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -145,7 +149,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -168,7 +172,7 @@ class EditProtectedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

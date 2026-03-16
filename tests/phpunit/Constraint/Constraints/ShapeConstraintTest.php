@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\DataItemFactory;
+use SMW\SemanticData;
 use SMWDataValue;
 
 /**
@@ -15,7 +17,7 @@ use SMWDataValue;
  *
  * @author mwjames
  */
-class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
+class ShapeConstraintTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -54,7 +56,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-class-shape-constraint-missing-property';
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +97,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 
 		$expectedErrMsg = 'smw-constraint-violation-class-shape-constraint-wrong-type';
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -140,7 +142,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -193,7 +195,7 @@ class ShapeConstraintTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getString' )
 			->willReturn( 'Bar' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

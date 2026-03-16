@@ -58,7 +58,7 @@ class NamespaceExaminer {
 			$namespace = $object->getNamespace();
 		}
 
-		if ( $object instanceof \SMW\DIWikiPage ) {
+		if ( $object instanceof DIWikiPage ) {
 			$namespace = $object->getNamespace();
 		}
 

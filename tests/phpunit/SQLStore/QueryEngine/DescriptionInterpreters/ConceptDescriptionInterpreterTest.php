@@ -2,10 +2,16 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
+use SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use SMW\Utils\CircularReferenceGuard;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
@@ -16,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ConceptDescriptionInterpreterTest extends TestCase {
 
 	private $querySegmentValidator;
 	private $descriptionInterpreterFactory;
@@ -38,19 +44,19 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$this->queryParser = $queryFactory->newQueryParser();
 		$this->dataItemFactory = $applicationFactory->getDataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->circularReferenceGuard = $this->getMockBuilder( '\SMW\Utils\CircularReferenceGuard' )
+		$this->circularReferenceGuard = $this->getMockBuilder( CircularReferenceGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->descriptionInterpreterFactory = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\DescriptionInterpreterFactory' )
+		$this->descriptionInterpreterFactory = $this->getMockBuilder( DescriptionInterpreterFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -110,7 +116,7 @@ class ConceptDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPageID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

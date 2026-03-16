@@ -24,7 +24,7 @@ use SMW\Utils\CircularReferenceGuard;
 class QueryEngineFactory {
 
 	/**
-	 * @var \SMW\SQLStore\SQLStore
+	 * @var SQLStore
 	 */
 	private $store;
 

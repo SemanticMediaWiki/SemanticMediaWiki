@@ -2,10 +2,13 @@
 
 namespace SMW\Tests\Query\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\ValueDescription;
 use SMW\Query\Parser\DescriptionProcessor;
 
 /**
@@ -17,7 +20,7 @@ use SMW\Query\Parser\DescriptionProcessor;
  *
  * @author mwjames
  */
-class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
+class DescriptionProcessorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -47,7 +50,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionProcessor();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Description',
+			Description::class,
 			$instance->newDescriptionForPropertyObjectValue( new DIProperty( 'Foo' ), 'bar' )
 		);
 	}
@@ -58,7 +61,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		$valueDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			$valueDescription
 		);
 
@@ -90,7 +93,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
+			Disjunction::class,
 			$instance->asOr( $currentDescription, $newDescription )
 		);
 	}
@@ -106,7 +109,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
+			Disjunction::class,
 			$instance->asOr( $currentDescription, $newDescription )
 		);
 	}
@@ -122,7 +125,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
+			Disjunction::class,
 			$instance->asOr( $currentDescription, $newDescription )
 		);
 	}
@@ -133,7 +136,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			$instance->asOr( $currentDescription, null )
 		);
 	}
@@ -144,7 +147,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		$newDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			$instance->asOr( null, $newDescription )
 		);
 	}
@@ -160,7 +163,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
@@ -176,7 +179,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
@@ -192,7 +195,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}
@@ -203,7 +206,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			$instance->asAnd( $currentDescription, null )
 		);
 	}
@@ -214,7 +217,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		$newDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			$instance->asAnd( null, $newDescription )
 		);
 	}
@@ -234,7 +237,7 @@ class DescriptionProcessorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Conjunction',
+			Conjunction::class,
 			$instance->asAnd( $currentDescription, $newDescription )
 		);
 	}

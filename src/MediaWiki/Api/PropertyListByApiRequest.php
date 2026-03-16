@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
+use Exception;
 use SMW\DIProperty;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
@@ -206,7 +207,7 @@ class PropertyListByApiRequest {
 		// make the request a success
 		try {
 			$property = DIProperty::newFromUserLabel( $property )->getLabel();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$property = '';
 		}
 

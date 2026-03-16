@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\BeforePageDisplay;
 use SMW\Tests\TestEnvironment;
 
@@ -15,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
+class BeforePageDisplayTest extends TestCase {
 
 	private $outputPage;
 	private $request;
@@ -26,15 +32,15 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	private TestEnvironment $testEnvironment;
 
 	protected function setUp(): void {
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$requestContext = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
+		$requestContext = $this->getMockBuilder( RequestContext::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +48,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRequest' )
 			->willReturn( $this->request );
 
-		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +118,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testModules() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +140,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrependHTML_IncompleteTasks() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -157,7 +163,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testEmptyPrependHTML_IncompleteTasks_DisallowedSpecialPages() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -195,11 +201,11 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 	public function testProcess( $setup, $expected ) {
 		$expected = $expected['result'] ? $this->atLeastOnce() : $this->never();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -229,7 +235,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 
 	public function titleDataProvider() {
 		# 0 Standard title
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -251,7 +257,7 @@ class BeforePageDisplayTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1 as SpecialPage
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

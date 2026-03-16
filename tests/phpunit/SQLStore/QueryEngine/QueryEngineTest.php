@@ -2,7 +2,15 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Query\Language\Description;
+use SMW\Query\QueryResult;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
+use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\QueryEngine;
+use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
+use SMW\SQLStore\SQLStore;
 use SMWQuery as Query;
 
 /**
@@ -14,7 +22,7 @@ use SMWQuery as Query;
  *
  * @author mwjames
  */
-class QueryEngineTest extends \PHPUnit\Framework\TestCase {
+class QueryEngineTest extends TestCase {
 
 	private $store;
 	private $conditionBuilder;
@@ -22,19 +30,19 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	private $engineOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->querySegmentListProcessor = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\QuerySegmentListProcessor' )
+		$this->querySegmentListProcessor = $this->getMockBuilder( QuerySegmentListProcessor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->engineOptions = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\EngineOptions' )
+		$this->engineOptions = $this->getMockBuilder( EngineOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -47,7 +55,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetQueryResultForDebugQueryMode() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +71,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getExecutedQueries' )
 			->willReturn( [] );
 
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
 		$instance = new QueryEngine(
 			$this->store,
@@ -82,7 +90,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetImmediateEmptyQueryResultForLimitLessThanOne() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +102,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrors' )
 			->willReturn( [] );
 
-		$description = $this->getMockForAbstractClass( '\SMW\Query\Language\Description' );
+		$description = $this->getMockForAbstractClass( Description::class );
 
 		$instance = new QueryEngine(
 			$this->store,
@@ -107,7 +115,7 @@ class QueryEngineTest extends \PHPUnit\Framework\TestCase {
 		$query->setUnboundLimit( -1 );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$instance->getQueryResult( $query )
 		);
 	}

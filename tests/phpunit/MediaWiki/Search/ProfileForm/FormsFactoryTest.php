@@ -2,6 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\SortForm;
 use SMW\MediaWiki\Search\ProfileForm\FormsFactory;
 
 /**
@@ -13,12 +19,12 @@ use SMW\MediaWiki\Search\ProfileForm\FormsFactory;
  *
  * @author mwjames
  */
-class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
+class FormsFactoryTest extends TestCase {
 
 	private $webRequest;
 
 	protected function setUp(): void {
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -34,7 +40,7 @@ class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm',
+			OpenForm::class,
 			$instance->newOpenForm( $this->webRequest )
 		);
 	}
@@ -43,7 +49,7 @@ class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm',
+			CustomForm::class,
 			$instance->newCustomForm( $this->webRequest )
 		);
 	}
@@ -52,7 +58,7 @@ class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\ProfileForm\Forms\SortForm',
+			SortForm::class,
 			$instance->newSortForm( $this->webRequest )
 		);
 	}
@@ -61,7 +67,7 @@ class FormsFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FormsFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm',
+			NamespaceForm::class,
 			$instance->newNamespaceForm()
 		);
 	}

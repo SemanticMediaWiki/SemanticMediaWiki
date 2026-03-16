@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\LanguageCodeValue;
 
 /**
@@ -13,11 +14,11 @@ use SMW\DataValues\LanguageCodeValue;
  *
  * @author mwjames
  */
-class LanguageCodeValueTest extends \PHPUnit\Framework\TestCase {
+class LanguageCodeValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\LanguageCodeValue',
+			LanguageCodeValue::class,
 			new LanguageCodeValue()
 		);
 	}

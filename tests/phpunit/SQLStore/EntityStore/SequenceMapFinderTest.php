@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\SequenceMapFinder;
+use SMW\Utils\HmacSerializer;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SequenceMapFinder
@@ -14,18 +18,18 @@ use SMW\SQLStore\EntityStore\SequenceMapFinder;
  *
  * @author mwjames
  */
-class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
+class SequenceMapFinderTest extends TestCase {
 
 	private $cache;
 	private $idCacheManager;
 	private Database $connection;
 
 	protected function setUp(): void {
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->idCacheManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\IdCacheManager' )
+		$this->idCacheManager = $this->getMockBuilder( IdCacheManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +72,7 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindMapById() {
-		$map = \SMW\Utils\HmacSerializer::compress( [ 'Foo' ] );
+		$map = HmacSerializer::compress( [ 'Foo' ] );
 
 		$row = [
 			'smw_id' => 1001,
@@ -101,7 +105,7 @@ class SequenceMapFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrefetchSequenceMap() {
-		$map = \SMW\Utils\HmacSerializer::compress( [ 'Foo' ] );
+		$map = HmacSerializer::compress( [ 'Foo' ] );
 
 		$row = [
 			'smw_id' => 1001,

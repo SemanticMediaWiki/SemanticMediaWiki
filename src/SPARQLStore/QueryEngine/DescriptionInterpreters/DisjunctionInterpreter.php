@@ -15,6 +15,7 @@ use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
 use SMWExporter as Exporter;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -132,7 +133,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 		// Using a stdClass as data container for simpler handling in follow-up tasks
 		// and as the class is not exposed publicly we don't need to create
 		// an extra "real" class to manage its elements
-		$subConditionElements = new \stdClass;
+		$subConditionElements = new stdClass;
 
 		$subConditionElements->unionCondition = '';
 		$subConditionElements->filter = '';

@@ -3,6 +3,8 @@
 namespace SMW\Tests\MediaWiki\Preference;
 
 use MediaWiki\User\Options\UserOptionsLookup;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 
 /**
@@ -14,14 +16,14 @@ use SMW\MediaWiki\Preference\PreferenceExaminer;
  *
  * @author mwjames
  */
-class PreferenceExaminerTest extends \PHPUnit\Framework\TestCase {
+class PreferenceExaminerTest extends TestCase {
 
 	private $user;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

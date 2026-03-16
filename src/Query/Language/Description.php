@@ -53,7 +53,7 @@ abstract class Description {
 	}
 
 	/**
-	 * Add a single SMW\Query\PrintRequest.
+	 * Add a single PrintRequest.
 	 *
 	 * @param PrintRequest $printRequest
 	 */

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\TableBuilder\PostgresTableBuilder;
 use SMW\SQLStore\TableBuilder\Table;
 use Wikimedia\Rdbms\Database;
@@ -16,7 +17,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class PostgresTableBuilderTest extends \PHPUnit\Framework\TestCase {
+class PostgresTableBuilderTest extends TestCase {
 
 	private $connection;
 

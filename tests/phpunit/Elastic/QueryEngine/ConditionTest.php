@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\QueryEngine\Condition;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Elastic\QueryEngine\Condition;
  *
  * @author mwjames
  */
-class ConditionTest extends \PHPUnit\Framework\TestCase {
+class ConditionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

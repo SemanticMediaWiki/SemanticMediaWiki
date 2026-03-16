@@ -3,9 +3,15 @@
 namespace SMW\Tests\Schema;
 
 use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
+use SMW\Store;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -17,22 +23,22 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
+class SchemaFinderTest extends TestCase {
 
 	private $store;
 	private $propertySpecificationLookup;
 	private Cache $cache;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -72,7 +78,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\SchemaList',
+			SchemaList::class,
 			$instance->getSchemaListByType( 'Foo' )
 		);
 	}
@@ -97,7 +103,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\SchemaList',
+			SchemaList::class,
 			$instance->getConstraintSchema( new DIProperty( 'Foo' ) )
 		);
 	}
@@ -121,7 +127,7 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\SchemaList',
+			SchemaList::class,
 			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
 		);
 	}
@@ -160,13 +166,13 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Schema\SchemaList',
+			SchemaList::class,
 			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
 		);
 	}
 
 	public function testRegisterPropertyChangeListener() {
-		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+		$propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,9 +190,9 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord() {
-		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+		$changeRecord = new ChangeRecord(
 			[
-				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
+				new ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
 			]
 		);
 
@@ -204,9 +210,9 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord_InvalidKey() {
-		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+		$changeRecord = new ChangeRecord(
 			[
-				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
+				new ChangeRecord( [ 'row' => [ 'o_hash' => 'Foo' ] ] )
 			]
 		);
 
@@ -223,9 +229,9 @@ class SchemaFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord_NoHashField() {
-		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+		$changeRecord = new ChangeRecord(
 			[
-				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 'o_id' => 42 ] ] )
+				new ChangeRecord( [ 'row' => [ 'o_id' => 42 ] ] )
 			]
 		);
 

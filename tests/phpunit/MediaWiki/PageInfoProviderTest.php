@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Content\Content;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\PageInfoProvider;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\Tests\Utils\Mock\MockTitle;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
+class PageInfoProviderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$wikipage = $this->getMockBuilder( '\WikiPage' )
@@ -22,7 +28,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageInfoProvider',
+			PageInfoProvider::class,
 			new PageInfoProvider( $wikipage )
 		);
 	}
@@ -40,7 +46,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testWikiPage_TYPE_CREATION_DATE() {
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +64,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+		$revisionLookup = $this->getMockBuilder( RevisionLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +98,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider parentIdProvider
 	 */
 	public function testWikiPage_TYPE_NEW_PAGE( $parentId, $expected ) {
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -100,7 +106,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getParentId' )
 			->willReturn( $parentId );
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -162,7 +168,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 				->willReturn( $returnValue );
 		}
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +178,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 				->willReturn( $returnValue );
 		}
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -189,7 +195,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		if ( $parameters['revision'] != [] ) {
-			$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+			$revisionLookup = $this->getMockBuilder( RevisionLookup::class )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -283,7 +289,7 @@ class PageInfoProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testWikiPage_NativeData() {
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 

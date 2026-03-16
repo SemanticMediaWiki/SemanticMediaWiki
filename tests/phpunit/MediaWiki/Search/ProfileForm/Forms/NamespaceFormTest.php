@@ -2,6 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Search\ProfileForm\Forms;
 
+use MediaWiki\Title\NamespaceInfo;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\Localizer;
+use SMW\Localizer\MessageLocalizer;
 use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
 
 /**
@@ -13,22 +18,22 @@ use SMW\MediaWiki\Search\ProfileForm\Forms\NamespaceForm;
  *
  * @author mwjames
  */
-class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
+class NamespaceFormTest extends TestCase {
 
 	private $namespaceInfo;
 	private $localizer;
 	private $messageLocalizer;
 
 	protected function setUp(): void {
-		$this->namespaceInfo = $this->getMockBuilder( '\MediaWiki\Title\NamespaceInfo' )
+		$this->namespaceInfo = $this->getMockBuilder( NamespaceInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->localizer = $this->getMockBuilder( '\SMW\Localizer\Localizer' )
+		$this->localizer = $this->getMockBuilder( Localizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -59,7 +64,7 @@ class NamespaceFormTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCheckNamespaceEditToken() {
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 

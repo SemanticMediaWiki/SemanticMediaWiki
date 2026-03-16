@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\Element;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
@@ -16,11 +17,11 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class ExpLiteralTest extends \PHPUnit\Framework\TestCase {
+class ExpLiteralTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Element\ExpLiteral',
+			ExpLiteral::class,
 			new ExpLiteral( '', '', '', null )
 		);
 	}

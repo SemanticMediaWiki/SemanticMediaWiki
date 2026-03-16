@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
+use SMW\Services\DataValueServiceFactory;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter
@@ -15,18 +18,18 @@ use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
  *
  * @author mwjames
  */
-class MonolingualTextValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class MonolingualTextValueFormatterTest extends TestCase {
 
 	private $dataValueServiceFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,13 +44,13 @@ class MonolingualTextValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter',
+			MonolingualTextValueFormatter::class,
 			new MonolingualTextValueFormatter()
 		);
 	}
 
 	public function testIsFormatterForValidation() {
-		$monolingualTextValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+		$monolingualTextValue = $this->getMockBuilder( MonolingualTextValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

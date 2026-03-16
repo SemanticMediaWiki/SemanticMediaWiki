@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Query;
 
+use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Deferred;
 
 /**
@@ -13,10 +15,10 @@ use SMW\Query\Deferred;
  *
  * @author mwjames
  */
-class DeferredTest extends \PHPUnit\Framework\TestCase {
+class DeferredTest extends TestCase {
 
 	public function testRegisterResourceModules() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 

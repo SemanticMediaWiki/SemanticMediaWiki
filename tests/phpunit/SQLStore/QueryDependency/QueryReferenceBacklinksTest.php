@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
 
 /**
@@ -15,7 +18,7 @@ use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
  *
  * @author mwjames
  */
-class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
+class QueryReferenceBacklinksTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -30,12 +33,12 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
+		$queryDependencyLinksStore = $this->getMockBuilder( QueryDependencyLinksStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryDependency\QueryReferenceBacklinks',
+			QueryReferenceBacklinks::class,
 			new QueryReferenceBacklinks( $queryDependencyLinksStore )
 		);
 	}
@@ -43,7 +46,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 	public function testAddQueryReferenceBacklinksTo() {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', 'foobar' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -57,7 +60,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 				$this->dataItemFactory->newDIProperty( '_ASK' ),
 				$this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
-		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
+		$queryDependencyLinksStore = $this->getMockBuilder( QueryDependencyLinksStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +91,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 	public function testFindQueryReferenceBacklinks() {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 
-		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
+		$queryDependencyLinksStore = $this->getMockBuilder( QueryDependencyLinksStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +115,7 @@ class QueryReferenceBacklinksTest extends \PHPUnit\Framework\TestCase {
 		$property = $this->dataItemFactory->newDIProperty( '_ASK' );
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 
-		$queryDependencyLinksStore = $this->getMockBuilder( '\SMW\SQLStore\QueryDependency\QueryDependencyLinksStore' )
+		$queryDependencyLinksStore = $this->getMockBuilder( QueryDependencyLinksStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

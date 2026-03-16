@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Search\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
  *
  * @author mwjames
  */
-class SearchDatabaseInvalidTypeExceptionTest extends \PHPUnit\Framework\TestCase {
+class SearchDatabaseInvalidTypeExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SearchDatabaseInvalidTypeException( 'Foo' );

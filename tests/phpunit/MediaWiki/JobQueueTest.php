@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
+use SMW\FakeJob;
 use SMW\MediaWiki\JobQueue;
 
 /**
@@ -13,7 +15,7 @@ use SMW\MediaWiki\JobQueue;
  *
  * @author mwjames
  */
-class JobQueueTest extends \PHPUnit\Framework\TestCase {
+class JobQueueTest extends TestCase {
 
 	private $jobQueueGroup;
 
@@ -221,7 +223,7 @@ class JobQueueTest extends \PHPUnit\Framework\TestCase {
 		$instance = new JobQueue( $this->jobQueueGroup );
 
 		$this->assertTrue(
-			$instance->hasPendingJob( 'SMW\FakeJob' )
+			$instance->hasPendingJob( FakeJob::class )
 		);
 	}
 

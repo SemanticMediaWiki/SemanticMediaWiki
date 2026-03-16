@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Rule;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Schema\Rule;
  *
  * @author mwjames
  */
-class RuleTest extends \PHPUnit\Framework\TestCase {
+class RuleTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceof(

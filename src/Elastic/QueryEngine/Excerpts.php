@@ -3,6 +3,7 @@
 namespace SMW\Elastic\QueryEngine;
 
 use SMW\DIWikiPage;
+use SMW\Query\Excerpts as BaseExcerpts;
 
 /**
  * @license GPL-2.0-or-later
@@ -10,7 +11,7 @@ use SMW\DIWikiPage;
  *
  * @author mwjames
  */
-class Excerpts extends \SMW\Query\Excerpts {
+class Excerpts extends BaseExcerpts {
 
 	/**
 	 * @since 3.0

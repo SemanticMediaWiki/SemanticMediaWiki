@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 
 /**
@@ -14,7 +15,7 @@ use SMW\MediaWiki\Specials\Ask\ErrorWidget;
  *
  * @author mwjames
  */
-class ErrorWidgetTest extends \PHPUnit\Framework\TestCase {
+class ErrorWidgetTest extends TestCase {
 
 	public function testSessionFailure() {
 		$this->assertIsString(

@@ -3,7 +3,11 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
+use SMW\MediaWiki\Page\ConceptPage;
+use SMW\MediaWiki\Page\PropertyPage;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\ArticleFromTitle
@@ -14,14 +18,14 @@ use SMW\MediaWiki\Hooks\ArticleFromTitle;
  *
  * @author mwjames
  */
-class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
+class ArticleFromTitleTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
@@ -62,12 +66,12 @@ class ArticleFromTitleTest extends \PHPUnit\Framework\TestCase {
 	public function namespaceProvider() {
 		$provider[] = [
 			SMW_NS_PROPERTY,
-			'SMW\MediaWiki\Page\PropertyPage'
+			PropertyPage::class
 		];
 
 		$provider[] = [
 			SMW_NS_CONCEPT,
-			'SMW\MediaWiki\Page\ConceptPage'
+			ConceptPage::class
 		];
 
 		return $provider;

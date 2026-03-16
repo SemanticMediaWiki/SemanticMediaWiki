@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use Exception;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
@@ -129,7 +130,7 @@ class RevisionFromEditComplete implements HookListener {
 				$title->getDBKey(),
 				$this->pageInfoProvider->getNativeData()
 			);
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			return null;
 		}
 

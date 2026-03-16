@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class QuerySegmentTest extends \PHPUnit\Framework\TestCase {
+class QuerySegmentTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\QuerySegment',
+			QuerySegment::class,
 			new QuerySegment()
 		);
 	}

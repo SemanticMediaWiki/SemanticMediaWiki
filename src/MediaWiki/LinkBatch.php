@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use MediaWiki\Cache\LinkBatch as MwLinkBatch;
 use MediaWiki\MediaWikiServices;
 use SMW\DIWikiPage;
 
@@ -32,16 +33,16 @@ class LinkBatch {
 	private $batch = [];
 
 	/**
-	 * @var \LinkBatch|null
+	 * @var MwLinkBatch|null
 	 */
 	private $linkBatch;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param \LinkBatch|null $linkBatch
+	 * @param MwLinkBatch|null $linkBatch
 	 */
-	public function __construct( ?\LinkBatch $linkBatch = null ) {
+	public function __construct( ?MwLinkBatch $linkBatch = null ) {
 		$this->linkBatch = $linkBatch;
 	}
 

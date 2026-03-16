@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\TitleQuickPermissions;
+use SMW\MediaWiki\Permission\TitlePermissions;
+use SMW\NamespaceExaminer;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
+class TitleQuickPermissionsTest extends TestCase {
 
 	private $testEnvironment;
 	private $titlePermissions;
@@ -27,19 +32,19 @@ class TitleQuickPermissionsTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->titlePermissions = $this->getMockBuilder( '\SMW\MediaWiki\Permission\TitlePermissions' )
+		$this->titlePermissions = $this->getMockBuilder( TitlePermissions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

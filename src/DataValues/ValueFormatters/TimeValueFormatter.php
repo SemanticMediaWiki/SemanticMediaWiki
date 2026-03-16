@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use Exception;
 use MediaWiki\Html\Html;
 use RuntimeException;
 use SMW\DataValues\Time\IntlTimeFormatter;
@@ -369,7 +370,7 @@ class TimeValueFormatter extends DataValueFormatter {
 			$localizedFormat = $intlTimeFormatter->getLocalizedFormat( $formatFlag ) .
 				$this->hintTimeCorrection( $intlTimeFormatter->hasLocalTimeCorrection() ) .
 				$this->hintCalendarModel( $dataItem );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$localizedFormat = $this->getISO8601Date();
 		}
 

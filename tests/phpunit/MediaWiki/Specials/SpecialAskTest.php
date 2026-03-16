@@ -3,7 +3,10 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialAsk;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
@@ -16,7 +19,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  *
  * @author mwjames
  */
-class SpecialAskTest extends \PHPUnit\Framework\TestCase {
+class SpecialAskTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -25,7 +28,7 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -39,13 +42,13 @@ class SpecialAskTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SpecialAsk',
+			SpecialAsk::class,
 			new SpecialAsk()
 		);
 	}
 
 	public function testExecuteWithValidUser() {
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

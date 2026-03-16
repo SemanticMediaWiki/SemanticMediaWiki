@@ -4,9 +4,15 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\DAO\WikiAwareEntity;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\ContentParser;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWDIBlob as DIBlob;
 
@@ -19,7 +25,7 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class UpdateJobTest extends \PHPUnit\Framework\TestCase {
+class UpdateJobTest extends TestCase {
 
 	private $testEnvironment;
 	private $semanticDataFactory;
@@ -39,7 +45,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getPropertyValues', 'updateData' ] )
 			->getMock();
@@ -54,7 +60,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -70,18 +76,18 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\UpdateJob',
+			UpdateJob::class,
 			new UpdateJob( $title )
 		);
 	}
 
 	public function testJobWithMissingParserOutput() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +102,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithInvalidTitle() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +127,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithNoRevisionAvailable() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +135,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+		$contentParser = $this->getMockBuilder( ContentParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -146,7 +152,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobWithValidRevision() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -162,7 +168,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+		$contentParser = $this->getMockBuilder( ContentParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +190,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findAssociatedRev' )
 			->willReturn( 42 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'clearData', 'getObjectIds' ] )
 			->getMock();
@@ -205,7 +211,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testJobToCompareLastModified() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -231,7 +237,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 				->willReturn( WikiAwareEntity::LOCAL );
 		}
 
-		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+		$contentParser = $this->getMockBuilder( ContentParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -245,7 +251,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyValues', 'getObjectIds' ] )
 			->getMock();
@@ -269,7 +275,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 	public function testJobOnSerializedSemanticData() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -303,7 +309,7 @@ class UpdateJobTest extends \PHPUnit\Framework\TestCase {
 			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
 		);
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData', 'getPropertyValues' ] )
 			->getMockForAbstractClass();

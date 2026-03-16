@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIConcept;
 use SMW\DIProperty;
@@ -21,7 +22,7 @@ use SMWDITime;
  *
  * @author mwjames
  */
-class XsdValueMapperTest extends \PHPUnit\Framework\TestCase {
+class XsdValueMapperTest extends TestCase {
 
 	/**
 	 * @dataProvider supportedDataItemProvider

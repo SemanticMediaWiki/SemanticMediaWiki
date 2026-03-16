@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
 
@@ -14,7 +16,7 @@ use SMW\Listener\ChangeListener\ChangeRecord;
  *
  * @author mwjames
  */
-class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
+class ChangeRecordTest extends TestCase {
 
 	private $logger;
 	private $key;
@@ -23,7 +25,7 @@ class ChangeRecordTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

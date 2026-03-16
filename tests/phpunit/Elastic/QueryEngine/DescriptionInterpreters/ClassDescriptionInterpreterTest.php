@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\Query\DescriptionFactory;
 
@@ -15,12 +17,12 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ClassDescriptionInterpreterTest extends TestCase {
 
 	private $conditionBuilder;
 
 	public function setUp(): void {
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getID', 'findHierarchyMembers', 'prepareCache' ] )
 			->getMock();

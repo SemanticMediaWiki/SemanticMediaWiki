@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\ValueFormatters\ReferenceValueFormatter;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ReferenceValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class ReferenceValueFormatterTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -30,7 +32,7 @@ class ReferenceValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->stringValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newStringValidator();
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,13 +46,13 @@ class ReferenceValueFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\ReferenceValueFormatter',
+			ReferenceValueFormatter::class,
 			new ReferenceValueFormatter()
 		);
 	}
 
 	public function testIsFormatterForValidation() {
-		$referenceValue = $this->getMockBuilder( '\SMW\DataValues\ReferenceValue' )
+		$referenceValue = $this->getMockBuilder( ReferenceValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

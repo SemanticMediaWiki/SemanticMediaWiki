@@ -3,6 +3,13 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use PHPUnit\Framework\TestCase;
+use SMW\EntityCache;
+use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
+use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
+use SMW\Property\SpecificationLookup;
+use SMW\Query\Cache\ResultCache;
 
 /**
  * @group semantic-mediawiki
@@ -12,7 +19,7 @@ use Onoi\CallbackContainer\CallbackContainerFactory;
  *
  * @author mwjames
  */
-class EventsServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
+class EventsServicesContainerBuildTest extends TestCase {
 
 	private $callbackContainerFactory;
 	private $servicesFileDir;
@@ -23,15 +30,15 @@ class EventsServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->resultCache = $this->getMockBuilder( '\SMW\Query\Cache\ResultCache' )
+		$this->resultCache = $this->getMockBuilder( ResultCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,19 +70,19 @@ class EventsServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			'InvalidateResultCacheEventListener',
 			[],
-			'\SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener'
+			InvalidateResultCacheEventListener::class
 		];
 
 		$provider[] = [
 			'InvalidateEntityCacheEventListener',
 			[],
-			'\SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener'
+			InvalidateEntityCacheEventListener::class
 		];
 
 		$provider[] = [
 			'InvalidatePropertySpecificationLookupCacheEventListener',
 			[],
-			'\SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener'
+			InvalidatePropertySpecificationLookupCacheEventListener::class
 		];
 
 		return $provider;

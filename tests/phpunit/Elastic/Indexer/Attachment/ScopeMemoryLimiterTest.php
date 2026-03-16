@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer\Attachment;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
  *
  * @author mwjames
  */
-class ScopeMemoryLimiterTest extends \PHPUnit\Framework\TestCase {
+class ScopeMemoryLimiterTest extends TestCase {
 
 	private $testCaller;
 	private $memoryLimitFromCallable;

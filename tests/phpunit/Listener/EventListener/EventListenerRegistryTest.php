@@ -4,6 +4,7 @@ namespace SMW\Tests\Listener\EventListener;
 
 use Onoi\EventDispatcher\EventDispatcherFactory;
 use Onoi\EventDispatcher\EventListenerCollection;
+use PHPUnit\Framework\TestCase;
 use SMW\Listener\EventListener\EventListenerRegistry;
 use SMW\Tests\TestEnvironment;
 
@@ -16,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EventListenerRegistryTest extends \PHPUnit\Framework\TestCase {
+class EventListenerRegistryTest extends TestCase {
 
 	private $testEnvironment;
 	private $eventDispatcherFactory;
@@ -31,7 +32,7 @@ class EventListenerRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
+		$eventListenerCollection = $this->getMockBuilder( EventListenerCollection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +43,7 @@ class EventListenerRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testListenerCollection() {
-		$eventListenerCollection = $this->getMockBuilder( '\Onoi\EventDispatcher\EventListenerCollection' )
+		$eventListenerCollection = $this->getMockBuilder( EventListenerCollection::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'registerCallback' ] )
 			->getMockForAbstractClass();
@@ -53,7 +54,7 @@ class EventListenerRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new EventListenerRegistry( $eventListenerCollection );
 
 		$this->assertInstanceOf(
-			'\Onoi\EventDispatcher\EventListenerCollection',
+			EventListenerCollection::class,
 			$instance
 		);
 	}

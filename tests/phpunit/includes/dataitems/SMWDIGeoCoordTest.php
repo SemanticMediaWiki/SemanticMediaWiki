@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\DataItemException;
 use SMWDIGeoCoord;
 
@@ -11,7 +12,7 @@ use SMWDIGeoCoord;
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDIGeoCoordTest extends \PHPUnit\Framework\TestCase {
+class SMWDIGeoCoordTest extends TestCase {
 
 	public function testConstructorWithArrayArgumentForm() {
 		$coordinate = new SMWDIGeoCoord( [ 'lat' => 13.37, 'lon' => 42.42 ] );

@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\UniquenessConstraintValue;
+use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UniquenessConstraintValueTest extends \PHPUnit\Framework\TestCase {
+class UniquenessConstraintValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -25,7 +27,7 @@ class UniquenessConstraintValueTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -38,7 +40,7 @@ class UniquenessConstraintValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\UniquenessConstraintValue',
+			UniquenessConstraintValue::class,
 			new UniquenessConstraintValue()
 		);
 	}

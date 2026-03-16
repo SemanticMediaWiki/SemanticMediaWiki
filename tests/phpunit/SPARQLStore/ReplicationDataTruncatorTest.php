@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\SPARQLStore\ReplicationDataTruncator;
 
@@ -14,7 +15,7 @@ use SMW\SPARQLStore\ReplicationDataTruncator;
  *
  * @author mwjames
  */
-class ReplicationDataTruncatorTest extends \PHPUnit\Framework\TestCase {
+class ReplicationDataTruncatorTest extends TestCase {
 
 	private $semanticData;
 
@@ -26,7 +27,7 @@ class ReplicationDataTruncatorTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\ReplicationDataTruncator',
+			ReplicationDataTruncator::class,
 			new ReplicationDataTruncator()
 		);
 	}

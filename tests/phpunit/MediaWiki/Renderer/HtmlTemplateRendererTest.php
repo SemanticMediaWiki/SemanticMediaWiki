@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Renderer;
 
+use MediaWiki\Parser\Parser;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Renderer\HtmlTemplateRenderer;
 use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
 
@@ -14,25 +16,25 @@ use SMW\MediaWiki\Renderer\WikitextTemplateRenderer;
  *
  * @author mwjames
  */
-class HtmlTemplateRendererTest extends \PHPUnit\Framework\TestCase {
+class HtmlTemplateRendererTest extends TestCase {
 
 	public function testCanConstruct() {
-		$wikitextTemplateRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\WikitextTemplateRenderer' )
+		$wikitextTemplateRenderer = $this->getMockBuilder( WikitextTemplateRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Renderer\HtmlTemplateRenderer',
+			HtmlTemplateRenderer::class,
 			 new HtmlTemplateRenderer( $wikitextTemplateRenderer, $parser )
 		);
 	}
 
 	public function testRenderTemplate() {
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 

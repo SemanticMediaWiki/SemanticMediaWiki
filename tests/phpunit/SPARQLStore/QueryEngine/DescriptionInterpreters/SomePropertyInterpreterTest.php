@@ -2,13 +2,17 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\HierarchyLookup;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
@@ -27,7 +31,7 @@ use SMWExporter;
  *
  * @author mwjames
  */
-class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
+class SomePropertyInterpreterTest extends TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -38,22 +42,22 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter',
+			SomePropertyInterpreter::class,
 			new SomePropertyInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanInterpretDescription() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\SomeProperty' )
+		$description = $this->getMockBuilder( SomeProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +72,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider descriptionProvider
 	 */
 	public function testSomeProperty( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
-		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,7 +106,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$property = new DIProperty( 'Foo' );
 
-		$hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -144,7 +148,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
+		$conditionType = FalseCondition::class;
 
 		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
@@ -167,7 +171,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
@@ -190,7 +194,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 2 Inverse
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
 			new DIProperty( 'Foo', true ),
@@ -213,7 +217,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 3
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
@@ -237,7 +241,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 4
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
@@ -263,7 +267,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 5
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
@@ -290,7 +294,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 6
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -323,7 +327,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 7
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -352,7 +356,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 8
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
@@ -388,7 +392,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 9 Inverse -> ?v1 property:Foo ?v2 vs. ?v2 property:Foo ?v1
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo', true );
 		$property->setPropertyTypeId( '_wpg' );
@@ -421,7 +425,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 10
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( '_MDAT' );
 
@@ -447,7 +451,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 11, issue 556
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
@@ -475,7 +479,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 12 use the rdf/owl equivalent for a predefined property
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( '_SUBC' );
 
@@ -498,7 +502,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 13
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( '_SUBP' );
 
@@ -521,7 +525,7 @@ class SomePropertyInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 14 aux-property
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$property = new DIProperty( '_MDAT' );
 

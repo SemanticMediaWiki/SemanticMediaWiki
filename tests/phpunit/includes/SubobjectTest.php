@@ -4,7 +4,12 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
+use SMW\DIProperty;
+use SMW\Exception\SubSemanticDataException;
+use SMW\Property\SpecificationLookup;
 use SMW\Subobject;
 use SMWDIBlob;
 
@@ -19,7 +24,7 @@ use SMWDIBlob;
  *
  * @author mwjames
  */
-class SubobjectTest extends \PHPUnit\Framework\TestCase {
+class SubobjectTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -30,7 +35,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,12 +45,12 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Subobject',
+			Subobject::class,
 			new Subobject( $title )
 		);
 	}
@@ -67,7 +72,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DataModel\ContainerSemanticData',
+			ContainerSemanticData::class,
 			$instance->getSemanticData()
 		);
 
@@ -106,7 +111,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\DIProperty',
+			DIProperty::class,
 			$instance->getProperty()
 		);
 	}
@@ -145,7 +150,7 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider newDataValueProvider
 	 */
 	public function testDataValueExaminer( array $parameters, array $expected ) {
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -188,14 +193,14 @@ class SubobjectTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( SubSemanticDataException::class );
 		$instance->addDataValue( $dataValue );
 	}
 
 	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
 		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( SubSemanticDataException::class );
 		$instance->getSemanticData();
 	}
 

@@ -4,7 +4,9 @@ namespace SMW\Tests\ParserFunctions;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
+use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
 use SMW\MessageFormatter;
 use SMW\ParserData;
@@ -22,7 +24,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
+class SubobjectParserFunctionTest extends TestCase {
 
 	private $semanticDataValidator;
 
@@ -35,16 +37,16 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 	public function testCanConstruct() {
 		$subobject = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageFormatter = $this->getMockBuilder( '\SMW\MessageFormatter' )
+		$messageFormatter = $this->getMockBuilder( MessageFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctions\SubobjectParserFunction',
+			SubobjectParserFunction::class,
 			new SubobjectParserFunction(
 				$parserData,
 				$subobject,
@@ -279,7 +281,7 @@ class SubobjectParserFunctionTest extends \PHPUnit\Framework\TestCase {
 		$instance = $this->acquireInstance( $subobject );
 		$instance->parse( new ParserParameterProcessor( $parameters ) );
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( SubSemanticDataException::class );
 		$subobject->getSubobjectId();
 	}
 

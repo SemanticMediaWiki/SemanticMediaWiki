@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
+use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
 /**
@@ -15,7 +17,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class SearchTableTest extends \PHPUnit\Framework\TestCase {
+class SearchTableTest extends TestCase {
 
 	private $store;
 	private $dataItemFactory;
@@ -23,14 +25,14 @@ class SearchTableTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTable',
+			SearchTable::class,
 			new SearchTable( $this->store )
 		);
 	}

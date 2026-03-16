@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\Lookup\CachedListLookup;
+use SMW\SQLStore\Lookup\ListLookup;
 
 /**
  * @covers \SMW\SQLStore\Lookup\CachedListLookup
@@ -13,19 +16,19 @@ use SMW\SQLStore\Lookup\CachedListLookup;
  *
  * @author mwjames
  */
-class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
+class CachedListLookupTest extends TestCase {
 
 	public function testCanConstruct() {
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
+		$listLookup = $this->getMockBuilder( ListLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\CachedListLookup',
+			CachedListLookup::class,
 			new CachedListLookup( $listLookup, $cache, new \stdClass )
 		);
 	}
@@ -36,7 +39,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			'list' => [ 'Foo' ]
 		];
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
+		$listLookup = $this->getMockBuilder( ListLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +47,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Bar#123' );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -89,7 +92,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			'list' => [ 'Foo' ]
 		];
 
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
+		$listLookup = $this->getMockBuilder( ListLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +108,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo#123' );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -142,7 +145,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteCache() {
-		$listLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\ListLookup' )
+		$listLookup = $this->getMockBuilder( ListLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +153,7 @@ class CachedListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getHash' )
 			->willReturn( 'Foo#123' );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 

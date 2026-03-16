@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Exception;
 
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\Elastic\Exception\ClientBuilderNotFoundException;
 
@@ -14,7 +15,7 @@ use SMW\Elastic\Exception\ClientBuilderNotFoundException;
  *
  * @author mwjames
  */
-class ClientBuilderNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class ClientBuilderNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

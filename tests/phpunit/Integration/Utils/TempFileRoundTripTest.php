@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\TempFile;
 
 /**
@@ -12,7 +13,7 @@ use SMW\Utils\TempFile;
  *
  * @author mwjames
  */
-class TempFileRoundTripTest extends \PHPUnit\Framework\TestCase {
+class TempFileRoundTripTest extends TestCase {
 
 	public function testRoundTrip() {
 		$expected = 'Test write file';

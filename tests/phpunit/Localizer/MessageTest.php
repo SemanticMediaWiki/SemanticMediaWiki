@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Localizer;
 
+use MediaWiki\Language\Language;
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\Message;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class MessageTest extends \PHPUnit\Framework\TestCase {
+class MessageTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -67,7 +69,7 @@ class MessageTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisteredHandlerWithLanguage() {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 

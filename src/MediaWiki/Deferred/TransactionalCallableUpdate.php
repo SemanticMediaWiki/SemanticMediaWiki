@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
+use Exception;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Site;
 
@@ -164,7 +165,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 		try {
 			parent::doUpdate();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 		}
 
 		if ( $this->autoCommit && $autoTrx ) {

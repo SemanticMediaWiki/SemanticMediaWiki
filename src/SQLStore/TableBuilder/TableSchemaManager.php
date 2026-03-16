@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use Exception;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
@@ -157,7 +158,7 @@ class TableSchemaManager {
 			// are correctly initialized otherwise SMW can't recover
 			try {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() );
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				continue;
 			}
 

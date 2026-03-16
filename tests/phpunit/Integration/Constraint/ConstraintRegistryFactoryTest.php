@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Integration\Constraint;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintRegistry;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -13,13 +16,13 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class ConstraintRegistryFactoryTest extends \PHPUnit\Framework\TestCase {
+class ConstraintRegistryFactoryTest extends TestCase {
 
 	/**
 	 * @dataProvider constraintKeyProvider
 	 */
 	public function testGetConstraint( $key ) {
-		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -32,13 +35,13 @@ class ConstraintRegistryFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\Constraint',
+			Constraint::class,
 			$instance->getConstraintByKey( $key )
 		);
 	}
 
 	public function constraintKeyProvider() {
-		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

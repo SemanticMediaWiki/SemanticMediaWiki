@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\SemanticData;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
+class HtmlBuilderTest extends TestCase {
 
 	private $testEnvironment;
 	private $store;
@@ -29,7 +31,7 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 			'smwgEnabledQueryDependencyLinksStore' => false
 		] );
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

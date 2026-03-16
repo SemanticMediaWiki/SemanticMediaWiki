@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Template;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Template\Template;
 use SMW\MediaWiki\Template\TemplateSet;
 
@@ -14,7 +15,7 @@ use SMW\MediaWiki\Template\TemplateSet;
  *
  * @author mwjames
  */
-class TemplateSetTest extends \PHPUnit\Framework\TestCase {
+class TemplateSetTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

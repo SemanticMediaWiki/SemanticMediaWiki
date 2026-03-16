@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\Parser;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataValueFactory;
+use SMW\DIProperty;
 use SMW\Parser\AnnotationProcessor;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Parser\AnnotationProcessor
@@ -13,17 +17,17 @@ use SMW\Parser\AnnotationProcessor;
  *
  * @author mwjames
  */
-class AnnotationProcessorTest extends \PHPUnit\Framework\TestCase {
+class AnnotationProcessorTest extends TestCase {
 
 	private $semanticData;
 	private $dataValueFactory;
 
 	protected function setUp(): void {
-		$this->semanticData = $this->getMockBuilder( 'SMW\SemanticData' )
+		$this->semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueFactory = $this->getMockBuilder( 'SMW\DataValueFactory' )
+		$this->dataValueFactory = $this->getMockBuilder( DataValueFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -81,7 +85,7 @@ class AnnotationProcessorTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$property = $this->getMockBuilder( 'SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 

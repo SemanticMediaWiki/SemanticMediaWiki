@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Language\ThingDescription;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Query\Language\ThingDescription;
  *
  * @author mwjames
  */
-class ThingDescriptionTest extends \PHPUnit\Framework\TestCase {
+class ThingDescriptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			new ThingDescription()
 		);
 	}

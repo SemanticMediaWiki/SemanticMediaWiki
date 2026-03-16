@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\FileNotReadableException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\FileNotReadableException;
  *
  * @author mwjames
  */
-class FileNotReadableExceptionTest extends \PHPUnit\Framework\TestCase {
+class FileNotReadableExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new FileNotReadableException( 'Foo' );

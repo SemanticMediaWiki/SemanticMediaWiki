@@ -11,6 +11,7 @@ use SMW\Query\QueryToken;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDataValue;
+use SMWRecordValue;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -245,7 +246,7 @@ class ResultArray {
 			$this->printRequest->getParameter( 'index' ) !== false ) {
 
 			/**
-			 * @var \SMWRecordValue $recordValue
+			 * @var SMWRecordValue $recordValue
 			 */
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,

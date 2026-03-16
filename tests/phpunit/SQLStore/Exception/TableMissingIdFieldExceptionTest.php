@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\Exception\TableMissingIdFieldException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\SQLStore\Exception\TableMissingIdFieldException;
  *
  * @author mwjames
  */
-class TableMissingIdFieldExceptionTest extends \PHPUnit\Framework\TestCase {
+class TableMissingIdFieldExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new TableMissingIdFieldException( 'foo' );

@@ -3,6 +3,8 @@
 namespace SMW\Tests\Property;
 
 use MediaWiki\Html\Html;
+use PHPUnit\Framework\TestCase;
+use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminerMsgBuilder;
 
 /**
@@ -14,14 +16,14 @@ use SMW\Property\DeclarationExaminerMsgBuilder;
  *
  * @author mwjames
  */
-class DeclarationExaminerMsgBuilderTest extends \PHPUnit\Framework\TestCase {
+class DeclarationExaminerMsgBuilderTest extends TestCase {
 
 	private $declarationExaminer;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$this->declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

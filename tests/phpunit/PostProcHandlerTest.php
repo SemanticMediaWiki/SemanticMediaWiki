@@ -6,6 +6,7 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DependencyValidator;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
@@ -26,7 +27,7 @@ use SMWQuery;
  *
  * @author mwjames
  */
-class PostProcHandlerTest extends \PHPUnit\Framework\TestCase {
+class PostProcHandlerTest extends TestCase {
 
 	private $parserOutput;
 	private $cache;

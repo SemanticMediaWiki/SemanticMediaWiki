@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Document;
 
@@ -14,7 +15,7 @@ use SMW\Elastic\Indexer\Document;
  *
  * @author mwjames
  */
-class DocumentTest extends \PHPUnit\Framework\TestCase {
+class DocumentTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

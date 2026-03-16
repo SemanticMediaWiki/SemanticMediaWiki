@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Permission;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\PermissionManager;
 
 /**
  * @covers \SMW\MediaWiki\Permission\PermissionExaminer
@@ -13,7 +16,7 @@ use SMW\MediaWiki\Permission\PermissionExaminer;
  *
  * @author mwjames
  */
-class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
+class PermissionExaminerTest extends TestCase {
 
 	private $permissionManager;
 	private $user;
@@ -21,11 +24,11 @@ class PermissionExaminerTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
+		$this->permissionManager = $this->getMockBuilder( PermissionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

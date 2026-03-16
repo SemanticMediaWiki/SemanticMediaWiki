@@ -3,7 +3,11 @@
 namespace SMW\Tests\Integration;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Message\Message;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\SpecialPage\SpecialPage;
+use PHPUnit\Framework\TestCase;
+use SMW\Encoder;
 use SMW\MediaWiki\Hooks\SidebarBeforeOutput;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -22,7 +26,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
+class EncodingIntegrationTest extends TestCase {
 
 	/**
 	 * @dataProvider sidebarBeforeOutputDataProvider
@@ -56,7 +60,7 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 
 	public function sidebarBeforeOutputDataProvider() {
 		$specialName = str_replace( '%3A', ':',
-			\SMW\Encoder::encode( SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
+			Encoder::encode( SpecialPage::getTitleFor( 'Browse' )->getPrefixedText() )
 		);
 
 		$provider = [];
@@ -75,11 +79,11 @@ class EncodingIntegrationTest extends \PHPUnit\Framework\TestCase {
 			'smwgBrowseFeatures'           => SMW_BROWSE_TLINK
 		];
 
-		$message = $this->getMockBuilder( '\MediaWiki\Message\Message' )
+		$message = $this->getMockBuilder( Message::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

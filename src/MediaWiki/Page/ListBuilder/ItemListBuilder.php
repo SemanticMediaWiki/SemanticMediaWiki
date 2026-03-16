@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
+use Iterator;
 use MediaWiki\Html\Html;
 use MediaWiki\Skin\SkinComponentUtils;
 use SMW\DIProperty;
@@ -148,7 +149,7 @@ class ItemListBuilder {
 		);
 
 		// May return an iterator
-		if ( $subjectList instanceof \Iterator ) {
+		if ( $subjectList instanceof Iterator ) {
 			$subjectList = iterator_to_array( $subjectList );
 		}
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
+use PHPUnit\Framework\TestCase;
+use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -17,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class InternalParseBeforeLinksIntegrationTest extends \PHPUnit\Framework\TestCase {
+class InternalParseBeforeLinksIntegrationTest extends TestCase {
 
 	private $mwHooksHandler;
 	private $parserAfterTidyHook;
@@ -45,7 +47,7 @@ class InternalParseBeforeLinksIntegrationTest extends \PHPUnit\Framework\TestCas
 	}
 
 	public function testNonParseForInvokedMessageParse() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

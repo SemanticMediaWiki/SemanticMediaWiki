@@ -2,10 +2,20 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
+use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\DataItemHandler;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
+use SMW\SQLStore\EntityStore\StubSemanticData;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 use SMWDIBlob as DIBlob;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -18,7 +28,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
+class SemanticDataLookupTest extends TestCase {
 
 	private $store;
 	private $connection;
@@ -28,11 +38,11 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->dataItemHandler = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\DataItemHandler' )
+		$this->dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'findPropertyTableID', 'getDataItemHandlerForDIType', 'getObjectIds' ] )
 			->getMock();
@@ -41,7 +51,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemHandlerForDIType' )
 			->willReturn( $this->dataItemHandler );
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,9 +59,9 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
 
-		$this->query = new \SMW\MediaWiki\Connection\Query( $this->connection );
+		$this->query = new Query( $this->connection );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,13 +89,13 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			StubSemanticData::class,
 			$instance->newStubSemanticData( DIWikiPage::newFromText( __METHOD__ ) )
 		);
 	}
 
 	public function testNewStubSemanticData_FromSemanticData() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +108,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			StubSemanticData::class,
 			$instance->newStubSemanticData( $semanticData )
 		);
 	}
@@ -120,7 +130,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->with(	$property )
 			->willReturn( '__bar__' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +151,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testNewRequestOptions_NULL() {
 		$property = new DIProperty( 'Foo' );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -157,7 +167,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
 		$property = new DIProperty( 'Foo' );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -173,7 +183,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\RequestOptions',
+			RequestOptions::class,
 			$instance->newRequestOptions( $propertyTable, $property, $requestOptions )
 		);
 	}
@@ -187,7 +197,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'fooField' => 'fieldType' ] );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -238,7 +248,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -246,7 +256,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'fooField' => 'fieldType' ] );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -307,7 +317,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'fooField' => 'fieldType' ] );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -355,7 +365,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'fooField' => 'fieldType' ] );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -401,7 +411,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_Empty() {
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -420,7 +430,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetSemanticData() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -428,7 +438,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -439,13 +449,13 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\EntityStore\StubSemanticData',
+			StubSemanticData::class,
 			$instance->getSemanticData( 42, $dataItem, $propertyTable )
 		);
 	}
 
 	public function testGetSemanticData_NonWikiPage_ThrowsException() {
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -466,7 +476,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'fooField' => 'fieldType' ] );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -509,7 +519,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetSemanticData_OnLimit() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -517,8 +527,8 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$query_1 = new \SMW\MediaWiki\Connection\Query( $this->connection );
-		$query_2 = new \SMW\MediaWiki\Connection\Query( $this->connection );
+		$query_1 = new Query( $this->connection );
+		$query_2 = new Query( $this->connection );
 
 		$row = new \stdClass;
 		$row->p_id = 9000;
@@ -529,7 +539,7 @@ class SemanticDataLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFetchFields' )
 			->willReturn( [ 'fooField' => 'fieldType' ] );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

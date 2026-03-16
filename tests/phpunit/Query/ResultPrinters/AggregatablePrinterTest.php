@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
+use SMW\Query\ResultPrinters\ResultPrinter;
 use SMW\Tests\TestEnvironment;
 use SMWDataItem;
 use SMWDINumber;
@@ -18,7 +22,7 @@ use SMWDINumber;
  *
  * @author mwjames
  */
-class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
+class AggregatablePrinterTest extends TestCase {
 
 	private $queryResult;
 	private $resultPrinterReflector;
@@ -45,7 +49,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ResultPrinters\ResultPrinter',
+			ResultPrinter::class,
 			$this->aggregatablePrinter
 		);
 	}
@@ -236,7 +240,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $setup as $value ) {
 
-			$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+			$printRequest = $this->getMockBuilder( PrintRequest::class )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -278,7 +282,7 @@ class AggregatablePrinterTest extends \PHPUnit\Framework\TestCase {
 				->method( 'getDataItem' )
 				->willReturn( $dataItem );
 
-			$resultArray = $this->getMockBuilder( '\SMW\Query\Result\ResultArray' )
+			$resultArray = $this->getMockBuilder( ResultArray::class )
 				->disableOriginalConstructor()
 				->setMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
 				->getMock();

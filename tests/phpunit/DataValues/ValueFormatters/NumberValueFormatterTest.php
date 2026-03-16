@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueFormatters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
 use SMWNumberValue as NumberValue;
@@ -15,11 +16,11 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class NumberValueFormatterTest extends \PHPUnit\Framework\TestCase {
+class NumberValueFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueFormatters\NumberValueFormatter',
+			NumberValueFormatter::class,
 			new NumberValueFormatter()
 		);
 	}

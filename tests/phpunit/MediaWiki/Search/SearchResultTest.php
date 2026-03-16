@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Search\SearchResult;
 
 /**
@@ -14,10 +15,10 @@ use SMW\MediaWiki\Search\SearchResult;
  *
  * @author mwjames
  */
-class SearchResultTest extends \PHPUnit\Framework\TestCase {
+class SearchResultTest extends TestCase {
 
 	public function testGetSectionTitle_WithFragment() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,7 +35,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetSectionTitle_WithoutFragment() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +51,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testExcerpt() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +69,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTitleSnippet() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +94,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTextSnippet_HasHighlight() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,7 +109,7 @@ class SearchResultTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTextSnippet_NoHighlight() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

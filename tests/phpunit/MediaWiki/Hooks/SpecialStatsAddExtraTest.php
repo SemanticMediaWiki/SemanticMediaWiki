@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\SpecialStatsAddExtra;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\SpecialStatsAddExtra
@@ -14,7 +16,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
+class SpecialStatsAddExtraTest extends TestCase {
 
 	protected function tearDown(): void {
 		ApplicationFactory::clear();
@@ -23,7 +25,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -37,7 +39,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider statisticsDataProvider
 	 */
 	public function testProcess( $setup, $expected ) {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -80,7 +82,7 @@ class SpecialStatsAddExtraTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Maintenance;
 
+use SMW\MediaWiki\HookDispatcher;
 use SMW\Tests\SMWIntegrationTestCase;
 
 /**
@@ -23,7 +24,7 @@ class UpdateEntityCollationTest extends SMWIntegrationTestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

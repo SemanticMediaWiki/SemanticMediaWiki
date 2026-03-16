@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @group semantic-mediawiki
  *
@@ -10,7 +12,7 @@ namespace SMW\Tests;
  *
  * @author mwjames
  */
-class DefinesTest extends \PHPUnit\Framework\TestCase {
+class DefinesTest extends TestCase {
 
 	/**
 	 * @dataProvider constantsDataProvider

@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use MediaWiki\Html\TemplateParser;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\HtmlBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder;
+use SMW\MediaWiki\Specials\FacetedSearch\Profile;
+use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\HtmlBuilder
@@ -13,7 +20,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\HtmlBuilder;
  *
  * @author mwjames
  */
-class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
+class HtmlBuilderTest extends TestCase {
 
 	private $profile;
 	private $templateParser;
@@ -26,27 +33,27 @@ class HtmlBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->profile = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\Profile' )
+		$this->profile = $this->getMockBuilder( Profile::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->templateParser = $this->getMockBuilder( '\MediaWiki\Html\TemplateParser' )
+		$this->templateParser = $this->getMockBuilder( TemplateParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->optionsBuilder = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\OptionsBuilder' )
+		$this->optionsBuilder = $this->getMockBuilder( OptionsBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->extraFieldBuilder = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder' )
+		$this->extraFieldBuilder = $this->getMockBuilder( ExtraFieldBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->facetBuilder = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder' )
+		$this->facetBuilder = $this->getMockBuilder( FacetBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->resultFetcher = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher' )
+		$this->resultFetcher = $this->getMockBuilder( ResultFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

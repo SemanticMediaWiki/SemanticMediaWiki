@@ -3,8 +3,25 @@
 namespace SMW\Tests\SQLStore;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Options;
+use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\EntityStore\SubobjectListFinder;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyTableIdReferenceFinder;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\PropertyTableRowDiffer;
+use SMW\SQLStore\PropertyTableUpdater;
+use SMW\SQLStore\RedirectUpdater;
 use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\SQLStoreUpdater;
 
 /**
@@ -16,7 +33,7 @@ use SMW\SQLStore\SQLStoreUpdater;
  *
  * @author mwjames
  */
-class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
+class SQLStoreUpdaterTest extends TestCase {
 
 	private $store;
 	private $factory;
@@ -24,11 +41,11 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	private $redirectUpdater;
 
 	protected function setUp(): void {
-		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,7 +57,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [] );
 
-		$propertyTableRowDiffer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableRowDiffer' )
+		$propertyTableRowDiffer = $this->getMockBuilder( PropertyTableRowDiffer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,23 +65,23 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'computeTableRowDiff' )
 			->willReturn( [ [], [], [] ] );
 
-		$propertyTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableUpdater' )
+		$propertyTableUpdater = $this->getMockBuilder( PropertyTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+		$propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->redirectUpdater = $this->getMockBuilder( '\SMW\SQLStore\RedirectUpdater' )
+		$this->redirectUpdater = $this->getMockBuilder( RedirectUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$subobjectListFinder = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\SubobjectListFinder' )
+		$subobjectListFinder = $this->getMockBuilder( SubobjectListFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,11 +89,11 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'find' )
 			->willReturn( [] );
 
-		$semanticDataLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\CachingSemanticDataLookup' )
+		$semanticDataLookup = $this->getMockBuilder( CachingSemanticDataLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$changeDiff = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeDiff' )
+		$changeDiff = $this->getMockBuilder( ChangeDiff::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +105,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTableChangeOps' )
 			->willReturn( [] );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -112,7 +129,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOrderedDiffByTable' )
 			->willReturn( [] );
 
-		$this->factory = $this->getMockBuilder( '\SMW\SQLStore\SQLStoreFactory' )
+		$this->factory = $this->getMockBuilder( SQLStoreFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -159,12 +176,12 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testDoDataUpdateForMainNamespaceWithoutSubobject() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
 			->setMethods( null )
 			->getMock();
 
-		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$objectIdGenerator = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +189,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -183,11 +200,11 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$database->expects( $this->once() )
 			->method( 'endSectionTransaction' )
 			->with( SQLStore::UPDATE_TRANSACTION );
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$parentStore = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -209,7 +226,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
@@ -218,12 +235,12 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testDoDataUpdateForConceptNamespaceWithoutSubobject() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
 			->setMethods( null )
 			->getMock();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -231,15 +248,15 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$parentStore = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -261,7 +278,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
@@ -274,7 +291,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
 			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
@@ -283,19 +300,19 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
 
-		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$objectIdGenerator = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$parentStore = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -313,7 +330,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
@@ -326,7 +343,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
 			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
@@ -335,11 +352,11 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
 
-		$objectIdGenerator = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$objectIdGenerator = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -349,11 +366,11 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$database->expects( $this->atLeastOnce() )
 			->method( 'endSectionTransaction' );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parentStore = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$parentStore = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -371,7 +388,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$parentStore->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $parentStore, $this->factory );
 		$instance->doDataUpdate( $semanticData );
@@ -384,15 +401,15 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findIdsByTitle' )
 			->willReturn( [ 0 ] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
+		$propertyTableIdReferenceFinder = $this->getMockBuilder( PropertyTableIdReferenceFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -419,7 +436,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $this->store, $this->factory );
 		$instance->deleteSubject( $title );
@@ -428,11 +445,11 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testDeleteSubjectForConceptNamespace() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT );
 
-		$propertyTableIdReferenceFinder = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceFinder' )
+		$propertyTableIdReferenceFinder = $this->getMockBuilder( PropertyTableIdReferenceFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -454,7 +471,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 				'' )
 			->willReturn( [ 0 ] );
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -476,7 +493,7 @@ class SQLStoreUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->store->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
 		$instance = new SQLStoreUpdater( $this->store, $this->factory );
 		$instance->deleteSubject( $title );

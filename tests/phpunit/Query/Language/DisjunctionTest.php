@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
@@ -20,11 +21,11 @@ use SMW\Query\Language\ValueDescription;
  *
  * @author mwjames
  */
-class DisjunctionTest extends \PHPUnit\Framework\TestCase {
+class DisjunctionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\Query\Language\Disjunction',
+			Disjunction::class,
 			new Disjunction()
 		);
 	}

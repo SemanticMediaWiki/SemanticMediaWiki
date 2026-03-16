@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class CompoundConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
+class CompoundConstraintValueValidatorTest extends TestCase {
 
 	private $spyLogger;
 
@@ -35,7 +37,7 @@ class CompoundConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasConstraintViolation() {
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

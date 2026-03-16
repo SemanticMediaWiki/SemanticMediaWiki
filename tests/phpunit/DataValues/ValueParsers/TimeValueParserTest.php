@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueParsers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\Time\Components;
 use SMW\DataValues\ValueParsers\TimeValueParser;
 
@@ -14,7 +15,7 @@ use SMW\DataValues\ValueParsers\TimeValueParser;
  *
  * @author mwjames
  */
-class TimeValueParserTest extends \PHPUnit\Framework\TestCase {
+class TimeValueParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

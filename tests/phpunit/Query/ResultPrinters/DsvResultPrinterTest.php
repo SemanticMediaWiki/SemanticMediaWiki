@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\DsvResultPrinter;
+use SMW\Query\ResultPrinters\ResultPrinter;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DsvResultPrinterTest extends \PHPUnit\Framework\TestCase {
+class DsvResultPrinterTest extends TestCase {
 
 	private $queryResult;
 	private $resultPrinterReflector;
@@ -24,7 +27,7 @@ class DsvResultPrinterTest extends \PHPUnit\Framework\TestCase {
 
 		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
 
-		$this->queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$this->queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -36,7 +39,7 @@ class DsvResultPrinterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ResultPrinters\ResultPrinter',
+			ResultPrinter::class,
 			new DsvResultPrinter( 'dsv' )
 		);
 	}

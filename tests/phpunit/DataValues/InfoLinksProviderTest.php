@@ -2,11 +2,15 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Localizer\Message;
+use SMW\Property\SpecificationLookup;
+use SMW\Services\DataValueServiceFactory;
 use SMW\Tests\TestEnvironment;
 use SMWNumberValue as NumberValue;
 
@@ -19,7 +23,7 @@ use SMWNumberValue as NumberValue;
  *
  * @author mwjames
  */
-class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
+class InfoLinksProviderTest extends TestCase {
 
 	private $testEnvironment;
 	private $dataItemFactory;
@@ -34,11 +38,11 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 		$this->dataItemFactory = new DataItemFactory();
 		$this->dataValueFactory = DataValueFactory::getInstance();
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +50,7 @@ class InfoLinksProviderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConstraintValueValidator' )
 			->willReturn( $constraintValueValidator );
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

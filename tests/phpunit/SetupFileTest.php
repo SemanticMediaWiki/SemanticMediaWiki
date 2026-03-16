@@ -2,7 +2,10 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SetupFile;
+use SMW\Site;
+use SMW\SQLStore\Installer;
 use SMW\Utils\File;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Utils\File;
  *
  * @author mwjames
  */
-class SetupFileTest extends \PHPUnit\Framework\TestCase {
+class SetupFileTest extends TestCase {
 
 	public function testIsGoodSchema() {
 		$this->assertIsBool(
@@ -78,7 +81,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFinalize() {
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,9 +114,9 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 			// "upgrade_key_base" => '["",[],"",[]]'
 		];
 
-		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );
+		$expected = json_encode( [ Site::id() => $fields ], JSON_PRETTY_PRINT );
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,9 +153,9 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 			// "upgrade_key_base" => '["",[],"",[]]'
 		];
 
-		$expected = json_encode( [ \SMW\Site::id() => $fields ], JSON_PRETTY_PRINT );
+		$expected = json_encode( [ Site::id() => $fields ], JSON_PRETTY_PRINT );
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +185,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 
 	public function testReset() {
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
-		$id = \SMW\Site::id();
+		$id = Site::id();
 
 		$fields = [
 			'Foo' => 42
@@ -190,7 +193,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 
 		$expected = json_encode( [ $id => [] ], JSON_PRETTY_PRINT );
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -221,7 +224,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 		$configFile = File::dir( 'Foo_dir/.smw.json' );
 		$expected = '[]';
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -248,9 +251,9 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGet() {
-		$id = \SMW\Site::id();
+		$id = Site::id();
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -269,7 +272,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testAddRemoveIncompleteTask() {
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -293,7 +296,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIncompleteTasks() {
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -302,7 +305,7 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$vars = [
-			'smw.json' => [ \SMW\Site::id() => [ \SMW\SQLStore\Installer::POPULATE_HASH_FIELD_COMPLETE => false ] ]
+			'smw.json' => [ Site::id() => [ Installer::POPULATE_HASH_FIELD_COMPLETE => false ] ]
 		];
 
 		$this->assertEquals(
@@ -317,9 +320,9 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetLatestVersion() {
-		$id = \SMW\Site::id();
+		$id = Site::id();
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -354,9 +357,9 @@ class SetupFileTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasDatabaseMinRequirement() {
-		$id = \SMW\Site::id();
+		$id = Site::id();
 
-		$file = $this->getMockBuilder( '\SMW\Utils\File' )
+		$file = $this->getMockBuilder( File::class )
 			->disableOriginalConstructor()
 			->getMock();
 

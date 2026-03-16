@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\TypesRegistry;
 
 /**
@@ -13,7 +14,7 @@ use SMW\TypesRegistry;
  *
  * @author mwjames
  */
-class TypesRegistryTest extends \PHPUnit\Framework\TestCase {
+class TypesRegistryTest extends TestCase {
 
 	public function testGetDataTypeList() {
 		$this->assertIsArray(

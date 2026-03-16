@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
+class ChangePropagationDispatchJobTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -24,7 +30,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +43,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +56,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 	public function testCleanUp() {
 		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->getMockForAbstractClass();
 
 		$cache->expects( $this->once() )
@@ -70,7 +76,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->getMockForAbstractClass();
 
 		$cache->expects( $this->once() )
@@ -93,7 +99,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->getMockForAbstractClass();
 
 		$cache->expects( $this->atLeastOnce() )
@@ -158,7 +164,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'getSMWPropertyID' ] )
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,11 +172,11 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDefaultDataItemTables' )
 			->willReturn( [] );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -213,7 +219,7 @@ class ChangePropagationDispatchJobTest extends \PHPUnit\Framework\TestCase {
 	public function testDispatchSchemaChangePropagation() {
 		$dataItem = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
+use SMW\Store;
 
 /**
  * @covers \SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder
@@ -13,14 +15,14 @@ use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
  *
  * @author mwjames
  */
-class TreeBuilderTest extends \PHPUnit\Framework\TestCase {
+class TreeBuilderTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}

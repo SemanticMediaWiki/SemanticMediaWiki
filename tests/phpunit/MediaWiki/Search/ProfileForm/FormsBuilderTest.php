@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm;
+use SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
+use SMW\MediaWiki\Search\ProfileForm\FormsFactory;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
+class FormsBuilderTest extends TestCase {
 
 	private $stringValidator;
 	private $webRequest;
@@ -23,11 +29,11 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->formsFactory = $this->getMockBuilder( '\SMW\MediaWiki\Search\ProfileForm\FormsFactory' )
+		$this->formsFactory = $this->getMockBuilder( FormsFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -40,15 +46,15 @@ class FormsBuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBuildForm() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$openForm = $this->getMockBuilder( '\SMW\MediaWiki\Search\ProfileForm\Forms\OpenForm' )
+		$openForm = $this->getMockBuilder( OpenForm::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$customForm = $this->getMockBuilder( '\SMW\MediaWiki\Search\ProfileForm\Forms\CustomForm' )
+		$customForm = $this->getMockBuilder( CustomForm::class )
 			->disableOriginalConstructor()
 			->getMock();
 

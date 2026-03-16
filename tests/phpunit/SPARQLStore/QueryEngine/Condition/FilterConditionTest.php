@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
  *
  * @author mwjames
  */
-class FilterConditionTest extends \PHPUnit\Framework\TestCase {
+class FilterConditionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\SPARQLStore\QueryEngine\Condition\FilterCondition',
+			FilterCondition::class,
 			new FilterCondition( 'condition' )
 		);
 	}
