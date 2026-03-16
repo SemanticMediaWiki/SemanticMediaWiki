@@ -161,7 +161,7 @@ class UnitConverter {
 
 		if ( $factors === null || $factors === [] ) { // no custom type
 			$this->errors[] = 'smw_nounitsdeclared';
-			return [ 'smw_nounitsdeclared' ];
+			return;
 		}
 
 		$number = '';
