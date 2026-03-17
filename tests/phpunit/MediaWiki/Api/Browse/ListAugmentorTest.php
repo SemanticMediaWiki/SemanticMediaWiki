@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ListAugmentor
@@ -14,6 +15,18 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
  * @author mwjames
  */
 class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
+
+	private $testEnvironment;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->testEnvironment = new TestEnvironment();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
 
 	public function testCanConstruct() {
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
@@ -59,6 +72,16 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 				]
 			]
 		];
+
+		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$propertySpecificationLookup->expects( $this->any() )
+			->method( 'getPropertyDescriptionByLanguageCode' )
+			->willReturn( '' );
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
 		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
 			->disableOriginalConstructor()

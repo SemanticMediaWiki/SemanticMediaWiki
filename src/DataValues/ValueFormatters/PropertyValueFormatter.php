@@ -263,13 +263,13 @@ class PropertyValueFormatter extends DataValueFormatter {
 
 		$dataItem = $this->dataValue->getDataItem();
 
-				$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
-						$dataItem,
-						$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
-						$linker ?: \smwfGetLinker()
-				);
+		$propertyDescription = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
+			$dataItem,
+			$this->dataValue->getOption( PropertyValue::OPT_USER_LANGUAGE ),
+			$linker ?: \smwfGetLinker()
+		);
 
-				return !$dataItem->isUserDefined() || $propertyDescription !== '';
+		return !$dataItem->isUserDefined() || $propertyDescription !== '';
 	}
 
 	private function hintPreferredLabelUse() {
