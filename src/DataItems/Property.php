@@ -4,6 +4,7 @@ namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 use RuntimeException;
+use SMW\DataTypeRegistry;
 use SMW\Exception\DataItemException;
 use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
@@ -11,7 +12,6 @@ use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Localizer\Localizer;
 use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\DataTypeRegistry;
 
 /**
  * This class implements Property item
