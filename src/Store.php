@@ -109,7 +109,7 @@ abstract class Store implements QueryEngine {
 	 * @param DataItem $object
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
 	abstract public function getInProperties( DataItem $object, $requestOptions = null );
 
@@ -182,7 +182,9 @@ abstract class Store implements QueryEngine {
 
 		if ( $type === DataItem::TYPE_PROPERTY ) {
 			$entityCache->save( $key, $dataItem->getSerialization(), $entityCache::TTL_DAY );
-			$entityCache->associate( $wikipage, $key );
+			if ( $wikipage instanceof DIWikiPage || $wikipage instanceof Title ) {
+				$entityCache->associate( $wikipage, $key );
+			}
 		}
 
 		return $dataItem;
@@ -468,11 +470,6 @@ abstract class Store implements QueryEngine {
 	 */
 	public static function setupStore( $verbose = true, $options = null ) {
 		$store = StoreFactory::getStore();
-
-		// See notes in ExtensionSchemaUpdates
-		if ( is_bool( $verbose ) ) {
-			$verbose = $verbose;
-		}
 
 		if ( isset( $options['verbose'] ) ) {
 			$verbose = $options['verbose'];

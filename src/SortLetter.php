@@ -50,7 +50,9 @@ class SortLetter {
 	public function getFirstLetter( DataItem $dataItem ) {
 		$sortKey = $dataItem->getSortKey();
 
-		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE ) {
+		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE &&
+			$dataItem instanceof DIWikiPage
+		) {
 			$sortKey = $this->store->getWikiPageSortKey( $dataItem );
 		}
 
