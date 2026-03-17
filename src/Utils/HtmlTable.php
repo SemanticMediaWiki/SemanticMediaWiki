@@ -56,7 +56,7 @@ class HtmlTable {
 	 *
 	 * @param array $attributes
 	 *
-	 * @return TableBuilder
+	 * @return void
 	 */
 	public function row( $attributes = [] ) {
 		if ( $this->cells !== [] ) {
