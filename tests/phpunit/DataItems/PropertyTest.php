@@ -74,14 +74,14 @@ class PropertyTest extends TestCase {
 	}
 
 	public function testSetPropertyTypeIdOnPredefinedPropertyThrowsException() {
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 
 		$this->expectException( 'RuntimeException' );
 		$property->setPropertyTypeId( '_txt' );
 	}
 
 	public function testCorrectInversePrefixForPredefinedProperty() {
-		$property = new DIProperty( '_SOBJ', true );
+		$property = new Property( '_SOBJ', true );
 
 		$this->assertTrue(
 			$property->isInverse()
