@@ -100,7 +100,7 @@ class PropertyTest extends TestCase {
 		$property->setInterwiki( 'bar' );
 
 		$this->assertEquals(
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}
@@ -114,7 +114,7 @@ class PropertyTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}
