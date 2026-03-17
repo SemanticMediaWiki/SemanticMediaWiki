@@ -3,16 +3,14 @@
 namespace SMW\Query;
 
 use MediaWiki\Html\Html;
-use Onoi\HttpRequest\CachedCurlRequest;
-use Onoi\HttpRequest\CurlRequest;
-use Onoi\HttpRequest\HttpRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Localizer\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
-use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Site;
 use SMWQuery as Query;
+use WANObjectCache;
 
 /**
  * @license GPL-2.0-or-later
@@ -32,13 +30,12 @@ class RemoteRequest implements QueryEngine {
 	 */
 	const REQUEST_ID = "\x7fsmw-remote-request\x7f";
 
-	/**
-	 * @var
-	 */
-	private $features = [];
+	private int $features = 0;
+
+	private bool $isFromCache = false;
 
 	/**
-	 * @var
+	 * @var bool|null
 	 */
 	private static $isConnected;
 
@@ -47,7 +44,8 @@ class RemoteRequest implements QueryEngine {
 	 */
 	public function __construct(
 		private readonly array $parameters = [],
-		private ?HttpRequest $httpRequest = null,
+		private ?HttpRequestFactory $httpRequestFactory = null,
+		private ?WANObjectCache $cache = null
 	) {
 		$this->features = $GLOBALS['smwgRemoteReqFeatures'];
 
@@ -91,7 +89,7 @@ class RemoteRequest implements QueryEngine {
 			throw new RuntimeException( "Missing a remote URL for $source" );
 		}
 
-		$this->init();
+		$this->initServices();
 
 		if ( !$this->canConnect( $this->parameters['url'] ) ) {
 			return $this->error( 'smw-remote-source-unavailable', $this->parameters['url'] );
@@ -99,14 +97,10 @@ class RemoteRequest implements QueryEngine {
 
 		$result = $this->fetch( $query );
 
-		$isFromCache = false;
+		$isFromCache = $this->isFromCache;
 		$isDisabled = false;
 		$count = 0;
 		$hasFurtherResults = false;
-
-		if ( $this->httpRequest instanceof CachedCurlRequest ) {
-			$isFromCache = $this->httpRequest->isFromCache();
-		}
 
 		if ( $result === self::SOURCE_DISABLED ) {
 			$result = $this->error( 'smw-remote-source-disabled', $source );
@@ -231,26 +225,13 @@ class RemoteRequest implements QueryEngine {
 		return $link->getText( SMW_OUTPUT_WIKI );
 	}
 
-	private function init() {
-		if ( $this->httpRequest === null && isset( $this->parameters['cache'] ) ) {
-			$this->httpRequest = new CachedCurlRequest(
-				curl_init(),
-				ApplicationFactory::getInstance()->getCache()
-			);
-
-			$this->httpRequest->setOption(
-				ONOI_HTTP_REQUEST_RESPONSECACHE_TTL,
-				$this->parameters['cache']
-			);
-
-			$this->httpRequest->setOption(
-				ONOI_HTTP_REQUEST_RESPONSECACHE_PREFIX,
-				Site::id( 'smw:query:remote:' )
-			);
+	private function initServices(): void {
+		if ( $this->httpRequestFactory === null ) {
+			$this->httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		}
 
-		if ( $this->httpRequest === null ) {
-			$this->httpRequest = new CurlRequest( curl_init() );
+		if ( $this->cache === null && isset( $this->parameters['cache'] ) ) {
+			$this->cache = MediaWikiServices::getInstance()->getMainWANObjectCache();
 		}
 	}
 
@@ -264,17 +245,69 @@ class RemoteRequest implements QueryEngine {
 		);
 	}
 
-	private function canConnect( $url ) {
-		$this->httpRequest->setOption( CURLOPT_URL, $url );
-
+	private function canConnect( string $url ): bool {
 		if ( self::$isConnected === null ) {
-			self::$isConnected = $this->httpRequest->ping();
+			$request = $this->httpRequestFactory->create( $url, [
+				'method' => 'HEAD',
+				'followRedirects' => true,
+			], __METHOD__ );
+
+			self::$isConnected = $request->execute()->isOK();
 		}
 
 		return self::$isConnected;
 	}
 
-	private function fetch( $query ) {
+	private function fetch( Query $query ): string {
+		$params = $this->buildPostParams( $query );
+		$default = $params['default'] ?? '';
+		unset( $params['default'] );
+
+		$url = $this->parameters['url'];
+		$caller = __METHOD__;
+
+		$doFetch = function () use ( $url, $params, $default, $caller ) {
+			$request = $this->httpRequestFactory->create( $url, [
+				'method' => 'POST',
+				'postData' => http_build_query( $params ),
+				'sslVerifyCert' => false,
+			], $caller );
+
+			$status = $request->execute();
+			$output = $request->getContent();
+
+			if ( !$status->isOK() ) {
+				$output = '';
+			}
+
+			return $output !== '' ? $output : $default;
+		};
+
+		if ( isset( $this->parameters['cache'] ) ) {
+			$cacheKey = $this->cache->makeKey(
+				'smw', 'remote-request',
+				md5( $url . serialize( $params ) )
+			);
+
+			$this->isFromCache = true;
+
+			$result = $this->cache->getWithSetCallback(
+				$cacheKey,
+				$this->parameters['cache'],
+				function () use ( $doFetch ) {
+					$this->isFromCache = false;
+					return $doFetch();
+				}
+			);
+
+			return $result;
+		}
+
+		$this->isFromCache = false;
+		return $doFetch();
+	}
+
+	private function buildPostParams( Query $query ): array {
 		$parameters = $query->toArray();
 		$default = '';
 		$params = [ 'title' => 'Special:Ask', 'q' => '', 'po' => '', 'p' => [] ];
@@ -316,31 +349,9 @@ class RemoteRequest implements QueryEngine {
 		}
 
 		$params['request_type'] = $query->isEmbedded() ? 'embed' : 'special_page';
+		$params['default'] = $default;
 
-		$options = [
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_POST => true,
-			CURLOPT_POSTFIELDS => http_build_query( $params ),
-			CURLOPT_RETURNTRANSFER => 1
-		];
-
-		foreach ( $options as $key => $value ) {
-			$this->httpRequest->setOption( $key, $value );
-		}
-
-		$output = $this->httpRequest->execute();
-
-		if ( $this->httpRequest->getLastError() !== '' ) {
-			$output = $this->httpRequest->getLastError();
-		}
-
-		// The remote Special:Ask doesn't return a default output hence it is done
-		// at this point
-		if ( $output === '' ) {
-			$output = $default;
-		}
-
-		return $output;
+		return $params;
 	}
 
 }

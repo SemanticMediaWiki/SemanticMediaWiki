@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use Onoi\HttpRequest\HttpRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use MWHttpRequest;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
+use StatusValue;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector
@@ -23,45 +25,67 @@ class VirtuosoRepositoryConnectorTest extends ElementaryRepositoryConnectorTest 
 	public function testDoUpdateUsesQueryParameter() {
 		$capturedOptions = [];
 
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->atLeastOnce() )
-			->method( 'setOption' )
-			->willReturnCallback( static function ( $option, $value ) use ( &$capturedOptions ) {
-				$capturedOptions[$option] = $value;
-				return true;
-			} );
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newGood() );
 
-		$httpRequest->method( 'getLastErrorCode' )->willReturn( 0 );
+		$mockRequest->method( 'getStatus' )
+			->willReturn( 200 );
+
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				$this->anything(),
+				$this->callback( static function ( $options ) use ( &$capturedOptions ) {
+					$capturedOptions = $options;
+					return true;
+				} ),
+				$this->anything()
+			)
+			->willReturn( $mockRequest );
 
 		$instance = new VirtuosoRepositoryConnector(
 			new RepositoryClient( '', 'http://localhost/query', 'http://localhost/update' ),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$instance->doUpdate( 'DELETE { ?s ?p ?o } WHERE { ?s ?p ?o }' );
 
 		// Virtuoso uses 'query=' not 'update='
-		$this->assertStringStartsWith( 'query=', $capturedOptions[CURLOPT_POSTFIELDS] );
+		$this->assertStringStartsWith( 'query=', $capturedOptions['postData'] );
 	}
 
 	public function testDeleteUsesFromSyntax() {
 		$capturedOptions = [];
 
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->atLeastOnce() )
-			->method( 'setOption' )
-			->willReturnCallback( static function ( $option, $value ) use ( &$capturedOptions ) {
-				$capturedOptions[$option] = $value;
-				return true;
-			} );
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newGood() );
 
-		$httpRequest->method( 'getLastErrorCode' )->willReturn( 0 );
+		$mockRequest->method( 'getStatus' )
+			->willReturn( 200 );
+
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				$this->anything(),
+				$this->callback( static function ( $options ) use ( &$capturedOptions ) {
+					$capturedOptions = $options;
+					return true;
+				} ),
+				$this->anything()
+			)
+			->willReturn( $mockRequest );
 
 		$instance = new VirtuosoRepositoryConnector(
 			new RepositoryClient(
@@ -69,13 +93,13 @@ class VirtuosoRepositoryConnectorTest extends ElementaryRepositoryConnectorTest 
 				'http://localhost/query',
 				'http://localhost/update'
 			),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$instance->delete( '?s ?p ?o', '?s ?p ?o' );
 
 		// Virtuoso uses DELETE FROM <graph> not WITH <graph> DELETE
-		$decoded = urldecode( $capturedOptions[CURLOPT_POSTFIELDS] );
+		$decoded = urldecode( $capturedOptions['postData'] );
 		$this->assertStringContainsString( 'DELETE FROM <http://foo/graph>', $decoded );
 	}
 

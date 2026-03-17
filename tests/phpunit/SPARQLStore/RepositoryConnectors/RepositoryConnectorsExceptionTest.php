@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use Onoi\HttpRequest\HttpRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use MWHttpRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\RepositoryClient;
@@ -10,6 +11,7 @@ use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
 use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
 use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\SPARQLStore\RepositoryConnectors\VirtuosoRepositoryConnector;
+use StatusValue;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector
@@ -41,17 +43,36 @@ class RepositoryConnectorsExceptionTest extends TestCase {
 		$this->defaultGraph = 'http://foo/myDefaultGraph';
 	}
 
+	private function createHttpRequestFactory(): HttpRequestFactory {
+		return $this->createMock( HttpRequestFactory::class );
+	}
+
+	private function createFailingHttpRequestFactory( int $httpCode ): HttpRequestFactory {
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newFatal( 'http-request-error' ) );
+
+		$mockRequest->method( 'getStatus' )
+			->willReturn( $httpCode );
+
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->method( 'create' )
+			->willReturn( $mockRequest );
+
+		return $httpRequestFactory;
+	}
+
 	/**
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testCanConstruct( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
-			new $httpConnector( new RepositoryClient( $this->defaultGraph, '' ), $httpRequest )
+			new $httpConnector( new RepositoryClient( $this->defaultGraph, '' ), $this->createHttpRequestFactory() )
 		);
 	}
 
@@ -59,13 +80,9 @@ class RepositoryConnectorsExceptionTest extends TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoQueryForEmptyQueryEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new $httpConnector(
 			new RepositoryClient( $this->defaultGraph, '' ),
-			$httpRequest
+			$this->createHttpRequestFactory()
 		);
 
 		$this->expectException( BadHttpEndpointResponseException::class );
@@ -76,13 +93,9 @@ class RepositoryConnectorsExceptionTest extends TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoUpdateForEmptyUpdateEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new $httpConnector(
 			new RepositoryClient( $this->defaultGraph, '', '' ),
-			$httpRequest
+			$this->createHttpRequestFactory()
 		);
 
 		$this->expectException( BadHttpEndpointResponseException::class );
@@ -93,13 +106,9 @@ class RepositoryConnectorsExceptionTest extends TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForEmptyDataEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$instance = new $httpConnector(
 			new RepositoryClient( $this->defaultGraph, '', '', '' ),
-			$httpRequest
+			$this->createHttpRequestFactory()
 		);
 
 		$this->expectException( BadHttpEndpointResponseException::class );
@@ -110,17 +119,11 @@ class RepositoryConnectorsExceptionTest extends TestCase {
 	 * @dataProvider httpDatabaseConnectorInstanceNameProvider
 	 */
 	public function testDoHttpPostForUnreachableDataEndpointThrowsException( $httpConnector ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->atLeastOnce() )
-			->method( 'getLastErrorCode' )
-			->willReturn( 22 );
+		$httpRequestFactory = $this->createFailingHttpRequestFactory( 500 );
 
 		$instance = new $httpConnector(
 			new RepositoryClient( $this->defaultGraph, '', '', 'unreachableDataEndpoint' ),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$this->expectException( 'Exception' );

@@ -2,10 +2,12 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use Onoi\HttpRequest\HttpRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use MWHttpRequest;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
+use StatusValue;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector
@@ -25,48 +27,69 @@ class FourstoreRepositoryConnectorTest extends ElementaryRepositoryConnectorTest
 		$rawResultProvider = new FakeRawResultProvider();
 		$capturedOptions = [];
 
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->atLeastOnce() )
-			->method( 'setOption' )
-			->willReturnCallback( static function ( $option, $value ) use ( &$capturedOptions ) {
-				$capturedOptions[$option] = $value;
-				return true;
-			} );
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newGood() );
 
-		$httpRequest->method( 'execute' )
+		$mockRequest->method( 'getContent' )
 			->willReturn( $rawResultProvider->getEmptySparqlResultXml() );
 
-		$httpRequest->method( 'getLastErrorCode' )
-			->willReturn( 0 );
+		$mockRequest->method( 'getStatus' )
+			->willReturn( 200 );
+
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				$this->anything(),
+				$this->callback( static function ( $options ) use ( &$capturedOptions ) {
+					$capturedOptions = $options;
+					return true;
+				} ),
+				$this->anything()
+			)
+			->willReturn( $mockRequest );
 
 		$instance = new FourstoreRepositoryConnector(
 			new RepositoryClient( 'http://foo/graph', 'http://localhost/query' ),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$instance->doQuery( 'ASK { ?s ?p ?o }' );
 
-		$this->assertStringContainsString( '&restricted=1', $capturedOptions[CURLOPT_POSTFIELDS] );
+		$this->assertStringContainsString( '&restricted=1', $capturedOptions['postData'] );
 	}
 
 	public function testDoHttpPostUsesFormEncodedParams() {
 		$capturedOptions = [];
 
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->atLeastOnce() )
-			->method( 'setOption' )
-			->willReturnCallback( static function ( $option, $value ) use ( &$capturedOptions ) {
-				$capturedOptions[$option] = $value;
-				return true;
-			} );
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newGood() );
 
-		$httpRequest->method( 'getLastErrorCode' )->willReturn( 0 );
+		$mockRequest->method( 'getStatus' )
+			->willReturn( 200 );
+
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->with(
+				$this->anything(),
+				$this->callback( static function ( $options ) use ( &$capturedOptions ) {
+					$capturedOptions = $options;
+					return true;
+				} ),
+				$this->anything()
+			)
+			->willReturn( $mockRequest );
 
 		$instance = new FourstoreRepositoryConnector(
 			new RepositoryClient(
@@ -75,44 +98,52 @@ class FourstoreRepositoryConnectorTest extends ElementaryRepositoryConnectorTest
 				'http://localhost/update',
 				'http://localhost/data'
 			),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$instance->doHttpPost( '<s> <p> <o> .' );
 
-		// Fourstore uses form-encoded data= param, not CURLOPT_INFILE
-		$this->assertStringContainsString( 'data=', $capturedOptions[CURLOPT_POSTFIELDS] );
-		$this->assertStringContainsString( 'mime-type=application/x-turtle', $capturedOptions[CURLOPT_POSTFIELDS] );
-		$this->assertArrayNotHasKey( CURLOPT_INFILE, $capturedOptions );
+		// Fourstore uses form-encoded data= param
+		$this->assertStringContainsString( 'data=', $capturedOptions['postData'] );
+		$this->assertStringContainsString( 'mime-type=application/x-turtle', $capturedOptions['postData'] );
 	}
 
 	public function testDoUpdateOmitsCharsetFromContentType() {
-		$capturedOptions = [];
+		$capturedHeaders = [];
 
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$httpRequest->expects( $this->atLeastOnce() )
-			->method( 'setOption' )
-			->willReturnCallback( static function ( $option, $value ) use ( &$capturedOptions ) {
-				$capturedOptions[$option] = $value;
-				return true;
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newGood() );
+
+		$mockRequest->method( 'getStatus' )
+			->willReturn( 200 );
+
+		$mockRequest->expects( $this->atLeastOnce() )
+			->method( 'setHeader' )
+			->willReturnCallback( static function ( $name, $value ) use ( &$capturedHeaders ) {
+				$capturedHeaders[$name] = $value;
 			} );
 
-		$httpRequest->method( 'getLastErrorCode' )->willReturn( 0 );
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->expects( $this->once() )
+			->method( 'create' )
+			->willReturn( $mockRequest );
 
 		$instance = new FourstoreRepositoryConnector(
 			new RepositoryClient( '', 'http://localhost/query', 'http://localhost/update' ),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$instance->doUpdate( 'INSERT DATA { <s> <p> <o> }' );
 
 		// 4Store breaks when charset is included
 		$this->assertSame(
-			[ 'Content-Type: application/x-www-form-urlencoded' ],
-			$capturedOptions[CURLOPT_HTTPHEADER]
+			'application/x-www-form-urlencoded',
+			$capturedHeaders['Content-Type']
 		);
 	}
 
