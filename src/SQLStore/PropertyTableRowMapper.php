@@ -20,17 +20,9 @@ use SMWDIError as DIError;
 class PropertyTableRowMapper {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 2.3
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

@@ -21,31 +21,13 @@ use SMWDIError as DIError;
 class UndeclaredPropertyListLookup implements ListLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var string
-	 */
-	private $defaultPropertyType;
-
-	/**
-	 * @var RequestOptions
-	 */
-	private $requestOptions;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param string $defaultPropertyType
-	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, $defaultPropertyType, ?RequestOptions $requestOptions = null ) {
-		$this->store = $store;
-		$this->defaultPropertyType = $defaultPropertyType;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private readonly Store $store,
+		private $defaultPropertyType,
+		private readonly ?RequestOptions $requestOptions = null,
+	) {
 	}
 
 	/**

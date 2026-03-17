@@ -20,16 +20,6 @@ use SMW\Store;
 class PropertyLabelSimilarityLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @var integer/float
 	 */
 	private $threshold = 50;
@@ -46,14 +36,11 @@ class PropertyLabelSimilarityLookup {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup|null $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, ?SpecificationLookup $propertySpecificationLookup = null ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
-
+	public function __construct(
+		private readonly Store $store,
+		private ?SpecificationLookup $propertySpecificationLookup = null,
+	) {
 		if ( $this->propertySpecificationLookup === null ) {
 			$this->propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 		}

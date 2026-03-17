@@ -14,11 +14,6 @@ use SMW\Store;
 class MissingRedirectLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var array
 	 */
 	private $namespaces;
@@ -30,11 +25,8 @@ class MissingRedirectLookup {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

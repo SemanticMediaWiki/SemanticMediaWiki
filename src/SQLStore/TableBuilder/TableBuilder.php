@@ -18,11 +18,6 @@ use Wikimedia\Rdbms\IDatabase;
 abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
 	/**
-	 * @var IDatabase
-	 */
-	protected $connection;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
@@ -41,11 +36,8 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param IDatabase $connection
 	 */
-	protected function __construct( $connection ) {
-		$this->connection = $connection;
+	protected function __construct( protected $connection ) {
 	}
 
 	/**

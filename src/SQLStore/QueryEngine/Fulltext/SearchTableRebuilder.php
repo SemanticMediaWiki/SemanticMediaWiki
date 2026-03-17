@@ -18,16 +18,6 @@ use SMWDataItem as DataItem;
 class SearchTableRebuilder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var SearchTableUpdater
-	 */
-	private $searchTableUpdater;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
@@ -49,13 +39,11 @@ class SearchTableRebuilder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
-	 * @param SearchTableUpdater $searchTableUpdater
 	 */
-	public function __construct( Database $connection, SearchTableUpdater $searchTableUpdater ) {
-		$this->connection = $connection;
-		$this->searchTableUpdater = $searchTableUpdater;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly SearchTableUpdater $searchTableUpdater,
+	) {
 		$this->messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 

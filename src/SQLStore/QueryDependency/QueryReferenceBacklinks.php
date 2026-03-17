@@ -19,17 +19,9 @@ use SMW\SemanticData;
 class QueryReferenceBacklinks {
 
 	/**
-	 * @var QueryDependencyLinksStore
-	 */
-	private $queryDependencyLinksStore = null;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param QueryDependencyLinksStore $queryDependencyLinksStore
 	 */
-	public function __construct( QueryDependencyLinksStore $queryDependencyLinksStore ) {
-		$this->queryDependencyLinksStore = $queryDependencyLinksStore;
+	public function __construct( private readonly QueryDependencyLinksStore $queryDependencyLinksStore ) {
 	}
 
 	/**

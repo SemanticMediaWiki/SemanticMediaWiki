@@ -23,11 +23,6 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @var array
 	 */
-	private $diff = [];
-
-	/**
-	 * @var array
-	 */
 	private $data = [];
 
 	/**
@@ -39,11 +34,6 @@ class ChangeOp implements IteratorAggregate {
 	 * @var array
 	 */
 	private $orderedDiff = [];
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
 
 	/**
 	 * @var array
@@ -62,13 +52,11 @@ class ChangeOp implements IteratorAggregate {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param DIWikiPage|null $subject
-	 * @param array $diff
 	 */
-	public function __construct( ?DIWikiPage $subject = null, array $diff = [] ) {
-		$this->subject = $subject;
-		$this->diff = $diff;
+	public function __construct(
+		private readonly ?DIWikiPage $subject = null,
+		private array $diff = [],
+	) {
 	}
 
 	/**

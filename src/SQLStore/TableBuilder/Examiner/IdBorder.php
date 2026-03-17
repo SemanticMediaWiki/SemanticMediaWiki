@@ -28,17 +28,9 @@ class IdBorder {
 	const UPPER_BOUND = 'upper.bound';
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**

@@ -19,36 +19,18 @@ use SMW\SQLStore\SQLStore;
 class EntityIdFinder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var PropertyTableHashes
-	 */
-	private $propertyTableHashes;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @var bool
 	 */
 	private $fetchPropertyTableHashes = false;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param PropertyTableHashes $propertyTableHashes
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, PropertyTableHashes $propertyTableHashes, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->propertyTableHashes = $propertyTableHashes;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly PropertyTableHashes $propertyTableHashes,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**

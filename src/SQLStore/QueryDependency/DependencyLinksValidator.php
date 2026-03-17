@@ -19,11 +19,6 @@ class DependencyLinksValidator {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var bool
 	 */
 	private $checkDependencies = false;
@@ -35,11 +30,8 @@ class DependencyLinksValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**

@@ -19,29 +19,17 @@ class Table {
 	const TYPE_DEFAULTS = 'defaults';
 
 	/**
-	 * @var string
-	 */
-	private $name;
-
-	/**
-	 * @var bool
-	 */
-	private $isCoreTable = true;
-
-	/**
 	 * @var array
 	 */
 	private $attributes = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param string $name
-	 * @param bool $isCoreTable
 	 */
-	public function __construct( $name, bool $isCoreTable = true ) {
-		$this->name = $name;
-		$this->isCoreTable = $isCoreTable;
+	public function __construct(
+		private $name,
+		private readonly bool $isCoreTable = true,
+	) {
 	}
 
 	/**

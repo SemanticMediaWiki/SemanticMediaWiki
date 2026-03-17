@@ -13,24 +13,12 @@ use SMW\MediaWiki\Collator;
 class TableFieldUpdater {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var Collator
-	 */
-	private $collator;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
-	 * @param Collator|null $collator
 	 */
-	public function __construct( SQLStore $store, ?Collator $collator = null ) {
-		$this->store = $store;
-		$this->collator = $collator;
+	public function __construct(
+		private readonly SQLStore $store,
+		private ?Collator $collator = null,
+	) {
 	}
 
 	/**

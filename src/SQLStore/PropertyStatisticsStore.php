@@ -21,11 +21,6 @@ class PropertyStatisticsStore {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var bool
 	 */
 	private $isCommandLineMode = false;
@@ -37,11 +32,8 @@ class PropertyStatisticsStore {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private Database $connection ) {
 	}
 
 	/**

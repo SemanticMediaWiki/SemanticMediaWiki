@@ -26,11 +26,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class QueryResultDependencyListResolver {
 
 	/**
-	 * @var HierarchyLookup
-	 */
-	private $hierarchyLookup;
-
-	/**
 	 * Specifies a list of property keys to be excluded from the detection
 	 * process.
 	 *
@@ -40,11 +35,8 @@ class QueryResultDependencyListResolver {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function __construct( HierarchyLookup $hierarchyLookup ) {
-		$this->hierarchyLookup = $hierarchyLookup;
+	public function __construct( private readonly HierarchyLookup $hierarchyLookup ) {
 	}
 
 	/**
