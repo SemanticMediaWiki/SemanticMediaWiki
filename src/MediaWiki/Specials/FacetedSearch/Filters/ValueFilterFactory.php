@@ -18,17 +18,11 @@ use SMW\Schema\CompartmentIterator;
 class ValueFilterFactory {
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
 	 */
-	public function __construct( TemplateParser $templateParser ) {
-		$this->templateParser = $templateParser;
+	public function __construct(
+		private readonly TemplateParser $templateParser,
+	) {
 	}
 
 	/**

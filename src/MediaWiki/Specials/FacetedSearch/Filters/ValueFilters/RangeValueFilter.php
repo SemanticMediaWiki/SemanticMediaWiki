@@ -19,36 +19,18 @@ class RangeValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var CompartmentIterator
-	 */
-	private $compartmentIterator;
-
-	/**
 	 * @var UrlArgs
 	 */
 	private $urlArgs;
 
 	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param CompartmentIterator $compartmentIterator
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, CompartmentIterator $compartmentIterator, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->compartmentIterator = $compartmentIterator;
-		$this->params = $params;
+	public function __construct(
+		private readonly TemplateParser $templateParser,
+		private readonly CompartmentIterator $compartmentIterator,
+		private readonly array $params,
+	) {
 	}
 
 	/**

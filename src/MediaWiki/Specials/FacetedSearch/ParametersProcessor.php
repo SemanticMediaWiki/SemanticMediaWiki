@@ -30,11 +30,6 @@ class ParametersProcessor {
 	// RequestParameters
 
 	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
 	 * @var string
 	 */
 	private $queryString = '';
@@ -66,11 +61,10 @@ class ParametersProcessor {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
 	 */
-	public function __construct( Profile $profile ) {
-		$this->profile = $profile;
+	public function __construct(
+		private readonly Profile $profile,
+	) {
 	}
 
 	/**

@@ -30,11 +30,6 @@ use Traversable;
 class ValueListBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var int
 	 */
 	private $pagingLimit = 0;
@@ -66,11 +61,10 @@ class ValueListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+	) {
 	}
 
 	/**

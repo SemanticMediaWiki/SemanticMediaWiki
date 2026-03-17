@@ -19,31 +19,13 @@ class CategoryFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var TreeBuilder
-	 */
-	private $treeBuilder;
-
-	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param TreeBuilder $treeBuilder
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, TreeBuilder $treeBuilder, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->treeBuilder = $treeBuilder;
-		$this->params = $params;
+	public function __construct(
+		private readonly TemplateParser $templateParser,
+		private readonly TreeBuilder $treeBuilder,
+		private array $params,
+	) {
 	}
 
 	/**

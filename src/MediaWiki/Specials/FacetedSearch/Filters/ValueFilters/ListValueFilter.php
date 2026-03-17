@@ -20,29 +20,17 @@ class ListValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
 	 * @var UrlArgs
 	 */
 	private $urlArgs;
 
 	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->params = $params;
+	public function __construct(
+		private readonly TemplateParser $templateParser,
+		private array $params,
+	) {
 	}
 
 	/**

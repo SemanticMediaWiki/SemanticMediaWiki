@@ -30,31 +30,13 @@ class ArticleViewHeader implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var DependencyValidator
-	 */
-	private $dependencyValidator;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyValidator
 	 */
-	public function __construct( Store $store, NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
-		$this->store = $store;
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->dependencyValidator = $dependencyValidator;
+	public function __construct(
+		private readonly Store $store,
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly DependencyValidator $dependencyValidator,
+	) {
 	}
 
 	/**

@@ -28,48 +28,19 @@ class PageInfoProvider implements PageInfo {
 	use RevisionGuardAwareTrait;
 
 	/**
-	 * @var WikiPage
-	 */
-	private $wikiPage = null;
-
-	/**
-	 * @var RevisionRecord
-	 */
-	private $revision = null;
-
-	/**
-	 * @var User
-	 */
-	private $user = null;
-
-	/**
 	 * @var RevisionLookup
 	 */
 	private $revisionLookup;
 
 	/**
-	 * @var ?bool
-	 */
-	private $isReUpload = null;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param WikiPage $wikiPage
-	 * @param ?RevisionRecord $revision
-	 * @param ?User $user
-	 * @param ?bool $isReUpload
 	 */
 	public function __construct(
-		WikiPage $wikiPage,
-		?RevisionRecord $revision = null,
-		?User $user = null,
-		?bool $isReUpload = null
+		private readonly WikiPage $wikiPage,
+		private readonly ?RevisionRecord $revision = null,
+		private readonly ?User $user = null,
+		private readonly ?bool $isReUpload = null,
 	) {
-		$this->wikiPage = $wikiPage;
-		$this->revision = $revision;
-		$this->user = $user;
-		$this->isReUpload = $isReUpload;
 	}
 
 	/**

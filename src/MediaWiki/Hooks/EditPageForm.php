@@ -28,31 +28,13 @@ class EditPageForm implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
-	 * @var PreferenceExaminer
-	 */
-	private $preferenceExaminer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param PermissionExaminer $permissionExaminer
-	 * @param PreferenceExaminer $preferenceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, PermissionExaminer $permissionExaminer, PreferenceExaminer $preferenceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->permissionExaminer = $permissionExaminer;
-		$this->preferenceExaminer = $preferenceExaminer;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly PermissionExaminer $permissionExaminer,
+		private readonly PreferenceExaminer $preferenceExaminer,
+	) {
 	}
 
 	/**

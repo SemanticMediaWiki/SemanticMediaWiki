@@ -16,24 +16,12 @@ class ArticleLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var ArticleAugmentor
-	 */
-	private $articleAugmentor;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Database $connection
-	 * @param ArticleAugmentor $articleAugmentor
 	 */
-	public function __construct( Database $connection, ArticleAugmentor $articleAugmentor ) {
-		$this->connection = $connection;
-		$this->articleAugmentor = $articleAugmentor;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly ArticleAugmentor $articleAugmentor,
+	) {
 	}
 
 	/**

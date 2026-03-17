@@ -23,36 +23,18 @@ class HashFieldUpdate implements DeferrableUpdate {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var int
-	 */
-	private $id;
-
-	/**
-	 * @var string
-	 */
-	private $hash;
-
-	/**
 	 * @var bool
 	 */
 	public static $isCommandLineMode;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param int $id
-	 * @param string $hash
 	 */
-	public function __construct( Database $connection, $id, $hash ) {
-		$this->connection = $connection;
-		$this->id = $id;
-		$this->hash = $hash;
+	public function __construct(
+		private readonly Database $connection,
+		private $id,
+		private $hash,
+	) {
 	}
 
 	/**

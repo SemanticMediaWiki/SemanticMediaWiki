@@ -17,24 +17,12 @@ class ExtraFieldBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
-	 * @param TemplateParser $templateParser
 	 */
-	public function __construct( Profile $profile, TemplateParser $templateParser ) {
-		$this->profile = $profile;
-		$this->templateParser = $templateParser;
+	public function __construct(
+		private readonly Profile $profile,
+		private readonly TemplateParser $templateParser,
+	) {
 	}
 
 	/**

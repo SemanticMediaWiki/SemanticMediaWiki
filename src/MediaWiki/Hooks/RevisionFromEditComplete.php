@@ -39,38 +39,14 @@ class RevisionFromEditComplete implements HookListener {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var EditInfo
-	 */
-	private $editInfo;
-
-	/**
-	 * @var PageInfoProvider
-	 */
-	private $pageInfoProvider;
-
-	/**
-	 * @var PropertyAnnotatorFactory
-	 */
-	private $propertyAnnotatorFactory;
-
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param EditInfo $editInfo
-	 * @param PageInfoProvider $pageInfoProvider
-	 * @param PropertyAnnotatorFactory $propertyAnnotatorFactory
-	 * @param SchemaFactory $schemaFactory
 	 */
-	public function __construct( EditInfo $editInfo, PageInfoProvider $pageInfoProvider, PropertyAnnotatorFactory $propertyAnnotatorFactory, SchemaFactory $schemaFactory ) {
-		$this->editInfo = $editInfo;
-		$this->pageInfoProvider = $pageInfoProvider;
-		$this->propertyAnnotatorFactory = $propertyAnnotatorFactory;
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private readonly EditInfo $editInfo,
+		private readonly PageInfoProvider $pageInfoProvider,
+		private readonly PropertyAnnotatorFactory $propertyAnnotatorFactory,
+		private readonly SchemaFactory $schemaFactory,
+	) {
 	}
 
 	/**

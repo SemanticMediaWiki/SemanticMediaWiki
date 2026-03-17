@@ -33,20 +33,14 @@ class ApiQueryResultFormatter {
 	 */
 	protected $isRawMode = false;
 
-	/**
-	 * @var QueryResult
-	 */
-	protected $queryResult = null;
-
 	protected array $result;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param QueryResult $queryResult
 	 */
-	public function __construct( QueryResult $queryResult ) {
-		$this->queryResult = $queryResult;
+	public function __construct(
+		protected readonly QueryResult $queryResult,
+	) {
 	}
 
 	/**

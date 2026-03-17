@@ -21,11 +21,6 @@ use SMWQueryProcessor as QueryProcessor;
 class ResultFetcher {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var int
 	 */
 	private $totalCount = 0;
@@ -87,11 +82,10 @@ class ResultFetcher {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+	) {
 	}
 
 	/**

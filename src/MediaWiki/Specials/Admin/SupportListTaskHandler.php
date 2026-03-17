@@ -14,17 +14,11 @@ use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 class SupportListTaskHandler extends TaskHandler {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+	) {
 	}
 
 	/**

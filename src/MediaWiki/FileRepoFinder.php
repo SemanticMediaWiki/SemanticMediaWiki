@@ -15,17 +15,11 @@ use RepoGroup;
 class FileRepoFinder {
 
 	/**
-	 * @var RepoGroup
-	 */
-	private $repoGroup;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param RepoGroup $repoGroup
 	 */
-	public function __construct( RepoGroup $repoGroup ) {
-		$this->repoGroup = $repoGroup;
+	public function __construct(
+		private readonly RepoGroup $repoGroup,
+	) {
 	}
 
 	/**

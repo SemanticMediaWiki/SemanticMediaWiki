@@ -21,22 +21,16 @@ use SMW\MediaWiki\Connection\Database;
 class TitleLookup {
 
 	/**
-	 * @var Database
-	 */
-	private $connection = null;
-
-	/**
 	 * @var int
 	 */
 	private $namespace = null;
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct(
+		private readonly Database $connection,
+	) {
 	}
 
 	/**

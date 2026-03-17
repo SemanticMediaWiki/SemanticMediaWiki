@@ -22,16 +22,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @var null|Job
 	 */
 	private $refreshjob = null;
@@ -43,13 +33,11 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**

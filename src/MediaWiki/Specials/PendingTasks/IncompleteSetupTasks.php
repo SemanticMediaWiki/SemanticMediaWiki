@@ -15,18 +15,11 @@ use SMW\SetupFile;
 class IncompleteSetupTasks {
 
 	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param SetupFile|null $setupFile
 	 */
-	public function __construct( ?SetupFile $setupFile = null ) {
-		$this->setupFile = $setupFile;
-
+	public function __construct(
+		private ?SetupFile $setupFile = null,
+	) {
 		if ( $this->setupFile === null ) {
 			$this->setupFile = new SetupFile();
 		}

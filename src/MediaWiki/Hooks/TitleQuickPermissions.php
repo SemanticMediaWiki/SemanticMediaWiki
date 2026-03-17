@@ -18,24 +18,12 @@ use SMW\NamespaceExaminer;
 class TitleQuickPermissions implements HookListener {
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var TitlePermissions
-	 */
-	private $titlePermissions;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param TitlePermissions $titlePermissions
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, TitlePermissions $titlePermissions ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->titlePermissions = $titlePermissions;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly TitlePermissions $titlePermissions,
+	) {
 	}
 
 	/**

@@ -17,21 +17,16 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class CleanUpTables {
 
 	/**
-	 * @var Database|IDatabase
-	 */
-	private $connection;
-
-	/**
 	 * @since 3.1
 	 */
-	public function __construct( $connection ) {
+	public function __construct(
+		private $connection,
+	) {
 		if (
 			!$connection instanceof Database &&
 			!$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
-
-		$this->connection = $connection;
 	}
 
 	/**

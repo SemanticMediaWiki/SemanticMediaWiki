@@ -18,17 +18,11 @@ use SMW\MediaWiki\HookListener;
 class BeforeDisplayNoArticleText implements HookListener {
 
 	/**
-	 * @var Page
-	 */
-	private $article;
-
-	/**
 	 * @since  2.0
-	 *
-	 * @param Page $article
 	 */
-	public function __construct( $article ) {
-		$this->article = $article;
+	public function __construct(
+		private $article,
+	) {
 	}
 
 	/**

@@ -29,15 +29,11 @@ use SMWQuery as Query;
 class QueryResultLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 2.1
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+	) {
 	}
 
 	/**

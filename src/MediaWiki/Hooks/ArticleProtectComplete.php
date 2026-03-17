@@ -34,24 +34,12 @@ class ArticleProtectComplete implements HookListener {
 	const RESTRICTED_UPDATE = 'articleprotectcomplete.restricted.update';
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
-	 * @var EditInfo
-	 */
-	private $editInfo;
-
-	/**
 	 * @since  2.5
-	 *
-	 * @param Title $title
-	 * @param EditInfo $editInfo
 	 */
-	public function __construct( Title $title, EditInfo $editInfo ) {
-		$this->title = $title;
-		$this->editInfo = $editInfo;
+	public function __construct(
+		private readonly Title $title,
+		private readonly EditInfo $editInfo,
+	) {
 	}
 
 	/**

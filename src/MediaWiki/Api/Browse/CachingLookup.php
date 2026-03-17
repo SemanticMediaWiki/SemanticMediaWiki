@@ -22,26 +22,17 @@ class CachingLookup {
 	private $store;
 
 	/**
-	 * @var Lookup
-	 */
-	private $lookup;
-
-	/**
 	 * @var int|bool
 	 */
 	private $cacheTTL;
 
-	private Cache $cache;
-
 	/**
 	 * @since 3.0
-	 *
-	 * @param Cache $cache
-	 * @param Lookup $lookup
 	 */
-	public function __construct( Cache $cache, Lookup $lookup ) {
-		$this->cache = $cache;
-		$this->lookup = $lookup;
+	public function __construct(
+		private readonly Cache $cache,
+		private readonly Lookup $lookup,
+	) {
 		$this->cacheTTL = self::CACHE_TTL;
 	}
 

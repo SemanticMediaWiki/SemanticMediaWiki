@@ -24,17 +24,11 @@ use SMW\Store;
 class ExtensionSchemaUpdates implements HookListener {
 
 	/**
-	 * @var DatabaseUpdater
-	 */
-	protected $updater = null;
-
-	/**
 	 * @since  2.0
-	 *
-	 * @param DatabaseUpdater|null $updater = null
 	 */
-	public function __construct( ?DatabaseUpdater $updater = null ) {
-		$this->updater = $updater;
+	public function __construct(
+		protected readonly ?DatabaseUpdater $updater = null,
+	) {
 	}
 
 	/**

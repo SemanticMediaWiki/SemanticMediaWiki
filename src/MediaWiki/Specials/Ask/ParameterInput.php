@@ -23,26 +23,6 @@ use ParamProcessor\ParamDefinition;
 class ParameterInput {
 
 	/**
-	 * The parameter to print an input for.
-	 *
-	 * @since 1.9
-	 *
-	 * @var ParamDefinition
-	 */
-	protected $param;
-
-	/**
-	 * The current value for the parameter. When provided,
-	 * it'll be used as value for the input, otherwise the
-	 * parameters default value will be used.
-	 *
-	 * @since 1.9
-	 *
-	 * @var mixed string or false
-	 */
-	protected $currentValue;
-
-	/**
 	 * Name for the input.
 	 *
 	 * @since 1.9
@@ -60,14 +40,12 @@ class ParameterInput {
 	 * Constructor.
 	 *
 	 * @since 1.9
-	 *
-	 * @param ParamDefinition $param
-	 * @param mixed $currentValue
 	 */
-	public function __construct( ParamDefinition $param, $currentValue = false ) {
-		$this->currentValue = $currentValue;
+	public function __construct(
+		protected readonly ParamDefinition $param,
+		protected $currentValue = false,
+	) {
 		$this->inputName = $param->getName();
-		$this->param = $param;
 	}
 
 	/**

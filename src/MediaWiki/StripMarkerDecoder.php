@@ -14,22 +14,16 @@ use MediaWiki\Parser\StripState;
 class StripMarkerDecoder {
 
 	/**
-	 * @var StripState
-	 */
-	private $stripState;
-
-	/**
 	 * @var bool
 	 */
 	private $isSupported = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param StripState $stripState
 	 */
-	public function __construct( StripState $stripState ) {
-		$this->stripState = $stripState;
+	public function __construct(
+		private readonly StripState $stripState,
+	) {
 	}
 
 	/**

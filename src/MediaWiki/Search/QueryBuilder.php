@@ -25,30 +25,17 @@ use SMWQueryProcessor as QueryProcessor;
 class QueryBuilder {
 
 	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
-	 * @var array
-	 */
-	private $data = [];
-
-	/**
 	 * @var array
 	 */
 	private $queryCache = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest|null $request
-	 * @param array|null $data
 	 */
-	public function __construct( ?WebRequest $request = null, array $data = [] ) {
-		$this->request = $request;
-		$this->data = $data;
-
+	public function __construct(
+		private ?WebRequest $request = null,
+		private array $data = [],
+	) {
 		if ( $this->request === null ) {
 			$this->request = $GLOBALS['wgRequest'];
 		}

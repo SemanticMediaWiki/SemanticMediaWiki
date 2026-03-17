@@ -28,16 +28,6 @@ class ProfileForm {
 	const SCHEMA_TYPE = 'SEARCH_FORM_SCHEMA';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecialSearch
-	 */
-	private $specialSearch;
-
-	/**
 	 * @var FormsFactory
 	 */
 	private $formsFactory;
@@ -49,13 +39,11 @@ class ProfileForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param SpecialSearch $specialSearch
 	 */
-	public function __construct( Store $store, SpecialSearch $specialSearch ) {
-		$this->store = $store;
-		$this->specialSearch = $specialSearch;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecialSearch $specialSearch,
+	) {
 		$this->formsFactory = new FormsFactory();
 	}
 

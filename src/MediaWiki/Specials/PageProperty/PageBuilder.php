@@ -19,29 +19,17 @@ use SMWInfolink as Infolink;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
 	 * @var Linker
 	 */
 	private $linker;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param Options $options
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, Options $options ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->options = $options;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly Options $options,
+	) {
 		$this->linker = smwfGetLinker();
 	}
 

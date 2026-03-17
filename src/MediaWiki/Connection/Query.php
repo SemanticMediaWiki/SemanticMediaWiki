@@ -21,11 +21,6 @@ class Query {
 	const TYPE_SELECT = 'SELECT';
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var string
 	 */
 	protected $type = '';
@@ -72,11 +67,10 @@ class Query {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct(
+		private readonly Database $connection,
+	) {
 	}
 
 	/**

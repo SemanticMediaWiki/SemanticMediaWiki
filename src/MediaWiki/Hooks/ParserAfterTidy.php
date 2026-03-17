@@ -40,16 +40,6 @@ class ParserAfterTidy implements HookListener {
 	private $parser;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var bool
 	 */
 	private $isCommandLineMode = false;
@@ -63,13 +53,13 @@ class ParserAfterTidy implements HookListener {
 	 * @since  1.9
 	 *
 	 * @param Parser &$parser
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param Cache $cache
 	 */
-	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
+	public function __construct(
+		Parser &$parser,
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly Cache $cache,
+	) {
 		$this->parser = $parser;
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->cache = $cache;
 	}
 
 	/**

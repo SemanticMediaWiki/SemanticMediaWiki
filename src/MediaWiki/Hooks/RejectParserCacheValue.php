@@ -22,24 +22,12 @@ class RejectParserCacheValue implements HookListener {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var DependencyValidator
-	 */
-	private $dependencyValidator;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param DependencyValidator $dependencyValidator
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer, DependencyValidator $dependencyValidator ) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->dependencyValidator = $dependencyValidator;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly DependencyValidator $dependencyValidator,
+	) {
 	}
 
 	/**

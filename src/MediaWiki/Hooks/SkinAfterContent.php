@@ -23,17 +23,11 @@ class SkinAfterContent implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var Skin
-	 */
-	private $skin = null;
-
-	/**
 	 * @since  1.9
-	 *
-	 * @param Skin|null $skin
 	 */
-	public function __construct( ?Skin $skin = null ) {
-		$this->skin = $skin;
+	public function __construct(
+		private readonly ?Skin $skin = null,
+	) {
 	}
 
 	/**

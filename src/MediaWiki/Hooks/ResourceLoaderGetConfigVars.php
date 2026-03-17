@@ -32,17 +32,11 @@ class ResourceLoaderGetConfigVars implements HookListener {
 	];
 
 	/**
-	 * @var NamespaceInfo
-	 */
-	private $namespaceInfo;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceInfo $namespaceInfo
 	 */
-	public function __construct( NamespaceInfo $namespaceInfo ) {
-		$this->namespaceInfo = $namespaceInfo;
+	public function __construct(
+		private readonly NamespaceInfo $namespaceInfo,
+	) {
 	}
 
 	/**

@@ -25,22 +25,16 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class UserChange implements HookListener {
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
 	 * @var string
 	 */
 	private $origin = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct(
+		private readonly NamespaceExaminer $namespaceExaminer,
+	) {
 	}
 
 	/**

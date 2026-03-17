@@ -16,17 +16,11 @@ use MediaWiki\User\User;
 class PermissionManager {
 
 	/**
-	 * @var MwPermissionManager
-	 */
-	private $permissionManager;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param MwPermissionManager $permissionManager
 	 */
-	public function __construct( MwPermissionManager $permissionManager ) {
-		$this->permissionManager = $permissionManager;
+	public function __construct(
+		private readonly MwPermissionManager $permissionManager,
+	) {
 	}
 
 	/**

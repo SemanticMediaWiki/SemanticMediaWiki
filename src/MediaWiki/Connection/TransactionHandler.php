@@ -16,11 +16,6 @@ use Wikimedia\ScopedCallback;
 class TransactionHandler {
 
 	/**
-	 * @var ILBFactory
-	 */
-	private $loadBalancerFactory;
-
-	/**
 	 * @var string|null
 	 */
 	private $sectionTransaction;
@@ -35,8 +30,9 @@ class TransactionHandler {
 	/**
 	 * @since 3.1
 	 */
-	public function __construct( ILBFactory $loadBalancerFactory ) {
-		$this->loadBalancerFactory = $loadBalancerFactory;
+	public function __construct(
+		private readonly ILBFactory $loadBalancerFactory,
+	) {
 	}
 
 	/**

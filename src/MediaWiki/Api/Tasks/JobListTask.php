@@ -14,17 +14,11 @@ use SMW\MediaWiki\JobQueue;
 class JobListTask extends Task {
 
 	/**
-	 * @var JobQueue
-	 */
-	private $jobQueue;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param JobQueue $jobQueue
 	 */
-	public function __construct( JobQueue $jobQueue ) {
-		$this->jobQueue = $jobQueue;
+	public function __construct(
+		private readonly JobQueue $jobQueue,
+	) {
 	}
 
 	/**

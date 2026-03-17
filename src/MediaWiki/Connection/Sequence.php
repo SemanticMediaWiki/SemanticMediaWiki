@@ -15,11 +15,6 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class Sequence {
 
 	/**
-	 * @var Database|IDatabase
-	 */
-	private $connection;
-
-	/**
 	 * @var string
 	 */
 	private $tablePrefix;
@@ -27,14 +22,14 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( $connection ) {
+	public function __construct(
+		private $connection,
+	) {
 		if (
 			!$connection instanceof Database &&
 			!$connection instanceof IDatabase ) {
 			throw new RuntimeException( "Invalid connection instance!" );
 		}
-
-		$this->connection = $connection;
 	}
 
 	/**

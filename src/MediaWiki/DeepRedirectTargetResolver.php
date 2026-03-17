@@ -14,11 +14,6 @@ use RuntimeException;
 class DeepRedirectTargetResolver {
 
 	/**
-	 * @var PageCreator
-	 */
-	private $pageCreator = null;
-
-	/**
 	 * Track titles to prevent circular references caused by double redirects
 	 * on the same title
 	 *
@@ -28,11 +23,10 @@ class DeepRedirectTargetResolver {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param PageCreator $pageCreator
 	 */
-	public function __construct( PageCreator $pageCreator ) {
-		$this->pageCreator = $pageCreator;
+	public function __construct(
+		private readonly PageCreator $pageCreator,
+	) {
 	}
 
 	/**

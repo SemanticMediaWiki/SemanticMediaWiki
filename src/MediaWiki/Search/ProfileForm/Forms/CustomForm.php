@@ -17,11 +17,6 @@ use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 class CustomForm {
 
 	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
 	 * @var Field
 	 */
 	private $field;
@@ -55,11 +50,10 @@ class CustomForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct(
+		private readonly WebRequest $request,
+	) {
 		$this->field = new Field();
 	}
 

@@ -28,21 +28,6 @@ use SMWInfolink as Infolink;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var PageRequestOptions
-	 */
-	private $pageRequestOptions;
-
-	/**
-	 * @var QueryResultLookup
-	 */
-	private $queryResultLookup;
-
-	/**
 	 * @var MessageBuilder
 	 */
 	private $messageBuilder;
@@ -54,15 +39,12 @@ class PageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param PageRequestOptions $pageRequestOptions
-	 * @param QueryResultLookup $queryResultLookup
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, PageRequestOptions $pageRequestOptions, QueryResultLookup $queryResultLookup ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->pageRequestOptions = $pageRequestOptions;
-		$this->queryResultLookup = $queryResultLookup;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly PageRequestOptions $pageRequestOptions,
+		private readonly QueryResultLookup $queryResultLookup,
+	) {
 		$this->linker = smwfGetLinker();
 	}
 

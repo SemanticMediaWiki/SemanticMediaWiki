@@ -28,17 +28,11 @@ use WikiPage;
 class MwCollaboratorFactory {
 
 	/**
-	 * @var ApplicationFactory
-	 */
-	private $applicationFactory;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param ApplicationFactory $applicationFactory
 	 */
-	public function __construct( ApplicationFactory $applicationFactory ) {
-		$this->applicationFactory = $applicationFactory;
+	public function __construct(
+		private readonly ApplicationFactory $applicationFactory,
+	) {
 	}
 
 	/**

@@ -19,11 +19,6 @@ use SMWQuery as Query;
 class HtmlForm {
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @var array
 	 */
 	private $parameters = [];
@@ -60,11 +55,10 @@ class HtmlForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Title $title
 	 */
-	public function __construct( Title $title ) {
-		$this->title = $title;
+	public function __construct(
+		private readonly Title $title,
+	) {
 	}
 
 	/**

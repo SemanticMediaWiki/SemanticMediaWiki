@@ -19,16 +19,6 @@ use SMW\StringCondition;
 class PropertyListByApiRequest {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @var RequestOptions
 	 */
 	private $requestOptions = null;
@@ -70,13 +60,11 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**

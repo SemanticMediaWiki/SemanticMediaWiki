@@ -17,22 +17,16 @@ use JobQueueGroup;
 class JobQueue {
 
 	/**
-	 * @var JobQueueGroup
-	 */
-	private $jobQueueGroup;
-
-	/**
 	 * @var bool
 	 */
 	private $disableCache = false;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param JobQueueGroup $jobQueueGroup
 	 */
-	public function __construct( JobQueueGroup $jobQueueGroup ) {
-		$this->jobQueueGroup = $jobQueueGroup;
+	public function __construct(
+		private readonly JobQueueGroup $jobQueueGroup,
+	) {
 	}
 
 	/**
