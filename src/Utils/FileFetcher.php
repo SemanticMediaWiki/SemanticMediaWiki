@@ -2,6 +2,7 @@
 
 namespace SMW\Utils;
 
+use Iterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
@@ -87,7 +88,7 @@ class FileFetcher {
 	 *
 	 * @param string $extension
 	 *
-	 * @return Iterator
+	 * @return Iterator|array
 	 */
 	public function findByExtension( $extension ) {
 		if ( !is_dir( $this->dir ) ) {
