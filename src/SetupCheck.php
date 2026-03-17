@@ -72,7 +72,7 @@ class SetupCheck {
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 
@@ -92,7 +92,7 @@ class SetupCheck {
 	private $localMessageProvider;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $definitions = [];
 
@@ -258,7 +258,7 @@ class SetupCheck {
 			$this->errorType = self::MAINTENANCE_MODE;
 		} elseif ( !$this->isCli() && !$this->setupFile->hasDatabaseMinRequirement() ) {
 			$this->errorType = self::ERROR_DB_REQUIREMENT_INCOMPATIBLE;
-		} elseif ( $this->setupFile->isGoodSchema() === false ) {
+		} elseif ( !$this->setupFile->isGoodSchema() ) {
 			$this->errorType = self::ERROR_SCHEMA_INVALID_KEY;
 		}
 
@@ -354,6 +354,8 @@ class SetupCheck {
 	 * @since 3.1
 	 *
 	 * @param bool $isCli
+	 * 
+	 * @return never
 	 */
 	public function showErrorAndAbort( $isCli = false ) {
 		echo $this->getError( $isCli );
