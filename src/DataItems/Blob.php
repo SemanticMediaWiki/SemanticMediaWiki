@@ -83,4 +83,4 @@ class Blob extends DataItem {
 /**
  * @deprecated since 7.0.0
  */
-class_alias( Blob::class, 'Blob' );
+class_alias( Blob::class, 'SMWDIBlob' );
