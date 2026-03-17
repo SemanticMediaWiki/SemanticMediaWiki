@@ -3,6 +3,8 @@
 namespace SMW\Services;
 
 use Onoi\Cache\CacheFactory;
+use Onoi\Cache\FixedInMemoryLruCache;
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 
 /**
  * @codeCoverageIgnore
@@ -18,9 +20,10 @@ use Onoi\Cache\CacheFactory;
 return [
 
 	/**
-	 * FixedInMemoryLruCache
+	 * @param CallbackContainerBuilder $containerBuilder
+	 * @param int $cacheSize
 	 *
-	 * @return callable
+	 * @return FixedInMemoryLruCache
 	 */
 	'FixedInMemoryLruCache' => static function ( $containerBuilder, $cacheSize = 500 ) {
 		return CacheFactory::getInstance()->newFixedInMemoryLruCache( $cacheSize );
