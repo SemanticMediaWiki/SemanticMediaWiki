@@ -19,11 +19,6 @@ class DebugFormatter {
 	/**
 	 * @var string
 	 */
-	private $type = '';
-
-	/**
-	 * @var string
-	 */
 	private $format = '';
 
 	/**
@@ -33,17 +28,15 @@ class DebugFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string|null $type
-	 * @param string $format
 	 */
-	public function __construct( ?string $type = '', string $format = '' ) {
-		$this->type = $type;
-
+	public function __construct(
+		private readonly ?string $type = '',
+		string $format = '',
+	) {
 		// Use a more expressive explain output
 		// https://dev.mysql.com/doc/refman/5.6/en/explain.html
 		// https://mariadb.com/kb/en/mariadb/explain-formatjson-in-mysql/
-		if ( $type === 'mysql' && $format === self::JSON_FORMAT ) {
+		if ( $this->type === 'mysql' && $format === self::JSON_FORMAT ) {
 			$this->format = 'FORMAT=json';
 		}
 	}

@@ -15,19 +15,13 @@ use SMWDIBlob as DIBlob;
 class FormatProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var string
-	 */
-	private $format;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param string $format
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, $format ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private $format,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->format = $format;
 	}
 
 	/**

@@ -94,15 +94,11 @@ abstract class ResultPrinter implements IResultPrinter {
 	protected $mSearchlabel = null;
 
 	/** Default return value for empty queries. Unescaped. Normally not used in sub-classes! */
-	protected $mDefault = '';
-
-	// parameters relevant for printers in general:
-	protected $mFormat; // a string identifier describing a valid format
+	protected $mDefault = ''; // a string identifier describing a valid format
 	protected $mLinkFirst; // should article names of the first column be linked?
 	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
 	protected $mShowHeaders = SMW_HEADERS_SHOW; // should the headers (property names) be printed?
-	protected $mShowErrors = true; // should errors possibly be printed?
-	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
+	protected $mShowErrors = true; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
 	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
@@ -171,15 +167,12 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * that may influence the processing details.
 	 *
 	 * Do not override in deriving classes.
-	 *
-	 * @param string $format
-	 * @param bool $inline Optional since 1.9
 	 */
-	public function __construct( $format, $inline = true ) {
+	public function __construct(
+		protected $mFormat,
+		protected $mInline = true,
+	) {
 		global $smwgQDefaultLinking;
-
-		$this->mFormat = $format;
-		$this->mInline = $inline;
 		$this->mLinkFirst = ( $smwgQDefaultLinking != 'none' );
 		$this->mLinkOthers = ( $smwgQDefaultLinking == 'all' );
 		$this->mLinker = new Linker(); ///TODO: how can we get the default or user skin here (depending on context)?

@@ -61,20 +61,16 @@ class ListResultBuilder {
 		],
 	];
 
-	/** @var Linker|null */
-	private $linker = null;
-
-	/** @var QueryResult */
-	private $queryResult;
-
 	/** @var ParameterDictionary */
 	private $configuration;
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
-	public function __construct( QueryResult $queryResult, Linker $linker, ?bool $listPlainByDefault = null ) {
-		$this->linker = $linker;
-		$this->queryResult = $queryResult;
+	public function __construct(
+		private readonly QueryResult $queryResult,
+		private readonly Linker $linker,
+		?bool $listPlainByDefault = null,
+	) {
 		$this->configuration = new ParameterDictionary();
 		$this->listPlainByDefault = $listPlainByDefault ?? $GLOBALS['smwgPlainList'];
 	}

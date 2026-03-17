@@ -23,31 +23,18 @@ class TermsLookup implements ITermsLookup {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
 	 * @var FieldMapper
 	 */
 	private $fieldMapper;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, ?Options $options = null ) {
-		$this->store = $store;
-		$this->options = $options;
-
-		if ( $options === null ) {
+	public function __construct(
+		private Store $store,
+		private ?Options $options = null,
+	) {
+		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 

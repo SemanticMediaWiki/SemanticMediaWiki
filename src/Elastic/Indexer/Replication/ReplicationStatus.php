@@ -27,15 +27,10 @@ class ReplicationStatus {
 	 */
 	private $fieldMapper;
 
-	private ElasticClient $connection;
-
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $connection
 	 */
-	public function __construct( ElasticClient $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly ElasticClient $connection ) {
 		$this->fieldMapper = new FieldMapper();
 	}
 

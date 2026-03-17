@@ -20,21 +20,6 @@ class Document implements JsonSerializable {
 	const TYPE_DELETE = 'type/delete';
 
 	/**
-	 * @var int
-	 */
-	private $id = 0;
-
-	/**
-	 * @var array
-	 */
-	private $data = [];
-
-	/**
-	 * @var string
-	 */
-	private $type = self::TYPE_INSERT;
-
-	/**
 	 * @var array
 	 */
 	private $subDocuments = [];
@@ -46,15 +31,12 @@ class Document implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param int $id
-	 * @param array $data
-	 * @param string $type
 	 */
-	public function __construct( int $id, array $data = [], string $type = self::TYPE_INSERT ) {
-		$this->id = $id;
-		$this->data = $data;
-		$this->type = $type;
+	public function __construct(
+		private readonly int $id,
+		private array $data = [],
+		private readonly string $type = self::TYPE_INSERT,
+	) {
 	}
 
 	/**

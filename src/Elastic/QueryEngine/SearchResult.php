@@ -15,11 +15,6 @@ class SearchResult {
 	/**
 	 * @var
 	 */
-	private $raw = [];
-
-	/**
-	 * @var
-	 */
 	private $errors = [];
 
 	/**
@@ -45,11 +40,8 @@ class SearchResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $raw
 	 */
-	public function __construct( array $raw = [] ) {
-		$this->raw = $raw;
+	public function __construct( private readonly array $raw = [] ) {
 	}
 
 	/**

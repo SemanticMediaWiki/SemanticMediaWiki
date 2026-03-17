@@ -55,9 +55,7 @@ class PrintRequest {
 
 	protected $m_data; // data entries specifyin gwhat was requested (mixed type)
 
-	protected $m_typeid = false; // id of the datatype of the printed objects, if applicable
-
-	protected $m_outputformat; // output format string for formatting results, if applicable
+	protected $m_typeid = false; // output format string for formatting results, if applicable
 
 	protected $m_hash = false; // cache your hash (currently useful since QueryResult accesses the hash many times, might be dropped at some point)
 
@@ -78,14 +76,14 @@ class PrintRequest {
 
 	/**
 	 * Create a print request.
-	 *
-	 * @param int $mode a constant defining what to printout
-	 * @param string $label the string label to describe this printout
-	 * @param mixed $data optional data for specifying some request, might be a property object, title, or something else; interpretation depends on $mode
-	 * @param mixed $outputformat optional string for specifying an output format, e.g. an output unit
-	 * @param array|null $params optional array of further, named parameters for the print request
 	 */
-	public function __construct( $mode, $label, $data = null, $outputformat = false, ?array $params = null ) {
+	public function __construct(
+		$mode,
+		$label,
+		$data = null,
+		protected $m_outputformat = false,
+		?array $params = null,
+	) {
 		if ( ( ( $mode == self::PRINT_CATS || $mode == self::PRINT_THIS ) &&
 				$data !== null ) ||
 			( $mode == self::PRINT_PROP &&
@@ -100,9 +98,8 @@ class PrintRequest {
 
 		$this->m_mode = $mode;
 		$this->m_data = $data;
-		$this->m_outputformat = $outputformat;
 
-		if ( $mode == self::PRINT_CCAT && !$outputformat ) {
+		if ( $mode == self::PRINT_CCAT && !$this->m_outputformat ) {
 			$this->m_outputformat = 'x'; // changed default for Boolean case
 		}
 

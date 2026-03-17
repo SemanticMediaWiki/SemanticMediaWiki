@@ -15,19 +15,13 @@ use SMWDINumber as DINumber;
 class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var int
-	 */
-	private $duration;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param int $duration
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, $duration ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private $duration,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->duration = $duration;
 	}
 
 	/**

@@ -16,17 +16,9 @@ use SMW\Query\Language\ClassDescription;
 class ClassDescriptionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**

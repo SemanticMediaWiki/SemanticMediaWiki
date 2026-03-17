@@ -29,16 +29,6 @@ use SMWDIBoolean as DIBoolean;
 class FieldItemFinder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PrintRequest
-	 */
-	private $printRequest;
-
-	/**
 	 * @var QueryToken
 	 */
 	private $queryToken;
@@ -47,11 +37,6 @@ class FieldItemFinder {
 	 * @var DIWikiPage[]
 	 */
 	private $dataItems = [];
-
-	/**
-	 * @var ItemFetcher
-	 */
-	private $itemFetcher;
 
 	/**
 	 * @var bool|array
@@ -65,18 +50,14 @@ class FieldItemFinder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param ItemFetcher|null $itemFetcher
-	 * @param PrintRequest|null $printRequest
 	 */
-	public function __construct( Store $store, ?ItemFetcher $itemFetcher = null, ?PrintRequest $printRequest = null ) {
-		$this->store = $store;
-		$this->printRequest = $printRequest;
-		$this->itemFetcher = $itemFetcher;
-
+	public function __construct(
+		private readonly Store $store,
+		private ?ItemFetcher $itemFetcher = null,
+		private ?PrintRequest $printRequest = null,
+	) {
 		if ( $this->itemFetcher === null ) {
-			$this->itemFetcher = new ItemFetcher( $store );
+			$this->itemFetcher = new ItemFetcher( $this->store );
 		}
 	}
 

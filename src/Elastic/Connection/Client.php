@@ -47,16 +47,6 @@ class Client {
 	private static $ping;
 
 	/**
-	 * @var LockManager
-	 */
-	private $lockManager;
-
-	/**
-	 * @var Options
-	 */
-	private $options;
-
-	/**
 	 * @var string
 	 */
 	private $wikiid;
@@ -73,15 +63,13 @@ class Client {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $client
-	 * @param LockManager $lockManager
-	 * @param Options|null $options
 	 */
-	public function __construct( ElasticClient $client, LockManager $lockManager, ?Config $options = null ) {
+	public function __construct(
+		ElasticClient $client,
+		private LockManager $lockManager,
+		private ?Config $options = null,
+	) {
 		$this->client = $client;
-		$this->lockManager = $lockManager;
-		$this->options = $options;
 
 		if ( $this->options === null ) {
 			$this->options = new Options();

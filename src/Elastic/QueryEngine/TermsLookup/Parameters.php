@@ -13,15 +13,9 @@ use InvalidArgumentException;
 class Parameters {
 
 	/**
-	 * @var array
-	 */
-	private $parameters = [];
-
-	/**
 	 * @since 3.0
 	 */
-	public function __construct( array $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private array $parameters = [] ) {
 	}
 
 	/**

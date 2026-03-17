@@ -46,24 +46,12 @@ class ReplicationError {
 	const TYPE_FILE_ATTACHMENT_MISSING = 'document/file_attachment/missing';
 
 	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
-	 * @var array
-	 */
-	private $data = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param string $type
-	 * @param array $data
 	 */
-	public function __construct( $type, array $data = [] ) {
-		$this->type = $type;
-		$this->data = $data;
+	public function __construct(
+		private $type,
+		private array $data = [],
+	) {
 	}
 
 	/**

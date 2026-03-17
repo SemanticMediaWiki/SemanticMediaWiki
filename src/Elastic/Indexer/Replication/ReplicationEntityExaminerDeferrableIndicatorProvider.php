@@ -22,21 +22,6 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var ReplicationCheck
-	 */
-	private $replicationCheck;
-
-	/**
 	 * @var
 	 */
 	private $indicators = [];
@@ -60,15 +45,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param ReplicationCheck $replicationCheck
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, ReplicationCheck $replicationCheck ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->replicationCheck = $replicationCheck;
+	public function __construct(
+		private Store $store,
+		private EntityCache $entityCache,
+		private ReplicationCheck $replicationCheck,
+	) {
 	}
 
 	/**

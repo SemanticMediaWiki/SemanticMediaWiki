@@ -35,16 +35,6 @@ class RemoteRequest implements QueryEngine {
 	/**
 	 * @var
 	 */
-	private $parameters = [];
-
-	/**
-	 * @var HttpRequest
-	 */
-	private $httpRequest;
-
-	/**
-	 * @var
-	 */
 	private $features = [];
 
 	/**
@@ -54,13 +44,11 @@ class RemoteRequest implements QueryEngine {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $parameters
-	 * @param HttpRequest|null $httpRequest
 	 */
-	public function __construct( array $parameters = [], ?HttpRequest $httpRequest = null ) {
-		$this->parameters = $parameters;
-		$this->httpRequest = $httpRequest;
+	public function __construct(
+		private array $parameters = [],
+		private ?HttpRequest $httpRequest = null,
+	) {
 		$this->features = $GLOBALS['smwgRemoteReqFeatures'];
 
 		if ( isset( $this->parameters['smwgRemoteReqFeatures'] ) ) {

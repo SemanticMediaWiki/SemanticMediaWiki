@@ -24,11 +24,6 @@ use SMWDataItem as DataItem;
 class SomePropertyInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @var FieldMapper
 	 */
 	private $fieldMapper;
@@ -40,11 +35,8 @@ class SomePropertyInterpreter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**

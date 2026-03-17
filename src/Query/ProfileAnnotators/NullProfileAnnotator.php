@@ -15,17 +15,9 @@ use SMWDIContainer as DIContainer;
 class NullProfileAnnotator implements ProfileAnnotator {
 
 	/**
-	 * @var DIContainer
-	 */
-	private $container;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param DIContainer $container
 	 */
-	public function __construct( DIContainer $container ) {
-		$this->container = $container;
+	public function __construct( private readonly DIContainer $container ) {
 	}
 
 	/**

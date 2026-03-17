@@ -25,30 +25,11 @@ use SMWURIValue as UriValue;
  */
 class ValueDescription extends Description {
 
-	/**
-	 * @var DataItem
-	 */
-	private $dataItem;
-
-	/**
-	 * @var int element in the SMW_CMP_ enum
-	 */
-	private $comparator;
-
-	/**
-	 * @var null|DIProperty
-	 */
-	private $property = null;
-
-	/**
-	 * @param DataItem $dataItem
-	 * @param null|DIProperty $property
-	 * @param int $comparator
-	 */
-	public function __construct( DataItem $dataItem, ?DIProperty $property = null, $comparator = SMW_CMP_EQ ) {
-		$this->dataItem = $dataItem;
-		$this->comparator = $comparator;
-		$this->property = $property;
+	public function __construct(
+		private readonly DataItem $dataItem,
+		private readonly ?DIProperty $property = null,
+		private $comparator = SMW_CMP_EQ,
+	) {
 	}
 
 	/**
