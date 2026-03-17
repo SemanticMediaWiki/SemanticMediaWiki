@@ -76,17 +76,17 @@ class ListAugmentorTest extends TestCase {
 			]
 		];
 
-                $propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
-                        ->disableOriginalConstructor()
-                        ->getMock();
+				$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+						->disableOriginalConstructor()
+						->getMock();
 
-                $propertySpecificationLookup->expects( $this->any() )
-                        ->method( 'getPropertyDescriptionByLanguageCode' )
-                        ->willReturn( '' );
+				$propertySpecificationLookup->expects( $this->any() )
+						->method( 'getPropertyDescriptionByLanguageCode' )
+						->willReturn( '' );
 
-                $this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
+				$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
-                $store = $this->getMockBuilder( SQLStore::class )
+				$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
