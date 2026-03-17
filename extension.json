@@ -25,7 +25,6 @@
 		"SMW\\": "src/",
 		"SMW\\Maintenance\\": "maintenance/"
 	},
-	
 	"TestAutoloadNamespaces": {
 		"SMW\\Tests\\": "tests/phpunit/"
 	},
