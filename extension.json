@@ -37,7 +37,7 @@
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
 		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php",
 		"SMWDIBlob": "src/DataItems/Blob.php",
-		"SMWDIBoolean": "src/DataItems/Bool.php",
+		"SMWDIBoolean": "src/DataItems/Boolean.php",
 		"SMW\\DIConcept": "src/DataItems/Concept.php",
 		"SMWDIContainer": "src/DataItems/Container.php",
 		"SMWDataItem": "src/DataItems/DataItem.php",

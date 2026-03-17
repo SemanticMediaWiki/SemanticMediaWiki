@@ -11,6 +11,7 @@ use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Localizer\Localizer;
 use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\DataTypeRegistry;
 
 /**
  * This class implements Property item
