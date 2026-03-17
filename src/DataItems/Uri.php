@@ -75,7 +75,7 @@ class Uri extends DataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_URI;
+		return DataItem::TYPE_URI;
 	}
 
 	/// @todo This should be changed to the spelling getUri().

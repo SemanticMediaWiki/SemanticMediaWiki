@@ -44,7 +44,7 @@ class Number extends DataItem {
 	}
 
 	/**
-	 * @see ataItem::getSortKeyDataItem()
+	 * @see DataItem::getSortKeyDataItem()
 	 * @return DataItem
 	 */
 	public function getSortKeyDataItem() {
