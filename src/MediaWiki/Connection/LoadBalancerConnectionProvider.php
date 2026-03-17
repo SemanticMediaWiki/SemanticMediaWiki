@@ -105,9 +105,16 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	/**
 	 * @see IConnectionProvider::releaseConnection
 	 *
+	 * Clear both the cached connection and load balancer so the next
+	 * getConnection() call acquires fresh references. This is necessary
+	 * for test isolation — without clearing the load balancer, the next
+	 * call would reuse a stale LB that may not have the test DB prefix.
+	 *
 	 * @since 1.9
 	 */
 	public function releaseConnection() {
+		$this->connection = null;
+		$this->loadBalancer = null;
 	}
 
 	/**

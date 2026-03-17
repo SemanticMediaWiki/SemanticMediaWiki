@@ -3,59 +3,21 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
-use PHPUnit\Framework\TestCase;
-use RuntimeException;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
-use SMW\StoreFactory;
-use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
+use SMW\Tests\SMWIntegrationTestCase;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob
  * @group semantic-mediawiki
+ * @group Database
  *
  * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
  */
-class FulltextSearchTableRebuildJobTest extends TestCase {
-
-	private $testEnvironment;
-
-	/**
-	 * @var TestDatabaseTableBuilder
-	 */
-	protected $testDatabaseTableBuilder;
-
-	/**
-	 * @var bool
-	 */
-	protected $isUsableUnitTestDatabase = true;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->testEnvironment = new TestEnvironment();
-
-		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-			$this->getStore()
-		);
-
-		try {
-			$this->testDatabaseTableBuilder->doBuild();
-		} catch ( RuntimeException $e ) {
-			$this->isUsableUnitTestDatabase = false;
-		}
-
-		$this->testEnvironment->registerObject( 'Store', $this->getStore() );
-	}
-
-	protected function tearDown(): void {
-		$this->testEnvironment->tearDown();
-		parent::tearDown();
-	}
+class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 
 	public function testCanConstruct() {
 		$title = $this->getMockBuilder( Title::class )
@@ -99,9 +61,4 @@ class FulltextSearchTableRebuildJobTest extends TestCase {
 
 		return $provider;
 	}
-
-	protected function getStore() {
-		return StoreFactory::getStore();
-	}
-
 }

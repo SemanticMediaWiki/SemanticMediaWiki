@@ -52,9 +52,7 @@ class InterwikiDBIntegrationTest extends SMWIntegrationTestCase {
 			->invokeHooksFromRegistry();
 
 		// Register a test interwiki prefix via the interwiki cache.
-		// Must be set after deregisterListedHooks()/invokeHooksFromRegistry()
-		// which call resetGlobalInstance() and disable the old service container,
-		// making overrideConfigValue() unusable.
+		// Must be set after deregisterListedHooks()/invokeHooksFromRegistry().
 		$this->oldInterwikiCache = $GLOBALS['wgInterwikiCache'] ?? false;
 		$GLOBALS['wgInterwikiCache'] = ClassicInterwikiLookup::buildCdbHash( [
 			[

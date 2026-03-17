@@ -41,7 +41,6 @@ class ChangePropagationDispatchJob extends SMWIntegrationTestCase {
 		$this->jobQueue = ApplicationFactory::getInstance()->getJobQueue();
 
 		$this->jobQueueRunner = $utilityFactory->newRunnerFactory()->newJobQueueRunner();
-		$this->jobQueueRunner->setConnectionProvider( $this->getConnectionProvider() );
 		$this->jobQueueRunner->deleteAllJobs();
 
 		$this->testEnvironment->addConfiguration( 'smwgEnableUpdateJobs', true );

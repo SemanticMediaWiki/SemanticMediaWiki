@@ -28,36 +28,3 @@ $autoloader->addClassMap( [
 	'SMW\Maintenance\disposeOutdatedEntities'    => __DIR__ . '/../maintenance/disposeOutdatedEntities.php',
 	'SMW\Maintenance\updateEntityCountMap'       => __DIR__ . '/../maintenance/updateEntityCountMap.php'
 ] );
-
-// define( 'SMW_PHPUNIT_TABLE_PREFIX', 'sunittest_' );
-// define( 'SMW_PHPUNIT_TABLE_PREFIX', '' );
-
-/**
- * Register a shutdown function the invoke a final clean-up
- */
-register_shutdown_function( static function () {
-	if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
-		return;
-	}
-
-	// $connectionManager = ApplicationFactory::getInstance()->getConnectionManager();
-	// $connection = $connectionManager->getConnection( 'mw.db' );
-
-	// // Reset any sequence modified during the test
-	// $sequence = new Sequence(
-	// 	$connection
-	// );
-
-	// try {
-	// 	$sequence->tablePrefix( '' );
-	// 	$sequence->restart( SQLStore::ID_TABLE, 'smw_id' );
-	// } catch( \Wikimedia\Rdbms\DBConnectionError $e ) {
-	// 	return;
-	// }
-
-	// $cleanUpTables = new CleanUpTables(
-	// 	$connection
-	// );
-
-	// $cleanUpTables->dropTables( SMW_PHPUNIT_TABLE_PREFIX );
-} );
