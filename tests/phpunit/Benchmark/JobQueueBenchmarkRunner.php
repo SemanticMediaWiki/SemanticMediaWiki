@@ -18,21 +18,6 @@ use SMW\Tests\Utils\Runners\JobQueueRunner;
 class JobQueueBenchmarkRunner implements BenchmarkReporter {
 
 	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
-
-	/**
-	 * @var JobQueueRunner
-	 */
-	private $jobQueueRunner;
-
-	/**
-	 * @var Benchmarker
-	 */
-	private $benchmarker;
-
-	/**
 	 * @var array
 	 */
 	private $benchmarkReport = [];
@@ -44,15 +29,12 @@ class JobQueueBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param JobFactory $jobFactory
-	 * @param JobQueueRunner $jobQueueRunner
-	 * @param Benchmarker $benchmarker
 	 */
-	public function __construct( JobFactory $jobFactory, JobQueueRunner $jobQueueRunner, Benchmarker $benchmarker ) {
-		$this->jobFactory = $jobFactory;
-		$this->jobQueueRunner = $jobQueueRunner;
-		$this->benchmarker = $benchmarker;
+	public function __construct(
+		private readonly JobFactory $jobFactory,
+		private readonly JobQueueRunner $jobQueueRunner,
+		private readonly Benchmarker $benchmarker,
+	) {
 	}
 
 	/**

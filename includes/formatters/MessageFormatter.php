@@ -5,7 +5,6 @@ namespace SMW;
 use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Message\Message;
-use MediaWiki\StubObject\StubUserLang;
 
 /**
  * Class implementing message output formatting
@@ -40,16 +39,10 @@ class MessageFormatter {
 	/** @var bool */
 	protected $escape = true;
 
-	/** @var Language|StubUserLang */
-	private $language;
-
 	/**
 	 * @since 1.9
-	 *
-	 * @param Language|StubUserLang $language
 	 */
-	public function __construct( $language ) {
-		$this->language = $language;
+	public function __construct( private $language ) {
 	}
 
 	/**

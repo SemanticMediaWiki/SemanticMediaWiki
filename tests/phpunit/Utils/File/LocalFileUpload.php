@@ -20,16 +20,6 @@ class LocalFileUpload extends UploadBase {
 	private $removeTemporaryFile = true;
 
 	/**
-	 * @var string
-	 */
-	private $localUploadPath;
-
-	/**
-	 * @var string
-	 */
-	private $desiredDestName;
-
-	/**
 	 * @var DummyFileCreator
 	 */
 	private $dummyFileCreator;
@@ -41,13 +31,11 @@ class LocalFileUpload extends UploadBase {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $localUploadPath
-	 * @param string $desiredDestName
 	 */
-	public function __construct( $localUploadPath = '', $desiredDestName = '' ) {
-		$this->localUploadPath = $localUploadPath;
-		$this->desiredDestName = $desiredDestName;
+	public function __construct(
+		private $localUploadPath = '',
+		private $desiredDestName = '',
+	) {
 		parent::__construct();
 	}
 

@@ -126,12 +126,6 @@ abstract class SMWDataValue {
 	protected $m_caption;
 
 	/**
-	 * The type id for this value object.
-	 * @var string
-	 */
-	protected $m_typeid;
-
-	/**
 	 * Output formatting string, false when not set.
 	 * @see setOutputFormat()
 	 * @var mixed
@@ -194,11 +188,8 @@ abstract class SMWDataValue {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param string $typeid
 	 */
-	public function __construct( $typeid ) {
-		$this->m_typeid = $typeid;
+	public function __construct( protected $m_typeid ) {
 	}
 
 	/**

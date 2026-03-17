@@ -16,29 +16,17 @@ use SMW\Tests\Utils\Runners\RunnerFactory;
 class MaintenanceBenchmarkRunner implements BenchmarkReporter {
 
 	/**
-	 * @var RunnerFactory
-	 */
-	private $runnerFactory;
-
-	/**
-	 * @var Benchmarker
-	 */
-	private $benchmarker;
-
-	/**
 	 * @var array
 	 */
 	private $benchmarkReport = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param RunnerFactory $runnerFactory
-	 * @param Benchmarker $benchmarker
 	 */
-	public function __construct( RunnerFactory $runnerFactory, Benchmarker $benchmarker ) {
-		$this->runnerFactory = $runnerFactory;
-		$this->benchmarker = $benchmarker;
+	public function __construct(
+		private readonly RunnerFactory $runnerFactory,
+		private readonly Benchmarker $benchmarker,
+	) {
 	}
 
 	/**

@@ -17,17 +17,9 @@ use SMW\Store;
 class IncomingSemanticDataValidator extends Assert {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

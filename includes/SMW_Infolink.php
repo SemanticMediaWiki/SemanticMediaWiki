@@ -22,38 +22,9 @@ class SMWInfolink {
 	const LINK_UPPER_LENGTH_RESTRICTION = 2000;
 
 	/**
-	 * The actual link target.
-	 *
-	 * @var string
-	 */
-	protected $mTarget;
-
-	/**
-	 * The label for the link.
-	 *
-	 * @var string
-	 */
-	protected $mCaption;
-
-	/**
-	 * CSS class of a span to embedd the link into,
-	 * or false if no extra style is required.
-	 *
-	 * @var mixed
-	 */
-	protected $mStyle;
-
-	/**
 	 * @var array
 	 */
 	private $linkAttributes = [];
-
-	/**
-	 * Indicates whether $target is a page name (true) or URL (false).
-	 *
-	 * @var bool
-	 */
-	protected $mInternal;
 
 	/**
 	 * Array of parameters, format $name => $value, if any.
@@ -74,18 +45,14 @@ class SMWInfolink {
 
 	/**
 	 * Create a new link to some internal page or to some external URL.
-	 *
-	 * @param bool $internal Indicates whether $target is a page name (true) or URL (false).
-	 * @param string $caption The label for the link.
-	 * @param string $target The actual link target.
-	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
-	 * @param array $params Array of parameters, format $name => $value, if any.
 	 */
-	public function __construct( $internal, $caption, $target, $style = false, array $params = [] ) {
-		$this->mInternal = $internal;
-		$this->mCaption = $caption;
-		$this->mTarget = $target;
-		$this->mStyle = $style;
+	public function __construct(
+		protected $mInternal,
+		protected $mCaption,
+		protected $mTarget,
+		protected $mStyle = false,
+		array $params = [],
+	) {
 		$this->mParams = $params;
 		$this->setCompactLink( $GLOBALS['smwgCompactLinkSupport'] );
 	}

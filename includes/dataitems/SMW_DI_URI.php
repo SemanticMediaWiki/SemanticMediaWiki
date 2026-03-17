@@ -22,16 +22,6 @@ class SMWDIUri extends SMWDataItem {
 	 * @var string
 	 */
 	protected $m_hierpart;
-	/**
-	 * Query part of the URI.
-	 * @var string
-	 */
-	protected $m_query;
-	/**
-	 * Fragment part of the URI.
-	 * @var string
-	 */
-	protected $m_fragment;
 
 	/**
 	 * URI to be defined by its components:
@@ -52,14 +42,16 @@ class SMWDIUri extends SMWDataItem {
 	 * ┌─┴┐┌──────────────────────────────┴──────────────┐
 	 * urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 	 *
-	 * @param $scheme string for the scheme
-	 * @param $hierpart string for the "hierpart"
-	 * @param $query string for the query
-	 * @param $fragment string for the fragment
 	 *
 	 * @todo Implement more validation here.
 	 */
-	public function __construct( $scheme, $hierpart, $query, $fragment, $strict = true ) {
+	public function __construct(
+		$scheme,
+		$hierpart,
+		protected $m_query,
+		protected $m_fragment,
+		$strict = true,
+	) {
 		if ( $strict && ( ( $scheme === '' ) || ( preg_match( '/[^a-zA-Z]/u', $scheme ) ) ) ) {
 			throw new DataItemException( "Illegal URI scheme \"$scheme\"." );
 		}
@@ -68,8 +60,6 @@ class SMWDIUri extends SMWDataItem {
 		}
 		$this->m_scheme   = $scheme;
 		$this->m_hierpart = $hierpart;
-		$this->m_query    = $query;
-		$this->m_fragment = $fragment;
 	}
 
 	public function getDIType() {

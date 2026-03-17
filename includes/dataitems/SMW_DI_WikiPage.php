@@ -32,12 +32,6 @@ class DIWikiPage extends SMWDataItem {
 	protected $m_namespace;
 
 	/**
-	 * MediaWiki interwiki prefix.
-	 * @var string
-	 */
-	protected $m_interwiki;
-
-	/**
 	 * Name for subobjects of pages, or empty string if the given object is
 	 * the page itself (not a subobject).
 	 * @var string
@@ -73,13 +67,13 @@ class DIWikiPage extends SMWDataItem {
 	 * of allowed characters (may depend on MW configuration). All of this
 	 * would be more work than it is worth, since callers will usually be
 	 * careful and since errors here do not have major consequences.
-	 *
-	 * @param string $dbkey
-	 * @param int $namespace
-	 * @param string $interwiki
-	 * @param string $subobjectname
 	 */
-	public function __construct( $dbkey, $namespace, $interwiki = '', $subobjectname = '' ) {
+	public function __construct(
+		$dbkey,
+		$namespace,
+		protected $m_interwiki = '',
+		$subobjectname = '',
+	) {
 		// Check if the provided value holds an integer
 		// (it can be of type string or float as well, as long as the value is an int)
 		if ( !ctype_digit( ltrim( (string)$namespace, '-' ) ) ) {
@@ -92,8 +86,7 @@ class DIWikiPage extends SMWDataItem {
 		}
 
 		$this->m_dbkey = str_replace( ' ', '_', $dbkey );
-		$this->m_namespace = (int)$namespace; // really make this an integer
-		$this->m_interwiki = $interwiki;
+		$this->m_namespace = (int)$namespace;
 		$this->m_subobjectname = $subobjectname;
 	}
 

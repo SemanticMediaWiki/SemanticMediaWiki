@@ -60,12 +60,6 @@ class DIProperty extends SMWDataItem {
 	private $m_key;
 
 	/**
-	 * Whether to take the inverse of this property or not.
-	 * @var bool
-	 */
-	private $m_inverse;
-
-	/**
 	 * @var string
 	 */
 	private $propertyValueType;
@@ -85,11 +79,11 @@ class DIProperty extends SMWDataItem {
 	 * of the wiki). No check is performed to see if a user label is in
 	 * fact the label or alias of a predefined property. If this should be
 	 * done, the function self::newFromUserLabel() can be used.
-	 *
-	 * @param string|bool|null $key Key for the property (internal SMW key or wikipage DB key)
-	 * @param bool $inverse States if the inverse of the property is constructed
 	 */
-	public function __construct( $key, $inverse = false ) {
+	public function __construct(
+		$key,
+		private $m_inverse = false,
+	) {
 		$key = (string)$key;
 
 		if ( $key === '' || $key[0] == '-' ) {
@@ -101,7 +95,6 @@ class DIProperty extends SMWDataItem {
 		}
 
 		$this->m_key = $key;
-		$this->m_inverse = $inverse;
 	}
 
 	/**

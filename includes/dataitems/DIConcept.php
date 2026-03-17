@@ -23,32 +23,6 @@ use SMWDataItem;
 class DIConcept extends SMWDataItem {
 
 	/**
-	 * Query string for this concept. Possibly long.
-	 * @var string
-	 */
-	protected $m_concept;
-	/**
-	 * Documentation for this concept. Possibly long.
-	 * @var string
-	 */
-	protected $m_docu;
-	/**
-	 * Flags of query features.
-	 * @var int
-	 */
-	protected $m_features;
-	/**
-	 * Size of the query.
-	 * @var int
-	 */
-	protected $m_size;
-	/**
-	 * Depth of the query.
-	 * @var int
-	 */
-	protected $m_depth;
-
-	/**
 	 * Status
 	 * @var int
 	 */
@@ -66,19 +40,13 @@ class DIConcept extends SMWDataItem {
 	 */
 	protected $cacheCount;
 
-	/**
-	 * @param string $concept the concept query string
-	 * @param string $docu user documentation
-	 * @param int $queryFeatures flags about query features
-	 * @param int $size concept query size
-	 * @param int $depth concept query depth
-	 */
-	public function __construct( $concept, $docu, $queryFeatures, $size, $depth ) {
-		$this->m_concept  = $concept;
-		$this->m_docu     = $docu;
-		$this->m_features = $queryFeatures;
-		$this->m_size     = $size;
-		$this->m_depth    = $depth;
+	public function __construct(
+		protected $m_concept,
+		protected $m_docu,
+		protected $m_features,
+		protected $m_size,
+		protected $m_depth,
+	) {
 	}
 
 	public function getDIType() {
