@@ -2,6 +2,8 @@
 
 namespace SMW\DataItems;
 
+use Transliterator;
+
 /**
  * This class implements blob (long string) data items.
  *
