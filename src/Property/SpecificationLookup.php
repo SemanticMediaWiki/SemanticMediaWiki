@@ -34,11 +34,6 @@ class SpecificationLookup {
 	const CACHE_NS_KEY_SPECIFICATIONLOOKUP_DESCRIPTION = ':propertyspecificationlookup:description';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var Cache
 	 */
 	private $entityCache;
@@ -55,12 +50,11 @@ class SpecificationLookup {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, EntityCache $entityCache ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+		EntityCache $entityCache,
+	) {
 		$this->entityCache = $entityCache;
 	}
 

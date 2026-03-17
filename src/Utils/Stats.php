@@ -36,16 +36,6 @@ class Stats {
 	const CACHE_NAMESPACE = 'smw:stats';
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var string|int
-	 */
-	private $id;
-
-	/**
 	 * @var bool
 	 */
 	private $shouldRecord = true;
@@ -71,13 +61,11 @@ class Stats {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Cache $cache
-	 * @param string $id
 	 */
-	public function __construct( Cache $cache, $id ) {
-		$this->cache = $cache;
-		$this->id = $id;
+	public function __construct(
+		private readonly Cache $cache,
+		private $id,
+	) {
 		$this->initRecord();
 	}
 

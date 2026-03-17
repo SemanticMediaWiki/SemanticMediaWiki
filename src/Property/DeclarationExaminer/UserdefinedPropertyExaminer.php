@@ -21,19 +21,13 @@ use SMWDataItem as DataItem;
 class UserdefinedPropertyExaminer extends DeclarationExaminer {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param DeclarationExaminer $declarationExaminer
-	 * @param Store $store
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store ) {
+	public function __construct(
+		IDeclarationExaminer $declarationExaminer,
+		private readonly Store $store,
+	) {
 		$this->declarationExaminer = $declarationExaminer;
-		$this->store = $store;
 	}
 
 	/**

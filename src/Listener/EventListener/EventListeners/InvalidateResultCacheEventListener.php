@@ -21,15 +21,9 @@ class InvalidateResultCacheEventListener implements EventListener {
 	const EVENT_ID = 'InvalidateResultCache';
 
 	/**
-	 * @var ResultCache
-	 */
-	private $resultCache;
-
-	/**
 	 * @since 3.1
 	 */
-	public function __construct( ResultCache $resultCache ) {
-		$this->resultCache = $resultCache;
+	public function __construct( private ResultCache $resultCache ) {
 	}
 
 	/**

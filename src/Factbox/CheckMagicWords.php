@@ -15,17 +15,9 @@ use MediaWiki\Parser\ParserOutput;
 class CheckMagicWords {
 
 	/**
-	 * @var array
-	 */
-	private $options = [];
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param array $options
 	 */
-	public function __construct( array $options ) {
-		$this->options = $options;
+	public function __construct( private array $options ) {
 	}
 
 	/**

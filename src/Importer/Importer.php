@@ -15,16 +15,6 @@ use SMW\Utils\CliMsgFormatter;
 class Importer implements MessageReporterAware {
 
 	/**
-	 * @var ContentIterator
-	 */
-	private $contentIterator;
-
-	/**
-	 * @var ContentCreator
-	 */
-	private $contentCreator;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
@@ -46,13 +36,11 @@ class Importer implements MessageReporterAware {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ContentIterator $contentIterator
-	 * @param ContentCreator $contentCreator
 	 */
-	public function __construct( ContentIterator $contentIterator, ContentCreator $contentCreator ) {
-		$this->contentIterator = $contentIterator;
-		$this->contentCreator = $contentCreator;
+	public function __construct(
+		private readonly ContentIterator $contentIterator,
+		private readonly ContentCreator $contentCreator,
+	) {
 	}
 
 	/**

@@ -19,22 +19,14 @@ use SMW\Store;
 class SchemaFactory {
 
 	/**
-	 * @var
-	 */
-	private $types = [];
-
-	/**
 	 * @var SchemaTypes
 	 */
 	private $schemaTypes;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $types
 	 */
-	public function __construct( array $types = [] ) {
-		$this->types = $types;
+	public function __construct( private readonly array $types = [] ) {
 	}
 
 	/**

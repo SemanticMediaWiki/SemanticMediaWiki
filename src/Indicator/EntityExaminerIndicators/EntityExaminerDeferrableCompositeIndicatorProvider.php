@@ -24,11 +24,6 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var
-	 */
-	private $indicatorProviders = [];
-
-	/**
 	 * @var PermissionExaminer
 	 */
 	private $permissionExaminer;
@@ -57,11 +52,8 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $indicatorProviders
 	 */
-	public function __construct( array $indicatorProviders ) {
-		$this->indicatorProviders = $indicatorProviders;
+	public function __construct( private array $indicatorProviders ) {
 	}
 
 	/**

@@ -19,17 +19,9 @@ use SMW\SemanticData;
 class NullPropertyAnnotator implements Annotator {
 
 	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param SemanticData $semanticData
 	 */
-	public function __construct( SemanticData $semanticData ) {
-		$this->semanticData = $semanticData;
+	public function __construct( private readonly SemanticData $semanticData ) {
 	}
 
 	/**

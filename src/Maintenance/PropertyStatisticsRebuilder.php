@@ -21,29 +21,17 @@ use SMW\Utils\CliMsgFormatter;
 class PropertyStatisticsRebuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store = null;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 		$this->messageReporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 

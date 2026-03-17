@@ -14,19 +14,13 @@ use SMW\Property\Annotator;
 class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var string
-	 */
-	private $defaultSort;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param string $defaultSort
 	 */
-	public function __construct( Annotator $propertyAnnotator, $defaultSort ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $defaultSort,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->defaultSort = $defaultSort;
 	}
 
 	protected function addPropertyValues() {

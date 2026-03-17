@@ -20,20 +20,12 @@ use SMWDIBlob as DIBlob;
  */
 class AttachmentFormatter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
 	private HtmlTable $htmlTable;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

@@ -26,16 +26,6 @@ use SMWQueryProcessor;
 class DistinctEntityDataRebuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
 	 * @var Options
 	 */
 	private $options;
@@ -62,13 +52,11 @@ class DistinctEntityDataRebuilder {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleFactory $titleFactory ) {
-		$this->store = $store;
-		$this->titleFactory = $titleFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly TitleFactory $titleFactory,
+	) {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 

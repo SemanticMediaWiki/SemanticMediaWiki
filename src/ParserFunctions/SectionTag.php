@@ -17,24 +17,12 @@ use MediaWiki\Parser\PPFrame;
 class SectionTag {
 
 	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
-	 * @var PPFrame
-	 */
-	private $frame;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Parser $parser
-	 * @param PPFrame $frame
 	 */
-	public function __construct( Parser $parser, PPFrame $frame ) {
-		$this->parser = $parser;
-		$this->frame = $frame;
+	public function __construct(
+		private readonly Parser $parser,
+		private readonly PPFrame $frame,
+	) {
 	}
 
 	/**

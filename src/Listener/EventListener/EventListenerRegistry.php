@@ -20,22 +20,14 @@ use SMWExporter as Exporter;
 class EventListenerRegistry implements EventListenerCollection {
 
 	/**
-	 * @var EventListenerCollection
-	 */
-	private $eventListenerCollection = null;
-
-	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param EventListenerCollection $eventListenerCollection
 	 */
-	public function __construct( EventListenerCollection $eventListenerCollection ) {
-		$this->eventListenerCollection = $eventListenerCollection;
+	public function __construct( private readonly EventListenerCollection $eventListenerCollection ) {
 	}
 
 	/**

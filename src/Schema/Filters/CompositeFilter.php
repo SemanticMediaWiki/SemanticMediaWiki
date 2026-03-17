@@ -19,11 +19,6 @@ class CompositeFilter implements SchemaFilter {
 	const SORT_FILTER_SCORE = 'sort/filterscore';
 
 	/**
-	 * @var SchemaFilter[]
-	 */
-	private $filters = [];
-
-	/**
 	 * @var iterable
 	 */
 	private $matches = [];
@@ -35,11 +30,8 @@ class CompositeFilter implements SchemaFilter {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SchemaFilter[] $filters
 	 */
-	public function __construct( array $filters ) {
-		$this->filters = $filters;
+	public function __construct( private readonly array $filters ) {
 	}
 
 	/**

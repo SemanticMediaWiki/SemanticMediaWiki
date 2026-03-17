@@ -21,16 +21,6 @@ class ExceptionFileLogger {
 	/**
 	 * @var string
 	 */
-	private $namespace;
-
-	/**
-	 * @var File
-	 */
-	private $file;
-
-	/**
-	 * @var string
-	 */
 	private $exceptionFile;
 
 	/**
@@ -45,14 +35,11 @@ class ExceptionFileLogger {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $namespace
-	 * @param File|null $file
 	 */
-	public function __construct( $namespace = 'smw', ?File $file = null ) {
-		$this->namespace = $namespace;
-		$this->file = $file;
-
+	public function __construct(
+		private $namespace = 'smw',
+		private ?File $file = null,
+	) {
 		if ( $this->file === null ) {
 			$this->file = new File();
 		}

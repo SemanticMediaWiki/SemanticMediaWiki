@@ -27,11 +27,6 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	use RevisionGuardAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $indicators = [];
@@ -55,11 +50,8 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**

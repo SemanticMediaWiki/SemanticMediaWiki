@@ -16,11 +16,6 @@ class SummaryTable {
 	/**
 	 * @var
 	 */
-	private $parameters = [];
-
-	/**
-	 * @var
-	 */
 	private $attributes = [];
 
 	/**
@@ -35,11 +30,8 @@ class SummaryTable {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param array $parameters
 	 */
-	public function __construct( array $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private readonly array $parameters = [] ) {
 	}
 
 	/**

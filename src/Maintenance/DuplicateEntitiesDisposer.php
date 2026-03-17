@@ -23,24 +23,12 @@ class DuplicateEntitiesDisposer {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Store
-	 */
-	private $cache;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, ?Cache $cache = null ) {
-		$this->store = $store;
-		$this->cache = $cache;
+	public function __construct(
+		private Store $store,
+		private ?Cache $cache = null,
+	) {
 	}
 
 	/**

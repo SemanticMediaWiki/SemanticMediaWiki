@@ -21,11 +21,6 @@ class ExpensiveFuncExecutionWatcher {
 	const EXPENSIVE_COUNTER = 'smw-expensiveparsercount';
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
 	 * @var int
 	 */
 	private $expensiveThreshold = 10;
@@ -37,11 +32,8 @@ class ExpensiveFuncExecutionWatcher {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ParserData $parserData
 	 */
-	public function __construct( ParserData $parserData ) {
-		$this->parserData = $parserData;
+	public function __construct( private readonly ParserData $parserData ) {
 	}
 
 	/**

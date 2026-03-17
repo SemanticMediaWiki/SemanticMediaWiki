@@ -27,16 +27,6 @@ class UniqueValueConstraint implements Constraint {
 	const CONSTRAINT_KEY = 'unique_value_constraint';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @var bool
 	 */
 	private $hasViolation = false;
@@ -51,13 +41,11 @@ class UniqueValueConstraint implements Constraint {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**

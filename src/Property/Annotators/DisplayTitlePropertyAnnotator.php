@@ -13,31 +13,19 @@ use SMW\Property\Annotator;
 class DisplayTitlePropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var string|false
-	 */
-	private $displayTitle;
-
-	/**
-	 * @var string
-	 */
-	private $defaultSort;
-
-	/**
 	 * @var bool
 	 */
 	private $canCreateAnnotation = true;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param string|false $displayTitle
-	 * @param string $defaultSort
 	 */
-	public function __construct( Annotator $propertyAnnotator, $displayTitle = false, $defaultSort = '' ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $displayTitle = false,
+		private $defaultSort = '',
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->displayTitle = $displayTitle;
-		$this->defaultSort = $defaultSort;
 	}
 
 	/**

@@ -21,24 +21,18 @@ use SMWDITime as DITime;
 class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var PageInfo
-	 */
-	private $pageInfo;
-
-	/**
 	 * @var array
 	 */
 	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param PageInfo $pageInfo
 	 */
-	public function __construct( Annotator $propertyAnnotator, PageInfo $pageInfo ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly PageInfo $pageInfo,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->pageInfo = $pageInfo;
 	}
 
 	/**

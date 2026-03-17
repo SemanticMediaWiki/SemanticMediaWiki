@@ -23,19 +23,13 @@ class Logger extends AbstractLogger {
 	protected $logger;
 
 	/**
-	 * @var string
-	 */
-	protected $role;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param LoggerInterface $logger
-	 * @param string $role
 	 */
-	public function __construct( LoggerInterface $logger, $role = self::ROLE_DEVELOPER ) {
+	public function __construct(
+		LoggerInterface $logger,
+		protected $role = self::ROLE_DEVELOPER,
+	) {
 		$this->logger = $logger;
-		$this->role = $role;
 	}
 
 	/**

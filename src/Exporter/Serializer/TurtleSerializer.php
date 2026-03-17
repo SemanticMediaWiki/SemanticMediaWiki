@@ -34,14 +34,6 @@ class TurtleSerializer extends Serializer {
 	protected $subexpdata;
 
 	/**
-	 * If true, do not serialize namespace declarations and record them in
-	 * $sparql_namespaces instead for later retrieval.
-	 *
-	 * @var bool
-	 */
-	protected $sparqlmode;
-
-	/**
 	 * Array of retrieved namespaces (abbreviation => URI) for later use.
 	 *
 	 * @var array of string
@@ -52,12 +44,9 @@ class TurtleSerializer extends Serializer {
 
 	/**
 	 * @since 1.5.5
-	 *
-	 * @param bool $sparqlMode
 	 */
-	public function __construct( $sparqlMode = false ) {
+	public function __construct( protected $sparqlmode = false ) {
 		parent::__construct();
-		$this->sparqlmode = $sparqlMode;
 	}
 
 	/**

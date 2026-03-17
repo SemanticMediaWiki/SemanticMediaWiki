@@ -25,16 +25,6 @@ use SMWDIBlob as DIBlob;
 class ChangePropagationNotifier {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SerializerFactory
-	 */
-	private $serializerFactory;
-
-	/**
 	 * @var array
 	 */
 	private $propertyList = [];
@@ -56,13 +46,11 @@ class ChangePropagationNotifier {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param SerializerFactory $serializerFactory
 	 */
-	public function __construct( Store $store, SerializerFactory $serializerFactory ) {
-		$this->store = $store;
-		$this->serializerFactory = $serializerFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SerializerFactory $serializerFactory,
+	) {
 	}
 
 	/**

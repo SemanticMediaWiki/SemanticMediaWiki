@@ -69,24 +69,12 @@ class ServicesFactory {
 	private static $instance = null;
 
 	/**
-	 * @var CallbackContainerBuilder|null
-	 */
-	private $callbackContainerBuilder;
-
-	/**
-	 * @var string
-	 */
-	private $servicesFileDir = '';
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param CallbackContainerBuilder|null $callbackContainerBuilder
-	 * @param string $servicesFileDir
 	 */
-	public function __construct( ?CallbackContainerBuilder $callbackContainerBuilder = null, $servicesFileDir = '' ) {
-		$this->callbackContainerBuilder = $callbackContainerBuilder;
-		$this->servicesFileDir = $servicesFileDir;
+	public function __construct(
+		private readonly ?CallbackContainerBuilder $callbackContainerBuilder = null,
+		private $servicesFileDir = '',
+	) {
 	}
 
 	/**

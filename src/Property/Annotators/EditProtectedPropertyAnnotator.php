@@ -25,24 +25,18 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	const SYSTEM_ANNOTATION = 'editprotectedpropertyannotator.system.annotation';
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @var bool
 	 */
 	private $editProtectionRight = false;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param Title $title
 	 */
-	public function __construct( Annotator $propertyAnnotator, Title $title ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly Title $title,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->title = $title;
 	}
 
 	/**

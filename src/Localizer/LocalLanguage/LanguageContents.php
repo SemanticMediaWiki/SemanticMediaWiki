@@ -13,29 +13,17 @@ use RuntimeException;
 class LanguageContents {
 
 	/**
-	 * @var JsonContentsFileReader
-	 */
-	private $jsonContentsFileReader;
-
-	/**
-	 * @var FallbackFinder
-	 */
-	private $fallbackFinder;
-
-	/**
 	 * @var array
 	 */
 	private $contents = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param JsonContentsFileReader $jsonContentsFileReader
-	 * @param FallbackFinder $fallbackFinder
 	 */
-	public function __construct( JsonContentsFileReader $jsonContentsFileReader, FallbackFinder $fallbackFinder ) {
-		$this->jsonContentsFileReader = $jsonContentsFileReader;
-		$this->fallbackFinder = $fallbackFinder;
+	public function __construct(
+		private readonly JsonContentsFileReader $jsonContentsFileReader,
+		private readonly FallbackFinder $fallbackFinder,
+	) {
 	}
 
 	/**

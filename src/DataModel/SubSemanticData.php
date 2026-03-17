@@ -25,28 +25,6 @@ use SMW\SemanticData;
 class SubSemanticData implements JsonUnserializable {
 
 	/**
-	 * States whether repeated values should be avoided. Not needing
-	 * duplicate elimination (e.g. when loading from store) can save some
-	 * time, especially in subclasses like SMWSqlStubSemanticData, where
-	 * the first access to a data item is more costy.
-	 *
-	 * @note This setting is merely for optimization. The SMW data model
-	 * never cares about the multiplicity of identical data assignments.
-	 *
-	 * @var bool
-	 */
-	private $noDuplicates;
-
-	/**
-	 * DIWikiPage object that is the subject of this container.
-	 * Subjects can never be null (and this is ensured in all methods setting
-	 * them in this class).
-	 *
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
 	 * Semantic data associated to subobjects of the subject of this
 	 * SMWSemanticData.
 	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
@@ -65,14 +43,12 @@ class SubSemanticData implements JsonUnserializable {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param DIWikiPage $subject
-	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
-	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
+	public function __construct(
+		private readonly DIWikiPage $subject,
+		private $noDuplicates = true,
+	) {
 		$this->clear();
-		$this->subject = $subject;
-		$this->noDuplicates = $noDuplicates;
 	}
 
 	/**

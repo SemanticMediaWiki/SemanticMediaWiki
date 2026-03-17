@@ -24,15 +24,9 @@ use WikiImporter;
 class ImporterServiceFactory {
 
 	/**
-	 * @var CallbackContainerBuilder
-	 */
-	private $callbackContainerBuilder;
-
-	/**
 	 * @since 3.0
 	 */
-	public function __construct( CallbackContainerBuilder $callbackContainerBuilder ) {
-		$this->callbackContainerBuilder = $callbackContainerBuilder;
+	public function __construct( private readonly CallbackContainerBuilder $callbackContainerBuilder ) {
 	}
 
 	/**

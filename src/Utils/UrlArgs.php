@@ -11,22 +11,14 @@ namespace SMW\Utils;
 class UrlArgs {
 
 	/**
-	 * @var array
-	 */
-	private $args = [];
-
-	/**
 	 * @var string
 	 */
 	private $fragment = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param array $args
 	 */
-	public function __construct( array $args = [] ) {
-		$this->args = $args;
+	public function __construct( private array $args = [] ) {
 	}
 
 	/**

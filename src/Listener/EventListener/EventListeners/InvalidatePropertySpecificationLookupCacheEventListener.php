@@ -20,17 +20,9 @@ class InvalidatePropertySpecificationLookupCacheEventListener implements EventLi
 	const EVENT_ID = 'InvalidatePropertySpecificationLookupCache';
 
 	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct( private SpecificationLookup $propertySpecificationLookup ) {
 	}
 
 	/**
