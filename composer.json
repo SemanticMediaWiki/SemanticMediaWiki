@@ -79,11 +79,11 @@
 	},
 	"autoload": {
 		"files": [
-			"includes/GlobalFunctions.php"
+			"src/GlobalFunctions.php"
 		],
 		"classmap" : [
-			"includes/",
-			"tests/phpunit/includes/"
+			"src/",
+			"tests/phpunit/src/includes/"
 		]
 	},
 	"config": {

@@ -3,7 +3,6 @@
   <coverage includeUncoveredFiles="true">
     <include>
       <directory suffix=".php">src</directory>
-      <directory suffix=".php">includes</directory>
       <directory suffix=".php">maintenance</directory>
     </include>
   </coverage>
@@ -23,7 +22,7 @@
       <directory>tests/phpunit/DataModel</directory>
     </testsuite>
     <testsuite name="semantic-mediawiki-unit">
-      <directory>tests/phpunit/includes</directory>
+      <directory>tests/phpunit/src/includes</directory>
       <directory>tests/phpunit/Connection</directory>
       <directory>tests/phpunit/Constraint</directory>
       <directory>tests/phpunit/DataValues</directory>

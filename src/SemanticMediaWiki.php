@@ -25,7 +25,7 @@ class SemanticMediaWiki {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();
 			self::setupGlobals();
-			require_once dirname( __DIR__ ) . "/includes/GlobalFunctions.php";
+			require_once __DIR__ . '/GlobalFunctions.php';
 		}
 
 		// We're moving away from enableSemantics, so set this here.
@@ -525,7 +525,7 @@ class SemanticMediaWiki {
 	public static function getDefaultSettings(): array {
 		static $settings = null;
 		if ( $settings === null ) {
-			$settings = include dirname( __DIR__ ) . '/includes/DefaultSettings.php';
+			$settings = include __DIR__ . '/DefaultSettings.php';
 			if ( !is_array( $settings ) ) {
 				throw new Exception( "Including DefaultSettings.php did not return an array." );
 			}

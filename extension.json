@@ -33,7 +33,7 @@
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
 	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "includes/SemanticMediaWiki.php",
+		"SemanticMediaWiki": "src/SemanticMediaWiki.php",
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
 		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php"
 	},
