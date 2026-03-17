@@ -95,7 +95,7 @@ class SetupFile {
 			return true;
 		}
 
-		if ( $isCli === false && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
+		if ( !$isCli && ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) ) {
 			return true;
 		}
 
