@@ -354,7 +354,7 @@ class SetupCheck {
 	 * @since 3.1
 	 *
 	 * @param bool $isCli
-	 * 
+	 *
 	 * @return never
 	 */
 	public function showErrorAndAbort( $isCli = false ) {
