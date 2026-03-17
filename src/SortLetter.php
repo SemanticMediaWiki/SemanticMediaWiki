@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use MediaWiki\Title\Title;
 use SMW\MediaWiki\Collator;
 use SMWDataItem as DataItem;
 
@@ -52,7 +51,7 @@ class SortLetter {
 		$sortKey = $dataItem->getSortKey();
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE &&
-			( $dataItem instanceof DIWikiPage || $dataItem instanceof Title )
+			$dataItem instanceof DIWikiPage
 		) {
 			$sortKey = $this->store->getWikiPageSortKey( $dataItem );
 		}
