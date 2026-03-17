@@ -18,17 +18,9 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( OutputFormatter $outputFormatter ) {
-		$this->outputFormatter = $outputFormatter;
+	public function __construct( private readonly OutputFormatter $outputFormatter ) {
 	}
 
 	/**

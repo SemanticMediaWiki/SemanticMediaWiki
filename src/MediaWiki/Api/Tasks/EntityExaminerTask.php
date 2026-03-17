@@ -17,29 +17,17 @@ use SMW\Store;
 class EntityExaminerTask extends Task implements PermissionExaminerAware {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityExaminerIndicatorsFactory
-	 */
-	private $entityExaminerIndicatorsFactory;
-
-	/**
 	 * @var PermissionExaminer
 	 */
 	private $permissionExaminer;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityExaminerIndicatorsFactory $entityExaminerIndicatorsFactory
 	 */
-	public function __construct( Store $store, EntityExaminerIndicatorsFactory $entityExaminerIndicatorsFactory ) {
-		$this->store = $store;
-		$this->entityExaminerIndicatorsFactory = $entityExaminerIndicatorsFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly EntityExaminerIndicatorsFactory $entityExaminerIndicatorsFactory,
+	) {
 	}
 
 	/**

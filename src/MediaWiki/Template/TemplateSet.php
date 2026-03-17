@@ -11,17 +11,9 @@ namespace SMW\MediaWiki\Template;
 class TemplateSet {
 
 	/**
-	 * @var
-	 */
-	private $templates = [];
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param array $templates
 	 */
-	public function __construct( array $templates = [] ) {
-		$this->templates = $templates;
+	public function __construct( private array $templates = [] ) {
 	}
 
 	/**

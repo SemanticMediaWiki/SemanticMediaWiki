@@ -23,17 +23,9 @@ use RuntimeException;
 class MessageBuilder {
 
 	/**
-	 * @var Language
-	 */
-	private $language = null;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param Language|null $language
 	 */
-	public function __construct( ?Language $language = null ) {
-		$this->language = $language;
+	public function __construct( private ?Language $language = null ) {
 	}
 
 	/**

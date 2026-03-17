@@ -28,17 +28,9 @@ class PageMoveComplete implements HookListener {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
 	 * @since  1.9
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
 	}
 
 	/**

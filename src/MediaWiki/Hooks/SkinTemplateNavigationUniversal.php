@@ -18,11 +18,6 @@ use SMW\MediaWiki\HookListener;
 class SkinTemplateNavigationUniversal implements HookListener {
 
 	/**
-	 * @var SkinTemplate
-	 */
-	private $skinTemplate = null;
-
-	/**
 	 * @var array
 	 */
 	private $links;
@@ -33,8 +28,10 @@ class SkinTemplateNavigationUniversal implements HookListener {
 	 * @param SkinTemplate &$skinTemplate
 	 * @param array &$links
 	 */
-	public function __construct( SkinTemplate &$skinTemplate, array &$links ) {
-		$this->skinTemplate = $skinTemplate;
+	public function __construct(
+		private SkinTemplate &$skinTemplate,
+		array &$links,
+	) {
 		$this->links =& $links;
 	}
 

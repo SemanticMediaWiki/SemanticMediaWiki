@@ -45,16 +45,6 @@ class Database {
 	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
 	/**
-	 * @var ConnRef
-	 */
-	private $connRef;
-
-	/**
-	 * @var TransactionHandler
-	 */
-	private $transactionHandler;
-
-	/**
 	 * @var int
 	 */
 	private $flags = 0;
@@ -71,13 +61,11 @@ class Database {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ConnRef $connRef
-	 * @param TransactionHandler $transactionHandler
 	 */
-	public function __construct( ConnRef $connRef, TransactionHandler $transactionHandler ) {
-		$this->connRef = $connRef;
-		$this->transactionHandler = $transactionHandler;
+	public function __construct(
+		private readonly ConnRef $connRef,
+		private readonly TransactionHandler $transactionHandler,
+	) {
 	}
 
 	/**

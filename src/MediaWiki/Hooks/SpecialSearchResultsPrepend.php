@@ -27,31 +27,13 @@ class SpecialSearchResultsPrepend implements HookListener {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var PreferenceExaminer
-	 */
-	private $preferenceExaminer;
-
-	/**
-	 * @var SpecialSearch
-	 */
-	private $specialSearch;
-
-	/**
-	 * @var OutputPage
-	 */
-	private $outputPage;
-
-	/**
 	 * @since  3.0
-	 *
-	 * @param PreferenceExaminer $preferenceExaminer
-	 * @param SpecialSearch $specialSearch
-	 * @param OutputPage $outputPage
 	 */
-	public function __construct( PreferenceExaminer $preferenceExaminer, SpecialSearch $specialSearch, OutputPage $outputPage ) {
-		$this->preferenceExaminer = $preferenceExaminer;
-		$this->specialSearch = $specialSearch;
-		$this->outputPage = $outputPage;
+	public function __construct(
+		private PreferenceExaminer $preferenceExaminer,
+		private SpecialSearch $specialSearch,
+		private OutputPage $outputPage,
+	) {
 	}
 
 	/**

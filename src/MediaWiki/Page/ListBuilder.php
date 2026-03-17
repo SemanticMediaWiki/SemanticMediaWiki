@@ -20,16 +20,6 @@ use SMWInfolink as Infolink;
 class ListBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Collator
-	 */
-	private $collator;
-
-	/**
 	 * @var callable
 	 */
 	private $itemFormatter;
@@ -61,13 +51,11 @@ class ListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Collator|null $collator
 	 */
-	public function __construct( Store $store, ?Collator $collator = null ) {
-		$this->store = $store;
-		$this->collator = $collator;
+	public function __construct(
+		private readonly Store $store,
+		private ?Collator $collator = null,
+	) {
 	}
 
 	/**

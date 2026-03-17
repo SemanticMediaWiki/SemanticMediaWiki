@@ -14,23 +14,12 @@ use MediaWiki\User\User;
 class PreferenceExaminer {
 
 	/**
-	 * @var User
-	 */
-	private $user;
-
-	/**
-	 * @var ?UserOptionsLookup
-	 */
-	private $userOptionsLookup;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param User|null $user
 	 */
-	public function __construct( ?User $user = null, ?UserOptionsLookup $userOptionsLookup = null ) {
-		$this->user = $user;
-		$this->userOptionsLookup = $userOptionsLookup;
+	public function __construct(
+		private ?User $user = null,
+		private readonly ?UserOptionsLookup $userOptionsLookup = null,
+	) {
 	}
 
 	/**

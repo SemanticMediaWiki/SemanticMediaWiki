@@ -24,22 +24,14 @@ class ArticleDelete implements HookListener {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var string
 	 */
 	private $origin = 'ArticleDelete';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**

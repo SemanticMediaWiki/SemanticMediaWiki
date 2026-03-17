@@ -27,16 +27,6 @@ class ExtendedSearch {
 	const COMPLETION_SEARCH_EXTRA_SEARCH_SIZE = 10;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SearchEngine
-	 */
-	private $fallbackSearchEngine;
-
-	/**
 	 * @var array
 	 */
 	private $errors = [];
@@ -93,13 +83,11 @@ class ExtendedSearch {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param SearchEngine $fallbackSearchEngine
 	 */
-	public function __construct( Store $store, SearchEngine $fallbackSearchEngine ) {
-		$this->store = $store;
-		$this->fallbackSearchEngine = $fallbackSearchEngine;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SearchEngine $fallbackSearchEngine,
+	) {
 	}
 
 	/**
