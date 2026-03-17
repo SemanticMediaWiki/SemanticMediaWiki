@@ -178,5 +178,7 @@ class Uri extends DataItem {
 	}
 }
 
-// Deprecated since 7.0.0
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( Uri::class, 'SMWDIUri' );

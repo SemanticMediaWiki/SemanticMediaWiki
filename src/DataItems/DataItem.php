@@ -283,5 +283,7 @@ abstract class DataItem implements JsonUnserializable {
 
 }
 
-// Deprecated since 7.0.0
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( DataItem::class, 'SMWDataItem' );

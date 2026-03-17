@@ -233,5 +233,7 @@ class Concept extends DataItem {
 
 }
 
-// Deprecated since 7.0.0
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( Concept::class, 'SMW\DIConcept' );

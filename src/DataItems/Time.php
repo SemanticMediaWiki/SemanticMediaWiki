@@ -636,5 +636,7 @@ class Time extends DataItem implements CalendarModel {
 
 }
 
-// Deprecated since 7.0.0
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( Time::class, 'SMWDITime' );

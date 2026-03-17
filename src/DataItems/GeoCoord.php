@@ -190,5 +190,7 @@ class GeoCoord extends DataItem {
 	}
 }
 
-// Deprecated since 7.0.0
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( GeoCoord::class, 'SMWDIGeoCoord' );
