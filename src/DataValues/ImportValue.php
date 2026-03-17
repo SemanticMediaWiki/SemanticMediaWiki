@@ -78,7 +78,7 @@ class ImportValue extends DataValue {
 
 	private array $declarativeNames = [];
 
-	private MediaWikiNsContentReader $mediaWikiNsContentReader;
+	private readonly MediaWikiNsContentReader $mediaWikiNsContentReader;
 
 	/**
 	 * @param string $typeid

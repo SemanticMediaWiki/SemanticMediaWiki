@@ -42,31 +42,6 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	private $connection = null;
 
 	/**
-	 * @var string|null
-	 */
-	private $connectorId = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $defaultGraph = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $queryEndpoint = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $updateEndpoint = null;
-
-	/**
-	 * @var string|null
-	 */
-	private $dataEndpoint = null;
-
-	/**
 	 * @var HttpRequest
 	 */
 	private $httpRequest;
@@ -83,20 +58,14 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 
 	/**
 	 * @since 2.0
-	 *
-	 * @param string|null $connectorId
-	 * @param string|null $defaultGraph
-	 * @param string|null $queryEndpoint
-	 * @param string|null $updateEndpoint
-	 * @param string|null $dataEndpoint
 	 */
-	public function __construct( $connectorId = null, $defaultGraph = null, $queryEndpoint = null, $updateEndpoint = null, $dataEndpoint = null ) {
-		$this->connectorId = $connectorId;
-		$this->defaultGraph = $defaultGraph;
-		$this->queryEndpoint = $queryEndpoint;
-		$this->updateEndpoint = $updateEndpoint;
-		$this->dataEndpoint = $dataEndpoint;
-
+	public function __construct(
+		private $connectorId = null,
+		private $defaultGraph = null,
+		private $queryEndpoint = null,
+		private $updateEndpoint = null,
+		private $dataEndpoint = null,
+	) {
 		if ( $this->connectorId === null ) {
 			$this->connectorId = $GLOBALS['smwgSparqlRepositoryConnector'];
 		}

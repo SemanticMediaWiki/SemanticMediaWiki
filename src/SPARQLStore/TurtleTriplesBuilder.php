@@ -33,11 +33,6 @@ class TurtleTriplesBuilder {
 	private $semanticData = null;
 
 	/**
-	 * @var RepositoryRedirectLookup
-	 */
-	private $repositoryRedirectLookup = null;
-
-	/**
 	 * @var null|string
 	 */
 	private $triples = null;
@@ -58,19 +53,12 @@ class TurtleTriplesBuilder {
 	private $triplesChunkSize = 80;
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param RepositoryRedirectLookup $repositoryRedirectLookup
-	 * @param Cache|null $cache
 	 */
-	public function __construct( RepositoryRedirectLookup $repositoryRedirectLookup, ?Cache $cache = null ) {
-		$this->repositoryRedirectLookup = $repositoryRedirectLookup;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly RepositoryRedirectLookup $repositoryRedirectLookup,
+		private readonly ?Cache $cache = null,
+	) {
 	}
 
 	/**

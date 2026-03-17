@@ -48,20 +48,12 @@ class IntlNumberFormatter {
 	/**
 	 * @var int
 	 */
-	private $maxNonExpNumber = null;
-
-	/**
-	 * @var int
-	 */
 	private $defaultPrecision = 3;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param int $maxNonExpNumber
 	 */
-	public function __construct( $maxNonExpNumber ) {
-		$this->maxNonExpNumber = $maxNonExpNumber;
+	public function __construct( private $maxNonExpNumber ) {
 		$this->options = new Options();
 	}
 

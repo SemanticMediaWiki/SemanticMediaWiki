@@ -20,16 +20,6 @@ use SMWDataValue as DataValue;
 class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var ConstraintCheckRunner
-	 */
-	private $constraintCheckRunner;
-
-	/**
-	 * @var SchemaFinder
-	 */
-	private $schemaFinder;
-
-	/**
 	 * @var
 	 */
 	private $schemaLists = [];
@@ -56,13 +46,11 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ConstraintCheckRunner $constraintCheckRunner
-	 * @param SchemaFinder $schemaFinder
 	 */
-	public function __construct( ConstraintCheckRunner $constraintCheckRunner, SchemaFinder $schemaFinder ) {
-		$this->constraintCheckRunner = $constraintCheckRunner;
-		$this->schemaFinder = $schemaFinder;
+	public function __construct(
+		private readonly ConstraintCheckRunner $constraintCheckRunner,
+		private readonly SchemaFinder $schemaFinder,
+	) {
 	}
 
 	/**
