@@ -19,7 +19,7 @@ class CharArmor {
 	 *
 	 * @param string $text
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public static function removeControlChars( $text ) {
 		return preg_replace( '/[^\PC\s]/u', '', $text );
@@ -30,11 +30,11 @@ class CharArmor {
 	 *
 	 * @param string $text
 	 *
-	 * @return text
+	 * @return string
 	 */
 	public static function removeSpecialChars( $text ) {
 		return str_replace(
-			[ '&shy;', '&lrm;', " ", " ", " " ],
+			[ '&shy;', '&lrm;', " ", " ", " " ],
 			[ '', '', ' ', ' ', ' ' ],
 			$text ?? ''
 		);
