@@ -102,7 +102,7 @@ class HtmlVTabs {
 	 *
 	 * @param string $id
 	 * @param string $label
-	 * @param string|array $flag
+	 * @param string|array|bool $flag
 	 * @param array $attributes
 	 *
 	 * @return string
