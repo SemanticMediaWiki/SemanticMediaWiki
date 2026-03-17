@@ -9,6 +9,7 @@ use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Localizer\Localizer;
+use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
