@@ -131,7 +131,6 @@ class JobQueueRunner {
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
 	 */
 	private function pop() {
-		$offset = 0;
 		return MediaWikiServices::getInstance()->getJobQueueGroup()->pop();
 	}
 
