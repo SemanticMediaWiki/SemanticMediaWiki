@@ -24,16 +24,6 @@ use SMWDIBlob as DIBlob;
 class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @var ComparatorMapper
 	 */
 	private $comparatorMapper;
@@ -45,13 +35,11 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+	) {
 		$this->comparatorMapper = new ComparatorMapper();
 		$this->fulltextSearchTableFactory = new FulltextSearchTableFactory();
 	}

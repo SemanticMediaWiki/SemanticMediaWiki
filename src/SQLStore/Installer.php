@@ -53,31 +53,6 @@ class Installer implements MessageReporter {
 	const POPULATE_HASH_FIELD_COMPLETE = 'populate.smw_hash_field_complete';
 
 	/**
-	 * @var TableSchemaManager
-	 */
-	private $tableSchemaManager;
-
-	/**
-	 * @var TableBuilder
-	 */
-	private $tableBuilder;
-
-	/**
-	 * @var TableBuildExaminer
-	 */
-	private $tableBuildExaminer;
-
-	/**
-	 * @var VersionExaminer
-	 */
-	private $versionExaminer;
-
-	/**
-	 * @var TableOptimizer
-	 */
-	private $tableOptimizer;
-
-	/**
 	 * @var Options
 	 */
 	private $options;
@@ -94,19 +69,14 @@ class Installer implements MessageReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param TableSchemaManager $tableSchemaManager
-	 * @param TableBuilder $tableBuilder
-	 * @param TableBuildExaminer $tableBuildExaminer
-	 * @param VersionExaminer VersionExaminer
-	 * @param TableOptimizer $tableOptimizer
 	 */
-	public function __construct( TableSchemaManager $tableSchemaManager, TableBuilder $tableBuilder, TableBuildExaminer $tableBuildExaminer, VersionExaminer $versionExaminer, TableOptimizer $tableOptimizer ) {
-		$this->tableSchemaManager = $tableSchemaManager;
-		$this->tableBuilder = $tableBuilder;
-		$this->tableBuildExaminer = $tableBuildExaminer;
-		$this->versionExaminer = $versionExaminer;
-		$this->tableOptimizer = $tableOptimizer;
+	public function __construct(
+		private TableSchemaManager $tableSchemaManager,
+		private TableBuilder $tableBuilder,
+		private TableBuildExaminer $tableBuildExaminer,
+		private VersionExaminer $versionExaminer,
+		private TableOptimizer $tableOptimizer,
+	) {
 		$this->options = new Options();
 		$this->setupFile = new SetupFile();
 	}

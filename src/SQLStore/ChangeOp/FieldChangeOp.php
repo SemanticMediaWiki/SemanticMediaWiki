@@ -13,24 +13,12 @@ use InvalidArgumentException;
 class FieldChangeOp {
 
 	/**
-	 * @var array
-	 */
-	private $changeOp = [];
-
-	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param array $changeOp
-	 * @param string|null $type
 	 */
-	public function __construct( array $changeOp = [], $type = null ) {
-		$this->changeOp = $changeOp;
-		$this->type = $type;
+	public function __construct(
+		private array $changeOp = [],
+		private $type = null,
+	) {
 	}
 
 	/**

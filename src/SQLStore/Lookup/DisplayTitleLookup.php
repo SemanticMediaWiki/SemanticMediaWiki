@@ -17,17 +17,9 @@ class DisplayTitleLookup {
 	private const MAX_ITEMS_PER_QUERY = 2000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

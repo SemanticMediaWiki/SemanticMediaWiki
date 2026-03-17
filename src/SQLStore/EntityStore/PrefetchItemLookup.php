@@ -37,46 +37,15 @@ class PrefetchItemLookup {
 	const HASH_INDEX = 'hash.index';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SemanticDataLookup
-	 */
-	private $semanticDataLookup;
-
-	/**
-	 * @var PropertySubjectsLookup
-	 */
-	private $propertySubjectsLookup;
-
-	/**
-	 * @var LinkBatch
-	 */
-	private $linkBatch;
-
-	/**
-	 * @var SequenceMap
-	 */
-	private $sequenceMap;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param CachingSemanticDataLookup $semanticDataLookup
-	 * @param PropertySubjectsLookup $propertySubjectsLookup
-	 * @param LinkBatch|null $linkBatch
-	 * @param SequenceMap|null $sequenceMap
 	 */
-	public function __construct( Store $store, CachingSemanticDataLookup $semanticDataLookup, PropertySubjectsLookup $propertySubjectsLookup, ?LinkBatch $linkBatch = null, ?SequenceMap $sequenceMap = null ) {
-		$this->store = $store;
-		$this->semanticDataLookup = $semanticDataLookup;
-		$this->propertySubjectsLookup = $propertySubjectsLookup;
-		$this->linkBatch = $linkBatch;
-		$this->sequenceMap = $sequenceMap;
-
+	public function __construct(
+		private readonly Store $store,
+		private readonly CachingSemanticDataLookup $semanticDataLookup,
+		private readonly PropertySubjectsLookup $propertySubjectsLookup,
+		private ?LinkBatch $linkBatch = null,
+		private ?SequenceMap $sequenceMap = null,
+	) {
 		// Help reduce the amount of queries by allowing to prefetch those
 		// links we know will be used for the display
 		if ( $this->linkBatch === null ) {

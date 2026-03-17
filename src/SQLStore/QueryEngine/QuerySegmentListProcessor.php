@@ -18,23 +18,6 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class QuerySegmentListProcessor {
 
-	// ConditionTreeProcessor
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var TemporaryTableBuilder
-	 */
-	private $temporaryTableBuilder;
-
-	/**
-	 * @var HierarchyTempTableBuilder
-	 */
-	private $hierarchyTempTableBuilder;
-
 	/**
 	 * Array of arrays of executed queries, indexed by the temporary table names
 	 * results were fed into.
@@ -56,15 +39,11 @@ class QuerySegmentListProcessor {
 	 */
 	private $querySegmentList = [];
 
-	/**
-	 * @param Database $connection
-	 * @param TemporaryTableBuilder $temporaryTableBuilder
-	 * @param HierarchyTempTableBuilder $hierarchyTempTableBuilder
-	 */
-	public function __construct( Database $connection, TemporaryTableBuilder $temporaryTableBuilder, HierarchyTempTableBuilder $hierarchyTempTableBuilder ) {
-		$this->connection = $connection;
-		$this->temporaryTableBuilder = $temporaryTableBuilder;
-		$this->hierarchyTempTableBuilder = $hierarchyTempTableBuilder;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly TemporaryTableBuilder $temporaryTableBuilder,
+		private readonly HierarchyTempTableBuilder $hierarchyTempTableBuilder,
+	) {
 	}
 
 	/**

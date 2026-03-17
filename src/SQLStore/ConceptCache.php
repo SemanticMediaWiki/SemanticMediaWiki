@@ -20,29 +20,17 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class ConceptCache {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var ConceptQuerySegmentBuilder
-	 */
-	private $conceptQuerySegmentBuilder;
-
-	/**
 	 * @var int
 	 */
 	private $upperLimit = 50;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param SQLStore $store
-	 * @param ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder
 	 */
-	public function __construct( SQLStore $store, ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder ) {
-		$this->store = $store;
-		$this->conceptQuerySegmentBuilder = $conceptQuerySegmentBuilder;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly ConceptQuerySegmentBuilder $conceptQuerySegmentBuilder,
+	) {
 	}
 
 	/**

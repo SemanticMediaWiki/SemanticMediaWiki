@@ -15,29 +15,17 @@ use SMWQuery as Query;
 class ConceptQuerySegmentBuilder {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QuerySegmentListProcessor
-	 */
-	private $querySegmentListProcessor;
-
-	/**
 	 * @var QueryParser
 	 */
 	private $queryParser;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param QuerySegmentListProcessor $querySegmentListProcessor
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder, QuerySegmentListProcessor $querySegmentListProcessor ) {
-		$this->conditionBuilder = $conditionBuilder;
-		$this->querySegmentListProcessor = $querySegmentListProcessor;
+	public function __construct(
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QuerySegmentListProcessor $querySegmentListProcessor,
+	) {
 	}
 
 	/**

@@ -22,16 +22,6 @@ use SMWQuery as Query;
 class ConditionBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var OrderCondition
-	 */
-	private $orderCondition;
-
-	/**
 	 * @var DispatchingDescriptionInterpreter
 	 */
 	private $dispatchingDescriptionInterpreter;
@@ -67,20 +57,15 @@ class ConditionBuilder {
 	 */
 	private $lastQuerySegmentId = -1;
 
-	private CircularReferenceGuard $circularReferenceGuard;
-
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param OrderCondition $orderCondition
-	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
-	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( Store $store, OrderCondition $orderCondition, DescriptionInterpreterFactory $descriptionInterpreterFactory, CircularReferenceGuard $circularReferenceGuard ) {
-		$this->store = $store;
-		$this->orderCondition = $orderCondition;
-		$this->circularReferenceGuard = $circularReferenceGuard;
+	public function __construct(
+		private readonly Store $store,
+		private readonly OrderCondition $orderCondition,
+		DescriptionInterpreterFactory $descriptionInterpreterFactory,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+	) {
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
 		QuerySegment::$qnum = 0;
 	}

@@ -22,18 +22,9 @@ class IdCacheManager {
 	const REDIRECT_TARGET = 'redirect.target.lookup';
 
 	/**
-	 * @var
-	 */
-	private $caches;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param array $caches
 	 */
-	public function __construct( array $caches ) {
-		$this->caches = $caches;
-
+	public function __construct( private array $caches ) {
 		if ( !isset( $this->caches['entity.id'] ) ) {
 			throw new RuntimeException( "Missing 'entity.id' instance." );
 		}

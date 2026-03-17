@@ -23,17 +23,9 @@ class FieldList {
 	const CATEGORY_LIST = 'list/category';
 
 	/**
-	 * @var
-	 */
-	private $countMaps = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param iterable $countMaps
 	 */
-	public function __construct( iterable $countMaps = [] ) {
-		$this->countMaps = $countMaps;
+	public function __construct( private readonly iterable $countMaps = [] ) {
 	}
 
 	/**

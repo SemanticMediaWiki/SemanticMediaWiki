@@ -24,11 +24,6 @@ use SMWDIBlob as DIBlob;
 class EntityLookup implements IEntityLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var TraversalPropertyLookup
 	 */
 	private $traversalPropertyLookup;
@@ -50,12 +45,11 @@ class EntityLookup implements IEntityLookup {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
-	 * @param SQLStoreFactory $factory
 	 */
-	public function __construct( SQLStore $store, SQLStoreFactory $factory ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly SQLStore $store,
+		SQLStoreFactory $factory,
+	) {
 		$this->traversalPropertyLookup = $factory->newTraversalPropertyLookup();
 		$this->propertySubjectsLookup = $factory->newPropertySubjectsLookup();
 		$this->propertiesLookup = $factory->newPropertiesLookup();

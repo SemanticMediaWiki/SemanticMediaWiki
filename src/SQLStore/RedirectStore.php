@@ -22,16 +22,6 @@ class RedirectStore {
 	const TABLE_NAME = 'smw_fpt_redi';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var int
 	 */
 	private $equalitySupport = 0;
@@ -43,14 +33,11 @@ class RedirectStore {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Store $store
-	 * @param Cache|null $cache
 	 */
-	public function __construct( Store $store, ?Cache $cache = null ) {
-		$this->store = $store;
-		$this->cache = $cache;
-
+	public function __construct(
+		private readonly Store $store,
+		private ?Cache $cache = null,
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}

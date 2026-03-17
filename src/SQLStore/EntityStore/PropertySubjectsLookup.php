@@ -20,11 +20,6 @@ use SMWDIContainer;
 class PropertySubjectsLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var IteratorFactory
 	 */
 	private $iteratorFactory;
@@ -51,11 +46,8 @@ class PropertySubjectsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 

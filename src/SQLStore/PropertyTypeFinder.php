@@ -18,22 +18,14 @@ use SMW\MediaWiki\Connection\Database;
 class PropertyTypeFinder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var string
 	 */
 	private $typeTableName = '';
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly Database $connection ) {
 	}
 
 	/**
