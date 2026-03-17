@@ -107,6 +107,7 @@ class HttpResponseErrorMapperTest extends TestCase {
 
 	public function curlErrorCodeThatNotThrowsExceptionProvider() {
 		$provider = [
+			[ 52 ],
 			[ CURLE_GOT_NOTHING ],
 			[ CURLE_COULDNT_CONNECT ]
 		];
@@ -117,7 +118,8 @@ class HttpResponseErrorMapperTest extends TestCase {
 	public function httpCodeThatThrowsExceptionProvider() {
 		$provider = [
 			[ 400 ],
-			[ 500 ]
+			[ 500 ],
+			[ 503 ]
 		];
 
 		return $provider;
