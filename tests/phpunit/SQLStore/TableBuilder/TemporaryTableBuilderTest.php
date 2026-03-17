@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
 
@@ -14,7 +15,7 @@ use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
  *
  * @author mwjames
  */
-class TemporaryTableBuilderTest extends \PHPUnit\Framework\TestCase {
+class TemporaryTableBuilderTest extends TestCase {
 
 	private $connection;
 

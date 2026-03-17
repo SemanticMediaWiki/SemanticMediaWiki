@@ -2,6 +2,11 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\RevisionGuard;
 
 /**
@@ -13,14 +18,14 @@ use SMW\MediaWiki\RevisionGuard;
  *
  * @author mwjames
  */
-class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
+class RevisionGuardTest extends TestCase {
 
 	private $hookDispatcher;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -33,7 +38,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsSkippableUpdate() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,7 +59,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsSkippableUpdate_WithID() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -76,7 +81,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetLatestRevID() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +102,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewRevisionFromTitle() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,11 +121,11 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onChangeRevision' );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -131,13 +136,13 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\MediaWiki\Revision\RevisionRecord',
+			RevisionRecord::class,
 			$instance->getRevision( $title, $revision )
 		);
 	}
 
 	public function testGetFile() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -164,7 +169,7 @@ class RevisionGuardTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function getRevisionLookupMock() {
-		return $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+		return $this->getMockBuilder( RevisionLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

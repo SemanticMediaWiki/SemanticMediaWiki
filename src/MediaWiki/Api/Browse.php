@@ -15,6 +15,7 @@ use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -108,8 +109,8 @@ class Browse extends ApiBase {
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		if ( !is_a( $store, SQLStore::class ) ) {
+			$store = $applicationFactory->getStore( SQLStore::class );
 		}
 
 		$listLookup = new ListLookup(
@@ -151,8 +152,8 @@ class Browse extends ApiBase {
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		if ( !is_a( $store, SQLStore::class ) ) {
+			$store = $applicationFactory->getStore( SQLStore::class );
 		}
 
 		$listLookup = new PValueLookup(
@@ -191,8 +192,8 @@ class Browse extends ApiBase {
 		// We explicitly want the SQLStore here to avoid
 		// "Call to undefined method SMW\SPARQLStore\SPARQLStore::getSQLOptions() ..."
 		// since we don't use those methods anywher else other than the SQLStore
-		if ( !is_a( $store, '\SMW\SQLStore\SQLStore' ) ) {
-			$store = $applicationFactory->getStore( '\SMW\SQLStore\SQLStore' );
+		if ( !is_a( $store, SQLStore::class ) ) {
+			$store = $applicationFactory->getStore( SQLStore::class );
 		}
 
 		$listLookup = new PSubjectLookup(

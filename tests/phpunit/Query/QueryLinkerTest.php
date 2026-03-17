@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\QueryLinker;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Query\QueryLinker;
  *
  * @author mwjames
  */
-class QueryLinkerTest extends \PHPUnit\Framework\TestCase {
+class QueryLinkerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\Query\QueryLinker',
+			QueryLinker::class,
 			new QueryLinker()
 		);
 	}

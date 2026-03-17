@@ -25,17 +25,9 @@ class RepositoryRedirectLookup {
 	const POOLCACHE_ID = 'sparql.repository.redirectLookup';
 
 	/**
-	 * @var RepositoryConnection
-	 */
-	private $repositoryConnection;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param RepositoryConnection $repositoryConnection
 	 */
-	public function __construct( RepositoryConnection $repositoryConnection ) {
-		$this->repositoryConnection = $repositoryConnection;
+	public function __construct( private readonly RepositoryConnection $repositoryConnection ) {
 	}
 
 	/**

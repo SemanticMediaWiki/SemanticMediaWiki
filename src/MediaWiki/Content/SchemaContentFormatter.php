@@ -13,6 +13,7 @@ use SMW\Schema\Schema;
 use SMW\Store;
 use SMW\Utils\Html\SummaryTable;
 use SMWInfolink as Infolink;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,11 +22,6 @@ use SMWInfolink as Infolink;
  * @author mwjames
  */
 class SchemaContentFormatter {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var HtmlBuilder
@@ -49,11 +45,8 @@ class SchemaContentFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 		$this->htmlBuilder = new HtmlBuilder();
 	}
 
@@ -185,7 +178,7 @@ class SchemaContentFormatter {
 
 			$ps = $this->store->getPropertySubjects( $property, $subject );
 
-			if ( $ps instanceof \Traversable ) {
+			if ( $ps instanceof Traversable ) {
 				$ps = iterator_to_array( $ps );
 			}
 
@@ -265,7 +258,7 @@ class SchemaContentFormatter {
 	private function schema_body( $text ) {
 		$codeHighlighter = null;
 
-		if ( class_exists( '\Onoi\CodeHighlighter\Highlighter' ) ) {
+		if ( class_exists( CodeHighlighter::class ) ) {
 			$codeHighlighter = new CodeHighlighter();
 
 			// `yaml` works well enough for both JSON and YAML

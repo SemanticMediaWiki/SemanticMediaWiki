@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\RedirectTargetFinder;
 
 /**
@@ -14,11 +15,11 @@ use SMW\MediaWiki\RedirectTargetFinder;
  *
  * @author mwjames
  */
-class RedirectTargetFinderTest extends \PHPUnit\Framework\TestCase {
+class RedirectTargetFinderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\RedirectTargetFinder',
+			RedirectTargetFinder::class,
 			new RedirectTargetFinder()
 		);
 	}

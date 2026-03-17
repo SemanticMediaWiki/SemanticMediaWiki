@@ -2,8 +2,18 @@
 
 namespace SMW\Tests\Protection;
 
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\EntityCache;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
+use SMW\Listener\ChangeListener\ChangeRecord;
+use SMW\MediaWiki\PermissionManager;
 use SMW\Protection\ProtectionValidator;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\Protection\ProtectionValidator
@@ -14,7 +24,7 @@ use SMW\Protection\ProtectionValidator;
  *
  * @author mwjames
  */
-class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
+class ProtectionValidatorTest extends TestCase {
 
 	private $dataItemFactory;
 	private $store;
@@ -26,16 +36,16 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'save', 'contains', 'fetch', 'associate', 'invalidate', 'delete' ] )
 			->getMock();
 
-		$this->permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
+		$this->permissionManager = $this->getMockBuilder( PermissionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -246,7 +256,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasCreateProtection() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -298,11 +308,11 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsClassifiedAsImportPerformerProtected_NoImportersNoProtection() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -327,7 +337,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getUserText' )
 			->willReturn( 'FooImporter' );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -343,7 +353,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFirstRevision' )
 			->willReturn( $revision );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -372,7 +382,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getUserText' )
 			->willReturn( 'FooImporter' );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -388,7 +398,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFirstRevision' )
 			->willReturn( $revision );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -412,7 +422,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterPropertyChangeListener() {
-		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+		$propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -432,7 +442,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testInvalidateCacheFromChangeRecord() {
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -440,7 +450,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemById' )
 			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -452,9 +462,9 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'delete' )
 			->with( $this->stringContains( 'smw:entity:d5c5aca7d29a32ea16a0331dac164ac4' ) );
 
-		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+		$changeRecord = new ChangeRecord(
 			[
-				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 's_id' => 42 ] ] )
+				new ChangeRecord( [ 'row' => [ 's_id' => 42 ] ] )
 			]
 		);
 
@@ -470,7 +480,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCacheStateChangeFromChangeRecord() {
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -478,7 +488,7 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemById' )
 			->willReturn( $this->dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ) );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -490,9 +500,9 @@ class ProtectionValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'save' )
 			->with( $this->stringContains( 'smw:entity:d5c5aca7d29a32ea16a0331dac164ac4' ) );
 
-		$changeRecord = new \SMW\Listener\ChangeListener\ChangeRecord(
+		$changeRecord = new ChangeRecord(
 			[
-				new \SMW\Listener\ChangeListener\ChangeRecord( [ 'row' => [ 's_id' => 42 ], 'is_insert' => true ] )
+				new ChangeRecord( [ 'row' => [ 's_id' => 42 ], 'is_insert' => true ] )
 			]
 		);
 

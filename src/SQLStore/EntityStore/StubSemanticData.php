@@ -95,7 +95,7 @@ class StubSemanticData extends SemanticData {
 	 * @since 2.3
 	 */
 	public function __wakeup() {
-		$this->store = StoreFactory::getStore( 'SMW\SQLStore\SQLStore' );
+		$this->store = StoreFactory::getStore( SQLStore::class );
 	}
 
 	/**
@@ -149,7 +149,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 *
-	 * @return array of \SMW\DIProperty objects
+	 * @return array of DIProperty objects
 	 */
 	public function getProperties() {
 		$this->unstubProperties();
@@ -263,7 +263,7 @@ class StubSemanticData extends SemanticData {
 	 * change, all parts of SMW are prepared to handle mismatched data item
 	 * types anyway.
 	 *
-	 * @param $property \SMW\DIProperty
+	 * @param $property DIProperty
 	 * @param $dataItem DataItem
 	 *
 	 * @since 1.8
@@ -352,7 +352,7 @@ class StubSemanticData extends SemanticData {
 	 * @since 1.8
 	 *
 	 * @param string $propertyKey
-	 * @param \SMW\DIProperty|null $diProperty if available
+	 * @param DIProperty|null $diProperty if available
 	 *
 	 * @throws DataItemException if property key is not valid
 	 * 	and $diProperty is null

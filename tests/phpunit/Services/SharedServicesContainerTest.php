@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Services;
 
+use Onoi\CallbackContainer\CallbackContainer;
+use Onoi\CallbackContainer\ContainerBuilder;
+use PHPUnit\Framework\TestCase;
 use SMW\Services\SharedServicesContainer;
 
 /**
@@ -13,7 +16,7 @@ use SMW\Services\SharedServicesContainer;
  *
  * @author mwjames
  */
-class SharedServicesContainerTest extends \PHPUnit\Framework\TestCase {
+class SharedServicesContainerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -22,13 +25,13 @@ class SharedServicesContainerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Onoi\CallbackContainer\CallbackContainer',
+			CallbackContainer::class,
 			new SharedServicesContainer()
 		);
 	}
 
 	public function testRegister() {
-		$containerBuilder = $this->getMockBuilder( '\Onoi\CallbackContainer\ContainerBuilder' )
+		$containerBuilder = $this->getMockBuilder( ContainerBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 

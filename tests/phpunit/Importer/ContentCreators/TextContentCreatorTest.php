@@ -2,8 +2,15 @@
 
 namespace SMW\Tests\Importer\ContentCreators;
 
+use MediaWiki\Storage\PageUpdateStatus;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
 use SMW\Importer\ContentCreators\TextContentCreator;
 use SMW\Importer\ImportContents;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\TitleFactory;
 
 /**
  * @covers \SMW\Importer\ContentCreators\TextContentCreator
@@ -14,7 +21,7 @@ use SMW\Importer\ImportContents;
  *
  * @author mwjames
  */
-class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
+class TextContentCreatorTest extends TestCase {
 
 	private $titleFactory;
 	private $connection;
@@ -23,22 +30,22 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$this->messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Importer\ContentCreators\TextContentCreator',
+			TextContentCreator::class,
 			new TextContentCreator( $this->titleFactory, $this->connection )
 		);
 	}
@@ -65,7 +72,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+		$status = $this->getMockBuilder( PageUpdateStatus::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,7 +80,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +132,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+		$status = $this->getMockBuilder( PageUpdateStatus::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,7 +144,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getErrorsArray' )
 			->willReturn( [ 'FooError', 'BarError' ] );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -190,7 +197,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$this->connection->expects( $this->never() )
 			->method( 'onTransactionCommitOrIdle' );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -238,7 +245,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+		$status = $this->getMockBuilder( PageUpdateStatus::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -246,7 +253,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -254,7 +261,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'equals' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -315,7 +322,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			}
 			);
 
-		$status = $this->getMockBuilder( '\MediaWiki\Storage\PageUpdateStatus' )
+		$status = $this->getMockBuilder( PageUpdateStatus::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -323,7 +330,7 @@ class TextContentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isOK' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

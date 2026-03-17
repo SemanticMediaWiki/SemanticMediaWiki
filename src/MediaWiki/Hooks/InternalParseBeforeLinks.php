@@ -3,7 +3,6 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Parser\Parser;
-use MediaWiki\Parser\StripState;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Parser\InTextAnnotationParser;
@@ -40,24 +39,12 @@ class InternalParseBeforeLinks implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
-	 * @var StripState
-	 */
-	private $stripState;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param Parser &$parser
-	 * @param StripState $stripState
 	 */
-	public function __construct( Parser &$parser, $stripState ) {
-		$this->parser = $parser;
-		$this->stripState = $stripState;
+	public function __construct(
+		private Parser &$parser,
+		private $stripState,
+	) {
 	}
 
 	/**

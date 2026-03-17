@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Localizer\Localizer;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
@@ -18,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class AttachmentLinkPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;
@@ -33,7 +35,7 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -83,7 +85,7 @@ class AttachmentLinkPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

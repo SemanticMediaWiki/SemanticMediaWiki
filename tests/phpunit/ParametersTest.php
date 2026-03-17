@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Parameters;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Parameters;
  *
  * @author mwjames
  */
-class ParametersTest extends \PHPUnit\Framework\TestCase {
+class ParametersTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

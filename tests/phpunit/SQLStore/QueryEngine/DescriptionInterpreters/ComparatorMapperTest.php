@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper;
 
 /**
@@ -13,11 +15,11 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper;
  *
  * @author mwjames
  */
-class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
+class ComparatorMapperTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\DescriptionInterpreters\ComparatorMapper',
+			ComparatorMapper::class,
 			new ComparatorMapper()
 		);
 	}
@@ -25,7 +27,7 @@ class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
 	public function testInvalidComparatorThrowsException() {
 		$value = '';
 
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +41,7 @@ class ComparatorMapperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider comparatorProvider
 	 */
 	public function testSQLComparatorElement( $comparator, $value, $expected ) {
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 

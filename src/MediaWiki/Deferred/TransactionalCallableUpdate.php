@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
+use Exception;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Site;
 
@@ -17,11 +18,6 @@ use SMW\Site;
  * @author mwjames
  */
 class TransactionalCallableUpdate extends CallableUpdate {
-
-	/**
-	 * @var Database|null
-	 */
-	private $connection;
 
 	/**
 	 * @var bool
@@ -66,13 +62,12 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param callable|null $callback
-	 * @param Database|null $connection
 	 */
-	public function __construct( ?callable $callback = null, ?Database $connection = null ) {
+	public function __construct(
+		?callable $callback = null,
+		private readonly ?Database $connection = null,
+	) {
 		parent::__construct( $callback );
-		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
 	}
 
@@ -164,7 +159,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 		try {
 			parent::doUpdate();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 		}
 
 		if ( $this->autoCommit && $autoTrx ) {

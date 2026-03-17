@@ -34,11 +34,6 @@ use SMWExporter as Exporter;
 class ConditionBuilder {
 
 	/**
-	 * @var EngineOptions
-	 */
-	private $engineOptions;
-
-	/**
 	 * @var DispatchingDescriptionInterpreter
 	 */
 	private $dispatchingDescriptionInterpreter;
@@ -101,13 +96,12 @@ class ConditionBuilder {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param DescriptionInterpreterFactory $descriptionInterpreterFactory
-	 * @param EngineOptions|null $engineOptions
 	 */
-	public function __construct( DescriptionInterpreterFactory $descriptionInterpreterFactory, ?EngineOptions $engineOptions = null ) {
+	public function __construct(
+		DescriptionInterpreterFactory $descriptionInterpreterFactory,
+		private ?EngineOptions $engineOptions = null,
+	) {
 		$this->dispatchingDescriptionInterpreter = $descriptionInterpreterFactory->newDispatchingDescriptionInterpreter( $this );
-		$this->engineOptions = $engineOptions;
 
 		if ( $this->engineOptions === null ) {
 			$this->engineOptions = new EngineOptions();
@@ -451,7 +445,8 @@ class ConditionBuilder {
 	 */
 	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
-			return $condition->orderByVariable = $mainVariable;
+			$condition->orderByVariable = $mainVariable;
+			return;
 		}
 
 		$condition->orderByVariable = $mainVariable . 'sk';

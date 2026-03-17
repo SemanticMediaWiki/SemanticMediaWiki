@@ -2,7 +2,9 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\ParameterProcessorFactory;
+use SMW\ParserParameterProcessor;
 
 /**
  * @covers \SMW\ParameterProcessorFactory
@@ -13,11 +15,11 @@ use SMW\ParameterProcessorFactory;
  *
  * @author mwjames
  */
-class ParameterProcessorFactoryTest extends \PHPUnit\Framework\TestCase {
+class ParameterProcessorFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'SMW\ParameterProcessorFactory',
+			ParameterProcessorFactory::class,
 			new ParameterProcessorFactory()
 		);
 	}
@@ -30,7 +32,7 @@ class ParameterProcessorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = ParameterProcessorFactory::newFromArray( $parameter );
 
 		$this->assertInstanceOf(
-			'\SMW\ParserParameterProcessor',
+			ParserParameterProcessor::class,
 			$instance
 		);
 
@@ -47,7 +49,7 @@ class ParameterProcessorFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = ParameterProcessorFactory::newFromArray( $parameter );
 
 		$this->assertInstanceOf(
-			'\SMW\ParserParameterProcessor',
+			ParserParameterProcessor::class,
 			$instance
 		);
 

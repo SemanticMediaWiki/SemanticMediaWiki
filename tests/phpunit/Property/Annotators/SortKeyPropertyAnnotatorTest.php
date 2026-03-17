@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class SortKeyPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class SortKeyPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -31,7 +33,7 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,7 +43,7 @@ class SortKeyPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\SortKeyPropertyAnnotator',
+			SortKeyPropertyAnnotator::class,
 			$instance
 		);
 	}

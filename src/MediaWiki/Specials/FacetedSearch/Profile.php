@@ -22,11 +22,6 @@ class Profile {
 	const SCHEMA_TYPE = 'FACETEDSEARCH_PROFILE_SCHEMA';
 
 	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
 	 * @var Compartment
 	 */
 	private $profile;
@@ -48,12 +43,11 @@ class Profile {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SchemaFactory $schemaFactory
-	 * @param string $profileName
 	 */
-	public function __construct( SchemaFactory $schemaFactory, string $profileName = '' ) {
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private readonly SchemaFactory $schemaFactory,
+		string $profileName = '',
+	) {
 		$this->profileName = str_replace( '_profile', '', $profileName );
 	}
 

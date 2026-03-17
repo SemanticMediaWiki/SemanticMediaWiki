@@ -21,16 +21,6 @@ use SMW\SQLStore\SQLStore;
 class CacheWarmer {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @var DisplayTitleFinder
 	 */
 	private $displayTitleFinder;
@@ -42,13 +32,11 @@ class CacheWarmer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( SQLStore $store, IdCacheManager $idCacheManager ) {
-		$this->store = $store;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**

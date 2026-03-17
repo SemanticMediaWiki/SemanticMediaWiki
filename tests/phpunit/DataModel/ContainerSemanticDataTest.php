@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\DataModel;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\Exception\DataItemException;
 use SMW\SemanticData;
 
 /**
@@ -15,7 +17,7 @@ use SMW\SemanticData;
  *
  * @author mwjames
  */
-class ContainerSemanticDataTest extends \PHPUnit\Framework\TestCase {
+class ContainerSemanticDataTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -49,7 +51,7 @@ class ContainerSemanticDataTest extends \PHPUnit\Framework\TestCase {
 	public function testGetSubjectOnAnonymousContainerWithoutSkipThrowsException() {
 		$instance = ContainerSemanticData::makeAnonymousContainer();
 
-		$this->expectException( '\SMW\Exception\DataItemException' );
+		$this->expectException( DataItemException::class );
 		$instance->getSubject();
 	}
 

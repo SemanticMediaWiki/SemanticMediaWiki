@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Constraint\Constraints;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\NullConstraint;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Constraint\Constraints\NullConstraint;
  *
  * @author mwjames
  */
-class NullConstraintTest extends \PHPUnit\Framework\TestCase {
+class NullConstraintTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Url;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Url;
  *
  * @author mwjames
  */
-class UrlTest extends \PHPUnit\Framework\TestCase {
+class UrlTest extends TestCase {
 
 	/**
 	 * @dataProvider urlProvider

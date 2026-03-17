@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Status;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Status;
  *
  * @author mwjames
  */
-class StatusTest extends \PHPUnit\Framework\TestCase {
+class StatusTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

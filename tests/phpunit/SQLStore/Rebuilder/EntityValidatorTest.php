@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\SQLStore\Rebuilder;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\Rebuilder\EntityValidator;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
+class EntityValidatorTest extends TestCase {
 
 	private $testEnvironment;
 	private NamespaceExaminer $namespaceExaminer;
@@ -31,7 +36,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,7 +49,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( 0 );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -66,7 +71,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +82,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIsDetachedSubobject() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -90,7 +95,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 			'smw_proptable_hash' => []
 		];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +110,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHasLatestRevID() {
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -113,7 +118,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 42 );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +132,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 			'smw_rev' => 42
 		];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -151,7 +156,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 			'smw_proptable_hash' => null
 		];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,7 +174,7 @@ class EntityValidatorTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider propertyRetiredListProvider
 	 */
 	public function testIsRetiredProperty( $row, $list, $expected ) {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

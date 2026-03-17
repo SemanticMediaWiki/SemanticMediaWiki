@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\ResultPrinters\ListResultPrinter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Query\ResultPrinters\ListResultPrinter\ParameterDictionary;
  *
  * @author Stephan Gambke
  */
-class ParameterDictionaryTest extends \PHPUnit\Framework\TestCase {
+class ParameterDictionaryTest extends TestCase {
 
 	public function testSetGet() {
 		$dict = new ParameterDictionary();

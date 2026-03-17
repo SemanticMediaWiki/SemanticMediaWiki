@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\ParserParameterProcessor;
 
 /**
@@ -13,14 +14,14 @@ use SMW\ParserParameterProcessor;
  *
  * @author mwjames
  */
-class ParserParameterProcessorTest extends \PHPUnit\Framework\TestCase {
+class ParserParameterProcessorTest extends TestCase {
 
 	/**
 	 * @dataProvider parametersDataProvider
 	 */
 	public function testCanConstruct( array $parameters ) {
 		$this->assertInstanceOf(
-			'SMW\ParserParameterProcessor',
+			ParserParameterProcessor::class,
 			new ParserParameterProcessor( $parameters )
 		);
 	}

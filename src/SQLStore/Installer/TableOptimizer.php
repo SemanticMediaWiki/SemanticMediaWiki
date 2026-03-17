@@ -22,22 +22,14 @@ class TableOptimizer {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var TableBuilder
-	 */
-	private $tableBuilder;
-
-	/**
 	 * @var SetupFile
 	 */
 	private $setupFile;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TableBuilder $tableBuilder
 	 */
-	public function __construct( TableBuilder $tableBuilder ) {
-		$this->tableBuilder = $tableBuilder;
+	public function __construct( private TableBuilder $tableBuilder ) {
 	}
 
 	/**

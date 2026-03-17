@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DeferredConstraintCheckUpdateJobTest extends \PHPUnit\Framework\TestCase {
+class DeferredConstraintCheckUpdateJobTest extends TestCase {
 
 	private $testEnvironment;
 	private $jobQueue;
@@ -25,7 +28,7 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +46,7 @@ class DeferredConstraintCheckUpdateJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

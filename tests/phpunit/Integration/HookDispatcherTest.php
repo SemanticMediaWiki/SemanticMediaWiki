@@ -2,7 +2,25 @@
 
 namespace SMW\Tests\Integration;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
+use SMW\Constraint\ConstraintRegistry;
+use SMW\DIProperty;
+use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\HookDispatcher;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Options;
+use SMW\Parser\AnnotationProcessor;
+use SMW\Property\Annotator;
+use SMW\Schema\SchemaTypes;
+use SMW\SQLStore\TableBuilder;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -13,7 +31,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
+class HookDispatcherTest extends TestCase {
 
 	private $mwHooksHandler;
 
@@ -88,26 +106,26 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnRegisterTaskHandlers() {
 		$hookDispatcher = new HookDispatcher();
 
-		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
+		$taskHandlerRegistry = $this->getMockBuilder( TaskHandlerRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$taskHandlerRegistry->expects( $this->once() )
 			->method( 'registerTaskHandler' );
 
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -121,11 +139,11 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnRegisterPropertyChangeListeners() {
 		$hookDispatcher = new HookDispatcher();
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyChangeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener' )
+		$propertyChangeListener = $this->getMockBuilder( PropertyChangeListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -143,7 +161,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnInitConstraints() {
 		$hookDispatcher = new HookDispatcher();
 
-		$constraintRegistry = $this->getMockBuilder( '\SMW\Constraint\ConstraintRegistry' )
+		$constraintRegistry = $this->getMockBuilder( ConstraintRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -160,7 +178,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnRegisterSchemaTypes() {
 		$hookDispatcher = new HookDispatcher();
 
-		$schemaTypes = $this->getMockBuilder( '\SMW\Schema\SchemaTypes' )
+		$schemaTypes = $this->getMockBuilder( SchemaTypes::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,7 +197,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -217,7 +235,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 		$hookDispatcher = new HookDispatcher();
 
-		$annotationProcessor = $this->getMockBuilder( '\SMW\Parser\AnnotationProcessor' )
+		$annotationProcessor = $this->getMockBuilder( AnnotationProcessor::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -236,14 +254,14 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnParserAfterTidyPropertyAnnotationComplete() {
 		$hookDispatcher = new HookDispatcher();
 
-		$propertyAnnotator = $this->getMockBuilder( '\SMW\Property\Annotator' )
+		$propertyAnnotator = $this->getMockBuilder( Annotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyAnnotator->expects( $this->once() )
 			->method( 'addAnnotation' );
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -257,11 +275,11 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnAfterUpdateEntityCollationComplete() {
 		$hookDispatcher = new HookDispatcher();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -278,7 +296,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnRegisterEntityExaminerIndicatorProviders() {
 		$hookDispatcher = new HookDispatcher();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -299,7 +317,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnRegisterEntityExaminerDeferrableIndicatorProviders() {
 		$hookDispatcher = new HookDispatcher();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -320,7 +338,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnIsApprovedRevision() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -336,7 +354,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnChangeRevisionID() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -357,7 +375,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnChangeFile() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -389,15 +407,15 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnChangeRevision() {
 		$hookDispatcher = new HookDispatcher();
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$anotherRevision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$anotherRevision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -423,7 +441,7 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 
 		$tables = [];
 
-		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -440,15 +458,15 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnInstallerAfterCreateTablesComplete() {
 		$hookDispatcher = new HookDispatcher();
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$options = $this->getMockBuilder( '\SMW\Options' )
+		$options = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -465,15 +483,15 @@ class HookDispatcherTest extends \PHPUnit\Framework\TestCase {
 	public function testOnInstallerAfterDropTablesComplete() {
 		$hookDispatcher = new HookDispatcher();
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$options = $this->getMockBuilder( '\SMW\Options' )
+		$options = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 

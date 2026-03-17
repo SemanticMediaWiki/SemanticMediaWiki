@@ -27,11 +27,6 @@ class PropertyTableIdReferenceDisposer {
 	use EventDispatcherAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store = null;
-
-	/**
 	 * @var Database
 	 */
 	private $connection = null;
@@ -58,11 +53,8 @@ class PropertyTableIdReferenceDisposer {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 

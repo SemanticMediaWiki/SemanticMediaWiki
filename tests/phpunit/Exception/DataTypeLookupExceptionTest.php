@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\DataTypeLookupException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\DataTypeLookupException;
  *
  * @author mwjames
  */
-class DataTypeLookupExceptionTest extends \PHPUnit\Framework\TestCase {
+class DataTypeLookupExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new DataTypeLookupException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\DataTypeLookupException',
+			DataTypeLookupException::class,
 			$instance
 		);
 

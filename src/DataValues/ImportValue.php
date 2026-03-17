@@ -78,7 +78,7 @@ class ImportValue extends DataValue {
 
 	private array $declarativeNames = [];
 
-	private MediaWikiNsContentReader $mediaWikiNsContentReader;
+	private readonly MediaWikiNsContentReader $mediaWikiNsContentReader;
 
 	/**
 	 * @param string $typeid
@@ -169,7 +169,8 @@ class ImportValue extends DataValue {
 		);
 
 		if ( $controlledVocabulary === '' ) {
-			return $this->declarativeNames[$namespace] = '';
+			$this->declarativeNames[$namespace] = '';
+			return $this->declarativeNames[$namespace];
 		}
 
 		$importDefintions = array_map( 'trim', preg_split( "([\n][\s]?)", $controlledVocabulary ) );
@@ -178,12 +179,14 @@ class ImportValue extends DataValue {
 		$fristLine = array_shift( $importDefintions );
 
 		if ( strpos( $fristLine, '|' ) === false ) {
-			return $this->declarativeNames[$namespace] = '';
+			$this->declarativeNames[$namespace] = '';
+			return $this->declarativeNames[$namespace];
 		}
 
 		[ $uri, $name ] = explode( '|', $fristLine, 2 );
 
-		return $this->declarativeNames[$namespace] = $name;
+		$this->declarativeNames[$namespace] = $name;
+		return $this->declarativeNames[$namespace];
 	}
 
 	/**

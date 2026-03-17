@@ -2,10 +2,15 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\IteratorFactory;
 use SMW\Iterators\AppendIterator;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ChangePropagationEntityLookup
@@ -16,7 +21,7 @@ use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
  *
  * @author mwjames
  */
-class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
+class ChangePropagationEntityLookupTest extends TestCase {
 
 	private $store;
 	private $iteratorFactory;
@@ -26,15 +31,15 @@ class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->iteratorFactory = $this->getMockBuilder( '\SMW\IteratorFactory' )
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->appendIterator = $this->getMockBuilder( '\SMW\Iterators\AppendIterator' )
+		$this->appendIterator = $this->getMockBuilder( AppendIterator::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -71,7 +76,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newAppendIterator' )
 			->willReturn( $this->appendIterator );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +97,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDataItemPoolHashListFor' )
 			->willReturn( [] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -131,7 +136,7 @@ class ChangePropagationEntityLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newAppendIterator' )
 			->willReturn( $this->appendIterator );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

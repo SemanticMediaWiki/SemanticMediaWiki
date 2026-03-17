@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Services;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Services\ServicesContainer;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Services\ServicesContainer;
  *
  * @author mwjames
  */
-class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
+class ServicesContainerTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -112,7 +114,7 @@ class ServicesContainerTest extends \PHPUnit\Framework\TestCase {
 	public function testUnknownServiceThrowsException() {
 		$instance = new ServicesContainer();
 
-		$this->expectException( '\SMW\Services\Exception\ServiceNotFoundException' );
+		$this->expectException( ServiceNotFoundException::class );
 		$instance->get( 'test' );
 	}
 

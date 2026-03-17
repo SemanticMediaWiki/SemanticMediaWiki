@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\ResultLimiter;
 
@@ -14,7 +15,7 @@ use SMW\SQLStore\EntityStore\ResultLimiter;
  *
  * @author mwjames
  */
-class ResultLimiterTest extends \PHPUnit\Framework\TestCase {
+class ResultLimiterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\Tests\TestEnvironment;
 
@@ -15,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
+class SpecialURIResolverTest extends TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;

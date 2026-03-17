@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Parser;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Parser\LinksProcessor;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Parser\LinksProcessor;
  *
  * @author mwjames
  */
-class LinksProcessorTest extends \PHPUnit\Framework\TestCase {
+class LinksProcessorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new LinksProcessor();
 
 		$this->assertInstanceOf(
-			'SMW\Parser\LinksProcessor',
+			LinksProcessor::class,
 			$instance
 		);
 	}

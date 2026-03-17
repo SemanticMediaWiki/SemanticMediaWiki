@@ -2,10 +2,16 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableRowMapper;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableRowMapper
@@ -17,15 +23,15 @@ use SMW\SQLStore\PropertyTableRowMapper;
  *
  * @author mwjames
  */
-class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableRowMapperTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\PropertyTableRowMapper',
+			PropertyTableRowMapper::class,
 			new PropertyTableRowMapper( $store )
 		);
 	}
@@ -36,7 +42,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
 
@@ -60,7 +66,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testMapToRowsWithFixedProperty() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -72,7 +78,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +101,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [ 'smw_foo' => $propertyTable ];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getPropertyTables', 'findPropertyTableID', 'getObjectIds' ] )
 			->getMock();
 
@@ -132,7 +138,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewChangeOp() {
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -144,7 +150,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 			->method( 'makeSMWPageID' )
 			->willReturn( 1001 );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -167,7 +173,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$propertyTables = [ 'smw_foo' => $propertyTable ];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->setMethods( [ 'getPropertyTables', 'findPropertyTableID', 'getObjectIds' ] )
 			->getMock();
 
@@ -193,7 +199,7 @@ class PropertyTableRowMapperTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ChangeOp\ChangeOp',
+			ChangeOp::class,
 			$changeOp
 		);
 	}

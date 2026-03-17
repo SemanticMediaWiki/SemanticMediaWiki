@@ -9,6 +9,7 @@ use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use stdClass;
 use Wikimedia\Rdbms\Subquery;
 
 /**
@@ -20,17 +21,9 @@ use Wikimedia\Rdbms\Subquery;
 class TraversalPropertyLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -115,7 +108,7 @@ class TraversalPropertyLookup {
 			);
 
 			if ( $result->numRows() > 0 ) {
-				$res = new \stdClass;
+				$res = new stdClass;
 				$res->smw_title = $propertyTableDef->getFixedProperty();
 				$result = [ $res ];
 			}

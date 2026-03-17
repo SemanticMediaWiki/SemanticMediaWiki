@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use Onoi\HttpRequest\HttpRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
+use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SPARQLStore\HttpResponseErrorMapper;
 
 /**
@@ -13,10 +17,10 @@ use SMW\SPARQLStore\HttpResponseErrorMapper;
  *
  * @author mwjames
  */
-class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
+class HttpResponseErrorMapperTest extends TestCase {
 
 	public function testCanConstruct() {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +34,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider curlErrorCodeThatNotThrowsExceptionProvider
 	 */
 	public function testResponseToHttpRequestThatNotThrowsException( $curlErrorCode ) {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -43,7 +47,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testResponseToHttpRequestForInvalidErrorCodeThrowsException() {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,7 +57,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\HttpEndpointConnectionException' );
+		$this->expectException( HttpEndpointConnectionException::class );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
@@ -64,7 +68,7 @@ class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 		// PHP doesn't know CURLE_HTTP_RETURNED_ERROR therefore using 22
 		// http://curl.haxx.se/libcurl/c/libcurl-errors.html
 
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,12 +83,12 @@ class HttpResponseErrorMapperTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new HttpResponseErrorMapper( $httpRequest );
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException' );
+		$this->expectException( BadHttpEndpointResponseException::class );
 		$instance->mapErrorResponse( 'Foo', 'Bar' );
 	}
 
 	public function testResponseToHttpRequesForHttpErrorThatNotThrowsException() {
-		$httpRequest = $this->getMockBuilder( '\Onoi\HttpRequest\HttpRequest' )
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

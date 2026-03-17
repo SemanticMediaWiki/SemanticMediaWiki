@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
+use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater
@@ -13,29 +17,29 @@ use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
  *
  * @author mwjames
  */
-class SearchTableUpdaterTest extends \PHPUnit\Framework\TestCase {
+class SearchTableUpdaterTest extends TestCase {
 
 	private $connection;
 	private $searchTable;
 	private $textSanitizer;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+		$this->searchTable = $this->getMockBuilder( SearchTable::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->textSanitizer = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer' )
+		$this->textSanitizer = $this->getMockBuilder( TextSanitizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater',
+			SearchTableUpdater::class,
 			new SearchTableUpdater( $this->connection, $this->searchTable, $this->textSanitizer )
 		);
 	}

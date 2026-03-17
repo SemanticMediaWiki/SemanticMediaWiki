@@ -2,10 +2,15 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\MonolingualTextLookup
@@ -16,12 +21,12 @@ use SMW\SQLStore\Lookup\MonolingualTextLookup;
  *
  * @author mwjames
  */
-class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
+class MonolingualTextLookupTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -37,7 +42,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testFetchFromTable( $subject, $languageCode, $expected ) {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,11 +58,11 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +70,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturn( 42 );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +146,7 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 			'lcode' => 'en'
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,15 +163,15 @@ class MonolingualTextLookupTest extends \PHPUnit\Framework\TestCase {
 		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_bar' );
 		$property = DIProperty::newFromUserLabel( 'Foo' );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

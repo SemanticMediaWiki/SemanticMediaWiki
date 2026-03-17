@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
+use Exception;
 use MediaWiki\Api\ApiBase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
@@ -84,7 +85,7 @@ class BrowseBySubject extends ApiBase {
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		}
 

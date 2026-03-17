@@ -2,6 +2,12 @@
 
 namespace SMW\Tests\Factbox;
 
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\Factbox\CachedFactbox;
+use SMW\Factbox\CheckMagicWords;
+use SMW\Factbox\Factbox;
 use SMW\Factbox\FactboxFactory;
 
 /**
@@ -13,7 +19,7 @@ use SMW\Factbox\FactboxFactory;
  *
  * @author mwjames
  */
-class FactboxFactoryTest extends \PHPUnit\Framework\TestCase {
+class FactboxFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -26,7 +32,7 @@ class FactboxFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\CachedFactbox',
+			CachedFactbox::class,
 			$instance->newCachedFactbox()
 		);
 	}
@@ -35,13 +41,13 @@ class FactboxFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\CheckMagicWords',
+			CheckMagicWords::class,
 			$instance->newCheckMagicWords( [] )
 		);
 	}
 
 	public function testCanConstructFactbox() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,14 +55,14 @@ class FactboxFactoryTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_MAIN );
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$instance = new FactboxFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Factbox\Factbox',
+			Factbox::class,
 			$instance->newFactbox( $title, $parserOutput )
 		);
 	}

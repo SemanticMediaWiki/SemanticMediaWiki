@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema\Filters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Filters\PropertyFilter;
@@ -16,7 +17,7 @@ use SMW\Schema\Rule;
  *
  * @author mwjames
  */
-class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
+class PropertyFilterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -35,7 +36,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testIfCondition() {
-		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+		$compartment = $this->getMockBuilder( Compartment::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +49,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoCondition_FilterNotRequired() {
-		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+		$compartment = $this->getMockBuilder( Compartment::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +69,7 @@ class PropertyFilterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFilterOnCallbackWhileFailingReturnFormat_ThrowsException() {
-		$compartment = $this->getMockBuilder( '\SMW\Schema\Compartment' )
+		$compartment = $this->getMockBuilder( Compartment::class )
 			->disableOriginalConstructor()
 			->getMock();
 

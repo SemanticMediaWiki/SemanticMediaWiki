@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\LinkBatch;
 
@@ -14,7 +15,7 @@ use SMW\MediaWiki\LinkBatch;
  *
  * @author mwjames
  */
-class LinkBatchTest extends \PHPUnit\Framework\TestCase {
+class LinkBatchTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\Elastic\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
+use SMW\HierarchyLookup;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Services\ServicesContainer;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\ConditionBuilder
@@ -13,7 +20,7 @@ use SMW\Elastic\QueryEngine\ConditionBuilder;
  *
  * @author mwjames
  */
-class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
+class ConditionBuilderTest extends TestCase {
 
 	private $store;
 	private $termsLookup;
@@ -25,15 +32,15 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\DummyClient' )
+		$this->elasticClient = $this->getMockBuilder( DummyClient::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,7 +52,7 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			return $this->elasticClient;
 		};
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -61,11 +68,11 @@ class ConditionBuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hierarchyLookup = $this->getMockBuilder( '\SMW\HierarchyLookup' )
+		$this->hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->servicesContainer = $this->getMockBuilder( '\SMW\Services\ServicesContainer' )
+		$this->servicesContainer = $this->getMockBuilder( ServicesContainer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

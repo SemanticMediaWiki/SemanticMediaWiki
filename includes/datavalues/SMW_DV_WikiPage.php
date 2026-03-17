@@ -162,15 +162,18 @@ class SMWWikiPageValue extends SMWDataValue {
 			// T:P0427 If the user value says `ab c*` then make sure to use this one
 			// instead of the transformed DBKey which would be `Ab c*`
 			if ( $title !== null && $title->getNamespace() === NS_MAIN && $this->getOption( 'isCapitalLinks' ) === false ) {
-				return $this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
+				$this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
+				return $this->m_dataitem;
 			// If we know that it is a wikipage in a query context and the wiki
 			// requires `isCapitalLinks` then use the standard transformation so
 			// they appear as standard links even though the user input was `abc`.
 			// T:P0902 (`[[Help:]]`)
 			} elseif ( $title !== null ) {
-				return $this->m_dataitem = DIWikiPage::newFromTitle( $title );
+				$this->m_dataitem = DIWikiPage::newFromTitle( $title );
+				return $this->m_dataitem;
 			} elseif ( !$localizer->getNsIndex( substr( $value, 0, -1 ) ) ) {
-				return $this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
+				$this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
+				return $this->m_dataitem;
 			}
 		}
 
@@ -539,7 +542,8 @@ class SMWWikiPageValue extends SMWDataValue {
 		if ( $this->isValid() ) {
 
 			if ( ( $title = $this->m_dataitem->getTitle() ) !== null ) {
-				return $this->m_title = $title;
+				$this->m_title = $title;
+				return $this->m_title;
 			}
 
 			// #3278, Special handling of `>` in the user namespace

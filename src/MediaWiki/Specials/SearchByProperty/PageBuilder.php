@@ -13,6 +13,7 @@ use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMWDataValue as DataValue;
+use SMWDIError;
 use SMWInfolink as Infolink;
 
 /**
@@ -27,21 +28,6 @@ use SMWInfolink as Infolink;
 class PageBuilder {
 
 	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var PageRequestOptions
-	 */
-	private $pageRequestOptions;
-
-	/**
-	 * @var QueryResultLookup
-	 */
-	private $queryResultLookup;
-
-	/**
 	 * @var MessageBuilder
 	 */
 	private $messageBuilder;
@@ -53,15 +39,12 @@ class PageBuilder {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param PageRequestOptions $pageRequestOptions
-	 * @param QueryResultLookup $queryResultLookup
 	 */
-	public function __construct( HtmlFormRenderer $htmlFormRenderer, PageRequestOptions $pageRequestOptions, QueryResultLookup $queryResultLookup ) {
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->pageRequestOptions = $pageRequestOptions;
-		$this->queryResultLookup = $queryResultLookup;
+	public function __construct(
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly PageRequestOptions $pageRequestOptions,
+		private readonly QueryResultLookup $queryResultLookup,
+	) {
 		$this->linker = smwfGetLinker();
 	}
 
@@ -301,7 +284,7 @@ class PageBuilder {
 			// or if the current results are to be highlighted:
 			if ( array_key_exists( 1, $result ) &&
 				( $result[1] instanceof DataValue ) &&
-				( !$result[1]->getDataItem() instanceof \SMWDIError ) &&
+				( !$result[1]->getDataItem() instanceof SMWDIError ) &&
 				( !$this->pageRequestOptions->value->getDataItem()->equals( $result[1]->getDataItem() )
 					|| $highlight ) ) {
 

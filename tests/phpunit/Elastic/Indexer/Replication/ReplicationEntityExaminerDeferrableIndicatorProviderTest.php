@@ -2,8 +2,15 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\EntityCache;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
+class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase {
 
 	private TestEnvironment $testEnvironment;
 	private $store;
@@ -28,11 +35,11 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Elastic\ElasticStore' )
+		$this->store = $this->getMockBuilder( ElasticStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -40,11 +47,11 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\
 			->method( 'getConnection' )
 			->willReturn( $this->connection );
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->replicationCheck = $this->getMockBuilder( '\SMW\Elastic\Indexer\Replication\ReplicationCheck' )
+		$this->replicationCheck = $this->getMockBuilder( ReplicationCheck::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -61,12 +68,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider',
+			DeferrableIndicatorProvider::class,
 			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider',
+			TypableSeverityIndicatorProvider::class,
 			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
 		);
 	}
@@ -200,7 +207,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\
 		$this->entityCache->expects( $this->any() )
 			->method( 'fetch' )
 			->with(	$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) )
-			->willReturn( \SMW\Elastic\Indexer\Replication\ReplicationCheck::TYPE_SUCCESS );
+			->willReturn( ReplicationCheck::TYPE_SUCCESS );
 
 		$subject = DIWikiPage::newFromText( 'Foo' );
 
@@ -299,7 +306,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getSeverityType' )
-			->willReturn( \SMW\Elastic\Indexer\Replication\ReplicationCheck::SEVERITY_TYPE_ERROR );
+			->willReturn( ReplicationCheck::SEVERITY_TYPE_ERROR );
 
 		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
@@ -319,7 +326,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\
 		$indicators = $instance->getIndicators();
 
 		$this->assertTrue(
-			$instance->isSeverityType( \SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider::SEVERITY_ERROR )
+			$instance->isSeverityType( TypableSeverityIndicatorProvider::SEVERITY_ERROR )
 		);
 
 		$this->assertArrayHasKey(

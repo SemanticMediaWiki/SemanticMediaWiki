@@ -9,6 +9,7 @@ use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
+use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Store;
 use SMWDIBoolean as DIBoolean;
 
@@ -425,7 +426,7 @@ class SpecificationLookup {
 		// @TODO move in the constructor ?
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );
-		} catch ( \SMW\Services\Exception\ServiceNotFoundException $e ) {
+		} catch ( ServiceNotFoundException $e ) {
 			return '';
 		}
 

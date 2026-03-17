@@ -13,17 +13,17 @@ use MediaWiki\Html\Html;
 class HtmlTabs {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $tabs = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $contents = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $hidden = [];
 
@@ -61,8 +61,8 @@ class HtmlTabs {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
-		$this->isRTL = (bool)$isRTL;
+	public function isRTL( bool $isRTL ) {
+		$this->isRTL = $isRTL;
 	}
 
 	/**
@@ -70,7 +70,7 @@ class HtmlTabs {
 	 *
 	 * @param string $activeTab
 	 */
-	public function setActiveTab( $activeTab ) {
+	public function setActiveTab( string $activeTab ) {
 		$this->activeTab = $activeTab;
 	}
 
@@ -83,7 +83,7 @@ class HtmlTabs {
 	 *
 	 * @param bool $isSubTab
 	 */
-	public function isSubTab( $isSubTab = true ) {
+	public function isSubTab( bool $isSubTab = true ) {
 		$this->isSubTab = $isSubTab;
 	}
 
@@ -92,7 +92,7 @@ class HtmlTabs {
 	 *
 	 * @param string $group
 	 */
-	public function setGroup( $group ) {
+	public function setGroup( string $group ) {
 		$this->group = $group;
 	}
 
@@ -142,9 +142,9 @@ class HtmlTabs {
 	 * @param string $html
 	 * @param array $params
 	 *
-	 * @return string
+	 * @return void
 	 */
-	public function html( $html, array $params = [] ) {
+	public function html( string $html, array $params = [] ) {
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
 			return;
 		}
@@ -158,12 +158,11 @@ class HtmlTabs {
 	 * @param string $id
 	 * @param string $name
 	 * @param array $params
-	 *
-	 * @return string
 	 */
-	public function tab( $id, $name = '', array $params = [] ) {
+	public function tab( string $id, string $name = '', array $params = [] ) {
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
-			return $this->hidden[$id] = true;
+			$this->hidden[$id] = true;
+			return;
 		}
 
 		$isChecked = false;
@@ -201,7 +200,7 @@ class HtmlTabs {
 	 * @param string $id
 	 * @param string $content
 	 */
-	public function content( $id, $content ) {
+	public function content( string $id, string $content ) {
 		// Tab hidden?
 		if ( isset( $this->hidden[$id] ) ) {
 			return;
@@ -218,7 +217,11 @@ class HtmlTabs {
 		);
 	}
 
-	private function mergeAttributes( $class, $attr ) {
+	/**
+	 * @param string $class
+	 * @param array $attr
+	 */
+	private function mergeAttributes( string $class, array $attr ) {
 		$attributes = [];
 
 		// A bit of attribute order
@@ -232,7 +235,8 @@ class HtmlTabs {
 			$attributes['class'] = $class;
 		}
 
-		return $attributes += $attr;
+		$attributes += $attr;
+		return $attributes;
 	}
 
 }

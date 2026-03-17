@@ -3,9 +3,7 @@
 namespace SMW\Tests\Utils\Runners;
 
 use MediaWiki\MediaWikiServices;
-use SMW\Connection\ConnectionProvider;
 use SMW\Tests\TestEnvironment;
-use SMW\Tests\Utils\Connection\TestDatabaseConnectionProvider;
 
 /**
  * Partially copied from the MW 1.19 RunJobs maintenance script
@@ -20,7 +18,6 @@ class JobQueueRunner {
 
 	protected $type = null;
 	protected $status = [];
-	protected $connectionProvider = null;
 	private $lbFactory;
 
 	/**
@@ -32,17 +29,10 @@ class JobQueueRunner {
 	 * @since 1.9.2
 	 *
 	 * @param string|null $type
-	 * @param ConnectionProvider|null $connectionProvider
 	 */
-	public function __construct( $type = null, ?ConnectionProvider $connectionProvider = null ) {
+	public function __construct( $type = null ) {
 		$this->type = $type;
-		$this->connectionProvider = $connectionProvider;
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
-
-		if ( $this->connectionProvider === null ) {
-			$this->connectionProvider = new TestDatabaseConnectionProvider();
-		}
-
 		$this->testEnvironment = new TestEnvironment();
 	}
 
@@ -58,16 +48,8 @@ class JobQueueRunner {
 		return $this;
 	}
 
-	/**
-	 * @since 2.1
-	 *
-	 * @param IConnectionProvider $connectionProvider
-	 *
-	 * @return JobQueueRunner
-	 */
-	public function setConnectionProvider( ConnectionProvider $connectionProvider ) {
-		$this->connectionProvider = $connectionProvider;
-		return $this;
+	private function getConnection() {
+		return MediaWikiServices::getInstance()->getConnectionProvider()->getPrimaryDatabase();
 	}
 
 	/**
@@ -75,7 +57,7 @@ class JobQueueRunner {
 	 */
 	public function run() {
 		$conds = '';
-		$connection = $this->connectionProvider->getConnection();
+		$connection = $this->getConnection();
 
 		if ( $this->type !== null ) {
 			$conds = "job_cmd = " . $connection->addQuotes( $this->type );
@@ -105,7 +87,7 @@ class JobQueueRunner {
 	 */
 	public function deleteAllJobs() {
 		$conditions = '*';
-		$connection = $this->connectionProvider->getConnection();
+		$connection = $this->getConnection();
 
 		if ( $this->type !== null ) {
 			$conditions = "job_cmd = " . $connection->addQuotes( $this->type );
@@ -131,7 +113,6 @@ class JobQueueRunner {
 	 * @see https://gerrit.wikimedia.org/r/#/c/162009/
 	 */
 	private function pop() {
-		$offset = 0;
 		return MediaWikiServices::getInstance()->getJobQueueGroup()->pop();
 	}
 

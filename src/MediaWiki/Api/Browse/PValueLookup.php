@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Api\Browse;
 use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\Store;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,17 +18,9 @@ class PValueLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -132,7 +125,7 @@ class PValueLookup extends Lookup {
 	}
 
 	private function is_iterable( $obj ) {
-		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
+		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
 }

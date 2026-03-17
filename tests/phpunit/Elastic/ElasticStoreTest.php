@@ -2,10 +2,22 @@
 
 namespace SMW\Tests\Elastic;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\DIWikiPage;
 use SMW\Elastic\Config;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\ElasticFactory;
 use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Document;
+use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\Elastic\Indexer\Indexer;
+use SMW\Elastic\Installer;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Options;
+use SMW\SemanticData;
+use SMW\SetupFile;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +29,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
+class ElasticStoreTest extends TestCase {
 
 	private $testEnvironment;
 	private $elasticFactory;
@@ -28,11 +40,11 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->elasticFactory = $this->getMockBuilder( '\SMW\Elastic\ElasticFactory' )
+		$this->elasticFactory = $this->getMockBuilder( ElasticFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,18 +70,18 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 
 	public function testSetup() {
 		$row = new \stdClass;
-		$row->smw_id = \SMW\SQLStore\SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
+		$row->smw_id = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
 		$row->smw_proptable_hash = 'foo';
 		$row->smw_hash = 42;
 		$row->smw_rev = null;
 		$row->smw_touched = null;
 		$row->count = 0;
 
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -96,7 +108,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $row );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +128,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturnCallback( $callback );
 
-		$installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
+		$installer = $this->getMockBuilder( Installer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,11 +164,11 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDrop() {
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +184,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'listTables' )
 			->willReturn( [] );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -192,7 +204,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturnCallback( $callback );
 
-		$installer = $this->getMockBuilder( '\SMW\Elastic\Installer' )
+		$installer = $this->getMockBuilder( Installer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -245,7 +257,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSubject', 'getPropertyValues', 'getProperties', 'getSubSemanticData' ] )
 			->getMock();
@@ -268,7 +280,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 
 		$semanticData->setOption( 'is_fileupload', true );
 
-		$client = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$client = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -276,7 +288,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConfig' )
 			->willReturn( $config );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -288,7 +300,7 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [] );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -304,15 +316,15 @@ class ElasticStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturnCallback( $callback );
 
-		$indexer = $this->getMockBuilder( '\SMW\Elastic\Indexer\Indexer' )
+		$indexer = $this->getMockBuilder( Indexer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$document = $this->getMockBuilder( '\SMW\Elastic\Indexer\Document' )
+		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$documentCreator = $this->getMockBuilder( '\SMW\Elastic\Indexer\DocumentCreator' )
+		$documentCreator = $this->getMockBuilder( DocumentCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 

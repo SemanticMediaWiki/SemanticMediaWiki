@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\NamespaceInfo;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
 
 /**
@@ -13,12 +15,12 @@ use SMW\MediaWiki\Hooks\ResourceLoaderGetConfigVars;
  *
  * @author mwjames
  */
-class ResourceLoaderGetConfigVarsTest extends \PHPUnit\Framework\TestCase {
+class ResourceLoaderGetConfigVarsTest extends TestCase {
 
 	private $namespaceInfo;
 
 	protected function setUp(): void {
-		$this->namespaceInfo = $this->getMockBuilder( '\MediaWiki\Title\NamespaceInfo' )
+		$this->namespaceInfo = $this->getMockBuilder( NamespaceInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

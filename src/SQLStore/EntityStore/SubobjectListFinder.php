@@ -18,16 +18,6 @@ use SMW\SQLStore\SQLStore;
 class SubobjectListFinder {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @var DIWikiPage
 	 */
 	private $subject;
@@ -44,13 +34,11 @@ class SubobjectListFinder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( SQLStore $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 	}
 
 	/**

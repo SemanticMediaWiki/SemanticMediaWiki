@@ -2,7 +2,9 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataTypeRegistry;
+use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMWDataItem as DataItem;
 
 /**
@@ -14,7 +16,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
+class DataTypeRegistryTest extends TestCase {
 
 	private $dataTypeRegistry;
 
@@ -32,7 +34,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testGetInstance() {
 		$this->assertInstanceOf(
-			'\SMW\DataTypeRegistry',
+			DataTypeRegistry::class,
 			$this->dataTypeRegistry
 		);
 
@@ -85,10 +87,10 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->dataTypeRegistry
-			->registerDataType( '_foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
+			->registerDataType( '_foo', FooValue::class, DataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEquals(
-			'\SMW\Tests\FooValue',
+			FooValue::class,
 			$this->dataTypeRegistry->getDataTypeClassById( '_foo' ),
 			'Asserts that getDataTypeClassById() returns the registered class'
 		);
@@ -115,7 +117,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRegisterDatatypeIdAndAlias() {
 		$this->dataTypeRegistry
-			->registerDataType( '_foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue' );
+			->registerDataType( '_foo', FooValue::class, DataItem::TYPE_NOTYPE, 'FooValue' );
 
 		$this->assertEmpty(
 			$this->dataTypeRegistry->findTypeByLabel( 'FooBar' )
@@ -155,7 +157,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTypeIdAndLabelAsLanguageIndependantInvocation() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -189,7 +191,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testKnownAliasAsLanguageIndependantInvocation() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -248,7 +250,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testFindTypeByLabelAndLanguageFromRegisteredTypeWithoutLanguageMatch() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -288,7 +290,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider recordTypeProvider
 	 */
 	public function testIsRecordType( $typeId, $expected ) {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -315,7 +317,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSubDataType() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -343,7 +345,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBrowsableType() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -376,7 +378,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetFieldType() {
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -407,7 +409,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	protected function assertRegistryFindsIdForLabels( $inputLabel, array $equivalentLabels ) {
 		$id = '_wpg';
 
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -435,7 +437,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 	protected function assertRegistryFindsIdForAliases( $inputLabel, array $equivalentLabels ) {
 		$id = '_wpg';
 
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -465,7 +467,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 			return 'foo';
 		};
 
-		$localLanguage = $this->getMockBuilder( '\SMW\Localizer\LocalLanguage\LocalLanguage' )
+		$localLanguage = $this->getMockBuilder( LocalLanguage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -486,7 +488,7 @@ class DataTypeRegistryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$instance->registerDataType(
-			'__foo', '\SMW\Tests\FooValue', DataItem::TYPE_NOTYPE, 'FooValue'
+			'__foo', FooValue::class, DataItem::TYPE_NOTYPE, 'FooValue'
 		);
 
 		$instance->registerCallable(

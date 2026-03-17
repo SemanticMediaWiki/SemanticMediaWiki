@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use Exception;
 use RuntimeException;
 use SMW\DIProperty;
 use SMW\MediaWiki\Connection\Database;
@@ -17,22 +18,14 @@ use SMW\MediaWiki\Connection\Database;
 class PropertyTypeFinder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var string
 	 */
 	private $typeTableName = '';
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly Database $connection ) {
 	}
 
 	/**
@@ -91,7 +84,7 @@ class PropertyTypeFinder {
 				],
 				__METHOD__
 			);
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$row = false;
 		}
 

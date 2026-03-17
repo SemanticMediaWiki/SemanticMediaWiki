@@ -26,22 +26,14 @@ class TreeBuilder {
 	const TYPE_CATEGORY = 'type/category';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $nodes;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -207,13 +199,12 @@ class TreeBuilder {
 	public function newNode( $id, $content = '' ) {
 		return new class ( $id, $content ) {
 
-			public $id;
-			public $content = '';
 			public $children = [];
 
-			public function __construct( $id, $content ) {
-				$this->id = $id;
-				$this->content = $content;
+			public function __construct(
+				public $id,
+				public $content,
+			) {
 			}
 
 			public function hasNode( $id ) {

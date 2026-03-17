@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 
 /**
@@ -13,10 +15,10 @@ use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
  *
  * @author mwjames
  */
-class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
+class ParametersProcessorTest extends TestCase {
 
 	public function testEmpty() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -27,7 +29,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParameters() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -45,7 +47,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParameters_Printrequest_PlusPipe() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +65,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParameters_Printrequest_WikiLink() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +83,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParameters_Printrequest_WikiLink_PlusPipe() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +101,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParametersWithDefaults() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +127,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParameters_Sort_FirstEmpty() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -160,7 +162,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParameters_Sort_FirstNotEmpty() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -195,7 +197,7 @@ class ParametersProcessorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testParametersOn_p_Array_Request() {
-		$request = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$request = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -3,6 +3,7 @@
 namespace SMW\Tests\Serializers;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Serializers\SemanticDataSerializer;
@@ -18,14 +19,14 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class SemanticDataSerializerTest extends \PHPUnit\Framework\TestCase {
+class SemanticDataSerializerTest extends TestCase {
 
 	private $dataValueFactory;
 	private $semanticDataFactory;
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(
-			'\SMW\Serializers\SemanticDataSerializer',
+			SemanticDataSerializer::class,
 			new SemanticDataSerializer()
 		);
 	}

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\AdminLinks;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\Hooks\AdminLinks;
  *
  * @author mwjames
  */
-class AdminLinksTest extends \PHPUnit\Framework\TestCase {
+class AdminLinksTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

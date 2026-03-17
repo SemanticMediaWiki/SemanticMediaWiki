@@ -2,10 +2,15 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\DescriptionFactory;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SQLStore\QueryEngineFactory;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -17,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ClassDescriptionInterpreterTest extends TestCase {
 
 	private $querySegmentValidator;
 	private $store;
@@ -25,7 +30,7 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -34,12 +39,12 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter',
+			ClassDescriptionInterpreter::class,
 			new ClassDescriptionInterpreter( $this->store, $conditionBuilder )
 		);
 	}
@@ -56,11 +61,11 @@ class ClassDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPageID' )
 			->willReturn( $pageId );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

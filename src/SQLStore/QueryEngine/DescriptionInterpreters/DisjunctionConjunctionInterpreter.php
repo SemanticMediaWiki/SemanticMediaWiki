@@ -19,20 +19,10 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  */
 class DisjunctionConjunctionInterpreter implements DescriptionInterpreter {
 
-	// DisjunctionConjunctionInterpreter -> CompoundInterpreter
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
 	/**
 	 * @since 2.2
-	 *
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ConditionBuilder $conditionBuilder ) {
 	}
 
 	/**

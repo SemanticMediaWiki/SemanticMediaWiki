@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
+use SMW\SPARQLStore\Exception\XmlParserException;
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 
@@ -16,11 +19,11 @@ use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
  *
  * @author mwjames
  */
-class XmlResponseParserTest extends \PHPUnit\Framework\TestCase {
+class XmlResponseParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\XmlResponseParser',
+			XmlResponseParser::class,
 			new XmlResponseParser()
 		);
 	}
@@ -33,7 +36,7 @@ class XmlResponseParserTest extends \PHPUnit\Framework\TestCase {
 		$resultFormat = $instance->parse( $rawXmlResult );
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\RepositoryResult',
+			RepositoryResult::class,
 			$resultFormat
 		);
 
@@ -48,7 +51,7 @@ class XmlResponseParserTest extends \PHPUnit\Framework\TestCase {
 
 		$instance = new XmlResponseParser();
 
-		$this->expectException( '\SMW\SPARQLStore\Exception\XmlParserException' );
+		$this->expectException( XmlParserException::class );
 		$instance->parse( $rawResultProvider->getInvalidSparqlResultXml() );
 	}
 

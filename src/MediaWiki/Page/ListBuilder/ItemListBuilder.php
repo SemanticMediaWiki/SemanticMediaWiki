@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Page\ListBuilder;
 
+use Iterator;
 use MediaWiki\Html\Html;
 use MediaWiki\Skin\SkinComponentUtils;
 use SMW\DIProperty;
@@ -18,11 +19,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class ItemListBuilder {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
 
 	/**
 	 * @var string
@@ -61,11 +57,8 @@ class ItemListBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -148,7 +141,7 @@ class ItemListBuilder {
 		);
 
 		// May return an iterator
-		if ( $subjectList instanceof \Iterator ) {
+		if ( $subjectList instanceof Iterator ) {
 			$subjectList = iterator_to_array( $subjectList );
 		}
 

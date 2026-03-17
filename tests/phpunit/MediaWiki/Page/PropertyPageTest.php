@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Page;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\PropertyPage;
+use SMW\Property\DeclarationExaminerFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\MediaWiki\Page\PropertyPage
@@ -14,7 +17,7 @@ use SMW\MediaWiki\Page\PropertyPage;
  *
  * @author mwjames
  */
-class PropertyPageTest extends \PHPUnit\Framework\TestCase {
+class PropertyPageTest extends TestCase {
 
 	private $title;
 	private $store;
@@ -23,11 +26,11 @@ class PropertyPageTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->declarationExaminerFactory = $this->getMockBuilder( '\SMW\Property\DeclarationExaminerFactory' )
+		$this->declarationExaminerFactory = $this->getMockBuilder( DeclarationExaminerFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Query\ScoreSet;
 
@@ -14,7 +15,7 @@ use SMW\Query\ScoreSet;
  *
  * @author mwjames
  */
-class ScoreSetTest extends \PHPUnit\Framework\TestCase {
+class ScoreSetTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

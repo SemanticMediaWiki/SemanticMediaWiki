@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Api;
 
+use Exception;
 use SMW\DIProperty;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
@@ -16,16 +17,6 @@ use SMW\StringCondition;
  * @author mwjames
  */
 class PropertyListByApiRequest {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
 
 	/**
 	 * @var RequestOptions
@@ -69,13 +60,11 @@ class PropertyListByApiRequest {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**
@@ -206,7 +195,7 @@ class PropertyListByApiRequest {
 		// make the request a success
 		try {
 			$property = DIProperty::newFromUserLabel( $property )->getLabel();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$property = '';
 		}
 

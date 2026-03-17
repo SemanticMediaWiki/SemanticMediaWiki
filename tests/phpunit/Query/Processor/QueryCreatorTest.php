@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Query\Processor;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\QueryCreator;
+use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -14,10 +16,10 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class QueryCreatorTest extends \PHPUnit\Framework\TestCase {
+class QueryCreatorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$queryFactory = $this->getMockBuilder( '\SMW\QueryFactory' )
+		$queryFactory = $this->getMockBuilder( QueryFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

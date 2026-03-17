@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\ResultFormat;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Query\ResultFormat;
  *
  * @author mwjames
  */
-class ResultFormatTest extends \PHPUnit\Framework\TestCase {
+class ResultFormatTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

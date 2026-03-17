@@ -8,6 +8,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\DependencyContainer;
 use SMW\DIWikiPage;
@@ -34,7 +35,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  *
  * @author mwjames
  */
-abstract class SemanticMediaWikiTestCase extends \PHPUnit\Framework\TestCase {
+abstract class SemanticMediaWikiTestCase extends TestCase {
 
 	/**
 	 * Returns the name of the deriving class being tested

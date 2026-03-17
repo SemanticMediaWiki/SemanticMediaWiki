@@ -3,7 +3,20 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
+use SMW\ChangePropagationClassUpdateJob;
+use SMW\ChangePropagationDispatchJob;
+use SMW\ChangePropagationUpdateJob;
+use SMW\EntityIdDisposerJob;
+use SMW\FulltextSearchTableRebuildJob;
+use SMW\FulltextSearchTableUpdateJob;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use SMW\PropertyStatisticsRebuildJob;
+use SMW\RefreshJob;
+use SMW\UpdateDispatcherJob;
+use SMW\UpdateJob;
 
 /**
  * @covers \SMW\MediaWiki\JobFactory
@@ -14,7 +27,7 @@ use SMW\MediaWiki\JobFactory;
  *
  * @author mwjames
  */
-class JobFactoryTest extends \PHPUnit\Framework\TestCase {
+class JobFactoryTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -42,7 +55,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new JobFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Jobs\NullJob',
+			NullJob::class,
 			$instance->newByType( $type, null )
 		);
 	}
@@ -56,7 +69,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function typeProvider() {
 		$provider[] = [
-			'SMW\RefreshJob',
+			RefreshJob::class,
 			'\SMW\MediaWiki\Jobs\RefreshJob'
 		];
 
@@ -66,7 +79,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\UpdateJob',
+			UpdateJob::class,
 			'\SMW\MediaWiki\Jobs\UpdateJob'
 		];
 
@@ -76,7 +89,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\UpdateDispatcherJob',
+			UpdateDispatcherJob::class,
 			'\SMW\MediaWiki\Jobs\UpdateDispatcherJob'
 		];
 
@@ -86,7 +99,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\FulltextSearchTableUpdateJob',
+			FulltextSearchTableUpdateJob::class,
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob'
 		];
 
@@ -96,7 +109,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\EntityIdDisposerJob',
+			EntityIdDisposerJob::class,
 			'\SMW\MediaWiki\Jobs\EntityIdDisposerJob'
 		];
 
@@ -106,7 +119,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\PropertyStatisticsRebuildJob',
+			PropertyStatisticsRebuildJob::class,
 			'\SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob'
 		];
 
@@ -116,7 +129,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\FulltextSearchTableRebuildJob',
+			FulltextSearchTableRebuildJob::class,
 			'\SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob'
 		];
 
@@ -126,7 +139,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\ChangePropagationDispatchJob',
+			ChangePropagationDispatchJob::class,
 			'\SMW\MediaWiki\Jobs\ChangePropagationDispatchJob'
 		];
 
@@ -136,7 +149,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\ChangePropagationUpdateJob',
+			ChangePropagationUpdateJob::class,
 			'\SMW\MediaWiki\Jobs\ChangePropagationUpdateJob'
 		];
 
@@ -146,7 +159,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		$provider[] = [
-			'SMW\ChangePropagationClassUpdateJob',
+			ChangePropagationClassUpdateJob::class,
 			'\SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob'
 		];
 
@@ -157,7 +170,7 @@ class JobFactoryTest extends \PHPUnit\Framework\TestCase {
 
 		$provider[] = [
 			'smw.parserCachePurge',
-			'\SMW\MediaWiki\Jobs\ParserCachePurgeJob'
+			ParserCachePurgeJob::class
 		];
 
 		return $provider;

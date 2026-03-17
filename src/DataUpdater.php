@@ -311,7 +311,8 @@ class DataUpdater {
 		}
 
 		if ( !$this->processSemantics ) {
-			return $this->semanticData = new SemanticData( $this->getSubject() );
+			$this->semanticData = new SemanticData( $this->getSubject() );
+			return $this->semanticData;
 		}
 
 		$pageInfoProvider = $applicationFactory->newMwCollaboratorFactory()->newPageInfoProvider(

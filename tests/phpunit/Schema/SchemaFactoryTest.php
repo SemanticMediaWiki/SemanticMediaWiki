@@ -2,7 +2,15 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\Schema\Exception\SchemaTypeNotFoundException;
+use SMW\Schema\SchemaDefinition;
 use SMW\Schema\SchemaFactory;
+use SMW\Schema\SchemaFilterFactory;
+use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaValidator;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
+class SchemaFactoryTest extends TestCase {
 
 	private $testEnvironment;
 	private $jobQueue;
@@ -28,7 +36,7 @@ class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,25 +62,25 @@ class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\SchemaValidator',
+			SchemaValidator::class,
 			$instance->newSchemaValidator()
 		);
 	}
 
 	public function testCanConstructSchemaFinder() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\SchemaFinder',
+			SchemaFinder::class,
 			$instance->newSchemaFinder( $store )
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Schema\SchemaFinder',
+			SchemaFinder::class,
 			$instance->newSchemaFinder()
 		);
 	}
@@ -81,7 +89,7 @@ class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SchemaFactory();
 
 		$this->assertInstanceof(
-			'\SMW\Schema\SchemaFilterFactory',
+			SchemaFilterFactory::class,
 			$instance->newSchemaFilterFactory()
 		);
 	}
@@ -94,7 +102,7 @@ class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Schema\SchemaDefinition',
+			SchemaDefinition::class,
 			$instance->newSchema( 'foo_bar', [ 'type' => 'foo' ] )
 		);
 	}
@@ -102,7 +110,7 @@ class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 	public function testNewSchemaDefinitionOnUnknownTypeThrowsException() {
 		$instance = new SchemaFactory();
 
-		$this->expectException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
+		$this->expectException( SchemaTypeNotFoundException::class );
 		$instance->newSchema( 'foo_bar', [ 'type' => 'foo' ] );
 	}
 
@@ -113,7 +121,7 @@ class SchemaFactoryTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->expectException( '\SMW\Schema\Exception\SchemaTypeNotFoundException' );
+		$this->expectException( SchemaTypeNotFoundException::class );
 		$instance->newSchema( 'foo_bar', [] );
 	}
 

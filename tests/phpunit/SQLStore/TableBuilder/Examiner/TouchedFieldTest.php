@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\TouchedField;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
+class TouchedFieldTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $store;
@@ -23,7 +26,7 @@ class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -40,7 +43,7 @@ class TouchedFieldTest extends \PHPUnit\Framework\TestCase {
 			'count' => 42
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

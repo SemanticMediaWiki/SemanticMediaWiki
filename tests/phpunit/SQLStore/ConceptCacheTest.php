@@ -3,7 +3,11 @@
 namespace SMW\Tests\SQLStore;
 
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\ConceptCache;
+use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -15,7 +19,7 @@ use SMW\SQLStore\SQLStore;
  *
  * @author mwjames
  */
-class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
+class ConceptCacheTest extends TestCase {
 
 	private $store;
 	private $conceptQuerySegmentBuilder;
@@ -23,7 +27,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->conceptQuerySegmentBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder' )
+		$this->conceptQuerySegmentBuilder = $this->getMockBuilder( ConceptQuerySegmentBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,7 +38,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\ConceptCache',
+			ConceptCache::class,
 			new ConceptCache( $this->store, $this->conceptQuerySegmentBuilder )
 		);
 	}
@@ -55,7 +59,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteConceptCache() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +70,7 @@ class ConceptCacheTest extends \PHPUnit\Framework\TestCase {
 		$connection->expects( $this->once() )
 			->method( 'delete' );
 
-		$connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 

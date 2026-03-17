@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\SettingsAlreadyLoadedException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\SettingsAlreadyLoadedException;
  *
  * @author mwjames
  */
-class SettingsAlreadyLoadedExceptionTest extends \PHPUnit\Framework\TestCase {
+class SettingsAlreadyLoadedExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SettingsAlreadyLoadedException();

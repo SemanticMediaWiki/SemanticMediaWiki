@@ -181,12 +181,14 @@ class ConceptCacheRebuilder {
 		$concept = $this->store->getConceptCacheStatus( $title );
 
 		if ( $this->skipConcept( $title, $concept ) ) {
-			return $this->lines += $this->verbose ? 1 : 0;
+			$this->lines += $this->verbose ? 1 : 0;
+			return $this->lines;
 		}
 
 		$this->performAction( $title, $concept );
 
-		return $this->lines += 1;
+		$this->lines += 1;
+		return $this->lines;
 	}
 
 	private function skipConcept( $title, $concept = null ) {

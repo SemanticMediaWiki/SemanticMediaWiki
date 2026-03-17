@@ -30,31 +30,6 @@ class ChangeDiff {
 	private $time;
 
 	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
-	 * @var array
-	 */
-	private $tableChangeOps = [];
-
-	/**
-	 * @var array
-	 */
-	private $dataOps = [];
-
-	/**
-	 * @var array
-	 */
-	private $propertyList = [];
-
-	/**
-	 * @var array
-	 */
-	private $textItems = [];
-
-	/**
 	 * @var array
 	 */
 	private $changeList = [];
@@ -66,20 +41,15 @@ class ChangeDiff {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DIWikiPage $subject
-	 * @param array $tableChangeOps
-	 * @param array $dataOps
-	 * @param array $propertyList
-	 * @param array $textItems
 	 */
-	public function __construct( DIWikiPage $subject, array $tableChangeOps, array $dataOps, array $propertyList, array $textItems = [] ) {
+	public function __construct(
+		private readonly DIWikiPage $subject,
+		private readonly array $tableChangeOps,
+		private readonly array $dataOps,
+		private readonly array $propertyList,
+		private readonly array $textItems = [],
+	) {
 		$this->time = time();
-		$this->subject = $subject;
-		$this->tableChangeOps = $tableChangeOps;
-		$this->dataOps = $dataOps;
-		$this->propertyList = $propertyList;
-		$this->textItems = $textItems;
 	}
 
 	/**

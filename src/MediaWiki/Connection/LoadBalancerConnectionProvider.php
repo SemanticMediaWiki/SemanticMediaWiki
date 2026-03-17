@@ -25,36 +25,18 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $connection;
 
 	/**
-	 * @var int
-	 */
-	private $id;
-
-	/**
-	 * @var string|array
-	 */
-	private $groups;
-
-	/**
-	 * @var string|bool
-	 */
-	private $wiki;
-
-	/**
 	 * @var ILoadBalancer
 	 */
 	private $loadBalancer;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param int $id
-	 * @param string|array $groups
-	 * @param string|bool $wiki Wiki ID, or false for the current wiki
 	 */
-	public function __construct( $id, $groups = [], $wiki = false ) {
-		$this->id = $id;
-		$this->groups = $groups;
-		$this->wiki = $wiki;
+	public function __construct(
+		private $id,
+		private $groups = [],
+		private $wiki = false,
+	) {
 	}
 
 	/**
@@ -105,9 +87,16 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	/**
 	 * @see IConnectionProvider::releaseConnection
 	 *
+	 * Clear both the cached connection and load balancer so the next
+	 * getConnection() call acquires fresh references. This is necessary
+	 * for test isolation — without clearing the load balancer, the next
+	 * call would reuse a stale LB that may not have the test DB prefix.
+	 *
 	 * @since 1.9
 	 */
 	public function releaseConnection() {
+		$this->connection = null;
+		$this->loadBalancer = null;
 	}
 
 	/**
@@ -117,10 +106,12 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 		$servicesFactory = ServicesFactory::getInstance();
 
 		if ( $wiki === false ) {
-			return $this->loadBalancer = $servicesFactory->create( 'DBLoadBalancer' );
+			$this->loadBalancer = $servicesFactory->create( 'DBLoadBalancer' );
+			return $this->loadBalancer;
 		}
 
-		return $this->loadBalancer = $servicesFactory->create( 'DBLoadBalancerFactory' )->getMainLB( $wiki );
+		$this->loadBalancer = $servicesFactory->create( 'DBLoadBalancerFactory' )->getMainLB( $wiki );
+		return $this->loadBalancer;
 	}
 
 }

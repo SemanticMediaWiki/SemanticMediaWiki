@@ -6,6 +6,8 @@
 
 namespace SMW\Tests;
 
+use SMW\Query\Exception\ResultFormatNotFoundException;
+use SMW\Query\ResultPrinter;
 use SMWQueryProcessor;
 
 /**
@@ -35,7 +37,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	 */
 	public function testGetResultPrinter_MatchAlias( $alias ) {
 		$this->assertInstanceOf(
-			'\SMW\Query\ResultPrinter',
+			ResultPrinter::class,
 			SMWQueryProcessor::getResultPrinter( $alias )
 		);
 	}
@@ -49,7 +51,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	}
 
 	public function testGetResultPrinter_ThrowsException() {
-		$this->expectException( '\SMW\Query\Exception\ResultFormatNotFoundException' );
+		$this->expectException( ResultFormatNotFoundException::class );
 		SMWQueryProcessor::getResultPrinter( 'unknown_format' );
 	}
 

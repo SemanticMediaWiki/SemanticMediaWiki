@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\ResultPrinters;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\Query\ResultPrinters\FeedExportPrinter;
 
@@ -13,7 +14,7 @@ use SMW\Query\ResultPrinters\FeedExportPrinter;
  *
  * @author mwjames
  */
-class FeedExportPrinterTest extends \PHPUnit\Framework\TestCase {
+class FeedExportPrinterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -28,7 +29,7 @@ class FeedExportPrinterTest extends \PHPUnit\Framework\TestCase {
 	public function testFeedItemDescription( $setup, $expected, $message ) {
 		$instance = new FeedExportPrinter( 'feed' );
 
-		$reflector = new ReflectionClass( '\SMW\Query\ResultPrinters\FeedExportPrinter' );
+		$reflector = new ReflectionClass( FeedExportPrinter::class );
 		$method = $reflector->getMethod( 'feedItemDescription' );
 
 		$this->assertEquals(

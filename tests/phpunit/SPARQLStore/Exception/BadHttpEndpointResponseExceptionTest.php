@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 
 /**
@@ -13,11 +14,11 @@ use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
  *
  * @author mwjames
  */
-class BadHttpEndpointResponseExceptionTest extends \PHPUnit\Framework\TestCase {
+class BadHttpEndpointResponseExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\Exception\BadHttpEndpointResponseException',
+			BadHttpEndpointResponseException::class,
 			new BadHttpEndpointResponseException( 'Foo', 'Bar', 'Que' )
 		);
 	}

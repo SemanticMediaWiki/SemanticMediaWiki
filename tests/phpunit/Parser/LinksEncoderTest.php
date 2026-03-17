@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Parser;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksEncoder;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Parser\LinksEncoder;
  *
  * @author mwjames
  */
-class LinksEncoderTest extends \PHPUnit\Framework\TestCase {
+class LinksEncoderTest extends TestCase {
 
 	/**
 	 * @dataProvider obfuscateProvider
@@ -31,7 +33,7 @@ class LinksEncoderTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider obfuscateProvider
 	 */
 	public function testfindAndEncodeLinks( $text, $expected ) {
-		$inTextAnnotationParser = $this->getMockBuilder( 'SMW\Parser\InTextAnnotationParser' )
+		$inTextAnnotationParser = $this->getMockBuilder( InTextAnnotationParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 

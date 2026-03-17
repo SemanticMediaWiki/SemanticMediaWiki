@@ -46,13 +46,15 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 		// In case the filter was marked as elective allows sets to remain in
 		// the match pool.
 		if ( $namespaces === null && $this->getOption( self::FILTER_CONDITION_NOT_REQUIRED ) === true ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		// No restriction and no `namespace` filter was defined hence allow the
 		// rule to remain in the pool of matches.
 		if ( $namespaces === null && $this->namespace === null ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		$matchedCondition = $this->matchOneOf( (array)$namespaces );

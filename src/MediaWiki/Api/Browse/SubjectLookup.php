@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
+use Exception;
 use SMW\DIWikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
@@ -18,17 +19,9 @@ use SMW\Store;
 class SubjectLookup extends Lookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**
@@ -119,7 +112,7 @@ class SubjectLookup extends Lookup {
 
 		try {
 			$title = $deepRedirectTargetResolver->findRedirectTargetFor( $title );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			throw new RedirectTargetUnresolvableException( $e->getMessage() );
 		}
 

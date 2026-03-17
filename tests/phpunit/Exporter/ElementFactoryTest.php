@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\Exporter\Element;
 use SMW\Exporter\ElementFactory;
 
 /**
@@ -15,7 +17,7 @@ use SMW\Exporter\ElementFactory;
  *
  * @author mwjames
  */
-class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
+class ElementFactoryTest extends TestCase {
 
 	/**
 	 * @dataProvider supportedDataItemProvider
@@ -24,7 +26,7 @@ class ElementFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new ElementFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Exporter\Element',
+			Element::class,
 			$instance->newFromDataItem( $dataItem )
 		);
 	}

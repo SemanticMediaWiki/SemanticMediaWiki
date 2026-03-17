@@ -42,6 +42,7 @@ use SMW\Elastic\QueryEngine\TermsLookup\TermsLookup;
 use SMW\Options;
 use SMW\Services\ServicesContainer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
 /**
@@ -244,7 +245,7 @@ class ElasticFactory {
 		// recursively since the annotation for attachment information can only
 		// happen after the ES ingest processor has been run.
 		$fileAttachment = new FileAttachment(
-			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' ),
+			$applicationFactory->getStore( SQLStore::class ),
 			$indexer,
 			$this->newBulk( $connection )
 		);

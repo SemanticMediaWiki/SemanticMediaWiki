@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exporter\Controller;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\Controller\Queue;
 
@@ -14,7 +15,7 @@ use SMW\Exporter\Controller\Queue;
  *
  * @author mwjames
  */
-class QueueTest extends \PHPUnit\Framework\TestCase {
+class QueueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

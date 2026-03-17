@@ -3,6 +3,7 @@
 namespace SMW\Tests;
 
 use ParamProcessor\ParamDefinition;
+use PHPUnit\Framework\TestCase;
 use SMW\ParameterListDocBuilder;
 use SMW\Tests\Utils\UtilityFactory;
 use SMW\Tests\Utils\Validators\StringValidator;
@@ -14,7 +15,7 @@ use SMW\Tests\Utils\Validators\StringValidator;
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class ParameterListDocBuilderTest extends \PHPUnit\Framework\TestCase {
+class ParameterListDocBuilderTest extends TestCase {
 
 	/**
 	 * @var ParameterListDocBuilder

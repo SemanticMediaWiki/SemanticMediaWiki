@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Deferred;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\NullJob;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
+class ChangeTitleUpdateTest extends TestCase {
 
 	private $testEnvironment;
 	private $jobFactory;
@@ -23,7 +27,7 @@ class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'newUpdateJob' ] )
 			->getMock();
@@ -50,7 +54,7 @@ class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDoUpdate() {
-		$nullJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\NullJob' )
+		$nullJob = $this->getMockBuilder( NullJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,11 +62,11 @@ class ChangeTitleUpdateTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newUpdateJob' )
 			->willReturn( $nullJob );
 
-		$oldTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$oldTitle = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$newTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$newTitle = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

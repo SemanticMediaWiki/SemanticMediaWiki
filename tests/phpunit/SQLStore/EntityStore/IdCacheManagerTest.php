@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 
 /**
@@ -14,7 +17,7 @@ use SMW\SQLStore\EntityStore\IdCacheManager;
  *
  * @author mwjames
  */
-class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
+class IdCacheManagerTest extends TestCase {
 
 	private $caches;
 
@@ -64,7 +67,7 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertEquals(
 			42,
-			$instance->getId( new \SMW\DIWikiPage( 'foo', NS_MAIN ) )
+			$instance->getId( new DIWikiPage( 'foo', NS_MAIN ) )
 		);
 
 		$this->assertEquals(
@@ -134,7 +137,7 @@ class IdCacheManagerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testDeleteCacheById() {
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 

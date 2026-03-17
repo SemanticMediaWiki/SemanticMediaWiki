@@ -3,8 +3,13 @@
 namespace SMW\Services;
 
 use ImportSource;
-use Onoi\CallbackContainer\ContainerBuilder;
+use ImportStreamSource;
+use ImportStringSource;
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 use SMW\Importer\ContentIterator;
+use SMW\Importer\Importer;
+use SMW\Importer\JsonContentIterator;
+use WikiImporter;
 
 /**
  * @private
@@ -19,15 +24,15 @@ use SMW\Importer\ContentIterator;
 class ImporterServiceFactory {
 
 	/**
-	 * @var ContainerBuilder
+	 * @var CallbackContainerBuilder
 	 */
-	private $containerBuilder;
+	private $callbackContainerBuilder;
 
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( ContainerBuilder $containerBuilder ) {
-		$this->containerBuilder = $containerBuilder;
+	public function __construct( CallbackContainerBuilder $callbackContainerBuilder ) {
+		$this->callbackContainerBuilder = $callbackContainerBuilder;
 	}
 
 	/**
@@ -38,7 +43,7 @@ class ImporterServiceFactory {
 	 * @return ImportStringSource
 	 */
 	public function newImportStringSource( $source ) {
-		return $this->containerBuilder->create( 'ImportStringSource', $source );
+		return $this->callbackContainerBuilder->create( 'ImportStringSource', $source );
 	}
 
 	/**
@@ -49,7 +54,7 @@ class ImporterServiceFactory {
 	 * @return ImportStreamSource
 	 */
 	public function newImportStreamSource( $source ) {
-		return $this->containerBuilder->create( 'ImportStreamSource', $source );
+		return $this->callbackContainerBuilder->create( 'ImportStreamSource', $source );
 	}
 
 	/**
@@ -60,7 +65,7 @@ class ImporterServiceFactory {
 	 * @return WikiImporter
 	 */
 	public function newWikiImporter( ImportSource $importSource ) {
-		return $this->containerBuilder->create( 'WikiImporter', $importSource );
+		return $this->callbackContainerBuilder->create( 'WikiImporter', $importSource );
 	}
 
 	/**
@@ -71,7 +76,7 @@ class ImporterServiceFactory {
 	 * @return Importer
 	 */
 	public function newImporter( ContentIterator $contentIterator ) {
-		return $this->containerBuilder->create( 'Importer', $contentIterator );
+		return $this->callbackContainerBuilder->create( 'Importer', $contentIterator );
 	}
 
 	/**
@@ -80,7 +85,7 @@ class ImporterServiceFactory {
 	 * @return JsonContentIterator
 	 */
 	public function newJsonContentIterator( $importFileDir ) {
-		return $this->containerBuilder->create( 'JsonContentIterator', $importFileDir );
+		return $this->callbackContainerBuilder->create( 'JsonContentIterator', $importFileDir );
 	}
 
 }

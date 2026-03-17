@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use SMW\DependencyValidator;
+use SMW\EntityCache;
 use SMW\MediaWiki\Hooks\RejectParserCacheValue;
+use SMW\NamespaceExaminer;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
+class RejectParserCacheValueTest extends TestCase {
 
 	private $testEnvironment;
 	private $dependencyValidator;
@@ -28,19 +34,19 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->dependencyValidator = $this->getMockBuilder( '\SMW\DependencyValidator' )
+		$this->dependencyValidator = $this->getMockBuilder( DependencyValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -58,7 +64,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcesCanKeepParserCache() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -97,7 +103,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcesCanNOTKeepParserCache() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -136,7 +142,7 @@ class RejectParserCacheValueTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcessOnDisabledNamespace() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

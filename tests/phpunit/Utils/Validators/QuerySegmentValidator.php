@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Validators;
 
+use PHPUnit\Framework\Assert;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
 /**
@@ -10,7 +11,7 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class QuerySegmentValidator extends \PHPUnit\Framework\Assert {
+class QuerySegmentValidator extends Assert {
 
 	/**
 	 * @since 2.1
@@ -29,7 +30,7 @@ class QuerySegmentValidator extends \PHPUnit\Framework\Assert {
 
 		foreach ( $querySegment as $key => $container ) {
 			$this->assertInstanceOf(
-				'\SMW\SQLStore\QueryEngine\QuerySegment',
+				QuerySegment::class,
 				$container
 			);
 

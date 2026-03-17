@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\AskArgs;
+use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\Utils\MwApiFactory;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\Utils\MwApiFactory;
  *
  * @author mwjames
  */
-class AskArgsTest extends \PHPUnit\Framework\TestCase {
+class AskArgsTest extends TestCase {
 
 	private $apiFactory;
 	private $applicationFactory;
@@ -40,7 +43,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Api\AskArgs',
+			AskArgs::class,
 			$instance
 		);
 	}
@@ -88,7 +91,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -129,7 +132,7 @@ class AskArgsTest extends \PHPUnit\Framework\TestCase {
 			];
 		}
 
-		$queryResult = $this->getMockBuilder( '\SMW\Query\QueryResult' )
+		$queryResult = $this->getMockBuilder( QueryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 

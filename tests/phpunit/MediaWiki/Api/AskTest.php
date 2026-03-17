@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Ask;
 use SMW\Tests\Utils\MwApiFactory;
 
@@ -14,7 +15,7 @@ use SMW\Tests\Utils\MwApiFactory;
  *
  * @author mwjames
  */
-class AskTest extends \PHPUnit\Framework\TestCase {
+class AskTest extends TestCase {
 
 	private $apiFactory;
 
@@ -31,7 +32,7 @@ class AskTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Api\Ask',
+			Ask::class,
 			$instance
 		);
 	}

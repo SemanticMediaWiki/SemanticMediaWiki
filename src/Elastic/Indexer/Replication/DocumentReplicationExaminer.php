@@ -2,6 +2,8 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
+use Elasticsearch\Common\Exceptions\BadRequest400Exception;
+use Exception;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Store;
@@ -139,9 +141,9 @@ class DocumentReplicationExaminer {
 	private function runCheck( $method, $id ) {
 		try {
 			$replicationStatusResponse = $this->replicationStatus->get( $method, $id );
-		} catch ( \Elasticsearch\Common\Exceptions\BadRequest400Exception $e ) {
+		} catch ( BadRequest400Exception $e ) {
 			return $this->newReplicationError( ReplicationError::TYPE_EXCEPTION, [ 'exception_error' => 'BadRequest400Exception' ] );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			return $this->newReplicationError( ReplicationError::TYPE_EXCEPTION, [ 'exception_error' => $e->getMessage() ] );
 		}
 

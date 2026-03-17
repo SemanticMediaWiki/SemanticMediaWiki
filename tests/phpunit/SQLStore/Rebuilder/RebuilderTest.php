@@ -2,7 +2,16 @@
 
 namespace SMW\Tests\SQLStore\Rebuilder;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\TitleFactory;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class RebuilderTest extends \PHPUnit\Framework\TestCase {
+class RebuilderTest extends TestCase {
 
 	private $testEnvironment;
 	private $titleFactory;
@@ -36,15 +45,15 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$this->titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityValidator = $this->getMockBuilder( '\SMW\SQLStore\Rebuilder\EntityValidator' )
+		$this->entityValidator = $this->getMockBuilder( EntityValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyTableIdReferenceDisposer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceDisposer' )
+		$this->propertyTableIdReferenceDisposer = $this->getMockBuilder( PropertyTableIdReferenceDisposer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +68,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( 0 );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -81,7 +90,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +108,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newFromIDs' )
 			->willReturn( [] );
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,7 +120,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectField' )
 			->willReturn( $expected );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMock();
@@ -153,7 +162,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'hasLatestRevID' )
 			->willReturn( true );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,11 +188,11 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			'smw_rev' => 0
 		];
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -195,7 +204,7 @@ class RebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectField' )
 			->willReturn( 500 );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection', 'getObjectIds' ] )
 			->getMock();

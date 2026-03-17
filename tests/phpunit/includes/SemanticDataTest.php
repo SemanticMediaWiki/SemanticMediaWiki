@@ -4,12 +4,17 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\SemanticDataImportException;
+use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 use SMW\Subobject;
 use SMWDITime as DITime;
 
@@ -22,7 +27,7 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class SemanticDataTest extends \PHPUnit\Framework\TestCase {
+class SemanticDataTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $dataValueFactory;
@@ -34,7 +39,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->testEnvironment->addConfiguration( 'smwgCreateProtectionRight', false );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,12 +61,12 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$instance
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$instance
 		);
 	}
@@ -70,7 +75,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
-			'SMW\DIWikiPage',
+			DIWikiPage::class,
 			$instance->getSubject()
 		);
 
@@ -305,7 +310,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertNotInstanceOf(
-			'\SMW\DataModel\ContainerSemanticData',
+			ContainerSemanticData::class,
 			$instance->getSubSemanticData()
 		);
 
@@ -318,7 +323,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $instance->getSubSemanticData() as $subSemanticData ) {
 
 			$this->assertInstanceOf(
-				'\SMW\DataModel\ContainerSemanticData',
+				ContainerSemanticData::class,
 				$subSemanticData
 			);
 		}
@@ -341,7 +346,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		foreach ( $instance->getSubSemanticData() as $subSemanticData ) {
 
 			$this->assertInstanceOf(
-				'\SMW\DataModel\ContainerSemanticData',
+				ContainerSemanticData::class,
 				$subSemanticData
 			);
 
@@ -354,7 +359,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$instance->removeSubSemanticData( $subobject->getSemanticData() );
 
 		$this->assertNotInstanceOf(
-			'\SMW\DataModel\ContainerSemanticData',
+			ContainerSemanticData::class,
 			$instance->getSubSemanticData()
 		);
 	}
@@ -363,7 +368,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( SubSemanticDataException::class );
 
 		$instance->addSubSemanticData(
 			new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( 'addSubSemanticData' ) ) )
@@ -374,7 +379,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( SubSemanticDataException::class );
 		$instance->addSubobject( $this->newSubobject( $titleFactory->newFromText( 'addSubSemanticData' ) ) );
 	}
 
@@ -382,7 +387,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$instance = new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
 
-		$this->expectException( '\SMW\Exception\SemanticDataImportException' );
+		$this->expectException( SemanticDataImportException::class );
 
 		$instance->importDataFrom(
 			new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( 'importDataFrom' ) ) )
@@ -414,7 +419,7 @@ class SemanticDataTest extends \PHPUnit\Framework\TestCase {
 		$this->assertNotEmpty( $instance->findSubSemanticData( $subobjectName ) );
 
 		$this->assertInstanceOf(
-			'\SMW\DataModel\ContainerSemanticData',
+			ContainerSemanticData::class,
 			$instance->findSubSemanticData( $subobjectName )
 		);
 	}

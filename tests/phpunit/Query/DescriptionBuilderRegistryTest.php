@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\Query;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\DescriptionBuilderRegistry;
+use SMW\Query\DescriptionBuilders\DescriptionBuilder;
+use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
+use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
+use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
+use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
 
 /**
  * @covers \SMW\Query\DescriptionBuilderRegistry
@@ -13,7 +19,7 @@ use SMW\Query\DescriptionBuilderRegistry;
  *
  * @author mwjames
  */
-class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
+class DescriptionBuilderRegistryTest extends TestCase {
 
 	protected function tearDown(): void {
 		parent::tearDown();
@@ -34,7 +40,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionBuilderRegistry();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder',
+			SomeValueDescriptionBuilder::class,
 			$instance->getDescriptionBuilder( $dataValue )
 		);
 	}
@@ -47,7 +53,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionBuilderRegistry();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder',
+			TimeValueDescriptionBuilder::class,
 			$instance->getDescriptionBuilder( $dataValue )
 		);
 	}
@@ -60,7 +66,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionBuilderRegistry();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder',
+			NumberValueDescriptionBuilder::class,
 			$instance->getDescriptionBuilder( $dataValue )
 		);
 	}
@@ -73,13 +79,13 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DescriptionBuilderRegistry();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder',
+			RecordValueDescriptionBuilder::class,
 			$instance->getDescriptionBuilder( $dataValue )
 		);
 	}
 
 	public function testRegisterAdditionalDescriptionBuilder() {
-		$descriptionBuilder = $this->getMockBuilder( '\SMW\Query\DescriptionBuilders\DescriptionBuilder' )
+		$descriptionBuilder = $this->getMockBuilder( DescriptionBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isBuilderFor' ] )
 			->getMockForAbstractClass();
@@ -96,7 +102,7 @@ class DescriptionBuilderRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance->registerDescriptionBuilder( $descriptionBuilder );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\DescriptionBuilders\DescriptionBuilder',
+			DescriptionBuilder::class,
 			$instance->getDescriptionBuilder( $dataValue )
 		);
 	}

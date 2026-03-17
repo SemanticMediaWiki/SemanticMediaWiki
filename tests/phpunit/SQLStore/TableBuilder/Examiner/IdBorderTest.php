@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\SQLStore\TableBuilder\Examiner;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\Examiner\IdBorder;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class IdBorderTest extends \PHPUnit\Framework\TestCase {
+class IdBorderTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $store;
@@ -23,7 +26,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -40,7 +43,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			'smw_id' => 100
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,7 +80,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			(object)[ 'smw_id' => 9999 ]
 		];
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -130,7 +133,7 @@ class IdBorderTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'moveSMWPageID' ] )
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

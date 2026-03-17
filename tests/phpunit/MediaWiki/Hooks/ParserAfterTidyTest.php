@@ -3,8 +3,20 @@
 namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Revision\RevisionLookup;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Title\Title;
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Hooks\ParserAfterTidy;
+use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -17,7 +29,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
+class ParserAfterTidyTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $applicationFactory;
@@ -45,7 +57,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
 		$this->parserFactory = $this->testEnvironment->getUtilityFactory()->newParserFactory();
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -53,23 +65,23 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 
-		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$this->parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -117,7 +129,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_MAIN );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -143,7 +155,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 	private function newMockCache( $id, $containsStatus, $fetchStatus ) {
 		$key = $this->applicationFactory->newCacheFactory()->getPurgeCacheKey( $id );
 
-		$cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -175,7 +187,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( isset( $parameters['revision'] ) ? $parameters['revision'] : null );
 
 		$this->testEnvironment->redefineMediaWikiService( 'RevisionLookup', function () use ( $parameters ) {
-			$revisionLookup = $this->getMockBuilder( '\MediaWiki\Revision\RevisionLookup' )
+			$revisionLookup = $this->getMockBuilder( RevisionLookup::class )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -194,7 +206,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $parameters['title'] );
 
-		$pageCreator = $this->getMockBuilder( '\SMW\MediaWiki\PageCreator' )
+		$pageCreator = $this->getMockBuilder( PageCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -244,7 +256,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -346,7 +358,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 
 	public function titleDataProvider() {
 		# 0 Runs store update
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -379,7 +391,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1 No cache entry, no store update
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -408,7 +420,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 2 SpecialPage, no store update
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -437,7 +449,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 3 NS_FILE, store update
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -445,7 +457,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		$store->expects( $this->atLeastOnce() )
 			->method( 'updateData' );
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -475,7 +487,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 4, 1131, No store update when fetch return FALSE
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'updateData' ] )
 			->getMockForAbstractClass();
@@ -508,7 +520,7 @@ class ParserAfterTidyTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 5, 1410 displaytitle
-		$store = $this->getMockBuilder( 'SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
+use SMW\SQLStore\PropertyStatisticsStore;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -15,25 +20,25 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
+class UsageStatisticsListLookupTest extends TestCase {
 
 	private $store;
 	private $propertyStatisticsStore;
 	private $requestOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertyStatisticsStore = $this->getMockBuilder( '\SMW\SQLStore\PropertyStatisticsStore' )
+		$this->propertyStatisticsStore = $this->getMockBuilder( PropertyStatisticsStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\Lookup\UsageStatisticsListLookup',
+			UsageStatisticsListLookup::class,
 			new UsageStatisticsListLookup( $this->store, $this->propertyStatisticsStore )
 		);
 	}
@@ -60,7 +65,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testfetchListForInvalidTableThrowsException() {
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -129,7 +134,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 		$row->o_hash = 42;
 		$row->count = 1001;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -137,7 +142,7 @@ class UsageStatisticsListLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

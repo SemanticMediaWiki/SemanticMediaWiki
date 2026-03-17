@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\TaskFactory;
+use SMW\MediaWiki\Api\Tasks\Task;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TaskFactoryTest extends \PHPUnit\Framework\TestCase {
+class TaskFactoryTest extends TestCase {
 
 	private $apiFactory;
 	private $testEnvironment;
@@ -56,7 +58,7 @@ class TaskFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new TaskFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Api\Tasks\Task',
+			Task::class,
 			$instance->newByType( $type )
 		);
 	}

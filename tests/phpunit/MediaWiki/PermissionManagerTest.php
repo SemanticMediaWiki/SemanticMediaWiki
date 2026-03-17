@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki;
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\PermissionManager;
 
 /**
@@ -16,7 +17,7 @@ use SMW\MediaWiki\PermissionManager;
  *
  * @author mwjames
  */
-class PermissionManagerTest extends \PHPUnit\Framework\TestCase {
+class PermissionManagerTest extends TestCase {
 
 	public function testUserCan_PermissionManager() {
 		$title = $this->createMock( Title::class );

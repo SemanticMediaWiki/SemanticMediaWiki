@@ -144,7 +144,8 @@ class CopyLocalMessages {
 		$contents = json_decode( file_get_contents( $file ), true );
 
 		if ( $contents !== null && json_last_error() === JSON_ERROR_NONE ) {
-			return $this->contents = $contents;
+			$this->contents = $contents;
+			return $this->contents;
 		}
 
 		throw new JSONFileParseException( $file );

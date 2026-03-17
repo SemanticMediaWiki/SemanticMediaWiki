@@ -2,6 +2,10 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Registration\ExtensionDependencyError;
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\ConfigPreloadFileNotReadableException;
+use SMW\SetupCheck;
 use SMW\UncaughtExceptionHandler;
 
 /**
@@ -13,14 +17,14 @@ use SMW\UncaughtExceptionHandler;
  *
  * @author mwjames
  */
-class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
+class UncaughtExceptionHandlerTest extends TestCase {
 
 	private $setupCheck;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->setupCheck = $this->getMockBuilder( '\SMW\SetupCheck' )
+		$this->setupCheck = $this->getMockBuilder( SetupCheck::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -38,13 +42,13 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->setupCheck->expects( $this->once() )
 			->method( 'setErrorType' )
-			->with( \SMW\SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN );
+			->with( SetupCheck::ERROR_CONFIG_PROFILE_UNKNOWN );
 
 		$instance = new UncaughtExceptionHandler(
 			$this->setupCheck
 		);
 
-		$exception = new \SMW\Exception\ConfigPreloadFileNotReadableException(
+		$exception = new ConfigPreloadFileNotReadableException(
 			'Foo'
 		);
 
@@ -70,7 +74,7 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider errorTypeProvider
 	 */
 	public function testExtensionDependencyError( $args, $expected ) {
-		$exception = $this->getMockBuilder( '\ExtensionDependencyError' )
+		$exception = $this->getMockBuilder( ExtensionDependencyError::class )
 			->setConstructorArgs( [ [ $args ] ] )
 			->getMock();
 
@@ -91,22 +95,22 @@ class UncaughtExceptionHandlerTest extends \PHPUnit\Framework\TestCase {
 	public function errorTypeProvider() {
 		yield [
 			[ 'msg' => 'SemanticFoo', 'type' => 'Foo' ],
-			\SMW\SetupCheck::ERROR_EXTENSION_DEPENDENCY
+			SetupCheck::ERROR_EXTENSION_DEPENDENCY
 		];
 
 		yield [
 			[ 'msg' => 'SemanticBar', 'type' => 'incompatible-core' ],
-			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
+			SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
 		yield [
 			[ 'msg' => 'SemanticFoobar', 'type' => 'incompatible-php' ],
-			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
+			SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 
 		yield [
 			[ 'msg' => 'SemanticFoOBaR', 'type' => 'incompatible-extensions', 'incompatible' => [] ],
-			\SMW\SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
+			SetupCheck::ERROR_EXTENSION_INCOMPATIBLE
 		];
 	}
 

@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\Maintenance;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIConcept;
 use SMW\Maintenance\ConceptCacheRebuilder;
+use SMW\MediaWiki\Connection\Database;
+use SMW\Settings;
+use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\Maintenance\ConceptCacheRebuilder
@@ -14,17 +19,17 @@ use SMW\Maintenance\ConceptCacheRebuilder;
  *
  * @author mwjames
  */
-class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
+class ConceptCacheRebuilderTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockForAbstractClass( '\SMW\Store' );
+		$store = $this->getMockForAbstractClass( Store::class );
 
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
+		$settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\ConceptCacheRebuilder',
+			ConceptCacheRebuilder::class,
 			new ConceptCacheRebuilder( $store, $settings )
 		);
 	}
@@ -33,9 +38,9 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 	 * @depends testCanConstruct
 	 */
 	public function testRebuildWithoutOptionsAndActions() {
-		$store = $this->getMockForAbstractClass( '\SMW\Store' );
+		$store = $this->getMockForAbstractClass( Store::class );
 
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
+		$settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -164,7 +169,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->page_namespace = 0;
 		$row->page_title = 1;
 
-		$database = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$database = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +177,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( [ $row ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -188,7 +193,7 @@ class ConceptCacheRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $database );
 
-		$settings = $this->getMockBuilder( '\SMW\Settings' )
+		$settings = $this->getMockBuilder( Settings::class )
 			->disableOriginalConstructor()
 			->getMock();
 

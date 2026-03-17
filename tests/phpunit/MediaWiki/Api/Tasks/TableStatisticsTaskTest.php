@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Api\Tasks;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Tasks\TableStatisticsTask;
+use SMW\SQLStore\Lookup\TableStatisticsLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
+class TableStatisticsTaskTest extends TestCase {
 
 	private $store;
 	private $cache;
@@ -25,12 +29,12 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -50,7 +54,7 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$tableStatisticsLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\TableStatisticsLookup' )
+		$tableStatisticsLookup = $this->getMockBuilder( TableStatisticsLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +63,7 @@ class TableStatisticsTaskTest extends \PHPUnit\Framework\TestCase {
 			->with( 'TableStatisticsLookup' )
 			->willReturn( $tableStatisticsLookup );
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 

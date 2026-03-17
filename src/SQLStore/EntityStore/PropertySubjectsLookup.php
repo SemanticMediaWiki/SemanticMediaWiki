@@ -9,6 +9,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
+use SMWDIContainer;
 
 /**
  * @license GNU GPL v2
@@ -17,11 +18,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class PropertySubjectsLookup {
-
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
 
 	/**
 	 * @var IteratorFactory
@@ -50,11 +46,8 @@ class PropertySubjectsLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 		$this->iteratorFactory = ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 
@@ -156,7 +149,8 @@ class PropertySubjectsLookup {
 			$this->store->getObjectIds()->warmupCache( $warmupCache );
 		}
 
-		return $this->prefetch[$hash] = $result;
+		$this->prefetch[$hash] = $result;
+		return $this->prefetch[$hash];
 	}
 
 	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
@@ -374,7 +368,7 @@ class PropertySubjectsLookup {
 	private function getWhereConds( $query, $dataItem ) {
 		$conds = '';
 
-		if ( $dataItem instanceof \SMWDIContainer ) {
+		if ( $dataItem instanceof SMWDIContainer ) {
 			throw new RuntimeException( 'SMWDIContainer support is missing!' );
 		}
 

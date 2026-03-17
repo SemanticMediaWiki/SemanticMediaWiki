@@ -2,9 +2,13 @@
 
 namespace SMW\Tests\Elastic\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\DIProperty;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 use SMW\RequestOptions;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\Elastic\Lookup\ProximityPropertyValueLookup
@@ -15,7 +19,7 @@ use SMW\RequestOptions;
  *
  * @author mwjames
  */
-class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
+class ProximityPropertyValueLookupTest extends TestCase {
 
 	private $logger;
 	private $idTable;
@@ -23,7 +27,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 	private $elasticClient;
 
 	protected function setUp(): void {
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,7 +40,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSMWPropertyID' )
 			->willReturnOnConsecutiveCalls( 42, 1001, 9000, 110001 );
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getConnection' ] )
 			->getMock();
@@ -45,7 +49,7 @@ class ProximityPropertyValueLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $this->idTable );
 
-		$this->elasticClient = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->elasticClient = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 

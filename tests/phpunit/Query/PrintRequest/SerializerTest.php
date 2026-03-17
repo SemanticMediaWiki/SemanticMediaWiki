@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\PrintRequest;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
@@ -17,7 +18,7 @@ use SMW\Query\PrintRequest\Serializer;
  *
  * @author mwjames
  */
-class SerializerTest extends \PHPUnit\Framework\TestCase {
+class SerializerTest extends TestCase {
 
 	/**
 	 * @dataProvider textProvider

@@ -12,6 +12,7 @@ use SMW\Parameters;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
+use SMW\Store;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -26,19 +27,6 @@ use SMWDIBlob as DIBlob;
  * @author mwjames
  */
 class SQLStoreUpdater {
-
-	/**
-	 * The store used by this store writer.
-	 *
-	 * @since 1.8
-	 * @var \SMW\SQLStore\SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var SQLStoreFactory
-	 */
-	private $factory;
 
 	/**
 	 * @var PropertyTableRowDiffer
@@ -72,13 +60,11 @@ class SQLStoreUpdater {
 
 	/**
 	 * @since 1.8
-	 *
-	 * @param SQLStore $store
-	 * @param SQLStoreFactory $factory
 	 */
-	public function __construct( SQLStore $store, $factory ) {
-		$this->store = $store;
-		$this->factory = $factory;
+	public function __construct(
+		private readonly SQLStore $store,
+		private $factory,
+	) {
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
 		$this->propertyTableUpdater = $this->factory->newPropertyTableUpdater();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();
@@ -87,7 +73,7 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see \SMW\Store::deleteSubject
+	 * @see Store::deleteSubject
 	 *
 	 * @since 1.8
 	 *
@@ -183,7 +169,7 @@ class SQLStoreUpdater {
 	}
 
 	/**
-	 * @see \SMW\Store::doDataUpdate
+	 * @see Store::doDataUpdate
 	 *
 	 * @since 1.8
 	 *

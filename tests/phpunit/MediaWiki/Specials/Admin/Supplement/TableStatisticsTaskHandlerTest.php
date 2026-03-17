@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Supplement;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\EntityCache;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\Supplement\TableStatisticsTaskHandler;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableStatisticsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class TableStatisticsTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $outputFormatter;
@@ -25,11 +29,11 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -67,7 +71,7 @@ class TableStatisticsTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->entityCache
 		);
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

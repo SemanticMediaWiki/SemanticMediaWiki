@@ -3,11 +3,14 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -19,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
+class UpdateDispatcherJobTest extends TestCase {
 
 	protected $expectedProperty;
 	protected $expectedSubjects;
@@ -36,7 +39,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			'smwgEnableUpdateJobs' => false
 		] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -49,18 +52,18 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
+			UpdateDispatcherJob::class,
 			new UpdateDispatcherJob( $title )
 		);
 	}
 
 	public function testPushToJobQueue() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +74,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChunkedJobWithListOnValidMembers() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +95,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testChunkedJobWithListOnInvalidMembers() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -115,7 +118,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	public function testJobRunOnMainNamespace() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [
 				'getProperties',
@@ -141,7 +144,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 	public function testJobRunOnPropertyNamespace() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_PROPERTY );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [
 				'getProperties',
@@ -186,7 +189,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 			UpdateDispatcherJob::RESTRICTED_DISPATCH_POOL => true
 		];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [
 				'getAllPropertySubjects',
@@ -214,7 +217,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		$this->expectedProperty = $setup['property'];
 		$this->expectedSubjects = $setup['subjects'];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [
 				'getAllPropertySubjects',
@@ -271,7 +274,7 @@ class UpdateDispatcherJobTest extends \PHPUnit\Framework\TestCase {
 		$this->expectedProperty = $setup['property'];
 		$this->expectedSubjects = $setup['subjects'];
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [
 				'getAllPropertySubjects',

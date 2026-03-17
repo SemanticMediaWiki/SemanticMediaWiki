@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
+use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
+use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMWDIBlob as DIBlob;
 
@@ -15,18 +19,18 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
+class DIBlobHandlerTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,7 +170,7 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 			$this->store
 		);
 
-		$this->expectException( '\SMW\SQLStore\EntityStore\Exception\DataItemHandlerException' );
+		$this->expectException( DataItemHandlerException::class );
 		$instance->dataItemFromDBKeys( $dbKeys );
 	}
 
@@ -191,7 +195,8 @@ class DIBlobHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function createRandomString( $length = 10 ) {
-		return substr( str_shuffle( str_repeat( $x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil( $length / strlen( $x ) ) ) ), 1, $length );
+		$x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		return substr( str_shuffle( str_repeat( $x, ceil( $length / strlen( $x ) ) ) ), 1, $length );
 	}
 
 	public function fieldTypeProvider() {

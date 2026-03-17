@@ -2,9 +2,12 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DIWikiPage;
+use SMW\ProcessingError;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
@@ -16,7 +19,7 @@ use SMW\ProcessingErrorMsgHandler;
  *
  * @author mwjames
  */
-class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
+class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $testEnvironment;
@@ -32,12 +35,12 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$subject = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$subject = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ProcessingErrorMsgHandler',
+			ProcessingErrorMsgHandler::class,
 			new ProcessingErrorMsgHandler( $subject )
 		);
 	}
@@ -72,7 +75,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -111,7 +114,7 @@ class ProcessingErrorMsgHandlerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetErrorContainerFromMsg_TypedError() {
-		$processingError = $this->getMockBuilder( '\SMW\ProcessingError' )
+		$processingError = $this->getMockBuilder( ProcessingError::class )
 			->disableOriginalConstructor()
 			->getMock();
 

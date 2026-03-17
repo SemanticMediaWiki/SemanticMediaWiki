@@ -14,24 +14,12 @@ class TableChangeOp {
 	const OP_DELETE = 'delete';
 
 	/**
-	 * @var string
-	 */
-	private $tableName;
-
-	/**
-	 * @var array
-	 */
-	private $changeOps;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param string $tableName
-	 * @param array $changeOps
 	 */
-	public function __construct( $tableName, array $changeOps ) {
-		$this->tableName = $tableName;
-		$this->changeOps = $changeOps;
+	public function __construct(
+		private $tableName,
+		private array $changeOps,
+	) {
 	}
 
 	/**

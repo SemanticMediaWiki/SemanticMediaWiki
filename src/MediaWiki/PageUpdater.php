@@ -21,16 +21,6 @@ class PageUpdater implements DeferrableUpdate {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var TransactionalCallableUpdate
-	 */
-	private $transactionalCallableUpdate;
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var Title[]
 	 */
 	private $titles = [];
@@ -72,13 +62,11 @@ class PageUpdater implements DeferrableUpdate {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database|null $connection
-	 * @param TransactionalCallableUpdate|null $transactionalCallableUpdate
 	 */
-	public function __construct( ?Database $connection = null, ?TransactionalCallableUpdate $transactionalCallableUpdate = null ) {
-		$this->connection = $connection;
-		$this->transactionalCallableUpdate = $transactionalCallableUpdate;
+	public function __construct(
+		private ?Database $connection = null,
+		private ?TransactionalCallableUpdate $transactionalCallableUpdate = null,
+	) {
 	}
 
 	/**
@@ -227,7 +215,8 @@ class PageUpdater implements DeferrableUpdate {
 		$method = __METHOD__;
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeParserCache'] = true;
+			$this->pendingUpdates['doPurgeParserCache'] = true;
+			return $this->pendingUpdates['doPurgeParserCache'];
 		}
 
 		foreach ( $this->titles as $title ) {
@@ -244,7 +233,8 @@ class PageUpdater implements DeferrableUpdate {
 		}
 
 		if ( $this->isPending || $this->onTransactionIdle ) {
-			return $this->pendingUpdates['doPurgeHtmlCache'] = true;
+			$this->pendingUpdates['doPurgeHtmlCache'] = true;
+			return $this->pendingUpdates['doPurgeHtmlCache'];
 		}
 
 		$method = __METHOD__;

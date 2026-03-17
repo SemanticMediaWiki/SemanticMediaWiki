@@ -32,21 +32,6 @@ use SMWDataItem as DataItem;
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var ValueMatchConditionBuilder
-	 */
-	private $valueMatchConditionBuilder;
-
-	/**
 	 * @var ComparatorMapper
 	 */
 	private $comparatorMapper;
@@ -58,14 +43,12 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ValueMatchConditionBuilder $valueMatchConditionBuilder ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->valueMatchConditionBuilder = $valueMatchConditionBuilder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly ValueMatchConditionBuilder $valueMatchConditionBuilder,
+	) {
 		$this->comparatorMapper = new ComparatorMapper();
 	}
 

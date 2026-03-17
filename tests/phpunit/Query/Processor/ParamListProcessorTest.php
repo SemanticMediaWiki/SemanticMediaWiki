@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Query\Processor;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Query\PrintRequestFactory;
 use SMW\Query\Processor\ParamListProcessor;
 
 /**
@@ -13,10 +15,10 @@ use SMW\Query\Processor\ParamListProcessor;
  *
  * @author mwjames
  */
-class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
+class ParamListProcessorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )
+		$printRequestFactory = $this->getMockBuilder( PrintRequestFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -30,7 +32,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testPreprocess( $parameters, $showMode, $expected ) {
-		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )
+		$printRequestFactory = $this->getMockBuilder( PrintRequestFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +50,7 @@ class ParamListProcessorTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider legacyParametersProvider
 	 */
 	public function testLegacyArray( $parameters ) {
-		$printRequestFactory = $this->getMockBuilder( '\SMW\Query\PrintRequestFactory' )
+		$printRequestFactory = $this->getMockBuilder( PrintRequestFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

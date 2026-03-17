@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 
 /**
@@ -12,7 +13,7 @@ use SMW\Localizer\LocalLanguage\LocalLanguage;
  *
  * @author mwjames
  */
-class LocalLanguageAccessibilityAndIntegrityTest extends \PHPUnit\Framework\TestCase {
+class LocalLanguageAccessibilityAndIntegrityTest extends TestCase {
 
 	/**
 	 * @dataProvider languageCodeProvider

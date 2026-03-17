@@ -158,7 +158,8 @@ class HtmlModal {
 			$attributes['class'] = $class;
 		}
 
-		return $attributes += $attr;
+		$attributes += $attr;
+		return $attributes;
 	}
 
 }

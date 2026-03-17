@@ -10,6 +10,7 @@ use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Listener\EventListener\EventHandler;
 use SMW\MediaWiki\Job;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -281,7 +282,7 @@ class UpdateJob extends Job {
 		);
 
 		$parserData->getSemanticData()->setOption(
-			\SMW\SemanticData::OPT_LAST_MODIFIED,
+			SemanticData::OPT_LAST_MODIFIED,
 			wfTimestamp( TS_UNIX )
 		);
 

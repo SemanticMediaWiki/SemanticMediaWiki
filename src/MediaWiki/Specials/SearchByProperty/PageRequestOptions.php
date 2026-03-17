@@ -6,6 +6,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\Encoder;
+use SMWDataValue as DataValue;
 use SMWNumberValue as NumberValue;
 
 /**
@@ -15,16 +16,6 @@ use SMWNumberValue as NumberValue;
  * @author mwjames
  */
 class PageRequestOptions {
-
-	/**
-	 * @var string
-	 */
-	private $queryString;
-
-	/**
-	 * @var array
-	 */
-	private $requestOptions;
 
 	/**
 	 * @var Encoder
@@ -47,7 +38,7 @@ class PageRequestOptions {
 	public $valueString;
 
 	/**
-	 * @var \SMWDataValue
+	 * @var DataValue
 	 */
 	public $value;
 
@@ -68,13 +59,11 @@ class PageRequestOptions {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $queryString
-	 * @param array $requestOptions
 	 */
-	public function __construct( $queryString, array $requestOptions ) {
-		$this->queryString = $queryString;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private $queryString,
+		private array $requestOptions,
+	) {
 		$this->urlEncoder = new Encoder();
 	}
 

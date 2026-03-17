@@ -19,30 +19,17 @@ class IntlTimeFormatter {
 	const LOCL_TIMEOFFSET = 0x4;
 
 	/**
-	 * @var DITime
-	 */
-	private $dataItem;
-
-	/**
-	 * @var Language
-	 */
-	private $language;
-
-	/**
 	 * @var bool
 	 */
 	private $hasLocalTimeCorrection = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param DITime $dataItem
-	 * @param Language|null $language
 	 */
-	public function __construct( DITime $dataItem, ?Language $language = null ) {
-		$this->dataItem = $dataItem;
-		$this->language = $language;
-
+	public function __construct(
+		private readonly DITime $dataItem,
+		private ?Language $language = null,
+	) {
 		if ( $this->language === null ) {
 			$this->language = Localizer::getInstance()->getContentLanguage();
 		}

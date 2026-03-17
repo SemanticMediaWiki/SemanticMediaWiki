@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\PropertyNotFoundException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\PropertyNotFoundException;
  *
  * @author mwjames
  */
-class PropertyNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class PropertyNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PropertyNotFoundException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\PropertyNotFoundException',
+			PropertyNotFoundException::class,
 			$instance
 		);
 

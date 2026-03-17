@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SQLStore\ChangeOp;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 
@@ -14,7 +15,7 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
  *
  * @author mwjames
  */
-class ChangeOpTest extends \PHPUnit\Framework\TestCase {
+class ChangeOpTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

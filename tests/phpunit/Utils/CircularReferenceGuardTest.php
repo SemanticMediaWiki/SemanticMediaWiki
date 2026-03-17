@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\CircularReferenceGuard;
 
 /**
@@ -13,11 +14,11 @@ use SMW\Utils\CircularReferenceGuard;
  *
  * @author mwjames
  */
-class CircularReferenceGuardTest extends \PHPUnit\Framework\TestCase {
+class CircularReferenceGuardTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Utils\CircularReferenceGuard',
+			CircularReferenceGuard::class,
 			new CircularReferenceGuard()
 		);
 	}

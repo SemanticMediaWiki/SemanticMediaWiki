@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\SiteLanguageChangeException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\SiteLanguageChangeException;
  *
  * @author mwjames
  */
-class SiteLanguageChangeExceptionTest extends \PHPUnit\Framework\TestCase {
+class SiteLanguageChangeExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new SiteLanguageChangeException( 'Foo', 'Bar' );

@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\SQLStore;
+use SMWQuery;
 
 /**
  * @private
@@ -18,16 +19,6 @@ use SMW\SQLStore\SQLStore;
 class EntityValidator {
 
 	use RevisionGuardAwareTrait;
-
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
 
 	/**
 	 * @var array
@@ -46,13 +37,11 @@ class EntityValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( SQLStore $store, NamespaceExaminer $namespaceExaminer ) {
-		$this->store = $store;
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct(
+		private SQLStore $store,
+		private NamespaceExaminer $namespaceExaminer,
+	) {
 	}
 
 	/**
@@ -179,7 +168,7 @@ class EntityValidator {
 
 		// Any query reference without a `proptable` map is considered
 		// detached (doesn't belong to any subject, or is outdated)
-		return substr( $row->smw_subobject, 0, 6 ) === \SMWQuery::ID_PREFIX;
+		return substr( $row->smw_subobject, 0, 6 ) === SMWQuery::ID_PREFIX;
 	}
 
 	/**

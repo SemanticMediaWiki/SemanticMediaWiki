@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
+use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
 use SMWDataItem as DataItem;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder
@@ -15,7 +21,7 @@ use SMWDataItem as DataItem;
  *
  * @author mwjames
  */
-class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
+class SearchTableRebuilderTest extends TestCase {
 
 	private $searchTableUpdater;
 	private $searchTable;
@@ -23,15 +29,15 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	private $iteratorMockBuilder;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->searchTable = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTable' )
+		$this->searchTable = $this->getMockBuilder( SearchTable::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->searchTableUpdater = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater' )
+		$this->searchTableUpdater = $this->getMockBuilder( SearchTableUpdater::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -44,13 +50,13 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder',
+			SearchTableRebuilder::class,
 			new SearchTableRebuilder( $this->connection, $this->searchTableUpdater )
 		);
 	}
 
 	public function testRebuildWithoutUpdate() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +81,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNeverRebuildOnOptimization() {
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -105,7 +111,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 		$row->o_blob = null;
 		$row->s_id = 42;
 
-		$resultWrapper = $this->iteratorMockBuilder->setClass( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->iteratorMockBuilder->setClass( ResultWrapper::class )
 			->with( [ $row ] )
 			->incrementInvokedCounterBy( 1 )
 			->getMockForIterator();
@@ -118,7 +124,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( $resultWrapper );
 
-		$tableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -156,7 +162,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testgetQualifiedTableList() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,7 +190,7 @@ class SearchTableRebuilderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRebuildByTable() {
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 

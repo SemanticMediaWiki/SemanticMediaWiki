@@ -2,17 +2,14 @@
 
 namespace SMW\Tests;
 
-use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
-use PHPUnit\Framework\TestResult;
-use RuntimeException;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\LinkBatch;
 use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory;
+use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\StoreFactory;
-use SMW\Tests\Utils\Connection\TestDatabaseTableBuilder;
 use SMWExporter as Exporter;
 use SMWQueryProcessor;
 use Wikimedia\ObjectCache\HashBagOStuff;
@@ -32,12 +29,6 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 	protected ?TestEnvironment $testEnvironment = null;
 
-	protected ?TestDatabaseTableBuilder $testDatabaseTableBuilder = null;
-
-	protected bool $destroyDatabaseTablesBeforeRun = false;
-
-	protected bool $isUsableUnitTestDatabase = true;
-
 	/**
 	 * Setup configuration required for SMW integration tests.
 	 */
@@ -46,13 +37,41 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 
 		// Load default settings specific to SMW
 		TestEnvironment::loadDefaultSettings( [ 'smwgQEqualitySupport' ] );
+
+		// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql.
+		// Must be set before maybeSetupDB() reads this flag.
+		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
+		static::setCliArg( 'use-normal-tables', true );
+	}
+
+	/**
+	 * Called once per test class after overrideMwServices(). Creates SMW
+	 * tables using MW's native DB connection so that both MW and SMW share
+	 * the same transaction context, avoiding lock contention on teardown.
+	 */
+	public function addDBDataOnce(): void {
+		// Release cached connections so the Store picks up the test DB
+		// prefix (unittest_) set by MW's test framework. Without this,
+		// connections cached during boot have no prefix and the Store
+		// reads/writes the wrong tables.
+		ServicesFactory::getInstance()->getConnectionManager()->releaseConnections();
+
+		// Idempotent: creates SMW tables if they don't exist yet
+		$this->getStore()->setup( false );
 	}
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		// Reset services and caches that SMW tests rely on
+		// Reset SMW services first so stale singletons from prior tests
+		// (or the unit suite) are destroyed before we set up fresh ones.
 		$this->resetSMWServices();
+
+		// Release cached connections on the fresh ServicesFactory so the
+		// Store picks up the test DB connection (with unittest_ prefix)
+		// instead of stale boot connections.
+		ServicesFactory::getInstance()->getConnectionManager()->releaseConnections();
+
 		$this->clearGlobalCaches();
 
 		// Prepare test environment for SMW-specific requirements
@@ -66,7 +85,7 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 		LinkBatch::reset();
 		DataValueFactory::getInstance()->clear();
 		Exporter::clear();
-		MediaWikiServices::getInstance()->resetGlobalInstance();
+		CachingSemanticDataLookup::clear();
 		StoreFactory::clear();
 		ServicesFactory::clear();
 		SMWQueryProcessor::setRecursiveTextProcessor();
@@ -112,53 +131,19 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 	}
 
 	protected function tearDown(): void {
-		try {
-			if ( $this->testEnvironment !== null ) {
-				$this->testEnvironment->tearDown();
-			}
-		} finally {
-			try {
-				// Roll back all open database transactions to prevent lock
-				// contention when MediaWikiIntegrationTestCase::tearDown()
-				// truncates tables. Without this, page deletions from
-				// flushPages() can hold row locks that block TRUNCATE,
-				// causing "Lock wait timeout" errors.
-				if ( $this->testDatabaseTableBuilder !== null ) {
-					$this->getDBConnection()?->rollback();
-				}
-
-				MediaWikiServices::getInstance()
-					->getDBLoadBalancerFactory()
-					->rollbackPrimaryChanges( __METHOD__ );
-			} finally {
-				parent::tearDown();
-			}
-		}
-	}
-
-	public function run( ?TestResult $result = null ): TestResult {
-		$this->getStore()->clear();
-		if ( $GLOBALS['wgDBtype'] == 'mysql' ) {
-			// Don't use temporary tables to avoid "Error: 1137 Can't reopen table" on mysql
-			// https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/80/commits/565061cd0b9ccabe521f0382938d013a599e4673
-			$this->setCliArg( 'use-normal-tables', true );
+		if ( $this->testEnvironment !== null ) {
+			$this->testEnvironment->tearDown();
 		}
 
-		$this->testDatabaseTableBuilder = TestDatabaseTableBuilder::getInstance(
-			$this->getStore()
-		);
+		// Commit or rollback any open transactions from page deletions
+		// (flushPages) before MW's tearDown truncates tables. Without this,
+		// delete transactions can hold row locks that block TRUNCATE,
+		// causing "Lock wait timeout" errors.
+		MediaWikiServices::getInstance()
+			->getDBLoadBalancerFactory()
+			->commitPrimaryChanges( __METHOD__ );
 
-		$this->destroyDatabaseTables( $this->destroyDatabaseTablesBeforeRun );
-
-		try {
-			$this->testDatabaseTableBuilder->doBuild();
-		} catch ( RuntimeException $e ) {
-			$this->isUsableUnitTestDatabase = false;
-		}
-
-		$testResult = parent::run( $result );
-
-		return $testResult;
+		parent::tearDown();
 	}
 
 	protected function getStore() {
@@ -184,26 +169,8 @@ abstract class SMWIntegrationTestCase extends MediaWikiIntegrationTestCase {
 			$message = "Database was excluded and is not expected to support this test";
 		}
 
-		if ( in_array( $this->getDBConnection()->getType(), $excludedDatabase ) ) {
+		if ( in_array( $this->getDb()->getType(), $excludedDatabase ) ) {
 			$this->markTestSkipped( $message );
-		}
-	}
-
-	protected function getDBConnection() {
-		return $this->testDatabaseTableBuilder->getDBConnection();
-	}
-
-	protected function getConnectionProvider() {
-		return $this->testDatabaseTableBuilder->getConnectionProvider();
-	}
-
-	private function destroyDatabaseTables( bool $destroyDatabaseTables ): void {
-		if ( $this->isUsableUnitTestDatabase && $destroyDatabaseTables ) {
-			try {
-				$this->testDatabaseTableBuilder->doDestroy();
-			} catch ( Exception $e ) {
-				// Do nothing because an instance was not available
-			}
 		}
 	}
 }

@@ -23,17 +23,9 @@ class DependencyLinksTableUpdater {
 	private static $updateList = [];
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**
@@ -64,7 +56,8 @@ class DependencyLinksTableUpdater {
 		}
 
 		if ( !isset( self::$updateList[$sid] ) ) {
-			return self::$updateList[$sid] = $dependencyList;
+			self::$updateList[$sid] = $dependencyList;
+			return self::$updateList[$sid];
 		}
 
 		self::$updateList[$sid] = array_merge( self::$updateList[$sid], $dependencyList );

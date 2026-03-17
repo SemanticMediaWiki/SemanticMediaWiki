@@ -4,7 +4,9 @@ namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\SpecialPageProperty;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
+class SpecialPagePropertyTest extends TestCase {
 
 	private $testEnvironment;
 	private $stringValidator;
@@ -26,7 +28,7 @@ class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyValues', 'service' ] )
 			->getMock();
@@ -46,7 +48,7 @@ class SpecialPagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Specials\SpecialPageProperty',
+			SpecialPageProperty::class,
 			new SpecialPageProperty()
 		);
 	}

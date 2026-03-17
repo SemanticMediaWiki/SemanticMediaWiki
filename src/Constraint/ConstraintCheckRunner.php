@@ -143,7 +143,8 @@ class ConstraintCheckRunner {
 		}
 
 		if ( $constraint->getType() === Constraint::TYPE_DEFERRED ) {
-			return $this->hasDeferrableConstraint = true;
+			$this->hasDeferrableConstraint = true;
+			return $this->hasDeferrableConstraint;
 		}
 
 		$constraint->checkConstraint( [ $key => $value ], $dataValue );

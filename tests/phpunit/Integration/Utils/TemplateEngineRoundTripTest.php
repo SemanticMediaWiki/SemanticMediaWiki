@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Integration\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\TempFile;
 use SMW\Utils\TemplateEngine;
 
@@ -13,7 +14,7 @@ use SMW\Utils\TemplateEngine;
  *
  * @author mwjames
  */
-class TemplateEngineRoundTripTest extends \PHPUnit\Framework\TestCase {
+class TemplateEngineRoundTripTest extends TestCase {
 
 	public function testRoundTrip() {
 		$contents = '<div>{{abc}}</div><span>{{#ABC}}</span>';

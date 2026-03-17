@@ -2,7 +2,15 @@
 
 namespace SMW\Tests\SQLStore\Lookup;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIWikiPage;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\Query\QueryResult;
+use SMW\QueryEngine;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\Lookup\SingleEntityQueryLookup
@@ -13,17 +21,17 @@ use SMW\SQLStore\Lookup\SingleEntityQueryLookup;
  *
  * @author mwjames
  */
-class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
+class SingleEntityQueryLookupTest extends TestCase {
 
 	private $store;
 	private $idTable;
 
 	protected function setUp(): void {
-		$this->idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,13 +47,13 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\QueryEngine',
+			QueryEngine::class,
 			new SingleEntityQueryLookup( $this->store )
 		);
 	}
 
 	public function testNonValueDescriptionReturnsEmptyQueryResult() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ThingDescription' )
+		$description = $this->getMockBuilder( ThingDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +74,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$instance->getQueryResult( $query )
 		);
 	}
@@ -76,7 +84,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findAssociatedRev' )
 			->willReturn( 1001 );
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +93,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 			->with( $dataItem )
 			->willReturn( $dataItem );
 
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -116,7 +124,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->getQueryResult( $query );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$res
 		);
 
@@ -126,11 +134,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetQueryResult_SubobjectEntity() {
-		$dataItem_base = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem_base = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -148,7 +156,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 			->with( $dataItem_base )
 			->willReturn( 1001 );
 
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -179,7 +187,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->getQueryResult( $query );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$res
 		);
 
@@ -192,11 +200,11 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 		$this->idTable->expects( $this->never() )
 			->method( 'findAssociatedRev' );
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$valueDescription = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$valueDescription = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -227,7 +235,7 @@ class SingleEntityQueryLookupTest extends \PHPUnit\Framework\TestCase {
 		$res = $instance->getQueryResult( $query );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\QueryResult',
+			QueryResult::class,
 			$res
 		);
 

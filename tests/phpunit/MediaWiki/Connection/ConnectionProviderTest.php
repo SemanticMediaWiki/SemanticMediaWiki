@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\ConnectionProvider;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
+class ConnectionProviderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -32,7 +34,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\Database',
+			Database::class,
 			$connection
 		);
 
@@ -70,7 +72,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 		$connection = $instance->getConnection();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\Database',
+			Database::class,
 			$connection
 		);
 
@@ -88,7 +90,7 @@ class ConnectionProviderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetConnectionOnCallback() {
-		$db = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$db = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 

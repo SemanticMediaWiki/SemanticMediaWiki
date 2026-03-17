@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use MediaWiki\Output\OutputPage;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Hooks\PersonalUrls;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Preference\PreferenceExaminer;
 
 /**
  * @covers \SMW\MediaWiki\Hooks\PersonalUrls
@@ -13,7 +17,7 @@ use SMW\MediaWiki\Hooks\PersonalUrls;
  *
  * @author mwjames
  */
-class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
+class PersonalUrlsTest extends TestCase {
 
 	private $skinTemplate;
 	private $jobQueue;
@@ -29,11 +33,11 @@ class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->preferenceExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Preference\PreferenceExaminer' )
+		$this->preferenceExaminer = $this->getMockBuilder( PreferenceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -51,7 +55,7 @@ class PersonalUrlsTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw-prefs-general-options-jobqueue-watchlist' )
 			->willReturn( true );
 
-		$output = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$output = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

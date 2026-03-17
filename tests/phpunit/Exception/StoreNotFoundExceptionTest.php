@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\StoreNotFoundException;
 
 /**
@@ -13,13 +14,13 @@ use SMW\Exception\StoreNotFoundException;
  *
  * @author mwjames
  */
-class StoreNotFoundExceptionTest extends \PHPUnit\Framework\TestCase {
+class StoreNotFoundExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new StoreNotFoundException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\StoreNotFoundException',
+			StoreNotFoundException::class,
 			$instance
 		);
 

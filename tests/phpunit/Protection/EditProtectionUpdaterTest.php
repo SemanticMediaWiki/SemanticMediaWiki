@@ -2,8 +2,12 @@
 
 namespace SMW\Tests\Protection;
 
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Protection\EditProtectionUpdater;
+use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
+class EditProtectionUpdaterTest extends TestCase {
 
 	private $dataItemFactory;
 	private $wikiPage;
@@ -34,7 +38,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -56,7 +60,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->wikiPage->expects( $this->never() )
 			->method( 'doUpdateRestrictions' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,7 +91,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->wikiPage->expects( $this->once() )
 			->method( 'doUpdateRestrictions' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -121,7 +125,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 	public function testDoUpdateFromWithRestrictionsButNoTrueEditProtection() {
 		$this->markTestSkipped( 'SUT needs refactoring' );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -136,7 +140,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->wikiPage->expects( $this->once() )
 			->method( 'doUpdateRestrictions' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +176,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 
 		$property = $this->dataItemFactory->newDIProperty( '_EDIP' );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,7 +191,7 @@ class EditProtectionUpdaterTest extends \PHPUnit\Framework\TestCase {
 		$this->wikiPage->expects( $this->never() )
 			->method( 'doUpdateRestrictions' );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

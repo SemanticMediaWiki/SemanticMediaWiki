@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandler;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
+class TaskHandlerRegistryTest extends TestCase {
 
 	private $testEnvironment;
 	private $hookDispatcher;
@@ -28,15 +33,15 @@ class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,11 +59,11 @@ class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onRegisterTaskHandlers' );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +86,7 @@ class TaskHandlerRegistryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider sectionTypeProvider
 	 */
 	public function testRegisterTaskHandler( $section ) {
-		$taskHandler = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandler' )
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 

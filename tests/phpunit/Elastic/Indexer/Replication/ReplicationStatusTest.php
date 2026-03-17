@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
 use SMWDITime as DITime;
 
@@ -14,12 +16,12 @@ use SMWDITime as DITime;
  *
  * @author mwjames
  */
-class ReplicationStatusTest extends \PHPUnit\Framework\TestCase {
+class ReplicationStatusTest extends TestCase {
 
 	private $connection;
 
 	protected function setUp(): void {
-		$this->connection = $this->getMockBuilder( '\SMW\Elastic\Connection\Client' )
+		$this->connection = $this->getMockBuilder( Client::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

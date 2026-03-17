@@ -17,25 +17,12 @@ use SMW\SQLStore\TableBuilder\FieldType;
 class IdChanger {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
-	 * @param JobFactory|null $jobFactory
 	 */
-	public function __construct( SQLStore $store, ?JobFactory $jobFactory = null ) {
-		$this->store = $store;
-		$this->jobFactory = $jobFactory;
-
+	public function __construct(
+		private readonly SQLStore $store,
+		private ?JobFactory $jobFactory = null,
+	) {
 		if ( $this->jobFactory === null ) {
 			$this->jobFactory = new JobFactory();
 		}

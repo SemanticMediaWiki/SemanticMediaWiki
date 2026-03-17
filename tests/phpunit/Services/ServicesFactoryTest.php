@@ -2,7 +2,43 @@
 
 namespace SMW\Tests\Services;
 
+use MediaWiki\Parser\Parser;
+use MediaWiki\Title\Title;
+use Onoi\EventDispatcher\EventDispatcher;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use SMW\CacheFactory;
+use SMW\Connection\ConnectionManager;
+use SMW\ContentParser;
+use SMW\DataItemFactory;
+use SMW\DataUpdater;
+use SMW\DataValueFactory;
+use SMW\Factbox\FactboxFactory;
+use SMW\HierarchyLookup;
+use SMW\IteratorFactory;
+use SMW\Maintenance\MaintenanceFactory;
+use SMW\MediaWiki\Deferred\CallableUpdate;
+use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\MwCollaboratorFactory;
+use SMW\MediaWiki\PageCreator;
+use SMW\MediaWiki\PageUpdater;
+use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
+use SMW\Parser\InTextAnnotationParser;
+use SMW\ParserData;
+use SMW\ParserFunctionFactory;
+use SMW\Property\AnnotatorFactory;
+use SMW\Property\SpecificationLookup;
+use SMW\PropertyLabelFinder;
+use SMW\Query\Cache\ResultCache;
+use SMW\Query\QuerySourceFactory;
+use SMW\QueryFactory;
+use SMW\SemanticData;
+use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory;
+use SMW\Settings;
+use SMW\Store;
 
 /**
  * @covers \SMW\Services\ServicesFactory
@@ -13,7 +49,7 @@ use SMW\Services\ServicesFactory;
  *
  * @author mwjames
  */
-class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
+class ServicesFactoryTest extends TestCase {
 
 	private ServicesFactory $servicesFactory;
 
@@ -37,184 +73,184 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstructSerializerFactory() {
 		$this->assertInstanceOf(
-			'\SMW\SerializerFactory',
+			SerializerFactory::class,
 			$this->servicesFactory->newSerializerFactory()
 		);
 	}
 
 	public function testCanConstructJobFactory() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\JobFactory',
+			JobFactory::class,
 			$this->servicesFactory->newJobFactory()
 		);
 	}
 
 	public function testCanConstructParserFunctionFactory() {
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ParserFunctionFactory',
+			ParserFunctionFactory::class,
 			$this->servicesFactory->newParserFunctionFactory( $parser )
 		);
 	}
 
 	public function testCanConstructQuerySourceFactory() {
 		$this->assertInstanceOf(
-			'\SMW\Query\QuerySourceFactory',
+			QuerySourceFactory::class,
 			$this->servicesFactory->getQuerySourceFactory()
 		);
 	}
 
 	public function testGetStore() {
 		$this->assertInstanceOf(
-			'\SMW\Store',
+			Store::class,
 			$this->servicesFactory->getStore()
 		);
 	}
 
 	public function testGetSettings() {
 		$this->assertInstanceOf(
-			'\SMW\Settings',
+			Settings::class,
 			$this->servicesFactory->getSettings()
 		);
 	}
 
 	public function testGetConnectionManager() {
 		$this->assertInstanceOf(
-			'\SMW\Connection\ConnectionManager',
+			ConnectionManager::class,
 			$this->servicesFactory->getConnectionManager()
 		);
 	}
 
 	public function testCanConstructTitleFactory() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\TitleFactory',
+			TitleFactory::class,
 			$this->servicesFactory->newTitleFactory()
 		);
 	}
 
 	public function testCanConstructPageCreator() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageCreator',
+			PageCreator::class,
 			$this->servicesFactory->newPageCreator()
 		);
 	}
 
 	public function testCanConstructPageUpdater() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\PageUpdater',
+			PageUpdater::class,
 			$this->servicesFactory->newPageUpdater()
 		);
 	}
 
 	public function testCanConstructInTextAnnotationParser() {
-		$parserData = $this->getMockBuilder( '\SMW\ParserData' )
+		$parserData = $this->getMockBuilder( ParserData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Parser\InTextAnnotationParser',
+			InTextAnnotationParser::class,
 			$this->servicesFactory->newInTextAnnotationParser( $parserData )
 		);
 	}
 
 	public function testCanConstructContentParser() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\ContentParser',
+			ContentParser::class,
 			$this->servicesFactory->newContentParser( $title )
 		);
 	}
 
 	public function testCanConstructMwCollaboratorFactory() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MwCollaboratorFactory',
+			MwCollaboratorFactory::class,
 			$this->servicesFactory->newMwCollaboratorFactory()
 		);
 	}
 
 	public function testCanConstructNamespaceExaminer() {
 		$this->assertInstanceOf(
-			'\SMW\NamespaceExaminer',
+			NamespaceExaminer::class,
 			$this->servicesFactory->getNamespaceExaminer()
 		);
 	}
 
 	public function testCanConstructDataUpdater() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\DataUpdater',
+			DataUpdater::class,
 			$this->servicesFactory->newDataUpdater( $semanticData )
 		);
 	}
 
 	public function testCanConstructDataItemFactory() {
 		$this->assertInstanceOf(
-			'\SMW\DataItemFactory',
+			DataItemFactory::class,
 			$this->servicesFactory->getDataItemFactory()
 		);
 	}
 
 	public function testCanConstructMaintenanceFactory() {
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\MaintenanceFactory',
+			MaintenanceFactory::class,
 			$this->servicesFactory->newMaintenanceFactory()
 		);
 	}
 
 	public function testCanConstructCacheFactory() {
 		$this->assertInstanceOf(
-			'\SMW\CacheFactory',
+			CacheFactory::class,
 			$this->servicesFactory->newCacheFactory()
 		);
 	}
 
 	public function testCanConstructIteratorFactory() {
 		$this->assertInstanceOf(
-			'\SMW\IteratorFactory',
+			IteratorFactory::class,
 			$this->servicesFactory->getIteratorFactory()
 		);
 	}
 
 	public function testCanConstructDataValueFactory() {
 		$this->assertInstanceOf(
-			'\SMW\DataValueFactory',
+			DataValueFactory::class,
 			$this->servicesFactory->getDataValueFactory()
 		);
 	}
 
 	public function testCanConstructPropertySpecificationLookup() {
 		$this->assertInstanceOf(
-			'\SMW\Property\SpecificationLookup',
+			SpecificationLookup::class,
 			$this->servicesFactory->getPropertySpecificationLookup()
 		);
 	}
 
 	public function testCanConstructHierarchyLookup() {
 		$this->assertInstanceOf(
-			'\SMW\HierarchyLookup',
+			HierarchyLookup::class,
 			$this->servicesFactory->newHierarchyLookup()
 		);
 	}
 
 	public function testCanConstructQueryFactory() {
 		$this->assertInstanceOf(
-			'\SMW\QueryFactory',
+			QueryFactory::class,
 			$this->servicesFactory->getQueryFactory()
 		);
 	}
 
 	public function testCanConstructPropertyLabelFinder() {
 		$this->assertInstanceOf(
-			'\SMW\PropertyLabelFinder',
+			PropertyLabelFinder::class,
 			$this->servicesFactory->getPropertyLabelFinder()
 		);
 	}
@@ -225,28 +261,28 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 		};
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Deferred\CallableUpdate',
+			CallableUpdate::class,
 			$this->servicesFactory->newDeferredCallableUpdate( $callback )
 		);
 	}
 
 	public function testCanConstructDeferredTransactionalCallableUpdate() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Deferred\TransactionalCallableUpdate',
+			TransactionalCallableUpdate::class,
 			$this->servicesFactory->newDeferredTransactionalCallableUpdate( null )
 		);
 	}
 
 	public function testCanConstructMediaWikiLogger() {
 		$this->assertInstanceOf(
-			'\Psr\Log\LoggerInterface',
+			LoggerInterface::class,
 			$this->servicesFactory->getMediaWikiLogger()
 		);
 	}
 
 	public function testCanConstructEventDispatcher() {
 		$this->assertInstanceOf(
-			'\Onoi\EventDispatcher\EventDispatcher',
+			EventDispatcher::class,
 			$this->servicesFactory->getEventDispatcher()
 		);
 	}
@@ -274,19 +310,19 @@ class ServicesFactoryTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			'ResultCache',
 			[],
-			'\SMW\Query\Cache\ResultCache'
+			ResultCache::class
 		];
 
 		$provider[] = [
 			'FactboxFactory',
 			[],
-			'SMW\Factbox\FactboxFactory'
+			FactboxFactory::class
 		];
 
 		$provider[] = [
 			'PropertyAnnotatorFactory',
 			[],
-			'SMW\Property\AnnotatorFactory'
+			AnnotatorFactory::class
 		];
 
 		return $provider;

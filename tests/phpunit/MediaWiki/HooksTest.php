@@ -3,16 +3,49 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Block\Block;
+use MediaWiki\Content\Content;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Edit\PreparedEdit;
 use MediaWiki\EditPage\EditPage;
+use MediaWiki\Language\Language;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
+use Onoi\EventDispatcher\Listener\GenericCallbackEventListener;
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
+use SMW\ContentParser;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
+use SMW\MediaWiki\PermissionManager;
+use SMW\MediaWiki\RevisionGuard;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
+use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
+use SMW\Options;
+use SMW\QueryEngine;
+use SMW\RequestOptions;
+use SMW\Schema\SchemaFactory;
+use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
+use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeOp;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\PropertyTableInfoFetcher;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -25,7 +58,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class HooksTest extends \PHPUnit\Framework\TestCase {
+class HooksTest extends TestCase {
 
 	private $parser;
 	private $title;
@@ -45,15 +78,15 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$this->parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$this->title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,7 +98,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 9900 );
 
-		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,11 +106,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getUser' )
 			->willReturn( $user );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestContext = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
+		$this->requestContext = $this->getMockBuilder( RequestContext::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,11 +134,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getOutput' )
 			->willReturn( $this->outputPage );
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$contentParser = $this->getMockBuilder( '\SMW\ContentParser' )
+		$contentParser = $this->getMockBuilder( ContentParser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +160,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'ParserCache', $parserCache );
 
-		$permissionManager = $this->getMockBuilder( '\SMW\MediaWiki\PermissionManager' )
+		$permissionManager = $this->getMockBuilder( PermissionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +188,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 		// BeforePageDisplay
 		$callback = end( $vars['wgHooks']['BeforePageDisplay'] );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -169,7 +202,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider callMethodProvider
 	 */
 	public function testRegister( $method ) {
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -194,7 +227,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			'AdminLinks'
 		];
 
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -358,7 +391,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callOutputPageParserOutput( $instance ) {
 		$handler = 'OutputPageParserOutput';
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -448,11 +481,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
+		$searchEngine = $this->getMockBuilder( ExtendedSearchEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -504,7 +537,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -537,14 +570,14 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callRevisionFromEditComplete( $instance ) {
 		$handler = 'RevisionFromEditComplete';
 
-		$contentHandler = $this->getMockBuilder( '\MediaWiki\Content\ContentHandler' )
+		$contentHandler = $this->getMockBuilder( ContentHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$contentHandler->expects( $this->any() )
 			->method( 'getDefaultFormat' )
 			->willReturn( CONTENT_FORMAT_WIKITEXT );
 
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -552,7 +585,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentHandler' )
 			->willReturn( $contentHandler );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -564,7 +597,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -572,7 +605,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContent' )
 			->willReturn( $content );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -598,14 +631,14 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callPageMoveComplete( $instance ) {
 		$handler = 'PageMoveComplete';
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'deleteSubject' ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$oldTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$oldTitle = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -617,7 +650,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$newTitle = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$newTitle = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -625,7 +658,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_SPECIAL );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -648,14 +681,14 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callArticleProtectComplete( $instance ) {
 		$handler = 'ArticleProtectComplete';
 
-		$contentHandler = $this->getMockBuilder( '\MediaWiki\Content\ContentHandler' )
+		$contentHandler = $this->getMockBuilder( ContentHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$contentHandler->expects( $this->any() )
 			->method( 'getDefaultFormat' )
 			->willReturn( CONTENT_FORMAT_WIKITEXT );
 
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -663,7 +696,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContentHandler' )
 			->willReturn( $contentHandler );
 
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -679,11 +712,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $this->title );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -724,15 +757,15 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getNamespace' )
 			->willReturn( NS_MAIN );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher', 'getObjectIds' ] )
 			->getMock();
@@ -817,7 +850,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callArticleDelete( $instance ) {
 		$handler = 'ArticleDelete';
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -853,7 +886,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $this->title );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -879,7 +912,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'findAssociatedRev' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'updateData' ] )
 			->getMock();
@@ -890,7 +923,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -994,11 +1027,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function callGetPreferences( $instance ) {
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+		$schemaFinder = $this->getMockBuilder( SchemaFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1006,7 +1039,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSchemaListByType' )
 			->willReturn( $schemaList );
 
-		$schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+		$schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1018,7 +1051,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$handler = 'GetPreferences';
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 		$preferences = [];
@@ -1035,7 +1068,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callSkinTemplateNavigation( $instance ) {
 		$handler = 'SkinTemplateNavigation::Universal';
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1200,7 +1233,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$title = Title::newFromText( 'Foo' );
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1212,7 +1245,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1253,7 +1286,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callParserFirstCallInit( $instance ) {
 		$handler = 'ParserFirstCallInit';
 
-		$parser = $this->getMockBuilder( '\MediaWiki\Parser\Parser' )
+		$parser = $this->getMockBuilder( Parser::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1278,7 +1311,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$title = $this->title;
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1330,11 +1363,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables', 'getPropertyTableInfoFetcher' ] )
 			->getMock();
@@ -1445,7 +1478,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callUserGroupsChanged( $instance ) {
 		$handler = 'UserGroupsChanged';
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1468,7 +1501,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callDeleteAccount( $instance ) {
 		$handler = 'DeleteAccount';
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1527,19 +1560,19 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			return $this->markTestSkipped( "$handler not used" );
 		}
 
-		$taskHandlerRegistry = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry' )
+		$taskHandlerRegistry = $this->getMockBuilder( TaskHandlerRegistry::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1558,7 +1591,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			return $this->markTestSkipped( "$handler not used" );
 		}
 
-		$eventListener = $this->getMockBuilder( '\Onoi\EventDispatcher\Listener\GenericCallbackEventListener' )
+		$eventListener = $this->getMockBuilder( GenericCallbackEventListener::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1573,15 +1606,15 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 	public function callSMWSQLStorAfterDataUpdateComplete( $instance ) {
 		$handler = 'SMW::SQLStore::AfterDataUpdateComplete';
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1595,9 +1628,9 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getOptions' )
-			->willReturn( new \SMW\Options() );
+			->willReturn( new Options() );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1605,7 +1638,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubject' )
 			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
-		$changeOp = $this->getMockBuilder( '\SMW\SQLStore\ChangeOp\ChangeOp' )
+		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1644,7 +1677,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$queryEngine = $this->getMockBuilder( '\SMW\QueryEngine' )
+		$queryEngine = $this->getMockBuilder( QueryEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1669,7 +1702,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'warmUpCache' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getPropertyValues' ] )
 			->getMock();
@@ -1699,7 +1732,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->setMethods( [ 'exists', 'getId' ] )
 			->getMock();
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds', 'getPropertyValues' ] )
 			->getMock();
@@ -1712,7 +1745,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [] );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1720,7 +1753,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getSubject' )
 			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
 
-		$requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1768,15 +1801,15 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			$instance->isRegistered( $handler )
 		);
 
-		$tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$options = $this->getMockBuilder( '\SMW\Options' )
+		$options = $this->getMockBuilder( Options::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1797,11 +1830,11 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			$instance->isRegistered( $handler )
 		);
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -1822,7 +1855,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase {
 			$instance->isRegistered( $handler )
 		);
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

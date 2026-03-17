@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Query\Result;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Query\PrintRequest;
 use SMW\Query\Result\Restrictions;
 
 /**
@@ -14,7 +16,7 @@ use SMW\Query\Result\Restrictions;
  *
  * @author mwjames
  */
-class RestrictionsTest extends \PHPUnit\Framework\TestCase {
+class RestrictionsTest extends TestCase {
 
 	private $dataItemFactory;
 	private $store;
@@ -24,7 +26,7 @@ class RestrictionsTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+		$this->printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

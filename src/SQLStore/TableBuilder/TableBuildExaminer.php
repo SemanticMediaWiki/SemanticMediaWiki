@@ -26,29 +26,17 @@ class TableBuildExaminer {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var TableBuildExaminerFactory
-	 */
-	private $tableBuildExaminerFactory;
-
-	/**
 	 * @var array
 	 */
 	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
-	 * @param TableBuildExaminerFactory $tableBuildExaminerFactory
 	 */
-	public function __construct( SQLStore $store, TableBuildExaminerFactory $tableBuildExaminerFactory ) {
-		$this->store = $store;
-		$this->tableBuildExaminerFactory = $tableBuildExaminerFactory;
+	public function __construct(
+		private SQLStore $store,
+		private TableBuildExaminerFactory $tableBuildExaminerFactory,
+	) {
 		$this->messageReporter = new NullMessageReporter();
 		$this->setPredefinedPropertyList( PropertyRegistry::getInstance()->getPropertyList() );
 	}

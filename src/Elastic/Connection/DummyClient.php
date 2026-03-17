@@ -2,6 +2,7 @@
 
 namespace SMW\Elastic\Connection;
 
+use Elasticsearch\Client as ElasticSearchClient;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use Psr\Log\NullLogger;
@@ -35,7 +36,7 @@ class DummyClient extends Client {
 	/**
 	 * @since 3.0
 	 *
-	 * @param \Elasticsearch\Client|null $client
+	 * @param ElasticSearchClient|null $client
 	 * @param Cache|null $cache
 	 * @param Config|null $config
 	 */

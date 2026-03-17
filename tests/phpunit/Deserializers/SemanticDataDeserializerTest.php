@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Deserializers;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Deserializers\SemanticDataDeserializer;
+use SMW\Exception\DataItemDeserializationException;
+use SMW\SemanticData;
 
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer
@@ -13,11 +16,11 @@ use SMW\Deserializers\SemanticDataDeserializer;
  *
  * @author mwjames
  */
-class SemanticDataDeserializerTest extends \PHPUnit\Framework\TestCase {
+class SemanticDataDeserializerTest extends TestCase {
 
 	public function testCanConstructor() {
 		$this->assertInstanceOf(
-			'\SMW\Deserializers\SemanticDataDeserializer',
+			SemanticDataDeserializer::class,
 			new SemanticDataDeserializer()
 		);
 	}
@@ -35,7 +38,7 @@ class SemanticDataDeserializerTest extends \PHPUnit\Framework\TestCase {
 	public function testDeserializerForInvalidSubjectThrowsException() {
 		$instance = new SemanticDataDeserializer();
 
-		$this->expectException( '\SMW\Exception\DataItemDeserializationException' );
+		$this->expectException( DataItemDeserializationException::class );
 
 		$instance->deserialize(
 			[ 'subject' => '--#Foo' ]
@@ -53,7 +56,7 @@ class SemanticDataDeserializerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new SemanticDataDeserializer();
 
 		$this->assertInstanceOf(
-			'SMW\SemanticData',
+			SemanticData::class,
 			$instance->deserialize( [ 'subject' => 'Foo#0##' ] )
 		);
 	}

@@ -38,7 +38,11 @@ trait SeekableIteratorTrait {
 	 * {@inheritDoc}
 	 */
 	public function count(): int {
-		return $this->count ?? $this->count = count( $this->container );
+		if ( $this->count === null ) {
+			$this->count = count( $this->container );
+		}
+
+		return $this->count;
 	}
 
 	/**

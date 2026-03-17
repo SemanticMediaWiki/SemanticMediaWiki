@@ -5,6 +5,8 @@ namespace SMW\SQLStore\EntityStore;
 use Iterator;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\PredefinedPropertyLabelMismatchException;
+use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
@@ -68,11 +70,6 @@ class EntityIdManager {
 	 * @var SQLStore
 	 */
 	public $store;
-
-	/**
-	 * @var SQLStoreFactory
-	 */
-	private $factory;
 
 	/**
 	 * @var IdToDataItemMatchFinder
@@ -146,12 +143,12 @@ class EntityIdManager {
 
 	/**
 	 * @since 1.8
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store, SQLStoreFactory $factory ) {
+	public function __construct(
+		SQLStore $store,
+		private readonly SQLStoreFactory $factory,
+	) {
 		$this->store = $store;
-		$this->factory = $factory;
 		$this->initCache();
 
 		$this->idEntityFinder = $this->factory->newIdEntityFinder(
@@ -519,9 +516,9 @@ class EntityIdManager {
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
 				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
-			} catch ( \SMW\Exception\PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				return 0;
-			} catch ( \SMW\Exception\PropertyLabelNotResolvedException $e ) {
+			} catch ( PropertyLabelNotResolvedException $e ) {
 				return 0;
 			}
 

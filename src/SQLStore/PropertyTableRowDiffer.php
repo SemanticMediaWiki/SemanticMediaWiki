@@ -23,16 +23,6 @@ use SMWDataItem as DataItem;
 class PropertyTableRowDiffer {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PropertyTableRowMapper
-	 */
-	private $propertyTableRowMapper;
-
-	/**
 	 * @var ChangeOp
 	 */
 	private $changeOp;
@@ -44,13 +34,11 @@ class PropertyTableRowDiffer {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param Store $store
-	 * @param PropertyTableRowMapper $propertyTableRowMapper
 	 */
-	public function __construct( Store $store, PropertyTableRowMapper $propertyTableRowMapper ) {
-		$this->store = $store;
-		$this->propertyTableRowMapper = $propertyTableRowMapper;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyTableRowMapper $propertyTableRowMapper,
+	) {
 	}
 
 	/**

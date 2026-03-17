@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataValues\ValueValidators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator;
@@ -15,7 +16,7 @@ use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator
  *
  * @author mwjames
  */
-class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit\Framework\TestCase {
+class PropertySpecificationConstraintValueValidatorTest extends TestCase {
 
 	private $dataItemFactory;
 	private $dataValueFactory;
@@ -28,7 +29,7 @@ class PropertySpecificationConstraintValueValidatorTest extends \PHPUnit\Framewo
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator',
+			PropertySpecificationConstraintValueValidator::class,
 			new PropertySpecificationConstraintValueValidator()
 		);
 	}

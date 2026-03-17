@@ -19,11 +19,6 @@ class ConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var string
-	 */
-	private $provider;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
@@ -35,11 +30,8 @@ class ConnectionProvider implements IConnectionProvider {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string|null $provider
 	 */
-	public function __construct( $provider = null ) {
-		$this->provider = $provider;
+	public function __construct( private $provider = null ) {
 	}
 
 	/**
@@ -75,7 +67,8 @@ class ConnectionProvider implements IConnectionProvider {
 			$conf = $this->localConnectionConf[$this->provider];
 		}
 
-		return $this->connection = $this->createConnection( $conf );
+		$this->connection = $this->createConnection( $conf );
+		return $this->connection;
 	}
 
 	/**

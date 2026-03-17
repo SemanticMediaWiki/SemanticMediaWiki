@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
 use SMW\Query\DescriptionFactory;
 
@@ -14,7 +16,7 @@ use SMW\Query\DescriptionFactory;
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class NamespaceDescriptionInterpreterTest extends TestCase {
 
 	private DescriptionFactory $descriptionFactory;
 	private $conditionBuilder;
@@ -22,7 +24,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function setUp(): void {
 		$this->descriptionFactory = new DescriptionFactory();
 
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\Elastic\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->setMethods( null )
 			->getMock();

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Structure;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\GlobalsProvider;
 
@@ -17,7 +18,7 @@ use SMW\Tests\Utils\GlobalsProvider;
  *
  * @author mwjames
  */
-class InstallationGlobalsProviderIntegrityTest extends \PHPUnit\Framework\TestCase {
+class InstallationGlobalsProviderIntegrityTest extends TestCase {
 
 	private $globalsProvider;
 	private $applicationFactory;

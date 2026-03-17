@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Language\NamespaceDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter;
@@ -17,7 +19,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class NamespaceDescriptionInterpreterTest extends TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -28,22 +30,22 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter',
+			NamespaceDescriptionInterpreter::class,
 			new NamespaceDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanBuildConditionFor() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\NamespaceDescription' )
+		$description = $this->getMockBuilder( NamespaceDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -84,7 +86,7 @@ class NamespaceDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new NamespaceDescription( NS_MAIN );
 		$orderByProperty = null;

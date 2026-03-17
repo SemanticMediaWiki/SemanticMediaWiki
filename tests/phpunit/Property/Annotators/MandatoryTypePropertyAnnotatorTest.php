@@ -2,11 +2,13 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\Utils\UtilityFactory;
 use SMWDIBlob as DIBlob;
 use SMWDIUri as DIUri;
@@ -20,7 +22,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -33,7 +35,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -42,7 +44,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\MandatoryTypePropertyAnnotator',
+			MandatoryTypePropertyAnnotator::class,
 			$instance
 		);
 	}
@@ -50,7 +52,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function testNoImportForNoProperty() {
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -71,7 +73,7 @@ class MandatoryTypePropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	public function testNoImportForPredefinedProperty() {
 		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -6,7 +6,9 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\QueryPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
@@ -18,7 +20,7 @@ use SMW\Tests\Utils\Mock\MockSuperUser;
  *
  * @author mwjames
  */
-class QueryPageTest extends \PHPUnit\Framework\TestCase {
+class QueryPageTest extends TestCase {
 
 	/**
 	 * Helper method that returns a QueryPage object
@@ -30,7 +32,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	 * @return QueryPage
 	 */
 	private function newInstance( $search = '' ) {
-		$queryPage = $this->getMockBuilder( '\SMW\QueryPage' )
+		$queryPage = $this->getMockBuilder( QueryPage::class )
 			->setMethods( [ 'getResults', 'formatResult' ] )
 			->getMock();
 
@@ -46,7 +48,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 	 * @since 1.9
 	 */
 	public function testConstructor() {
-		$this->assertInstanceOf( '\SMW\QueryPage', $this->newInstance() );
+		$this->assertInstanceOf( QueryPage::class, $this->newInstance() );
 	}
 
 	/**
@@ -72,7 +74,7 @@ class QueryPageTest extends \PHPUnit\Framework\TestCase {
 		$search = __METHOD__;
 		$instance = $this->newInstance();
 
-		$reflector = new ReflectionClass( '\SMW\QueryPage' );
+		$reflector = new ReflectionClass( QueryPage::class );
 		$selectOptions = $reflector->getProperty( 'selectOptions' );
 		$selectOptions->setValue( $instance, [
 			'offset' => 1,

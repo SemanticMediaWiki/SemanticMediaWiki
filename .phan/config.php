@@ -1,6 +1,8 @@
 <?php
 $config = require __DIR__ . '/../vendor/mediawiki/mediawiki-phan-config/src/config.php';
 
+$config['minimum_target_php_version'] = '8.1';
+
 $config['suppress_issue_types'] = array_merge(
 	$config['suppress_issue_types'],
 	[
@@ -41,35 +43,18 @@ $config['suppress_issue_types'] = array_merge(
 		'SecurityCheck-DoubleEscaped',
 		'SecurityCheck-SQLInjection',
 		'SecurityCheck-XSS',
-		// Required php8+
-		'PhanUnusedVariableCaughtException',
+
+		// Both local and global vendor directories have to be analysed
+		'PhanRedefinedClassReference',
+		'PhanRedefinedExtendedClass',
+		'PhanRedefinedInheritedInterface',
+		'PhanRedefinedUsedTrait',
 	]
 );
 
-// Include only direct production dependencies in vendor/
-// Omit dev dependencies and most indirect dependencies
-
-$composerJson = json_decode(
-	file_get_contents( __DIR__ . '/../composer.json' ),
-	true
-);
-
-$directDeps = [];
-foreach ( $composerJson['require'] as $dep => $version ) {
-	$parts = explode( '/', $dep );
-	if ( count( $parts ) === 2 ) {
-		$directDeps[] = $dep;
-	}
+if ( is_dir( 'vendor' ) ) {
+	$config['directory_list'][] = 'vendor';
+	$config['exclude_analysis_directory_list'][] = 'vendor';
 }
-
-foreach ( [ ...$directDeps ] as $dep ) {
-	$config['directory_list'][] = "vendor/$dep";
-}
-
-$config['exclude_analysis_directory_list'] = [
-	'vendor/',
-	'.phan/',
-	'tests/phpunit/',
-];
 
 return $config;

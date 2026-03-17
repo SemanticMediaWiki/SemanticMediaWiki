@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\Iterators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Iterators\ResultIterator;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\Iterators\ResultIterator
@@ -13,7 +15,7 @@ use SMW\Iterators\ResultIterator;
  *
  * @author mwjames
  */
-class ResultIteratorTest extends \PHPUnit\Framework\TestCase {
+class ResultIteratorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -67,7 +69,7 @@ class ResultIteratorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testdoIterateOnResultWrapper() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 

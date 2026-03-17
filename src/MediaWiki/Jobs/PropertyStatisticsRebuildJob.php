@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GPL-2.0-or-later
@@ -55,7 +56,7 @@ class PropertyStatisticsRebuildJob extends Job {
 		// the property statistics table and hereby its update is bound to
 		// the SQLStore
 		$propertyStatisticsRebuilder = $maintenanceFactory->newPropertyStatisticsRebuilder(
-			$applicationFactory->getStore( '\SMW\SQLStore\SQLStore' )
+			$applicationFactory->getStore( SQLStore::class )
 		);
 
 		$propertyStatisticsRebuilder->rebuild();

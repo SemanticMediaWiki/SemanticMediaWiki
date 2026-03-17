@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 
+use MediaWiki\Request\WebRequest;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler;
+use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
+class DisposeJobTaskHandlerTest extends TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
@@ -26,11 +32,11 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputFormatter = $this->getMockBuilder( '\SMW\MediaWiki\Specials\Admin\OutputFormatter' )
+		$this->outputFormatter = $this->getMockBuilder( OutputFormatter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,14 +92,14 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw.entityIdDisposer' )
 			->willReturn( false );
 
-		$entityIdDisposerJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\EntityIdDisposerJob' )
+		$entityIdDisposerJob = $this->getMockBuilder( EntityIdDisposerJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$entityIdDisposerJob->expects( $this->once() )
 			->method( 'insert' );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -103,7 +109,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -123,7 +129,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 			->with( 'smw.entityIdDisposer' )
 			->willReturn( true );
 
-		$jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +138,7 @@ class DisposeJobTaskHandlerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment->registerObject( 'JobFactory', $jobFactory );
 
-		$webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 

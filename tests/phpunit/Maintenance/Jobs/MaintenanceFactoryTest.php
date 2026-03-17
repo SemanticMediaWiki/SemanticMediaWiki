@@ -2,7 +2,17 @@
 
 namespace SMW\Tests\Maintenance\Jobs;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Localizer\LocalMessageProvider;
+use SMW\Maintenance\AutoRecovery;
+use SMW\Maintenance\ConceptCacheRebuilder;
+use SMW\Maintenance\DataRebuilder;
+use SMW\Maintenance\DuplicateEntitiesDisposer;
 use SMW\Maintenance\MaintenanceFactory;
+use SMW\Maintenance\MaintenanceHelper;
+use SMW\Maintenance\MaintenanceLogger;
+use SMW\Maintenance\PropertyStatisticsRebuilder;
+use SMW\Store;
 
 /**
  * @covers \SMW\Maintenance\MaintenanceFactory
@@ -13,21 +23,21 @@ use SMW\Maintenance\MaintenanceFactory;
  *
  * @author mwjames
  */
-class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
+class MaintenanceFactoryTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 	}
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\MaintenanceFactory',
+			MaintenanceFactory::class,
 			new MaintenanceFactory()
 		);
 	}
@@ -36,7 +46,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\MaintenanceHelper',
+			MaintenanceHelper::class,
 			$instance->newMaintenanceHelper()
 		);
 	}
@@ -45,7 +55,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Localizer\LocalMessageProvider',
+			LocalMessageProvider::class,
 			$instance->newLocalMessageProvider( 'foo' )
 		);
 	}
@@ -54,7 +64,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\DataRebuilder',
+			DataRebuilder::class,
 			$instance->newDataRebuilder( $this->store )
 		);
 	}
@@ -63,7 +73,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\ConceptCacheRebuilder',
+			ConceptCacheRebuilder::class,
 			$instance->newConceptCacheRebuilder( $this->store )
 		);
 	}
@@ -72,7 +82,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\PropertyStatisticsRebuilder',
+			PropertyStatisticsRebuilder::class,
 			$instance->newPropertyStatisticsRebuilder( $this->store )
 		);
 	}
@@ -90,7 +100,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\DuplicateEntitiesDisposer',
+			DuplicateEntitiesDisposer::class,
 			$instance->newDuplicateEntitiesDisposer( $this->store )
 		);
 	}
@@ -99,7 +109,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\MaintenanceLogger',
+			MaintenanceLogger::class,
 			$instance->newMaintenanceLogger( 'Foo' )
 		);
 	}
@@ -108,7 +118,7 @@ class MaintenanceFactoryTest extends \PHPUnit\Framework\TestCase {
 		$instance = new MaintenanceFactory();
 
 		$this->assertInstanceOf(
-			'\SMW\Maintenance\AutoRecovery',
+			AutoRecovery::class,
 			$instance->newAutoRecovery( 'Foo' )
 		);
 	}

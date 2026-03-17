@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Utils\Image;
 
@@ -14,7 +15,7 @@ use SMW\Utils\Image;
  *
  * @author mwjames
  */
-class ImageTest extends \PHPUnit\Framework\TestCase {
+class ImageTest extends TestCase {
 
 	public function testIsImage() {
 		$this->assertTrue(

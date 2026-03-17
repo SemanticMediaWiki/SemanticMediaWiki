@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Exception\NamespaceIndexChangeException;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Exception\NamespaceIndexChangeException;
  *
  * @author mwjames
  */
-class NamespaceIndexChangeExceptionTest extends \PHPUnit\Framework\TestCase {
+class NamespaceIndexChangeExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new NamespaceIndexChangeException( 'Foo', 'Bar' );

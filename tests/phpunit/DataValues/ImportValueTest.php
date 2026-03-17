@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\ImportValue;
 use SMW\DataValues\ValueParsers\ImportValueParser;
+use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Services\DataValueServiceFactory;
 
 /**
  * @covers \SMW\DataValues\ImportValue
@@ -14,18 +17,18 @@ use SMW\DataValues\ValueParsers\ImportValueParser;
  *
  * @author mwjames
  */
-class ImportValueTest extends \PHPUnit\Framework\TestCase {
+class ImportValueTest extends TestCase {
 
 	private $dataValueServiceFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+		$mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,7 +39,7 @@ class ImportValueTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\DataValues\ImportValue',
+			ImportValue::class,
 			new ImportValue()
 		);
 	}

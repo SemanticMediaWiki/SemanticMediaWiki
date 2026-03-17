@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 /**
@@ -13,7 +15,7 @@ use RuntimeException;
  *
  * @author mwjames
  */
-class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
+class IteratorMockBuilder extends TestCase {
 
 	private $iteratorClass;
 	private $items = [];
@@ -71,7 +73,7 @@ class IteratorMockBuilder extends \PHPUnit\Framework\TestCase {
 	/**
 	 * @since  2.0
 	 *
-	 * @return \PHPUnit\Framework\MockObject\MockObject
+	 * @return MockObject
 	 * @throws RuntimeException
 	 */
 	public function getMockForIterator() {

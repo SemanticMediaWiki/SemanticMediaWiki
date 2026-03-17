@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Search;
 
+use File;
 use MediaWiki\Title\Title;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
@@ -18,11 +19,6 @@ use SMW\DIWikiPage;
 class SearchResult extends \SearchResult {
 
 	/**
-	 * @var Title|null
-	 */
-	protected $mTitle;
-
-	/**
 	 * @var string|null
 	 */
 	protected $mText;
@@ -34,11 +30,8 @@ class SearchResult extends \SearchResult {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title|null $title
 	 */
-	public function __construct( $title ) {
-		$this->mTitle = $title;
+	public function __construct( protected $mTitle ) {
 	}
 
 	/**
@@ -49,7 +42,7 @@ class SearchResult extends \SearchResult {
 	}
 
 	/**
-	 * @return \File|null
+	 * @return File|null
 	 */
 	public function getFile() {
 		return null;

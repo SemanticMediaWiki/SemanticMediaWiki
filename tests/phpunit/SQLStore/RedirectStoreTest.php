@@ -2,10 +2,17 @@
 
 namespace SMW\Tests\SQLStore;
 
+use Onoi\Cache\Cache;
+use PHPUnit\Framework\TestCase;
+use SMW\Connection\ConnectionManager;
 use SMW\InMemoryPoolCache;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobQueue;
+use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\FieldType;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
@@ -19,7 +26,7 @@ use Wikimedia\Rdbms\FakeResultWrapper;
  *
  * @author mwjames
  */
-class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
+class RedirectStoreTest extends TestCase {
 
 	private $store;
 	private Database $connection;
@@ -31,7 +38,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,12 +46,12 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( null )
 			->getMock();
 
-		$this->connectionManager = $this->getMockBuilder( '\SMW\Connection\ConnectionManager' )
+		$this->connectionManager = $this->getMockBuilder( ConnectionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -196,15 +203,15 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 				[ 'Foo' => 42 ] )
 			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getFields' )
-			->willReturn( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] );
+			->willReturn( [ 'Foo' => FieldType::FIELD_ID ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
@@ -216,7 +223,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( [ $propertyTable ] );
 
 		$store->setOption(
-			\SMW\Store::OPT_CREATE_UPDATE_JOB,
+			Store::OPT_CREATE_UPDATE_JOB,
 			true
 		);
 
@@ -246,7 +253,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 	public function testUpdateRedirect_OnCommandLine_ActiveSectionTransaction() {
 		$this->connection->expects( $this->once() )
 			->method( 'inSectionTransaction' )
-			->with( \SMW\SQLStore\SQLStore::UPDATE_TRANSACTION )
+			->with( SQLStore::UPDATE_TRANSACTION )
 			->willReturn( true );
 
 		$this->jobQueue->expects( $this->once() )
@@ -260,15 +267,15 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( new FakeResultWrapper( [ $row ] ) );
 
-		$propertyTable = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getFields' )
-			->willReturn( [ 'Foo' => \SMW\SQLStore\TableBuilder\FieldType::FIELD_ID ] );
+			->willReturn( [ 'Foo' => FieldType::FIELD_ID ] );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
@@ -280,7 +287,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 			->willReturn( [ $propertyTable ] );
 
 		$store->setOption(
-			\SMW\Store::OPT_CREATE_UPDATE_JOB,
+			Store::OPT_CREATE_UPDATE_JOB,
 			true
 		);
 
@@ -305,7 +312,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testUpdateRedirectNotEnabled() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getPropertyTables' ] )
 			->getMock();
@@ -314,7 +321,7 @@ class RedirectStoreTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' );
 
 		$store->setOption(
-			\SMW\Store::OPT_CREATE_UPDATE_JOB,
+			Store::OPT_CREATE_UPDATE_JOB,
 			false
 		);
 

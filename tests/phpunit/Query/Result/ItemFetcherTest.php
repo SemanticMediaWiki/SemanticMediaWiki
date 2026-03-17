@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\Query\Result;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Query\PrintRequest;
+use SMW\Query\QueryToken;
 use SMW\Query\Result\ItemFetcher;
+use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\PrefetchCache;
+use SMW\Store;
 
 /**
  * @covers SMW\Query\Result\ItemFetcher
@@ -14,7 +20,7 @@ use SMW\Query\Result\ItemFetcher;
  *
  * @author mwjames
  */
-class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
+class ItemFetcherTest extends TestCase {
 
 	private $dataItemFactory;
 	private $store;
@@ -24,12 +30,12 @@ class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 		parent::setUp();
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service', 'getPropertyValues' ] )
 			->getMockForAbstractClass();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -55,7 +61,7 @@ class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHighlightTokens_Blob() {
-		$queryToken = $this->getMockBuilder( '\SMW\Query\QueryToken' )
+		$queryToken = $this->getMockBuilder( QueryToken::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +69,7 @@ class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 			->method( 'highlight' )
 			->willReturn( '<b>Foo</b>' );
 
-		$printRequest = $this->getMockBuilder( '\SMW\Query\PrintRequest' )
+		$printRequest = $this->getMockBuilder( PrintRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -130,7 +136,7 @@ class ItemFetcherTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foobar' )
 		];
 
-		$prefetchCache = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PrefetchCache' )
+		$prefetchCache = $this->getMockBuilder( PrefetchCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 

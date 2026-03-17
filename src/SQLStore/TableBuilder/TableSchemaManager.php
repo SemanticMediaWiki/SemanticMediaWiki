@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\TableBuilder;
 
+use Exception;
 use SMW\SQLStore\SQLStore;
 use SMWDataItem as DataItem;
 
@@ -16,11 +17,6 @@ use SMWDataItem as DataItem;
  * @author mwjames
  */
 class TableSchemaManager {
-
-	/**
-	 * @var SQLStore
-	 */
-	private $store;
 
 	/**
 	 * @var MessageReporter
@@ -44,11 +40,8 @@ class TableSchemaManager {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**
@@ -157,7 +150,7 @@ class TableSchemaManager {
 			// are correctly initialized otherwise SMW can't recover
 			try {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() );
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				continue;
 			}
 

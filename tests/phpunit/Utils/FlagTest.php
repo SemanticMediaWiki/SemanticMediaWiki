@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\Flag;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\Flag;
  *
  * @author mwjames
  */
-class FlagTest extends \PHPUnit\Framework\TestCase {
+class FlagTest extends TestCase {
 
 	public function testIs() {
 		$instance = new Flag( 2 | 4 | 16 );

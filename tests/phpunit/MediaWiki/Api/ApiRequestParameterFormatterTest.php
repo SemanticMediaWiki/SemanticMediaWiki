@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\ApiRequestParameterFormatter;
+use SMW\Query\PrintRequest;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
+class ApiRequestParameterFormatterTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -28,7 +31,7 @@ class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Api\ApiRequestParameterFormatter',
+			ApiRequestParameterFormatter::class,
 			new ApiRequestParameterFormatter( [] )
 		);
 	}
@@ -86,10 +89,10 @@ class ApiRequestParameterFormatterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newPrintRequest( $printout ) {
-		return new \SMW\Query\PrintRequest(
-			\SMW\Query\PrintRequest::PRINT_PROP,
+		return new PrintRequest(
+			PrintRequest::PRINT_PROP,
 			$printout,
-			\SMW\DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
+			DataValueFactory::getInstance()->newPropertyValueByLabel( $printout )
 		);
 	}
 

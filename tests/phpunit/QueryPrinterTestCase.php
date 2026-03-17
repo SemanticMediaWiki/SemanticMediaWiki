@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use SMW\Query\ResultPrinters\ResultPrinter;
 
@@ -23,7 +24,7 @@ use SMW\Query\ResultPrinters\ResultPrinter;
  * @group SMW
  * @group SMWExtension
  */
-abstract class QueryPrinterTestCase extends \PHPUnit\Framework\TestCase {
+abstract class QueryPrinterTestCase extends TestCase {
 
 	/**
 	 * Helper method sets result printer parameters

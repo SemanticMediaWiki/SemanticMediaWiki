@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Localizer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\LocalMessageProvider;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Localizer\LocalMessageProvider;
  *
  * @author mwjames
  */
-class LocalMessageProviderTest extends \PHPUnit\Framework\TestCase {
+class LocalMessageProviderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

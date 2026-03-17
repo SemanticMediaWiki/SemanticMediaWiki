@@ -4,6 +4,7 @@ namespace SMW\MediaWiki;
 
 use DateInterval;
 use DateTimeZone;
+use Exception;
 
 /**
  * @license GPL-2.0-or-later
@@ -55,7 +56,7 @@ class LocalTime {
 				$dateTime->setTimezone( $userTZ );
 				$dateTime->hasLocalTimeCorrection = true;
 				return $dateTime;
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				// Unrecognized timezone, default to 'Offset' with the stored offset.
 				$data[0] = 'Offset';
 			}

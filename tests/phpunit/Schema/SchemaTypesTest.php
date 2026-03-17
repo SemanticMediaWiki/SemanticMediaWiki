@@ -2,6 +2,9 @@
 
 namespace SMW\Tests\Schema;
 
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\HookDispatcher;
+use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
 use SMW\Schema\SchemaTypes;
 use SMW\Tests\TestEnvironment;
 
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SchemaTypesTest extends \PHPUnit\Framework\TestCase {
+class SchemaTypesTest extends TestCase {
 
 	private $testEnvironment;
 	private $hookDispatcher;
@@ -24,7 +27,7 @@ class SchemaTypesTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -145,7 +148,7 @@ class SchemaTypesTest extends \PHPUnit\Framework\TestCase {
 
 		$instance->registerSchemaType( 'Foo', [] );
 
-		$this->expectException( '\SMW\Schema\Exception\SchemaTypeAlreadyExistsException' );
+		$this->expectException( SchemaTypeAlreadyExistsException::class );
 		$instance->registerSchemaType( 'Foo', [] );
 	}
 

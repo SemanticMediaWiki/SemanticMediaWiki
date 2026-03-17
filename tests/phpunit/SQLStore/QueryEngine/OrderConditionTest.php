@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\SQLStore\QueryEngine;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\OrderCondition;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 
@@ -15,12 +17,12 @@ use SMW\SQLStore\QueryEngine\QuerySegment;
  *
  * @author mwjames
  */
-class OrderConditionTest extends \PHPUnit\Framework\TestCase {
+class OrderConditionTest extends TestCase {
 
 	private $conditionBuilder;
 
 	protected function setUp(): void {
-		$this->conditionBuilder = $this->getMockBuilder( '\SMW\SQLStore\QueryEngine\ConditionBuilder' )
+		$this->conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

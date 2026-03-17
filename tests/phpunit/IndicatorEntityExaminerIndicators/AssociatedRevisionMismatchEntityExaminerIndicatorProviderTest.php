@@ -2,9 +2,16 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
+use SMW\Indicator\IndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\Localizer\MessageLocalizer;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\RevisionGuard;
 use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +23,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
+class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends TestCase {
 
 	private EntityIdManager $entityIdManager;
 	private $store;
@@ -30,11 +37,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$this->entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getObjectIds' ] )
 			->getMockForAbstractClass();
@@ -43,11 +50,11 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 			->method( 'getObjectIds' )
 			->willReturn( $this->entityIdManager );
 
-		$this->revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$this->revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )
+		$this->messageLocalizer = $this->getMockBuilder( MessageLocalizer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,23 +70,23 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends \PHP
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider',
+			AssociatedRevisionMismatchEntityExaminerIndicatorProvider::class,
 			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProvider',
+			IndicatorProvider::class,
 			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider',
+			TypableSeverityIndicatorProvider::class,
 			new AssociatedRevisionMismatchEntityExaminerIndicatorProvider( $this->store )
 		);
 	}
 
 	public function testHasPermission() {
-		$permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 

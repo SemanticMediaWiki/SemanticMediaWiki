@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\FileNotReadableException;
 use SMW\Utils\TemplateEngine;
 
 /**
@@ -13,12 +15,12 @@ use SMW\Utils\TemplateEngine;
  *
  * @author mwjames
  */
-class TemplateEngineTest extends \PHPUnit\Framework\TestCase {
+class TemplateEngineTest extends TestCase {
 
 	public function testLoad_ThrowsException() {
 		$instance = new TemplateEngine();
 
-		$this->expectException( '\SMW\Exception\FileNotReadableException' );
+		$this->expectException( FileNotReadableException::class );
 		$instance->load( 'foo', 'bar' );
 	}
 

@@ -17,22 +17,14 @@ use SMW\Query\PrintRequest;
 final class ApiRequestParameterFormatter {
 
 	/**
-	 * @var array
-	 */
-	protected $requestParameters = [];
-
-	/**
 	 * @var ObjectDictionary
 	 */
 	protected $results = null;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param array $requestParameters
 	 */
-	public function __construct( array $requestParameters ) {
-		$this->requestParameters = $requestParameters;
+	public function __construct( protected array $requestParameters ) {
 	}
 
 	/**

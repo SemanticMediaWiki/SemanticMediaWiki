@@ -7,7 +7,7 @@ use SMW\Exporter\Element\ExpLiteral;
 
 /**
  * Class for accessing SPARQL query results in a unified form. The data is
- * structured in tabular form, with each cell containing some \SMW\Exporter\Element\ExpElement.
+ * structured in tabular form, with each cell containing some ExpElement.
  * Rows should always have the same number of columns, but the datatype of the
  * cells in each column may not be uniform throughout the result.
  *
@@ -41,7 +41,7 @@ class RepositoryResult implements Iterator {
 	 * SPARQL result table is empty (this is different from finding a blank
 	 * node).
 	 *
-	 * @var array of array of (\SMW\Exporter\Element\ExpElement or null)
+	 * @var array of array of (ExpElement or null)
 	 */
 	protected $data;
 
@@ -54,25 +54,17 @@ class RepositoryResult implements Iterator {
 	protected $comments;
 
 	/**
-	 * Error code.
-	 *
-	 * @var int
-	 */
-	protected $errorCode;
-
-	/**
 	 * Initialise a result set from a result string in SPARQL XML format.
-	 *
-	 * @param $header array mapping SPARQL variable names to column indices
-	 * @param $data array of array of (\SMW\Exporter\Element\ExpElement or null)
-	 * @param $comments array of string comments if the result contained any
-	 * @param $errorCode integer an error code
 	 */
-	public function __construct( array $header = [], array $data = [], array $comments = [], $errorCode = self::ERROR_NOERROR ) {
+	public function __construct(
+		array $header = [],
+		array $data = [],
+		array $comments = [],
+		protected $errorCode = self::ERROR_NOERROR,
+	) {
 		$this->header    = $header;
 		$this->data      = $data;
 		$this->comments  = $comments;
-		$this->errorCode = $errorCode;
 		reset( $this->data );
 	}
 
@@ -171,7 +163,7 @@ class RepositoryResult implements Iterator {
 	/**
 	 * Return the current result row. Standard method of Iterator.
 	 *
-	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
+	 * @return array of (ExpElement or null), or false at end of data
 	 */
 	#[\ReturnTypeWillChange]
 	public function current() {
@@ -182,7 +174,7 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
+	 * @return array of (ExpElement or null), or false at end of data
 	 */
 	#[\ReturnTypeWillChange]
 	public function next() {
@@ -193,7 +185,7 @@ class RepositoryResult implements Iterator {
 	 * Return the next result row and advance the internal pointer.
 	 * Standard method of Iterator.
 	 *
-	 * @return array of (\SMW\Exporter\Element\ExpElement or null), or false at end of data
+	 * @return array of (ExpElement or null), or false at end of data
 	 */
 	#[\ReturnTypeWillChange]
 	public function key() {

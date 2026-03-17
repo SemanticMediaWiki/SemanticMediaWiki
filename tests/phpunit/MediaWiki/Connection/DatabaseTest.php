@@ -2,14 +2,18 @@
 
 namespace SMW\Tests\MediaWiki\Connection;
 
+use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\Connection\ConnRef;
 use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
+use SMW\MediaWiki\Connection\TransactionHandler;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\FakeResultWrapper;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IResultWrapper;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Connection\Database
@@ -20,7 +24,7 @@ use Wikimedia\Rdbms\IResultWrapper;
  *
  * @author mwjames
  */
-class DatabaseTest extends \PHPUnit\Framework\TestCase {
+class DatabaseTest extends TestCase {
 
 	private $connRef;
 	private $transactionHandler;
@@ -28,11 +32,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->connRef = $this->getMockBuilder( '\SMW\Connection\ConnRef' )
+		$this->connRef = $this->getMockBuilder( ConnRef::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->transactionHandler = $this->getMockBuilder( '\SMW\MediaWiki\Connection\TransactionHandler' )
+		$this->transactionHandler = $this->getMockBuilder( TransactionHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -51,7 +55,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Connection\Query',
+			Query::class,
 			$instance->newQuery()
 		);
 	}
@@ -67,7 +71,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->with( 'Fan' )
 			->willReturn( 'Fan' );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -103,7 +107,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'tableName' )
 			->willReturnArgument( 0 );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +131,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSelectMethod() {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -140,7 +144,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( $resultWrapper );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -158,7 +162,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			ResultWrapper::class,
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -174,7 +178,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->with( 'Foo' )
 			->willReturn( 'Bar' );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -201,7 +205,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider querySqliteProvider
 	 */
 	public function testQueryOnSQLite( $query, $expected ) {
-		$resultWrapper = $this->getMockBuilder( '\Wikimedia\Rdbms\ResultWrapper' )
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -214,7 +218,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getType' )
 			->willReturn( 'sqlite' );
 
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -232,7 +236,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->with( $expected )
 			->willReturn( $resultWrapper );
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -251,7 +255,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			ResultWrapper::class,
 			$instance->query( $query )
 		);
 	}
@@ -277,7 +281,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willThrowException( new RuntimeException( 'Database error' ) );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -297,7 +301,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		$this->expectException( 'RuntimeException' );
 
 		$this->assertInstanceOf(
-			'\Wikimedia\Rdbms\ResultWrapper',
+			ResultWrapper::class,
 			$instance->select( 'Foo', 'Bar', '', __METHOD__ )
 		);
 	}
@@ -314,7 +318,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'query' )
 			->willThrowException( $databaseException );
 
-		$connectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$connectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -337,11 +341,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetEmptyTransactionTicket() {
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -362,11 +366,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCommitAndWaitForReplication() {
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -387,11 +391,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBeginSectionTransaction() {
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
+		$read = $this->getMockBuilder( IDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -399,7 +403,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $read );
 
-		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
+		$write = $this->getMockBuilder( IDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -409,7 +413,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		$write->expects( $this->never() )
 			->method( 'endAtomic' );
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -442,11 +446,11 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testBeginEndSectionTransaction() {
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$read = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
+		$read = $this->getMockBuilder( IDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -454,7 +458,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $read );
 
-		$write = $this->getMockBuilder( '\Wikimedia\Rdbms\IDatabase' )
+		$write = $this->getMockBuilder( IDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -464,7 +468,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		$write->expects( $this->once() )
 			->method( 'endAtomic' );
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -502,7 +506,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testListTables() {
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -549,7 +553,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 		$database->expects( $this->once() )
 			->method( 'setFlag' );
 
-		$readConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$readConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -557,7 +561,7 @@ class DatabaseTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getConnection' )
 			->willReturn( $database );
 
-		$writeConnectionProvider = $this->getMockBuilder( '\SMW\Connection\ConnectionProvider' )
+		$writeConnectionProvider = $this->getMockBuilder( ConnectionProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 

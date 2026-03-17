@@ -2,6 +2,7 @@
 
 namespace SMW\Query\Result;
 
+use Iterator;
 use SMW\DataTypeRegistry;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
@@ -12,6 +13,7 @@ use SMW\RequestOptions;
 use SMW\Store;
 use SMWDataItem as DataItem;
 use SMWDIBlob as DIBlob;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -185,7 +187,7 @@ class ItemFetcher {
 				$requestOptions
 			);
 
-			if ( $pv instanceof \Traversable ) {
+			if ( $pv instanceof Traversable ) {
 				$pv = iterator_to_array( $pv );
 			}
 
@@ -221,7 +223,7 @@ class ItemFetcher {
 				$requestOptions
 			);
 
-			if ( $pv instanceof \Iterator ) {
+			if ( $pv instanceof Iterator ) {
 				$pv = iterator_to_array( $pv );
 			}
 

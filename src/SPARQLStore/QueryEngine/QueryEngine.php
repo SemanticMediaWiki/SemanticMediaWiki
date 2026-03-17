@@ -32,26 +32,6 @@ class QueryEngine implements QueryEngineInterface {
 	const RESULT_VARIABLE = 'result';
 
 	/**
-	 * @var RepositoryConnection
-	 */
-	private $connection;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QueryResultFactory
-	 */
-	private $queryResultFactory;
-
-	/**
-	 * @var EngineOptions
-	 */
-	private $engineOptions;
-
-	/**
 	 * @var array
 	 */
 	private $sortKeys = [];
@@ -65,14 +45,13 @@ class QueryEngine implements QueryEngineInterface {
 	 * @param EngineOptions|null $EngineOptions
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-	public function __construct( RepositoryConnection $connection, ConditionBuilder $conditionBuilder, QueryResultFactory $queryResultFactory, ?EngineOptions $engineOptions = null ) {
-	// @codingStandardsIgnoreEnd
-		$this->connection = $connection;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->queryResultFactory = $queryResultFactory;
-		$this->engineOptions = $engineOptions;
-
-		if ( $this->engineOptions === null ) {
+	public function __construct(
+		private readonly RepositoryConnection $connection,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QueryResultFactory $queryResultFactory,
+		private ?EngineOptions $engineOptions = null,
+	) {
+	if ( $this->engineOptions === null ) {
 			$this->engineOptions = new EngineOptions();
 		}
 

@@ -14,31 +14,13 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class SearchTableUpdater {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var SearchTable
-	 */
-	private $searchTable;
-
-	/**
-	 * @var TextSanitizer
-	 */
-	private $textSanitizer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
-	 * @param SearchTable $searchTable
-	 * @param TextSanitizer $textSanitizer
 	 */
-	public function __construct( Database $connection, SearchTable $searchTable, TextSanitizer $textSanitizer ) {
-		$this->connection = $connection;
-		$this->searchTable = $searchTable;
-		$this->textSanitizer = $textSanitizer;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly SearchTable $searchTable,
+		private readonly TextSanitizer $textSanitizer,
+	) {
 	}
 
 	/**

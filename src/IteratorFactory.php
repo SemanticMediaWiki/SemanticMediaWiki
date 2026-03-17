@@ -7,6 +7,7 @@ use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\CsvFileIterator;
 use SMW\Iterators\MappingIterator;
 use SMW\Iterators\ResultIterator;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,7 +20,7 @@ class IteratorFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @param \Wikimedia\Rdbms\ResultWrapper|Iterator|array $res
+	 * @param ResultWrapper|Iterator|array $res
 	 *
 	 * @return ResultIterator
 	 */

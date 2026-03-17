@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\MediaWiki\RevisionGuard;
 
 /**
  * @covers \SMW\MediaWiki\MediaWikiNsContentReader
@@ -13,11 +15,11 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  *
  * @author mwjames
  */
-class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
+class MediaWikiNsContentReaderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MediaWikiNsContentReader',
+			MediaWikiNsContentReader::class,
 			new MediaWikiNsContentReader()
 		);
 	}
@@ -40,7 +42,7 @@ class MediaWikiNsContentReaderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSkipMessageCache() {
-		$revisionGuard = $this->getMockBuilder( '\SMW\MediaWiki\RevisionGuard' )
+		$revisionGuard = $this->getMockBuilder( RevisionGuard::class )
 			->disableOriginalConstructor()
 			->getMock();
 

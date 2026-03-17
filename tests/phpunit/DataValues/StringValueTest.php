@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\DataValues;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\StringValueFormatter;
+use SMW\DataValues\ValueValidators\ConstraintValueValidator;
+use SMW\Services\DataValueServiceFactory;
 
 /**
  * @covers \SMW\DataValues\StringValue
@@ -14,18 +17,18 @@ use SMW\DataValues\ValueFormatters\StringValueFormatter;
  *
  * @author mwjames
  */
-class StringValueTest extends \PHPUnit\Framework\TestCase {
+class StringValueTest extends TestCase {
 
 	private $dataValueServiceFactory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$constraintValueValidator = $this->getMockBuilder( '\SMW\DataValues\ValueValidators\ConstraintValueValidator' )
+		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\DataValueServiceFactory' )
+		$this->dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

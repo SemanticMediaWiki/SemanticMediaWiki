@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Language;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ValueDescription;
@@ -16,15 +17,15 @@ use SMWDINumber as DINumber;
  *
  * @author mwjames
  */
-class ValueDescriptionTest extends \PHPUnit\Framework\TestCase {
+class ValueDescriptionTest extends TestCase {
 
 	public function testCanConstruct() {
-		$dataItem = $this->getMockBuilder( '\SMW\DIWikiPage' )
+		$dataItem = $this->getMockBuilder( DIWikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\Query\Language\ValueDescription',
+			ValueDescription::class,
 			new ValueDescription( $dataItem )
 		);
 	}

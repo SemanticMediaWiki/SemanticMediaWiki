@@ -32,7 +32,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMW\MessageFormatter';
+		return MessageFormatter::class;
 	}
 
 	/**

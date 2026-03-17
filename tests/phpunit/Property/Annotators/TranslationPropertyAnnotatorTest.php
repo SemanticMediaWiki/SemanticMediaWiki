@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Property\Annotators;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
@@ -17,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class TranslationPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataValidator;
 	private $dataItemFactory;
@@ -30,7 +32,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -50,7 +52,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,7 +104,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,7 +136,7 @@ class TranslationPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( 'Foo' )
 		);
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

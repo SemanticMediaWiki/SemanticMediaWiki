@@ -19,24 +19,12 @@ use SMWDataItem as DataItem;
 class DuplicateFinder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 	}
 
 	/**

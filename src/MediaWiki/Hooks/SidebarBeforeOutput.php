@@ -23,16 +23,7 @@ class SidebarBeforeOutput implements HookListener {
 
 	use OptionsAwareTrait;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @param NamespaceExaminer $namespaceExaminer
-	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
 	}
 
 	/**

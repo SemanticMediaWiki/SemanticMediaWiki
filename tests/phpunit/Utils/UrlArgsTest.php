@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\UrlArgs;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\UrlArgs;
  *
  * @author mwjames
  */
-class UrlArgsTest extends \PHPUnit\Framework\TestCase {
+class UrlArgsTest extends TestCase {
 
 	public function testToString() {
 		$instance = new UrlArgs();

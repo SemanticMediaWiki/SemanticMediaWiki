@@ -5,6 +5,7 @@ namespace SMW\Tests\Utils;
 use JsonSchema\Exception\ResourceNotFoundException;
 use JsonSchema\Validator as SchemaValidator;
 use JsonSerializable;
+use PHPUnit\Framework\TestCase;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\JsonSchemaValidator;
 
@@ -17,7 +18,7 @@ use SMW\Utils\JsonSchemaValidator;
  *
  * @author mwjames
  */
-class JsonSchemaValidatorTest extends \PHPUnit\Framework\TestCase {
+class JsonSchemaValidatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

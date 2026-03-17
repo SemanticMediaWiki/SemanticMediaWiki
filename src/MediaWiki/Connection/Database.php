@@ -7,8 +7,10 @@ use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
 use Wikimedia\Rdbms\Database as MWDatabase;
+use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IResultWrapper;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 use Wikimedia\Rdbms\Platform\SQLPlatform;
 use Wikimedia\Rdbms\ResultWrapper;
@@ -43,16 +45,6 @@ class Database {
 	const LIST_COMMA = ISQLPlatform::LIST_COMMA;
 
 	/**
-	 * @var ConnRef
-	 */
-	private $connRef;
-
-	/**
-	 * @var TransactionHandler
-	 */
-	private $transactionHandler;
-
-	/**
 	 * @var int
 	 */
 	private $flags = 0;
@@ -69,13 +61,11 @@ class Database {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ConnRef $connRef
-	 * @param TransactionHandler $transactionHandler
 	 */
-	public function __construct( ConnRef $connRef, TransactionHandler $transactionHandler ) {
-		$this->connRef = $connRef;
-		$this->transactionHandler = $transactionHandler;
+	public function __construct(
+		private readonly ConnRef $connRef,
+		private readonly TransactionHandler $transactionHandler,
+	) {
 	}
 
 	/**
@@ -187,7 +177,7 @@ class Database {
 		// https://github.com/wikimedia/mediawiki/commit/6ab57b9c2424d9cc01b29908658b273a6ce75489
 		// Avoid "DBUnexpectedError ... DBConnRef.php: Database selection is
 		// disallowed to enable reuse ..."
-		if ( $connection instanceof \Wikimedia\Rdbms\DBConnRef ) {
+		if ( $connection instanceof DBConnRef ) {
 			return $connection->__call( __FUNCTION__, [ $prefix ] );
 		}
 
@@ -305,7 +295,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param string $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	public function readQuery( $sql, $fname = __METHOD__, $flags = 0 ) {
@@ -326,7 +316,7 @@ class Database {
 	 * @param Query|string $sql
 	 * @param $fname
 	 * @param int $flags
-	 * @return bool|\Wikimedia\Rdbms\IResultWrapper
+	 * @return bool|IResultWrapper
 	 * @throws Exception
 	 */
 	private function executeQuery( IDatabase $connection, $sql, $fname, $flags ) {
@@ -480,7 +470,8 @@ class Database {
 		$res = $this->connRef->getConnection( 'write' )->query( "SELECT nextval('$safeseq')", ISQLPlatform::QUERY_CHANGE_NONE );
 		$row = $res->fetchRow();
 
-		return $this->insertId = $row[0] === null ? null : (int)$row[0];
+		$this->insertId = $row[0] === null ? null : (int)$row[0];
+		return $this->insertId;
 	}
 
 	/**
@@ -523,7 +514,8 @@ class Database {
 	 */
 	public function setFlag( $flag ) {
 		if ( $flag === self::AUTO_COMMIT ) {
-			return $this->flags = self::AUTO_COMMIT;
+			$this->flags = self::AUTO_COMMIT;
+			return;
 		}
 
 		$this->connRef->getConnection( 'write' )->setFlag( $flag );

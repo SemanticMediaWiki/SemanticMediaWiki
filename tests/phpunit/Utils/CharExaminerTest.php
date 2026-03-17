@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Utils\CharExaminer;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Utils\CharExaminer;
  *
  * @author mwjames
  */
-class CharExaminerTest extends \PHPUnit\Framework\TestCase {
+class CharExaminerTest extends TestCase {
 
 	public function testToContainKoreanCharacters() {
 		$this->assertTrue(

@@ -2,9 +2,14 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
+use SMW\SemanticData;
+use SMW\SQLStore\Lookup\DisplayTitleLookup;
+use SMW\Store;
 use SMWDIBlob as DIBlob;
 
 /**
@@ -17,18 +22,18 @@ use SMWDIBlob as DIBlob;
  *
  * @author mwjames
  */
-class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
+class DisplayTitleFinderTest extends TestCase {
 
 	private $store;
 	private $entityCache;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getWikiPageSortKey', 'service' ] )
 			->getMockForAbstractClass();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -158,7 +163,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testPrefetchFromSemanticData() {
-		$subSemanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$subSemanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -174,7 +179,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ DIWikiPage::newFromText( 'SubFoo' ) ] );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -201,7 +206,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'SubFoo' )
 		];
 
-		$instance = $this->getMockBuilder( '\SMW\DisplayTitleFinder' )
+		$instance = $this->getMockBuilder( DisplayTitleFinder::class )
 			->setConstructorArgs(
 				[
 					$this->store,
@@ -231,7 +236,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 			$subjects[1]->getSha1() => null,
 		];
 
-		$displayTitleLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\DisplayTitleLookup' )
+		$displayTitleLookup = $this->getMockBuilder( DisplayTitleLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -277,7 +282,7 @@ class DisplayTitleFinderTest extends \PHPUnit\Framework\TestCase {
 			$subjects[0]->asBase()->getSha1() => 'Bar',
 		];
 
-		$displayTitleLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\DisplayTitleLookup' )
+		$displayTitleLookup = $this->getMockBuilder( DisplayTitleLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 

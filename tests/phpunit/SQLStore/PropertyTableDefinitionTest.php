@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\SQLStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\SQLStore;
 use SMW\StoreFactory;
 use SMWDataItem;
 
@@ -15,7 +17,7 @@ use SMWDataItem;
  *
  * @author mwjames
  */
-class PropertyTableDefinitionTest extends \PHPUnit\Framework\TestCase {
+class PropertyTableDefinitionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -32,7 +34,7 @@ class PropertyTableDefinitionTest extends \PHPUnit\Framework\TestCase {
 
 		$this->assertIsArray(
 
-			$instance->getFields( StoreFactory::getStore( '\SMW\SQLStore\SQLStore' ) )
+			$instance->getFields( StoreFactory::getStore( SQLStore::class ) )
 		);
 
 		$this->assertEquals(

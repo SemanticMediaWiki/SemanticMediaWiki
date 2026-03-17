@@ -3,9 +3,11 @@
 namespace SMW\MediaWiki\Deferred;
 
 use Closure;
+use Exception;
 use MediaWiki\Deferred\DeferrableUpdate;
 use MediaWiki\Deferred\DeferredUpdates;
 use Psr\Log\LoggerAwareTrait;
+use Throwable;
 use Wikimedia\Assert\Assert;
 
 /**
@@ -278,11 +280,13 @@ class CallableUpdate implements DeferrableUpdate {
 				[ 'method' => __METHOD__, 'role' => 'developer', 'origin' => $this->getOrigin(), 'fingerprint' => $this->fingerprint ]
 			);
 
-			return self::$pendingUpdates[] = $this;
+			self::$pendingUpdates[] = $this;
+			return;
 		}
 
 		if ( !$this->isCommandLineMode && $this->isDeferrableUpdate ) {
-			return $this->registerUpdate( $this );
+			$this->registerUpdate( $this );
+			return;
 		}
 
 		$this->doUpdate();
@@ -323,8 +327,8 @@ class CallableUpdate implements DeferrableUpdate {
 
 		try {
 			$this->runUpdate();
-		} catch ( \Exception $e ) {
-		} catch ( \Throwable $e ) {
+		} catch ( Exception $e ) {
+		} catch ( Throwable $e ) {
 		}
 
 		if ( $e === null ) {

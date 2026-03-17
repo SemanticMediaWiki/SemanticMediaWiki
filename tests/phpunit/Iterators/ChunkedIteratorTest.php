@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Iterators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Iterators\ChunkedIterator;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Iterators\ChunkedIterator;
  *
  * @author mwjames
  */
-class ChunkedIteratorTest extends \PHPUnit\Framework\TestCase {
+class ChunkedIteratorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

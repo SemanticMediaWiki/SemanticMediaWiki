@@ -2,12 +2,15 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Content\Content;
+use MediaWiki\Content\ContentHandler;
 use MediaWiki\Edit\PreparedEdit;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\EditInfo;
 use SMW\ParserData;
 use SMW\SemanticData;
@@ -22,7 +25,7 @@ use WikiPage;
  *
  * @author mwjames
  */
-class EditInfoTest extends \PHPUnit\Framework\TestCase {
+class EditInfoTest extends TestCase {
 
 	public function testCanConstruct() {
 		$wikiPage = $this->getMockBuilder( WikiPage::class )
@@ -91,7 +94,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SemanticData',
+			SemanticData::class,
 			$instance->fetchSemanticData()
 		);
 	}
@@ -178,7 +181,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newRevisionStub() {
-		$revision = $this->getMockBuilder( '\MediaWiki\Revision\RevisionRecord' )
+		$revision = $this->getMockBuilder( RevisionRecord::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -203,7 +206,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newContentStub() {
-		$contentHandler = $this->getMockBuilder( '\MediaWiki\Content\ContentHandler' )
+		$contentHandler = $this->getMockBuilder( ContentHandler::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -211,7 +214,7 @@ class EditInfoTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getDefaultFormat' )
 			->willReturn( 'Foo' );
 
-		$content = $this->getMockBuilder( '\MediaWiki\Content\Content' )
+		$content = $this->getMockBuilder( Content::class )
 			->disableOriginalConstructor()
 			->getMock();
 

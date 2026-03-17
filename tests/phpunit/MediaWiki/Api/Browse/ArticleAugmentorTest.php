@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
+use SMW\MediaWiki\TitleFactory;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ArticleAugmentor
@@ -13,10 +16,10 @@ use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
  *
  * @author mwjames
  */
-class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
+class ArticleAugmentorTest extends TestCase {
 
 	public function testCanConstruct() {
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -58,7 +61,7 @@ class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -66,7 +69,7 @@ class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFullText' )
 			->willReturn( 'NS:FOO' );
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -119,7 +122,7 @@ class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +130,7 @@ class ArticleAugmentorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getFullURL' )
 			->willReturn( 'http://example.org/FOO' );
 
-		$titleFactory = $this->getMockBuilder( '\SMW\MediaWiki\TitleFactory' )
+		$titleFactory = $this->getMockBuilder( TitleFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 

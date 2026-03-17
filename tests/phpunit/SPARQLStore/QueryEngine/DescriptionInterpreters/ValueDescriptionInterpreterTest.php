@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIConcept;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
@@ -23,7 +29,7 @@ use SMWDIUri as DIUri;
  *
  * @author mwjames
  */
-class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ValueDescriptionInterpreterTest extends TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -34,22 +40,22 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter',
+			ValueDescriptionInterpreter::class,
 			new ValueDescriptionInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanBuildConditionFor() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -64,7 +70,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider notSupportedDataItemTypeProvider
 	 */
 	public function testCreateFalseConditionForNotSupportedDataItemType( $dataItem ) {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
 			->setMethods( [ 'isSetFlag' ] )
 			->getMock();
@@ -81,7 +87,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition',
+			FalseCondition::class,
 			$instance->interpretDescription( $description )
 		);
 	}
@@ -114,7 +120,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	public function testValueConditionOnRediret() {
 		$resultVariable = 'result';
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->setConstructorArgs( [ $this->descriptionInterpreterFactory ] )
 			->setMethods( [ 'tryToFindRedirectVariableForDataItem' ] )
 			->getMock();
@@ -135,7 +141,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 
 		$condition = $instance->interpretDescription( $description );
 
-		$expectedConditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$expectedConditionType = FilterCondition::class;
 
 		$this->assertInstanceOf(
 			$expectedConditionType,
@@ -182,7 +188,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
+		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -201,7 +207,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -221,7 +227,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 2 Less for a non-blob (DIWikiPage type) value
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
@@ -241,7 +247,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 3
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIProperty( 'SomeProperty' ),
@@ -261,7 +267,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 4
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -281,7 +287,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 5
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -301,7 +307,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 6
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -321,7 +327,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 7
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -341,7 +347,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 8
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -361,7 +367,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 9
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyValue' ),
@@ -381,7 +387,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 10 Regex on a non-blob value
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = TrueCondition::class;
 
 		$description = new ValueDescription(
 			new DINumber( 42 ),
@@ -400,7 +406,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 11 Regex on a non-blob (DIWikiPage type) value
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
+		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
 			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
@@ -420,7 +426,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 12 Regex on a non-blob (DIUri type) value
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
 			new DIUri( 'http', '//example.org', '', '' ),
@@ -440,9 +446,9 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 13 Unknown comparator operator
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = TrueCondition::class;
 
-		$description = $this->getMockBuilder( '\SMW\Query\Language\ValueDescription' )
+		$description = $this->getMockBuilder( ValueDescription::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -570,7 +576,7 @@ class ValueDescriptionInterpreterTest extends \PHPUnit\Framework\TestCase {
 			$dataItem
 		];
 
-		$dataItem = $this->getMockBuilder( '\SMW\DIConcept' )
+		$dataItem = $this->getMockBuilder( DIConcept::class )
 			->disableOriginalConstructor()
 			->getMock();
 

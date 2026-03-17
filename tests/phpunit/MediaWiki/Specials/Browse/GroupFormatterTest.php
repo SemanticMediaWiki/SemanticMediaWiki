@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Specials\Browse\GroupFormatter;
+use SMW\Property\SpecificationLookup;
+use SMW\Schema\SchemaDefinition;
+use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Browse\GroupFormatter
@@ -15,7 +20,7 @@ use SMW\MediaWiki\Specials\Browse\GroupFormatter;
  *
  * @author mwjames
  */
-class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
+class GroupFormatterTest extends TestCase {
 
 	private $propertySpecificationLookup;
 	private $schemaFinder;
@@ -23,11 +28,11 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+		$this->schemaFinder = $this->getMockBuilder( SchemaFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -44,7 +49,7 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyGroup' )
 			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,7 +96,7 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 			[ 'properties' => [ 'Foo' ], 'group_name' => 'Foo schema' ]
 		];
 
-		$schemaDefinition = $this->getMockBuilder( '\SMW\Schema\SchemaDefinition' )
+		$schemaDefinition = $this->getMockBuilder( SchemaDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -108,7 +113,7 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyGroup' )
 			->willReturn( null );
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -155,7 +160,7 @@ class GroupFormatterTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyGroup' )
 			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
 
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 

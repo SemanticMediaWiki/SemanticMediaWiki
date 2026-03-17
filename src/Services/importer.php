@@ -27,32 +27,26 @@ use SMW\Utils\FileFetcher;
 return [
 
 	/**
-	 * ImporterServiceFactory
-	 *
-	 * @return callable
+	 * @return ImporterServiceFactory
 	 */
-	'ImporterServiceFactory' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', '\SMW\Services\ImporterServiceFactory' );
-		return new ImporterServiceFactory( $containerBuilder );
+	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ) {
+		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
+		return new ImporterServiceFactory( $callbackContainerBuilder );
 	},
 
 	/**
-	 * XmlContentCreator
-	 *
-	 * @return callable
+	 * @return XmlContentCreator
 	 */
 	'XmlContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', '\SMW\Importer\ContentCreators\XmlContentCreator' );
+		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', XmlContentCreator::class );
 		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
 	},
 
 	/**
-	 * TextContentCreator
-	 *
-	 * @return callable
+	 * @return TextContentCreator
 	 */
 	'TextContentCreator' => static function ( $containerBuilder ) {
-		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', '\SMW\Importer\ContentCreators\TextContentCreator' );
+		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', TextContentCreator::class );
 
 		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
 
@@ -65,12 +59,10 @@ return [
 	},
 
 	/**
-	 * Importer
-	 *
-	 * @return callable
+	 * @return Importer
 	 */
 	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ) {
-		$containerBuilder->registerExpectedReturnType( 'Importer', '\SMW\Importer\Importer' );
+		$containerBuilder->registerExpectedReturnType( 'Importer', Importer::class );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(
 			[
@@ -92,12 +84,10 @@ return [
 	},
 
 	/**
-	 * JsonContentIterator
-	 *
-	 * @return callable
+	 * @return JsonContentIterator
 	 */
 	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ) {
-		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', '\SMW\Importer\JsonContentIterator' );
+		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', JsonContentIterator::class );
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(
 			new ContentModeller(),

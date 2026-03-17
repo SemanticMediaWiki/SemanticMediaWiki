@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\Property;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\StringValue;
+use SMW\EntityCache;
 use SMW\Property\LanguageFalldownAndInverse;
 use SMW\Property\SpecificationLookup;
+use SMW\SQLStore\Lookup\MonolingualTextLookup;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMWDataItem as DataItem;
 
@@ -18,7 +24,7 @@ use SMWDataItem as DataItem;
  * @author mwjames
  * @author thomas-topway-it
  */
-class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
+class SpecificationLookupTest extends TestCase {
 
 	private $monolingualTextLookup;
 	private $dataItemFactory;
@@ -29,17 +35,17 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'service' ] )
 			->getMockForAbstractClass();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'save', 'fetch', 'associate', 'fetchSub', 'saveSub', 'delete', 'invalidate' ] )
 			->getMock();
 
-		$this->monolingualTextLookup = $this->getMockBuilder( '\SMW\SQLStore\Lookup\MonolingualTextLookup' )
+		$this->monolingualTextLookup = $this->getMockBuilder( MonolingualTextLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -461,11 +467,11 @@ class SpecificationLookupTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTryToGetLocalPropertyDescriptionForUserdefinedProperty() {
-		$stringValue = $this->getMockBuilder( '\SMW\DataValues\StringValue' )
+		$stringValue = $this->getMockBuilder( StringValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$monolingualTextValue = $this->getMockBuilder( '\SMW\DataValues\MonolingualTextValue' )
+		$monolingualTextValue = $this->getMockBuilder( MonolingualTextValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

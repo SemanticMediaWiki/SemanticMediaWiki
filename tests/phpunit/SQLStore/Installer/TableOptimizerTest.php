@@ -2,7 +2,11 @@
 
 namespace SMW\Tests\SQLStore\Installer;
 
+use PHPUnit\Framework\TestCase;
+use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\TableBuilder;
+use SMW\SQLStore\TableBuilder\Table;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
+class TableOptimizerTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $setupFile;
@@ -25,11 +29,11 @@ class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyMessageReporter = TestEnvironment::getUtilityFactory()->newSpyMessageReporter();
 
-		$this->setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$this->setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->tableBuilder = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder' )
+		$this->tableBuilder = $this->getMockBuilder( TableBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -42,7 +46,7 @@ class TableOptimizerTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRunForTables() {
-		$table = $this->getMockBuilder( '\SMW\SQLStore\TableBuilder\Table' )
+		$table = $this->getMockBuilder( Table::class )
 			->disableOriginalConstructor()
 			->getMock();
 

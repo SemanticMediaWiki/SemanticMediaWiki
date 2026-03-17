@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Processor;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\DefaultParamDefinition;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Query\Processor\DefaultParamDefinition;
  *
  * @author mwjames
  */
-class DefaultParamDefinitionTest extends \PHPUnit\Framework\TestCase {
+class DefaultParamDefinitionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

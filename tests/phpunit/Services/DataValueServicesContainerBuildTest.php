@@ -3,10 +3,13 @@
 namespace SMW\Tests\Services;
 
 use Onoi\CallbackContainer\CallbackContainerFactory;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use SMW\ConstraintFactory;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\Number\UnitConverter;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
@@ -22,6 +25,10 @@ use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
+use SMW\EntityCache;
+use SMW\MediaWiki\MediaWikiNsContentReader;
+use SMW\Property\SpecificationLookup;
+use SMW\Schema\SchemaFactory;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
 use SMW\Store;
@@ -36,7 +43,7 @@ use SMWTimeValue as TimeValue;
  *
  * @author mwjames
  */
-class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
+class DataValueServicesContainerBuildTest extends TestCase {
 
 	private Store $store;
 	private $callbackContainerFactory;
@@ -51,33 +58,33 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->mediaWikiNsContentReader = $this->getMockBuilder( '\SMW\MediaWiki\MediaWikiNsContentReader' )
+		$this->mediaWikiNsContentReader = $this->getMockBuilder( MediaWikiNsContentReader::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->logger = $this->getMockBuilder( '\Psr\Log\LoggerInterface' )
+		$this->logger = $this->getMockBuilder( LoggerInterface::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
-			->disableOriginalConstructor()
-			->setMethods( null )
-			->getMock();
-
-		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
+		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->setMethods( null )
 			->getMock();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->constraintFactory = $this->getMockBuilder( ConstraintFactory::class )
+			->disableOriginalConstructor()
+			->setMethods( null )
+			->getMock();
+
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -195,7 +202,7 @@ class DataValueServicesContainerBuildTest extends \PHPUnit\Framework\TestCase {
 		$provider[] = [
 			'UnitConverter',
 			[],
-			'\SMW\DataValues\Number\UnitConverter'
+			UnitConverter::class
 		];
 
 		return $provider;

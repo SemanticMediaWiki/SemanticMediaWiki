@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Query\Processor;
 
+use PHPUnit\Framework\TestCase;
 use SMWQueryProcessor as QueryProcessor;
 
 /**
@@ -13,7 +14,7 @@ use SMWQueryProcessor as QueryProcessor;
  *
  * @author mwjames
  */
-class QueryProcessorTest extends \PHPUnit\Framework\TestCase {
+class QueryProcessorTest extends TestCase {
 
 	/**
 	 * @dataProvider limitOffsetParamsProvider

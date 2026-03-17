@@ -17,31 +17,13 @@ use SMW\Store;
 class IdEntityFinder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory, IdCacheManager $idCacheManager ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**

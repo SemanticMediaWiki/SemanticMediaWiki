@@ -2,6 +2,8 @@
 
 namespace SMW\Tests;
 
+use MediaWiki\Language\Language;
+use PHPUnit\Framework\TestCase;
 use SMWInfolink as Infolink;
 
 /**
@@ -13,14 +15,14 @@ use SMWInfolink as Infolink;
  *
  * @author mwjames
  */
-class InfolinkTest extends \PHPUnit\Framework\TestCase {
+class InfolinkTest extends TestCase {
 
 	private $testEnvironment;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$language = $this->getMockBuilder( '\MediaWiki\Language\Language' )
+		$language = $this->getMockBuilder( Language::class )
 			->disableOriginalConstructor()
 			->getMock();
 

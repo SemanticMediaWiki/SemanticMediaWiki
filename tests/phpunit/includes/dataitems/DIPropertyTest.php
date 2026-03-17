@@ -2,8 +2,10 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Exception\DataTypeLookupException;
 use SMW\PropertyRegistry;
 
 /**
@@ -17,7 +19,7 @@ use SMW\PropertyRegistry;
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIPropertyTest extends \PHPUnit\Framework\TestCase {
+class DIPropertyTest extends TestCase {
 
 	protected function tearDown(): void {
 		PropertyRegistry::clear();
@@ -66,7 +68,7 @@ class DIPropertyTest extends \PHPUnit\Framework\TestCase {
 	public function testSetUnknownPropertyTypeIdThrowsException() {
 		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
 
-		$this->expectException( '\SMW\Exception\DataTypeLookupException' );
+		$this->expectException( DataTypeLookupException::class );
 		$property->setPropertyTypeId( '_unknownTypeId' );
 	}
 

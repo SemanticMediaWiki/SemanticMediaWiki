@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Indicator\EntityExaminerIndicators\BlankEntityExaminerDeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
+class BlankEntityExaminerDeferrableIndicatorProviderTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -37,12 +40,12 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends \PHPUnit\Framew
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider',
+			DeferrableIndicatorProvider::class,
 			new BlankEntityExaminerDeferrableIndicatorProvider()
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider',
+			TypableSeverityIndicatorProvider::class,
 			new BlankEntityExaminerDeferrableIndicatorProvider()
 		);
 	}

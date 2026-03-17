@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\FileRepoFinder;
+use Wikimedia\Rdbms\IReadableDatabase;
 
 /**
  * @covers \SMW\MediaWiki\FileRepoFinder
@@ -13,7 +16,7 @@ use SMW\MediaWiki\FileRepoFinder;
  *
  * @author mwjames
  */
-class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
+class FileRepoFinderTest extends TestCase {
 
 	private $repoGroup;
 
@@ -39,7 +42,7 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'findFile' )
 			->willReturn( $file );
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,7 +62,7 @@ class FileRepoFinderTest extends \PHPUnit\Framework\TestCase {
 			->getMock();
 
 		// Mock the IReadableDatabase interface
-		$db = $this->getMockBuilder( \Wikimedia\Rdbms\IReadableDatabase::class )
+		$db = $this->getMockBuilder( IReadableDatabase::class )
 			->disableOriginalConstructor()
 			->getMock();
 

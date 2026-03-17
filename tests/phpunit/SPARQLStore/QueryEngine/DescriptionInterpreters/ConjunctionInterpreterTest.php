@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -11,6 +12,11 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
@@ -27,7 +33,7 @@ use SMWExporter;
  *
  * @author mwjames
  */
-class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
+class ConjunctionInterpreterTest extends TestCase {
 
 	private $descriptionInterpreterFactory;
 
@@ -38,22 +44,22 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter',
+			ConjunctionInterpreter::class,
 			new ConjunctionInterpreter( $conditionBuilder )
 		);
 	}
 
 	public function testCanBuildConditionFor() {
-		$description = $this->getMockBuilder( '\SMW\Query\Language\Conjunction' )
+		$description = $this->getMockBuilder( Conjunction::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$conditionBuilder = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\ConditionBuilder' )
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -95,7 +101,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
 
 		# 0
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = TrueCondition::class;
 
 		$description = new Conjunction();
 
@@ -115,7 +121,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 1
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FalseCondition';
+		$conditionType = FalseCondition::class;
 
 		$description = new Conjunction( [
 			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) )
@@ -142,7 +148,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 2
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\TrueCondition';
+		$conditionType = TrueCondition::class;
 
 		$description = new Conjunction( [ new ThingDescription() ] );
 
@@ -162,7 +168,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 3
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
 			new DIProperty( 'Foo' ),
@@ -191,7 +197,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 4
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
+		$conditionType = SingletonCondition::class;
 
 		$description = new Conjunction( [
 			new NamespaceDescription( NS_MAIN ),
@@ -214,7 +220,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 5
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyBlobValue' ),
@@ -253,7 +259,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 6
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition';
+		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
 			new DIBlob( 'SomePropertyBlobValue' ),
@@ -292,7 +298,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 7
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\FilterCondition';
+		$conditionType = FilterCondition::class;
 
 		$description = new Conjunction( [
 			new ValueDescription( new DIBlob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
@@ -318,7 +324,7 @@ class ConjunctionInterpreterTest extends \PHPUnit\Framework\TestCase {
 		];
 
 		# 8
-		$conditionType = '\SMW\SPARQLStore\QueryEngine\Condition\WhereCondition';
+		$conditionType = WhereCondition::class;
 
 		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
 

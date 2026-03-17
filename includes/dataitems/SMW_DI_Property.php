@@ -399,7 +399,8 @@ class DIProperty extends SMWDataItem {
 		}
 
 		if ( !$this->isUserDefined() ) {
-			return $this->propertyValueType = PropertyRegistry::getInstance()->getPropertyValueTypeById( $this->m_key );
+			$this->propertyValueType = PropertyRegistry::getInstance()->getPropertyValueTypeById( $this->m_key );
+			return $this->propertyValueType;
 		}
 
 		$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
@@ -551,7 +552,7 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * Implements \JsonSerializable.
+	 * Implements JsonSerializable.
 	 *
 	 * @since 4.0.0
 	 *

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ExpDataFactory;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Exporter\ExpDataFactory;
  *
  * @author mwjames
  */
-class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
+class ExpDataFactoryTest extends TestCase {
 
 	private $exporter;
 
@@ -33,7 +35,7 @@ class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewSiteExpData() {
-		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
+		$expNsResource = $this->getMockBuilder( ExpNsResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +58,7 @@ class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewDefinedExpData() {
-		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
+		$expNsResource = $this->getMockBuilder( ExpNsResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -79,7 +81,7 @@ class ExpDataFactoryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNewOntologyExpData() {
-		$expNsResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpNsResource' )
+		$expNsResource = $this->getMockBuilder( ExpNsResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 

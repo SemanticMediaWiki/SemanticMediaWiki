@@ -2,8 +2,10 @@
 
 namespace SMW\Tests\Query\ProfileAnnotators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIWikiPage;
+use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Tests\TestEnvironment;
@@ -18,7 +20,7 @@ use SMWDIContainer as DIContainer;
  *
  * @author mwjames
  */
-class SourceProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class SourceProfileAnnotatorTest extends TestCase {
 
 	private $semanticDataValidator;
 
@@ -30,12 +32,12 @@ class SourceProfileAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$profileAnnotator = $this->getMockBuilder( '\SMW\Query\ProfileAnnotator' )
+		$profileAnnotator = $this->getMockBuilder( ProfileAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ProfileAnnotators\SourceProfileAnnotator',
+			SourceProfileAnnotator::class,
 			new SourceProfileAnnotator( $profileAnnotator )
 		);
 	}

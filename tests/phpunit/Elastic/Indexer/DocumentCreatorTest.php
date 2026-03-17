@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\Elastic\Indexer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\DocumentCreator;
+use SMW\SemanticData;
+use SMW\SQLStore\EntityStore\EntityIdManager;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\Elastic\Indexer\DocumentCreator
@@ -15,12 +20,12 @@ use SMW\Elastic\Indexer\DocumentCreator;
  *
  * @author mwjames
  */
-class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
+class DocumentCreatorTest extends TestCase {
 
 	private $store;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -47,7 +52,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$property = new DIProperty( 'FooProp' );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -63,7 +68,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $entityIdManager );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -93,7 +98,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$document = $instance->newFromSemanticData( $semanticData );
 
 		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\Document',
+			Document::class,
 			$document
 		);
 
@@ -111,7 +116,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$property = new DIProperty( 'FooProp' );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -127,7 +132,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $entityIdManager );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -151,7 +156,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DocumentCreator( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\Document',
+			Document::class,
 			$instance->newFromSemanticData( $semanticData )
 		);
 	}
@@ -165,7 +170,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 
 		$property = new DIProperty( '_SOBJ' );
 
-		$entityIdManager = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -181,7 +186,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $entityIdManager );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -205,7 +210,7 @@ class DocumentCreatorTest extends \PHPUnit\Framework\TestCase {
 		$instance = new DocumentCreator( $this->store );
 
 		$this->assertInstanceOf(
-			'\SMW\Elastic\Indexer\Document',
+			Document::class,
 			$instance->newFromSemanticData( $semanticData )
 		);
 	}

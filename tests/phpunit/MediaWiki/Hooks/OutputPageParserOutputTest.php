@@ -4,13 +4,21 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\FauxRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\EntityCache;
+use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
+use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\NamespaceExaminer;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -24,7 +32,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
+class OutputPageParserOutputTest extends TestCase {
 
 	private $testEnvironment;
 	private $applicationFactory;
@@ -48,19 +56,19 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			]
 		);
 
-		$this->namespaceExaminer = $this->getMockBuilder( '\SMW\NamespaceExaminer' )
+		$this->namespaceExaminer = $this->getMockBuilder( NamespaceExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$this->parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -87,13 +95,13 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSemanticEnabled' )
 			->willReturn( $parameters['smwgNamespacesWithSemanticLinks'] );
 
-		$entityCache = new \SMW\EntityCache(
+		$entityCache = new EntityCache(
 			$this->applicationFactory->newCacheFactory()->newFixedInMemoryCache()
 		);
 
 		$this->testEnvironment->registerObject( 'EntityCache', $entityCache );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -110,7 +118,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$cachedFactbox = $this->applicationFactory->create( 'FactboxFactory' )->newCachedFactbox();
 
-		$factboxFactory = $this->getMockBuilder( '\SMW\Factbox\FactboxFactory' )
+		$factboxFactory = $this->getMockBuilder( FactboxFactory::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'newCachedFactbox' ] )
 			->getMock();
@@ -166,7 +174,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -209,7 +217,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 9098 );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -251,7 +259,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getArticleID' )
 			->willReturn( 90000 );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -281,7 +289,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -311,7 +319,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isRedirect' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -348,7 +356,7 @@ class OutputPageParserOutputTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPageLanguage' )
 			->willReturn( $language );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

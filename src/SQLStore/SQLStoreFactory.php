@@ -69,35 +69,22 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
 class SQLStoreFactory {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
-
-	/**
 	 * @var QueryEngineFactory
 	 */
 	private $queryEngineFactory;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param SQLStore $store
-	 * @param MessageReporter|null $messageReporter
 	 */
-	public function __construct( SQLStore $store, ?MessageReporter $messageReporter = null ) {
-		$this->store = $store;
-		$this->messageReporter = $messageReporter;
-
+	public function __construct(
+		private readonly SQLStore $store,
+		private ?MessageReporter $messageReporter = null,
+	) {
 		if ( $this->messageReporter === null ) {
 			$this->messageReporter = new NullMessageReporter();
 		}
 
-		$this->queryEngineFactory = new QueryEngineFactory( $store );
+		$this->queryEngineFactory = new QueryEngineFactory( $this->store );
 	}
 
 	/**
@@ -1172,7 +1159,8 @@ class SQLStoreFactory {
 				],
 				'PropertyTableIdReferenceFinder' => function () {
 					static $singleton;
-					return $singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
+					$singleton = $singleton === null ? $this->newPropertyTableIdReferenceFinder() : $singleton;
+					return $singleton;
 				},
 				'PrefetchCache' => [
 					'_service' => [ $this, 'newPrefetchCache' ],

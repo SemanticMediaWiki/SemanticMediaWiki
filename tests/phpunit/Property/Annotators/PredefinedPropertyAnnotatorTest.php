@@ -3,11 +3,14 @@
 namespace SMW\Tests\Property\Annotators;
 
 use MediaWiki\MediaWikiServices;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
+use SMW\PageInfo;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\PredefinedPropertyAnnotator;
+use SMW\SemanticData;
 use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -20,7 +23,7 @@ use SMW\Tests\Utils\UtilityFactory;
  *
  * @author mwjames
  */
-class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
+class PredefinedPropertyAnnotatorTest extends TestCase {
 
 	private $semanticDataFactory;
 	private $semanticDataValidator;
@@ -33,11 +36,11 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$pageInfo = $this->getMockBuilder( '\SMW\PageInfo' )
+		$pageInfo = $this->getMockBuilder( PageInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -47,7 +50,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Property\Annotators\PredefinedPropertyAnnotator',
+			PredefinedPropertyAnnotator::class,
 			$instance
 		);
 	}
@@ -60,7 +63,7 @@ class PredefinedPropertyAnnotatorTest extends \PHPUnit\Framework\TestCase {
 			->setSubject( $parameters['subject'] )
 			->newEmptySemanticData();
 
-		$pageInfo = $this->getMockBuilder( '\SMW\PageInfo' )
+		$pageInfo = $this->getMockBuilder( PageInfo::class )
 			->disableOriginalConstructor()
 			->getMock();
 

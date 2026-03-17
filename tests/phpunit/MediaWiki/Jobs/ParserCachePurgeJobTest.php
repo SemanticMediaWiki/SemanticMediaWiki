@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\MediaWiki\Jobs;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
 
 /**
@@ -13,10 +15,10 @@ use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
  *
  * @author mwjames
  */
-class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
+class ParserCachePurgeJobTest extends TestCase {
 
 	public function testCanConstruct() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +39,7 @@ class ParserCachePurgeJobTest extends \PHPUnit\Framework\TestCase {
 			'action' => $action
 		];
 
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

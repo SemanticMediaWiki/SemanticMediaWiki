@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exception\DataItemException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 
 /**
@@ -13,18 +15,18 @@ use SMW\Exception\PropertyLabelNotResolvedException;
  *
  * @author mwjames
  */
-class PropertyLabelNotResolvedExceptionTest extends \PHPUnit\Framework\TestCase {
+class PropertyLabelNotResolvedExceptionTest extends TestCase {
 
 	public function testCanConstruct() {
 		$instance = new PropertyLabelNotResolvedException();
 
 		$this->assertInstanceof(
-			'\SMW\Exception\PropertyLabelNotResolvedException',
+			PropertyLabelNotResolvedException::class,
 			$instance
 		);
 
 		$this->assertInstanceof(
-			'\SMW\Exception\DataItemException',
+			DataItemException::class,
 			$instance
 		);
 	}

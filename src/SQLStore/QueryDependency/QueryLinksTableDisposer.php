@@ -17,16 +17,6 @@ use SMW\Store;
 class QueryLinksTableDisposer {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
@@ -43,13 +33,11 @@ class QueryLinksTableDisposer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 

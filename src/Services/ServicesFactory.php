@@ -40,6 +40,7 @@ use SMW\Parser\InTextAnnotationParser;
 use SMW\ParserData;
 use SMW\ParserFunctionFactory;
 use SMW\PostProcHandler;
+use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Query\Parser as QueryParser;
@@ -50,6 +51,7 @@ use SMW\SerializerFactory;
 use SMW\Settings;
 use SMW\Site;
 use SMW\Store;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 /**
  * Application instances access for internal and external use
@@ -62,7 +64,7 @@ use SMW\Store;
 class ServicesFactory {
 
 	/**
-	 * @var ServicesFactory
+	 * @var ServicesFactory|null
 	 */
 	private static $instance = null;
 
@@ -113,7 +115,8 @@ class ServicesFactory {
 			$servicesFileDir
 		);
 
-		return self::$instance = new self( $callbackContainerBuilder, $servicesFileDir );
+		self::$instance = new self( $callbackContainerBuilder, $servicesFileDir );
+		return self::$instance;
 	}
 
 	/**
@@ -149,12 +152,13 @@ class ServicesFactory {
 	 * not to be relied upon for external access.
 	 *
 	 *
-	 * @param string ...$service
+	 * @param string $serviceName
+	 * @param mixed ...$args
 	 *
 	 * @return mixed
 	 */
-	public function singleton( ...$service ) {
-		return $this->callbackContainerBuilder->singleton( ...$service );
+	public function singleton( $serviceName, ...$args ) {
+		return $this->callbackContainerBuilder->singleton( $serviceName, ...$args );
 	}
 
 	/**
@@ -165,12 +169,13 @@ class ServicesFactory {
 	 *
 	 * @since 2.5
 	 *
-	 * @param string ...$service
+	 * @param string $serviceName
+	 * @param mixed ...$args
 	 *
 	 * @return mixed
 	 */
-	public function create( ...$service ) {
-		return $this->callbackContainerBuilder->create( ...$service );
+	public function create( $serviceName, ...$args ) {
+		return $this->callbackContainerBuilder->create( $serviceName, ...$args );
 	}
 
 	/**
@@ -434,7 +439,7 @@ class ServicesFactory {
 	public function newDataUpdater( SemanticData $semanticData ) {
 		$settings = $this->getSettings();
 
-		$changePropagationNotifier = new \SMW\Property\ChangePropagationNotifier(
+		$changePropagationNotifier = new ChangePropagationNotifier(
 			$this->getStore(),
 			$this->newSerializerFactory()
 		);
@@ -526,7 +531,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.5
 	 *
-	 * @return \createBalancer
+	 * @return ILoadBalancer
 	 */
 	public function getLoadBalancer() {
 		return $this->callbackContainerBuilder->singleton( 'DBLoadBalancer' );

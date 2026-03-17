@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\RequestOptions;
 use SMW\StringCondition;
 
@@ -14,7 +15,7 @@ use SMW\StringCondition;
  *
  * @author mwjames
  */
-class RequestOptionsTest extends \PHPUnit\Framework\TestCase {
+class RequestOptionsTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -29,7 +30,7 @@ class RequestOptionsTest extends \PHPUnit\Framework\TestCase {
 
 		foreach ( $instance->getStringConditions() as $stringCondition ) {
 			$this->assertInstanceOf(
-				'\SMW\StringCondition',
+				StringCondition::class,
 				$stringCondition
 			);
 

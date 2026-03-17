@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\Elastic;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Elastic\Indexer\Rebuilder\Rollover;
 use SMW\Elastic\Installer;
+use SMW\SetupFile;
 
 /**
  * @covers \SMW\Elastic\Installer
@@ -13,12 +16,12 @@ use SMW\Elastic\Installer;
  *
  * @author mwjames
  */
-class InstallerTest extends \PHPUnit\Framework\TestCase {
+class InstallerTest extends TestCase {
 
 	private $rollover;
 
 	protected function setUp(): void {
-		$this->rollover = $this->getMockBuilder( '\SMW\Elastic\Indexer\Rebuilder\Rollover' )
+		$this->rollover = $this->getMockBuilder( Rollover::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -34,7 +37,7 @@ class InstallerTest extends \PHPUnit\Framework\TestCase {
 		$instance = new Installer( $this->rollover );
 
 		$this->assertInstanceOf(
-			'\SMW\SetupFile',
+			SetupFile::class,
 			$instance->newSetupFile()
 		);
 	}

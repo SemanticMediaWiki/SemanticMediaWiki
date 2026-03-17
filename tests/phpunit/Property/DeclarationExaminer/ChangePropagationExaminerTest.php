@@ -2,9 +2,12 @@
 
 namespace SMW\Tests\Property\DeclarationExaminer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\SemanticData;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
+class ChangePropagationExaminerTest extends TestCase {
 
 	private $declarationExaminer;
 	private $store;
@@ -33,7 +36,7 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->declarationExaminer = $this->getMockBuilder( '\SMW\Property\DeclarationExaminer' )
+		$this->declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -41,11 +44,11 @@ class ChangePropagationExaminerTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getMessages' )
 			->willReturn( [] );
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$this->semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

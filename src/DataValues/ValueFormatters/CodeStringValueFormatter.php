@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use SMW\DataValues\StringValue;
 use SMWDataValue as DataValue;
 use SMWOutputs as Outputs;
 
@@ -23,7 +24,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	}
 
 	/**
-	 * @param \SMW\DataValues\StringValue $dataValue
+	 * @param StringValue $dataValue
 	 * @param int $type
 	 * @param mixed $linker
 	 *

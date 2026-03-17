@@ -2,9 +2,14 @@
 
 namespace SMW\Tests\SQLStore\EntityStore;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
+use SMW\RequestOptions;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\PrefetchCache;
+use SMW\SQLStore\EntityStore\PrefetchItemLookup;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\PrefetchCache
@@ -15,22 +20,22 @@ use SMW\SQLStore\EntityStore\PrefetchCache;
  *
  * @author mwjames
  */
-class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
+class PrefetchCacheTest extends TestCase {
 
 	private $store;
 	private $prefetchItemLookup;
 	private $requestOptions;
 
 	protected function setUp(): void {
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->prefetchItemLookup = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\PrefetchItemLookup' )
+		$this->prefetchItemLookup = $this->getMockBuilder( PrefetchItemLookup::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestOptions = $this->getMockBuilder( '\SMW\RequestOptions' )
+		$this->requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -50,7 +55,7 @@ class PrefetchCacheTest extends \PHPUnit\Framework\TestCase {
 			DIWikiPage::newFromText( 'Bar' )
 		];
 
-		$idTable = $this->getMockBuilder( '\SMW\SQLStore\EntityStore\EntityIdManager' )
+		$idTable = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
 			->getMock();
 

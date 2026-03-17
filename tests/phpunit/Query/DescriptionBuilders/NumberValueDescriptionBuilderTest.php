@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\Query\DescriptionBuilders;
 
+use PHPUnit\Framework\TestCase;
+use SMW\DIProperty;
 use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
+use SMW\Query\Language\Conjunction;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
 
 /**
  * @covers \SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder
@@ -13,7 +18,7 @@ use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
  *
  * @author mwjames
  */
-class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
+class NumberValueDescriptionBuilderTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -52,7 +57,7 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 
 		$numberValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->willReturn( new \SMW\DIProperty( 'Foo' ) );
+			->willReturn( new DIProperty( 'Foo' ) );
 
 		$instance = new NumberValueDescriptionBuilder();
 
@@ -74,7 +79,7 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 		$instance = new NumberValueDescriptionBuilder();
 
 		$this->assertInstanceOf(
-			'\SMW\Query\Language\ThingDescription',
+			ThingDescription::class,
 			$instance->newDescription( $numberValue, 'Foo' )
 		);
 	}
@@ -82,22 +87,22 @@ class NumberValueDescriptionBuilderTest extends \PHPUnit\Framework\TestCase {
 	public function valueProvider() {
 		$provider[] = [
 			'42',
-			'\SMW\Query\Language\ValueDescription'
+			ValueDescription::class
 		];
 
 		$provider[] = [
 			'~42',
-			'\SMW\Query\Language\Conjunction'
+			Conjunction::class
 		];
 
 		$provider[] = [
 			'~*42*',
-			'\SMW\Query\Language\Conjunction'
+			Conjunction::class
 		];
 
 		$provider[] = [
 			'~-42',
-			'\SMW\Query\Language\Conjunction'
+			Conjunction::class
 		];
 
 		return $provider;

@@ -2,7 +2,18 @@
 
 namespace SMW\Tests\Constraint;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintRegistry;
+use SMW\Constraint\Constraints\MandatoryPropertiesConstraint;
+use SMW\Constraint\Constraints\MustExistsConstraint;
+use SMW\Constraint\Constraints\NamespaceConstraint;
+use SMW\Constraint\Constraints\NonNegativeIntegerConstraint;
+use SMW\Constraint\Constraints\NullConstraint;
+use SMW\Constraint\Constraints\ShapeConstraint;
+use SMW\Constraint\Constraints\UniqueValueConstraint;
+use SMW\ConstraintFactory;
+use SMW\MediaWiki\HookDispatcher;
 
 /**
  * @covers \SMW\Constraint\ConstraintRegistry
@@ -13,17 +24,17 @@ use SMW\Constraint\ConstraintRegistry;
  *
  * @author mwjames
  */
-class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
+class ConstraintRegistryTest extends TestCase {
 
 	private $constraintFactory;
 	private $hookDispatcher;
 
 	protected function setUp(): void {
-		$this->constraintFactory = $this->getMockBuilder( '\SMW\ConstraintFactory' )
+		$this->constraintFactory = $this->getMockBuilder( ConstraintFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->hookDispatcher = $this->getMockBuilder( '\SMW\MediaWiki\HookDispatcher' )
+		$this->hookDispatcher = $this->getMockBuilder( HookDispatcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -66,13 +77,13 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetConstraintByUnkownKey() {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->constraintFactory->expects( $this->atLeastOnce() )
 			->method( 'newConstraintByClass' )
-			->with( 'SMW\Constraint\Constraints\NullConstraint' )
+			->with( NullConstraint::class )
 			->willReturn( $constraint );
 
 		$instance = new ConstraintRegistry(
@@ -87,7 +98,7 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testRegisterConstraintWithInstance() {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -102,13 +113,13 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance->registerConstraint( 'foo', $constraint );
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\Constraint',
+			Constraint::class,
 			$instance->getConstraintByKey( 'foo' )
 		);
 	}
 
 	public function testRegisterConstraintWithCallable() {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -126,13 +137,13 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\Constraint',
+			Constraint::class,
 			$instance->getConstraintByKey( 'foo' )
 		);
 	}
 
 	public function testRegisterConstraintWithClassReference() {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -152,7 +163,7 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 		$instance->registerConstraint( 'foo', '__class__' );
 
 		$this->assertInstanceOf(
-			'\SMW\Constraint\Constraint',
+			Constraint::class,
 			$instance->getConstraintByKey( 'foo' )
 		);
 	}
@@ -161,7 +172,7 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 	 * @dataProvider constraintKeyProvider
 	 */
 	public function testGetConstraintByKey( $key, $expected ) {
-		$constraint = $this->getMockBuilder( '\SMW\Constraint\Constraint' )
+		$constraint = $this->getMockBuilder( Constraint::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -184,32 +195,32 @@ class ConstraintRegistryTest extends \PHPUnit\Framework\TestCase {
 	public function constraintKeyProvider() {
 		yield [
 			'allowed_namespaces',
-			'SMW\Constraint\Constraints\NamespaceConstraint'
+			NamespaceConstraint::class
 		];
 
 		yield [
 			'unique_value_constraint',
-			'SMW\Constraint\Constraints\UniqueValueConstraint'
+			UniqueValueConstraint::class
 		];
 
 		yield [
 			'non_negative_integer',
-			'SMW\Constraint\Constraints\NonNegativeIntegerConstraint'
+			NonNegativeIntegerConstraint::class
 		];
 
 		yield [
 			'must_exists',
-			'SMW\Constraint\Constraints\MustExistsConstraint'
+			MustExistsConstraint::class
 		];
 
 		yield [
 			'mandatory_properties',
-			'SMW\Constraint\Constraints\MandatoryPropertiesConstraint'
+			MandatoryPropertiesConstraint::class
 		];
 
 		yield [
 			'shape_constraint',
-			'SMW\Constraint\Constraints\ShapeConstraint'
+			ShapeConstraint::class
 		];
 	}
 

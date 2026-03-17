@@ -27,26 +27,6 @@ use SMW\Utils\Lru;
 class Rebuilder {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
-	 * @var EntityValidator
-	 */
-	private $entityValidator;
-
-	/**
-	 * @var PropertyTableIdReferenceDisposer
-	 */
-	private $propertyTableIdReferenceDisposer;
-
-	/**
 	 * @var JobFactory
 	 */
 	private $jobFactory;
@@ -98,17 +78,13 @@ class Rebuilder {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param SQLStore $store
-	 * @param TitleFactory $titleFactory
-	 * @param EntityValidator $entityValidator
-	 * @param PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer
 	 */
-	public function __construct( SQLStore $store, TitleFactory $titleFactory, EntityValidator $entityValidator, PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer ) {
-		$this->store = $store;
-		$this->titleFactory = $titleFactory;
-		$this->entityValidator = $entityValidator;
-		$this->propertyTableIdReferenceDisposer = $propertyTableIdReferenceDisposer;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly TitleFactory $titleFactory,
+		private readonly EntityValidator $entityValidator,
+		private readonly PropertyTableIdReferenceDisposer $propertyTableIdReferenceDisposer,
+	) {
 		$this->jobFactory = ApplicationFactory::getInstance()->newJobFactory();
 		$this->hookContainer = MediaWikiServices::getInstance()->getHookContainer();
 		$this->lru = new Lru( 10000 );
@@ -246,7 +222,8 @@ class Rebuilder {
 		// -1 means that no next position is available
 		$this->next_position( $id, $emptyRange );
 
-		return $this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
+		$this->progress = $id > 0 && $this->getMaxId() !== 0 ? $id / $this->getMaxId() : 1;
+		return $this->progress;
 	}
 
 	private function matchAsTitle( $id ) {
@@ -488,7 +465,8 @@ class Rebuilder {
 		$this->lru->set( $hash, true );
 
 		if ( $this->hasSkippableRevision( $title, $row = false ) ) {
-			return $this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
+			$this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
+			return;
 		}
 
 		$params = [

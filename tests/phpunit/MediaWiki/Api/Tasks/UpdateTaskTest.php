@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Tasks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Tasks\UpdateTask;
+use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
+class UpdateTaskTest extends TestCase {
 
 	private $jobFactory;
 	private $testEnvironment;
@@ -24,7 +27,7 @@ class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->jobFactory = $this->getMockBuilder( '\SMW\MediaWiki\JobFactory' )
+		$this->jobFactory = $this->getMockBuilder( JobFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -44,7 +47,7 @@ class UpdateTaskTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testProcess() {
-		$updateJob = $this->getMockBuilder( '\SMW\MediaWiki\Jobs\UpdateJob' )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 

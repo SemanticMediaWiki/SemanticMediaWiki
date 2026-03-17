@@ -2,7 +2,10 @@
 
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +17,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
+class ListAugmentorTest extends TestCase {
 
 	private $testEnvironment;
 
@@ -29,7 +32,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,17 +76,17 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
-			->disableOriginalConstructor()
-			->getMock();
+                $propertySpecificationLookup = $this->getMockBuilder( '\SMW\Property\SpecificationLookup' )
+                        ->disableOriginalConstructor()
+                        ->getMock();
 
-		$propertySpecificationLookup->expects( $this->any() )
-			->method( 'getPropertyDescriptionByLanguageCode' )
-			->willReturn( '' );
+                $propertySpecificationLookup->expects( $this->any() )
+                        ->method( 'getPropertyDescriptionByLanguageCode' )
+                        ->willReturn( '' );
 
-		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
+                $this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+                $store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -133,7 +136,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 			]
 		];
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -182,7 +185,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 		$row = new \stdClass;
 		$row->usage_count = 1111;
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -190,7 +193,7 @@ class ListAugmentorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'selectRow' )
 			->willReturn( $row );
 
-		$store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

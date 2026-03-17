@@ -2,7 +2,14 @@
 
 namespace SMW\Tests\MediaWiki\Search\ProfileForm;
 
+use MediaWiki\Context\RequestContext;
+use MediaWiki\Output\OutputPage;
+use MediaWiki\Request\WebRequest;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\MediaWiki\Search\ProfileForm\ProfileForm;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +21,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ProfileFormTest extends \PHPUnit\Framework\TestCase {
+class ProfileFormTest extends TestCase {
 
 	private $store;
 	private $specialSearch;
@@ -27,7 +34,7 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		$this->stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
 
-		$this->store = $this->getMockBuilder( '\SMW\Store' )
+		$this->store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -35,19 +42,19 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$this->outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->webRequest = $this->getMockBuilder( '\MediaWiki\Request\WebRequest' )
+		$this->webRequest = $this->getMockBuilder( WebRequest::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->user = $this->getMockBuilder( '\MediaWiki\User\User' )
+		$this->user = $this->getMockBuilder( User::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->requestContext = $this->getMockBuilder( '\MediaWiki\Context\RequestContext' )
+		$this->requestContext = $this->getMockBuilder( RequestContext::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +106,7 @@ class ProfileFormTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );
 
-		$searchEngine = $this->getMockBuilder( '\SMW\MediaWiki\Search\ExtendedSearchEngine' )
+		$searchEngine = $this->getMockBuilder( ExtendedSearchEngine::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -23,17 +23,9 @@ use SMWQuery as Query;
 class SingleEntityQueryLookup implements QueryEngine {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

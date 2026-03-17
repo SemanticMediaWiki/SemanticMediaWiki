@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Iterators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Iterators\AppendIterator;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Iterators\AppendIterator;
  *
  * @author mwjames
  */
-class AppendIteratorTest extends \PHPUnit\Framework\TestCase {
+class AppendIteratorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(

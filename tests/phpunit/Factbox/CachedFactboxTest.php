@@ -4,14 +4,18 @@ namespace SMW\Tests\Factbox;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\FauxRequest;
+use PHPUnit\Framework\TestCase;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Factbox\CachedFactbox;
 use SMW\Factbox\FactboxText;
+use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\MockTitle;
 
@@ -25,7 +29,7 @@ use SMW\Tests\Utils\Mock\MockTitle;
  *
  * @author mwjames
  */
-class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
+class CachedFactboxTest extends TestCase {
 
 	private $testEnvironment;
 	private $memoryCache;
@@ -48,7 +52,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$this->spyLogger = $this->testEnvironment->newSpyLogger();
 
-		$this->entityCache = $this->getMockBuilder( '\SMW\EntityCache' )
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'fetch', 'save', 'saveSub', 'fetchSub', 'associate' ] )
 			->getMock();
@@ -205,7 +209,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 
 		$subject = DIWikiPage::newFromTitle( $title );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -229,7 +233,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getProperties' )
 			->willReturn( [ new DIProperty( __METHOD__ . 'property' ) ] );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -256,7 +260,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10001 );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -309,7 +313,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10002 );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -361,7 +365,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10003 );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -405,7 +409,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getLatestRevID' )
 			->willReturn( 10004 );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -421,7 +425,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getRevisionId' )
 			->willReturn( 10004 );
 
-		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
+		$semanticData = $this->getMockBuilder( SemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -429,7 +433,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isEmpty' )
 			->willReturn( true );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -461,7 +465,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'isSpecialPage' )
 			->willReturn( true );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -473,7 +477,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContext' )
 			->willReturn( new RequestContext() );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -505,7 +509,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'exists' )
 			->willReturn( false );
 
-		$outputPage = $this->getMockBuilder( '\MediaWiki\Output\OutputPage' )
+		$outputPage = $this->getMockBuilder( OutputPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -517,7 +521,7 @@ class CachedFactboxTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getContext' )
 			->willReturn( new RequestContext() );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

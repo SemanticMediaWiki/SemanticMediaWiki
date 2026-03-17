@@ -4,6 +4,7 @@ namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Parser\Sanitizer;
 use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
 
 /**
  * Result printer to print results in UNIX-style DSV (deliminter separated value)
@@ -140,7 +141,7 @@ class DsvResultPrinter extends FileExportPrinter {
 
 			/**
 			 * Loop over their fields (properties).
-			 * @var \SMW\Query\Result\ResultArray $field
+			 * @var ResultArray $field
 			 */
 			foreach ( $row as $field ) {
 				$itemSegments = [];

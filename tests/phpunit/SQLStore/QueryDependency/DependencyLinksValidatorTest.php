@@ -2,8 +2,13 @@
 
 namespace SMW\Tests\SQLStore\QueryDependency;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\PropertyTableDefinition;
+use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\DependencyLinksValidator
@@ -14,7 +19,7 @@ use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
  *
  * @author mwjames
  */
-class DependencyLinksValidatorTest extends \PHPUnit\Framework\TestCase {
+class DependencyLinksValidatorTest extends TestCase {
 
 	private $store;
 	private $dataItemFactory;
@@ -24,7 +29,7 @@ class DependencyLinksValidatorTest extends \PHPUnit\Framework\TestCase {
 
 		$this->dataItemFactory = new DataItemFactory();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -61,11 +66,11 @@ class DependencyLinksValidatorTest extends \PHPUnit\Framework\TestCase {
 	public function testHasArchaicDependencies() {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', '' );
 
-		$propertyTableDefinition = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableDefinition' )
+		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -85,7 +90,7 @@ class DependencyLinksValidatorTest extends \PHPUnit\Framework\TestCase {
 			->method( 'getPropertyTables' )
 			->willReturn( [ '_foo' => $propertyTableDefinition ] );
 
-		$propertyTableInfoFetcher = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableInfoFetcher' )
+		$propertyTableInfoFetcher = $this->getMockBuilder( PropertyTableInfoFetcher::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -56,13 +56,15 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		// In case the filter was marked as elective, allow sets to remain in
 		// the match pool.
 		if ( $conditions === null && $this->getOption( self::FILTER_CONDITION_NOT_REQUIRED ) === true ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		// No restriction and no `category` filter was defined hence allow the
 		// rule to remain in the pool of matches.
 		if ( $this->categories === [] && $conditions === null ) {
-			return $this->matches[] = $compartment;
+			$this->matches[] = $compartment;
+			return;
 		}
 
 		$matchedCondition = false;

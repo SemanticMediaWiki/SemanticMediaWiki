@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\NavigationLinksWidget;
 use SMW\Tests\TestEnvironment;
+use SMW\Utils\UrlArgs;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\NavigationLinksWidget
@@ -14,14 +17,14 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
+class NavigationLinksWidgetTest extends TestCase {
 
 	public function testNavigation() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -36,11 +39,11 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetMaxInlineLimit() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -59,11 +62,11 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNavigationLinksOnZeroCountResult() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -77,11 +80,11 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testOffsetLimit() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$urlArgs = $this->getMockBuilder( '\SMW\Utils\UrlArgs' )
+		$urlArgs = $this->getMockBuilder( UrlArgs::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'get', 'set' ] )
 			->getMock();
@@ -104,7 +107,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTopLinks() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -120,7 +123,7 @@ class NavigationLinksWidgetTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testHiddenTopLinks() {
-		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )
+		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
 

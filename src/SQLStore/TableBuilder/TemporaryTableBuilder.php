@@ -15,22 +15,14 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class TemporaryTableBuilder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var bool
 	 */
 	private $autoCommitFlag = false;
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param Database $connection
 	 */
-	public function __construct( Database $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly Database $connection ) {
 	}
 
 	/**

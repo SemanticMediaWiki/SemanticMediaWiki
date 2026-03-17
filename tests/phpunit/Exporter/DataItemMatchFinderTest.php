@@ -2,8 +2,14 @@
 
 namespace SMW\Tests\Exporter;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\Exporter\DataItemMatchFinder;
+use SMW\Exporter\Element\ExpResource;
+use SMW\SPARQLStore\QueryEngine\RepositoryResult;
+use SMW\SPARQLStore\RepositoryConnection;
+use SMW\SPARQLStore\SPARQLStore;
+use SMW\Store;
 
 /**
  * @covers \SMW\Exporter\DataItemMatchFinder
@@ -14,10 +20,10 @@ use SMW\Exporter\DataItemMatchFinder;
  *
  * @author mwjames
  */
-class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
+class DataItemMatchFinderTest extends TestCase {
 
 	public function testCanConstruct() {
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -30,7 +36,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testMatchExpElementOnMatchableWikiNamespaceUri() {
 		$dataItem = new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -39,7 +45,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 			'http://example.org/id/'
 		);
 
-		$expResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpResource' )
+		$expResource = $this->getMockBuilder( ExpResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -56,7 +62,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testMatchExpElementOnMatchableWikiNamespaceUriWithHelpWikiNs() {
 		$dataItem = new DIWikiPage( 'Foo', NS_HELP, '', 'Bar' );
 
-		$store = $this->getMockBuilder( '\SMW\Store' )
+		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -65,7 +71,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 			'http://example.org/id/'
 		);
 
-		$expResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpResource' )
+		$expResource = $this->getMockBuilder( ExpResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -82,11 +88,11 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 	public function testMatchExpElementOnUnmatchableWikiNamespaceUri() {
 		$dataItem = new DIWikiPage( 'UNKNOWN', NS_MAIN, '', '' );
 
-		$repositoryResult = $this->getMockBuilder( '\SMW\SPARQLStore\QueryEngine\RepositoryResult' )
+		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$repositoryConnector = $this->getMockBuilder( '\SMW\SPARQLStore\RepositoryConnection' )
+		$repositoryConnector = $this->getMockBuilder( RepositoryConnection::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -94,7 +100,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 			->method( 'select' )
 			->willReturn( $repositoryResult );
 
-		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$store = $this->getMockBuilder( SPARQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -107,7 +113,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 			'http://example.org/id/'
 		);
 
-		$expResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpResource' )
+		$expResource = $this->getMockBuilder( ExpResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -122,7 +128,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testTryToFindDataItemOnInvalidUri() {
-		$store = $this->getMockBuilder( '\SMW\SPARQLStore\SPARQLStore' )
+		$store = $this->getMockBuilder( SPARQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -131,7 +137,7 @@ class DataItemMatchFinderTest extends \PHPUnit\Framework\TestCase {
 			'http://example.org/id/'
 		);
 
-		$expResource = $this->getMockBuilder( '\SMW\Exporter\Element\ExpResource' )
+		$expResource = $this->getMockBuilder( ExpResource::class )
 			->disableOriginalConstructor()
 			->getMock();
 

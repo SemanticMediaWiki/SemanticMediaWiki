@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
 use SMW\Tests\TestEnvironment;
@@ -16,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class PagePropertyTest extends \PHPUnit\Framework\TestCase {
+class PagePropertyTest extends TestCase {
 
 	private $testEnvironment;
 	private $htmlFormRenderer;
@@ -29,7 +31,7 @@ class PagePropertyTest extends \PHPUnit\Framework\TestCase {
 
 		$this->options = new options();
 
-		$this->htmlFormRenderer = $this->getMockBuilder( '\SMW\MediaWiki\Renderer\HtmlFormRenderer' )
+		$this->htmlFormRenderer = $this->getMockBuilder( HtmlFormRenderer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

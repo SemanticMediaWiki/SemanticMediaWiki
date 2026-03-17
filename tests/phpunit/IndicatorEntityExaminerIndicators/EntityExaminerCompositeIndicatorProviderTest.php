@@ -2,9 +2,15 @@
 
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
+use SMW\Indicator\IndicatorProvider;
+use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
+use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
+use SMW\MediaWiki\Permission\PermissionExaminerAware;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -16,7 +22,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\TestCase {
+class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 
 	private $compositeIndicatorHtmlBuilder;
 
@@ -28,11 +34,11 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->compositeIndicatorHtmlBuilder = $this->getMockBuilder( '\SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder' )
+		$this->compositeIndicatorHtmlBuilder = $this->getMockBuilder( CompositeIndicatorHtmlBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->permissionExaminer = $this->getMockBuilder( '\SMW\MediaWiki\Permission\PermissionExaminer' )
+		$this->permissionExaminer = $this->getMockBuilder( PermissionExaminer::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -46,17 +52,17 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 		$indicatorProviders = [];
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider',
+			EntityExaminerCompositeIndicatorProvider::class,
 			new EntityExaminerCompositeIndicatorProvider( $this->compositeIndicatorHtmlBuilder, $indicatorProviders )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider',
+			CompositeIndicatorProvider::class,
 			new EntityExaminerCompositeIndicatorProvider( $this->compositeIndicatorHtmlBuilder, $indicatorProviders )
 		);
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\Permission\PermissionExaminerAware',
+			PermissionExaminerAware::class,
 			new EntityExaminerCompositeIndicatorProvider( $this->compositeIndicatorHtmlBuilder, $indicatorProviders )
 		);
 	}
@@ -120,7 +126,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 	public function testHasIndicator_Empty() {
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
+		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -150,7 +156,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 	public function testHasIndicator_Option_ActionEdit() {
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
+		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -171,7 +177,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 	public function testHasIndicator_Option_Diff() {
 		$subject = DIWikiPage::newFromText( __METHOD__ );
 
-		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
+		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -196,7 +202,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 			->method( 'buildHTML' )
 			->willReturn( '...' );
 
-		$indicatorProvider = $this->getMockBuilder( '\SMW\Indicator\IndicatorProvider' )
+		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -253,7 +259,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 	}
 
 	private function newPermissionAwareIndicatorProvider() {
-		return new class() implements \SMW\Indicator\IndicatorProvider, \SMW\MediaWiki\Permission\PermissionAware {
+		return new class() implements IndicatorProvider, PermissionAware {
 
 			public function getName(): string {
 				return '';
@@ -263,7 +269,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 				return '';
 			}
 
-			public function hasIndicator( \SMW\DIWikiPage $subject, array $options ) {
+			public function hasIndicator( DIWikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -275,7 +281,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends \PHPUnit\Framework\Te
 				return [];
 			}
 
-			public function hasPermission( \SMW\MediaWiki\Permission\PermissionExaminer $permissionExaminer ): bool {
+			public function hasPermission( PermissionExaminer $permissionExaminer ): bool {
 				return $permissionExaminer->hasPermissionOf( 'Foo' );
 			}
 		};

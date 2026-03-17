@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
 
@@ -14,7 +15,7 @@ use SMW\MediaWiki\LocalTime;
  *
  * @author mwjames
  */
-class LocalTimeTest extends \PHPUnit\Framework\TestCase {
+class LocalTimeTest extends TestCase {
 
 	public function testNoModifiedLocalTime() {
 		$dateTime = LocalTime::getLocalizedTime(

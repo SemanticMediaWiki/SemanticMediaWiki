@@ -2,7 +2,9 @@
 
 namespace SMW\Tests\MediaWiki\Specials\PendingTasks;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
+use SMW\SetupFile;
 
 /**
  * @covers \SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks
@@ -13,7 +15,7 @@ use SMW\MediaWiki\Specials\PendingTasks\IncompleteSetupTasks;
  *
  * @author mwjames
  */
-class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
+class IncompleteSetupTasksTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
@@ -32,7 +34,7 @@ class IncompleteSetupTasksTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetHtml() {
-		$setupFile = $this->getMockBuilder( '\SMW\SetupFile' )
+		$setupFile = $this->getMockBuilder( SetupFile::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore\QueryEngine\Condition;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Exporter\Element\ExpElement;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 
 /**
@@ -13,21 +15,21 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
  *
  * @author mwjames
  */
-class SingletonConditionTest extends \PHPUnit\Framework\TestCase {
+class SingletonConditionTest extends TestCase {
 
 	public function testCanConstruct() {
-		$expElement = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
+		$expElement = $this->getMockBuilder( ExpElement::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition',
+			SingletonCondition::class,
 			new SingletonCondition( $expElement )
 		);
 	}
 
 	public function testCommonMethods() {
-		$expElement = $this->getMockBuilder( '\SMW\Exporter\Element\ExpElement' )
+		$expElement = $this->getMockBuilder( ExpElement::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -2,8 +2,11 @@
 
 namespace SMW\Tests\MediaWiki\Page;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Page\ListBuilder;
+use SMW\SortLetter;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -15,7 +18,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ListBuilderTest extends \PHPUnit\Framework\TestCase {
+class ListBuilderTest extends TestCase {
 
 	private $store;
 	private $sortLetter;
@@ -23,11 +26,11 @@ class ListBuilderTest extends \PHPUnit\Framework\TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->sortLetter = $this->getMockBuilder( '\SMW\SortLetter' )
+		$this->sortLetter = $this->getMockBuilder( SortLetter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 

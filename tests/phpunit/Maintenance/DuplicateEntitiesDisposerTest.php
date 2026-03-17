@@ -2,7 +2,13 @@
 
 namespace SMW\Tests\Maintenance;
 
+use Onoi\Cache\Cache;
+use Onoi\MessageReporter\MessageReporter;
+use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\DuplicateEntitiesDisposer;
+use SMW\MediaWiki\Connection\Database;
+use SMW\SQLStore\PropertyTableIdReferenceDisposer;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @covers \SMW\Maintenance\DuplicateEntitiesDisposer
@@ -13,7 +19,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
  *
  * @author mwjames
  */
-class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
+class DuplicateEntitiesDisposerTest extends TestCase {
 
 	private $store;
 	private $cache;
@@ -21,11 +27,11 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 	private $connection;
 
 	protected function setUp(): void {
-		$propertyTableIdReferenceDisposer = $this->getMockBuilder( '\SMW\SQLStore\PropertyTableIdReferenceDisposer' )
+		$propertyTableIdReferenceDisposer = $this->getMockBuilder( PropertyTableIdReferenceDisposer::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( '\SMW\SQLStore\SQLStore' )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -34,15 +40,15 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 			->with( 'PropertyTableIdReferenceDisposer' )
 			->willReturn( $propertyTableIdReferenceDisposer );
 
-		$this->messageReporter = $this->getMockBuilder( '\Onoi\MessageReporter\MessageReporter' )
+		$this->messageReporter = $this->getMockBuilder( MessageReporter::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->connection = $this->getMockBuilder( '\SMW\MediaWiki\Connection\Database' )
+		$this->connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->cache = $this->getMockBuilder( '\Onoi\Cache\Cache' )
+		$this->cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -157,7 +163,7 @@ class DuplicateEntitiesDisposerTest extends \PHPUnit\Framework\TestCase {
 		);
 
 		$duplicates = [
-			\SMW\SQLStore\SQLStore::ID_TABLE => [ $record ]
+			SQLStore::ID_TABLE => [ $record ]
 		];
 
 		$instance->verifyAndDispose( $duplicates );

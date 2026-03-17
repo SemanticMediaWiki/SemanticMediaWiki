@@ -24,11 +24,6 @@ use SMWDataItem as DataItem;
 class DataItemHandlerFactory {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var array
 	 */
 	private $handlers = [];
@@ -40,11 +35,8 @@ class DataItemHandlerFactory {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**

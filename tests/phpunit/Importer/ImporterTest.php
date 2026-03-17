@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Importer;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Importer\ContentCreator;
 use SMW\Importer\ContentIterator;
 use SMW\Importer\ImportContents;
 use SMW\Importer\Importer;
@@ -18,7 +20,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class ImporterTest extends \PHPUnit\Framework\TestCase {
+class ImporterTest extends TestCase {
 
 	private $spyMessageReporter;
 	private $testEnvironment;
@@ -38,7 +40,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->contentCreator = $this->getMockBuilder( '\SMW\Importer\ContentCreator' )
+		$this->contentCreator = $this->getMockBuilder( ContentCreator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -49,7 +51,7 @@ class ImporterTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\Importer\Importer',
+			Importer::class,
 			new Importer( $this->contentIterator, $this->contentCreator )
 		);
 	}

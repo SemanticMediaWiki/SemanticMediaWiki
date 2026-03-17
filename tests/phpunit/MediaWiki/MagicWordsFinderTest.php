@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use MediaWiki\Parser\ParserOutput;
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -15,7 +16,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  *
  * @author mwjames
  */
-class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
+class MagicWordsFinderTest extends TestCase {
 
 	private $magicWordsFinder;
 
@@ -27,16 +28,16 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MagicWordsFinder',
+			MagicWordsFinder::class,
 			new MagicWordsFinder()
 		);
 
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMW\MediaWiki\MagicWordsFinder',
+			MagicWordsFinder::class,
 			new MagicWordsFinder( $parserOutput )
 		);
 	}
@@ -77,7 +78,7 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testSetGetMagicWordsOnLegacyStorage() {
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
+		$instance = $this->getMockBuilder( MagicWordsFinder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'hasExtensionData' ] )
 			->getMock();
@@ -96,14 +97,14 @@ class MagicWordsFinderTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testNoPushOnEmptyMagicWordsList() {
-		$parserOutput = $this->getMockBuilder( '\MediaWiki\Parser\ParserOutput' )
+		$parserOutput = $this->getMockBuilder( ParserOutput::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$parserOutput->expects( $this->never() )
 			->method( 'setExtensionData' );
 
-		$instance = $this->getMockBuilder( '\SMW\MediaWiki\MagicWordsFinder' )
+		$instance = $this->getMockBuilder( MagicWordsFinder::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'hasExtensionData' ] )
 			->getMock();

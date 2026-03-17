@@ -2,7 +2,12 @@
 
 namespace SMW\Tests\DataModel;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataModel\SequenceMap;
+use SMW\DIProperty;
+use SMW\Schema\SchemaFactory;
+use SMW\Schema\SchemaFinder;
+use SMW\Schema\SchemaList;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -14,7 +19,7 @@ use SMW\Tests\TestEnvironment;
  *
  * @author mwjames
  */
-class SequenceMapTest extends \PHPUnit\Framework\TestCase {
+class SequenceMapTest extends TestCase {
 
 	private $testEnvironment;
 	private $schemaFactory;
@@ -24,7 +29,7 @@ class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 
 		$this->testEnvironment = new TestEnvironment();
 
-		$this->schemaFactory = $this->getMockBuilder( '\SMW\Schema\SchemaFactory' )
+		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +44,7 @@ class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	public function testCanMap() {
-		$schemaList = $this->getMockBuilder( '\SMW\Schema\SchemaList' )
+		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -48,7 +53,7 @@ class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 			->with( 'profile' )
 			->willReturn( [ 'sequence_map' => true ] );
 
-		$schemaFinder = $this->getMockBuilder( '\SMW\Schema\SchemaFinder' )
+		$schemaFinder = $this->getMockBuilder( SchemaFinder::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -60,7 +65,7 @@ class SequenceMapTest extends \PHPUnit\Framework\TestCase {
 			->method( 'newSchemaFinder' )
 			->willReturn( $schemaFinder );
 
-		$property = $this->getMockBuilder( '\SMW\DIProperty' )
+		$property = $this->getMockBuilder( DIProperty::class )
 			->disableOriginalConstructor()
 			->getMock();
 

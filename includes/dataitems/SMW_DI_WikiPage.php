@@ -338,7 +338,7 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
-	 * Implements \JsonSerializable.
+	 * Implements JsonSerializable.
 	 *
 	 * @since 4.0.0
 	 *

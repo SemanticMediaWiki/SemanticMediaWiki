@@ -33,13 +33,13 @@ class SearchResultSet extends \SearchResultSet {
 	 */
 	private $excerpts;
 
-	private $count = null;
-
-	public function __construct( QueryResult $result, $count = null ) {
+	public function __construct(
+		QueryResult $result,
+		private $count = null,
+	) {
 		$this->pages = $result->getResults();
 		$this->queryToken = $result->getQuery()->getQueryToken();
 		$this->excerpts = $result->getExcerpts();
-		$this->count = $count;
 	}
 
 	/**
@@ -133,7 +133,8 @@ class SearchResultSet extends \SearchResultSet {
 		//   method to avoid constructor work
 
 		if ( $this->pages === [] ) {
-			return $this->results = [];
+			$this->results = [];
+			return [];
 		}
 
 		foreach ( $this->pages as $page ) {

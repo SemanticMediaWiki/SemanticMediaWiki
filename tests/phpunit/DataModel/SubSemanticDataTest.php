@@ -2,9 +2,11 @@
 
 namespace SMW\Tests\DataModel;
 
+use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataModel\SubSemanticData;
+use SMW\Exception\SubSemanticDataException;
 
 /**
  * @covers \SMW\DataModel\SubSemanticData
@@ -15,7 +17,7 @@ use SMW\DataModel\SubSemanticData;
  *
  * @author mwjames
  */
-class SubSemanticDataTest extends \PHPUnit\Framework\TestCase {
+class SubSemanticDataTest extends TestCase {
 
 	private $dataItemFactory;
 
@@ -59,7 +61,7 @@ class SubSemanticDataTest extends \PHPUnit\Framework\TestCase {
 			$this->dataItemFactory->newDIWikiPage( __METHOD__, NS_MAIN )
 		);
 
-		$this->expectException( '\SMW\Exception\SubSemanticDataException' );
+		$this->expectException( SubSemanticDataException::class );
 
 		$instance->addSubSemanticData(
 			ContainerSemanticData::makeAnonymousContainer( true, true )
