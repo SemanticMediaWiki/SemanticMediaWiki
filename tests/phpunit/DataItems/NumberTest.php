@@ -2,20 +2,22 @@
 
 namespace SMW\Tests;
 
+use SMW\DataItems\Number;
+
 /**
- * @covers SMWDINumber
- * @covers SMWDataItem
+ * @covers \SMW\DataItems\Number
+ * @covers \SMW\DataItems\DataItem
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
- * @group SMWDINumberTest
+ * @group DataItems
+ * @group NumberTest
  * @group Database
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDINumberTest extends AbstractDataItem {
+class NumberTest extends AbstractDataItem {
 
 	/**
 	 * @see AbstractDataItem::getClass
@@ -25,7 +27,7 @@ class SMWDINumberTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWDINumber';
+		return Number::class;
 	}
 
 	/**

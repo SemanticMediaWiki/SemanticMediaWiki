@@ -3,38 +3,38 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Time;
 use SMW\Exception\DataItemException;
 use SMW\MediaWiki\ExtendedDateTime;
-use SMWDITime as DITime;
 
 /**
- * @covers \SMWDITime
+ * @covers \SMW\DataItems\Time
  *
  * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
  */
-class DITimeTest extends TestCase {
+class TimeTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMWDITime',
-			new DITime( DITime::CM_GREGORIAN, 1970 )
+			Time::class,
+			new Time( Time::CM_GREGORIAN, 1970 )
 		);
 	}
 
 	public function testNewFromTimestamp() {
-		$instance = DITime::newFromTimestamp( '1362200400' );
+		$instance = Time::newFromTimestamp( '1362200400' );
 
 		$this->assertInstanceOf(
-			'\SMWDITime',
+			Time::class,
 			$instance
 		);
 	}
 
 	public function testNewFromDateTime() {
-		$instance = DITime::newFromDateTime(
+		$instance = Time::newFromDateTime(
 			new ExtendedDateTime( '2012-07-08 11:14:15.638276' )
 		);
 
@@ -43,21 +43,21 @@ class DITimeTest extends TestCase {
 			$instance->getSecond()
 		);
 
-		$instance = DITime::newFromDateTime(
+		$instance = Time::newFromDateTime(
 			new ExtendedDateTime( '1582-10-04' )
 		);
 
 		$this->assertEquals(
-			DITime::CM_JULIAN,
+			Time::CM_JULIAN,
 			$instance->getCalendarModel()
 		);
 
-		$instance = DITime::newFromDateTime(
+		$instance = Time::newFromDateTime(
 			new ExtendedDateTime( '1582-10-05' )
 		);
 
 		$this->assertEquals(
-			DITime::CM_GREGORIAN,
+			Time::CM_GREGORIAN,
 			$instance->getCalendarModel()
 		);
 	}
@@ -65,7 +65,7 @@ class DITimeTest extends TestCase {
 	public function testDateTimeRoundTrip() {
 		$dateTime = new ExtendedDateTime( '2012-07-08 11:14:15.638276' );
 
-		$instance = DITime::newFromDateTime(
+		$instance = Time::newFromDateTime(
 			$dateTime
 		);
 
@@ -78,7 +78,7 @@ class DITimeTest extends TestCase {
 	public function testDateTimeWithLargeMs() {
 		$dateTime = new ExtendedDateTime( '1300-11-02 12:03:25.888499' );
 
-		$instance = new DITime(
+		$instance = new Time(
 			2, 1300, 11, 02, 12, 03, 25.888499
 		);
 
@@ -91,7 +91,7 @@ class DITimeTest extends TestCase {
 	public function testDateTimeWithHistoricDate() {
 		$dateTime = new ExtendedDateTime( '-0900-02-02 00:00:00' );
 
-		$instance = new DITime(
+		$instance = new Time(
 			2, -900, 02, 02
 		);
 
@@ -102,13 +102,13 @@ class DITimeTest extends TestCase {
 	}
 
 	public function testDeserializationOnIncompleteFormat() {
-		$instance = new DITime(
+		$instance = new Time(
 			1, 2013, 0, 2, 0
 		);
 
 		$this->assertEquals(
 			$instance,
-			DITime::doUnserialize( '1/2013/0/2/0/' )
+			Time::doUnserialize( '1/2013/0/2/0/' )
 		);
 	}
 
@@ -117,19 +117,19 @@ class DITimeTest extends TestCase {
 	 */
 	public function testNewFromJD( $jd, $expected ) {
 		$this->assertEquals(
-			DITime::doUnserialize( $expected ),
-			DITime::newFromJD( $jd )
+			Time::doUnserialize( $expected ),
+			Time::newFromJD( $jd )
 		);
 	}
 
 	public function testTryToDeserializeOnNonNumericElementsThrowsException() {
 		$this->expectException( DataItemException::class );
-		DITime::doUnserialize( '1/2013/0/2/0/foo' );
+		Time::doUnserialize( '1/2013/0/2/0/foo' );
 	}
 
 	public function testTryToDeserializeOnInvalidCountOfElementsThrowsException() {
 		$this->expectException( DataItemException::class );
-		DITime::doUnserialize( '1' );
+		Time::doUnserialize( '1' );
 	}
 
 	public function jdProvider() {

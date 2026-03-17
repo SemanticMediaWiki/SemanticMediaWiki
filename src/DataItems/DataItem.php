@@ -2,6 +2,7 @@
 
 namespace SMW\DataItems;
 
+use InvalidArgumentException;
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
 use SMW\Options;
@@ -11,6 +12,7 @@ use SMW\SemanticData;
  * This group contains all parts of SMW that relate to the processing of dataitems
  * of various types.
  *
+ * @defgroup SMWDataItems SMWDataItems
  * @defgroup DataItems DataItems
  * @ingroup SMW
  */
@@ -107,7 +109,7 @@ abstract class DataItem implements JsonUnserializable {
 
 	/**
 	 * Create a data item that represents the sortkey, i.e. either an
-	 * SMWDIBlob or an SMWDINumber. For efficiency, these subclasses
+	 * Blob or an Number. For efficiency, these subclasses
 	 * overwrite this method to return themselves.
 	 *
 	 * @return DataItem
@@ -116,10 +118,10 @@ abstract class DataItem implements JsonUnserializable {
 		$sortKey = $this->getSortKey();
 
 		if ( is_numeric( $sortKey ) ) {
-			return new SMWDINumber( $sortKey );
+			return new Number( $sortKey );
 		}
 
-		return new SMWDIBlob( $sortKey );
+		return new Blob( $sortKey );
 	}
 
 	/**

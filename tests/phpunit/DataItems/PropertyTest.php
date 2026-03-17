@@ -3,13 +3,14 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\DataTypeLookupException;
 use SMW\PropertyRegistry;
 
 /**
- * @covers \SMW\DIProperty
+ * @covers \SMW\DataItems\Property
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -19,7 +20,7 @@ use SMW\PropertyRegistry;
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIPropertyTest extends TestCase {
+class PropertyTest extends TestCase {
 
 	protected function tearDown(): void {
 		PropertyRegistry::clear();
@@ -27,7 +28,7 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testSerialization() {
-		$instance = new DIProperty( 'ohi there' );
+		$instance = new Property( 'ohi there' );
 
 		$this->assertEquals(
 			$instance,
@@ -36,7 +37,7 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testInstanceEqualsItself() {
-		$instance = new DIProperty( 'ohi there' );
+		$instance = new Property( 'ohi there' );
 
 		$this->assertTrue(
 			$instance->equals( $instance )
@@ -44,29 +45,29 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testInstanceDoesNotEqualNyanData() {
-		$instance = new DIProperty( 'ohi there' );
+		$instance = new Property( 'ohi there' );
 
 		$this->assertFalse(
-			$instance->equals( new \SMWDIBlob( '~=[,,_,,]:3' ) )
+			$instance->equals( new Blob( '~=[,,_,,]:3' ) )
 		);
 	}
 
 	public function testSetPropertyTypeIdOnUserDefinedProperty() {
-		$property = new DIProperty( 'SomeBlobProperty' );
+		$property = new Property( 'SomeBlobProperty' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$this->assertEquals( '_txt', $property->findPropertyTypeID() );
 	}
 
 	public function testSetPropertyTypeIdOnPredefinedProperty() {
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 		$property->setPropertyTypeId( '_dat' );
 
 		$this->assertEquals( '_dat', $property->findPropertyTypeID() );
 	}
 
 	public function testSetUnknownPropertyTypeIdThrowsException() {
-		$property = new DIProperty( 'SomeUnknownTypeIdProperty' );
+		$property = new Property( 'SomeUnknownTypeIdProperty' );
 
 		$this->expectException( DataTypeLookupException::class );
 		$property->setPropertyTypeId( '_unknownTypeId' );
@@ -95,7 +96,7 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testUseInterwikiPrefix() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setInterwiki( 'bar' );
 
 		$this->assertEquals(
@@ -105,7 +106,7 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testCreatePropertyFromLabelThatContainsInverseMarker() {
-		$property = DIProperty::newFromUserLabel( '-Foo' );
+		$property = Property::newFromUserLabel( '-Foo' );
 		$property->setInterwiki( 'bar' );
 
 		$this->assertTrue(
@@ -119,7 +120,7 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testCreatePropertyFromLabelThatContainsLanguageMarker() {
-		$property = DIProperty::newFromUserLabel( '-Foo@en' );
+		$property = Property::newFromUserLabel( '-Foo@en' );
 		$property->setInterwiki( 'bar' );
 
 		$this->assertTrue(
@@ -127,7 +128,7 @@ class DIPropertyTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY, 'bar' ),
 			$property->getDiWikiPage()
 		);
 	}
@@ -136,7 +137,7 @@ class DIPropertyTest extends TestCase {
 	 * @dataProvider labelProvider
 	 */
 	public function testNewFromLabel( $label, $iw, $lc, $expected ) {
-		$property = DIProperty::newFromUserLabel( $label, $iw, $lc );
+		$property = Property::newFromUserLabel( $label, $iw, $lc );
 
 		$this->assertEquals(
 			$expected,
@@ -145,7 +146,7 @@ class DIPropertyTest extends TestCase {
 	}
 
 	public function testCanonicalRepresentation() {
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 
 		$this->assertEquals(
 			'Modification date',
@@ -153,7 +154,7 @@ class DIPropertyTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'Modification_date', SMW_NS_PROPERTY ),
+			new WikiPage( 'Modification_date', SMW_NS_PROPERTY ),
 			$property->getCanonicalDiWikiPage()
 		);
 	}

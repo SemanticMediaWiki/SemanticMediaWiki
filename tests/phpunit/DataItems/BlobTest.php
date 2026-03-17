@@ -2,21 +2,23 @@
 
 namespace SMW\Tests;
 
+use SMW\DataItems\Blob;
+
 /**
- * @covers SMWDIBoolean
- * @covers SMWDataItem
+ * @covers \SMW\DataItems\Blob
+ * @covers \SMW\DataItems\DataItem
  *
  * @since 1.8
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
+ * @group DataItems
  * @group Database
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDIBooleanTest extends AbstractDataItem {
+class BlobTest extends AbstractDataItem {
 
 	/**
 	 * @see AbstractDataItem::getClass
@@ -26,7 +28,7 @@ class SMWDIBooleanTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWDIBoolean';
+		return Blob::class;
 	}
 
 	/**
@@ -38,8 +40,8 @@ class SMWDIBooleanTest extends AbstractDataItem {
 	 */
 	public function constructorProvider() {
 		return [
-			[ false ],
-			[ true ],
+			[ 'I love Semantic MediaWiki' ],
+			[ 'It is open source' ],
 		];
 	}
 

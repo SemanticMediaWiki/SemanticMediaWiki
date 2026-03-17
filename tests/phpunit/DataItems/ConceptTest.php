@@ -2,20 +2,20 @@
 
 namespace SMW\Tests;
 
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
 
 /**
- * @covers \SMW\DIConcept
+ * @covers \SMW\DataItems\Concept
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
+ * @group DataItems
  * @group Database
  *
  * @license GPL-2.0-or-later
  * @author mwjames
  */
-class DIConceptTest extends AbstractDataItem {
+class ConceptTest extends AbstractDataItem {
 
 	/**
 	 * Returns the name of the class to be tested
@@ -25,7 +25,7 @@ class DIConceptTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return DIConcept::class;
+		return Concept::class;
 	}
 
 	/**

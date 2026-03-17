@@ -3,16 +3,12 @@
 namespace SMW\DataItems;
 
 /**
- * @ingroup DataItems
- */
-
-/**
  * This class implements blob (long string) data items.
  *
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
 class Blob extends DataItem {
 
@@ -84,5 +80,7 @@ class Blob extends DataItem {
 	}
 }
 
-// Deprecated since 7.0.0
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( Blob::class, 'Blob' );

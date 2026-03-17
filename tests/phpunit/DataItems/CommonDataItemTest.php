@@ -3,9 +3,10 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 
 /**
- * @covers \SMWDataItem
+ * @covers \SMW\DataItems\DataItem
  *
  * @group SMW
  * @group SMWExtension
@@ -22,7 +23,7 @@ class CommonDataItemTest extends TestCase {
 
 		foreach ( [ 'Foo', 'Bar', 'Foo' ] as  $value ) {
 
-			$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+			$dataItem = $this->getMockBuilder( DataItem::class )
 				->disableOriginalConstructor()
 				->getMockForAbstractClass();
 
