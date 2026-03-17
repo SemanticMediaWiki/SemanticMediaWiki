@@ -48,6 +48,11 @@ class PropertyValueFormatterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$displayTitleFinder = $this->getMockBuilder( \SMW\DisplayTitleFinder::class )->disableOriginalConstructor()->getMock();
+		$displayTitleFinder->expects( $this->any() )->method( 'findDisplayTitle' )->willReturn( '' );
+
+		$this->testEnvironment->registerObject( 'DisplayTitleFinder', $displayTitleFinder );
+
 		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
 
 		$constraintValueValidator = $this->getMockBuilder( ConstraintValueValidator::class )
