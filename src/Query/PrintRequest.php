@@ -55,7 +55,7 @@ class PrintRequest {
 
 	protected $m_data; // data entries specifyin gwhat was requested (mixed type)
 
-	protected $m_typeid = false; // output format string for formatting results, if applicable
+	protected $m_typeid = false; // cached type id of this print request
 
 	protected $m_hash = false; // cache your hash (currently useful since QueryResult accesses the hash many times, might be dropped at some point)
 

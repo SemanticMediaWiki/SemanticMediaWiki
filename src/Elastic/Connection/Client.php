@@ -72,7 +72,7 @@ class Client {
 		$this->client = $client;
 
 		if ( $this->options === null ) {
-			$this->options = new Options();
+			$this->options = new Config();
 		}
 
 		$this->logger = new NullLogger();

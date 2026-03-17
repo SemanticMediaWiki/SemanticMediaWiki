@@ -46,7 +46,7 @@ class RemoteRequest implements QueryEngine {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private array $parameters = [],
+		private readonly array $parameters = [],
 		private ?HttpRequest $httpRequest = null,
 	) {
 		$this->features = $GLOBALS['smwgRemoteReqFeatures'];

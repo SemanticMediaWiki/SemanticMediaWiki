@@ -32,7 +32,7 @@ class TermParser {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( private array $prefix_map = [] ) {
+	public function __construct( private readonly array $prefix_map = [] ) {
 	}
 
 	/**

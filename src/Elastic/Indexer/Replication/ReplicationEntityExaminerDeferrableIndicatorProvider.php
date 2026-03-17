@@ -47,9 +47,9 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 * @since 3.2
 	 */
 	public function __construct(
-		private Store $store,
-		private EntityCache $entityCache,
-		private ReplicationCheck $replicationCheck,
+		private readonly Store $store,
+		private readonly EntityCache $entityCache,
+		private readonly ReplicationCheck $replicationCheck,
 	) {
 	}
 

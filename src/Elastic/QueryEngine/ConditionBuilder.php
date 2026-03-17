@@ -116,10 +116,10 @@ class ConditionBuilder {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private Store $store,
-		private TermsLookup $termsLookup,
-		private HierarchyLookup $hierarchyLookup,
-		private ServicesContainer $servicesContainer,
+		private readonly Store $store,
+		private readonly TermsLookup $termsLookup,
+		private readonly HierarchyLookup $hierarchyLookup,
+		private readonly ServicesContainer $servicesContainer,
 	) {
 	}
 
