@@ -50,7 +50,7 @@ class Boolean extends DataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return bool
+	 * @return Boolean
 	 * @throws DataItemException
 	 */
 	public static function doUnserialize( $serialization ) {
