@@ -16,22 +16,14 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 class AllowsPatternValueParser implements ValueParser {
 
 	/**
-	 * @var MediaWikiNsContentReader
-	 */
-	private $mediaWikiNsContentReader;
-
-	/**
 	 * @var array
 	 */
 	private $errors = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
-		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
+	public function __construct( private readonly MediaWikiNsContentReader $mediaWikiNsContentReader ) {
 	}
 
 	/**

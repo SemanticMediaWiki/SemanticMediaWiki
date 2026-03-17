@@ -22,16 +22,6 @@ use SMWWikiPageValue as WikiPageValue;
 class InfoLinksProvider {
 
 	/**
-	 * @var DataValue
-	 */
-	private $dataValue;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @var Infolink[]
 	 */
 	protected $infoLinks = [];
@@ -72,13 +62,11 @@ class InfoLinksProvider {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param DataValue $dataValue
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( DataValue $dataValue, SpecificationLookup $propertySpecificationLookup ) {
-		$this->dataValue = $dataValue;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly DataValue $dataValue,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**
