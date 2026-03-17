@@ -34,16 +34,6 @@ use SMWDataValue;
 class PropertyPage extends Page {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DeclarationExaminerFactory
-	 */
-	private $declarationExaminerFactory;
-
-	/**
 	 * @var DIProperty
 	 */
 	private $property;
@@ -70,15 +60,13 @@ class PropertyPage extends Page {
 
 	/**
 	 * @see 3.0
-	 *
-	 * @param Title $title
-	 * @param Store $store
-	 * @param DeclarationExaminerFactory $declarationExaminerFactory
 	 */
-	public function __construct( Title $title, Store $store, DeclarationExaminerFactory $declarationExaminerFactory ) {
+	public function __construct(
+		Title $title,
+		private readonly Store $store,
+		private readonly DeclarationExaminerFactory $declarationExaminerFactory,
+	) {
 		parent::__construct( $title );
-		$this->store = $store;
-		$this->declarationExaminerFactory = $declarationExaminerFactory;
 	}
 
 	/**

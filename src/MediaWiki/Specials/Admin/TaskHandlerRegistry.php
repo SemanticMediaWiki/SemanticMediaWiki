@@ -17,16 +17,6 @@ class TaskHandlerRegistry {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @var
 	 */
 	private $taskHandlers = [];
@@ -43,13 +33,11 @@ class TaskHandlerRegistry {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private Store $store,
+		private OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**

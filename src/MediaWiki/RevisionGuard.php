@@ -27,17 +27,9 @@ class RevisionGuard {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var RevisionLookup
-	 */
-	private $revisionLookup;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param RevisionLookup $revisionLookup
 	 */
-	public function __construct( RevisionLookup $revisionLookup ) {
-		$this->revisionLookup = $revisionLookup;
+	public function __construct( private RevisionLookup $revisionLookup ) {
 	}
 
 	/**

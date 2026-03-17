@@ -13,24 +13,12 @@ use MediaWiki\Parser\Parser;
 class HtmlTemplateRenderer {
 
 	/**
-	 * @var WikitextTemplateRenderer
-	 */
-	private $wikitextTemplateRenderer;
-
-	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param WikitextTemplateRenderer $wikitextTemplateRenderer
-	 * @param Parser $parser
 	 */
-	public function __construct( WikitextTemplateRenderer $wikitextTemplateRenderer, Parser $parser ) {
-		$this->wikitextTemplateRenderer = $wikitextTemplateRenderer;
-		$this->parser = $parser;
+	public function __construct(
+		private readonly WikitextTemplateRenderer $wikitextTemplateRenderer,
+		private readonly Parser $parser,
+	) {
 	}
 
 	/**

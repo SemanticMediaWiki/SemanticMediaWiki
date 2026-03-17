@@ -30,16 +30,6 @@ class GroupFormatter {
 	const MESSAGE_GROUP_DESCRIPTION = 'smw-property-group-description-';
 
 	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
-	 * @var SchemaFinder
-	 */
-	private $schemaFinder;
-
-	/**
 	 * @var bool
 	 */
 	private $showGroup = true;
@@ -56,12 +46,11 @@ class GroupFormatter {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SpecificationLookup $propertySpecificationLookup, SchemaFinder $schemaFinder ) {
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
-		$this->schemaFinder = $schemaFinder;
+	public function __construct(
+		private readonly SpecificationLookup $propertySpecificationLookup,
+		private readonly SchemaFinder $schemaFinder,
+	) {
 	}
 
 	/**

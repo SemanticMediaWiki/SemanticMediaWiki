@@ -16,22 +16,14 @@ use MediaWiki\User\User;
 class ManualEntryLogger {
 
 	/**
-	 * @var logEntry
-	 */
-	private $logEntry = null;
-
-	/**
 	 * @var array
 	 */
 	private $eventTypes = [];
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param LogEntry|null $logEntry
 	 */
-	public function __construct( ?LogEntry $logEntry = null ) {
-		$this->logEntry = $logEntry;
+	public function __construct( private readonly ?LogEntry $logEntry = null ) {
 	}
 
 	/**

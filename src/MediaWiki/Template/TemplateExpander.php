@@ -25,22 +25,14 @@ class TemplateExpander {
 	const MAX_INCLUDE_SIZE = 50000000;
 
 	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
 	 * @var Title
 	 */
 	private $title;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Parser $parser
 	 */
-	public function __construct( $parser ) {
-		$this->parser = $parser;
+	public function __construct( private $parser ) {
 	}
 
 	/**

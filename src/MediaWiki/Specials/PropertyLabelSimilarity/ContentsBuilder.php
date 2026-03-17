@@ -17,24 +17,12 @@ use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 class ContentsBuilder {
 
 	/**
-	 * @var PropertyLabelSimilarityLookup
-	 */
-	private $propertyLabelSimilarityLookup;
-
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param PropertyLabelSimilarityLookup $propertyLabelSimilarityLookup
-	 * @param HtmlFormRenderer $htmlFormRenderer
 	 */
-	public function __construct( PropertyLabelSimilarityLookup $propertyLabelSimilarityLookup, HtmlFormRenderer $htmlFormRenderer ) {
-		$this->propertyLabelSimilarityLookup = $propertyLabelSimilarityLookup;
-		$this->htmlFormRenderer = $htmlFormRenderer;
+	public function __construct(
+		private readonly PropertyLabelSimilarityLookup $propertyLabelSimilarityLookup,
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+	) {
 	}
 
 	/**

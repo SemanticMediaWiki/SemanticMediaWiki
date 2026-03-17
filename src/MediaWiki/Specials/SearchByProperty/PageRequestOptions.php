@@ -18,16 +18,6 @@ use SMWNumberValue as NumberValue;
 class PageRequestOptions {
 
 	/**
-	 * @var string
-	 */
-	private $queryString;
-
-	/**
-	 * @var array
-	 */
-	private $requestOptions;
-
-	/**
 	 * @var Encoder
 	 */
 	private $urlEncoder;
@@ -69,13 +59,11 @@ class PageRequestOptions {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param string $queryString
-	 * @param array $requestOptions
 	 */
-	public function __construct( $queryString, array $requestOptions ) {
-		$this->queryString = $queryString;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private $queryString,
+		private array $requestOptions,
+	) {
 		$this->urlEncoder = new Encoder();
 	}
 

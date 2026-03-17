@@ -23,22 +23,10 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class FileUpload implements HookListener {
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var HookContainer
-	 */
-	private $hookContainer;
-
 	public function __construct(
-		NamespaceExaminer $namespaceExaminer,
-		HookContainer $hookContainer
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly HookContainer $hookContainer,
 	) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->hookContainer = $hookContainer;
 	}
 
 	/**

@@ -18,31 +18,13 @@ use SMW\Utils\HtmlTabs;
 class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var FileFetcher
-	 */
-	private $fileFetcher;
-
-	/**
-	 * @var TaskHandler[]
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param FileFetcher $fileFetcher
-	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, FileFetcher $fileFetcher, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->fileFetcher = $fileFetcher;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly FileFetcher $fileFetcher,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**

@@ -26,16 +26,6 @@ use SMWDataValue;
 class HtmlBuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
 	 * @var bool
 	 */
 	private $showoutgoing = true;
@@ -96,13 +86,11 @@ class HtmlBuilder {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param DIWikiPage $subject
 	 */
-	public function __construct( Store $store, DIWikiPage $subject ) {
-		$this->store = $store;
-		$this->subject = $subject;
+	public function __construct(
+		private readonly Store $store,
+		private readonly DIWikiPage $subject,
+	) {
 	}
 
 	/**

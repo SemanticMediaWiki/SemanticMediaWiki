@@ -17,29 +17,17 @@ use SMW\Protection\ProtectionValidator;
 class TitlePermissions {
 
 	/**
-	 * @var ProtectionValidator
-	 */
-	private $protectionValidator;
-
-	/**
-	 * @var PermissionManager
-	 */
-	private $permissionManager;
-
-	/**
 	 * @var
 	 */
 	private $errors = [];
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param ProtectionValidator $protectionValidator
-	 * @param permissionManager $permissionManager
 	 */
-	public function __construct( ProtectionValidator $protectionValidator, PermissionManager $permissionManager ) {
-		$this->protectionValidator = $protectionValidator;
-		$this->permissionManager = $permissionManager;
+	public function __construct(
+		private readonly ProtectionValidator $protectionValidator,
+		private readonly PermissionManager $permissionManager,
+	) {
 	}
 
 	/**

@@ -28,11 +28,6 @@ class SpecialStatsAddExtra implements HookListener {
 	const CRITICAL_DELETECOUNT = 5000;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var Language|string
 	 */
 	private $language;
@@ -62,11 +57,8 @@ class SpecialStatsAddExtra implements HookListener {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**

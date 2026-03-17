@@ -15,26 +15,17 @@ use SMW\Store;
 class DuplicateLookupTask extends Task {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $cacheUsage;
 
-	private Cache $cache;
-
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, Cache $cache ) {
-		$this->store = $store;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly Store $store,
+		private readonly Cache $cache,
+	) {
 	}
 
 	/**
