@@ -48,7 +48,6 @@
 		"SMWDITime": "src/DataItems/Time.php",
 		"SMWDIUri": "src/DataItems/Uri.php",
 		"SMW\\DIWikiPage": "src/DataItems/WikiPage.php"
-		
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
