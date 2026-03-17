@@ -34,26 +34,6 @@ class FileIndexer {
 	const INGEST_RESPONSE = 'es.ingest.response';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var FileHandler
-	 */
-	private $fileHandler;
-
-	/**
-	 * @var FileAttachment
-	 */
-	private $fileAttachment;
-
-	/**
 	 * @var string
 	 */
 	private $origin = '';
@@ -70,17 +50,13 @@ class FileIndexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param FileHandler $fileHandler
-	 * @param FileAttachment $fileAttachment
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, FileHandler $fileHandler, FileAttachment $fileAttachment ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->fileHandler = $fileHandler;
-		$this->fileAttachment = $fileAttachment;
+	public function __construct(
+		private Store $store,
+		private EntityCache $entityCache,
+		private FileHandler $fileHandler,
+		private FileAttachment $fileAttachment,
+	) {
 	}
 
 	/**

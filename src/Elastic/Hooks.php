@@ -17,22 +17,14 @@ use SMW\Store;
 class Hooks {
 
 	/**
-	 * @var ElasticFactory
-	 */
-	private $elasticFactory;
-
-	/**
 	 * @var
 	 */
 	private $handlers = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param ElasticFactory $elasticFactory
 	 */
-	public function __construct( ElasticFactory $elasticFactory ) {
-		$this->elasticFactory = $elasticFactory;
+	public function __construct( private readonly ElasticFactory $elasticFactory ) {
 	}
 
 	/**

@@ -22,29 +22,17 @@ class ConnectionProvider implements IConnectionProvider {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var LockManager
-	 */
-	private $lockManager;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
 	 * @var Client
 	 */
 	private $connection;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param LockManager $lockManager
-	 * @param config $config
 	 */
-	public function __construct( LockManager $lockManager, Config $config ) {
-		$this->lockManager = $lockManager;
-		$this->config = $config;
+	public function __construct(
+		private LockManager $lockManager,
+		private Config $config,
+	) {
 	}
 
 	/**

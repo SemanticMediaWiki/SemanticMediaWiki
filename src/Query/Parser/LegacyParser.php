@@ -26,21 +26,6 @@ use SMW\Query\QueryToken;
 class LegacyParser implements Parser {
 
 	/**
-	 * @var DescriptionProcessor
-	 */
-	private $descriptionProcessor;
-
-	/**
-	 * @var QueryToken
-	 */
-	private $queryToken;
-
-	/**
-	 * @var Tokenizer
-	 */
-	private $tokenizer;
-
-	/**
 	 * @var DescriptionFactory
 	 */
 	private $descriptionFactory;
@@ -111,15 +96,12 @@ class LegacyParser implements Parser {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param DescriptionProcessor $descriptionProcessor
-	 * @param Tokenizer $tokenizer
-	 * @param QueryToken $queryToken
 	 */
-	public function __construct( DescriptionProcessor $descriptionProcessor, Tokenizer $tokenizer, QueryToken $queryToken ) {
-		$this->descriptionProcessor = $descriptionProcessor;
-		$this->tokenizer = $tokenizer;
-		$this->queryToken = $queryToken;
+	public function __construct(
+		private readonly DescriptionProcessor $descriptionProcessor,
+		private readonly Tokenizer $tokenizer,
+		private readonly QueryToken $queryToken,
+	) {
 		$this->descriptionFactory = new DescriptionFactory();
 		$this->dataTypeRegistry = DataTypeRegistry::getInstance();
 		$this->setDefaultPrefix();

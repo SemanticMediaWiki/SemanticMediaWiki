@@ -21,10 +21,8 @@ class ValueTextsBuilder {
 	use ParameterDictionaryUser;
 
 	private $linker;
-	private $prefixParameterProcessor;
 
-	public function __construct( PrefixParameterProcessor $prefixParameterProcessor ) {
-		$this->prefixParameterProcessor = $prefixParameterProcessor;
+	public function __construct( private PrefixParameterProcessor $prefixParameterProcessor ) {
 	}
 
 	/**

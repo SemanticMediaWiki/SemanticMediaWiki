@@ -17,19 +17,13 @@ use SMWDINumber as DINumber;
 class DescriptionProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var Description
-	 */
-	private $description;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param Description $description
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, Description $description ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private readonly Description $description,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->description = $description;
 	}
 
 	/**

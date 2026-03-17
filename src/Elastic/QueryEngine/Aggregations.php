@@ -13,11 +13,6 @@ class Aggregations {
 	/**
 	 * @var array
 	 */
-	private $parameters = [];
-
-	/**
-	 * @var array
-	 */
 	private $subAggregations = [];
 
 	/**
@@ -27,11 +22,8 @@ class Aggregations {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Aggregations|array $parameters
 	 */
-	public function __construct( $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private $parameters = [] ) {
 	}
 
 	/**

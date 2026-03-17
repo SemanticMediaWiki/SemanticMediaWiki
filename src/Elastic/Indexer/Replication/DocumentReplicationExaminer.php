@@ -28,26 +28,17 @@ class DocumentReplicationExaminer {
 	const CHECK_MISSING_FILE_ATTACHMENT = 'check/missing/file_attachment';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $replicationStatusResponse = [];
 
-	private ReplicationStatus $replicationStatus;
-
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param ReplicationStatus $replicationStatus
 	 */
-	public function __construct( Store $store, ReplicationStatus $replicationStatus ) {
-		$this->store = $store;
-		$this->replicationStatus = $replicationStatus;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ReplicationStatus $replicationStatus,
+	) {
 	}
 
 	/**
