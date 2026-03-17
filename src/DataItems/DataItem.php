@@ -1,10 +1,9 @@
 <?php
 
+namespace SMW\DataItems;
+
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Options;
 use SMW\SemanticData;
 
@@ -12,7 +11,7 @@ use SMW\SemanticData;
  * This group contains all parts of SMW that relate to the processing of dataitems
  * of various types.
  *
- * @defgroup SMWDataItems SMWDataItems
+ * @defgroup DataItems DataItems
  * @ingroup SMW
  */
 
@@ -31,33 +30,33 @@ use SMW\SemanticData;
  *
  * @since 1.6
  *
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-abstract class SMWDataItem implements JsonUnserializable {
+abstract class DataItem implements JsonUnserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
 	const TYPE_NOTYPE = 0;
-	/// Data item ID for SMWDINumber
+	/// Data item ID for INumber
 	const TYPE_NUMBER = 1;
-	/// Data item ID for SMWDIBlob
+	/// Data item ID for Blob
 	const TYPE_BLOB = 2;
-	///  Data item ID for SMWDIBoolean
+	///  Data item ID for Boolean
 	const TYPE_BOOLEAN = 4;
-	///  Data item ID for SMWDIUri
+	///  Data item ID for Uri
 	const TYPE_URI = 5;
-	///  Data item ID for SMWDITimePoint
+	///  Data item ID for TimePoint
 	const TYPE_TIME = 6;
-	///  Data item ID for SMWDIGeoCoord
+	///  Data item ID for GeoCoord
 	const TYPE_GEO = 7;
-	///  Data item ID for SMWDIContainer
+	///  Data item ID for Container
 	const TYPE_CONTAINER = 8;
-	///  Data item ID for DIWikiPage
+	///  Data item ID for WikiPage
 	const TYPE_WIKIPAGE = 9;
-	///  Data item ID for DIConcept
+	///  Data item ID for Concept
 	const TYPE_CONCEPT = 10;
-	///  Data item ID for DIProperty
+	///  Data item ID for Property
 	const TYPE_PROPERTY = 11;
-	///  Data item ID for SMWDIError
+	///  Data item ID for Error
 	const TYPE_ERROR = 12;
 
 	/**
@@ -95,23 +94,23 @@ abstract class SMWDataItem implements JsonUnserializable {
 	abstract public function getSortKey();
 
 	/**
-	 * Method to compare two SMWDataItems
+	 * Method to compare two DataItems
 	 * This should result true only if they are of the same DI type
 	 * and have the same internal value
 	 *
 	 * @since 1.8
 	 *
-	 * @param SMWDataItem $di
+	 * @param DataItem $di
 	 * @return bool
 	 */
-	abstract public function equals( SMWDataItem $di );
+	abstract public function equals( DataItem $di );
 
 	/**
 	 * Create a data item that represents the sortkey, i.e. either an
 	 * SMWDIBlob or an SMWDINumber. For efficiency, these subclasses
 	 * overwrite this method to return themselves.
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public function getSortKeyDataItem() {
 		$sortKey = $this->getSortKey();
@@ -126,7 +125,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	/**
 	 * Get a UTF-8 encoded string serialization of this data item.
 	 * The serialisation should be concise and need not be pretty, but it
-	 * must allow unserialization. Each subclass of SMWDataItem implements
+	 * must allow unserialization. Each subclass of DataItem implements
 	 * a static method doUnserialize() for this purpose.
 	 * @return string
 	 */
@@ -167,7 +166,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	 * @param int $diType dataitem ID
 	 * @param string $serialization
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public static function newFromSerialization( $diType, $serialization ) {
 		$diClass = self::getDataItemClassNameForId( $diType );
@@ -177,7 +176,7 @@ abstract class SMWDataItem implements JsonUnserializable {
 	/**
 	 * Gets the class name of the data item that has the provided type id.
 	 *
-	 * @param int $diType Element of the SMWDataItem::TYPE_ enum
+	 * @param int $diType Element of the DataItem::TYPE_ enum
 	 *
 	 * @throws InvalidArgumentException
 	 *
@@ -186,27 +185,27 @@ abstract class SMWDataItem implements JsonUnserializable {
 	public static function getDataItemClassNameForId( $diType ) {
 		switch ( $diType ) {
 			case self::TYPE_NUMBER:
-				return SMWDINumber::class;
+				return Number::class;
 			case self::TYPE_BLOB:
-				return SMWDIBlob::class;
+				return Blob::class;
 			case self::TYPE_BOOLEAN:
-				return SMWDIBoolean::class;
+				return Boolean::class;
 			case self::TYPE_URI:
-				return SMWDIUri::class;
+				return Uri::class;
 			case self::TYPE_TIME:
-				return SMWDITime::class;
+				return Time::class;
 			case self::TYPE_GEO:
-				return SMWDIGeoCoord::class;
+				return GeoCoord::class;
 			case self::TYPE_CONTAINER:
-				return SMWDIContainer::class;
+				return Container::class;
 			case self::TYPE_WIKIPAGE:
-				return DIWikiPage::class;
+				return WikiPage::class;
 			case self::TYPE_CONCEPT:
-				return DIConcept::class;
+				return Concept::class;
 			case self::TYPE_PROPERTY:
-				return DIProperty::class;
+				return Property::class;
 			case self::TYPE_ERROR:
-				return SMWDIError::class;
+				return Error::class;
 			case self::TYPE_NOTYPE:
 			default:
 				throw new InvalidArgumentException( "The value \"$diType\" is not a valid dataitem ID." );
@@ -281,3 +280,6 @@ abstract class SMWDataItem implements JsonUnserializable {
 	}
 
 }
+
+// Deprecated since 7.0.0
+class_alias( DataItem::class, 'SMWDataItem' );

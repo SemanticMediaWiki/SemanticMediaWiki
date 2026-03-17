@@ -1,7 +1,9 @@
 <?php
 /**
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
+
+namespace SMW\DataItems;
 
 use SMW\Exception\DataItemException;
 
@@ -11,9 +13,9 @@ use SMW\Exception\DataItemException;
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDIBoolean extends SMWDataItem {
+class Boolean extends DataItem {
 
 	/**
 	 * Internal value.
@@ -30,7 +32,7 @@ class SMWDIBoolean extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_BOOLEAN;
+		return DataItem::TYPE_BOOLEAN;
 	}
 
 	public function getBoolean() {
@@ -48,22 +50,25 @@ class SMWDIBoolean extends SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return SMWDIBoolean
+	 * @return Boolean
 	 */
 	public static function doUnserialize( $serialization ) {
 		if ( $serialization == 't' ) {
-			return new SMWDIBoolean( true );
+			return new Boolean( true );
 		} elseif ( $serialization == 'f' ) {
-			return new SMWDIBoolean( false );
+			return new Boolean( false );
 		} else {
 			throw new DataItemException( "Boolean data item unserialised from illegal value '$serialization'" );
 		}
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_BOOLEAN ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_BOOLEAN ) {
 			return false;
 		}
 		return $di->getBoolean() === $this->m_boolean;
 	}
 }
+
+// Deprecated since 7.0.0
+class_alias( Boolean::class, 'SMWDIBoolean' );

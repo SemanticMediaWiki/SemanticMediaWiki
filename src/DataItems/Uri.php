@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\DataItems;
+
 use SMW\Exception\DataItemException;
 
 /**
@@ -8,9 +10,9 @@ use SMW\Exception\DataItemException;
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDIUri extends SMWDataItem {
+class Uri extends DataItem {
 
 	/**
 	 * URI scheme such as "html" or "mailto".
@@ -127,7 +129,7 @@ class SMWDIUri extends SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return SMWDIUri
+	 * @return Uri
 	 */
 	public static function doUnserialize( $serialization ) {
 		// try to split "schema:rest"
@@ -164,14 +166,17 @@ class SMWDIUri extends SMWDataItem {
 
 		$hierpart = ltrim( $hierpart, '/' );
 
-		return new SMWDIUri( $scheme, $hierpart, $query, $fragment, $strict );
+		return new Uri( $scheme, $hierpart, $query, $fragment, $strict );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_URI ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_URI ) {
 			return false;
 		}
 
 		return $di->getURI() === $this->getURI();
 	}
 }
+
+// Deprecated since 7.0.0
+class_alias( Uri::class, 'SMWDIUri' );

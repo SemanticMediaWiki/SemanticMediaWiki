@@ -1,12 +1,14 @@
 <?php
 
+namespace SMW\DataItems;
+
 use SMW\Exception\DataItemException;
 
 /**
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDIGeoCoord extends SMWDataItem {
+class GeoCoord extends DataItem {
 
 	/**
 	 * @var float
@@ -51,7 +53,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 					$this->altitude = (float)$args[0]['alt'];
 				}
 			} else {
-				throw new DataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
+				throw new DataItemException( 'Invalid coordinate data passed to the GeoCoord constructor' );
 			}
 		} elseif ( $count === 2 || $count === 3 ) {
 			$this->setLatitude( $args[0] );
@@ -61,7 +63,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 				$this->altitude = (float)$args[2];
 			}
 		} else {
-			throw new DataItemException( 'Invalid coordinate data passed to the SMWDIGeoCoord constructor' );
+			throw new DataItemException( 'Invalid coordinate data passed to the GeoCoord constructor' );
 		}
 	}
 
@@ -91,10 +93,10 @@ class SMWDIGeoCoord extends SMWDataItem {
 
 	/**
 	 * (non-PHPdoc)
-	 * @see SMWDataItem::getDIType()
+	 * @see DataItem::getDIType()
 	 */
 	public function getDIType() {
-		return SMWDataItem::TYPE_GEO;
+		return DataItem::TYPE_GEO;
 	}
 
 	/**
@@ -115,7 +117,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 
 	/**
 	 * (non-PHPdoc)
-	 * @see SMWDataItem::getSortKey()
+	 * @see DataItem::getSortKey()
 	 */
 	public function getSortKey() {
 		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ',' . $this->altitude : '' );
@@ -123,7 +125,7 @@ class SMWDIGeoCoord extends SMWDataItem {
 
 	/**
 	 * (non-PHPdoc)
-	 * @see SMWDataItem::getSerialization()
+	 * @see DataItem::getSerialization()
 	 */
 	public function getSerialization() {
 		return implode( ',', $this->getCoordinateSet() );
@@ -179,11 +181,14 @@ class SMWDIGeoCoord extends SMWDataItem {
 		return $this->altitude;
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_GEO ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_GEO ) {
 			return false;
 		}
 
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }
+
+// Deprecated since 7.0.0
+class_alias( GeoCoord::class, 'SMWDIGeoCoord' );

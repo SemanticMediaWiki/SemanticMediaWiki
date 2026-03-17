@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\Exception\DataItemException;
-use SMWDataItem;
 
 /**
  * This class implements wiki page data items.
@@ -17,7 +16,7 @@ use SMWDataItem;
  *
  * @author Markus Krötzsch
  */
-class DIWikiPage extends SMWDataItem {
+class WikiPage extends DataItem {
 
 	/**
 	 * MediaWiki DB key string
@@ -98,7 +97,7 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_WIKIPAGE;
+		return DataItem::TYPE_WIKIPAGE;
 	}
 
 	public function getDBkey() {
@@ -168,7 +167,7 @@ class DIWikiPage extends SMWDataItem {
 	 * Get the sortkey of the wiki page data item. Note that this is not
 	 * the sortkey that might have been set for the corresponding wiki
 	 * page. To obtain the latter, query for the values of the property
-	 * "new SMW\DIProperty( '_SKEY' )".
+	 * "new SMW\DataItems\Property( '_SKEY' )".
 	 */
 	public function getSortKey() {
 		if ( $this->sortkey === null || $this->sortkey === '' ) {
@@ -236,7 +235,7 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
-	 * Create a MediaWiki Title object for this DIWikiPage. The result
+	 * Create a MediaWiki Title object for this WikiPage. The result
 	 * can be null if an error occurred.
 	 *
 	 * @return Title|null
@@ -255,7 +254,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @since 2.4
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function asBase() {
 		return new self (
@@ -287,7 +286,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param string $serialization
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 * @throws DataItemDeserializationException
 	 */
 	public static function doUnserialize( $serialization ) {
@@ -306,7 +305,7 @@ class DIWikiPage extends SMWDataItem {
 	 * Create a data item from a MediaWiki Title.
 	 *
 	 * @param Title $title
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public static function newFromTitle( Title $title ) {
 		return new self(
@@ -323,14 +322,14 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $text
 	 * @param integer namespace
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public static function newFromText( $text, $namespace = NS_MAIN ) {
 		return new self( $text, $namespace );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}
 
@@ -373,3 +372,6 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 }
+
+// Deprecated since 7.0.0
+class_alias( WikiPage::class, 'SMW\DIWikiPage' );

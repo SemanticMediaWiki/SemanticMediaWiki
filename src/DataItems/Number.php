@@ -1,7 +1,10 @@
 <?php
+
 /**
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
+
+namespace SMW\DataItems;
 
 use SMW\Exception\DataItemException;
 
@@ -11,9 +14,9 @@ use SMW\Exception\DataItemException;
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDINumber extends SMWDataItem {
+class Number extends DataItem {
 
 	/**
 	 * Internal value.
@@ -29,7 +32,7 @@ class SMWDINumber extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_NUMBER;
+		return DataItem::TYPE_NUMBER;
 	}
 
 	public function getNumber() {
@@ -41,8 +44,8 @@ class SMWDINumber extends SMWDataItem {
 	}
 
 	/**
-	 * @see SMWDataItem::getSortKeyDataItem()
-	 * @return SMWDataItem
+	 * @see ataItem::getSortKeyDataItem()
+	 * @return DataItem
 	 */
 	public function getSortKeyDataItem() {
 		return $this;
@@ -57,14 +60,14 @@ class SMWDINumber extends SMWDataItem {
 	 * ID.
 	 * @note PHP can convert any string to some number, so we do not do
 	 * validation here (because this would require less efficient parsing).
-	 * @return SMWDINumber
+	 * @return Number
 	 */
 	public static function doUnserialize( $serialization ) {
-		return new SMWDINumber( floatval( $serialization ) );
+		return new Number( floatval( $serialization ) );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_NUMBER ) {
 			return false;
 		}
 
@@ -72,3 +75,6 @@ class SMWDINumber extends SMWDataItem {
 	}
 
 }
+
+// Deprecated since 7.0.0
+class_alias( Number::class, 'SMWDINumber' );
