@@ -59,7 +59,39 @@ docker exec semanticmediawiki-mysql-wiki-1 php /var/www/html/maintenance/run.php
 
 ## Syncing local changes
 
-The extension is copied into the container at build time, not bind-mounted. Local edits are **not** reflected automatically. Copy files in before testing and copy fixes back after auto-formatting:
+By default, the extension is copied into the container at build time and local edits are **not** reflected automatically. For active development, add a bind mount so changes sync instantly in both directions.
+
+### Bind mount (recommended)
+
+Add a `volumes` entry to your `build/docker-compose.override.yml`:
+
+```yaml
+services:
+  wiki:
+    ports:
+      - 8080:8080
+    volumes:
+      - ../:/var/www/html/extensions/SemanticMediaWiki
+```
+
+Then rebuild:
+
+```sh
+make destroy install
+```
+
+With the bind mount, edits on the host are immediately visible in the container and vice versa — no copying needed. Auto-formatters like `composer fix` write directly to your working tree.
+
+**Note:** The bind mount overlays the copy that was baked into the image at build time. The container's `vendor/` directory comes from your host, so run `composer update` inside the container if dependencies are missing:
+
+```sh
+docker exec semanticmediawiki-mysql-wiki-1 bash -c \
+  "cd /var/www/html/extensions/SemanticMediaWiki && composer update"
+```
+
+### Manual copy (without bind mount)
+
+If you prefer not to bind-mount (e.g., to test against the exact image that CI builds), copy files in and out manually:
 
 ```sh
 # Copy a local file into the container
@@ -163,7 +195,7 @@ docker exec semanticmediawiki-mysql-wiki-1 bash -c \
   "cd /var/www/html/extensions/SemanticMediaWiki && composer fix"
 ```
 
-After running `composer fix`, remember to [copy fixed files back](#syncing-local-changes) to your local checkout.
+If you're not using a [bind mount](#bind-mount-recommended), remember to [copy fixed files back](#manual-copy-without-bind-mount) to your local checkout after running `composer fix`.
 
 **Caution:** `composer analyze` exits 0 even with warnings. Read the full output — warnings must also be fixed.
 
