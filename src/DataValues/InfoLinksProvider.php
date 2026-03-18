@@ -3,6 +3,7 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Linker\Linker;
+use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
