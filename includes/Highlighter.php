@@ -380,8 +380,14 @@ class Highlighter {
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
 		$content = $content ?? '';
-		if ( strpos( $content, '[' ) !== false || strpos( $content, '//' ) !== false ) {
-			$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
+
+		// If the content already contains HTML tags (e.g. it was pre-rendered via
+		// Message::PARSE), skip re-parsing to avoid double-parsing which would
+		// cause URLs inside href attributes to be wrapped in additional <a> tags.
+		if ( strpos( $content, '<' ) === false || strpos( $content, '>' ) === false ) {
+			if ( strpos( $content, '[' ) !== false || strpos( $content, '//' ) !== false ) {
+				$content = Message::get( [ 'smw-parse', $content ], Message::PARSE, $language );
+			}
 		}
 
 		return strip_tags(
