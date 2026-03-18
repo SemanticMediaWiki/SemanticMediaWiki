@@ -1,7 +1,4 @@
 <?php
-/**
- * @ingroup DataItems
- */
 
 namespace SMW\DataItems;
 
@@ -50,10 +47,9 @@ class Boolean extends DataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return \SMW\DataItems\Boolean
 	 * @throws DataItemException
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Boolean {
 		if ( $serialization == 't' ) {
 			return new Boolean( true );
 		} elseif ( $serialization == 'f' ) {

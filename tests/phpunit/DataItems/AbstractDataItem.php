@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataItems;
 
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
@@ -18,7 +18,7 @@ use SMW\DataItems\DataItem;
 abstract class AbstractDataItem extends SMWIntegrationTestCase {
 
 	/**
-	 * Returns the name of the \SMW\DataItem deriving class this test tests.
+	 * Returns the name of the DataItem deriving class this test tests.
 	 *
 	 * @since 1.8
 	 *

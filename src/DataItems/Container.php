@@ -1,7 +1,4 @@
 <?php
-/**
- * @ingroup SMWDataItems
- */
 
 namespace SMW\DataItems;
 
@@ -25,7 +22,7 @@ use SMW\Exception\DataItemException;
  * available for finding a suitable subobject name). See the repsective
  * documentation for details.
  *
- * Being a mere placeholder/template for other data, an Container is not
+ * Being a mere placeholder/template for other data, a Container is not
  * immutable as the other basic data items. New property-value pairs can always
  * be added to the internal ContainerSemanticData.
  *

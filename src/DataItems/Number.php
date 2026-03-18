@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @ingroup DataItems
- */
-
 namespace SMW\DataItems;
 
 use SMW\Exception\DataItemException;
