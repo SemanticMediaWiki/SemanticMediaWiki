@@ -403,10 +403,10 @@ class Exporter {
 	 * constructing export data structures from SemanticData objects.
 	 *
 	 * @param Property $property
-	 * @param array $dataItems of DataItem objects for the given property
+	 * @param DataItem[] $dataItems of DataItem objects for the given property
 	 * @param ExpData &$expData to add the data to
 	 */
-	public static function addPropertyValues( Property $property, array $dataItems, ExpData &$expData ) {
+	public static function addPropertyValues( Property $property, DataItem $dataItems, ExpData &$expData ) {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {
