@@ -19,11 +19,6 @@ class EntityCollation {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var SetupFile
 	 */
 	private $setupFile;
@@ -35,11 +30,8 @@ class EntityCollation {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**

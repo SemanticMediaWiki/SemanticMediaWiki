@@ -1,17 +1,17 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 use RuntimeException;
+use SMW\DataTypeRegistry;
 use SMW\Exception\DataItemException;
 use SMW\Exception\DataTypeLookupException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Localizer\Localizer;
+use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem;
-use SMWDIUri;
 
 /**
  * This class implements Property item
@@ -26,7 +26,7 @@ use SMWDIUri;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class DIProperty extends SMWDataItem {
+class Property extends DataItem {
 
 	/**
 	 * @see PropertyRegistry::registerPredefinedProperties
@@ -103,7 +103,7 @@ class DIProperty extends SMWDataItem {
 	 * @return int
 	 */
 	public function getDIType(): int {
-		return SMWDataItem::TYPE_PROPERTY;
+		return DataItem::TYPE_PROPERTY;
 	}
 
 	/**
@@ -270,7 +270,7 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * Get an object of type DIWikiPage that represents the page which
+	 * Get an object of type WikiPage that represents the page which
 	 * relates to this property, or null if no such page exists. The latter
 	 * can happen for special properties without user-readable label.
 	 *
@@ -281,9 +281,9 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
-	public function getDiWikiPage( string $subobjectName = '' ): ?DIWikiPage {
+	public function getDiWikiPage( string $subobjectName = '' ): ?WikiPage {
 		$dbkey = $this->m_key;
 
 		if ( !$this->isUserDefined() ) {
@@ -298,9 +298,9 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @param string $subobjectName
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
-	public function getCanonicalDiWikiPage( string $subobjectName = '' ): ?DIWikiPage {
+	public function getCanonicalDiWikiPage( string $subobjectName = '' ): ?WikiPage {
 		if ( $this->isUserDefined() ) {
 			$dbkey = $this->m_key;
 		} elseif ( $this->m_key === $this->findPropertyTypeID() ) {
@@ -325,7 +325,7 @@ class DIProperty extends SMWDataItem {
 	/**
 	 * @since 2.4
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getRedirectTarget(): self {
 		if ( $this->m_inverse ) {
@@ -336,7 +336,7 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * @deprecated since 3.0, use DIProperty::setPropertyValueType
+	 * @deprecated since 3.0, use Property::setPropertyValueType
 	 */
 	public function setPropertyTypeId( $valueType ) {
 		return $this->setPropertyValueType( $valueType );
@@ -370,7 +370,7 @@ class DIProperty extends SMWDataItem {
 	}
 
 	/**
-	 * @deprecated since 3.0, use DIProperty::findPropertyValueType
+	 * @deprecated since 3.0, use Property::findPropertyValueType
 	 */
 	public function findPropertyTypeId() {
 		return $this->findPropertyValueType();
@@ -396,7 +396,7 @@ class DIProperty extends SMWDataItem {
 			return $this->propertyValueType;
 		}
 
-		$diWikiPage = new DIWikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
+		$diWikiPage = new WikiPage( $this->getKey(), SMW_NS_PROPERTY, $this->interwiki );
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$typearray = $applicationFactory->getPropertySpecificationLookup()->getSpecification(
@@ -407,7 +407,7 @@ class DIProperty extends SMWDataItem {
 		if ( is_array( $typearray ) && count( $typearray ) >= 1 ) { // some types given, pick one (hopefully unique)
 			$typeDataItem = reset( $typearray );
 
-			if ( $typeDataItem instanceof SMWDIUri ) {
+			if ( $typeDataItem instanceof Uri ) {
 				$this->propertyValueType = $typeDataItem->getFragment();
 			} else {
 				// This is important. If a page has an invalid assignment to "has type", no
@@ -443,7 +443,7 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @param ?string $serialization
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public static function doUnserialize( ?string $serialization ): self {
 		$inverse = false;
@@ -461,12 +461,12 @@ class DIProperty extends SMWDataItem {
 	 *
 	 * @since 1.6
 	 *
-	 * @param SMWDataItem $di
+	 * @param DataItem $di
 	 *
 	 * @return bool
 	 */
-	public function equals( SMWDataItem $di ): bool {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_PROPERTY ) {
+	public function equals( DataItem $di ): bool {
+		if ( $di->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
 
@@ -475,10 +475,10 @@ class DIProperty extends SMWDataItem {
 
 	/**
 	 * Construct a property from a user-supplied label. The main difference
-	 * to the normal constructor of DIProperty is that it is checked
+	 * to the normal constructor of Property is that it is checked
 	 * whether the label refers to a known predefined property.
 	 * Note that this function only gives access to the registry data that
-	 * DIProperty stores, but does not do further parsing of user input.
+	 * Property stores, but does not do further parsing of user input.
 	 *
 	 * To process wiki input, PropertyValue should be used.
 	 *
@@ -488,7 +488,7 @@ class DIProperty extends SMWDataItem {
 	 * @param bool $inverse = false
 	 * @param $languageCode = false
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public static function newFromUserLabel( string $label, bool $inverse = false, $languageCode = false ): self {
 		// Explicitly cast to a string so we are able to return an object from
@@ -530,7 +530,7 @@ class DIProperty extends SMWDataItem {
 		return new self( $id, $inverse );
 	}
 
-	private function newDIWikiPage( string $dbkey, string $subobjectName ): ?DIWikiPage {
+	private function newDIWikiPage( string $dbkey, string $subobjectName ): ?WikiPage {
 		// If an inverse marker is present just omit the marker so a normal
 		// property page link can be produced independent of its directionality
 		if ( $dbkey !== '' && $dbkey[0] == '-' ) {
@@ -538,7 +538,7 @@ class DIProperty extends SMWDataItem {
 		}
 
 		try {
-			return new DIWikiPage( str_replace( ' ', '_', $dbkey ), SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
+			return new WikiPage( str_replace( ' ', '_', $dbkey ), SMW_NS_PROPERTY, $this->interwiki, $subobjectName );
 		} catch ( DataItemException $e ) {
 			return null;
 		}
@@ -576,3 +576,8 @@ class DIProperty extends SMWDataItem {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Property::class, 'SMW\DIProperty' );

@@ -15,19 +15,12 @@ namespace SMW\Elastic\Indexer\Attachment;
 class ScopeMemoryLimiter {
 
 	/**
-	 * @var string
-	 */
-	private $memoryLimit = '1024M';
-
-	/**
 	 * @since 3.2
 	 *
-	 * @param string $memoryLimit
 	 *
 	 * @return string
 	 */
-	public function __construct( $memoryLimit = '1024M' ) {
-		$this->memoryLimit = $memoryLimit;
+	public function __construct( private $memoryLimit = '1024M' ) {
 	}
 
 	/**

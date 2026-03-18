@@ -24,29 +24,17 @@ class FilterMap {
 	const CATEGORY_LIST = FieldList::CATEGORY_LIST;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var
-	 */
-	private $results = [];
-
-	/**
 	 * @var FieldList
 	 */
 	private $fieldList;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param array $results
 	 */
-	public function __construct( Store $store, array $results ) {
-		$this->store = $store;
-		$this->results = $results;
+	public function __construct(
+		private readonly Store $store,
+		private readonly array $results,
+	) {
 	}
 
 	/**

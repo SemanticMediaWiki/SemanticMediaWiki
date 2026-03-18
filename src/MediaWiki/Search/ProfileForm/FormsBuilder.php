@@ -18,16 +18,6 @@ use SMW\Localizer\Message;
 class FormsBuilder {
 
 	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
-	 * @var FormsFactory
-	 */
-	private $formsFactory;
-
-	/**
 	 * @var OpenForm
 	 */
 	private $openForm;
@@ -69,13 +59,11 @@ class FormsBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
-	 * @param FormsFactory $formsFactory
 	 */
-	public function __construct( WebRequest $request, FormsFactory $formsFactory ) {
-		$this->request = $request;
-		$this->formsFactory = $formsFactory;
+	public function __construct(
+		private readonly WebRequest $request,
+		private readonly FormsFactory $formsFactory,
+	) {
 	}
 
 	/**

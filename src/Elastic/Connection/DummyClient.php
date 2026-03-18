@@ -2,7 +2,6 @@
 
 namespace SMW\Elastic\Connection;
 
-use Elasticsearch\Client as ElasticSearchClient;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use Psr\Log\NullLogger;
@@ -19,32 +18,13 @@ use SMW\Elastic\Config;
 class DummyClient extends Client {
 
 	/**
-	 * @var Client
-	 */
-	protected $client;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticSearchClient|null $client
-	 * @param Cache|null $cache
-	 * @param Config|null $config
 	 */
-	public function __construct( $client = null, ?Cache $cache = null, ?Config $config = null ) {
-		$this->client = $client;
-		$this->cache = $cache;
-		$this->config = $config;
-
+	public function __construct(
+		protected $client = null,
+		private ?Cache $cache = null,
+		private ?Config $config = null,
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = new NullCache();
 		}

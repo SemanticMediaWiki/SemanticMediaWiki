@@ -17,17 +17,9 @@ use SMW\MediaWiki\HookListener;
 class TitleIsMovable implements HookListener {
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @since  2.1
-	 *
-	 * @param Title $title
 	 */
-	public function __construct( Title $title ) {
-		$this->title = $title;
+	public function __construct( private readonly Title $title ) {
 	}
 
 	/**

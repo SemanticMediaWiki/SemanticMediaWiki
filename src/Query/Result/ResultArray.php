@@ -27,21 +27,6 @@ use SMWRecordValue;
 class ResultArray {
 
 	/**
-	 * @var PrintRequest
-	 */
-	private $printRequest;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $result;
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var DataItem[]|false
 	 */
 	private $content;
@@ -50,11 +35,6 @@ class ResultArray {
 	 * @var ItemJournal
 	 */
 	private $itemJournal;
-
-	/**
-	 * @var FieldItemFinder
-	 */
-	private $fieldItemFinder;
 
 	/**
 	 * @var QueryToken
@@ -91,23 +71,16 @@ class ResultArray {
 		return $resultArray;
 	}
 
-	/**
-	 * @param DIWikiPage $resultPage
-	 * @param PrintRequest $printRequest
-	 * @param Store $store
-	 * @param fieldItemFinder|null $fieldItemFinder
-	 */
-	public function __construct( DIWikiPage $resultPage, PrintRequest $printRequest, Store $store, ?FieldItemFinder $fieldItemFinder = null ) {
-		$this->result = $resultPage;
-		$this->printRequest = $printRequest;
-		$this->store = $store;
+	public function __construct(
+		private readonly DIWikiPage $result,
+		private readonly PrintRequest $printRequest,
+		private readonly Store $store,
+		private ?FieldItemFinder $fieldItemFinder = null,
+	) {
 		$this->content = false;
 
-		// FIXME 3.0; Inject the object
-		$this->fieldItemFinder = $fieldItemFinder;
-
 		if ( $this->fieldItemFinder === null ) {
-			$this->fieldItemFinder = new FieldItemFinder( $store );
+			$this->fieldItemFinder = new FieldItemFinder( $this->store );
 		}
 	}
 

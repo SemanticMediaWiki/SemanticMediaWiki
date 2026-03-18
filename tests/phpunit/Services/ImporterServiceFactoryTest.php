@@ -24,7 +24,7 @@ use SMW\Settings;
  */
 class ImporterServiceFactoryTest extends TestCase {
 
-	private $containerBuilder;
+	private $callbackContainerBuilder;
 
 	protected function setUp(): void {
 		parent::setUp();

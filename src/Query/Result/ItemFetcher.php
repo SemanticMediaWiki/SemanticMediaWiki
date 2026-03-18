@@ -24,11 +24,6 @@ use Traversable;
 class ItemFetcher {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var PrefetchCache
 	 */
 	private $prefetchCache;
@@ -44,23 +39,17 @@ class ItemFetcher {
 	private $queryToken;
 
 	/**
-	 * @var DIWikiPage[]
-	 */
-	private $dataItems = [];
-
-	/**
 	 * @var bool
 	 */
 	private $prefetch = true;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store, array $dataItems = [] ) {
-		$this->store = $store;
-		$this->dataItems = $dataItems;
+	public function __construct(
+		private readonly Store $store,
+		private readonly array $dataItems = [],
+	) {
 	}
 
 	/**

@@ -31,11 +31,6 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var LoggerInterface
 	 */
 	private $logger;
@@ -72,38 +67,19 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	private $errors = [];
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QuerySegmentListProcessor
-	 */
-	private $querySegmentListProcessor;
-
-	/**
-	 * @var EngineOptions
-	 */
-	private $engineOptions;
-
-	/**
 	 * @var QueryFactory
 	 */
 	private $queryFactory;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param SQLStore $store
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param QuerySegmentListProcessor $querySegmentListProcessor
-	 * @param EngineOptions $engineOptions
 	 */
-	public function __construct( SQLStore $store, ConditionBuilder $conditionBuilder, QuerySegmentListProcessor $querySegmentListProcessor, EngineOptions $engineOptions ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->querySegmentListProcessor = $querySegmentListProcessor;
-		$this->engineOptions = $engineOptions;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QuerySegmentListProcessor $querySegmentListProcessor,
+		private readonly EngineOptions $engineOptions,
+	) {
 		$this->queryFactory = new QueryFactory();
 	}
 

@@ -22,24 +22,12 @@ use SMW\Site;
 class ChangeTitleUpdate implements DeferrableUpdate {
 
 	/**
-	 * @var Title|null
-	 */
-	private $oldTitle;
-
-	/**
-	 * @var Title|null
-	 */
-	private $newTitle;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Title|null $oldTitle
-	 * @param Title|null $newTitle
 	 */
-	public function __construct( ?Title $oldTitle = null, ?Title $newTitle = null ) {
-		$this->oldTitle = $oldTitle;
-		$this->newTitle = $newTitle;
+	public function __construct(
+		private readonly ?Title $oldTitle = null,
+		private readonly ?Title $newTitle = null,
+	) {
 	}
 
 	/**

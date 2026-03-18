@@ -17,11 +17,6 @@ use SMW\Localizer\Message;
 class SortForm {
 
 	/**
-	 * @var WebRequest
-	 */
-	private $request;
-
-	/**
 	 * @var Field
 	 */
 	private $field;
@@ -33,11 +28,8 @@ class SortForm {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param WebRequest $request
 	 */
-	public function __construct( WebRequest $request ) {
-		$this->request = $request;
+	public function __construct( private readonly WebRequest $request ) {
 		$this->field = new Field();
 	}
 

@@ -18,22 +18,14 @@ class UpdateEntityCollationComplete {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var int
 	 */
 	private $countDown = 5;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private Store $store ) {
 	}
 
 	/**

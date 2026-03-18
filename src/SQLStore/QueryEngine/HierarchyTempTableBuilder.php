@@ -17,16 +17,6 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class HierarchyTempTableBuilder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var TemporaryTableBuilder
-	 */
-	private $temporaryTableBuilder;
-
-	/**
 	 * Cache of computed hierarchy queries for reuse ("catetgory/property value
 	 * string" => "tablename").
 	 *
@@ -41,13 +31,11 @@ class HierarchyTempTableBuilder {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param Database $connection
-	 * @param TemporaryTableBuilder $temporaryTableBuilder
 	 */
-	public function __construct( Database $connection, TemporaryTableBuilder $temporaryTableBuilder ) {
-		$this->connection = $connection;
-		$this->temporaryTableBuilder = $temporaryTableBuilder;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly TemporaryTableBuilder $temporaryTableBuilder,
+	) {
 	}
 
 	/**

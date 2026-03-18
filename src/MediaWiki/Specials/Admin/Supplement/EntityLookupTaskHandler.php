@@ -23,36 +23,18 @@ use SMW\Store;
 class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var HtmlFormRenderer
-	 */
-	private $htmlFormRenderer;
-
-	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @var User|null
 	 */
 	private $user;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param HtmlFormRenderer $htmlFormRenderer
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( Store $store, HtmlFormRenderer $htmlFormRenderer, OutputFormatter $outputFormatter ) {
-		$this->store = $store;
-		$this->htmlFormRenderer = $htmlFormRenderer;
-		$this->outputFormatter = $outputFormatter;
+	public function __construct(
+		private readonly Store $store,
+		private readonly HtmlFormRenderer $htmlFormRenderer,
+		private readonly OutputFormatter $outputFormatter,
+	) {
 	}
 
 	/**

@@ -17,33 +17,19 @@ use SMW\Exporter\Element\ExpElement;
 class SingletonCondition extends Condition {
 
 	/**
-	 * Pattern string. Anything that can be used as a WHERE condition
-	 * when put between "{" and "}". Can be empty if the result
-	 * unconditionally is the given element.
-	 *
-	 * @var string
-	 */
-	public $condition;
-
-	/**
 	 * The single element that this condition may possibly match.
 	 *
 	 * @var ExpElement
 	 */
 	public $matchElement;
 
-	/**
-	 * Whether this condition is safe.
-	 *
-	 * @see SMWSparqlCondition::isSafe().
-	 * @var bool
-	 */
-	public $isSafe;
-
-	public function __construct( ExpElement $matchElement, $condition = '', $isSafe = false, $namespaces = [] ) {
+	public function __construct(
+		ExpElement $matchElement,
+		public $condition = '',
+		public $isSafe = false,
+		$namespaces = [],
+	) {
 		$this->matchElement = $matchElement;
-		$this->condition  = $condition;
-		$this->isSafe     = $isSafe;
 		$this->namespaces = $namespaces;
 	}
 

@@ -20,17 +20,9 @@ class LockManager {
 	const TYPE_MAINTENANCE = 'maintenance';
 
 	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param Cache $cache
 	 */
-	public function __construct( Cache $cache ) {
-		$this->cache = $cache;
+	public function __construct( private readonly Cache $cache ) {
 	}
 
 	/**

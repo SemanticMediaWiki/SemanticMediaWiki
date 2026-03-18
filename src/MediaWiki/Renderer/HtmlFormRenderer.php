@@ -31,16 +31,6 @@ use SMW\MediaWiki\MessageBuilder;
 class HtmlFormRenderer {
 
 	/**
-	 * @var Title
-	 */
-	private $title = null;
-
-	/**
-	 * @var MessageBuilder
-	 */
-	private $messageBuilder = null;
-
-	/**
 	 * @var array
 	 */
 	private $queryParameters = [];
@@ -77,13 +67,11 @@ class HtmlFormRenderer {
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param Title $title
-	 * @param MessageBuilder $messageBuilder
 	 */
-	public function __construct( Title $title, MessageBuilder $messageBuilder ) {
-		$this->title = $title;
-		$this->messageBuilder = $messageBuilder;
+	public function __construct(
+		private readonly Title $title,
+		private readonly MessageBuilder $messageBuilder,
+	) {
 	}
 
 	/**

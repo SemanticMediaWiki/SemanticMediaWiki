@@ -47,8 +47,6 @@ class HtmlTableRenderer {
 	 */
 	private $transpose = false;
 
-	private bool $htmlContext;
-
 	/**
 	 * @par Example:
 	 * @code
@@ -65,11 +63,8 @@ class HtmlTableRenderer {
 	 * @endcode
 	 *
 	 * @since 1.9
-	 *
-	 * @param bool $htmlContext
 	 */
-	public function __construct( $htmlContext = false ) {
-		$this->htmlContext = $htmlContext;
+	public function __construct( private bool $htmlContext = false ) {
 	}
 
 	/**

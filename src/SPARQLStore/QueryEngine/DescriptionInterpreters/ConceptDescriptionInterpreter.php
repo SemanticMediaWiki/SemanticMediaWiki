@@ -24,22 +24,14 @@ use SMWExporter as Exporter;
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @var Exporter
 	 */
 	private $exporter;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ConditionBuilder|null $conditionBuilder
 	 */
-	public function __construct( ?ConditionBuilder $conditionBuilder = null ) {
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct( private readonly ?ConditionBuilder $conditionBuilder = null ) {
 		$this->exporter = Exporter::getInstance();
 	}
 

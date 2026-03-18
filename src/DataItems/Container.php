@@ -1,12 +1,9 @@
 <?php
-/**
- * @ingroup SMWDataItems
- */
+
+namespace SMW\DataItems;
 
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIProperty;
 use SMW\Exception\DataItemException;
-use SMWDIBlob as DIBlob;
 
 /**
  * This class implements container data items that can store SMWSemanticData
@@ -25,16 +22,16 @@ use SMWDIBlob as DIBlob;
  * available for finding a suitable subobject name). See the repsective
  * documentation for details.
  *
- * Being a mere placeholder/template for other data, an SMWDIContainer is not
+ * Being a mere placeholder/template for other data, a Container is not
  * immutable as the other basic data items. New property-value pairs can always
  * be added to the internal ContainerSemanticData.
  *
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDIContainer extends SMWDataItem {
+class Container extends DataItem {
 
 	/**
 	 * Internal value.
@@ -55,7 +52,7 @@ class SMWDIContainer extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_CONTAINER;
+		return DataItem::TYPE_CONTAINER;
 	}
 
 	public function getSemanticData() {
@@ -73,8 +70,8 @@ class SMWDIContainer extends SMWDataItem {
 	 */
 	public function setSortKey( $sortKey ) {
 		$this->m_semanticData->addPropertyObjectValue(
-			new DIProperty( '_SKEY' ),
-			new DIBlob( $this->m_semanticData->getSubject()->getSortKey() . '#' . $sortKey )
+			new Property( '_SKEY' ),
+			new Blob( $this->m_semanticData->getSubject()->getSortKey() . '#' . $sortKey )
 		);
 	}
 
@@ -119,22 +116,27 @@ class SMWDIContainer extends SMWDataItem {
 	 * Create a data item from the provided serialization string and type
 	 * ID.
 	 *
-	 * @return SMWDIContainer
+	 * @return Container
 	 */
 	public static function doUnserialize( $serialization ) {
 		/// TODO May issue an E_NOTICE when problems occur; catch this
 		$data = unserialize( $serialization );
 		if ( !( $data instanceof ContainerSemanticData ) ) {
-			throw new DataItemException( "Could not unserialize SMWDIContainer from the given string." );
+			throw new DataItemException( "Could not unserialize Container from the given string." );
 		}
-		return new SMWDIContainer( $data );
+		return new Container( $data );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_CONTAINER ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_CONTAINER ) {
 			return false;
 		}
 
 		return $di->getSerialization() === $this->getSerialization();
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Container::class, 'SMWDIContainer' );

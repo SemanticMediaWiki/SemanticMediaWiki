@@ -23,16 +23,6 @@ use SMWNumberValue as NumberValue;
 class UnitConverter {
 
 	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @var array
 	 */
 	private $errors = [];
@@ -59,13 +49,11 @@ class UnitConverter {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param SpecificationLookup $propertySpecificationLookup
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( SpecificationLookup $propertySpecificationLookup, EntityCache $entityCache ) {
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private readonly SpecificationLookup $propertySpecificationLookup,
+		private readonly EntityCache $entityCache,
+	) {
 	}
 
 	/**

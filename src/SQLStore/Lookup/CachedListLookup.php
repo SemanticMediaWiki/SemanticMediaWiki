@@ -16,21 +16,6 @@ class CachedListLookup implements ListLookup {
 	const VERSION = '0.2';
 
 	/**
-	 * @var ListLookup
-	 */
-	private $listLookup;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var stdClass
-	 */
-	private $cacheOptions;
-
-	/**
 	 * @var bool
 	 */
 	private $isFromCache = false;
@@ -47,15 +32,12 @@ class CachedListLookup implements ListLookup {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param ListLookup $listLookup
-	 * @param Cache $cache
-	 * @param stdClass $cacheOptions
 	 */
-	public function __construct( ListLookup $listLookup, Cache $cache, stdClass $cacheOptions ) {
-		$this->listLookup = $listLookup;
-		$this->cache = $cache;
-		$this->cacheOptions = $cacheOptions;
+	public function __construct(
+		private readonly ListLookup $listLookup,
+		private readonly Cache $cache,
+		private readonly stdClass $cacheOptions,
+	) {
 	}
 
 	/**

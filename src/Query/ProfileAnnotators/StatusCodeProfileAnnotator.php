@@ -15,19 +15,13 @@ use SMWDINumber as DINumber;
 class StatusCodeProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var array
-	 */
-	private $statusCodes = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param array $statusCodes
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, array $statusCodes = [] ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private readonly array $statusCodes = [],
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->statusCodes = $statusCodes;
 	}
 
 	/**

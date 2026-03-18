@@ -19,22 +19,14 @@ class PredefinedProperties {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**

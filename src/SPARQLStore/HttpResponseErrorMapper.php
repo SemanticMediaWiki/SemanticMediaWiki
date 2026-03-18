@@ -20,15 +20,10 @@ use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
  */
 class HttpResponseErrorMapper {
 
-	private $httpRequest = null;
-
 	/**
 	 * @since  2.0
-	 *
-	 * @param HttpRequest $httpRequest
 	 */
-	public function __construct( HttpRequest $httpRequest ) {
-		$this->httpRequest = $httpRequest;
+	public function __construct( private readonly HttpRequest $httpRequest ) {
 	}
 
 	/**

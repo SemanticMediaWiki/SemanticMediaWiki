@@ -24,29 +24,17 @@ use SMWDataValue as DataValue;
 class UniquenessConstraintValueValidator implements ConstraintValueValidator {
 
 	/**
-	 * @var UniqueValueConstraint
-	 */
-	private $uniqueValueConstraint;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @var bool
 	 */
 	private $hasConstraintViolation = false;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param UniqueValueConstraint $uniqueValueConstraint
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( UniqueValueConstraint $uniqueValueConstraint, SpecificationLookup $propertySpecificationLookup ) {
-		$this->uniqueValueConstraint = $uniqueValueConstraint;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly UniqueValueConstraint $uniqueValueConstraint,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**

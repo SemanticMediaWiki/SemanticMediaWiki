@@ -141,7 +141,7 @@ class HmacSerializer {
 			$key = $GLOBALS['wgSecretKey'];
 		}
 
-		$key = $key . 'compress';
+		$key .= 'compress';
 
 		return gzcompress( self::serialize( $data, $key, $algo ), 9 );
 	}
@@ -160,7 +160,7 @@ class HmacSerializer {
 			$key = $GLOBALS['wgSecretKey'];
 		}
 
-		$key = $key . 'compress';
+		$key .= 'compress';
 
 		return self::unserialize( @gzuncompress( $data ), $key, $algo );
 	}

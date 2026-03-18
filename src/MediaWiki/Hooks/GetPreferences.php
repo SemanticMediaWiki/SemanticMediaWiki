@@ -62,23 +62,12 @@ class GetPreferences implements HookListener {
 	const SHOW_ENTITY_ISSUE_PANEL = 'smw-prefs-general-options-show-entity-issue-panel';
 
 	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
-	 * @var SchemaFactory
-	 */
-	private $schemaFactory;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function __construct( PermissionExaminer $permissionExaminer, SchemaFactory $schemaFactory ) {
-		$this->permissionExaminer = $permissionExaminer;
-		$this->schemaFactory = $schemaFactory;
+	public function __construct(
+		private PermissionExaminer $permissionExaminer,
+		private SchemaFactory $schemaFactory,
+	) {
 	}
 
 	/**

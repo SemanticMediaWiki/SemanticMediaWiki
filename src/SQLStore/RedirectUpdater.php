@@ -22,26 +22,6 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class RedirectUpdater {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var IdChanger
-	 */
-	private $idChanger;
-
-	/**
-	 * @var TableFieldUpdater
-	 */
-	private $tableFieldUpdater;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
 	 * @var
 	 */
 	private $lookupCache = [];
@@ -53,17 +33,13 @@ class RedirectUpdater {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param IdChanger $idChanger
-	 * @param TableFieldUpdater $tableFieldUpdater
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, IdChanger $idChanger, TableFieldUpdater $tableFieldUpdater, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->idChanger = $idChanger;
-		$this->tableFieldUpdater = $tableFieldUpdater;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IdChanger $idChanger,
+		private readonly TableFieldUpdater $tableFieldUpdater,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 	}
 
 	/**

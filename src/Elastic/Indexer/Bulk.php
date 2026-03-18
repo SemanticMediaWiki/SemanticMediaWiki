@@ -20,11 +20,6 @@ use SMW\Elastic\Connection\Client as ElasticClient;
 class Bulk implements JsonSerializable {
 
 	/**
-	 * @var ElasticClient
-	 */
-	private $connection;
-
-	/**
 	 * @var array
 	 */
 	private $bulk = [];
@@ -42,8 +37,7 @@ class Bulk implements JsonSerializable {
 	/**
 	 * @since 3.0
 	 */
-	public function __construct( ElasticClient $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly ElasticClient $connection ) {
 	}
 
 	/**

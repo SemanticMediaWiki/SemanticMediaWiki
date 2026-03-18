@@ -25,36 +25,18 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	private $connection;
 
 	/**
-	 * @var int
-	 */
-	private $id;
-
-	/**
-	 * @var string|array
-	 */
-	private $groups;
-
-	/**
-	 * @var string|bool
-	 */
-	private $wiki;
-
-	/**
 	 * @var ILoadBalancer
 	 */
 	private $loadBalancer;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param int $id
-	 * @param string|array $groups
-	 * @param string|bool $wiki Wiki ID, or false for the current wiki
 	 */
-	public function __construct( $id, $groups = [], $wiki = false ) {
-		$this->id = $id;
-		$this->groups = $groups;
-		$this->wiki = $wiki;
+	public function __construct(
+		private $id,
+		private $groups = [],
+		private $wiki = false,
+	) {
 	}
 
 	/**

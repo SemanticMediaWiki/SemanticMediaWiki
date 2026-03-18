@@ -16,17 +16,9 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 class UpdateTask extends Task {
 
 	/**
-	 * @var JobFactory
-	 */
-	private $jobFactory;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param JobFactory $jobFactory
 	 */
-	public function __construct( JobFactory $jobFactory ) {
-		$this->jobFactory = $jobFactory;
+	public function __construct( private readonly JobFactory $jobFactory ) {
 	}
 
 	/**

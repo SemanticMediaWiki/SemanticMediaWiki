@@ -21,17 +21,9 @@ use SMW\Elastic\Exception\NoConnectionException;
 class Rollover {
 
 	/**
-	 * @var ElasticClient
-	 */
-	private $connection;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $connection
 	 */
-	public function __construct( ElasticClient $connection ) {
-		$this->connection = $connection;
+	public function __construct( private readonly ElasticClient $connection ) {
 	}
 
 	/**

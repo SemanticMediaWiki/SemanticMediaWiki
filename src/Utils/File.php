@@ -89,7 +89,7 @@ class File {
 	 *
 	 * @param string $file
 	 *
-	 * @return int
+	 * @return bool|string
 	 */
 	public function getCheckSum( $file ) {
 		return md5_file( $file );

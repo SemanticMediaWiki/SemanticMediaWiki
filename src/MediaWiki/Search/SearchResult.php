@@ -19,11 +19,6 @@ use SMW\DIWikiPage;
 class SearchResult extends \SearchResult {
 
 	/**
-	 * @var Title|null
-	 */
-	protected $mTitle;
-
-	/**
 	 * @var string|null
 	 */
 	protected $mText;
@@ -35,11 +30,8 @@ class SearchResult extends \SearchResult {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Title|null $title
 	 */
-	public function __construct( $title ) {
-		$this->mTitle = $title;
+	public function __construct( protected $mTitle ) {
 	}
 
 	/**

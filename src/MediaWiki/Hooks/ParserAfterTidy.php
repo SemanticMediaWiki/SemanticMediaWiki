@@ -35,21 +35,6 @@ class ParserAfterTidy implements HookListener {
 	const CACHE_NAMESPACE = 'smw:parseraftertidy';
 
 	/**
-	 * @var Parser
-	 */
-	private $parser;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var bool
 	 */
 	private $isCommandLineMode = false;
@@ -61,15 +46,12 @@ class ParserAfterTidy implements HookListener {
 
 	/**
 	 * @since  1.9
-	 *
-	 * @param Parser &$parser
-	 * @param NamespaceExaminer $namespaceExaminer
-	 * @param Cache $cache
 	 */
-	public function __construct( Parser &$parser, NamespaceExaminer $namespaceExaminer, Cache $cache ) {
-		$this->parser = $parser;
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->cache = $cache;
+	public function __construct(
+		private Parser &$parser,
+		private NamespaceExaminer $namespaceExaminer,
+		private Cache $cache,
+	) {
 	}
 
 	/**

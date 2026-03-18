@@ -18,11 +18,6 @@ class Condition {
 	/**
 	 * @var array
 	 */
-	private $parameters = [];
-
-	/**
-	 * @var array
-	 */
 	private $logs = [];
 
 	/**
@@ -32,11 +27,8 @@ class Condition {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Condition|array $parameters
 	 */
-	public function __construct( $parameters = [] ) {
-		$this->parameters = $parameters;
+	public function __construct( private $parameters = [] ) {
 	}
 
 	/**

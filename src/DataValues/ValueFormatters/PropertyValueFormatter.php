@@ -21,17 +21,9 @@ use SMWDataValue as DataValue;
 class PropertyValueFormatter extends DataValueFormatter {
 
 	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SpecificationLookup $propertySpecificationLookup ) {
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct( private readonly SpecificationLookup $propertySpecificationLookup ) {
 	}
 
 	/**

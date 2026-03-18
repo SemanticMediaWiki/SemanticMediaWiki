@@ -26,36 +26,18 @@ use SMW\Utils\CircularReferenceGuard;
 class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
-
-	/**
 	 * @var QueryParser
 	 */
 	private $queryParser;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, CircularReferenceGuard $circularReferenceGuard ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
-		$this->circularReferenceGuard = $circularReferenceGuard;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+	) {
 	}
 
 	/**

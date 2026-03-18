@@ -33,17 +33,9 @@ class LinkBatch {
 	private $batch = [];
 
 	/**
-	 * @var MwLinkBatch|null
-	 */
-	private $linkBatch;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param MwLinkBatch|null $linkBatch
 	 */
-	public function __construct( ?MwLinkBatch $linkBatch = null ) {
-		$this->linkBatch = $linkBatch;
+	public function __construct( private ?MwLinkBatch $linkBatch = null ) {
 	}
 
 	/**

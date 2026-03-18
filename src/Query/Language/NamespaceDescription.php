@@ -17,16 +17,7 @@ use SMW\Localizer\Localizer;
  */
 class NamespaceDescription extends Description {
 
-	/**
-	 * @var int
-	 */
-	private $namespace;
-
-	/**
-	 * @param int $namespace
-	 */
-	public function __construct( $namespace ) {
-		$this->namespace = $namespace;
+	public function __construct( private $namespace ) {
 	}
 
 	/**

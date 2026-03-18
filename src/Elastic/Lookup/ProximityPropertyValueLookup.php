@@ -26,20 +26,12 @@ use SMWDITime as DITime;
  */
 class ProximityPropertyValueLookup {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	private FieldMapper $fieldMapper;
+	private readonly FieldMapper $fieldMapper;
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 		$this->fieldMapper = new FieldMapper();
 	}
 

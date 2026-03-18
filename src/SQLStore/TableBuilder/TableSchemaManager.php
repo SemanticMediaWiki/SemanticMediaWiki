@@ -19,11 +19,6 @@ use SMWDataItem as DataItem;
 class TableSchemaManager {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $messageReporter;
@@ -45,11 +40,8 @@ class TableSchemaManager {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**

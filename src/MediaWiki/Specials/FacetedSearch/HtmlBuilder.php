@@ -19,59 +19,17 @@ class HtmlBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var Profile
-	 */
-	private $profile;
-
-	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var OptionsBuilder
-	 */
-	private $optionsBuilder;
-
-	/**
-	 * @var ExtraFieldBuilder
-	 */
-	private $extraFieldBuilder;
-
-	/**
-	 * @var FacetBuilder
-	 */
-	private $facetBuilder;
-
-	/**
-	 * @var ResultFetcher
-	 */
-	private $resultFetcher;
-
-	/**
-	 * @var ExploreListBuilder
-	 */
-	private $exploreListBuilder;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Profile $profile
-	 * @param TemplateParser $templateParser
-	 * @param OptionsBuilder $optionsBuilder
-	 * @param ExtraFieldBuilder $extraFieldBuilder
-	 * @param FacetBuilder $facetBuilder
-	 * @param ResultFetcher $resultFetcher
-	 * @param ExploreListBuilder $exploreListBuilder
 	 */
-	public function __construct( Profile $profile, TemplateParser $templateParser, OptionsBuilder $optionsBuilder, ExtraFieldBuilder $extraFieldBuilder, FacetBuilder $facetBuilder, ResultFetcher $resultFetcher, ExploreListBuilder $exploreListBuilder ) {
-		$this->profile = $profile;
-		$this->templateParser = $templateParser;
-		$this->optionsBuilder = $optionsBuilder;
-		$this->extraFieldBuilder = $extraFieldBuilder;
-		$this->facetBuilder = $facetBuilder;
-		$this->resultFetcher = $resultFetcher;
-		$this->exploreListBuilder = $exploreListBuilder;
+	public function __construct(
+		private Profile $profile,
+		private TemplateParser $templateParser,
+		private OptionsBuilder $optionsBuilder,
+		private ExtraFieldBuilder $extraFieldBuilder,
+		private FacetBuilder $facetBuilder,
+		private ResultFetcher $resultFetcher,
+		private ExploreListBuilder $exploreListBuilder,
+	) {
 	}
 
 	/**

@@ -22,17 +22,9 @@ use SMW\Utils\CircularReferenceGuard;
 class SPARQLStoreFactory {
 
 	/**
-	 * @var SPARQLStore
-	 */
-	private $store;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param SPARQLStore $store
 	 */
-	public function __construct( SPARQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SPARQLStore $store ) {
 	}
 
 	/**

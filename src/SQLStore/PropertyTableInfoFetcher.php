@@ -16,11 +16,6 @@ use SMWDataItem as DataItem;
 class PropertyTableInfoFetcher {
 
 	/**
-	 * @var PropertyTypeFinder
-	 */
-	private $propertyTypeFinder;
-
-	/**
 	 * Array for keeping property table table data, indexed by table id.
 	 * Access this only by calling getPropertyTables().
 	 *
@@ -65,11 +60,8 @@ class PropertyTableInfoFetcher {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param PropertyTypeFinder $propertyTypeFinder
 	 */
-	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
-		$this->propertyTypeFinder = $propertyTypeFinder;
+	public function __construct( private readonly PropertyTypeFinder $propertyTypeFinder ) {
 	}
 
 	/**

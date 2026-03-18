@@ -17,29 +17,17 @@ use SMW\Utils\HmacSerializer;
 class SequenceMapFinder {
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var IdCacheManager
-	 */
-	private $idCacheManager;
-
-	/**
 	 * @var
 	 */
 	private $preloaded = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Database $connection
-	 * @param IdCacheManager $idCacheManager
 	 */
-	public function __construct( Database $connection, IdCacheManager $idCacheManager ) {
-		$this->connection = $connection;
-		$this->idCacheManager = $idCacheManager;
+	public function __construct(
+		private readonly Database $connection,
+		private readonly IdCacheManager $idCacheManager,
+	) {
 	}
 
 	/**

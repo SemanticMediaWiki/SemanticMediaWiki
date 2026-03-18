@@ -24,16 +24,6 @@ class CachingSemanticDataLookup {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var SemanticDataLookup
-	 */
-	private $semanticDataLookup;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * Cache for SemanticData dataItems, indexed by SMW ID.
 	 *
 	 * @var array
@@ -63,14 +53,11 @@ class CachingSemanticDataLookup {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SemanticDataLookup $semanticDataLookup
-	 * @param Cache|null $cache
 	 */
-	public function __construct( SemanticDataLookup $semanticDataLookup, ?Cache $cache = null ) {
-		$this->semanticDataLookup = $semanticDataLookup;
-		$this->cache = $cache;
-
+	public function __construct(
+		private SemanticDataLookup $semanticDataLookup,
+		private ?Cache $cache = null,
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = new NullCache();
 		}

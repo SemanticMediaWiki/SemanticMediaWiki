@@ -20,20 +20,12 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 	 * Defines the threshold in days, exceeding the threholds will trigger the
 	 * alert.
 	 */
-	const DAYS_THRESHOLD = 90; // 3 Month;
-
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	const DAYS_THRESHOLD = 90;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SetupFile $setupFile
 	 */
-	public function __construct( SetupFile $setupFile ) {
-		$this->setupFile = $setupFile;
+	public function __construct( private readonly SetupFile $setupFile ) {
 	}
 
 	/**

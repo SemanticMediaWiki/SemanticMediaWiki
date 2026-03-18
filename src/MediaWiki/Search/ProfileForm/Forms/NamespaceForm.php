@@ -24,16 +24,6 @@ class NamespaceForm {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var NamespaceInfo
-	 */
-	private $namespaceInfo;
-
-	/**
-	 * @var Localizer
-	 */
-	private $localizer;
-
-	/**
 	 * @var
 	 */
 	private $activeNamespaces = [];
@@ -60,13 +50,11 @@ class NamespaceForm {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param NamespaceInfo $namespaceInfo
-	 * @param Localizer $localizer
 	 */
-	public function __construct( NamespaceInfo $namespaceInfo, Localizer $localizer ) {
-		$this->namespaceInfo = $namespaceInfo;
-		$this->localizer = $localizer;
+	public function __construct(
+		private NamespaceInfo $namespaceInfo,
+		private Localizer $localizer,
+	) {
 	}
 
 	/**

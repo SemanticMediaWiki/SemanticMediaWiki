@@ -16,24 +16,12 @@ use SMW\MediaWiki\Specials\Admin\TaskHandler;
 class DeprecationNoticeTaskHandler extends TaskHandler {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var array
-	 */
-	private $deprecationNoticeList = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param array $deprecationNoticeList
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $deprecationNoticeList = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->deprecationNoticeList = $deprecationNoticeList;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private array $deprecationNoticeList = [],
+	) {
 	}
 
 	/**

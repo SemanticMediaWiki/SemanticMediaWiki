@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\DataItems;
+
 use MediaWiki\Json\JsonUnserializer;
 use SMW\DataValues\Time\CalendarModel;
 use SMW\DataValues\Time\JulianDay;
@@ -27,9 +29,9 @@ use SMW\MediaWiki\ExtendedDateTime;
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDITime extends SMWDataItem implements CalendarModel {
+class Time extends DataItem implements CalendarModel {
 
 	const PREC_Y    = SMW_PREC_Y;
 	const PREC_YM   = SMW_PREC_YM;
@@ -49,13 +51,13 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	protected static $m_daysofmonths = [ 1 => 31, 2 => 29, 3 => 31, 4 => 30, 5 => 31, 6 => 30, 7 => 31, 8 => 31, 9 => 30, 10 => 31, 11 => 30, 12 => 31 ];
 
 	/**
-	 * Precision SMWDITime::PREC_Y, SMWDITime::PREC_YM,
-	 * SMWDITime::PREC_YMD, or SMWDITime::PREC_YMDT.
+	 * Precision Time::PREC_Y, Time::PREC_YM,
+	 * Time::PREC_YMD, or Time::PREC_YMDT.
 	 * @var int
 	 */
 	protected $m_precision;
 	/**
-	 * Calendar model: SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN.
+	 * Calendar model: Time::CM_GREGORIAN or Time::CM_JULIAN.
 	 * @var int
 	 */
 	protected $m_model;
@@ -111,7 +113,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * the internal precision setting. The missing values are initialised
 	 * to minimal values (0 or 1) for internal calculations.
 	 *
-	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	 * @param $calendarmodel integer one of Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @param $year integer number of the year (possibly negative)
 	 * @param $month mixed integer number or false
 	 * @param $day mixed integer number or false
@@ -161,7 +163,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * @return int
 	 */
 	public function getDIType() {
-		return SMWDataItem::TYPE_TIME;
+		return DataItem::TYPE_TIME;
 	}
 
 	/**
@@ -328,7 +330,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 	/**
-	 * Creates and returns a new instance of SMWDITime from a MW timestamp.
+	 * Creates and returns a new instance of Time from a MW timestamp.
 	 *
 	 * @since 1.8
 	 *
@@ -384,7 +386,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * numbers when the internal calculations hit floating point accuracy.
 	 * Callers might want to avoid this (calendar models make little sense
 	 * in such cases anyway).
-	 * @param $calendarmodel integer one of SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	 * @param $calendarmodel integer one of Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @return self
 	 */
 	public function getForCalendarModel( $calendarmodel ) {
@@ -540,7 +542,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * Find out whether the given year number is a leap year.
 	 * This calculation assumes that neither calendar has a year 0.
 	 * @param $year integer year number
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @return bool
 	 */
 	public static function isLeapYear( $year, $calendarmodel ) {
@@ -559,7 +561,7 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	 * This calculation assumes that neither calendar has a year 0.
 	 * @param $month integer month number
 	 * @param $year integer year number
-	 * @param $calendarmodel integer either SMWDITime::CM_GREGORIAN or SMWDITime::CM_JULIAN
+	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @return bool
 	 */
 	public static function getDayNumberForMonth( $month, $year, $calendarmodel ) {
@@ -572,8 +574,8 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 		}
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_TIME ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_TIME ) {
 			return false;
 		}
 
@@ -633,3 +635,8 @@ class SMWDITime extends SMWDataItem implements CalendarModel {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Time::class, 'SMWDITime' );

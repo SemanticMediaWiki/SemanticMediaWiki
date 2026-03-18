@@ -2,6 +2,7 @@
 
 namespace SMW\Services;
 
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\ConstraintSchemaValue;
@@ -51,9 +52,9 @@ use SMWTimeValue as TimeValue;
 return [
 
 	/**
-	 * UnitConverter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return UnitConverter
 	 */
 	'UnitConverter' => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -70,9 +71,9 @@ return [
 	},
 
 	/**
-	 * ConstraintSchemaValue
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return ConstraintSchemaValue
 	 */
 	ConstraintSchemaValue::class => static function ( $containerBuilder ) {
 		return new ConstraintSchemaValue(
@@ -82,9 +83,9 @@ return [
 	},
 
 	/**
-	 * PropertyValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return PropertyValueParser
 	 */
 	DataValueServiceFactory::TYPE_PARSER . PropertyValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -106,9 +107,9 @@ return [
 	},
 
 	/**
-	 * PropertyValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return PropertyValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . PropertyValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -120,9 +121,9 @@ return [
 	},
 
 	/**
-	 * AllowsPatternValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return AllowsPatternValueParser
 	 */
 	DataValueServiceFactory::TYPE_PARSER . AllowsPatternValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -134,9 +135,9 @@ return [
 	},
 
 	/**
-	 * AllowsListValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return AllowsListValueParser
 	 */
 	DataValueServiceFactory::TYPE_PARSER . AllowsListValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -148,9 +149,9 @@ return [
 	},
 
 	/**
-	 * CompoundConstraintValueValidator
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return CompoundConstraintValueValidator
 	 */
 	DataValueServiceFactory::TYPE_VALIDATOR . 'CompoundConstraintValueValidator' => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -215,9 +216,9 @@ return [
 	},
 
 	/**
-	 * ImportValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return ImportValueParser
 	 */
 	DataValueServiceFactory::TYPE_PARSER . ImportValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -229,9 +230,9 @@ return [
 	},
 
 	/**
-	 * StringValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return StringValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -248,9 +249,9 @@ return [
 	},
 
 	/**
-	 * CodeStringValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return CodeStringValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . StringValue::TYPE_COD_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -262,9 +263,9 @@ return [
 	},
 
 	/**
-	 * ReferenceValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return ReferenceValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . ReferenceValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -276,9 +277,9 @@ return [
 	},
 
 	/**
-	 * MonolingualTextValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return MonolingualTextValueParser
 	 */
 	DataValueServiceFactory::TYPE_PARSER . MonolingualTextValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -290,9 +291,9 @@ return [
 	},
 
 	/**
-	 * MonolingualTextValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return MonolingualTextValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . MonolingualTextValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -304,9 +305,9 @@ return [
 	},
 
 	/**
-	 * NumberValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return NumberValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . QuantityValue::TYPE_ID => static function ( $containerBuilder ) {
 		return $containerBuilder->create( DataValueServiceFactory::TYPE_FORMATTER . NumberValue::TYPE_ID );
@@ -322,9 +323,9 @@ return [
 	},
 
 	/**
-	 * TimeValueFormatter
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return TimeValueFormatter
 	 */
 	DataValueServiceFactory::TYPE_FORMATTER . TimeValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -336,9 +337,9 @@ return [
 	},
 
 	/**
-	 * TimeValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return TimeValueParser
 	 */
 	DataValueServiceFactory::TYPE_PARSER . TimeValue::TYPE_ID => static function ( $containerBuilder ) {
 		$containerBuilder->registerExpectedReturnType(
@@ -350,9 +351,9 @@ return [
 	},
 
 	/**
-	 * TimeValueParser
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return DescriptionBuilderRegistry
 	 */
 	'DescriptionBuilderRegistry' => static function ( $containerBuilder ) {
 		return new DescriptionBuilderRegistry();

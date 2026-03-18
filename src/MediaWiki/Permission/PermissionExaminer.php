@@ -14,24 +14,12 @@ use SMW\MediaWiki\PermissionManager;
 class PermissionExaminer {
 
 	/**
-	 * @var PermissionManager
-	 */
-	private $permissionManager;
-
-	/**
-	 * @var User
-	 */
-	private $user;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param PermissionManager $permissionManager
-	 * @param User|null $user
 	 */
-	public function __construct( PermissionManager $permissionManager, ?User $user = null ) {
-		$this->permissionManager = $permissionManager;
-		$this->user = $user;
+	public function __construct(
+		private readonly PermissionManager $permissionManager,
+		private ?User $user = null,
+	) {
 	}
 
 	/**

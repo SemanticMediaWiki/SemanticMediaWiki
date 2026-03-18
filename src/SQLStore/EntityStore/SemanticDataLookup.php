@@ -26,22 +26,14 @@ class SemanticDataLookup {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var string
 	 */
 	private $caller = '';
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private SQLStore $store ) {
 	}
 
 	/**

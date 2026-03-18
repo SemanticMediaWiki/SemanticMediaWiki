@@ -19,23 +19,17 @@ use SMW\MediaWiki\HookListener;
 class TitleIsAlwaysKnown implements HookListener {
 
 	/**
-	 * @var Title
-	 */
-	private $title;
-
-	/**
 	 * @var mixed
 	 */
 	private $result;
 
 	/**
 	 * @since  2.0
-	 *
-	 * @param Title $title
-	 * @param mixed &$result
 	 */
-	public function __construct( Title $title, &$result ) {
-		$this->title = $title;
+	public function __construct(
+		private readonly Title $title,
+		&$result,
+	) {
 		$this->result =& $result;
 	}
 

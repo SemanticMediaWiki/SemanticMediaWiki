@@ -15,11 +15,6 @@ use SMWDataItem as DataItem;
 class PropertyTableIdReferenceFinder {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var Database
 	 */
 	private $connection;
@@ -36,11 +31,8 @@ class PropertyTableIdReferenceFinder {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}

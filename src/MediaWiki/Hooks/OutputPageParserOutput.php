@@ -32,33 +32,18 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class OutputPageParserOutput implements HookListener {
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
 	 * @var IndicatorRegistry
 	 */
 	private $indicatorRegistry;
-
-	private FactboxText $factboxText;
 
 	/**
 	 * @since 1.9
 	 */
 	public function __construct(
-		NamespaceExaminer $namespaceExaminer,
-		PermissionExaminer $permissionExaminer,
-		FactboxText $factboxText
+		private readonly NamespaceExaminer $namespaceExaminer,
+		private readonly PermissionExaminer $permissionExaminer,
+		private readonly FactboxText $factboxText,
 	) {
-		$this->namespaceExaminer = $namespaceExaminer;
-		$this->permissionExaminer = $permissionExaminer;
-		$this->factboxText = $factboxText;
 	}
 
 	/**

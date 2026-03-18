@@ -20,23 +20,12 @@ class ListLookup extends Lookup {
 	const VERSION = 1;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ListAugmentor
-	 */
-	private $listAugmentor;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store, ListAugmentor $listAugmentor ) {
-		$this->store = $store;
-		$this->listAugmentor = $listAugmentor;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ListAugmentor $listAugmentor,
+	) {
 	}
 
 	/**

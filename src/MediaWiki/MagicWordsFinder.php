@@ -15,24 +15,12 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class MagicWordsFinder {
 
 	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
-
-	/**
-	 * @var MagicWordFactory
-	 */
-	private $magicWordFactory;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param ParserOutput|null $parserOutput
-	 * @param MagicWordFactory|null $magicWordFactory
 	 */
-	public function __construct( ?ParserOutput $parserOutput = null, ?MagicWordFactory $magicWordFactory = null ) {
-		$this->parserOutput = $parserOutput;
-		$this->magicWordFactory = $magicWordFactory;
+	public function __construct(
+		private ?ParserOutput $parserOutput = null,
+		private readonly ?MagicWordFactory $magicWordFactory = null,
+	) {
 	}
 
 	/**
