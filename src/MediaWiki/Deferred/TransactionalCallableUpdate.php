@@ -20,11 +20,6 @@ use SMW\Site;
 class TransactionalCallableUpdate extends CallableUpdate {
 
 	/**
-	 * @var Database|null
-	 */
-	private $connection;
-
-	/**
 	 * @var bool
 	 */
 	private $onTransactionIdle = false;
@@ -67,13 +62,12 @@ class TransactionalCallableUpdate extends CallableUpdate {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param callable|null $callback
-	 * @param Database|null $connection
 	 */
-	public function __construct( ?callable $callback = null, ?Database $connection = null ) {
+	public function __construct(
+		?callable $callback = null,
+		private readonly ?Database $connection = null,
+	) {
 		parent::__construct( $callback );
-		$this->connection = $connection;
 		$this->connection->onTransactionResolution( [ $this, 'cancelOnRollback' ], __METHOD__ );
 	}
 

@@ -155,8 +155,8 @@ class Settings extends Options {
 			'smwgAutoRefreshOnPageMove' => $GLOBALS['smwgAutoRefreshOnPageMove'],
 			'smwgMaxPropertyValues' => $GLOBALS['smwgMaxPropertyValues'],
 			'smwgNamespace' => $GLOBALS['smwgNamespace'],
-			'smwgMasterStore' => isset( $GLOBALS['smwgMasterStore'] ) ? $GLOBALS['smwgMasterStore'] : '',
-			'smwgIQRunningNumber' => isset( $GLOBALS['smwgIQRunningNumber'] ) ? $GLOBALS['smwgIQRunningNumber'] : 0,
+			'smwgMasterStore' => $GLOBALS['smwgMasterStore'] ?? '',
+			'smwgIQRunningNumber' => $GLOBALS['smwgIQRunningNumber'] ?? 0,
 			'smwgCacheUsage' => $GLOBALS['smwgCacheUsage'],
 			'smwgMainCacheType' => $GLOBALS['smwgMainCacheType'],
 			'smwgFixedProperties' => $GLOBALS['smwgFixedProperties'],
@@ -292,7 +292,7 @@ class Settings extends Options {
 	public function safeGet( $key, $default = false ) {
 		try {
 			$r = $this->get( $key );
-		} catch ( SettingNotFoundException $e ) {
+		} catch ( SettingNotFoundException ) {
 			return $default;
 		}
 

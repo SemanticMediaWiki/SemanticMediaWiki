@@ -29,19 +29,6 @@ use SMWDIBlob as DIBlob;
 class SQLStoreUpdater {
 
 	/**
-	 * The store used by this store writer.
-	 *
-	 * @since 1.8
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var SQLStoreFactory
-	 */
-	private $factory;
-
-	/**
 	 * @var PropertyTableRowDiffer
 	 */
 	private $propertyTableRowDiffer;
@@ -73,13 +60,11 @@ class SQLStoreUpdater {
 
 	/**
 	 * @since 1.8
-	 *
-	 * @param SQLStore $store
-	 * @param SQLStoreFactory $factory
 	 */
-	public function __construct( SQLStore $store, $factory ) {
-		$this->store = $store;
-		$this->factory = $factory;
+	public function __construct(
+		private readonly SQLStore $store,
+		private $factory,
+	) {
 		$this->propertyTableRowDiffer = $this->factory->newPropertyTableRowDiffer();
 		$this->propertyTableUpdater = $this->factory->newPropertyTableUpdater();
 		$this->semanticDataLookup = $this->factory->newSemanticDataLookup();

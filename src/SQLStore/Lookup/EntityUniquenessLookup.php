@@ -21,24 +21,12 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class EntityUniquenessLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SQLStore $store
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( Store $store, IteratorFactory $iteratorFactory ) {
-		$this->store = $store;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly IteratorFactory $iteratorFactory,
+	) {
 	}
 
 	/**

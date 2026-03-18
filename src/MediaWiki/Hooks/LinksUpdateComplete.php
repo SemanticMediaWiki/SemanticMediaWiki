@@ -26,11 +26,6 @@ class LinksUpdateComplete implements HookListener {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
 	 * @var bool
 	 */
 	private $enabledDeferredUpdate = true;
@@ -42,11 +37,8 @@ class LinksUpdateComplete implements HookListener {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( NamespaceExaminer $namespaceExaminer ) {
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct( private NamespaceExaminer $namespaceExaminer ) {
 	}
 
 	/**

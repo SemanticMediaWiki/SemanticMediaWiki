@@ -7,15 +7,13 @@ use SMWQuery as Query;
 
 class PrefixParameterProcessor {
 
-	private Query $query;
-	private string $prefix;
 	private bool $mixedResults;
 
-	public function __construct( Query $query, string $prefix ) {
-		$this->query = $query;
-		$this->prefix = $prefix;
-
-		if ( $prefix === 'auto' ) {
+	public function __construct(
+		private readonly Query $query,
+		private readonly string $prefix,
+	) {
+		if ( $this->prefix === 'auto' ) {
 			$this->mixedResults = $this->getMixedResults();
 		}
 	}

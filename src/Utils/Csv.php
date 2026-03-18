@@ -95,7 +95,7 @@ class Csv {
 					// Index 0 represents the first column, same hash, only
 					// concatenate the rest of the columns
 					if ( $k != 0 ) {
-						$v = $v . ( isset( $row[$k] ) ? "$sep" . $row[$k] : '' );
+						$v .= ( isset( $row[$k] ) ? "$sep" . $row[$k] : '' );
 						// Filter duplicate values
 						$v = array_flip( explode( $sep, $v ) );
 						// Make it a simple list

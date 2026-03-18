@@ -15,24 +15,12 @@ use SMW\Utils\HtmlTabs;
 class AlertsTaskHandler extends TaskHandler {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var TaskHandler[]
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param TaskHandler[] $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**

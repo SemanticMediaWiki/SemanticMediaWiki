@@ -21,24 +21,12 @@ use SMW\Store;
 class ClassDescriptionInterpreter implements DescriptionInterpreter {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder ) {
-		$this->store = $store;
-		$this->conditionBuilder = $conditionBuilder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ConditionBuilder $conditionBuilder,
+	) {
 	}
 
 	/**

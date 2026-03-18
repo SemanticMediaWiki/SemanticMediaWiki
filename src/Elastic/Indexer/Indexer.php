@@ -35,16 +35,6 @@ class Indexer {
 	const REQUIRE_SAFE_REPLICATION = 'replication/safe';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Bulk
-	 */
-	private $bulk;
-
-	/**
 	 * @var FileIndexer
 	 */
 	private $fileIndexer;
@@ -66,13 +56,11 @@ class Indexer {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param Bulk $bulk
 	 */
-	public function __construct( Store $store, Bulk $bulk ) {
-		$this->store = $store;
-		$this->bulk = $bulk;
+	public function __construct(
+		private Store $store,
+		private Bulk $bulk,
+	) {
 	}
 
 	/**

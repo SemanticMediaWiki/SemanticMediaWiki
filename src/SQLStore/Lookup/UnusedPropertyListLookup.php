@@ -22,31 +22,13 @@ use SMWDIError as DIError;
 class UnusedPropertyListLookup implements ListLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
-	 * @var RequestOptions
-	 */
-	private $requestOptions;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
-	 * @param RequestOptions|null $requestOptions
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore, ?RequestOptions $requestOptions = null ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
-		$this->requestOptions = $requestOptions;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+		private readonly ?RequestOptions $requestOptions = null,
+	) {
 	}
 
 	/**

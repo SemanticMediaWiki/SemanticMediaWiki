@@ -23,38 +23,14 @@ class PersonalUrls implements HookListener {
 	use OptionsAwareTrait;
 
 	/**
-	 * @var SkinTemplate
-	 */
-	private $skin;
-
-	/**
-	 * @var JobQueue
-	 */
-	private $jobQueue;
-
-	/**
-	 * @var PermissionExaminer
-	 */
-	private $permissionExaminer;
-
-	/**
-	 * @var PreferenceExaminer
-	 */
-	private $preferenceExaminer;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param SkinTemplate $skin
-	 * @param JobQueue $jobQueue
-	 * @param PermissionExaminer $permissionExaminer
-	 * @param PreferenceExaminer $preferenceExaminer
 	 */
-	public function __construct( SkinTemplate $skin, JobQueue $jobQueue, PermissionExaminer $permissionExaminer, PreferenceExaminer $preferenceExaminer ) {
-		$this->skin = $skin;
-		$this->jobQueue = $jobQueue;
-		$this->permissionExaminer = $permissionExaminer;
-		$this->preferenceExaminer = $preferenceExaminer;
+	public function __construct(
+		private SkinTemplate $skin,
+		private JobQueue $jobQueue,
+		private PermissionExaminer $permissionExaminer,
+		private PreferenceExaminer $preferenceExaminer,
+	) {
 	}
 
 	/**

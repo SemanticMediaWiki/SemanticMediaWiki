@@ -22,17 +22,9 @@ use SMW\Utils\JsonView;
 class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param OutputFormatter $outputFormatter
 	 */
-	public function __construct( OutputFormatter $outputFormatter ) {
-		$this->outputFormatter = $outputFormatter;
+	public function __construct( private readonly OutputFormatter $outputFormatter ) {
 	}
 
 	/**

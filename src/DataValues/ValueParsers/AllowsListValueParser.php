@@ -16,11 +16,6 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
 class AllowsListValueParser implements ValueParser {
 
 	/**
-	 * @var MediaWikiNsContentReader
-	 */
-	private $mediaWikiNsContentReader;
-
-	/**
 	 * @var array
 	 */
 	private $errors = [];
@@ -32,11 +27,8 @@ class AllowsListValueParser implements ValueParser {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param MediaWikiNsContentReader $mediaWikiNsContentReader
 	 */
-	public function __construct( MediaWikiNsContentReader $mediaWikiNsContentReader ) {
-		$this->mediaWikiNsContentReader = $mediaWikiNsContentReader;
+	public function __construct( private readonly MediaWikiNsContentReader $mediaWikiNsContentReader ) {
 	}
 
 	/**

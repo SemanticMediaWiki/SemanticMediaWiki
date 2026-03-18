@@ -19,16 +19,6 @@ use SMW\Store;
 class PropertyTableUpdater {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
 	 * @var PropertyChangeListener
 	 */
 	private $propertyChangeListener;
@@ -40,13 +30,11 @@ class PropertyTableUpdater {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 	}
 
 	/**

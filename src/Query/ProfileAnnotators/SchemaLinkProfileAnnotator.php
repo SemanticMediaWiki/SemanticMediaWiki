@@ -16,19 +16,13 @@ use SMW\Query\ProfileAnnotator;
 class SchemaLinkProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var string
-	 */
-	private $schemaLink = '';
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param string $schemaLink
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, $schemaLink ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private $schemaLink,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->schemaLink = $schemaLink;
 	}
 
 	/**

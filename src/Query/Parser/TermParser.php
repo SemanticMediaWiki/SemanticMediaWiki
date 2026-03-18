@@ -30,26 +30,9 @@ class TermParser {
 	private static $cache = [];
 
 	/**
-	 * The `prefix_map` is expected to contain assignments of prefixes that link
-	 * to a collection of properties. The prefix is used as short-cut to cover a
-	 * range of disjunctive query declarations to simplify the creation of a
-	 * query construct such as:
-	 *
-	 * - Prefix map: `'keyword' => [ 'Has keyword', 'Keyword' ]`
-	 * - Input: `keyword:foo bar`
-	 * - Output: `([[Has keyword::foo bar]] || [[Keyword::foo bar]])`
-	 *
-	 * @var
-	 */
-	private $prefix_map = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param array $prefix_map
 	 */
-	public function __construct( array $prefix_map = [] ) {
-		$this->prefix_map = $prefix_map;
+	public function __construct( private readonly array $prefix_map = [] ) {
 	}
 
 	/**

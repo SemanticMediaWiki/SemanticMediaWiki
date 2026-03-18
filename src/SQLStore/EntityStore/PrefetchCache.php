@@ -16,16 +16,6 @@ use SMW\SQLStore\SQLStore;
 class PrefetchCache {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var PrefetchItemLookup
-	 */
-	private $prefetchItemLookup;
-
-	/**
 	 * @var
 	 */
 	private $cache = [];
@@ -37,13 +27,11 @@ class PrefetchCache {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param PrefetchItemLookup $prefetchItemLookup
 	 */
-	public function __construct( SQLStore $store, PrefetchItemLookup $prefetchItemLookup ) {
-		$this->store = $store;
-		$this->prefetchItemLookup = $prefetchItemLookup;
+	public function __construct(
+		private readonly SQLStore $store,
+		private readonly PrefetchItemLookup $prefetchItemLookup,
+	) {
 	}
 
 	/**

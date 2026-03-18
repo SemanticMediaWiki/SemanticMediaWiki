@@ -23,21 +23,6 @@ class TextChangeUpdater {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
-	 * @var SearchTableUpdater
-	 */
-	private $searchTableUpdater;
-
-	/**
 	 * @var bool
 	 */
 	private $asDeferredUpdate = true;
@@ -54,15 +39,12 @@ class TextChangeUpdater {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Database $connection
-	 * @param Cache $cache
-	 * @param SearchTableUpdater $searchTableUpdater
 	 */
-	public function __construct( Database $connection, Cache $cache, SearchTableUpdater $searchTableUpdater ) {
-		$this->connection = $connection;
-		$this->cache = $cache;
-		$this->searchTableUpdater = $searchTableUpdater;
+	public function __construct(
+		private Database $connection,
+		private Cache $cache,
+		private SearchTableUpdater $searchTableUpdater,
+	) {
 	}
 
 	/**

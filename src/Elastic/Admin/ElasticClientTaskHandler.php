@@ -23,24 +23,12 @@ use SMW\Utils\JsonView;
 class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var array
-	 */
-	private $taskHandlers = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param array $taskHandlers
 	 */
-	public function __construct( OutputFormatter $outputFormatter, array $taskHandlers = [] ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->taskHandlers = $taskHandlers;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly array $taskHandlers = [],
+	) {
 	}
 
 	/**

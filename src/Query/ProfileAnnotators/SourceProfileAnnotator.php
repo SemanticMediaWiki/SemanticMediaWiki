@@ -15,19 +15,13 @@ use SMWDIBlob as DIBlob;
 class SourceProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var string
-	 */
-	private $querySource;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param string $querySource
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, $querySource = '' ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private $querySource = '',
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->querySource = $querySource;
 	}
 
 	/**

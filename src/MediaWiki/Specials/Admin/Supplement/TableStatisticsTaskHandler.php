@@ -22,24 +22,12 @@ use SMW\Utils\HtmlTabs;
 class TableStatisticsTaskHandler extends TaskHandler implements ActionableTask {
 
 	/**
-	 * @var OutputFormatter
-	 */
-	private $outputFormatter;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( OutputFormatter $outputFormatter, EntityCache $entityCache ) {
-		$this->outputFormatter = $outputFormatter;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private readonly OutputFormatter $outputFormatter,
+		private readonly EntityCache $entityCache,
+	) {
 	}
 
 	/**

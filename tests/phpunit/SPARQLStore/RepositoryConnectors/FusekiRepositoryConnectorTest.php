@@ -5,6 +5,7 @@ namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 use Onoi\HttpRequest\HttpRequest;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector;
+use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryConnectors\FusekiRepositoryConnector
@@ -51,6 +52,37 @@ class FusekiRepositoryConnectorTest extends ElementaryRepositoryConnectorTest {
 			'3.2',
 			$instance->getVersion()
 		);
+	}
+
+	public function testDoQueryAddsOutputXmlParameter() {
+		$rawResultProvider = new FakeRawResultProvider();
+		$capturedOptions = [];
+
+		$httpRequest = $this->getMockBuilder( HttpRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$httpRequest->expects( $this->atLeastOnce() )
+			->method( 'setOption' )
+			->willReturnCallback( static function ( $option, $value ) use ( &$capturedOptions ) {
+				$capturedOptions[$option] = $value;
+				return true;
+			} );
+
+		$httpRequest->method( 'execute' )
+			->willReturn( $rawResultProvider->getEmptySparqlResultXml() );
+
+		$httpRequest->method( 'getLastErrorCode' )
+			->willReturn( 0 );
+
+		$instance = new FusekiRepositoryConnector(
+			new RepositoryClient( 'http://foo/graph', 'http://localhost/query' ),
+			$httpRequest
+		);
+
+		$instance->doQuery( 'SELECT ?s WHERE { ?s ?p ?o }' );
+
+		$this->assertStringContainsString( '&output=xml', $capturedOptions[CURLOPT_POSTFIELDS] );
 	}
 
 }

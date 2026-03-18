@@ -19,18 +19,13 @@ use SMWQueryProcessor;
 class TemplateRendererFactory {
 
 	private $templateRenderer;
-
-	private $queryResult;
 	private $numberOfPages;
 	private $userparam = '';
 
 	/**
 	 * TemplateRendererFactory constructor.
-	 *
-	 * @param $queryResult
 	 */
-	public function __construct( $queryResult ) {
-		$this->queryResult = $queryResult;
+	public function __construct( private $queryResult ) {
 	}
 
 	/**

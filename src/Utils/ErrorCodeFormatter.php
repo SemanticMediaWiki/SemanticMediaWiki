@@ -43,7 +43,7 @@ class ErrorCodeFormatter {
 			}
 		}
 
-		return isset( self::$jsonErrors[$errorCode] ) ? self::$jsonErrors[$errorCode] : 'UNKNOWN';
+		return self::$jsonErrors[$errorCode] ?? 'UNKNOWN';
 	}
 
 	/**

@@ -17,24 +17,12 @@ use SMW\Store;
 class UsageStatisticsListLookup implements ListLookup {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var PropertyStatisticsStore
-	 */
-	private $propertyStatisticsStore;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
-	 * @param PropertyStatisticsStore $propertyStatisticsStore
 	 */
-	public function __construct( Store $store, PropertyStatisticsStore $propertyStatisticsStore ) {
-		$this->store = $store;
-		$this->propertyStatisticsStore = $propertyStatisticsStore;
+	public function __construct(
+		private readonly Store $store,
+		private readonly PropertyStatisticsStore $propertyStatisticsStore,
+	) {
 	}
 
 	/**

@@ -26,23 +26,17 @@ class RedirectTargetLookup {
 	const CACHE_ONLY = 'cache/only';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var InMemoryCacheManager
 	 */
 	private $inMemoryCacheManager;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param IdCacheManager $inMemoryCacheManager
 	 */
-	public function __construct( Store $store, IdCacheManager $inMemoryCacheManager ) {
-		$this->store = $store;
+	public function __construct(
+		private readonly Store $store,
+		IdCacheManager $inMemoryCacheManager,
+	) {
 		$this->inMemoryCacheManager = $inMemoryCacheManager;
 	}
 

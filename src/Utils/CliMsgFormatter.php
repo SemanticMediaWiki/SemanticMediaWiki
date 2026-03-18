@@ -371,7 +371,7 @@ class CliMsgFormatter {
 		$maxLen = self::MAX_LEN;
 
 		if ( $expectedSecondColLen > 0 ) {
-			$maxLen = $maxLen - $expectedSecondColLen;
+			$maxLen -= $expectedSecondColLen;
 		}
 
 		$firstCol = $this->trimContent( $firstCol, $maxLen );
@@ -431,7 +431,7 @@ class CliMsgFormatter {
 	}
 
 	private function humanReadableTime( $time ) {
-		$time = round( $time, 2 );
+		$time = (int)round( $time, 2 );
 
 		$s = $time % 60;
 		$m = floor( ( $time % 3600 ) / 60 );

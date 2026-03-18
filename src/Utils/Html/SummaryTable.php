@@ -13,9 +13,6 @@ use SMW\Utils\HtmlDivTable;
  */
 class SummaryTable {
 
-	/**
-	 * @var
-	 */
 	private $attributes = [];
 
 	/**
@@ -37,7 +34,7 @@ class SummaryTable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
 	public static function getModuleStyles() {
 		return [ 'ext.smw.styles', 'smw.summarytable' ];

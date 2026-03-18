@@ -22,43 +22,19 @@ class ValueFilter {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateParser
-	 */
-	private $templateParser;
-
-	/**
-	 * @var ValueFilterFactory
-	 */
-	private $valueFilterFactory;
-
-	/**
-	 * @var SchemaFinder
-	 */
-	private $schemaFinder;
-
-	/**
 	 * @var UrlArgs
 	 */
 	private $urlArgs;
 
 	/**
-	 * @var
-	 */
-	private $params;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateParser $templateParser
-	 * @param ValueFilterFactory $valueFilterFactory
-	 * @param SchemaFinder $schemaFinder
-	 * @param array $params
 	 */
-	public function __construct( TemplateParser $templateParser, ValueFilterFactory $valueFilterFactory, SchemaFinder $schemaFinder, array $params ) {
-		$this->templateParser = $templateParser;
-		$this->valueFilterFactory = $valueFilterFactory;
-		$this->schemaFinder = $schemaFinder;
-		$this->params = $params;
+	public function __construct(
+		private TemplateParser $templateParser,
+		private ValueFilterFactory $valueFilterFactory,
+		private SchemaFinder $schemaFinder,
+		private array $params,
+	) {
 	}
 
 	/**

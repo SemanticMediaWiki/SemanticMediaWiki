@@ -21,16 +21,6 @@ class EntityValidator {
 	use RevisionGuardAwareTrait;
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
-
-	/**
 	 * @var array
 	 */
 	private $propertyInvalidCharacterList = [];
@@ -47,13 +37,11 @@ class EntityValidator {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SQLStore $store
-	 * @param NamespaceExaminer $namespaceExaminer
 	 */
-	public function __construct( SQLStore $store, NamespaceExaminer $namespaceExaminer ) {
-		$this->store = $store;
-		$this->namespaceExaminer = $namespaceExaminer;
+	public function __construct(
+		private SQLStore $store,
+		private NamespaceExaminer $namespaceExaminer,
+	) {
 	}
 
 	/**

@@ -30,16 +30,6 @@ class QueryDependencyLinksStore {
 	private $store;
 
 	/**
-	 * @var DependencyLinksTableUpdater
-	 */
-	private $dependencyLinksTableUpdater;
-
-	/**
-	 * @var QueryResultDependencyListResolver
-	 */
-	private $queryResultDependencyListResolver;
-
-	/**
 	 * @var NamespaceExaminer
 	 */
 	private $namespaceExaminer;
@@ -66,13 +56,11 @@ class QueryDependencyLinksStore {
 
 	/**
 	 * @since 2.3
-	 *
-	 * @param QueryResultDependencyListResolver $queryResultDependencyListResolver
-	 * @param DependencyLinksTableUpdater $dependencyLinksTableUpdater
 	 */
-	public function __construct( QueryResultDependencyListResolver $queryResultDependencyListResolver, DependencyLinksTableUpdater $dependencyLinksTableUpdater ) {
-		$this->queryResultDependencyListResolver = $queryResultDependencyListResolver;
-		$this->dependencyLinksTableUpdater = $dependencyLinksTableUpdater;
+	public function __construct(
+		private QueryResultDependencyListResolver $queryResultDependencyListResolver,
+		private DependencyLinksTableUpdater $dependencyLinksTableUpdater,
+	) {
 		$this->store = $this->dependencyLinksTableUpdater->getStore();
 		$this->namespaceExaminer = ApplicationFactory::getInstance()->getNamespaceExaminer();
 	}

@@ -18,17 +18,9 @@ use SMW\Localizer\Message;
 class OutputFormatter {
 
 	/**
-	 * @var OutputPage
-	 */
-	private $outputPage;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param OutputPage $outputPage
 	 */
-	public function __construct( OutputPage $outputPage ) {
-		$this->outputPage = $outputPage;
+	public function __construct( private readonly OutputPage $outputPage ) {
 	}
 
 	/**

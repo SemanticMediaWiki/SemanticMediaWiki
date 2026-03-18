@@ -20,22 +20,14 @@ use SMWDataItem as DataItem;
 class ByGroupPropertyValuesLookup {
 
 	/**
-	 * @var SQLStore
-	 */
-	private $store;
-
-	/**
 	 * @var
 	 */
 	private $cache = [];
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store ) {
-		$this->store = $store;
+	public function __construct( private readonly SQLStore $store ) {
 	}
 
 	/**

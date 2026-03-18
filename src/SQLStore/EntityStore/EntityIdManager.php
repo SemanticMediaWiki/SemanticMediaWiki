@@ -72,11 +72,6 @@ class EntityIdManager {
 	public $store;
 
 	/**
-	 * @var SQLStoreFactory
-	 */
-	private $factory;
-
-	/**
 	 * @var IdToDataItemMatchFinder
 	 */
 	private $idMatchFinder;
@@ -148,12 +143,12 @@ class EntityIdManager {
 
 	/**
 	 * @since 1.8
-	 *
-	 * @param SQLStore $store
 	 */
-	public function __construct( SQLStore $store, SQLStoreFactory $factory ) {
+	public function __construct(
+		SQLStore $store,
+		private readonly SQLStoreFactory $factory,
+	) {
 		$this->store = $store;
-		$this->factory = $factory;
 		$this->initCache();
 
 		$this->idEntityFinder = $this->factory->newIdEntityFinder(

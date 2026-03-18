@@ -16,19 +16,13 @@ use SMWQuery as Query;
 class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	/**
-	 * @var Query
-	 */
-	private $query;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param ProfileAnnotator $profileAnnotator
-	 * @param Query $query
 	 */
-	public function __construct( ProfileAnnotator $profileAnnotator, Query $query ) {
+	public function __construct(
+		ProfileAnnotator $profileAnnotator,
+		private readonly Query $query,
+	) {
 		parent::__construct( $profileAnnotator );
-		$this->query = $query;
 	}
 
 	/**

@@ -2,6 +2,7 @@
 
 namespace SMW\Services;
 
+use Onoi\CallbackContainer\CallbackContainerBuilder;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
@@ -20,9 +21,9 @@ use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener
 return [
 
 	/**
-	 * InvalidateResultCacheEventListener
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return InvalidateResultCacheEventListener
 	 */
 	'InvalidateResultCacheEventListener' => static function ( $containerBuilder ) {
 		$invalidateResultCacheEventListener = new InvalidateResultCacheEventListener(
@@ -33,9 +34,9 @@ return [
 	},
 
 	/**
-	 * InvalidateEntityCacheEventListener
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return InvalidateEntityCacheEventListener
 	 */
 	'InvalidateEntityCacheEventListener' => static function ( $containerBuilder ) {
 		$invalidateEntityCacheEventListener = new InvalidateEntityCacheEventListener(
@@ -46,9 +47,9 @@ return [
 	},
 
 	/**
-	 * InvalidatePropertySpecificationLookupCacheEventListener
+	 * @param CallbackContainerBuilder $containerBuilder
 	 *
-	 * @return callable
+	 * @return InvalidatePropertySpecificationLookupCacheEventListener
 	 */
 	'InvalidatePropertySpecificationLookupCacheEventListener' => static function ( $containerBuilder ) {
 		$invalidatePropertySpecificationLookupCacheEventListener = new InvalidatePropertySpecificationLookupCacheEventListener(

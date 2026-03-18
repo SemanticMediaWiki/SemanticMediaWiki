@@ -23,11 +23,6 @@ class PropertyTableDefinitionBuilder {
 	const PROPERTY_TABLE_PREFIX = 'smw_fpt';
 
 	/**
-	 * @var PropertyTypeFinder
-	 */
-	private $propertyTypeFinder;
-
-	/**
 	 * @var PropertyTableDefinition[]
 	 */
 	protected $propertyTables = [];
@@ -39,11 +34,8 @@ class PropertyTableDefinitionBuilder {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param PropertyTypeFinder $propertyTypeFinder
 	 */
-	public function __construct( PropertyTypeFinder $propertyTypeFinder ) {
-		$this->propertyTypeFinder = $propertyTypeFinder;
+	public function __construct( private readonly PropertyTypeFinder $propertyTypeFinder ) {
 	}
 
 	/**

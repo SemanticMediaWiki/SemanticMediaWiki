@@ -54,25 +54,17 @@ class RepositoryResult implements Iterator {
 	protected $comments;
 
 	/**
-	 * Error code.
-	 *
-	 * @var int
-	 */
-	protected $errorCode;
-
-	/**
 	 * Initialise a result set from a result string in SPARQL XML format.
-	 *
-	 * @param $header array mapping SPARQL variable names to column indices
-	 * @param $data array of array of (ExpElement or null)
-	 * @param $comments array of string comments if the result contained any
-	 * @param $errorCode integer an error code
 	 */
-	public function __construct( array $header = [], array $data = [], array $comments = [], $errorCode = self::ERROR_NOERROR ) {
+	public function __construct(
+		array $header = [],
+		array $data = [],
+		array $comments = [],
+		protected $errorCode = self::ERROR_NOERROR,
+	) {
 		$this->header    = $header;
 		$this->data      = $data;
 		$this->comments  = $comments;
-		$this->errorCode = $errorCode;
 		reset( $this->data );
 	}
 

@@ -18,24 +18,12 @@ use SMW\Query\Parser as QueryParser;
 class ConceptDescriptionInterpreter {
 
 	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
-
-	/**
-	 * @var QueryParser
-	 */
-	private $queryParser;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param QueryParser $queryParser
 	 */
-	public function __construct( ConditionBuilder $conditionBuilder, QueryParser $queryParser ) {
-		$this->conditionBuilder = $conditionBuilder;
-		$this->queryParser = $queryParser;
+	public function __construct(
+		private readonly ConditionBuilder $conditionBuilder,
+		private readonly QueryParser $queryParser,
+	) {
 	}
 
 	/**

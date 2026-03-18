@@ -47,11 +47,6 @@ use SMWDataItem as DataItem;
 class DocumentCreator {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var bool
 	 */
 	private $compatibilityMode = true;
@@ -69,8 +64,7 @@ class DocumentCreator {
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

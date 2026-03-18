@@ -28,21 +28,6 @@ class ReplicationCheck {
 	const SEVERITY_TYPE_WARNING = 'warning';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var DocumentReplicationExaminer
-	 */
-	private $documentReplicationExaminer;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @var TemplateEngine
 	 */
 	private $templateEngine;
@@ -69,15 +54,12 @@ class ReplicationCheck {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param DocumentReplicationExaminer $documentReplicationExaminer
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, DocumentReplicationExaminer $documentReplicationExaminer, EntityCache $entityCache ) {
-		$this->store = $store;
-		$this->documentReplicationExaminer = $documentReplicationExaminer;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private Store $store,
+		private DocumentReplicationExaminer $documentReplicationExaminer,
+		private EntityCache $entityCache,
+	) {
 	}
 
 	/**

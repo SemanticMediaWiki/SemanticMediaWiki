@@ -27,7 +27,7 @@ class Site {
 		// ...\ServiceContainer.php: Service disabled: DBLoadBalancer
 		try {
 			$isReadOnly = MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
-		} catch ( ServiceDisabledException $e ) {
+		} catch ( ServiceDisabledException ) {
 			$isReadOnly = true;
 		}
 
@@ -140,7 +140,7 @@ class Site {
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public static function stats() {
 		return [

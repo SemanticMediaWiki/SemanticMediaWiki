@@ -26,36 +26,18 @@ class FileAttachment {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Indexer
-	 */
-	private $indexer;
-
-	/**
-	 * @var Bulk
-	 */
-	private $bulk;
-
-	/**
 	 * @var string
 	 */
 	private $origin = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param Indexer $indexer
-	 * @param Bulk $bulk
 	 */
-	public function __construct( Store $store, Indexer $indexer, Bulk $bulk ) {
-		$this->store = $store;
-		$this->indexer = $indexer;
-		$this->bulk = $bulk;
+	public function __construct(
+		private Store $store,
+		private Indexer $indexer,
+		private Bulk $bulk,
+	) {
 	}
 
 	/**

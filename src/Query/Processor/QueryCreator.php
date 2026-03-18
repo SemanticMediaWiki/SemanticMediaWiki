@@ -19,26 +19,9 @@ use SMW\QueryFactory;
 class QueryCreator implements QueryContext {
 
 	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
-
-	/**
 	 * @var array
 	 */
 	private $params = [];
-
-	/**
-	 * @see smwgQDefaultNamespaces
-	 * @var null|array
-	 */
-	private $defaultNamespaces = null;
-
-	/**
-	 * @see smwgQDefaultLimit
-	 * @var int
-	 */
-	private $defaultLimit = 0;
 
 	/**
 	 * @see smwgQFeatures
@@ -54,15 +37,12 @@ class QueryCreator implements QueryContext {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param QueryFactory $queryFactory
-	 * @param array|null $defaultNamespaces
-	 * @param int $defaultLimit
 	 */
-	public function __construct( QueryFactory $queryFactory, $defaultNamespaces = null, $defaultLimit = 50 ) {
-		$this->queryFactory = $queryFactory;
-		$this->defaultNamespaces = $defaultNamespaces;
-		$this->defaultLimit = $defaultLimit;
+	public function __construct(
+		private readonly QueryFactory $queryFactory,
+		private $defaultNamespaces = null,
+		private $defaultLimit = 50,
+	) {
 	}
 
 	/**
