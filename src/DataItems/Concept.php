@@ -1,10 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 use SMW\Exception\DataItemException;
-use SMWDataItem;
 
 /**
  * This class implements Concept data items.
@@ -15,12 +14,12 @@ use SMWDataItem;
  *
  * @since 1.6
  *
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  *
  * @author Markus Krötzsch
  * @author mwjames
  */
-class DIConcept extends SMWDataItem {
+class Concept extends DataItem {
 
 	/**
 	 * Query string for this concept. Possibly long.
@@ -82,7 +81,7 @@ class DIConcept extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_CONCEPT;
+		return DataItem::TYPE_CONCEPT;
 	}
 
 	public function getConceptQuery() {
@@ -182,7 +181,7 @@ class DIConcept extends SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return DIConcept
+	 * @return Concept
 	 */
 	public static function doUnserialize( $serialization ) {
 		$result = unserialize( $serialization );
@@ -192,8 +191,8 @@ class DIConcept extends SMWDataItem {
 		return $result;
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_CONCEPT ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_CONCEPT ) {
 			return false;
 		}
 		return $di->getSerialization() === $this->getSerialization();
@@ -233,3 +232,8 @@ class DIConcept extends SMWDataItem {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Concept::class, 'SMW\DIConcept' );

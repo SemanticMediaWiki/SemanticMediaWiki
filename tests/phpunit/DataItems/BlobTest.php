@@ -1,22 +1,24 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataItems;
+
+use SMW\DataItems\Blob;
 
 /**
- * @covers SMWDIBlob
- * @covers SMWDataItem
+ * @covers \SMW\DataItems\Blob
+ * @covers \SMW\DataItems\DataItem
  *
  * @since 1.8
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
+ * @group DataItems
  * @group Database
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIBlobTest extends AbstractDataItem {
+class BlobTest extends AbstractDataItem {
 
 	/**
 	 * @see AbstractDataItem::getClass
@@ -26,7 +28,7 @@ class DIBlobTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWDIBlob';
+		return Blob::class;
 	}
 
 	/**

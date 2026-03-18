@@ -1,7 +1,6 @@
 <?php
-/**
- * @ingroup SMWDataItems
- */
+
+namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 
@@ -13,9 +12,9 @@ use MediaWiki\Json\JsonUnserializer;
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDIError extends SMWDataItem {
+class Error extends DataItem {
 
 	/**
 	 * List of error messages. Should always be safe for HTML.
@@ -36,7 +35,7 @@ class SMWDIError extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_ERROR;
+		return DataItem::TYPE_ERROR;
 	}
 
 	public function getErrors() {
@@ -68,14 +67,14 @@ class SMWDIError extends SMWDataItem {
 	 * Create a data item from the provided serialization string and type
 	 * ID.
 	 * @todo Be more careful with unserialization. It can create E_NOTICEs.
-	 * @return SMWDIError
+	 * @return Error
 	 */
 	public static function doUnserialize( $serialization ) {
-		return new SMWDIError( unserialize( $serialization ) );
+		return new Error( unserialize( $serialization ) );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_ERROR ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_ERROR ) {
 			return false;
 		}
 
@@ -112,3 +111,8 @@ class SMWDIError extends SMWDataItem {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Error::class, 'SMWDIError' );

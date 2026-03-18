@@ -1,8 +1,8 @@
 <?php
 
-/**
- * @ingroup SMWDataItems
- */
+namespace SMW\DataItems;
+
+use Transliterator;
 
 /**
  * This class implements blob (long string) data items.
@@ -10,9 +10,9 @@
  * @since 1.6
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  */
-class SMWDIBlob extends SMWDataItem {
+class Blob extends DataItem {
 
 	/**
 	 * Internal value.
@@ -25,7 +25,7 @@ class SMWDIBlob extends SMWDataItem {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_BLOB;
+		return DataItem::TYPE_BLOB;
 	}
 
 	public function getString() {
@@ -53,8 +53,8 @@ class SMWDIBlob extends SMWDataItem {
 	}
 
 	/**
-	 * @see SMWDataItem::getSortKeyDataItem()
-	 * @return SMWDataItem
+	 * @see DataItem::getSortKeyDataItem()
+	 * @return DataItem
 	 */
 	public function getSortKeyDataItem() {
 		return $this;
@@ -67,17 +67,22 @@ class SMWDIBlob extends SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return SMWDIBlob
+	 * @return Blob
 	 */
 	public static function doUnserialize( $serialization ) {
-		return new SMWDIBlob( $serialization );
+		return new Blob( $serialization );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( !( $di instanceof SMWDIBlob ) ) {
+	public function equals( DataItem $di ) {
+		if ( !( $di instanceof Blob ) ) {
 			return false;
 		}
 
 		return $di->getString() === $this->m_string;
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Blob::class, 'SMWDIBlob' );

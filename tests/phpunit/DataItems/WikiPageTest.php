@@ -1,21 +1,21 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataItems;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
- * @covers \SMW\DIWikiPage
- * @covers SMWDataItem
+ * @covers \SMW\DataItems\WikiPage
+ * @covers \SMW\DataItems\DataItem
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
+ * @group DataItems
  * @group Database
  *
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DIWikiPageTest extends AbstractDataItem {
+class WikiPageTest extends AbstractDataItem {
 
 	/**
 	 * @see AbstractDataItem::getClass
@@ -25,7 +25,7 @@ class DIWikiPageTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return DIWikiPage::class;
+		return WikiPage::class;
 	}
 
 	/**
@@ -46,8 +46,8 @@ class DIWikiPageTest extends AbstractDataItem {
 	/**
 	 * @dataProvider instanceProvider
 	 */
-	public function testGetTitleAndNewFromTitleRoundrtip( DIWikiPage $di ) {
-		$newDi = DIWikiPage::newFromTitle( $di->getTitle() );
+	public function testGetTitleAndNewFromTitleRoundrtip( WikiPage $di ) {
+		$newDi = WikiPage::newFromTitle( $di->getTitle() );
 		$this->assertTrue( $newDi->equals( $di ) );
 	}
 
@@ -55,7 +55,7 @@ class DIWikiPageTest extends AbstractDataItem {
 	 * @dataProvider sortKeyProvider
 	 */
 	public function testSortKeyRoundtrip( $title, $sortkey, $expected ) {
-		$instance = new DIWikiPage( $title, NS_MAIN );
+		$instance = new WikiPage( $title, NS_MAIN );
 
 		$instance->setSortKey( $sortkey );
 
@@ -69,7 +69,7 @@ class DIWikiPageTest extends AbstractDataItem {
 	 * @dataProvider subEntityProvider
 	 */
 	public function testIsSubEntityOf( $dbKey, $subobjectName, $subEntity, $expected ) {
-		$instance = new DIWikiPage( $dbKey, NS_MAIN, '', $subobjectName );
+		$instance = new WikiPage( $dbKey, NS_MAIN, '', $subobjectName );
 
 		$this->assertEquals(
 			$expected,
@@ -78,7 +78,7 @@ class DIWikiPageTest extends AbstractDataItem {
 	}
 
 	public function testInNamespace() {
-		$instance = new DIWikiPage( 'Foo', NS_HELP );
+		$instance = new WikiPage( 'Foo', NS_HELP );
 
 		$this->assertFalse(
 			$instance->inNamespace( SMW_NS_PROPERTY )
@@ -90,7 +90,7 @@ class DIWikiPageTest extends AbstractDataItem {
 	}
 
 	public function testInNamespace_EmptyDBKey() {
-		$instance = new DIWikiPage( '', NS_HELP );
+		$instance = new WikiPage( '', NS_HELP );
 
 		$this->assertFalse(
 			$instance->inNamespace( NS_HELP )
@@ -98,16 +98,16 @@ class DIWikiPageTest extends AbstractDataItem {
 	}
 
 	public function testDoUnserialize() {
-		$expected = new DIWikiPage( 'Foo', 0, '', '' );
+		$expected = new WikiPage( 'Foo', 0, '', '' );
 
 		$this->assertEquals(
 			$expected,
-			DIWikiPage::doUnserialize( 'Foo#0##' )
+			WikiPage::doUnserialize( 'Foo#0##' )
 		);
 
 		$this->assertEquals(
 			$expected,
-			DIWikiPage::doUnserialize( 'Foo#0##' )
+			WikiPage::doUnserialize( 'Foo#0##' )
 		);
 	}
 
