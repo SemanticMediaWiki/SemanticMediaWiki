@@ -271,7 +271,7 @@ class Exporter {
 		$result = $this->makeExportDataForSubject( $subject );
 
 		foreach ( $semanticData->getProperties() as $property ) {
-			self::addPropertyValues( $property, $semanticData->getPropertyValues( $property ), $result, $subject );
+			self::addPropertyValues( $property, $semanticData->getPropertyValues( $property ), $result );
 		}
 
 		return $result;
