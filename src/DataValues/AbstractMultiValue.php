@@ -140,7 +140,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @param Property|null $property
 	 *
-	 * @return Property[]|[]
+	 * @return Property[]|array
 	 */
 	protected function getFieldProperties( ?Property $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
