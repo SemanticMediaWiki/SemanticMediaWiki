@@ -286,7 +286,7 @@ class ExpData implements Element {
 	 * Return an array of ternary arrays (subject predicate object) of
 	 * ExpElement that represents the flattened version of this data.
 	 *
-	 * @return Element array of ExpElement
+	 * @return array<array{Element, Element, Element}> array of ExpElement
 	 */
 	public function getTripleList( ?Element $subject = null ) {
 		global $smwgBnodeCount;
