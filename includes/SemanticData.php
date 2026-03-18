@@ -105,19 +105,6 @@ class SemanticData implements JsonUnserializable {
 	protected $mHasVisibleSpecs = false;
 
 	/**
-	 * States whether repeated values should be avoided. Not needing
-	 * duplicate elimination (e.g. when loading from store) can save some
-	 * time, especially in subclasses like SMWSqlStubSemanticData, where
-	 * the first access to a data item is more costy.
-	 *
-	 * @note This setting is merely for optimization. The SMW data model
-	 * never cares about the multiplicity of identical data assignments.
-	 *
-	 * @var bool
-	 */
-	protected $mNoDuplicates;
-
-	/**
 	 * DIWikiPage object that is the subject of this container.
 	 * Subjects can never be null (and this is ensured in all methods setting
 	 * them in this class).
@@ -180,15 +167,14 @@ class SemanticData implements JsonUnserializable {
 
 	/**
 	 * Constructor.
-	 *
-	 * @param DIWikiPage $subject to which this data refers
-	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
-	public function __construct( DIWikiPage $subject, $noDuplicates = true ) {
+	public function __construct(
+		DIWikiPage $subject,
+		protected $mNoDuplicates = true,
+	) {
 		$this->clear();
 		$this->mSubject = $subject;
-		$this->mNoDuplicates = $noDuplicates;
-		$this->subSemanticData = new SubSemanticData( $subject, $noDuplicates );
+		$this->subSemanticData = new SubSemanticData( $subject, $this->mNoDuplicates );
 	}
 
 	/**

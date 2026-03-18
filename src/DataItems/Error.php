@@ -16,22 +16,12 @@ use MediaWiki\Json\JsonUnserializer;
  */
 class Error extends DataItem {
 
-	/**
-	 * List of error messages. Should always be safe for HTML.
-	 * @var array of strings
-	 */
-	protected $m_errors;
-
-	/**
-	 * @var string
-	 */
-	private $userValue;
-
 	public int $id;
 
-	public function __construct( $errors, $userValue = '' ) {
-		$this->m_errors = $errors;
-		$this->userValue = $userValue;
+	public function __construct(
+		protected $m_errors,
+		private $userValue = '',
+	) {
 	}
 
 	public function getDIType() {

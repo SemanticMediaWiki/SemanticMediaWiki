@@ -19,21 +19,6 @@ use SMW\Tests\Utils\PageDeleter;
 class JsonTestCaseContentHandler {
 
 	/**
-	 * @var PageCreator
-	 */
-	private $pageCreator;
-
-	/**
-	 * @var PageDeleter
-	 */
-	private $pageDeleter;
-
-	/**
-	 * @var LocalFileUpload
-	 */
-	private $LocalFileUpload;
-
-	/**
 	 * @var array
 	 */
 	private $pages = [];
@@ -48,19 +33,14 @@ class JsonTestCaseContentHandler {
 	 */
 	private $testCaseLocation = '';
 
-	private LocalFileUpload $localFileUpload;
-
 	/**
 	 * @since 2.5
-	 *
-	 * @param PageCreator $pageCreator
-	 * @param PageDeleter $pageDeleter
-	 * @param LocalFileUpload $localFileUpload
 	 */
-	public function __construct( PageCreator $pageCreator, PageDeleter $pageDeleter, LocalFileUpload $localFileUpload ) {
-		$this->pageCreator = $pageCreator;
-		$this->pageDeleter = $pageDeleter;
-		$this->localFileUpload = $localFileUpload;
+	public function __construct(
+		private readonly PageCreator $pageCreator,
+		private readonly PageDeleter $pageDeleter,
+		private readonly LocalFileUpload $localFileUpload,
+	) {
 	}
 
 	/**

@@ -12,12 +12,8 @@ use SMW\DIWikiPage;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Store;
 use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
-use SMW\Tests\Utils\Validators\IncomingSemanticDataValidator;
-use SMW\Tests\Utils\Validators\SemanticDataValidator;
-use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @group semantic-mediawiki
@@ -30,26 +26,6 @@ use SMW\Tests\Utils\Validators\StringValidator;
  * @author mwjames
  */
 class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
-
-	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SemanticDataValidator
-	 */
-	private $semanticDataValidator;
-
-	/**
-	 * @var IncomingSemanticDataValidator
-	 */
-	private $incomingSemanticDataValidator;
-
-	/**
-	 * @var StringValidator
-	 */
-	private $stringValidator;
 
 	/**
 	 * @var PageReader
@@ -71,17 +47,12 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	 */
 	private $debug = false;
 
-	/**
-	 * @param Store
-	 * @param SemanticDataValidator
-	 * @param IncomingSemanticDataValidator
-	 * @param StringValidator
-	 */
-	public function __construct( $store, $semanticDataValidator, $incomingSemanticDataValidator, $stringValidator ) {
-		$this->store = $store;
-		$this->semanticDataValidator = $semanticDataValidator;
-		$this->incomingSemanticDataValidator = $incomingSemanticDataValidator;
-		$this->stringValidator = $stringValidator;
+	public function __construct(
+		private $store,
+		private $semanticDataValidator,
+		private $incomingSemanticDataValidator,
+		private $stringValidator,
+	) {
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
 		$this->superUser = UtilityFactory::getInstance()->newMockSuperUser();
 		$this->serializerFactory = ApplicationFactory::getInstance()->newSerializerFactory();

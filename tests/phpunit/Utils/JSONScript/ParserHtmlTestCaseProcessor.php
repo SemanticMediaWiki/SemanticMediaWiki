@@ -23,21 +23,12 @@ use SMW\Tests\Utils\Validators\HtmlValidator;
 class ParserHtmlTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
-	 * @var HtmlValidator
-	 */
-	private $htmlValidator;
-
-	/**
 	 * @var PageReader
 	 */
 	private $pageReader;
 
-	/**
-	 * @param HtmlValidator $htmlValidator
-	 */
-	public function __construct( HtmlValidator $htmlValidator ) {
+	public function __construct( private readonly HtmlValidator $htmlValidator ) {
 		parent::__construct();
-		$this->htmlValidator = $htmlValidator;
 		$this->pageReader = UtilityFactory::getInstance()->newPageReader();
 	}
 

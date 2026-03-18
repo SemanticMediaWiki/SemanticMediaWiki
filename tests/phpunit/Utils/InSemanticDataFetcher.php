@@ -19,17 +19,9 @@ use SMW\Store;
 class InSemanticDataFetcher {
 
 	/**
-	 * @var Store
-	 */
-	private $store = null;
-
-	/**
 	 * @since 2.0
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 	}
 
 	/**

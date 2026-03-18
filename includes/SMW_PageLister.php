@@ -29,27 +29,16 @@ use SMW\StoreFactory;
  */
 class SMWPageLister {
 
-	protected $mDiWikiPages;
-	protected $mDiProperty;
-	protected $mLimit;
-	protected $mFrom;
-	protected $mUntil;
-
 	/**
 	 * Constructor
-	 *
-	 * @param $diWikiPages array of DIWikiPage
-	 * @param $diProperty mixed \SMW\DIProperty that the wikipages are values of, or null
-	 * @param $limit integer maximal amount of items to display
-	 * @param $from string if the results were selected starting from this string
-	 * @param $until string if the results were selected reaching until this string
 	 */
-	public function __construct( $diWikiPages, $diProperty, $limit, $from = '', $until = '' ) {
-		$this->mDiWikiPages = $diWikiPages;
-		$this->mDiProperty = $diProperty;
-		$this->mLimit = $limit;
-		$this->mFrom = $from;
-		$this->mUntil = $until;
+	public function __construct(
+		protected $mDiWikiPages,
+		protected $mDiProperty,
+		protected $mLimit,
+		protected $mFrom = '',
+		protected $mUntil = '',
+	) {
 	}
 
 	/**
