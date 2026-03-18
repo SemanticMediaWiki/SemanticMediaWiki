@@ -1,28 +1,29 @@
 <?php
 
+namespace SMW\Export;
+
+use Exception;
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\WikiPageValue;
 use SMW\Exception\DataItemException;
 use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Escaper;
 use SMW\Exporter\ExpDataFactory;
 use SMW\Exporter\Serializer\Serializer;
+use SMW\MediaWiki\DeepRedirectTargetResolver;
+use SMW\NamespaceExaminer;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\PrintRequest;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-
-/**
- * File holding the SMWExportController class that provides basic functions for
- * exporting pages to RDF and OWL.
- *
- * @ingroup SMW
- *
- * @author Markus Krötzsch
- */
+use SMW\StoreFactory;
+use Wikimedia\Rdbms\IDatabase;
+use Wikimedia\Rdbms\IReadableDatabase;
 
 /**
  * Class for controlling the export of SMW page data, supporting high-level
@@ -30,8 +31,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  * export independent of the serialisation syntax that is used.
  *
  * @ingroup SMW
+ * @author Markus Krötzsch
  */
-class SMWExportController {
+class ExportController {
 
 	/**
 	 * @var Serializer
@@ -129,10 +131,10 @@ class SMWExportController {
 	 * depth of -1 encodes "infinite" depth, i.e. a complete recursive
 	 * serialisation without limit.
 	 *
-	 * @param DIWikiPage $diWikiPage specifying the page to be exported
+	 * @param WikiPage $diWikiPage specifying the page to be exported
 	 * @param int $recursiondepth specifying the depth of recursion
 	 */
-	protected function serializePage( DIWikiPage $diWikiPage, $recursiondepth = 1 ) {
+	protected function serializePage( WikiPage $diWikiPage, $recursiondepth = 1 ) {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
 			return; // do not export twice
 		}
@@ -146,7 +148,7 @@ class SMWExportController {
 			return null;
 		}
 
-		$expData = SMWExporter::getInstance()->makeExportData( $semData );
+		$expData = Exporter::getInstance()->makeExportData( $semData );
 		$this->serializer->serializeExpData( $expData );
 
 		foreach ( $semData->getSubSemanticData() as $subSemanticData ) {
@@ -158,7 +160,7 @@ class SMWExportController {
 				$recursiondepth
 			);
 
-			$expData = SMWExporter::getInstance()->makeExportData(
+			$expData = Exporter::getInstance()->makeExportData(
 				$subSemanticData
 			);
 
@@ -182,7 +184,7 @@ class SMWExportController {
 
 		foreach ( $expDataList as $data ) {
 
-			if ( !$data instanceof SMWExpData ) {
+			if ( !$data instanceof ExpData ) {
 				continue;
 			}
 
@@ -194,13 +196,13 @@ class SMWExportController {
 						   ( $recursiondepth == 0 ? 0 : -1 );
 
 			foreach ( $expData->getProperties() as $property ) {
-				if ( $property->getDataItem() instanceof SMWWikiPageValue ) {
+				if ( $property->getDataItem() instanceof WikiPageValue ) {
 					$this->queue->add( $property->getDataItem(), 0 ); // no real recursion along properties
 				}
 				$wikipagevalues = false;
 				foreach ( $expData->getValues( $property ) as $valueExpElement ) {
-					$valueResource = $valueExpElement instanceof SMWExpData ? $valueExpElement->getSubject() : $valueExpElement;
-					if ( !$wikipagevalues && ( $valueResource->getDataItem() instanceof SMWWikiPageValue ) ) {
+					$valueResource = $valueExpElement instanceof ExpData ? $valueExpElement->getSubject() : $valueExpElement;
+					if ( !$wikipagevalues && ( $valueResource->getDataItem() instanceof WikiPageValue ) ) {
 						$wikipagevalues = true;
 					} elseif ( !$wikipagevalues ) {
 						break;
@@ -218,7 +220,7 @@ class SMWExportController {
 			// many different objects in many ways (we cannot consider them "Done"
 			// if they were serialised at recdepth 0 only).
 			if ( $this->add_backlinks ) {
-				$inprops = \SMW\StoreFactory::getStore()->getInProperties( $diWikiPage );
+				$inprops = StoreFactory::getStore()->getInProperties( $diWikiPage );
 
 				foreach ( $inprops as $inprop ) {
 					$propWikiPage = $inprop->getCanonicalDiWikiPage();
@@ -227,7 +229,7 @@ class SMWExportController {
 						$this->queue->add( $propWikiPage, 0 ); // no real recursion along properties
 					}
 
-					$inSubs = \SMW\StoreFactory::getStore()->getPropertySubjects( $inprop, $diWikiPage );
+					$inSubs = StoreFactory::getStore()->getPropertySubjects( $inprop, $diWikiPage );
 
 					foreach ( $inSubs as $inSub ) {
 						if ( !$this->queue->isDone( $inSub, $subrecdepth ) ) {
@@ -238,7 +240,7 @@ class SMWExportController {
 							}
 
 							$semdata->addPropertyObjectValue( $inprop, $diWikiPage );
-							$expData = SMWExporter::getInstance()->makeExportData( $semdata );
+							$expData = Exporter::getInstance()->makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData );
 						}
 					}
@@ -247,8 +249,8 @@ class SMWExportController {
 				if ( NS_CATEGORY === $diWikiPage->getNamespace() ) { // also print elements of categories
 					$options = new RequestOptions();
 					$options->limit = 100; // Categories can be large, always use limit
-					$instances = \SMW\StoreFactory::getStore()->getPropertySubjects( new SMW\DIProperty( '_INST' ), $diWikiPage, $options );
-					$pinst = new SMW\DIProperty( '_INST' );
+					$instances = StoreFactory::getStore()->getPropertySubjects( new Property( '_INST' ), $diWikiPage, $options );
+					$pinst = new Property( '_INST' );
 
 					foreach ( $instances as $instance ) {
 						if ( $this->queue->isNotDone( $instance ) ) {
@@ -259,7 +261,7 @@ class SMWExportController {
 							}
 
 							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
-							$expData = SMWExporter::getInstance()->makeExportData( $semdata );
+							$expData = Exporter::getInstance()->makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData );
 						}
 					}
@@ -269,14 +271,14 @@ class SMWExportController {
 					$query = new SMWQuery( $desc );
 					$query->setLimit( 100 );
 
-					$res = \SMW\StoreFactory::getStore()->getQueryResult( $query );
+					$res = StoreFactory::getStore()->getQueryResult( $query );
 					$resarray = $res->getNext();
-					$pinst = new SMW\DIProperty( '_INST' );
+					$pinst = new Property( '_INST' );
 
 					while ( $resarray !== false ) {
 						$instance = end( $resarray )->getNextDataItem();
 
-						if ( !$instance instanceof \SMWDataItem ) {
+						if ( !$instance instanceof DataItem ) {
 							$resarray = $res->getNext();
 							continue;
 						}
@@ -284,13 +286,13 @@ class SMWExportController {
 						if ( $this->queue->isNotDone( $instance ) ) {
 							$semdata = $this->getSemanticData( $instance, true );
 
-							if ( !$semdata instanceof \SMW\SemanticData ) {
+							if ( !$semdata instanceof SemanticData ) {
 								$resarray = $res->getNext();
 								continue;
 							}
 
 							$semdata->addPropertyObjectValue( $pinst, $diWikiPage );
-							$expData = SMWExporter::getInstance()->makeExportData( $semdata );
+							$expData = Exporter::getInstance()->makeExportData( $semdata );
 							$this->serializer->serializeExpData( $expData );
 						}
 
@@ -309,7 +311,7 @@ class SMWExportController {
 	 * and we do not want to modify the store's result which may be used for
 	 * caching purposes elsewhere.
 	 */
-	protected function getSemanticData( DIWikiPage $diWikiPage, $core_props_only ) {
+	protected function getSemanticData( WikiPage $diWikiPage, $core_props_only ) {
 		// Issue 619
 		// Resolve the redirect target and return a container with information
 		// about the redirect
@@ -317,7 +319,7 @@ class SMWExportController {
 
 			try {
 				$redirectTarget = $this->getDeepRedirectTargetResolver()->findRedirectTargetFor( $diWikiPage->getTitle() );
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$redirectTarget = null;
 			}
 
@@ -330,18 +332,19 @@ class SMWExportController {
 			$semData = new SemanticData( $diWikiPage );
 
 			$semData->addPropertyObjectValue(
-				new DIProperty( '_REDI' ),
-				DIWikiPage::newFromTitle( $redirectTarget )
+				new Property( '_REDI' ),
+				WikiPage::newFromTitle( $redirectTarget )
 			);
 
 			return $semData;
 		}
 
-		$semdata = \SMW\StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? [ '__spu', '__typ', '__imp' ] : false ); // advise store to retrieve only core things
+		// advise store to retrieve only core things
+		$semdata = StoreFactory::getStore()->getSemanticData( $diWikiPage, $core_props_only ? [ '__spu', '__typ', '__imp' ] : false );
 		if ( $core_props_only ) { // be sure to filter all non-relevant things that may still be present in the retrieved
 			$result = new SemanticData( $diWikiPage );
 			foreach ( [ '_URI', '_TYPE', '_IMPO' ] as $propid ) {
-				$prop = new SMW\DIProperty( $propid );
+				$prop = new Property( $propid );
 				$values = $semdata->getPropertyValues( $prop );
 				foreach ( $values as $dv ) {
 					$result->addPropertyObjectValue( $prop, $dv );
@@ -412,14 +415,14 @@ class SMWExportController {
 				}
 			}
 
-			$diPage = DIWikiPage::newFromTitle( $title );
+			$diPage = WikiPage::newFromTitle( $title );
 			$this->queue->add( $diPage, ( $recursion == 1 ? -1 : 1 ) );
 		}
 
 		$this->serializer->startSerialization();
 
 		if ( count( $pages ) == 1 ) { // ensure that ontologies that are retrieved as linked data are not confused with their subject!
-			$ontologyuri = SMWExporter::getInstance()->expandURI( '&export;' ) . '/' . Escaper::encodeUri( end( $pages ) );
+			$ontologyuri = Exporter::getInstance()->expandURI( '&export;' ) . '/' . Escaper::encodeUri( end( $pages ) );
 		} else { // use empty URI, i.e. "location" as URI otherwise
 			$ontologyuri = '';
 		}
@@ -479,7 +482,7 @@ class SMWExportController {
 	 *
 	 * @see https://phabricator.wikimedia.org/T273239
 	 *
-	 * @return \Wikimedia\Rdbms\IDatabase|\Wikimedia\Rdbms\IReadableDatabase
+	 * @return IDatabase|IReadableDatabase
 	 */
 	public static function getDBHandle() {
 		return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
@@ -514,7 +517,7 @@ class SMWExportController {
 			}
 			$a_count += 1; // DEBUG
 
-			$diPage = DIWikiPage::newFromTitle( $title );
+			$diPage = WikiPage::newFromTitle( $title );
 			$this->queue->add( $diPage, 1 );
 
 			while ( $this->queue->count() > 0 ) {
@@ -588,7 +591,7 @@ class SMWExportController {
 		foreach ( $res as $row ) {
 			$foundpages = true;
 			try {
-				$diPage = new DIWikiPage( $row->page_title, $row->page_namespace, '' );
+				$diPage = new WikiPage( $row->page_title, $row->page_namespace, '' );
 				$this->serializePage( $diPage, 0 );
 				$this->flush();
 				$linkCache->clear();
@@ -598,17 +601,17 @@ class SMWExportController {
 		}
 
 		if ( $foundpages ) { // add link to next result page
-			$exporter = SMWExporter::getInstance();
+			$exporter = Exporter::getInstance();
 			if ( strpos( $exporter->expandURI( '&wikiurl;' ), '?' ) === false ) { // check whether we have title as a first parameter or in URL
 				$nexturl = $exporter->expandURI( '&export;?offset=' ) . ( $offset + $limit );
 			} else {
 				$nexturl = $exporter->expandURI( '&export;&amp;offset=' ) . ( $offset + $limit );
 			}
 
-			$expData = new SMWExpData( new ExpResource( $nexturl ) );
-			$ed = new SMWExpData( $exporter->newExpNsResourceById( 'owl', 'Thing' ) );
+			$expData = new ExpData( new ExpResource( $nexturl ) );
+			$ed = new ExpData( $exporter->newExpNsResourceById( 'owl', 'Thing' ) );
 			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdf', 'type' ), $ed );
-			$ed = new SMWExpData( new ExpResource( $nexturl ) );
+			$ed = new ExpData( new ExpResource( $nexturl ) );
 			$expData->addPropertyObjectValue( $exporter->newExpNsResourceById( 'rdfs', 'isDefinedBy' ), $ed );
 			$this->serializer->serializeExpData( $expData );
 		}
@@ -675,3 +678,8 @@ class SMWExportController {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( ExportController::class, 'SMWExportController' );
