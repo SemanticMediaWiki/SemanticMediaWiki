@@ -2,8 +2,6 @@
 
 namespace SMW\DataValues;
 
-use SMWURIValue as UriValue;
-
 /**
  * https://www.ietf.org/rfc/rfc3986.txt describes:
  *
@@ -17,7 +15,7 @@ use SMWURIValue as UriValue;
  *
  * @author mwjames
  */
-class ExternalFormatterUriValue extends UriValue {
+class ExternalFormatterUriValue extends URIValue {
 
 	/**
 	 * @param string $typeid

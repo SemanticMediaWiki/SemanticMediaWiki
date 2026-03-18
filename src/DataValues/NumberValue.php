@@ -1,13 +1,13 @@
 <?php
 
+namespace SMW\DataValues;
+
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
 use SMW\DataValues\Number\IntlNumberFormatter;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-
-/**
- * @ingroup SMWDataValues
- */
 
 /**
  * This datavalue implements numerical datavalues, and supports optional
@@ -34,12 +34,12 @@ use SMW\Localizer\Message;
  * the value itself, such as getUnit() or getDBKeys().
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  *
  * @todo Wiki-HTML-conversion for unit strings must be revisited, as the current
  * solution might be unsafe.
  */
-class SMWNumberValue extends SMWDataValue {
+class NumberValue extends DataValue {
 
 	/**
 	 * DV identifier
@@ -204,12 +204,12 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_NUMBER ) {
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
 			return false;
 		}
 
@@ -454,7 +454,7 @@ class SMWNumberValue extends SMWDataValue {
 	 * @return bool specifying if the unit string is allowed
 	 */
 	protected function convertToMainUnit( $number, $unit ) {
-		$this->m_dataitem = new SMWDINumber( $number );
+		$this->m_dataitem = new Number( $number );
 		$this->m_unitin = '';
 		return ( $unit === '' );
 	}
@@ -587,3 +587,8 @@ class SMWNumberValue extends SMWDataValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( NumberValue::class, 'SMWNumberValue' );

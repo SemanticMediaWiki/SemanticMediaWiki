@@ -2,11 +2,9 @@
 
 namespace SMW\DataValues;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem;
-use SMWDataValue as DataValue;
-use SMWPropertyListValue as PropertyListValue;
 
 /**
  * @private
@@ -30,16 +28,16 @@ abstract class AbstractMultiValue extends DataValue {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty[] $properties
+	 * @param Property[] $properties
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function setFieldProperties( array $properties );
 
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function getProperties();
 
@@ -49,7 +47,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	abstract public function getPropertyDataItems();
 
@@ -61,7 +59,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @return SMWDataItem[]|null
+	 * @return DataItem[]|null
 	 */
 	public function getDataItems() {
 		if ( !$this->isValid() ) {
@@ -115,7 +113,7 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @param string|int $index
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getPropertyDataItemByIndex( $index ) {
 		$properties = $this->getPropertyDataItems();
@@ -140,11 +138,11 @@ abstract class AbstractMultiValue extends DataValue {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 *
-	 * @return DIProperty[]|[]
+	 * @return Property[]|[]
 	 */
-	protected function getFieldProperties( ?DIProperty $property = null ) {
+	protected function getFieldProperties( ?Property $property = null ) {
 		if ( $property === null || $property->getDiWikiPage() === null ) {
 			return [];
 		}

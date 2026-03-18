@@ -5,12 +5,19 @@
  * of various types.
  *
  * @defgroup SMWDataValues SMWDataValues
+ * @defgroup DataValues DataValues
  * @ingroup SMW
  */
 
-use SMW\DataValues\InfoLinksProvider;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+namespace SMW\DataValues;
+
+use InvalidArgumentException;
+use MediaWiki\Linker\Linker;
+use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Options;
@@ -44,11 +51,11 @@ use SMW\Utils\CharArmor;
  * In addition, there are a number of get-functions that provide useful output versions
  * for displaying and serializing the value.
  *
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  *
  * @author Markus Krötzsch
  */
-abstract class SMWDataValue {
+abstract class DataValue {
 
 	/**
 	 * Contains the user language a user operates in.
@@ -96,7 +103,7 @@ abstract class SMWDataValue {
 	 *
 	 * This variable must always be set to some data item, even if there
 	 * have been errors in initialising the data.
-	 * @var SMWDataItem
+	 * @var DataItem
 	 */
 	protected $m_dataitem;
 
@@ -105,7 +112,7 @@ abstract class SMWDataValue {
 	 * given. Property pages are used to make settings that affect parsing
 	 * and display, hence it is sometimes needed to know them.
 	 *
-	 * @var DIProperty
+	 * @var Property
 	 */
 	protected $m_property = null;
 
@@ -115,7 +122,7 @@ abstract class SMWDataValue {
 	 * parse user values such as "#subsection" which only make sense when
 	 * used on a certain page.
 	 *
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	protected $m_contextPage = null;
 
@@ -252,10 +259,10 @@ abstract class SMWDataValue {
 	 * in spite of it being of the right basic type. False is only returned
 	 * if the data item is fundamentally incompatible with the data value.
 	 *
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	public function setDataItem( SMWDataItem $dataItem ) {
+	public function setDataItem( DataItem $dataItem ) {
 		$this->m_dataitem = null;
 		$this->mErrors = [];
 		$this->mHasErrors = $this->m_caption = false;
@@ -278,9 +285,9 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.6
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 */
-	public function setProperty( DIProperty $property ) {
+	public function setProperty( Property $property ) {
 		$this->m_property = $property;
 	}
 
@@ -289,7 +296,7 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.8
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getProperty() {
 		return $this->m_property;
@@ -302,9 +309,9 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.7
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ) {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
@@ -316,7 +323,7 @@ abstract class SMWDataValue {
 	/**
 	 * @since 2.4
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getContextPage() {
 		return $this->m_contextPage;
@@ -552,14 +559,14 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataItem|SMWDIError
+	 * @return DataItem|Error
 	 */
 	public function getDataItem() {
 		if ( $this->isValid() ) {
 			return $this->m_dataitem;
 		}
 
-		return new SMWDIError( $this->mErrors, $this->userValue );
+		return new Error( $this->mErrors, $this->userValue );
 	}
 
 	/**
@@ -937,11 +944,11 @@ abstract class SMWDataValue {
 	 *
 	 * @since 1.6
 	 *
-	 * @param SMWDataItem $dataItem
+	 * @param DataItem $dataItem
 	 *
 	 * @return bool
 	 */
-	abstract protected function loadDataItem( SMWDataItem $dataItem );
+	abstract protected function loadDataItem( DataItem $dataItem );
 
 	/**
 	 * Overwritten by callers to supply an array of parameters that can be used for
@@ -975,3 +982,8 @@ abstract class SMWDataValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( DataValue::class, 'SMWDataValue' );

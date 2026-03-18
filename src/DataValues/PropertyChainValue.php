@@ -3,9 +3,8 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Html\Html;
+use SMW\DataItems\DataItem;
 use SMW\DataValueFactory;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * @private
@@ -138,14 +137,14 @@ class PropertyChainValue extends StringValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 *
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
 	 *
 	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 
@@ -174,7 +173,7 @@ class PropertyChainValue extends StringValue {
 
 		$this->initPropertyChain( $value );
 
-		$this->m_dataitem = new DIBlob( $value );
+		$this->m_dataitem = new Blob( $value );
 	}
 
 	private function initPropertyChain( $value ) {

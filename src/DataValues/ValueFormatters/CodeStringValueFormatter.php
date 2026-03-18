@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMWDataValue as DataValue;
 use SMWOutputs as Outputs;
 
 /**

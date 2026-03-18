@@ -2,11 +2,10 @@
 
 namespace SMW\DataValues\Number;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataValues\NumberValue;
 use SMW\EntityCache;
 use SMW\Property\SpecificationLookup;
-use SMWDIBlob as DIBlob;
-use SMWNumberValue as NumberValue;
 
 /**
  * Returns conversion data from a cached instance to enable a responsive query
@@ -142,7 +141,7 @@ class UnitConverter {
 
 		$factors = $this->propertySpecificationLookup->getSpecification(
 			$property->getDiWikiPage(),
-			new DIProperty( '_CONV' )
+			new Property( '_CONV' )
 		);
 
 		$numberValue->setContextPage( $property->getDiWikiPage() );
@@ -159,7 +158,7 @@ class UnitConverter {
 		foreach ( $factors as $di ) {
 
 			// ignore corrupted data and bogus inputs
-			if ( !( $di instanceof DIBlob ) ||
+			if ( !( $di instanceof Blob ) ||
 				 ( $numberValue->parseNumberValue( $di->getString(), $number, $unit, $asPrefix ) != 0 ) ||
 				 ( $number == 0 ) ) {
 				continue;

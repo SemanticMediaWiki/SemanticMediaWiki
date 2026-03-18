@@ -2,10 +2,9 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
 
 /**
  * Implements a string/text based datavalue suitable for defining text properties.
@@ -140,7 +139,7 @@ class StringValue extends DataValue {
 			$this->addErrorMsg( 'smw_emptystring' );
 		}
 
-		$this->m_dataitem = new DIBlob( $value );
+		$this->m_dataitem = new Blob( $value );
 	}
 
 	/**
@@ -149,7 +148,7 @@ class StringValue extends DataValue {
 	 * {@inheritDoc}
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 

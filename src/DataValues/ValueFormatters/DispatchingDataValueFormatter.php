@@ -3,7 +3,7 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @private
