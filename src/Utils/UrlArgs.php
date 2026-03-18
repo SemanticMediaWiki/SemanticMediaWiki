@@ -10,6 +10,8 @@ namespace SMW\Utils;
  */
 class UrlArgs {
 
+	private array $args = [];
+
 	/**
 	 * @var string
 	 */
@@ -18,7 +20,8 @@ class UrlArgs {
 	/**
 	 * @since 3.2
 	 */
-	public function __construct( private array $args = [] ) {
+	public function __construct( array $args = [] ) {
+		$this->args = $args;
 	}
 
 	/**
