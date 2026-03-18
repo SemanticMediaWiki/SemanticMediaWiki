@@ -38,7 +38,7 @@ abstract class DataItem implements JsonUnserializable {
 
 	/// Data item ID that can be used to indicate that no data item class is appropriate
 	const TYPE_NOTYPE = 0;
-	/// Data item ID for INumber
+	/// Data item ID for Number
 	const TYPE_NUMBER = 1;
 	/// Data item ID for Blob
 	const TYPE_BLOB = 2;
