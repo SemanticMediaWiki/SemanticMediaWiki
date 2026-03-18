@@ -233,7 +233,7 @@ class ExpData implements Element {
 	 * parseType="Collection" in RDF/XML, i.e. only lists of non-literal
 	 * resources.
 	 *
-	 * @return mixed array of ExpElement (but not ExpLiteral) or false
+	 * @return ExpElement[]|false array of ExpElement (but not ExpLiteral) or false
 	 */
 	public function getCollection() {
 		$exporter = Exporter::getInstance();
