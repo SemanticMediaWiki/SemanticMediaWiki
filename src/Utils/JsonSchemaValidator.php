@@ -15,11 +15,6 @@ use JsonSerializable;
 class JsonSchemaValidator {
 
 	/**
-	 * @var SchemaValidator
-	 */
-	private $schemaValidator;
-
-	/**
 	 * @var bool
 	 */
 	private $isValid = true;
@@ -31,11 +26,8 @@ class JsonSchemaValidator {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param SchemaValidator|null $schemaValidator
 	 */
-	public function __construct( ?SchemaValidator $schemaValidator = null ) {
-		$this->schemaValidator = $schemaValidator;
+	public function __construct( private readonly ?SchemaValidator $schemaValidator = null ) {
 	}
 
 	/**

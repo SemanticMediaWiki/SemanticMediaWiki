@@ -6,8 +6,6 @@ use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
-use ParserHooks\HookDefinition;
-use ParserHooks\HookHandler;
 use SMW\ParameterListDocBuilder;
 use SMWQueryProcessor as QueryProcessor;
 
@@ -20,7 +18,7 @@ use SMWQueryProcessor as QueryProcessor;
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class DocumentationParserFunction implements HookHandler {
+class DocumentationParserFunction {
 
 	/**
 	 * @var string
@@ -54,32 +52,29 @@ class DocumentationParserFunction implements HookHandler {
 		return $this->buildParameterListDocumentation( $parameters, $formatParameters );
 	}
 
-	/**
-	 * @return HookDefinition
-	 */
-	public static function getHookDefinition() {
-		return new HookDefinition(
-			'smwdoc',
+	public static function getParamDefinitions(): array {
+		return [
 			[
-				[
-					'name' => 'format',
-					'message' => 'smw-smwdoc-par-format',
-					'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
-				],
-				[
-					'name' => 'language',
-					'message' => 'smw-smwdoc-par-language',
-					'default' => $GLOBALS['wgLanguageCode'],
-				],
-				[
-					'name' => 'parameters',
-					'message' => 'smw-smwdoc-par-parameters',
-					'values' => [ 'all', 'specific', 'base' ],
-					'default' => 'specific',
-				],
+				'name' => 'format',
+				'message' => 'smw-smwdoc-par-format',
+				'values' => array_keys( $GLOBALS['smwgResultFormats'] ),
 			],
-			[ 'format', 'language', 'parameters' ]
-		);
+			[
+				'name' => 'language',
+				'message' => 'smw-smwdoc-par-language',
+				'default' => $GLOBALS['wgLanguageCode'],
+			],
+			[
+				'name' => 'parameters',
+				'message' => 'smw-smwdoc-par-parameters',
+				'values' => [ 'all', 'specific', 'base' ],
+				'default' => 'specific',
+			],
+		];
+	}
+
+	public static function getDefaultParams(): array {
+		return [ 'format', 'language', 'parameters' ];
 	}
 
 	/**

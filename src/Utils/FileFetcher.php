@@ -2,6 +2,7 @@
 
 namespace SMW\Utils;
 
+use Iterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
@@ -17,11 +18,6 @@ use RuntimeException;
 class FileFetcher {
 
 	/**
-	 * @var string
-	 */
-	private $dir = '';
-
-	/**
 	 * @var int
 	 */
 	private $maxDepth = -1;
@@ -33,11 +29,8 @@ class FileFetcher {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $dir
 	 */
-	public function __construct( string $dir = '' ) {
-		$this->dir = $dir;
+	public function __construct( private string $dir = '' ) {
 	}
 
 	/**
@@ -87,7 +80,7 @@ class FileFetcher {
 	 *
 	 * @param string $extension
 	 *
-	 * @return Iterator
+	 * @return Iterator|array
 	 */
 	public function findByExtension( $extension ) {
 		if ( !is_dir( $this->dir ) ) {

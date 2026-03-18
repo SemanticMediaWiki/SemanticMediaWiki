@@ -154,19 +154,29 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
 
-		$this->httpRequest->setOption( CURLOPT_URL, $this->repositoryClient->getUpdateEndpoint() );
-		$this->httpRequest->setOption( CURLOPT_POST, true );
-
 		$parameterString = "query=" . urlencode( $sparql );
 
-		$this->httpRequest->setOption( CURLOPT_POSTFIELDS, $parameterString );
-		$this->httpRequest->execute();
+		$request = $this->httpRequestFactory->create(
+			$this->repositoryClient->getUpdateEndpoint(),
+			array_merge( $this->getBaseOptions(), [
+				'method' => 'POST',
+				'postData' => $parameterString,
+			] ),
+			__METHOD__
+		);
 
-		if ( $this->httpRequest->getLastErrorCode() == 0 ) {
+		$status = $request->execute();
+		$this->lastErrorCode = $request->getStatus();
+
+		if ( $status->isOK() ) {
 			return true;
 		}
 
-		$this->mapHttpRequestError( $this->repositoryClient->getUpdateEndpoint(), $sparql );
+		$this->mapHttpRequestError(
+			$request->getStatus(),
+			$this->repositoryClient->getUpdateEndpoint(),
+			$sparql
+		);
 
 		return false;
 	}

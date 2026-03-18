@@ -21,22 +21,14 @@ use SMW\ParserData;
 class DeclareParserFunction {
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
 	 * @var DIWikiPage
 	 */
 	private $subject;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param ParserData $parserData
 	 */
-	public function __construct( ParserData $parserData ) {
-		$this->parserData = $parserData;
+	public function __construct( private readonly ParserData $parserData ) {
 	}
 
 	/**

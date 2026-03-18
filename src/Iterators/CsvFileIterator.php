@@ -27,24 +27,9 @@ class CsvFileIterator implements Iterator, Countable {
 	private $handle;
 
 	/**
-	 * @var bool
-	 */
-	private $parseHeader;
-
-	/**
 	 * @var
 	 */
 	private $header = [];
-
-	/**
-	 * @var string
-	 */
-	private $delimiter;
-
-	/**
-	 * @var int
-	 */
-	private $length;
 
 	/**
 	 * @var int
@@ -58,22 +43,19 @@ class CsvFileIterator implements Iterator, Countable {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $file
-	 * @param bool $parseHeader
-	 * @param string $delimiter
-	 * @param int $length
 	 */
-	public function __construct( $file, $parseHeader = false, $delimiter = ",", $length = 8000 ) {
+	public function __construct(
+		$file,
+		private $parseHeader = false,
+		private $delimiter = ",
+		",
+		private $length = 8000,
+	) {
 		try {
 			$this->file = new SplFileObject( $file, 'r' );
 		} catch ( RuntimeException $e ) {
 			throw new FileNotFoundException( 'File "' . $file . '" is not accessible.' );
 		}
-
-		$this->parseHeader = $parseHeader;
-		$this->delimiter = $delimiter;
-		$this->length = $length;
 	}
 
 	/**

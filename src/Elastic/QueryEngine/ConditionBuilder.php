@@ -33,29 +33,9 @@ class ConditionBuilder {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var Options
 	 */
 	private $options;
-
-	/**
-	 * @var TermsLookup
-	 */
-	private $termsLookup;
-
-	/**
-	 * @var HierarchyLookup
-	 */
-	private $hierarchyLookup;
-
-	/**
-	 * @var ServicesContainer
-	 */
-	private $servicesContainer;
 
 	/**
 	 * @var FieldMapper
@@ -134,17 +114,13 @@ class ConditionBuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param TermsLookup $termsLookup
-	 * @param HierarchyLookup $hierarchyLookup
-	 * @param ServicesContainer $servicesContainer
 	 */
-	public function __construct( Store $store, TermsLookup $termsLookup, HierarchyLookup $hierarchyLookup, ServicesContainer $servicesContainer ) {
-		$this->store = $store;
-		$this->termsLookup = $termsLookup;
-		$this->hierarchyLookup = $hierarchyLookup;
-		$this->servicesContainer = $servicesContainer;
+	public function __construct(
+		private readonly Store $store,
+		private readonly TermsLookup $termsLookup,
+		private readonly HierarchyLookup $hierarchyLookup,
+		private readonly ServicesContainer $servicesContainer,
+	) {
 	}
 
 	/**

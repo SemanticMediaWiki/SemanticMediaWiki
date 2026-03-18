@@ -21,7 +21,6 @@ use SMW\Tests\TestEnvironment;
  */
 class XmlImportRunner {
 
-	protected $file = null;
 	protected $requestContext = null;
 	protected $exception = false;
 	protected $result = null;
@@ -33,8 +32,7 @@ class XmlImportRunner {
 	 */
 	private $testEnvironment;
 
-	public function __construct( $file = null ) {
-		$this->file = $file;
+	public function __construct( protected $file = null ) {
 		$this->testEnvironment = new TestEnvironment();
 	}
 

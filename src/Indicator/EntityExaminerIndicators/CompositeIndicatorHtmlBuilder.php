@@ -21,22 +21,14 @@ class CompositeIndicatorHtmlBuilder {
 	use MessageLocalizerTrait;
 
 	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
-
-	/**
 	 * @var string
 	 */
 	private $languageCode = '';
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param TemplateEngine $templateEngine
 	 */
-	public function __construct( TemplateEngine $templateEngine ) {
-		$this->templateEngine = $templateEngine;
+	public function __construct( private TemplateEngine $templateEngine ) {
 	}
 
 	/**

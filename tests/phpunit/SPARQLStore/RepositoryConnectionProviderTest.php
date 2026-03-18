@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\SPARQLStore;
 
+use MediaWiki\Http\HttpRequestFactory;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionProvider;
 use SMW\SPARQLStore\RepositoryConnectionProvider;
@@ -48,6 +49,10 @@ class RepositoryConnectionProviderTest extends TestCase {
 		);
 	}
 
+	private function createHttpRequestFactory(): HttpRequestFactory {
+		return $this->createMock( HttpRequestFactory::class );
+	}
+
 	public function testCanConstruct() {
 		$instance = new RepositoryConnectionProvider();
 
@@ -64,7 +69,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 
 	public function testGetDefaultConnection() {
 		$instance = new RepositoryConnectionProvider( 'default' );
-		$instance->setHttpVersionTo( CURL_HTTP_VERSION_NONE );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
@@ -88,6 +93,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 
 	public function testGetFusekiConnection() {
 		$instance = new RepositoryConnectionProvider( 'fuSEKi' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			FusekiRepositoryConnector::class,
@@ -97,6 +103,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 
 	public function testGetVirtuosoConnection() {
 		$instance = new RepositoryConnectionProvider( 'virtuoso' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			VirtuosoRepositoryConnector::class,
@@ -106,6 +113,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 
 	public function testGet4StoreConnection() {
 		$instance = new RepositoryConnectionProvider( '4STORE' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			FourstoreRepositoryConnector::class,
@@ -115,6 +123,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 
 	public function testGetSesameConnection() {
 		$instance = new RepositoryConnectionProvider( 'sesame' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
@@ -124,6 +133,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 
 	public function testGetGenericConnection() {
 		$instance = new RepositoryConnectionProvider( 'generic' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
@@ -138,6 +148,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 		);
 
 		$instance = new RepositoryConnectionProvider( 'foo' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
@@ -152,6 +163,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 		);
 
 		$instance = new RepositoryConnectionProvider();
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
@@ -166,6 +178,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 		);
 
 		$instance = new RepositoryConnectionProvider();
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->assertInstanceOf(
 			GenericRepositoryConnector::class,
@@ -180,6 +193,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 		);
 
 		$instance = new RepositoryConnectionProvider( 'custom' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();
@@ -192,6 +206,7 @@ class RepositoryConnectionProviderTest extends TestCase {
 		);
 
 		$instance = new RepositoryConnectionProvider( 'custom' );
+		$instance->setHttpRequestFactory( $this->createHttpRequestFactory() );
 
 		$this->expectException( 'RuntimeException' );
 		$instance->getConnection();

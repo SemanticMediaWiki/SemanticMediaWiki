@@ -19,7 +19,7 @@ class HttpEndpointConnectionExceptionTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			HttpEndpointConnectionException::class,
-			new HttpEndpointConnectionException( 'Foo', 'Bar', 'Que' )
+			new HttpEndpointConnectionException( 'Foo', 42, 'Que' )
 		);
 	}
 

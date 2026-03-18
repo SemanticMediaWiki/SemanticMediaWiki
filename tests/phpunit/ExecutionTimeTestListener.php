@@ -17,15 +17,7 @@ class ExecutionTimeTestListener implements TestListener {
 	 */
 	protected $suites = 0;
 
-	/**
-	 * Threshold that defines "slow" in terms of seconds
-	 *
-	 * @var int
-	 */
-	protected $slowThreshold = 10;
-
 	protected $slowTests = [];
-	protected $isEnabledToListen = true;
 
 	/**
 	 * Map of test suites to execution time reports.
@@ -33,9 +25,10 @@ class ExecutionTimeTestListener implements TestListener {
 	 */
 	private static $slowTestsReport;
 
-	public function __construct( $isEnabledToListen, $slowThreshold ) {
-		$this->isEnabledToListen = $isEnabledToListen;
-		$this->slowThreshold = $slowThreshold;
+	public function __construct(
+		protected $isEnabledToListen,
+		protected $slowThreshold,
+	) {
 		self::$slowTestsReport = class_exists( WeakMap::class ) ? new WeakMap() : null;
 	}
 

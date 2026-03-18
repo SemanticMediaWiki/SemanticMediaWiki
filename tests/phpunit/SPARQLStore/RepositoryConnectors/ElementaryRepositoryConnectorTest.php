@@ -2,11 +2,13 @@
 
 namespace SMW\Tests\SPARQLStore\RepositoryConnectors;
 
-use Onoi\HttpRequest\HttpRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use MWHttpRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\Tests\Utils\Fixtures\Results\FakeRawResultProvider;
+use StatusValue;
 
 /**
  * @group semantic-mediawiki
@@ -22,6 +24,32 @@ class ElementaryRepositoryConnectorTest extends TestCase {
 		return [];
 	}
 
+	protected function createMockHttpRequestFactory( MWHttpRequest $mockRequest ): HttpRequestFactory {
+		$httpRequestFactory = $this->createMock( HttpRequestFactory::class );
+
+		$httpRequestFactory->method( 'create' )
+			->willReturn( $mockRequest );
+
+		return $httpRequestFactory;
+	}
+
+	protected function createSuccessfulMockRequest( string $content = '' ): MWHttpRequest {
+		$mockRequest = $this->getMockBuilder( MWHttpRequest::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mockRequest->method( 'execute' )
+			->willReturn( StatusValue::newGood() );
+
+		$mockRequest->method( 'getContent' )
+			->willReturn( $content );
+
+		$mockRequest->method( 'getStatus' )
+			->willReturn( 200 );
+
+		return $mockRequest;
+	}
+
 	/**
 	 * @dataProvider httpDatabaseConnectorInstanceNameForAskProvider
 	 *
@@ -30,21 +58,15 @@ class ElementaryRepositoryConnectorTest extends TestCase {
 	public function testAskToQueryEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
 		$rawResultProvider = new FakeRawResultProvider();
 
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
+		$mockRequest = $this->createSuccessfulMockRequest(
+			$rawResultProvider->getEmptySparqlResultXml()
+		);
 
-		$httpRequest->expects( $this->any() )
-			->method( 'setOption' )
-			->willReturn( true );
-
-		$httpRequest->expects( $this->once() )
-			->method( 'execute' )
-			->willReturn( $rawResultProvider->getEmptySparqlResultXml() );
+		$httpRequestFactory = $this->createMockHttpRequestFactory( $mockRequest );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient( 'http://foo/myDefaultGraph', 'http://localhost:9999/query' ),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$repositoryResult = $instance->ask(
@@ -64,17 +86,8 @@ class ElementaryRepositoryConnectorTest extends TestCase {
 	 * @see http://www.w3.org/TR/sparql11-update/#deleteInsert
 	 */
 	public function testDeleteToUpdateEndpointOnMockedHttpRequest( $httpDatabaseConnector, $expectedPostField ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->any() )
-			->method( 'setOption' )
-			->willReturn( true );
-
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastErrorCode' )
-			->willReturn( 0 );
+		$mockRequest = $this->createSuccessfulMockRequest();
+		$httpRequestFactory = $this->createMockHttpRequestFactory( $mockRequest );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient(
@@ -82,7 +95,7 @@ class ElementaryRepositoryConnectorTest extends TestCase {
 				'http://localhost:9999/query',
 				'http://localhost:9999/update'
 			),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$this->assertTrue(
@@ -96,13 +109,8 @@ class ElementaryRepositoryConnectorTest extends TestCase {
 	 * @see http://www.w3.org/TR/sparql11-http-rdf-update/#http-post
 	 */
 	public function testInsertViaHttpPostToDataPointOnMockedHttpRequest( $httpDatabaseConnector ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastErrorCode' )
-			->willReturn( 0 );
+		$mockRequest = $this->createSuccessfulMockRequest();
+		$httpRequestFactory = $this->createMockHttpRequestFactory( $mockRequest );
 
 		$instance = new $httpDatabaseConnector(
 			new RepositoryClient(
@@ -111,7 +119,7 @@ class ElementaryRepositoryConnectorTest extends TestCase {
 				'http://localhost:9999/update',
 				'http://localhost:9999/data'
 			),
-			$httpRequest
+			$httpRequestFactory
 		);
 
 		$this->assertTrue(

@@ -39,16 +39,6 @@ class SMWExportController {
 	protected $serializer;
 
 	/**
-	 * @var Queue
-	 */
-	private $queue;
-
-	/**
-	 * @var ExpDataFactory
-	 */
-	private $expDataFactory;
-
-	/**
 	 * Boolean to indicate whether all objects that are exported in full (with
 	 * all data) should also lead to the inclusion of all "inlinks" that they
 	 * receive from other objects. If yes, these other objects are also
@@ -86,15 +76,13 @@ class SMWExportController {
 
 	/**
 	 * @since 1.5.5
-	 *
-	 * @param Serializer $serializer instance used for syntactic serialization
-	 * @param Queue $queue
-	 * @param ExpDataFactory $expDataFactory
 	 */
-	public function __construct( Serializer $serializer, Queue $queue, ExpDataFactory $expDataFactory ) {
+	public function __construct(
+		Serializer $serializer,
+		private readonly Queue $queue,
+		private readonly ExpDataFactory $expDataFactory,
+	) {
 		$this->serializer = $serializer;
-		$this->queue = $queue;
-		$this->expDataFactory = $expDataFactory;
 	}
 
 	/**

@@ -11,17 +11,9 @@ namespace SMW\Parser;
 class SemanticLinksParser {
 
 	/**
-	 * @var LinksProcessor
-	 */
-	private $linksProcessor;
-
-	/**
 	 * @since 2.5
-	 *
-	 * @param LinksProcessor $linksProcessor
 	 */
-	public function __construct( LinksProcessor $linksProcessor ) {
-		$this->linksProcessor = $linksProcessor;
+	public function __construct( private readonly LinksProcessor $linksProcessor ) {
 	}
 
 	/**

@@ -2,7 +2,8 @@
 
 namespace SMW\SPARQLStore;
 
-use Onoi\HttpRequest\CurlRequest;
+use MediaWiki\Http\HttpRequestFactory;
+use MediaWiki\MediaWikiServices;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider;
 use SMW\SPARQLStore\RepositoryConnectors\FourstoreRepositoryConnector;
@@ -24,10 +25,8 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 
 	/**
 	 * List of supported standard connectors
-	 *
-	 * @var array
 	 */
-	private $repositoryConnectors = [
+	private array $repositoryConnectors = [
 		'default'   => GenericRepositoryConnector::class,
 		'generic'   => GenericRepositoryConnector::class,
 		'sesame'    => GenericRepositoryConnector::class,
@@ -36,35 +35,21 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 		'4store'    => FourstoreRepositoryConnector::class,
 	];
 
-	/**
-	 * @var RepositoryConnection
-	 */
-	private $connection = null;
+	private ?RepositoryConnection $connection = null;
 
-	/**
-	 * @var HttpRequest
-	 */
-	private $httpRequest;
+	private ?HttpRequestFactory $httpRequestFactory = null;
 
-	/**
-	 * @var bool|int
-	 */
-	private $httpVersion = false;
-
-	/**
-	 * @var int
-	 */
-	private $featureSet = 0;
+	private int $featureSet = 0;
 
 	/**
 	 * @since 2.0
 	 */
 	public function __construct(
-		private $connectorId = null,
-		private $defaultGraph = null,
-		private $queryEndpoint = null,
-		private $updateEndpoint = null,
-		private $dataEndpoint = null,
+		private ?string $connectorId = null,
+		private ?string $defaultGraph = null,
+		private ?string $queryEndpoint = null,
+		private ?string $updateEndpoint = null,
+		private ?string $dataEndpoint = null,
 	) {
 		if ( $this->connectorId === null ) {
 			$this->connectorId = $GLOBALS['smwgSparqlRepositoryConnector'];
@@ -89,28 +74,15 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @return HttpRequest $httpRequest
 	 */
-	public function setHttpRequest( HttpRequest $httpRequest ) {
-		$this->httpRequest = $httpRequest;
-	}
-
-	/**
-	 * @since 2.3
-	 *
-	 * @return int $httpVersion
-	 */
-	public function setHttpVersionTo( $httpVersion ) {
-		$this->httpVersion = $httpVersion;
+	public function setHttpRequestFactory( HttpRequestFactory $httpRequestFactory ): void {
+		$this->httpRequestFactory = $httpRequestFactory;
 	}
 
 	/**
 	 * @since 3.2
-	 *
-	 * @return int $featureSet
 	 */
-	public function setFeatureSet( int $featureSet ) {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -139,14 +111,9 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function connectTo( $id ) {
-		if ( $this->httpRequest === null ) {
-			$this->httpRequest = new CurlRequest( curl_init() );
-		}
-
-		// https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
-		if ( $this->httpVersion ) {
-			$this->httpRequest->setOption( CURLOPT_HTTP_VERSION, $this->httpVersion );
+	private function connectTo( string $id ): RepositoryConnection {
+		if ( $this->httpRequestFactory === null ) {
+			$this->httpRequestFactory = MediaWikiServices::getInstance()->getHttpRequestFactory();
 		}
 
 		$repositoryClient = new RepositoryClient(
@@ -171,7 +138,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 		throw new RuntimeException( 'Expected a RepositoryConnection instance' );
 	}
 
-	private function createRepositoryConnector( $id, $repositoryClient ) {
+	private function createRepositoryConnector( string $id, RepositoryClient $repositoryClient ): object {
 		$repositoryConnector = $this->repositoryConnectors['default'];
 
 		if ( isset( $this->repositoryConnectors[$id] ) ) {
@@ -186,10 +153,10 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 			throw new RuntimeException( "{$repositoryConnector} is not available" );
 		}
 
-		return new $repositoryConnector( $repositoryClient, $this->httpRequest );
+		return new $repositoryConnector( $repositoryClient, $this->httpRequestFactory );
 	}
 
-	private function isRepositoryConnection( $connection ) {
+	private function isRepositoryConnection( object $connection ): bool {
 		return $connection instanceof RepositoryConnection;
 	}
 

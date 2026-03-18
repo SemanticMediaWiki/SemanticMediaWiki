@@ -23,11 +23,6 @@ use SMWQuery as Query;
 class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var QueryParser
 	 */
 	private $fileReader;
@@ -41,20 +36,17 @@ class QueryTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	 * @var bool
 	 */
 	private $debug = false;
-
-	private QueryResultValidator $queryResultValidator;
-	private StringValidator $stringValidator;
 	private QueryParser $queryParser;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store, $queryResultValidator, $stringValidator, $numberValidator ) {
-		$this->store = $store;
-		$this->queryResultValidator = $queryResultValidator;
-		$this->stringValidator = $stringValidator;
+	public function __construct(
+		private readonly Store $store,
+		private readonly QueryResultValidator $queryResultValidator,
+		private readonly StringValidator $stringValidator,
+		$numberValidator,
+	) {
 		$this->numberValidator = $numberValidator;
 	}
 

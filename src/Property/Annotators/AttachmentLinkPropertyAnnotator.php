@@ -13,24 +13,18 @@ use SMW\Property\Annotator;
 class AttachmentLinkPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var
-	 */
-	private $attachments;
-
-	/**
 	 * @var array
 	 */
 	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param array|null $attachments
 	 */
-	public function __construct( Annotator $propertyAnnotator, $attachments ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $attachments,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->attachments = $attachments;
 	}
 
 	/**

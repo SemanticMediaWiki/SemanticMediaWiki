@@ -11,17 +11,9 @@ namespace SMW\Utils;
 class Flag {
 
 	/**
-	 * @var int
-	 */
-	private $flag = 0;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param int $flag
 	 */
-	public function __construct( int $flag ) {
-		$this->flag = $flag;
+	public function __construct( private readonly int $flag ) {
 	}
 
 	/**

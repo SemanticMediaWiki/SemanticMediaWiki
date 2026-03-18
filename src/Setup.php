@@ -32,6 +32,8 @@ final class Setup {
 	 * - `SqliteInstaller`
 	 *
 	 * Any change to a version will modify the key computed by `SetupFile::makeKey`.
+	 *
+	 * @var array
 	 */
 	const MINIMUM_DB_VERSION = [
 		'postgres' => '9.5',
@@ -46,6 +48,8 @@ final class Setup {
 	 * @since 3.1
 	 *
 	 * @param array &$vars
+	 *
+	 * @return void
 	 */
 	public static function registerExtensionCheck( &$vars ) {
 		$uncaughtExceptionHandler = new UncaughtExceptionHandler(
@@ -71,6 +75,8 @@ final class Setup {
 	 * @since 3.2
 	 *
 	 * @param array &$vars
+	 *
+	 * @return void
 	 */
 	public static function releaseExtensionCheck( &$vars ) {
 		// Restore the exception handler from before Setup::registerExtensionCheck
@@ -87,6 +93,10 @@ final class Setup {
 	 * are otherwise too late for the hook system to be recognized.
 	 *
 	 * @since 3.0
+	 *
+	 * @param array $vars
+	 *
+	 * @return array
 	 */
 	public static function initExtension( array $vars ): array {
 		Hooks::registerEarly( $vars );
@@ -96,6 +106,8 @@ final class Setup {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @return bool
 	 */
 	public static function isEnabled() {
 		return defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' );
@@ -103,6 +115,10 @@ final class Setup {
 
 	/**
 	 * @since 3.0
+	 *
+	 * @param bool $isCli
+	 *
+	 * @return bool
 	 */
 	public static function isValid( $isCli = false ) {
 		return SetupFile::isGoodSchema( $isCli );
@@ -110,6 +126,11 @@ final class Setup {
 
 	/**
 	 * @since 1.9
+	 *
+	 * @param array $vars
+	 * @param string $rootDir
+	 *
+	 * @return array
 	 */
 	public function init( array $vars, string $rootDir ): array {
 		$setupFile = new SetupFile();
@@ -128,14 +149,20 @@ final class Setup {
 		$this->registerPermissions( $vars );
 
 		$this->registerParamDefinitions( $vars );
-		$this->registerFooterIcon( $vars, $rootDir );
-		$this->registerHooks( $vars );
+		$this->registerFooterIcon( $vars );
+		$this->registerHooks();
 
 		$this->hookDispatcher->onSetupAfterInitializationComplete( $vars );
 
 		return $vars;
 	}
 
+	/**
+	 * @param SetupFile $setupFile
+	 * @param array $vars
+	 *
+	 * @return void
+	 */
 	private function runUpgradeKeyCheck( SetupFile $setupFile, array $vars ): void {
 		$setupCheck = new SetupCheck(
 			[
@@ -162,6 +189,12 @@ final class Setup {
 		}
 	}
 
+	/**
+	 * @param array &$vars
+	 * @param string $rootDir
+	 *
+	 * @return void
+	 */
 	private function addDefaultConfigurations( &$vars, $rootDir ) {
 		// Convenience function for extensions depending on a SMW specific
 		// test infrastructure
@@ -191,6 +224,9 @@ final class Setup {
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	private function initConnectionProviders() {
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -274,6 +310,10 @@ final class Setup {
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
+	 *
+	 * @param array &$vars
+	 *
+	 * @return void
 	 */
 	private function registerJobClasses( &$vars ) {
 		$jobClasses = [
@@ -318,6 +358,10 @@ final class Setup {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgAvailableRights
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
+	 *
+	 * @param array &$vars
+	 *
+	 * @return void
 	 */
 	private function registerPermissions( &$vars ) {
 		$applicationFactory = ApplicationFactory::getInstance();
@@ -341,6 +385,11 @@ final class Setup {
 		}
 	}
 
+	/**
+	 * @param array &$vars
+	 *
+	 * @return void
+	 */
 	private function registerParamDefinitions( &$vars ) {
 		$vars['wgParamDefinitions']['smwformat'] = [
 			'definition' => ResultFormat::class,
@@ -349,8 +398,12 @@ final class Setup {
 
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:$wgFooterIcons
+	 *
+	 * @param array &$vars
+	 *
+	 * @return void
 	 */
-	private function registerFooterIcon( &$vars, $path ) {
+	private function registerFooterIcon( &$vars ) {
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
@@ -372,10 +425,12 @@ final class Setup {
 	 *
 	 * @note $wgHooks contains a list of hooks which specifies for every event an
 	 * array of functions to be called.
+	 *
+	 * @return void
 	 */
-	private function registerHooks( &$vars ) {
+	private function registerHooks() {
 		$hooks = new Hooks();
-		$hooks->register( $vars );
+		$hooks->register();
 	}
 
 }

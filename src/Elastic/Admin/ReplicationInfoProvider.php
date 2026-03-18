@@ -21,26 +21,14 @@ use SMW\Utils\HtmlColumns;
 class ReplicationInfoProvider extends InfoProviderHandler {
 
 	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var ReplicationCheck
-	 */
-	private $replicationCheck;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param OutputFormatter $outputFormatter
-	 * @param ReplicationCheck $replicationCheck
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( OutputFormatter $outputFormatter, ReplicationCheck $replicationCheck, EntityCache $entityCache ) {
+	public function __construct(
+		OutputFormatter $outputFormatter,
+		private readonly ReplicationCheck $replicationCheck,
+		private readonly EntityCache $entityCache,
+	) {
 		parent::__construct( $outputFormatter );
-		$this->replicationCheck = $replicationCheck;
-		$this->entityCache = $entityCache;
 	}
 
 	/**

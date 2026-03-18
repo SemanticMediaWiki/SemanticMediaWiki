@@ -16,16 +16,6 @@ use SMW\Tests\Utils\Runners\XmlImportRunner;
 class PageImportBenchmarkRunner implements BenchmarkReporter {
 
 	/**
-	 * @var XmlImportRunner
-	 */
-	private $xmlImportRunner;
-
-	/**
-	 * @var Benchmarker
-	 */
-	private $benchmarker;
-
-	/**
 	 * @var array
 	 */
 	private $benchmarkReport = [];
@@ -37,13 +27,11 @@ class PageImportBenchmarkRunner implements BenchmarkReporter {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param XmlImportRunner $xmlImportRunner
-	 * @param Benchmarker $benchmarker
 	 */
-	public function __construct( XmlImportRunner $xmlImportRunner, Benchmarker $benchmarker ) {
-		$this->xmlImportRunner = $xmlImportRunner;
-		$this->benchmarker = $benchmarker;
+	public function __construct(
+		private readonly XmlImportRunner $xmlImportRunner,
+		private readonly Benchmarker $benchmarker,
+	) {
 	}
 
 	/**

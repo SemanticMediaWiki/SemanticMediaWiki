@@ -24,11 +24,6 @@ class TemplateEngine {
 	private static $templates = [];
 
 	/**
-	 * @var string
-	 */
-	private $templateDir;
-
-	/**
 	 * @var array
 	 */
 	private $container = [];
@@ -40,12 +35,8 @@ class TemplateEngine {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string|null $templateDir
 	 */
-	public function __construct( $templateDir = null ) {
-		$this->templateDir = $templateDir;
-
+	public function __construct( private $templateDir = null ) {
 		if ( $this->templateDir === null ) {
 			$this->templateDir = $GLOBALS['smwgDir'] . '/data/template';
 		}

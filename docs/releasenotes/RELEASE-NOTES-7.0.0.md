@@ -8,6 +8,8 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 ## Changes
 
 * Replaced the vendored `Onoi\Tesa` text sanitizer library with PHP `intl` built-ins for fulltext search text processing. Users with `smwgEnabledFulltextSearch` enabled must run `rebuildFulltextSearchTable.php` after upgrading. Transliteration now uses ICU instead of a static mapping table, which produces minor differences for some characters (e.g., German ü→u instead of ü→ue). This does not affect search match quality.
+* Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
+* Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
 
 ## Upgrading
 

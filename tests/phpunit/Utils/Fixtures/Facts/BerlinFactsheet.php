@@ -26,23 +26,14 @@ use SMW\Tests\Utils\UtilityFactory;
 class BerlinFactsheet {
 
 	/**
-	 * @var DIWikiPage
-	 */
-	private $targetSubject = null;
-
-	/**
 	 * @var DataValueFactory
 	 */
 	private $dataValueFactory;
 
 	/**
 	 * @since 2.1
-	 *
-	 * @param DIWikiPage|null $targetSubject
 	 */
-	public function __construct( ?DIWikiPage $targetSubject = null ) {
-		$this->targetSubject = $targetSubject;
-
+	public function __construct( private ?DIWikiPage $targetSubject = null ) {
 		if ( $this->targetSubject === null ) {
 			$this->targetSubject = $this->asSubject();
 		}

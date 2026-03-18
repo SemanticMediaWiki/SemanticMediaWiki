@@ -25,18 +25,9 @@ class ParamListProcessor {
 	const PRINT_THIS = 'print.this';
 
 	/**
-	 * @var PrintRequestFactory
-	 */
-	private $printRequestFactory;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param PrintRequestFactory|null $printRequestFactory
 	 */
-	public function __construct( ?PrintRequestFactory $printRequestFactory = null ) {
-		$this->printRequestFactory = $printRequestFactory;
-
+	public function __construct( private ?PrintRequestFactory $printRequestFactory = null ) {
 		if ( $this->printRequestFactory === null ) {
 			$this->printRequestFactory = new PrintRequestFactory();
 		}

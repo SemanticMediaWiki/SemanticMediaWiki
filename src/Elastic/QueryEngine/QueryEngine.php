@@ -27,19 +27,9 @@ class QueryEngine implements IQueryEngine {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var QueryFactory
 	 */
 	private $queryFactory;
-
-	/**
-	 * @var ConditionBuilder
-	 */
-	private $conditionBuilder;
 
 	/**
 	 * @var FieldMapper
@@ -54,11 +44,6 @@ class QueryEngine implements IQueryEngine {
 	/**
 	 * @var array
 	 */
-	private $options = [];
-
-	/**
-	 * @var array
-	 */
 	private $errors = [];
 
 	/**
@@ -68,24 +53,19 @@ class QueryEngine implements IQueryEngine {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Store $store
-	 * @param ConditionBuilder $conditionBuilder
-	 * @param Options|null $options
 	 */
-	public function __construct( Store $store, ConditionBuilder $conditionBuilder, ?Options $options = null ) {
-		$this->store = $store;
-		$this->options = $options;
-
-		if ( $options === null ) {
+	public function __construct(
+		private Store $store,
+		private ConditionBuilder $conditionBuilder,
+		private ?Options $options = null,
+	) {
+		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
 
 		$this->queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$this->fieldMapper = new FieldMapper();
-
-		$this->conditionBuilder = $conditionBuilder;
-		$this->sortBuilder = new SortBuilder( $store );
+		$this->sortBuilder = new SortBuilder( $this->store );
 
 		$this->sortBuilder->setScoreField(
 			$this->options->dotGet( 'query.score.sortfield' )

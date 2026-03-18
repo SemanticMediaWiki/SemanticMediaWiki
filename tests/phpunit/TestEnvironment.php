@@ -21,11 +21,11 @@ use SMW\Tests\Utils\Validators\ValidatorFactory;
  */
 class TestEnvironment {
 
-	private ApplicationFactory $applicationFactory;
+	private readonly ApplicationFactory $applicationFactory;
 
-	private DataValueFactory $dataValueFactory;
+	private readonly DataValueFactory $dataValueFactory;
 
-	private TestConfig $testConfig;
+	private readonly TestConfig $testConfig;
 
 	/**
 	 * @since 2.4

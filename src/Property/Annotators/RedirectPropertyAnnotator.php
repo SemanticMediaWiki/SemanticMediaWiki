@@ -18,19 +18,13 @@ use SMW\Property\Annotator;
 class RedirectPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var RedirectTargetFinder
-	 */
-	private $redirectTargetFinder;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( Annotator $propertyAnnotator, RedirectTargetFinder $redirectTargetFinder ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly RedirectTargetFinder $redirectTargetFinder,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->redirectTargetFinder = $redirectTargetFinder;
 	}
 
 	/**

@@ -41,26 +41,6 @@ class InTextAnnotationParser {
 	const ON = '[[SMW::on]]';
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var LinksProcessor
-	 */
-	private $linksProcessor;
-
-	/**
-	 * @var MagicWordsFinder
-	 */
-	private $magicWordsFinder;
-
-	/**
-	 * @var RedirectTargetFinder
-	 */
-	private $redirectTargetFinder;
-
-	/**
 	 * @var AnnotationProcessor
 	 */
 	private $annotationProcessor;
@@ -100,17 +80,13 @@ class InTextAnnotationParser {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param LinksProcessor $linksProcessor
-	 * @param MagicWordsFinder $magicWordsFinder
-	 * @param RedirectTargetFinder $redirectTargetFinder
 	 */
-	public function __construct( ParserData $parserData, LinksProcessor $linksProcessor, MagicWordsFinder $magicWordsFinder, RedirectTargetFinder $redirectTargetFinder ) {
-		$this->parserData = $parserData;
-		$this->linksProcessor = $linksProcessor;
-		$this->magicWordsFinder = $magicWordsFinder;
-		$this->redirectTargetFinder = $redirectTargetFinder;
+	public function __construct(
+		private ParserData $parserData,
+		private LinksProcessor $linksProcessor,
+		private MagicWordsFinder $magicWordsFinder,
+		private RedirectTargetFinder $redirectTargetFinder,
+	) {
 		$this->applicationFactory = ApplicationFactory::getInstance();
 	}
 

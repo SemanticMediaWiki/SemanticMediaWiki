@@ -1,10 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 use SMW\Exception\DataItemException;
-use SMWDataItem;
 
 /**
  * This class implements Concept data items.
@@ -15,38 +14,12 @@ use SMWDataItem;
  *
  * @since 1.6
  *
- * @ingroup SMWDataItems
+ * @ingroup DataItems
  *
  * @author Markus Krötzsch
  * @author mwjames
  */
-class DIConcept extends SMWDataItem {
-
-	/**
-	 * Query string for this concept. Possibly long.
-	 * @var string
-	 */
-	protected $m_concept;
-	/**
-	 * Documentation for this concept. Possibly long.
-	 * @var string
-	 */
-	protected $m_docu;
-	/**
-	 * Flags of query features.
-	 * @var int
-	 */
-	protected $m_features;
-	/**
-	 * Size of the query.
-	 * @var int
-	 */
-	protected $m_size;
-	/**
-	 * Depth of the query.
-	 * @var int
-	 */
-	protected $m_depth;
+class Concept extends DataItem {
 
 	/**
 	 * Status
@@ -66,23 +39,17 @@ class DIConcept extends SMWDataItem {
 	 */
 	protected $cacheCount;
 
-	/**
-	 * @param string $concept the concept query string
-	 * @param string $docu user documentation
-	 * @param int $queryFeatures flags about query features
-	 * @param int $size concept query size
-	 * @param int $depth concept query depth
-	 */
-	public function __construct( $concept, $docu, $queryFeatures, $size, $depth ) {
-		$this->m_concept  = $concept;
-		$this->m_docu     = $docu;
-		$this->m_features = $queryFeatures;
-		$this->m_size     = $size;
-		$this->m_depth    = $depth;
+	public function __construct(
+		protected $m_concept,
+		protected $m_docu,
+		protected $m_features,
+		protected $m_size,
+		protected $m_depth,
+	) {
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_CONCEPT;
+		return DataItem::TYPE_CONCEPT;
 	}
 
 	public function getConceptQuery() {
@@ -182,7 +149,7 @@ class DIConcept extends SMWDataItem {
 	/**
 	 * Create a data item from the provided serialization string and type
 	 * ID.
-	 * @return DIConcept
+	 * @return Concept
 	 */
 	public static function doUnserialize( $serialization ) {
 		$result = unserialize( $serialization );
@@ -192,8 +159,8 @@ class DIConcept extends SMWDataItem {
 		return $result;
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_CONCEPT ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_CONCEPT ) {
 			return false;
 		}
 		return $di->getSerialization() === $this->getSerialization();
@@ -233,3 +200,8 @@ class DIConcept extends SMWDataItem {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Concept::class, 'SMW\DIConcept' );

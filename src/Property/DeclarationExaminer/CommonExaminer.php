@@ -17,16 +17,6 @@ use SMW\Store;
 class CommonExaminer extends DeclarationExaminer {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
 	 * @var array
 	 */
 	private $namespacesWithSemanticLinks = [];
@@ -38,13 +28,11 @@ class CommonExaminer extends DeclarationExaminer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( Store $store, ?SemanticData $semanticData = null ) {
-		$this->store = $store;
-		$this->semanticData = $semanticData;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ?SemanticData $semanticData = null,
+	) {
 	}
 
 	/**

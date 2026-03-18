@@ -132,10 +132,7 @@ class JsonSchemaValidatorTest extends TestCase {
 	public function newJsonSerializable( $data ) {
 		return new class( $data ) implements \JsonSerializable {
 
-			private $data;
-
-			public function __construct( $data ) {
-				$this->data = $data;
+			public function __construct( private $data ) {
 			}
 
 			public function jsonSerialize(): string {

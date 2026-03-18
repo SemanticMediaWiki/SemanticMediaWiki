@@ -17,16 +17,6 @@ use SMW\Store;
 class ChangePropagationExaminer extends DeclarationExaminer {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
 	 * @var bool
 	 */
 	private $isLocked = false;
@@ -38,15 +28,13 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param DeclarationExaminer $declarationExaminer
-	 * @param Store $store
-	 * @param SemanticData|null $semanticData
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, Store $store, ?SemanticData $semanticData = null ) {
+	public function __construct(
+		IDeclarationExaminer $declarationExaminer,
+		private readonly Store $store,
+		private ?SemanticData $semanticData = null,
+	) {
 		$this->declarationExaminer = $declarationExaminer;
-		$this->store = $store;
-		$this->semanticData = $semanticData;
 	}
 
 	/**

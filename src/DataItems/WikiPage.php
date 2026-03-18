@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataItems;
 
 use MediaWiki\Json\JsonUnserializer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\Exception\DataItemException;
-use SMWDataItem;
 
 /**
  * This class implements wiki page data items.
@@ -17,7 +16,7 @@ use SMWDataItem;
  *
  * @author Markus Krötzsch
  */
-class DIWikiPage extends SMWDataItem {
+class WikiPage extends DataItem {
 
 	/**
 	 * MediaWiki DB key string
@@ -30,12 +29,6 @@ class DIWikiPage extends SMWDataItem {
 	 * @var int
 	 */
 	protected $m_namespace;
-
-	/**
-	 * MediaWiki interwiki prefix.
-	 * @var string
-	 */
-	protected $m_interwiki;
 
 	/**
 	 * Name for subobjects of pages, or empty string if the given object is
@@ -73,13 +66,13 @@ class DIWikiPage extends SMWDataItem {
 	 * of allowed characters (may depend on MW configuration). All of this
 	 * would be more work than it is worth, since callers will usually be
 	 * careful and since errors here do not have major consequences.
-	 *
-	 * @param string $dbkey
-	 * @param int $namespace
-	 * @param string $interwiki
-	 * @param string $subobjectname
 	 */
-	public function __construct( $dbkey, $namespace, $interwiki = '', $subobjectname = '' ) {
+	public function __construct(
+		$dbkey,
+		$namespace,
+		protected $m_interwiki = '',
+		$subobjectname = '',
+	) {
 		// Check if the provided value holds an integer
 		// (it can be of type string or float as well, as long as the value is an int)
 		if ( !ctype_digit( ltrim( (string)$namespace, '-' ) ) ) {
@@ -92,13 +85,12 @@ class DIWikiPage extends SMWDataItem {
 		}
 
 		$this->m_dbkey = str_replace( ' ', '_', $dbkey );
-		$this->m_namespace = (int)$namespace; // really make this an integer
-		$this->m_interwiki = $interwiki;
+		$this->m_namespace = (int)$namespace;
 		$this->m_subobjectname = $subobjectname;
 	}
 
 	public function getDIType() {
-		return SMWDataItem::TYPE_WIKIPAGE;
+		return DataItem::TYPE_WIKIPAGE;
 	}
 
 	public function getDBkey() {
@@ -168,7 +160,7 @@ class DIWikiPage extends SMWDataItem {
 	 * Get the sortkey of the wiki page data item. Note that this is not
 	 * the sortkey that might have been set for the corresponding wiki
 	 * page. To obtain the latter, query for the values of the property
-	 * "new SMW\DIProperty( '_SKEY' )".
+	 * "new SMW\DataItems\Property( '_SKEY' )".
 	 */
 	public function getSortKey() {
 		if ( $this->sortkey === null || $this->sortkey === '' ) {
@@ -236,7 +228,7 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 	/**
-	 * Create a MediaWiki Title object for this DIWikiPage. The result
+	 * Create a MediaWiki Title object for this WikiPage. The result
 	 * can be null if an error occurred.
 	 *
 	 * @return Title|null
@@ -255,7 +247,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @since 2.4
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function asBase() {
 		return new self (
@@ -287,7 +279,7 @@ class DIWikiPage extends SMWDataItem {
 	 *
 	 * @param string $serialization
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 * @throws DataItemDeserializationException
 	 */
 	public static function doUnserialize( $serialization ) {
@@ -306,7 +298,7 @@ class DIWikiPage extends SMWDataItem {
 	 * Create a data item from a MediaWiki Title.
 	 *
 	 * @param Title $title
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public static function newFromTitle( Title $title ) {
 		return new self(
@@ -323,14 +315,14 @@ class DIWikiPage extends SMWDataItem {
 	 * @param string $text
 	 * @param integer namespace
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public static function newFromText( $text, $namespace = NS_MAIN ) {
 		return new self( $text, $namespace );
 	}
 
-	public function equals( SMWDataItem $di ) {
-		if ( $di->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
+	public function equals( DataItem $di ) {
+		if ( $di->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}
 
@@ -373,3 +365,8 @@ class DIWikiPage extends SMWDataItem {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( WikiPage::class, 'SMW\DIWikiPage' );

@@ -28,11 +28,6 @@ class ExpResourceMapper {
 	const AUX_MARKER = 'aux';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
 	 * @var DataValueFactory
 	 */
 	private $dataValueFactory;
@@ -56,11 +51,8 @@ class ExpResourceMapper {
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param Store $store
 	 */
-	public function __construct( Store $store ) {
-		$this->store = $store;
+	public function __construct( private readonly Store $store ) {
 		$this->dataValueFactory = DataValueFactory::getInstance();
 		$this->inMemoryPoolCache = InMemoryPoolCache::getInstance();
 	}

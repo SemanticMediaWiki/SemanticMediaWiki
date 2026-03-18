@@ -22,17 +22,9 @@ class Installer {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var Rollover
-	 */
-	private $rollover;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Rollover $rollover
 	 */
-	public function __construct( Rollover $rollover ) {
-		$this->rollover = $rollover;
+	public function __construct( private Rollover $rollover ) {
 	}
 
 	/**

@@ -27,31 +27,6 @@ class Rebuilder {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var ElasticClient
-	 */
-	private $client;
-
-	/**
-	 * @var Indexer
-	 */
-	private $indexer;
-
-	/**
-	 * @var FileIndexer
-	 */
-	private $fileIndexer;
-
-	/**
-	 * @var DocumentCreator
-	 */
-	private $documentCreator;
-
-	/**
-	 * @var Installer
-	 */
-	private $installer;
-
-	/**
 	 * @var array
 	 */
 	private $settings = [];
@@ -68,19 +43,14 @@ class Rebuilder {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param ElasticClient $client
-	 * @param Indexer $indexer
-	 * @param FileIndexer $fileIndexer
-	 * @param DocumentCreator $documentCreator
-	 * @param Installer $installer
 	 */
-	public function __construct( ElasticClient $client, Indexer $indexer, FileIndexer $fileIndexer, DocumentCreator $documentCreator, Installer $installer ) {
-		$this->client = $client;
-		$this->indexer = $indexer;
-		$this->fileIndexer = $fileIndexer;
-		$this->documentCreator = $documentCreator;
-		$this->installer = $installer;
+	public function __construct(
+		private ElasticClient $client,
+		private Indexer $indexer,
+		private FileIndexer $fileIndexer,
+		private DocumentCreator $documentCreator,
+		private Installer $installer,
+	) {
 	}
 
 	/**

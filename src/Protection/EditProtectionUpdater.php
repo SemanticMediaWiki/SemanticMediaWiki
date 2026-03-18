@@ -24,16 +24,6 @@ use WikiPage;
 class EditProtectionUpdater implements LoggerAwareInterface {
 
 	/**
-	 * @var WikiPage
-	 */
-	private $wikiPage;
-
-	/**
-	 * @var User
-	 */
-	private $user;
-
-	/**
 	 * @var bool
 	 */
 	private $isRestrictedUpdate = false;
@@ -50,14 +40,11 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param WikiPage $wikiPage
-	 * @param User|null $user
 	 */
-	public function __construct( WikiPage $wikiPage, ?User $user = null ) {
-		$this->wikiPage = $wikiPage;
-		$this->user = $user;
-
+	public function __construct(
+		private readonly WikiPage $wikiPage,
+		private ?User $user = null,
+	) {
 		if ( $this->user === null ) {
 			$this->user = RequestContext::getMain()->getUser();
 		}

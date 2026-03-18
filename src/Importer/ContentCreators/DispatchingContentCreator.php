@@ -21,17 +21,9 @@ class DispatchingContentCreator implements ContentCreator {
 	private $messageReporter;
 
 	/**
-	 * @var ContentCreator[]
-	 */
-	private $contentCreators = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ContentCreator[]
 	 */
-	public function __construct( array $contentCreators ) {
-		$this->contentCreators = $contentCreators;
+	public function __construct( private readonly array $contentCreators ) {
 	}
 
 	/**

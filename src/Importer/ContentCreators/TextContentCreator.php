@@ -24,29 +24,17 @@ class TextContentCreator implements ContentCreator {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
-	 * @var Database
-	 */
-	private $connection;
-
-	/**
 	 * @var CliMsgFormatter
 	 */
 	private $cliMsgFormatter;
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param TitleFactory $titleFactory
-	 * @param Database $connection
 	 */
-	public function __construct( TitleFactory $titleFactory, Database $connection ) {
-		$this->titleFactory = $titleFactory;
-		$this->connection = $connection;
+	public function __construct(
+		private TitleFactory $titleFactory,
+		private Database $connection,
+	) {
 	}
 
 	/**

@@ -21,17 +21,9 @@ use SMWDataItem as DataItem;
 class QueryTestCaseInterpreter {
 
 	/**
-	 * @var array
-	 */
-	private $contents;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param array $contents
 	 */
-	public function __construct( array $contents ) {
-		$this->contents = $contents;
+	public function __construct( private array $contents ) {
 	}
 
 	/**

@@ -84,7 +84,6 @@ class SMWQuery implements QueryContext {
 
 	private $limit;
 	private $offset = 0;
-	private $description;
 	private $errors = []; // keep any errors that occurred so far
 	private $queryString = false; // string (inline query) version (if fixed and known)
 	private $isInline; // query used inline? (required for finding right default parameters)
@@ -120,11 +119,11 @@ class SMWQuery implements QueryContext {
 
 	/**
 	 * @since 1.6
-	 *
-	 * @param Description|null $description
-	 * @param int|bool $context
 	 */
-	public function __construct( ?Description $description = null, $context = false ) {
+	public function __construct(
+		private ?Description $description = null,
+		$context = false,
+	) {
 		$inline = false;
 		$concept = false;
 
@@ -143,7 +142,6 @@ class SMWQuery implements QueryContext {
 		$this->limit = $inline ? $GLOBALS['smwgQMaxInlineLimit'] : $GLOBALS['smwgQMaxLimit'];
 		$this->isInline = $inline;
 		$this->isUsedInConcept = $concept;
-		$this->description = $description;
 		$this->applyRestrictions();
 	}
 

@@ -6,6 +6,7 @@ use MediaWiki\Context\RequestContext;
 use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\DataValueFactory;
 use SMW\DataValues\InfoLinksProvider;
+use SMW\DataValues\Number\UnitConverter;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
@@ -14,6 +15,7 @@ use SMW\DataValues\ValueParsers\ValueParser;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\RestrictionExaminer;
 use SMW\Property\SpecificationLookup;
+use SMW\Query\DescriptionBuilderRegistry;
 use SMWDataValue as DataValue;
 use SMWNumberValue as NumberValue;
 use SMWTimeValue as TimeValue;
@@ -57,11 +59,6 @@ class DataValueServiceFactory {
 	const TYPE_VALIDATOR = '__dv.validator.';
 
 	/**
-	 * @var ContainerBuilder
-	 */
-	private $containerBuilder;
-
-	/**
 	 * @var DispatchingDataValueFormatter
 	 */
 	private $dispatchingDataValueFormatter = null;
@@ -69,8 +66,7 @@ class DataValueServiceFactory {
 	/**
 	 * @since 2.5
 	 */
-	public function __construct( ContainerBuilder $containerBuilder ) {
-		$this->containerBuilder = $containerBuilder;
+	public function __construct( private readonly ContainerBuilder $containerBuilder ) {
 	}
 
 	/**

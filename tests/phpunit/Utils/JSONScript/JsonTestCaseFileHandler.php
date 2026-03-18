@@ -14,22 +14,14 @@ use SMW\Tests\Utils\File\JsonFileReader;
 class JsonTestCaseFileHandler {
 
 	/**
-	 * @var JsonFileReader
-	 */
-	private $fileReader;
-
-	/**
 	 * @var string
 	 */
 	private $reasonToSkip = '';
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param JsonFileReader $fileReader
 	 */
-	public function __construct( JsonFileReader $fileReader ) {
-		$this->fileReader = $fileReader;
+	public function __construct( private readonly JsonFileReader $fileReader ) {
 	}
 
 	/**

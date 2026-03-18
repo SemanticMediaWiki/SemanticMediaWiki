@@ -14,24 +14,18 @@ use SMW\Property\Annotator;
 class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var array|null
-	 */
-	private $translation;
-
-	/**
 	 * @var array
 	 */
 	private $predefinedPropertyList = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param array|null $translation
 	 */
-	public function __construct( Annotator $propertyAnnotator, $translation ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private $translation,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->translation = $translation;
 	}
 
 	/**

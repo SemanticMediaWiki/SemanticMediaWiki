@@ -14,15 +14,10 @@ use SMW\Query\Result\ResultArray;
  */
 class TemplateRowBuilder extends RowBuilder {
 
-	private $templateRendererFactory;
-
 	/**
 	 * TemplateRowBuilder constructor.
-	 *
-	 * @param TemplateRendererFactory $templateRendererFactory
 	 */
-	public function __construct( TemplateRendererFactory $templateRendererFactory ) {
-		$this->templateRendererFactory = $templateRendererFactory;
+	public function __construct( private readonly TemplateRendererFactory $templateRendererFactory ) {
 	}
 
 	/**

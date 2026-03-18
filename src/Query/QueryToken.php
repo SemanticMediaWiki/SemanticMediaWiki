@@ -35,11 +35,6 @@ class QueryToken {
 	/**
 	 * @var array
 	 */
-	private $tokens = [];
-
-	/**
-	 * @var array
-	 */
 	private $minHighlightTokenLength = 4;
 
 	/**
@@ -54,11 +49,8 @@ class QueryToken {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param array $tokens
 	 */
-	public function __construct( array $tokens = [] ) {
-		$this->tokens = $tokens;
+	public function __construct( private array $tokens = [] ) {
 	}
 
 	/**

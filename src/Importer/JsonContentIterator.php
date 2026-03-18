@@ -14,22 +14,16 @@ use Iterator;
 class JsonContentIterator implements ContentIterator {
 
 	/**
-	 * @var JsonImportContentsFileDirReader
-	 */
-	private $jsonImportContentsFileDirReader;
-
-	/**
 	 * @var string
 	 */
 	private $description = '';
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param JsonImportContentsFileDirReader $jsonImportContentsFileDirReader
 	 */
-	public function __construct( JsonImportContentsFileDirReader $jsonImportContentsFileDirReader ) {
-		$this->jsonImportContentsFileDirReader = $jsonImportContentsFileDirReader;
+	public function __construct(
+		private readonly JsonImportContentsFileDirReader $jsonImportContentsFileDirReader,
+	) {
 	}
 
 	/**

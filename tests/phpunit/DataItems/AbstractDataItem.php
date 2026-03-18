@@ -1,15 +1,16 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataItems;
 
-use SMWDataItem;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 
 /**
- * Base class for SMW\DataItem tests.
+ * Base class for SMW\DataItems tests.
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
+ * @group DataItem
  *
  * @license GPL-2.0-or-later
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
@@ -17,7 +18,7 @@ use SMWDataItem;
 abstract class AbstractDataItem extends SMWIntegrationTestCase {
 
 	/**
-	 * Returns the name of the \SMW\DataItem deriving class this test tests.
+	 * Returns the name of the DataItem deriving class this test tests.
 	 *
 	 * @since 1.8
 	 *
@@ -37,7 +38,7 @@ abstract class AbstractDataItem extends SMWIntegrationTestCase {
 	 *
 	 * @since 1.8
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public function newInstance() {
 		$reflector = new \ReflectionClass( $this->getClass() );
@@ -73,7 +74,7 @@ abstract class AbstractDataItem extends SMWIntegrationTestCase {
 			func_get_args()
 		);
 
-		$this->assertInstanceOf( '\SMWDataItem', $dataItem );
+		$this->assertInstanceOf( DataItem::class, $dataItem );
 		$this->assertInstanceOf( $this->getClass(), $dataItem );
 	}
 
@@ -82,9 +83,9 @@ abstract class AbstractDataItem extends SMWIntegrationTestCase {
 	 *
 	 * @since 1.8
 	 *
-	 * @param \SMWDataItem $dataItem
+	 * @param DataItem $dataItem
 	 */
-	public function testSerialization( \SMWDataItem $dataItem ) {
+	public function testSerialization( DataItem $dataItem ) {
 		$class = $this->getClass();
 
 		$this->assertEquals(
@@ -96,15 +97,15 @@ abstract class AbstractDataItem extends SMWIntegrationTestCase {
 	/**
 	 * @dataProvider instanceProvider
 	 */
-	public function testInstanceEqualsItself( SMWDataItem $di ) {
+	public function testInstanceEqualsItself( DataItem $di ) {
 		$this->assertTrue( $di->equals( $di ) );
 	}
 
 	/**
 	 * @dataProvider instanceProvider
 	 */
-	public function testInstanceDoesNotEqualNyanData( SMWDataItem $di ) {
-		$this->assertFalse( $di->equals( new \SMWDIBlob( '~=[,,_,,]:3' ) ) );
+	public function testInstanceDoesNotEqualNyanData( DataItem $di ) {
+		$this->assertFalse( $di->equals( new Blob( '~=[,,_,,]:3' ) ) );
 	}
 
 }

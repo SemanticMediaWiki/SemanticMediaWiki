@@ -29,18 +29,9 @@ use SMWExporter as Exporter;
 class ConceptMapper implements DataItemMapper {
 
 	/**
-	 * @var Exporter
-	 */
-	private $exporter;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param Exporter|null $exporter
 	 */
-	public function __construct( ?Exporter $exporter = null ) {
-		$this->exporter = $exporter;
-
+	public function __construct( private ?Exporter $exporter = null ) {
 		if ( $this->exporter === null ) {
 			$this->exporter = Exporter::getInstance();
 		}

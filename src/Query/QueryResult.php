@@ -53,13 +53,6 @@ class QueryResult {
 	protected $mPrintRequests;
 
 	/**
-	 * Are there more results than the ones given?
-	 *
-	 * @var bool
-	 */
-	protected $mFurtherResults;
-
-	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
 	 *
@@ -118,18 +111,16 @@ class QueryResult {
 	 */
 	private $filterMap;
 
-	/**
-	 * @param PrintRequest[] $printRequests
-	 * @param Query $query
-	 * @param DIWikiPage[] $results
-	 * @param Store $store
-	 * @param bool $furtherRes
-	 */
-	public function __construct( array $printRequests, Query $query, array $results, Store $store, $furtherRes = false ) {
+	public function __construct(
+		array $printRequests,
+		Query $query,
+		array $results,
+		Store $store,
+		protected $mFurtherResults = false,
+	) {
 		$this->mResults = $results;
 		reset( $this->mResults );
 		$this->mPrintRequests = $printRequests;
-		$this->mFurtherResults = $furtherRes;
 		$this->mQuery = $query;
 		$this->mStore = $store;
 		$this->itemJournal = new ItemJournal();

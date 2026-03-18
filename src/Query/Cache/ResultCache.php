@@ -61,29 +61,9 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	const POOLCACHE_ID = 'queryresult.prefetcher';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
-
-	/**
-	 * @var BlobStore
-	 */
-	private $blobStore;
-
-	/**
 	 * @var QueryEngine
 	 */
 	private $queryEngine;
-
-	/**
-	 * @var CacheStats
-	 */
-	private $cacheStats;
 
 	/**
 	 * @var int|bool
@@ -124,17 +104,13 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param QueryFactory $queryFactory
-	 * @param BlobStore $blobStore
-	 * @param cacheStats $cacheStats
 	 */
-	public function __construct( Store $store, QueryFactory $queryFactory, BlobStore $blobStore, CacheStats $cacheStats ) {
-		$this->store = $store;
-		$this->queryFactory = $queryFactory;
-		$this->blobStore = $blobStore;
-		$this->cacheStats = $cacheStats;
+	public function __construct(
+		private readonly Store $store,
+		private readonly QueryFactory $queryFactory,
+		private readonly BlobStore $blobStore,
+		private readonly CacheStats $cacheStats,
+	) {
 		$this->tempCache = ApplicationFactory::getInstance()->getInMemoryPoolCache()->getPoolCacheById( self::POOLCACHE_ID );
 		$this->cacheStats->shouldRecord( $this->isEnabled() );
 	}

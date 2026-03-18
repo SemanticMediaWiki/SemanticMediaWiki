@@ -21,16 +21,6 @@ class JsonContentsFileReader {
 	private static $contents = [];
 
 	/**
-	 * @var string
-	 */
-	private $languageFileDir = '';
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var bool
 	 */
 	private $skipCache = false;
@@ -42,14 +32,11 @@ class JsonContentsFileReader {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Cache|null $cache
-	 * @param string $languageFileDir
 	 */
-	public function __construct( ?Cache $cache = null, $languageFileDir = '' ) {
-		$this->cache = $cache;
-		$this->languageFileDir = $languageFileDir;
-
+	public function __construct(
+		private ?Cache $cache = null,
+		private $languageFileDir = '',
+	) {
 		if ( $this->cache === null ) {
 			$this->cache = new NullCache();
 		}

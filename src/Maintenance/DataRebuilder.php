@@ -33,16 +33,6 @@ class DataRebuilder {
 	const AUTO_RECOVERY_LAST_START = 'ar_last_start';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var TitleFactory
-	 */
-	private $titleFactory;
-
-	/**
 	 * @var Options
 	 */
 	private $options;
@@ -97,15 +87,13 @@ class DataRebuilder {
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param Store $store
-	 * @param TitleFactory $titleFactory
 	 */
-	public function __construct( Store $store, TitleFactory $titleFactory ) {
-		$this->store = $store;
-		$this->titleFactory = $titleFactory;
+	public function __construct(
+		private readonly Store $store,
+		private readonly TitleFactory $titleFactory,
+	) {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
-		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $store, $titleFactory );
+		$this->distinctEntityDataRebuilder = new DistinctEntityDataRebuilder( $this->store, $this->titleFactory );
 		$this->exceptionFileLogger = new ExceptionFileLogger( 'rebuilddata' );
 		$this->cliMsgFormatter = new CliMsgFormatter();
 	}

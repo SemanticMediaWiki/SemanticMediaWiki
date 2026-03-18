@@ -16,7 +16,6 @@ use SMW\Tests\TestEnvironment;
  */
 class JobQueueRunner {
 
-	protected $type = null;
 	protected $status = [];
 	private $lbFactory;
 
@@ -27,11 +26,8 @@ class JobQueueRunner {
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param string|null $type
 	 */
-	public function __construct( $type = null ) {
-		$this->type = $type;
+	public function __construct( protected $type = null ) {
 		$this->lbFactory = MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 		$this->testEnvironment = new TestEnvironment();
 	}

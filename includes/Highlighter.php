@@ -77,24 +77,12 @@ class Highlighter {
 	private $options;
 
 	/**
-	 * @var int
-	 */
-	private $type;
-
-	/**
-	 * @var string|null
-	 */
-	private $language = null;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param int $type
-	 * @param string|null $language
 	 */
-	public function __construct( $type, $language = null ) {
-		$this->type = $type;
-		$this->language = $language;
+	public function __construct(
+		private $type,
+		private $language = null,
+	) {
 	}
 
 	/**

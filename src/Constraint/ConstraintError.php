@@ -16,24 +16,12 @@ class ConstraintError implements ProcessingError {
 	const ERROR_TYPE = 'constraint';
 
 	/**
-	 * @var
-	 */
-	private $parameters = [];
-
-	/**
-	 * @var string
-	 */
-	private $type;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param string|[] $parameters
-	 * @param int|string|null $type
 	 */
-	public function __construct( $parameters, $type = null ) {
-		$this->parameters = $parameters;
-		$this->type = $type;
+	public function __construct(
+		private $parameters,
+		private $type = null,
+	) {
 	}
 
 	/**

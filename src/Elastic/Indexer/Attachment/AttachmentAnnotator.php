@@ -18,24 +18,12 @@ use SMWDITime as DITime;
 class AttachmentAnnotator implements Annotator {
 
 	/**
-	 * @var ContainerSemanticData
-	 */
-	private $containerSemanticData;
-
-	/**
-	 * @var
-	 */
-	private $doc = [];
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param ContainerSemanticData $containerSemanticData
-	 * @param array $doc
 	 */
-	public function __construct( ContainerSemanticData $containerSemanticData, array $doc = [] ) {
-		$this->containerSemanticData = $containerSemanticData;
-		$this->doc = $doc;
+	public function __construct(
+		private readonly ContainerSemanticData $containerSemanticData,
+		private array $doc = [],
+	) {
 	}
 
 	/**

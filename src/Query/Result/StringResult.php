@@ -14,16 +14,6 @@ use SMWQuery as Query;
 class StringResult extends QueryResult {
 
 	/**
-	 * @var array
-	 */
-	private $result = '';
-
-	/**
-	 * @var Query
-	 */
-	private $query;
-
-	/**
 	 * @var callable
 	 */
 	private $preOutputCallback;
@@ -32,11 +22,6 @@ class StringResult extends QueryResult {
 	 * @var int
 	 */
 	private $count = 0;
-
-	/**
-	 * @var bool
-	 */
-	private $hasFurtherResults = false;
 
 	/**
 	 * @var array
@@ -48,13 +33,12 @@ class StringResult extends QueryResult {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param string $result
 	 */
-	public function __construct( $result, Query $query, $hasFurtherResults = false ) {
-		$this->result = $result;
-		$this->query = $query;
-		$this->hasFurtherResults = $hasFurtherResults;
+	public function __construct(
+		private $result,
+		private readonly Query $query,
+		private $hasFurtherResults = false,
+	) {
 	}
 
 	/**

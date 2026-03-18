@@ -1,22 +1,24 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataItems;
+
+use SMW\DataItems\Boolean;
 
 /**
- * @covers SMWDIBoolean
- * @covers SMWDataItem
+ * @covers \SMW\DataItems\Boolean
+ * @covers \SMW\DataItems\DataItem
  *
  * @since 1.8
  *
  * @group SMW
  * @group SMWExtension
- * @group SMWDataItems
+ * @group DataItems
  * @group Database
  *
  * @author Nischay Nahata
  * @author Jeroen De Dauw < jeroendedauw@gmail.com >
  */
-class SMWDIBooleanTest extends AbstractDataItem {
+class BooleanTest extends AbstractDataItem {
 
 	/**
 	 * @see AbstractDataItem::getClass
@@ -26,7 +28,7 @@ class SMWDIBooleanTest extends AbstractDataItem {
 	 * @return string
 	 */
 	public function getClass() {
-		return '\SMWDIBoolean';
+		return Boolean::class;
 	}
 
 	/**

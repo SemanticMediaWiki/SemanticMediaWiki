@@ -17,22 +17,17 @@ class CopyLocalMessages {
 	/**
 	 * @var string
 	 */
-	private $file = '';
-
-	/**
-	 * @var string
-	 */
 	private $languageFileDir = '';
 
 	private array $contents;
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $file
 	 */
-	public function __construct( string $file, ?string $languageFileDir = null ) {
-		$this->file = $file;
+	public function __construct(
+		private readonly string $file,
+		?string $languageFileDir = null,
+	) {
 		$this->languageFileDir = $languageFileDir
 							  ?? ( !is_array( $GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] )
 								   ? $GLOBALS['wgMessagesDirs']['SemanticMediaWiki']

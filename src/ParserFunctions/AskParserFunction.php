@@ -47,26 +47,6 @@ class AskParserFunction {
 	const IS_ANNOTATION = '@annotation';
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
-	 * @var CircularReferenceGuard
-	 */
-	private $circularReferenceGuard;
-
-	/**
-	 * @var ExpensiveFuncExecutionWatcher
-	 */
-	private $expensiveFuncExecutionWatcher;
-
-	/**
 	 * @var bool
 	 */
 	private $showMode = false;
@@ -98,17 +78,13 @@ class AskParserFunction {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
-	 * @param CircularReferenceGuard $circularReferenceGuard
-	 * @param ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, CircularReferenceGuard $circularReferenceGuard, ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
-		$this->circularReferenceGuard = $circularReferenceGuard;
-		$this->expensiveFuncExecutionWatcher = $expensiveFuncExecutionWatcher;
+	public function __construct(
+		private readonly ParserData $parserData,
+		private readonly MessageFormatter $messageFormatter,
+		private readonly CircularReferenceGuard $circularReferenceGuard,
+		private readonly ExpensiveFuncExecutionWatcher $expensiveFuncExecutionWatcher,
+	) {
 	}
 
 	/**

@@ -17,16 +17,7 @@ use SMW\DIWikiPage;
  */
 class ConceptDescription extends Description {
 
-	/**
-	 * @var DIWikiPage
-	 */
-	private $concept;
-
-	/**
-	 * @param DIWikiPage $concept
-	 */
-	public function __construct( DIWikiPage $concept ) {
-		$this->concept = $concept;
+	public function __construct( private readonly DIWikiPage $concept ) {
 	}
 
 	/**

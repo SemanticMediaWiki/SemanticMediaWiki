@@ -24,11 +24,6 @@ class ConstraintRegistry {
 	use HookDispatcherAwareTrait;
 
 	/**
-	 * @var ConstraintFactory
-	 */
-	private $constraintFactory;
-
-	/**
 	 * @var
 	 */
 	private $constraints = [];
@@ -45,11 +40,8 @@ class ConstraintRegistry {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ConstraintFactory $constraintFactory
 	 */
-	public function __construct( ConstraintFactory $constraintFactory ) {
-		$this->constraintFactory = $constraintFactory;
+	public function __construct( private ConstraintFactory $constraintFactory ) {
 	}
 
 	/**

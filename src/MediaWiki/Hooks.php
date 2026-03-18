@@ -7,9 +7,11 @@ use MediaWiki\Context\IContextSource;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\Linker\LinkTarget;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
 use MediaWiki\User\User;
 use MediaWiki\User\UserIdentity;
-use ParserHooks\HookRegistrant;
+use ParamProcessor\Processor;
 use SMW\DataTypeRegistry;
 use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\MediaWiki\Hooks\AdminLinks;
@@ -1162,17 +1164,55 @@ class Hooks {
 		$parserFunctionFactory = $applicationFactory->newParserFunctionFactory();
 		$parserFunctionFactory->registerFunctionHandlers( $parser );
 
-		$hookRegistrant = new HookRegistrant( $parser );
+		[ $name, $definition, $flag ] = $parserFunctionFactory->getInfoParserFunctionDefinition();
+		$parser->setFunctionHook( $name, $definition, $flag );
 
-		$infoFunctionDefinition = InfoParserFunction::getHookDefinition();
-		$infoFunctionHandler = new InfoParserFunction();
-		$hookRegistrant->registerFunctionHandler( $infoFunctionDefinition, $infoFunctionHandler );
-		$hookRegistrant->registerHookHandler( $infoFunctionDefinition, $infoFunctionHandler );
+		$parser->setHook( 'info', static function ( $input, array $attribs, Parser $parser, PPFrame $frame ) {
+			$defaultParams = InfoParserFunction::getDefaultParams();
+			$defaultParam = array_shift( $defaultParams );
 
-		$docsFunctionDefinition = DocumentationParserFunction::getHookDefinition();
-		$docsFunctionHandler = new DocumentationParserFunction();
-		$hookRegistrant->registerFunctionHandler( $docsFunctionDefinition, $docsFunctionHandler );
-		$hookRegistrant->registerHookHandler( $docsFunctionDefinition, $docsFunctionHandler );
+			if ( $defaultParam !== null && $input !== null ) {
+				$attribs[$defaultParam] = $input;
+			}
+
+			$processor = Processor::newDefault();
+			$processor->setParameters(
+				$attribs,
+				InfoParserFunction::getParamDefinitions()
+			);
+
+			$result = $processor->processParameters();
+
+			$handler = new InfoParserFunction();
+			$resultText = $handler->handle( $parser, $result );
+
+			return $parser->recursiveTagParse( $resultText, $frame );
+		} );
+
+		[ $name, $definition, $flag ] = $parserFunctionFactory->getDocumentationParserFunctionDefinition();
+		$parser->setFunctionHook( $name, $definition, $flag );
+
+		$parser->setHook( 'smwdoc', static function ( $input, array $attribs, Parser $parser, PPFrame $frame ) {
+			$defaultParams = DocumentationParserFunction::getDefaultParams();
+			$defaultParam = array_shift( $defaultParams );
+
+			if ( $defaultParam !== null && $input !== null ) {
+				$attribs[$defaultParam] = $input;
+			}
+
+			$processor = Processor::newDefault();
+			$processor->setParameters(
+				$attribs,
+				DocumentationParserFunction::getParamDefinitions()
+			);
+
+			$result = $processor->processParameters();
+
+			$handler = new DocumentationParserFunction();
+			$resultText = $handler->handle( $parser, $result );
+
+			return $parser->recursiveTagParse( $resultText, $frame );
+		} );
 
 		/**
 		 * Support for <section> ... </section>

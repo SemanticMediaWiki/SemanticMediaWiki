@@ -13,24 +13,12 @@ class Csv {
 	const DEFAULT_SEP = ',';
 
 	/**
-	 * @var bool
-	 */
-	private $show = false;
-
-	/**
-	 * @var bool
-	 */
-	private $bom = false;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param bool $show
-	 * @param bool $bom
 	 */
-	public function __construct( $show = false, $bom = false ) {
-		$this->show = $show;
-		$this->bom = $bom;
+	public function __construct(
+		private $show = false,
+		private $bom = false,
+	) {
 	}
 
 	/**
@@ -107,7 +95,7 @@ class Csv {
 					// Index 0 represents the first column, same hash, only
 					// concatenate the rest of the columns
 					if ( $k != 0 ) {
-						$v = $v . ( isset( $row[$k] ) ? "$sep" . $row[$k] : '' );
+						$v .= ( isset( $row[$k] ) ? "$sep" . $row[$k] : '' );
 						// Filter duplicate values
 						$v = array_flip( explode( $sep, $v ) );
 						// Make it a simple list
