@@ -52,7 +52,7 @@ class ExportSemanticDataTest extends TestCase {
 
 		$semanticData->addPropertyObjectValue(
 			$redirectProperty,
-			WikiPage::newFromTitle( $redirectTarget->getTitle(), '__red' )
+			WikiPage::newFromTitle( $redirectTarget->getTitle() )
 		);
 
 		$exporter = Exporter::getInstance();
