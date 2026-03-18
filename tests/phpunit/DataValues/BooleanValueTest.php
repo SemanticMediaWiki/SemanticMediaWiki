@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataValues\BooleanValue;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 
 /**
@@ -51,7 +51,7 @@ class BooleanValueTest extends TestCase {
 			->method( 'getPageLanguage' )
 			->willReturn( $language );
 
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

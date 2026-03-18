@@ -4,9 +4,9 @@ namespace SMW\Tests\DataValues\Time;
 
 use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Time;
 use SMW\DataValues\Time\IntlTimeFormatter;
 use SMW\Localizer\Localizer;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\DataValues\Time\IntlTimeFormatter
@@ -20,7 +20,7 @@ use SMWDITime as DITime;
 class IntlTimeFormatterTest extends TestCase {
 
 	public function testCanConstruct() {
-		$dataItem = $this->getMockBuilder( '\SMWDITime' )
+		$dataItem = $this->getMockBuilder( Time::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -39,7 +39,7 @@ class IntlTimeFormatterTest extends TestCase {
 			->getMock();
 
 		$instance = new IntlTimeFormatter(
-			DITime::doUnserialize( $serialization ),
+			Time::doUnserialize( $serialization ),
 			Localizer::getInstance()->getLanguage( $languageCode )
 		);
 
@@ -54,7 +54,7 @@ class IntlTimeFormatterTest extends TestCase {
 	 */
 	public function testGetLocalizedFormat( $serialization, $languageCode, $flag, $expected ) {
 		$instance = new IntlTimeFormatter(
-			DITime::doUnserialize( $serialization ),
+			Time::doUnserialize( $serialization ),
 			Localizer::getInstance()->getLanguage( $languageCode )
 		);
 
@@ -72,7 +72,7 @@ class IntlTimeFormatterTest extends TestCase {
 			->getMock();
 
 		$instance = new IntlTimeFormatter(
-			DITime::doUnserialize( '1/2000/12/12/1/1/20.200' ),
+			Time::doUnserialize( '1/2000/12/12/1/1/20.200' ),
 			$language
 		);
 
@@ -95,7 +95,7 @@ class IntlTimeFormatterTest extends TestCase {
 			->willReturn( 'Foo' );
 
 		$instance = new IntlTimeFormatter(
-			DITime::doUnserialize( '1/2000/12/12/1/1/20.200' ),
+			Time::doUnserialize( '1/2000/12/12/1/1/20.200' ),
 			$language
 		);
 

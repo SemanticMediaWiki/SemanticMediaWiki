@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 
@@ -33,7 +34,7 @@ class DispatchingDataValueFormatterTest extends TestCase {
 			->method( 'isFormatterFor' )
 			->willReturn( true );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -55,7 +56,7 @@ class DispatchingDataValueFormatterTest extends TestCase {
 			->method( 'isFormatterFor' )
 			->willReturn( true );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -84,7 +85,7 @@ class DispatchingDataValueFormatterTest extends TestCase {
 		$defaultDataValueFormatter->expects( $this->never() )
 			->method( 'isFormatterFor' );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -107,7 +108,7 @@ class DispatchingDataValueFormatterTest extends TestCase {
 			->method( 'isFormatterFor' )
 			->willReturn( false );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

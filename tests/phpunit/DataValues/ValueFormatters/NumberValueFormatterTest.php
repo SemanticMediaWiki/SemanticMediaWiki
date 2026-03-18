@@ -3,9 +3,9 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
-use SMWNumberValue as NumberValue;
 
 /**
  * @covers \SMW\DataValues\ValueFormatters\NumberValueFormatter
@@ -26,7 +26,7 @@ class NumberValueFormatterTest extends TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$numberValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -81,7 +81,7 @@ class NumberValueFormatterTest extends TestCase {
 	}
 
 	public function testTryToFormatWithUnknownType() {
-		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$numberValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

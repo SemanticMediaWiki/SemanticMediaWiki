@@ -3,6 +3,8 @@
 namespace SMW\Tests\DataValues\ValueFormatters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 
 /**
@@ -24,7 +26,7 @@ class NoValueFormatterTest extends TestCase {
 	}
 
 	public function testIsFormatterForValidation() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -36,7 +38,7 @@ class NoValueFormatterTest extends TestCase {
 	}
 
 	public function testFormat() {
-		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getSerialization' ] )
 			->getMockForAbstractClass();
@@ -45,7 +47,7 @@ class NoValueFormatterTest extends TestCase {
 			->method( 'getSerialization' )
 			->willReturn( 'isFromSerializationMethod' );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem' ] )
 			->getMockForAbstractClass();

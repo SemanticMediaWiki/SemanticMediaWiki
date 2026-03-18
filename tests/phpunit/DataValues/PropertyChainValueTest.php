@@ -3,8 +3,9 @@
 namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\DataValues\PropertyChainValue;
-use SMW\DIProperty;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -57,12 +58,12 @@ class PropertyChainValueTest extends TestCase {
 		$instance->setUserValue( 'Foo.Bar' );
 
 		$this->assertEquals(
-			new DIProperty( 'Bar' ),
+			new Property( 'Bar' ),
 			$instance->getLastPropertyChainValue()->getDataItem()
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIBlob',
+			Blob::class,
 			$instance->getDataItem()
 		);
 	}

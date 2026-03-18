@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataValues\TelephoneUriValue;
+use SMW\DataValues\URIValue;
 
 /**
  * @covers \SMW\DataValues\TelephoneUriValue
@@ -23,7 +24,7 @@ class TelephoneUriValueTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWURIValue',
+			URIValue::class,
 			new TelephoneUriValue()
 		);
 	}
