@@ -81,7 +81,7 @@ class ExporterTest extends TestCase {
 		$provider[] = [ new Blob( 'foo' ), ExpElement::class ];
 		$provider[] = [ new Boolean( true ), ExpElement::class ];
 
-		$provider[] = [ new Concept( 'Foo', '', '', '', '' ), 'SMWExpData' ];
+		$provider[] = [ new Concept( 'Foo', '', '', '', '' ), ExpData::class ];
 
 		return $provider;
 	}
