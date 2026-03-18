@@ -23,8 +23,8 @@ class Flag {
 	 *
 	 * @return bool
 	 */
-	public function is( $flag ): bool {
-		return ( ( (int)$this->flag & $flag ) == $flag );
+	public function is( int $flag ): bool {
+		return ( ( $this->flag & $flag ) == $flag );
 	}
 
 	/**
