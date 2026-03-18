@@ -91,7 +91,7 @@ class SemanticDataSerializer implements Serializer {
 		$incomingProperties = $store->getInProperties( $dataItem );
 		$semanticDataIncoming = new SemanticData( $dataItem );
 
-		if ( count( $incomingProperties ) > 0 ) {
+		if ( count( $incomingProperties ?? [] ) > 0 ) {
 			foreach ( $incomingProperties as $property ) {
 				$subjects = $store->getPropertySubjects( $property, $dataItem );
 
