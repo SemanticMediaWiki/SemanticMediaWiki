@@ -37,7 +37,7 @@ class ExpData implements Element {
 	/**
 	 * Array mapping property URIs to arrays their values, given as
 	 * ExpElement objects.
-	 * @var array of array of SMWElement
+	 * @var array of array of Element
 	 */
 	protected $m_children = [];
 
@@ -174,7 +174,7 @@ class ExpData implements Element {
 	 * Return the list of ExpElement values associated to some property
 	 * (element).
 	 *
-	 * @return ExpResource array of ExpElement
+	 * @return ExpElement[]
 	 */
 	public function getValues( ExpResource $property ) {
 		if ( array_key_exists( $property->getUri(), $this->m_children ) ) {
@@ -190,7 +190,8 @@ class ExpData implements Element {
 	 *
 	 * @param $namespaceId string idetifying a known special namespace (e.g. "rdf")
 	 * @param $localName string of local name (e.g. "type")
-	 * @return array of ExpData
+	 *
+	 * @return ExpData[]
 	 */
 	public function getSpecialValues( $namespaceId, $localName ) {
 		$pe = Exporter::getInstance()->newExpNsResourceById( $namespaceId, $localName );

@@ -196,13 +196,13 @@ class ExportController {
 						   ( $recursiondepth == 0 ? 0 : -1 );
 
 			foreach ( $expData->getProperties() as $property ) {
-				if ( $property->getDataItem() instanceof WikiPageValue ) {
+				if ( $property->getDataItem() instanceof WikiPage ) {
 					$this->queue->add( $property->getDataItem(), 0 ); // no real recursion along properties
 				}
 				$wikipagevalues = false;
 				foreach ( $expData->getValues( $property ) as $valueExpElement ) {
 					$valueResource = $valueExpElement instanceof ExpData ? $valueExpElement->getSubject() : $valueExpElement;
-					if ( !$wikipagevalues && ( $valueResource->getDataItem() instanceof WikiPageValue ) ) {
+					if ( !$wikipagevalues && ( $valueResource->getDataItem() instanceof WikiPage ) ) {
 						$wikipagevalues = true;
 					} elseif ( !$wikipagevalues ) {
 						break;
