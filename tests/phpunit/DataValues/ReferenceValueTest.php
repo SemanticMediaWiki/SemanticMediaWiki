@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
-use SMW\DataValues\Container;
-use SMW\DataValues\Error;
+use SMW\DataItems\Container;
+use SMW\DataItems\Error;
 use SMW\DataValues\ReferenceValue;
 use SMW\Property\SpecificationLookup;
 use SMW\Store;
