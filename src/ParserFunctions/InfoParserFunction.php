@@ -5,8 +5,6 @@ namespace SMW\ParserFunctions;
 use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
-use ParserHooks\HookDefinition;
-use ParserHooks\HookHandler;
 use SMW\Highlighter;
 use SMWOutputs;
 
@@ -18,7 +16,7 @@ use SMWOutputs;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class InfoParserFunction implements HookHandler {
+class InfoParserFunction {
 
 	/**
 	 * @param Parser $parser
@@ -97,37 +95,34 @@ class InfoParserFunction implements HookHandler {
 		return 'A fatal error occurred in the #info parser function';
 	}
 
-	public static function getHookDefinition() {
-		return new HookDefinition(
-			'info',
+	public static function getParamDefinitions(): array {
+		return [
 			[
-				[
-					'name' => 'message',
-					'message' => 'smw-info-par-message',
-				],
-				[
-					'name' => 'icon',
-					'message' => 'smw-info-par-icon',
-					'default' => 'info',
-					'values' => [ 'info', 'warning', 'error', 'note' ],
-				],
-				[
-					'name' => 'max-width',
-					'default' => '',
-					'message' => 'smw-info-par-max-width',
-				],
-				[
-					'name' => 'theme',
-					'default' => '',
-					'values' => [ 'square-border', 'square-border-light' ],
-					'message' => 'smw-info-par-theme',
-				]
+				'name' => 'message',
+				'message' => 'smw-info-par-message',
 			],
 			[
-				'message',
-				'icon'
-			]
-		);
+				'name' => 'icon',
+				'message' => 'smw-info-par-icon',
+				'default' => 'info',
+				'values' => [ 'info', 'warning', 'error', 'note' ],
+			],
+			[
+				'name' => 'max-width',
+				'default' => '',
+				'message' => 'smw-info-par-max-width',
+			],
+			[
+				'name' => 'theme',
+				'default' => '',
+				'values' => [ 'square-border', 'square-border-light' ],
+				'message' => 'smw-info-par-theme',
+			],
+		];
+	}
+
+	public static function getDefaultParams(): array {
+		return [ 'message', 'icon' ];
 	}
 
 }
