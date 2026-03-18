@@ -7,7 +7,6 @@ use MediaWiki\MediaWikiServices;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DataValues\WikiPageValue;
 use SMW\Exception\DataItemException;
 use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Element\ExpResource;
