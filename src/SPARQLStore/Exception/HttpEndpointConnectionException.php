@@ -17,7 +17,8 @@ class HttpEndpointConnectionException extends Exception {
 	/**
 	 * @since  2.1
 	 */
-	public function __construct( string $endpoint, int $errorCode, string $errorText = '' ) {
+	public function __construct( ?string $endpoint, int $errorCode, string $errorText = '' ) {
+		$endpoint ??= '(unknown)';
 		parent::__construct(
 			"Failed to communicate with $endpoint (endpoint), HTTP error: $errorCode" .
 			( $errorText !== '' ? " ($errorText)" : '' ) . "\n"
