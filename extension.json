@@ -47,7 +47,17 @@
 		"SMW\\DIProperty": "src/DataItems/Property.php",
 		"SMWDITime": "src/DataItems/Time.php",
 		"SMWDIUri": "src/DataItems/Uri.php",
-		"SMW\\DIWikiPage": "src/DataItems/WikiPage.php"
+		"SMW\\DIWikiPage": "src/DataItems/WikiPage.php",
+		"SMWDataValue": "src/DataValues/DataValue.php",
+		"SMWConceptValue": "src/DataValues/ConceptValue.php",
+		"SMWErrorValue": "src/DataValues/ErrorValue.php",
+		"SMWNumberValue": "src/DataValues/NumberValue.php",
+		"SMWPropertyListValue": "src/DataValues/PropertyListValue.php",
+		"SMWQuantityValue": "src/DataValues/QuantityValue.php",
+		"SMWRecordValue": "src/DataValues/RecordValue.php",
+		"SMWTimeValue": "src/DataValues/TimeValue.php",
+		"SMWURIValue": "src/DataValues/URIValue.php",
+		"SMWWikiPageValue": "src/DataValues/WikiPageValue.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

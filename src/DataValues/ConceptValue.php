@@ -1,7 +1,10 @@
 <?php
-/**
- * @ingroup SMWDataValues
- */
+
+namespace SMW\DataValues;
+
+use Exception;
+use SMW\DataItems\Concept;
+use SMW\DataItems\DataItem;
 
 /**
  * This datavalue is used as a container for concept descriptions as used
@@ -10,21 +13,21 @@
  * an issue.
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWConceptValue extends SMWDataValue {
+class ConceptValue extends DataValue {
 
 	protected function parseUserValue( $value ) {
 		throw new Exception( 'Concepts cannot be initialized from user-provided strings. This should not happen.' );
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataItem SMWDataItem
+	 * @see DataValue::loadDataItem()
+	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_CONCEPT ) {
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( $dataItem->getDIType() !== DataItem::TYPE_CONCEPT ) {
 			return false;
 		}
 
@@ -35,7 +38,7 @@ class SMWConceptValue extends SMWDataValue {
 	}
 
 	protected function clear() {
-		$this->m_dataitem = new \SMW\DIConcept( '', '', 0, -1, -1, $this->m_typeid );
+		$this->m_dataitem = new Concept( '', '', 0, -1, -1, $this->m_typeid );
 	}
 
 	public function getShortWikiText( $linked = null ) {
@@ -93,3 +96,8 @@ class SMWConceptValue extends SMWDataValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( ConceptValue::class, 'SMWConceptValue' );

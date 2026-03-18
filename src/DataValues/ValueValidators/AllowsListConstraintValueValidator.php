@@ -2,14 +2,14 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use SMW\DataItems\Blob;
 use SMW\DataValues\AbstractMultiValue;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
-use SMWNumberValue as NumberValue;
 
 /**
  * @private
@@ -175,10 +175,10 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		foreach ( $allowedValues as $allowedValue ) {
 
 			if ( is_string( $allowedValue ) ) {
-				$allowedValue = new DIBlob( $allowedValue );
+				$allowedValue = new Blob( $allowedValue );
 			}
 
-			if ( !$allowedValue instanceof DIBlob ) {
+			if ( !$allowedValue instanceof Blob ) {
 				continue;
 			}
 

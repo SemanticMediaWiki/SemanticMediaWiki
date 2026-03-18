@@ -4,6 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Container;
+use SMW\DataItems\Error;
 use SMW\DataValues\ReferenceValue;
 use SMW\Property\SpecificationLookup;
 use SMW\Store;
@@ -111,7 +113,7 @@ class ReferenceValueTest extends TestCase {
 		$container = $instance->getDataItem();
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 
@@ -131,7 +133,7 @@ class ReferenceValueTest extends TestCase {
 		$instance->setUserValue( '' );
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			Error::class,
 			$instance->getDataItem()
 		);
 	}
@@ -160,7 +162,7 @@ class ReferenceValueTest extends TestCase {
 		$instance->setUserValue( 'Foo;<>Foo' );
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			Error::class,
 			$instance->getDataItem()
 		);
 

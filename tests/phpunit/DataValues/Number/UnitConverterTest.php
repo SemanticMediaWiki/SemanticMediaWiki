@@ -5,10 +5,10 @@ namespace SMW\Tests\DataValues\Number;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\NumberValue;
 use SMW\EntityCache;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
-use SMWNumberValue as NumberValue;
 
 /**
  * @covers \SMW\DataValues\Number\UnitConverter
@@ -54,7 +54,7 @@ class UnitConverterTest extends TestCase {
 	public function testErrorOnMissingConversionData() {
 		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
 
-		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$numberValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

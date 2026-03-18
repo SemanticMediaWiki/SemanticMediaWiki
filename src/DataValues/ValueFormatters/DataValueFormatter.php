@@ -2,8 +2,8 @@
 
 namespace SMW\DataValues\ValueFormatters;
 
+use SMW\DataValues\DataValue;
 use SMW\Options;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later

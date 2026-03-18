@@ -2,17 +2,17 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWDIContainer as DIContainer;
-use SMWDITime as DITime;
 
 /**
  * ReferenceValue allows to define additional DV to describe the state of a
@@ -50,7 +50,7 @@ class ReferenceValue extends AbstractMultiValue {
 	const TYPE_ID = '_ref_rec';
 
 	/**
-	 * @var DIProperty[]|null
+	 * @var Property[]|null
 	 */
 	private $properties = null;
 
@@ -68,7 +68,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 */
 	public function setFieldProperties( array $properties ) {
 		foreach ( $properties as $property ) {
-			if ( $property instanceof DIProperty ) {
+			if ( $property instanceof Property ) {
 				$this->properties[] = $property;
 			}
 		}
@@ -223,7 +223,7 @@ class ReferenceValue extends AbstractMultiValue {
 					);
 
 					// Chronological order determined first
-					if ( $dataItem instanceof DITime ) {
+					if ( $dataItem instanceof Time ) {
 						array_unshift( $sortKeys, $dataItem->getSortKey() );
 					} else {
 						$sortKeys[] = $dataItem->getSortKey();
@@ -248,7 +248,7 @@ class ReferenceValue extends AbstractMultiValue {
 		// Remember the data to extend the sortkey
 		$containerSemanticData->setExtensionData( 'sort.data', implode( ';', $sortKeys ) );
 
-		$this->m_dataitem = new DIContainer( $containerSemanticData );
+		$this->m_dataitem = new Container( $containerSemanticData );
 	}
 
 	/**
@@ -270,13 +270,13 @@ class ReferenceValue extends AbstractMultiValue {
 			if (
 				$semanticData instanceof SemanticData &&
 				$semanticData->hasSubSemanticData( $subobjectName ) ) {
-				$this->m_dataitem = new DIContainer(
+				$this->m_dataitem = new Container(
 					$semanticData->findSubSemanticData( $subobjectName )
 				);
 			} else {
 				$semanticData = new ContainerSemanticData( $dataItem );
 				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
-				$this->m_dataitem = new DIContainer( $semanticData );
+				$this->m_dataitem = new Container( $semanticData );
 			}
 
 			return true;
@@ -292,7 +292,7 @@ class ReferenceValue extends AbstractMultiValue {
 		} else {
 			$subobjectName = '_REF' . md5( $value );
 
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$this->m_contextPage->getDBkey(),
 				$this->m_contextPage->getNamespace(),
 				$this->m_contextPage->getInterwiki(),

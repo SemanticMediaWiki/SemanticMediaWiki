@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueValidators;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMWDataValue as DataValue;
+use SMW\DataValues\DataValue;
 
 /**
  * @private

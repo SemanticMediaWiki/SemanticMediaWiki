@@ -3,10 +3,10 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
 use SMW\Highlighter;
 use SMW\Utils\Normalizer;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later

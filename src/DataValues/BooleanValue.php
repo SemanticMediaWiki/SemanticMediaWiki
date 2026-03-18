@@ -3,11 +3,10 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Parser\Sanitizer;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * This datavalue implements the handling of Boolean datavalues.
@@ -51,7 +50,7 @@ class BooleanValue extends DataValue {
 			$this->m_caption = $value;
 		}
 
-		$this->m_dataitem = new DIBoolean(
+		$this->m_dataitem = new Boolean(
 			$this->doParseBoolValue( $value )
 		);
 	}

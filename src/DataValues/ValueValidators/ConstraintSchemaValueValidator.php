@@ -3,11 +3,11 @@
 namespace SMW\DataValues\ValueValidators;
 
 use SMW\Constraint\ConstraintCheckRunner;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
-use SMWDataValue as DataValue;
 
 /**
  * @private
@@ -40,7 +40,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	private $isCommandLineMode = false;
 
 	/**
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	private $contextPage;
 

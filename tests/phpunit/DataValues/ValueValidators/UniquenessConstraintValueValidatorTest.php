@@ -5,6 +5,7 @@ namespace SMW\Tests\DataValues\ValueValidators;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\UniqueValueConstraint;
 use SMW\DataItemFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
@@ -52,7 +53,7 @@ class UniquenessConstraintValueValidatorTest extends TestCase {
 	public function testValidate_HasNoConstraintViolation() {
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();
@@ -96,7 +97,7 @@ class UniquenessConstraintValueValidatorTest extends TestCase {
 	public function testValidate_HasConstraintViolation() {
 		$property = $this->dataItemFactory->newDIProperty( __METHOD__ );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getContextPage' ] )
 			->getMockForAbstractClass();

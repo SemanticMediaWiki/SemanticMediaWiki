@@ -3,6 +3,7 @@
 namespace SMW\Tests\DataValues\ValueValidators;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\DataValues\ValueValidators\CompoundConstraintValueValidator;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Tests\TestEnvironment;
@@ -65,7 +66,7 @@ class CompoundConstraintValueValidatorTest extends TestCase {
 		$instance = new CompoundConstraintValueValidator();
 		$instance->setLogger( $this->spyLogger );
 
-		$this->expectException( '\RuntimeException' );
+		$this->expectException( RuntimeException::class );
 		$instance->validate( 'Foo' );
 	}
 

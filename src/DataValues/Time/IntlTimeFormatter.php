@@ -3,8 +3,8 @@
 namespace SMW\DataValues\Time;
 
 use MediaWiki\Language\Language;
+use SMW\DataItems\Time;
 use SMW\Localizer\Localizer;
-use SMWDITime as DITime;
 
 /**
  * @license GPL-2.0-or-later
@@ -27,7 +27,7 @@ class IntlTimeFormatter {
 	 * @since 2.4
 	 */
 	public function __construct(
-		private readonly DITime $dataItem,
+		private readonly Time $dataItem,
 		private ?Language $language = null,
 	) {
 		if ( $this->language === null ) {

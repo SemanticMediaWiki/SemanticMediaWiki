@@ -1,12 +1,13 @@
 <?php
 
+namespace SMW\DataValues;
+
+use MediaWiki\Parser\Sanitizer;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Uri;
 use SMW\Encoder;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Message;
-
-/**
- * @ingroup SMWDataValues
- */
 
 define( 'SMW_URI_MODE_EMAIL', 1 );
 define( 'SMW_URI_MODE_URI', 3 );
@@ -19,9 +20,9 @@ define( 'SMW_URI_MODE_TEL', 5 );
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWURIValue extends SMWDataValue {
+class URIValue extends DataValue {
 
 	/**
 	 * Raw value without encoding
@@ -189,7 +190,7 @@ class SMWURIValue extends SMWDataValue {
 
 		// Now create the URI data item:
 		try {
-			$this->m_dataitem = new SMWDIUri( $scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT ) );
+			$this->m_dataitem = new Uri( $scheme, $hierpart, $query, $fragment, !$this->getOption( self::OPT_QUERY_CONTEXT ) );
 		} catch ( DataItemException $e ) {
 			$this->addErrorMsg( [ 'smw_baduri', $this->m_wikitext ] );
 		}
@@ -206,12 +207,12 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataItem SMWDataItem
+	 * @see DataValue::loadDataItem()
+	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_URI ) {
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( $dataItem->getDIType() !== DataItem::TYPE_URI ) {
 			return false;
 		}
 
@@ -329,13 +330,13 @@ class SMWURIValue extends SMWDataValue {
 	 * dataitem if the dataitem was not set. This makes it easier to
 	 * write code that avoids errors even if the data was not
 	 * initialized properly.
-	 * @return SMWDIUri
+	 * @return Uri
 	 */
 	protected function getUriDataitem() {
 		if ( isset( $this->m_dataitem ) ) {
 			return $this->m_dataitem;
 		} else { // note: use "noprotocol" to avoid accidental use in an MW link, see getURL()
-			return new SMWDIUri( 'noprotocol', 'x', '', '', $this->m_typeid );
+			return new Uri( 'noprotocol', 'x', '', '', $this->m_typeid );
 		}
 	}
 
@@ -370,3 +371,8 @@ class SMWURIValue extends SMWDataValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( URIValue::class, 'SMWURIValue' );

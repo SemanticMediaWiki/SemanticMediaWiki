@@ -1,7 +1,8 @@
 <?php
-/**
- * @ingroup SMWDataValues
- */
+
+namespace SMW\DataValues;
+
+use SMW\DataItems\DataItem;
 
 /**
  * This datavalue implements error datavalues, a kind of pseudo data value that
@@ -9,14 +10,14 @@
  * value could be created. It is always invalid and never gets stored or
  * exported, but it can help to transport an error message.
  *
- * @note SMWDataValue will return a data item of type SMWDIError for invalid
+ * @note DataValue will return a data item of type SMWDIError for invalid
  * data values. Hence this is the DI type of this DV, even if not mentioned in
  * this file.
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWErrorValue extends SMWDataValue {
+class ErrorValue extends DataValue {
 
 	public function __construct( $typeid, $errormsg = '', $uservalue = '', $caption = false ) {
 		parent::__construct( $typeid );
@@ -34,12 +35,12 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataItem SMWDataItem
+	 * @see DataValue::loadDataItem()
+	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_ERROR ) {
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( $dataItem->getDIType() == DataItem::TYPE_ERROR ) {
 			$this->addError( $dataItem->getErrors() );
 			$this->m_caption = $this->getErrorText();
 			return true;
@@ -77,3 +78,8 @@ class SMWErrorValue extends SMWDataValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( ErrorValue::class, 'SMWErrorValue' );

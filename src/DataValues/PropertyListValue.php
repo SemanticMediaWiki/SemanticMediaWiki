@@ -1,12 +1,12 @@
 <?php
 
-use SMW\DIProperty;
+namespace SMW\DataValues;
+
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
-
-/**
- * @ingroup SMWDataValues
- */
 
 /**
  * This datavalue implements special processing suitable for defining the list
@@ -15,12 +15,12 @@ use SMW\Localizer\Localizer;
  * namespace prefix.
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWPropertyListValue extends SMWDataValue {
+class PropertyListValue extends DataValue {
 	/**
 	 * List of properte data items that are stored.
-	 * @var array of DIProperty
+	 * @var array of Property
 	 */
 	protected $m_diProperties;
 
@@ -53,9 +53,9 @@ class SMWPropertyListValue extends SMWDataValue {
 			$propertyName = $localizer->normalizeTitleText( $propertyName );
 
 			try {
-				$diProperty = SMW\DIProperty::newFromUserLabel( $propertyName );
+				$diProperty = Property::newFromUserLabel( $propertyName );
 			} catch ( DataItemException $e ) {
-				$diProperty = new SMW\DIProperty( 'Error' );
+				$diProperty = new Property( 'Error' );
 				$this->addErrorMsg( [ 'smw_noproperty', $propertyName ] );
 			}
 
@@ -63,18 +63,18 @@ class SMWPropertyListValue extends SMWDataValue {
 			$stringValue .= ( $stringValue ? ';' : '' ) . $diProperty->getKey();
 		}
 
-		$this->m_dataitem = new SMWDIBlob( $stringValue );
+		$this->m_dataitem = new Blob( $stringValue );
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 *
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( !$dataItem instanceof SMWDIBlob ) {
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 
@@ -85,13 +85,13 @@ class SMWPropertyListValue extends SMWDataValue {
 			$property = null;
 
 			try {
-				$property = new SMW\DIProperty( $propertyKey );
+				$property = new Property( $propertyKey );
 			} catch ( DataItemException $e ) {
-				$property = new SMW\DIProperty( 'Error' );
+				$property = new Property( 'Error' );
 				$this->addErrorMsg( [ 'smw-datavalue-propertylist-invalid-property-key', $dataItem->getString(), $propertyKey ] );
 			}
 
-			if ( $property instanceof DIProperty ) {
+			if ( $property instanceof Property ) {
 				 // Find a possible redirect
 				$this->m_diProperties[] = $property->getRedirectTarget();
 			}
@@ -159,3 +159,8 @@ class SMWPropertyListValue extends SMWDataValue {
 		}
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( PropertyListValue::class, 'SMWPropertyListValue' );

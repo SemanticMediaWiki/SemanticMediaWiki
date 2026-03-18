@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\ValueValidators;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueParsers\AllowsListValueParser;
 use SMW\DataValues\ValueValidators\AllowsListConstraintValueValidator;
 use SMW\Property\SpecificationLookup;
@@ -60,7 +61,7 @@ class AllowsListConstraintValueValidatorTest extends TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
@@ -100,7 +101,7 @@ class AllowsListConstraintValueValidatorTest extends TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
@@ -153,7 +154,7 @@ class AllowsListConstraintValueValidatorTest extends TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
@@ -202,7 +203,7 @@ class AllowsListConstraintValueValidatorTest extends TestCase {
 				$this->dataItemFactory->newDIBlob( 'list_foo' ),
 				$this->dataItemFactory->newDIBlob( 'list_bar' ) ] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();
@@ -245,7 +246,7 @@ class AllowsListConstraintValueValidatorTest extends TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID', 'getWikiValue' ] )
 			->getMockForAbstractClass();

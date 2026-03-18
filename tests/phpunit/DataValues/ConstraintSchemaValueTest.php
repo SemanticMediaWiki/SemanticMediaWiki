@@ -4,8 +4,8 @@ namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\DataValues\ConstraintSchemaValue;
-use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
 
@@ -59,7 +59,7 @@ class ConstraintSchemaValueTest extends TestCase {
 		);
 
 		$instance->setContextPage(
-			DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY )
 		);
 
 		$instance->setProperty( $this->dataItemFactory->newDIProperty( 'Bar' ) );
@@ -90,7 +90,7 @@ class ConstraintSchemaValueTest extends TestCase {
 		);
 
 		$instance->setContextPage(
-			DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY )
 		);
 
 		$instance->setUserValue( 'Foo' );
@@ -121,7 +121,7 @@ class ConstraintSchemaValueTest extends TestCase {
 		);
 
 		$instance->setContextPage(
-			DIWikiPage::newFromText( 'Foo', NS_CATEGORY )
+			WikiPage::newFromText( 'Foo', NS_CATEGORY )
 		);
 
 		$instance->setUserValue( 'Foo' );

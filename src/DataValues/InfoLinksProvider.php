@@ -2,16 +2,15 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Linker\Linker;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Property\SpecificationLookup;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
 use SMWInfolink as Infolink;
-use SMWWikiPageValue as WikiPageValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -56,7 +55,7 @@ class InfoLinksProvider {
 	private $serviceLinkParameters = false;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $disabledLinksByKey = [ '_ERRT' ];
 
@@ -254,7 +253,7 @@ class InfoLinksProvider {
 
 		$servicelinks = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_SERV' )
+			new Property( '_SERV' )
 		);
 
 		foreach ( $servicelinks as $servicelink ) {
@@ -265,7 +264,7 @@ class InfoLinksProvider {
 	}
 
 	private function makeLink( $dataItem, $args ) {
-		if ( !( $dataItem instanceof DIBlob ) ) {
+		if ( !( $dataItem instanceof Blob ) ) {
 			return;
 		}
 

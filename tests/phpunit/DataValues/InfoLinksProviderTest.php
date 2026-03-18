@@ -5,14 +5,15 @@ namespace SMW\Tests\DataValues;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\InfoLinksProvider;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Tests\TestEnvironment;
-use SMWNumberValue as NumberValue;
 
 /**
  * @covers \SMW\DataValues\InfoLinksProvider
@@ -63,7 +64,7 @@ class InfoLinksProviderTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

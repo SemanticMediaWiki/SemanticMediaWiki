@@ -1,18 +1,18 @@
 <?php
 
+namespace SMW\DataValues;
+
 use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\Sanitizer;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Pipetrick;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Image;
-
-/**
- * @ingroup SMWDataValues
- */
 
 /**
  * This datavalue implements special processing suitable for defining
@@ -33,9 +33,9 @@ use SMW\Utils\Image;
  *
  * @author Nikolas Iwan
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWWikiPageValue extends SMWDataValue {
+class WikiPageValue extends DataValue {
 
 	/**
 	 * Whether text transformation should be suppressed or not.
@@ -162,17 +162,17 @@ class SMWWikiPageValue extends SMWDataValue {
 			// T:P0427 If the user value says `ab c*` then make sure to use this one
 			// instead of the transformed DBKey which would be `Ab c*`
 			if ( $title !== null && $title->getNamespace() === NS_MAIN && $this->getOption( 'isCapitalLinks' ) === false ) {
-				$this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
+				$this->m_dataitem = new WikiPage( $value, NS_MAIN );
 				return $this->m_dataitem;
 			// If we know that it is a wikipage in a query context and the wiki
 			// requires `isCapitalLinks` then use the standard transformation so
 			// they appear as standard links even though the user input was `abc`.
 			// T:P0902 (`[[Help:]]`)
 			} elseif ( $title !== null ) {
-				$this->m_dataitem = DIWikiPage::newFromTitle( $title );
+				$this->m_dataitem = WikiPage::newFromTitle( $title );
 				return $this->m_dataitem;
 			} elseif ( !$localizer->getNsIndex( substr( $value, 0, -1 ) ) ) {
-				$this->m_dataitem = new DIWikiPage( $value, NS_MAIN );
+				$this->m_dataitem = new WikiPage( $value, NS_MAIN );
 				return $this->m_dataitem;
 			}
 		}
@@ -209,22 +209,22 @@ class SMWWikiPageValue extends SMWDataValue {
 			$this->m_fragment = str_replace( ' ', '_', $this->m_title->getFragment() );
 			$this->m_prefixedtext = '';
 			$this->m_id = -1; // unset id
-			$this->m_dataitem = DIWikiPage::newFromTitle( $this->m_title, $this->m_typeid );
+			$this->m_dataitem = WikiPage::newFromTitle( $this->m_title, $this->m_typeid );
 		}
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
-	 * @param $dataItem SMWDataItem
+	 * @see DataValue::loadDataItem()
+	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( SMWDataItem $dataItem ) {
-		if ( $dataItem->getDIType() == SMWDataItem::TYPE_CONTAINER ) {
+	protected function loadDataItem( DataItem $dataItem ) {
+		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
 			// might throw an exception, we just pass it through
 			$dataItem = $dataItem->getSemanticData()->getSubject();
 		}
 
-		if ( $dataItem->getDIType() !== SMWDataItem::TYPE_WIKIPAGE ) {
+		if ( $dataItem->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
 			return false;
 		}
 
@@ -437,7 +437,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 * Display the "long" value in HTML. This behaves largely like
 	 * getLongWikiText() but does not embed images.
 	 *
-	 * @param null $linker mixed if a Linker is given, the result will be linked
+	 * @param mixed $linker mixed if a Linker is given, the result will be linked
 	 * @return string
 	 */
 	public function getLongHTMLText( $linker = null ) {
@@ -581,7 +581,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *
 	 * Get MediaWiki's ID for this value or 0 if not available.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function getArticleID() {
 		if ( $this->m_id === false ) {
@@ -596,7 +596,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	 *
 	 * Get namespace constant for this value.
 	 *
-	 * @return integer
+	 * @return int
 	 */
 	private function getNamespace() {
 		return $this->m_dataitem->getNamespace();
@@ -670,7 +670,7 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 	/**
-	 * @see SMWDataValue::getPreferredCaption
+	 * @see DataValue::getPreferredCaption
 	 *
 	 * @since 2.4
 	 *
@@ -798,3 +798,8 @@ class SMWWikiPageValue extends SMWDataValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( WikiPageValue::class, 'SMWWikiPageValue' );
