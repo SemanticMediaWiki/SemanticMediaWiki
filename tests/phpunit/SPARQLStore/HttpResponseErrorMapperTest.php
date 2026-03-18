@@ -2,10 +2,8 @@
 
 namespace SMW\Tests\SPARQLStore;
 
-use Onoi\HttpRequest\HttpRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
-use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SPARQLStore\HttpResponseErrorMapper;
 
 /**
@@ -20,108 +18,51 @@ use SMW\SPARQLStore\HttpResponseErrorMapper;
 class HttpResponseErrorMapperTest extends TestCase {
 
 	public function testCanConstruct() {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
 		$this->assertInstanceOf(
 			HttpResponseErrorMapper::class,
-			new HttpResponseErrorMapper( $httpRequest )
+			new HttpResponseErrorMapper()
 		);
 	}
 
 	/**
-	 * @dataProvider curlErrorCodeThatNotThrowsExceptionProvider
+	 * @dataProvider gracefulHttpCodeProvider
 	 */
-	public function testResponseToHttpRequestThatNotThrowsException( $curlErrorCode ) {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
+	public function testGracefulHttpCodes( int $httpCode ) {
+		$instance = new HttpResponseErrorMapper();
+		$instance->mapErrorResponse( $httpCode, '', 'http://endpoint', 'SELECT ?s' );
 
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastErrorCode' )
-			->willReturn( $curlErrorCode );
-
-		$instance = new HttpResponseErrorMapper( $httpRequest );
-		$instance->mapErrorResponse( 'Foo', 'Bar' );
-	}
-
-	public function testResponseToHttpRequestForInvalidErrorCodeThrowsException() {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastErrorCode' )
-			->willReturn( 99999 );
-
-		$instance = new HttpResponseErrorMapper( $httpRequest );
-
-		$this->expectException( HttpEndpointConnectionException::class );
-		$instance->mapErrorResponse( 'Foo', 'Bar' );
+		// No exception = pass
+		$this->addToAssertionCount( 1 );
 	}
 
 	/**
-	 * @dataProvider httpCodeThatThrowsExceptionProvider
+	 * @dataProvider throwingHttpCodeProvider
 	 */
-	public function testResponseToHttpRequesForHttpErrorThatThrowsException( $httpErrorCode ) {
-		// PHP doesn't know CURLE_HTTP_RETURNED_ERROR therefore using 22
-		// http://curl.haxx.se/libcurl/c/libcurl-errors.html
-
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastErrorCode' )
-			->willReturn( 22 );
-
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastTransferInfo' )
-			->with( CURLINFO_HTTP_CODE )
-			->willReturn( $httpErrorCode );
-
-		$instance = new HttpResponseErrorMapper( $httpRequest );
+	public function testThrowingHttpCodes( int $httpCode ) {
+		$instance = new HttpResponseErrorMapper();
 
 		$this->expectException( BadHttpEndpointResponseException::class );
-		$instance->mapErrorResponse( 'Foo', 'Bar' );
+		$instance->mapErrorResponse( $httpCode, '', 'http://endpoint', 'SELECT ?s' );
 	}
 
-	public function testResponseToHttpRequesForHttpErrorThatNotThrowsException() {
-		$httpRequest = $this->getMockBuilder( HttpRequest::class )
-			->disableOriginalConstructor()
-			->getMock();
+	public function testConnectionFailureIsGraceful() {
+		$instance = new HttpResponseErrorMapper();
+		$instance->mapErrorResponse( 0, 'Connection refused', 'http://endpoint', 'SELECT ?s' );
 
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastErrorCode' )
-			->willReturn( 22 );
-
-		$httpRequest->expects( $this->once() )
-			->method( 'getLastTransferInfo' )
-			->with( CURLINFO_HTTP_CODE )
-			->willReturn( 404 );
-
-		$instance = new HttpResponseErrorMapper( $httpRequest );
-		$instance->mapErrorResponse( 'Foo', 'Bar' );
+		$this->addToAssertionCount( 1 );
 	}
 
-	public function curlErrorCodeThatNotThrowsExceptionProvider() {
-		$provider = [
-			[ 52 ],
-			[ CURLE_GOT_NOTHING ],
-			[ CURLE_COULDNT_CONNECT ]
+	public static function gracefulHttpCodeProvider() {
+		return [
+			'not found' => [ 404 ],
 		];
-
-		return $provider;
 	}
 
-	public function httpCodeThatThrowsExceptionProvider() {
-		$provider = [
-			[ 400 ],
-			[ 500 ],
-			[ 503 ]
+	public static function throwingHttpCodeProvider() {
+		return [
+			'malformed' => [ 400 ],
+			'refused' => [ 500 ],
+			'other' => [ 503 ],
 		];
-
-		return $provider;
 	}
 }

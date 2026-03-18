@@ -311,22 +311,6 @@ return ( static function () {
 		# #
 
 		##
-		# @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1306
-		#
-		# Setting to explicitly force a CURLOPT_HTTP_VERSION for the endpoint communication
-		# and should not be changed unless an error as in 	#1306 was encountered.
-		#
-		# @see http://curl.haxx.se/libcurl/c/CURLOPT_HTTP_VERSION.html reads "... libcurl
-		# to use the specific HTTP versions. This is not sensible to do unless you have
-		# a good reason.""
-		#
-		# @since 2.3
-		# @default false === means to use the default as determined by cURL
-		##
-		'smwgSparqlRepositoryConnectorForcedHttpVersion' => false,
-		# #
-
-		##
 		# Property replication exemption list
 		#
 		# Listed properties will be exempted from the replication process for a

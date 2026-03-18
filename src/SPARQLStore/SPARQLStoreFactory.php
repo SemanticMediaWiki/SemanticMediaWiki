@@ -131,10 +131,6 @@ class SPARQLStoreFactory {
 			$settings->dotGet( 'smwgSparqlEndpoint.data', '' )
 		);
 
-		$repositoryConnectionProvider->setHttpVersionTo(
-			$settings->get( 'smwgSparqlRepositoryConnectorForcedHttpVersion' )
-		);
-
 		$repositoryConnectionProvider->setFeatureSet(
 			$settings->get( 'smwgSparqlRepositoryFeatures' )
 		);

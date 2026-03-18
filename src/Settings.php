@@ -89,7 +89,6 @@ class Settings extends Options {
 			'smwgSparqlEndpoint' => $GLOBALS['smwgSparqlEndpoint'],
 			'smwgSparqlDefaultGraph' => $GLOBALS['smwgSparqlDefaultGraph'],
 			'smwgSparqlRepositoryFeatures' => $GLOBALS['smwgSparqlRepositoryFeatures'],
-			'smwgSparqlRepositoryConnectorForcedHttpVersion' => $GLOBALS['smwgSparqlRepositoryConnectorForcedHttpVersion'],
 			'smwgSparqlReplicationPropertyExemptionList' => $GLOBALS['smwgSparqlReplicationPropertyExemptionList'],
 			'smwgSparqlQFeatures' => $GLOBALS['smwgSparqlQFeatures'],
 			'smwgNamespaceIndex' => $GLOBALS['smwgNamespaceIndex'],
