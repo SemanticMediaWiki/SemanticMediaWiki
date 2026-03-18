@@ -15,11 +15,6 @@ use SMW\Schema\SchemaList;
 class ConstraintCheckRunner {
 
 	/**
-	 * @var ConstraintRegistry
-	 */
-	private $constraintRegistry;
-
-	/**
 	 * @var
 	 */
 	private $constraintChecks = [];
@@ -46,11 +41,8 @@ class ConstraintCheckRunner {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param ConstraintRegistry $constraintRegistry
 	 */
-	public function __construct( ConstraintRegistry $constraintRegistry ) {
-		$this->constraintRegistry = $constraintRegistry;
+	public function __construct( private readonly ConstraintRegistry $constraintRegistry ) {
 	}
 
 	/**

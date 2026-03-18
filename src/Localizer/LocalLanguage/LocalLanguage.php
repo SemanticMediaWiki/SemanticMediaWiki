@@ -20,11 +20,6 @@ class LocalLanguage {
 	private static $instance = null;
 
 	/**
-	 * @var LanguageContents
-	 */
-	private $languageContents;
-
-	/**
 	 * @var string
 	 */
 	private $languageCode = 'en';
@@ -56,11 +51,8 @@ class LocalLanguage {
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param LanguageContents $languageContents
 	 */
-	public function __construct( LanguageContents $languageContents ) {
-		$this->languageContents = $languageContents;
+	public function __construct( private readonly LanguageContents $languageContents ) {
 	}
 
 	/**

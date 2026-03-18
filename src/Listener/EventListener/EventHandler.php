@@ -19,17 +19,9 @@ class EventHandler {
 	private static $instance = null;
 
 	/**
-	 * @var EventDispatcher
-	 */
-	private $eventDispatcher = null;
-
-	/**
 	 * @since 2.2
-	 *
-	 * @param EventDispatcher $eventDispatcher
 	 */
-	public function __construct( EventDispatcher $eventDispatcher ) {
-		$this->eventDispatcher = $eventDispatcher;
+	public function __construct( private readonly EventDispatcher $eventDispatcher ) {
 	}
 
 	/**

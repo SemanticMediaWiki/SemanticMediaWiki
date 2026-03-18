@@ -11,11 +11,6 @@ namespace SMW\Utils;
 class Lru {
 
 	/**
-	 * @var int
-	 */
-	private $size;
-
-	/**
 	 * @var array
 	 */
 	private $cache = [];
@@ -25,11 +20,8 @@ class Lru {
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param int $size
 	 */
-	public function __construct( $size = 1000 ) {
-		$this->size = $size;
+	public function __construct( private $size = 1000 ) {
 	}
 
 	/**

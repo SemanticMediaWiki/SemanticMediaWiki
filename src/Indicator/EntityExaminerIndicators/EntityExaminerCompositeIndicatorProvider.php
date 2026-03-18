@@ -17,16 +17,6 @@ use SMW\MediaWiki\Permission\PermissionExaminerAware;
 class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProvider, PermissionExaminerAware {
 
 	/**
-	 * @var CompositeIndicatorHtmlBuilder
-	 */
-	private $compositeIndicatorHtmlBuilder;
-
-	/**
-	 * @var
-	 */
-	private $indicatorProviders = [];
-
-	/**
 	 * @var PermissionExaminer
 	 */
 	private $permissionExaminer;
@@ -43,13 +33,11 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder
-	 * @param array $indicatorProviders
 	 */
-	public function __construct( CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder, array $indicatorProviders ) {
-		$this->compositeIndicatorHtmlBuilder = $compositeIndicatorHtmlBuilder;
-		$this->indicatorProviders = $indicatorProviders;
+	public function __construct(
+		private readonly CompositeIndicatorHtmlBuilder $compositeIndicatorHtmlBuilder,
+		private readonly array $indicatorProviders,
+	) {
 	}
 
 	/**

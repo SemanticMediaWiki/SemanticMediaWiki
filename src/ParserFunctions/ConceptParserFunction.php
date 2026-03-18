@@ -27,29 +27,17 @@ use SMWQueryProcessor as QueryProcessor;
 class ConceptParserFunction {
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
 	 * @var PostProcHandler
 	 */
 	private $postProcHandler;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
+	public function __construct(
+		private readonly ParserData $parserData,
+		private readonly MessageFormatter $messageFormatter,
+	) {
 	}
 
 	/**

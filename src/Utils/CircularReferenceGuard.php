@@ -16,22 +16,14 @@ class CircularReferenceGuard {
 	private static $circularRefGuard = [];
 
 	/**
-	 * @var string
-	 */
-	private $namespace = '';
-
-	/**
 	 * @var int
 	 */
 	private $maxRecursionDepth = 1;
 
 	/**
 	 * @since 2.2
-	 *
-	 * @param string $namespace
 	 */
-	public function __construct( $namespace = '' ) {
-		$this->namespace = $namespace;
+	public function __construct( private $namespace = '' ) {
 	}
 
 	/**

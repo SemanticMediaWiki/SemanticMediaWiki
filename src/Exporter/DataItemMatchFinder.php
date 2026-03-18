@@ -19,24 +19,12 @@ use SMWDataItem as DataItem;
 class DataItemMatchFinder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var string
-	 */
-	private $wikiNamespace;
-
-	/**
 	 * @since 2.4
-	 *
-	 * @param Store $store
-	 * @param string $wikiNamespace
 	 */
-	public function __construct( Store $store, $wikiNamespace = '' ) {
-		$this->store = $store;
-		$this->wikiNamespace = $wikiNamespace;
+	public function __construct(
+		private readonly Store $store,
+		private $wikiNamespace = '',
+	) {
 	}
 
 	/**

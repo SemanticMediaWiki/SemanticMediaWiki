@@ -22,11 +22,6 @@ class SchemaTypes implements JsonSerializable {
 	private $schemaTypes = [];
 
 	/**
-	 * @var string
-	 */
-	private $dir = '';
-
-	/**
 	 * @var bool
 	 */
 	private $onRegisterSchemaTypes = false;
@@ -82,11 +77,8 @@ class SchemaTypes implements JsonSerializable {
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param string $dir
 	 */
-	public function __construct( string $dir = '' ) {
-		$this->dir = $dir;
+	public function __construct( private string $dir = '' ) {
 	}
 
 	/**

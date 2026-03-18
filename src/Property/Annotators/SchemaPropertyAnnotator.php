@@ -15,19 +15,13 @@ use SMW\Schema\Schema;
 class SchemaPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var Schema
-	 */
-	private $schema;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param Schema|null $schema
 	 */
-	public function __construct( Annotator $propertyAnnotator, ?Schema $schema = null ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly ?Schema $schema = null,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->schema = $schema;
 	}
 
 	protected function addPropertyValues() {

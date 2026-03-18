@@ -18,17 +18,9 @@ use SMWExporter as Exporter;
 class ExpDataFactory {
 
 	/**
-	 * @var Exporter
-	 */
-	private $exporter;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param Exporter $exporter
 	 */
-	public function __construct( Exporter $exporter ) {
-		$this->exporter = $exporter;
+	public function __construct( private readonly Exporter $exporter ) {
 	}
 
 	/**

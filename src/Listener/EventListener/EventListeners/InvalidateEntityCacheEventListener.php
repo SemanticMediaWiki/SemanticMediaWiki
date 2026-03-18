@@ -20,17 +20,9 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	const EVENT_ID = 'InvalidateEntityCache';
 
 	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache ) {
-		$this->entityCache = $entityCache;
+	public function __construct( private EntityCache $entityCache ) {
 	}
 
 	/**

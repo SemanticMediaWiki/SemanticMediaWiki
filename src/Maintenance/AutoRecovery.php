@@ -19,17 +19,7 @@ class AutoRecovery {
 	/**
 	 * @var string
 	 */
-	private $identifier = '';
-
-	/**
-	 * @var string
-	 */
 	private $site = '';
-
-	/**
-	 * @var File
-	 */
-	private $file;
 
 	/**
 	 * @var bool
@@ -50,13 +40,11 @@ class AutoRecovery {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $identifier
-	 * @param File|null $file
 	 */
-	public function __construct( $identifier, ?File $file = null ) {
-		$this->identifier = $identifier;
-		$this->file = $file;
+	public function __construct(
+		private $identifier,
+		private ?File $file = null,
+	) {
 		$this->site = Site::id();
 
 		if ( $this->file === null ) {

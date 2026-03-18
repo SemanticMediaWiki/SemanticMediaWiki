@@ -15,20 +15,12 @@ class ConnRef {
 	/**
 	 * @var array
 	 */
-	private $connectionProviders = [];
-
-	/**
-	 * @var array
-	 */
 	private $connections = [];
 
 	/**
 	 * @since 3.0
-	 *
-	 * @param array $connectionProviders
 	 */
-	public function __construct( array $connectionProviders ) {
-		$this->connectionProviders = $connectionProviders;
+	public function __construct( private array $connectionProviders ) {
 	}
 
 	/**

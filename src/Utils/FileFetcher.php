@@ -18,11 +18,6 @@ use RuntimeException;
 class FileFetcher {
 
 	/**
-	 * @var string
-	 */
-	private $dir = '';
-
-	/**
 	 * @var int
 	 */
 	private $maxDepth = -1;
@@ -34,11 +29,8 @@ class FileFetcher {
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param string $dir
 	 */
-	public function __construct( string $dir = '' ) {
-		$this->dir = $dir;
+	public function __construct( private string $dir = '' ) {
 	}
 
 	/**

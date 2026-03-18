@@ -24,30 +24,17 @@ use SMWDataItem as DataItem;
 class AnnotationProcessor {
 
 	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
-
-	/**
-	 * @var DataValueFactory
-	 */
-	private $dataValueFactory;
-
-	/**
 	 * @var bool
 	 */
 	private $canAnnotate = true;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param SemanticData $semanticData
-	 * @param DataValueFactory|null $dataValueFactory
 	 */
-	public function __construct( SemanticData $semanticData, ?DataValueFactory $dataValueFactory = null ) {
-		$this->semanticData = $semanticData;
-		$this->dataValueFactory = $dataValueFactory;
-
+	public function __construct(
+		private readonly SemanticData $semanticData,
+		private ?DataValueFactory $dataValueFactory = null,
+	) {
 		if ( $this->dataValueFactory === null ) {
 			$this->dataValueFactory = DataValueFactory::getInstance();
 		}

@@ -25,21 +25,6 @@ use SMW\Store;
 class ProtectionValidator {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
-	 * @var PermissionManager
-	 */
-	private $permissionManager;
-
-	/**
 	 * @var bool|string
 	 */
 	private $editProtectionRight = false;
@@ -66,15 +51,12 @@ class ProtectionValidator {
 
 	/**
 	 * @since 2.5
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
-	 * @param PermissionManager $permissionManager
 	 */
-	public function __construct( Store $store, EntityCache $entityCache, PermissionManager $permissionManager ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
-		$this->permissionManager = $permissionManager;
+	public function __construct(
+		private readonly Store $store,
+		private readonly EntityCache $entityCache,
+		private readonly PermissionManager $permissionManager,
+	) {
 	}
 
 	/**

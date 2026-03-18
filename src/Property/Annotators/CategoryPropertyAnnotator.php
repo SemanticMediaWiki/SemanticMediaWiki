@@ -23,11 +23,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
-	 * @var array
-	 */
-	private $categories;
-
-	/**
 	 * @var array|null
 	 */
 	private $hiddenCategories = null;
@@ -56,13 +51,12 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Annotator $propertyAnnotator
-	 * @param array $categories
 	 */
-	public function __construct( Annotator $propertyAnnotator, array $categories ) {
+	public function __construct(
+		Annotator $propertyAnnotator,
+		private readonly array $categories,
+	) {
 		parent::__construct( $propertyAnnotator );
-		$this->categories = $categories;
 	}
 
 	/**

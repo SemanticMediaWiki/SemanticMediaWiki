@@ -8,9 +8,6 @@
 namespace SMW\Property;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SQLStore\Lookup\MonolingualTextLookup;
 
 class LanguageFalldownAndInverse {
 
@@ -333,37 +330,12 @@ class LanguageFalldownAndInverse {
 		]
 	];
 
-	/**
-	 * @var MonolingualTextLookup
-	 */
-	private $monolingualTextLookup;
-
-	/**
-	 * @var DIWikiPage
-	 */
-	private $subject;
-
-	/**
-	 * @var DIProperty
-	 */
-	private $property;
-
-	/**
-	 * @var string
-	 */
-	private $languageCode;
-
-	/**
-	 * @param MonolingualTextLookup $monolingualTextLookup
-	 * @param DIWikiPage $subject
-	 * @param DIProperty $property
-	 * @param string $languageCode
-	 */
-	public function __construct( $monolingualTextLookup, $subject, $property, $languageCode ) {
-		$this->monolingualTextLookup = $monolingualTextLookup;
-		$this->subject = $subject;
-		$this->property = $property;
-		$this->languageCode = $languageCode;
+	public function __construct(
+		private $monolingualTextLookup,
+		private $subject,
+		private $property,
+		private $languageCode,
+	) {
 	}
 
 	/**

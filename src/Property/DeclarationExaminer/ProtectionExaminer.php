@@ -15,19 +15,13 @@ use SMW\Protection\ProtectionValidator;
 class ProtectionExaminer extends DeclarationExaminer {
 
 	/**
-	 * @var ProtectionValidator
-	 */
-	private $protectionValidator;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param DeclarationExaminer $declarationExaminer
-	 * @param ProtectionValidator $protectionValidator
 	 */
-	public function __construct( IDeclarationExaminer $declarationExaminer, ProtectionValidator $protectionValidator ) {
+	public function __construct(
+		IDeclarationExaminer $declarationExaminer,
+		private readonly ProtectionValidator $protectionValidator,
+	) {
 		$this->declarationExaminer = $declarationExaminer;
-		$this->protectionValidator = $protectionValidator;
 	}
 
 	/**

@@ -18,17 +18,9 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var int
-	 */
-	private $namespace;
-
-	/**
 	 * @since 3.2
-	 *
-	 * @param int|null $namespace
 	 */
-	public function __construct( ?int $namespace ) {
-		$this->namespace = $namespace;
+	public function __construct( private ?int $namespace ) {
 	}
 
 	/**

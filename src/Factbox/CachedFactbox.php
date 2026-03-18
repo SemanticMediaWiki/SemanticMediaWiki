@@ -27,11 +27,6 @@ class CachedFactbox {
 	use LoggerAwareTrait;
 
 	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @var bool
 	 */
 	private $isCached = false;
@@ -66,16 +61,13 @@ class CachedFactbox {
 	 */
 	private $timestamp;
 
-	private FactboxText $factboxText;
-
 	/**
 	 * @since 1.9
-	 *
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( EntityCache $entityCache, FactboxText $factboxText ) {
-		$this->entityCache = $entityCache;
-		$this->factboxText = $factboxText;
+	public function __construct(
+		private EntityCache $entityCache,
+		private FactboxText $factboxText,
+	) {
 	}
 
 	/**

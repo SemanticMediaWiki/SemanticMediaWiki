@@ -13,17 +13,9 @@ namespace SMW\ParserFunctions;
 class ShowParserFunction {
 
 	/**
-	 * @var AskParserFunction
-	 */
-	private $askParserFunction;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param AskParserFunction $askParserFunction
 	 */
-	public function __construct( AskParserFunction $askParserFunction ) {
-		$this->askParserFunction = $askParserFunction;
+	public function __construct( private readonly AskParserFunction $askParserFunction ) {
 	}
 
 	/**

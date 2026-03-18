@@ -27,36 +27,18 @@ use SMW\SemanticData;
 class SetParserFunction {
 
 	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var MessageFormatter
-	 */
-	private $messageFormatter;
-
-	/**
-	 * @var WikitextTemplateRenderer
-	 */
-	private $templateRenderer;
-
-	/**
 	 * @var StripMarkerDecoder
 	 */
 	private $stripMarkerDecoder;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param MessageFormatter $messageFormatter
-	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	public function __construct( ParserData $parserData, MessageFormatter $messageFormatter, WikitextTemplateRenderer $templateRenderer ) {
-		$this->parserData = $parserData;
-		$this->messageFormatter = $messageFormatter;
-		$this->templateRenderer = $templateRenderer;
+	public function __construct(
+		private readonly ParserData $parserData,
+		private readonly MessageFormatter $messageFormatter,
+		private readonly WikitextTemplateRenderer $templateRenderer,
+	) {
 	}
 
 	/**

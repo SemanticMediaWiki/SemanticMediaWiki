@@ -26,16 +26,6 @@ use SMW\Utils\CliMsgFormatter;
 class ConceptCacheRebuilder {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var Settings
-	 */
-	private $settings;
-
-	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
@@ -50,13 +40,11 @@ class ConceptCacheRebuilder {
 
 	/**
 	 * @since 1.9.2
-	 *
-	 * @param Store $store
-	 * @param Settings $settings
 	 */
-	public function __construct( Store $store, Settings $settings ) {
-		$this->store = $store;
-		$this->settings = $settings;
+	public function __construct(
+		private readonly Store $store,
+		private readonly Settings $settings,
+	) {
 		$this->reporter = MessageReporterFactory::getInstance()->newNullMessageReporter();
 	}
 

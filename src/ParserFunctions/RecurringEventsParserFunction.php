@@ -24,21 +24,15 @@ use SMW\Subobject;
 class RecurringEventsParserFunction extends SubobjectParserFunction {
 
 	/**
-	 * @var RecurringEvents
-	 */
-	private $recurringEvents;
-
-	/**
 	 * @since 1.9
-	 *
-	 * @param ParserData $parserData
-	 * @param Subobject $subobject
-	 * @param MessageFormatter $messageFormatter
-	 * @param RecurringEvents $recurringEvents
 	 */
-	public function __construct( ParserData $parserData, Subobject $subobject, MessageFormatter $messageFormatter, RecurringEvents $recurringEvents ) {
+	public function __construct(
+		ParserData $parserData,
+		Subobject $subobject,
+		MessageFormatter $messageFormatter,
+		private readonly RecurringEvents $recurringEvents,
+	) {
 		parent::__construct( $parserData, $subobject, $messageFormatter );
-		$this->recurringEvents = $recurringEvents;
 	}
 
 	/**

@@ -13,17 +13,9 @@ use SMW\Utils\JsonSchemaValidator;
 class SchemaValidator {
 
 	/**
-	 * @var JsonSchemaValidator
-	 */
-	private $validator;
-
-	/**
 	 * @since 3.0
-	 *
-	 * @param JsonSchemaValidator $validator
 	 */
-	public function __construct( JsonSchemaValidator $validator ) {
-		$this->validator = $validator;
+	public function __construct( private readonly JsonSchemaValidator $validator ) {
 	}
 
 	/**

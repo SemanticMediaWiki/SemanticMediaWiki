@@ -29,21 +29,6 @@ use SMWInfolink;
 class Factbox {
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var ParserData
-	 */
-	private $parserData;
-
-	/**
-	 * @var DisplayTitleFinder
-	 */
-	private $displayTitleFinder;
-
-	/**
 	 * @var DataValueFactory
 	 */
 	private $dataValueFactory;
@@ -73,21 +58,18 @@ class Factbox {
 	 */
 	private $checkMagicWords;
 
-	private AttachmentFormatter $attachmentFormatter;
+	private readonly AttachmentFormatter $attachmentFormatter;
 
 	/**
 	 * @since 1.9
-	 *
-	 * @param Store $store
-	 * @param ParserData $parserData
-	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function __construct( Store $store, ParserData $parserData, DisplayTitleFinder $displayTitleFinder ) {
-		$this->store = $store;
-		$this->parserData = $parserData;
-		$this->displayTitleFinder = $displayTitleFinder;
+	public function __construct(
+		private readonly Store $store,
+		private readonly ParserData $parserData,
+		private readonly DisplayTitleFinder $displayTitleFinder,
+	) {
 		$this->dataValueFactory = DataValueFactory::getInstance();
-		$this->attachmentFormatter = new AttachmentFormatter( $store );
+		$this->attachmentFormatter = new AttachmentFormatter( $this->store );
 	}
 
 	/**

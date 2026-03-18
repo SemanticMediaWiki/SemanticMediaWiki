@@ -14,29 +14,17 @@ use SMW\MediaWiki\ManualEntryLogger;
 class MaintenanceLogger {
 
 	/**
-	 * @var string
-	 */
-	private $performer = '';
-
-	/**
-	 * @var ManualEntryLogger
-	 */
-	private $manualEntryLogger;
-
-	/**
 	 * @var int
 	 */
 	private $maxNameChars = 255;
 
 	/**
 	 * @since 2.4
-	 *
-	 * @param string $performer
-	 * @param ManualEntryLogger $manualEntryLogger
 	 */
-	public function __construct( $performer, ManualEntryLogger $manualEntryLogger ) {
-		$this->performer = $performer;
-		$this->manualEntryLogger = $manualEntryLogger;
+	public function __construct(
+		private $performer,
+		private readonly ManualEntryLogger $manualEntryLogger,
+	) {
 		$this->manualEntryLogger->registerLoggableEventType( 'maintenance' );
 	}
 

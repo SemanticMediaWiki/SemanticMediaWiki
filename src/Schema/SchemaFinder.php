@@ -33,36 +33,18 @@ class SchemaFinder {
 	const TYPE_LIST = 'type/list';
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
-	 * @var Cache
-	 */
-	private $cache;
-
-	/**
 	 * @var int
 	 */
 	private $cacheTTL;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param Store $store
-	 * @param SpecificationLookup $propertySpecificationLookup
-	 * @param Cache $cache
 	 */
-	public function __construct( Store $store, SpecificationLookup $propertySpecificationLookup, Cache $cache ) {
-		$this->store = $store;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
-		$this->cache = $cache;
+	public function __construct(
+		private readonly Store $store,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+		private readonly Cache $cache,
+	) {
 		$this->cacheTTL = 60 * 60 * 24 * 7;
 	}
 

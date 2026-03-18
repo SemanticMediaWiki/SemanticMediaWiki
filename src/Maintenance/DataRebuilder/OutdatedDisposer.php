@@ -20,29 +20,17 @@ class OutdatedDisposer {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var EntityIdDisposerJob
-	 */
-	private $entityIdDisposerJob;
-
-	/**
-	 * @var IteratorFactory
-	 */
-	private $iteratorFactory;
-
-	/**
 	 * @var CliMsgFormatter
 	 */
 	private $cliMsgFormatter;
 
 	/**
 	 * @since 3.1
-	 *
-	 * @param EntityIdDisposerJob $entityIdDisposerJob
-	 * @param IteratorFactory $iteratorFactory
 	 */
-	public function __construct( EntityIdDisposerJob $entityIdDisposerJob, IteratorFactory $iteratorFactory ) {
-		$this->entityIdDisposerJob = $entityIdDisposerJob;
-		$this->iteratorFactory = $iteratorFactory;
+	public function __construct(
+		private EntityIdDisposerJob $entityIdDisposerJob,
+		private IteratorFactory $iteratorFactory,
+	) {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 	}
 

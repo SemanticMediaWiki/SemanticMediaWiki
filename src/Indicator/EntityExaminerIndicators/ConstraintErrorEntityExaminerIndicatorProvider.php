@@ -25,16 +25,6 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	const LOOKUP_LIMIT = 20;
 
 	/**
-	 * @var Store
-	 */
-	private $store;
-
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
-
-	/**
 	 * @var bool
 	 */
 	private $checkConstraintErrors = true;
@@ -60,13 +50,11 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 
 	/**
 	 * @since 3.2
-	 *
-	 * @param Store $store
-	 * @param EntityCache $entityCache
 	 */
-	public function __construct( Store $store, EntityCache $entityCache ) {
-		$this->store = $store;
-		$this->entityCache = $entityCache;
+	public function __construct(
+		private Store $store,
+		private EntityCache $entityCache,
+	) {
 	}
 
 	/**

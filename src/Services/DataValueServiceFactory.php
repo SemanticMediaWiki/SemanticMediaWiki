@@ -59,11 +59,6 @@ class DataValueServiceFactory {
 	const TYPE_VALIDATOR = '__dv.validator.';
 
 	/**
-	 * @var ContainerBuilder
-	 */
-	private $containerBuilder;
-
-	/**
 	 * @var DispatchingDataValueFormatter
 	 */
 	private $dispatchingDataValueFormatter = null;
@@ -71,8 +66,7 @@ class DataValueServiceFactory {
 	/**
 	 * @since 2.5
 	 */
-	public function __construct( ContainerBuilder $containerBuilder ) {
-		$this->containerBuilder = $containerBuilder;
+	public function __construct( private readonly ContainerBuilder $containerBuilder ) {
 	}
 
 	/**

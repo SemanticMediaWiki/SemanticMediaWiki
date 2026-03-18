@@ -16,24 +16,12 @@ use SMW\Schema\SchemaFinder;
 class ConstraintSchemaCompiler {
 
 	/**
-	 * @var SchemaFinder
-	 */
-	private $schemaFinder;
-
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
-
-	/**
 	 * @since 3.1
-	 *
-	 * @param SchemaFinder $schemaFinder
-	 * @param SpecificationLookup $propertySpecificationLookup
 	 */
-	public function __construct( SchemaFinder $schemaFinder, SpecificationLookup $propertySpecificationLookup ) {
-		$this->schemaFinder = $schemaFinder;
-		$this->propertySpecificationLookup = $propertySpecificationLookup;
+	public function __construct(
+		private readonly SchemaFinder $schemaFinder,
+		private readonly SpecificationLookup $propertySpecificationLookup,
+	) {
 	}
 
 	/**

@@ -33,34 +33,14 @@ class Localizer {
 	private static $instance = null;
 
 	/**
-	 * @var Language
-	 */
-	private $contentLanguage = null;
-
-	private NamespaceInfo $namespaceInfo;
-
-	/** @var IContextSource */
-	private $context = null;
-
-	/** @var UserOptionsLookup */
-	private $userOptionsLookup = null;
-
-	/**
 	 * @since 2.1
-	 *
-	 * @param Language $contentLanguage
-	 * @param NamespaceInfo $namespaceInfo
 	 */
 	public function __construct(
-		Language $contentLanguage,
-		NamespaceInfo $namespaceInfo,
-		UserOptionsLookup $userOptionsLookup,
-		IContextSource $context
+		private readonly Language $contentLanguage,
+		private readonly NamespaceInfo $namespaceInfo,
+		private readonly UserOptionsLookup $userOptionsLookup,
+		private readonly IContextSource $context,
 	) {
-		$this->contentLanguage = $contentLanguage;
-		$this->namespaceInfo = $namespaceInfo;
-		$this->userOptionsLookup = $userOptionsLookup;
-		$this->context = $context;
 	}
 
 	/**
