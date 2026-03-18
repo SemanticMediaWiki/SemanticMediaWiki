@@ -4,7 +4,6 @@ namespace SMW\DataValues;
 
 use Exception;
 use SMW\DataItems\Concept;
-use SMW\DataItems\DataValue;
 
 /**
  * This datavalue is used as a container for concept descriptions as used

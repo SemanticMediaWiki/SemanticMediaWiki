@@ -4,14 +4,16 @@ namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Container;
+use SMW\DataItems\Error;
+use SMW\DataValues\RecordValue;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWRecordValue as RecordValue;
 
 /**
- * @covers \SMWRecordValue
+ * @covers \SMW\DataValues\RecordValue
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -46,7 +48,7 @@ class RecordValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMWRecordValue',
+			RecordValue::class,
 			new RecordValue()
 		);
 	}
@@ -113,7 +115,7 @@ class RecordValueTest extends TestCase {
 		$container = $instance->getDataItem();
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$container
 		);
 
@@ -133,7 +135,7 @@ class RecordValueTest extends TestCase {
 		$instance->setUserValue( '' );
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			Error::class,
 			$instance->getDataItem()
 		);
 	}
@@ -162,7 +164,7 @@ class RecordValueTest extends TestCase {
 		$instance->setUserValue( 'Foo;<>Foo' );
 
 		$this->assertInstanceOf(
-			'\SMWDIError',
+			Error::class,
 			$instance->getDataItem()
 		);
 

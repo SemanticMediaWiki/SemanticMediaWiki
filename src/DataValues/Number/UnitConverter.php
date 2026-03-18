@@ -3,6 +3,7 @@
 namespace SMW\DataValues\Number;
 
 use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\DataValues\NumberValue;
 use SMW\EntityCache;
 use SMW\Property\SpecificationLookup;

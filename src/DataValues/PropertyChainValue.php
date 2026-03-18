@@ -3,6 +3,7 @@
 namespace SMW\DataValues;
 
 use MediaWiki\Html\Html;
+use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataValueFactory;
 

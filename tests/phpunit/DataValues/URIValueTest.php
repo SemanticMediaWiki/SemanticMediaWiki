@@ -3,10 +3,10 @@
 namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
-use SMWURIValue as UriValue;
+use SMW\DataValues\URIValue;
 
 /**
- * @covers \SMWURIValue
+ * @covers \SMW\DataValues\URIValue
  *
  * @group SMW
  * @group SMWExtension
@@ -16,12 +16,12 @@ use SMWURIValue as UriValue;
  *
  * @author mwjames
  */
-class UriValueTest extends TestCase {
+class URIValueTest extends TestCase {
 
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
-			'\SMWURIValue',
-			new UriValue( '_uri' )
+			URIValue::class,
+			new URIValue( '_uri' )
 		);
 	}
 
@@ -29,7 +29,7 @@ class UriValueTest extends TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testUriOutputFormatting( $uri, $caption, $linker, $expected ) {
-		$instance = new UriValue( '_uri' );
+		$instance = new URIValue( '_uri' );
 		$instance->setUserValue( $uri, $caption );
 
 		$this->assertOutputFormatting(
@@ -43,7 +43,7 @@ class UriValueTest extends TestCase {
 	 * @dataProvider uriProvider
 	 */
 	public function testAnuOutputFormatting( $uri, $caption, $linker, $expected ) {
-		$instance = new UriValue( '_anu' );
+		$instance = new URIValue( '_anu' );
 		$instance->setUserValue( $uri, $caption );
 
 		$this->assertOutputFormatting(
@@ -57,7 +57,7 @@ class UriValueTest extends TestCase {
 	 * @dataProvider telProvider
 	 */
 	public function testTelOutputFormatting( $uri, $caption, $linker, $expected ) {
-		$instance = new UriValue( '_tel' );
+		$instance = new URIValue( '_tel' );
 		$instance->setUserValue( $uri, $caption );
 
 		$this->assertOutputFormatting(
@@ -71,7 +71,7 @@ class UriValueTest extends TestCase {
 	 * @dataProvider emaProvider
 	 */
 	public function testEmaOutputFormatting( $uri, $caption, $linker, $expected ) {
-		$instance = new UriValue( '_ema' );
+		$instance = new URIValue( '_ema' );
 		$instance->setUserValue( $uri, $caption );
 
 		$this->assertOutputFormatting(

@@ -2,6 +2,7 @@
 
 namespace SMW\DataValues;
 
+use MediaWiki\Parser\Sanitizer;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Uri;
 use SMW\Encoder;
