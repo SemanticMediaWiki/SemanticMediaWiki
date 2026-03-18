@@ -21,6 +21,7 @@ use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\StoreFactory;
+use SMWQuery;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IReadableDatabase;
 
