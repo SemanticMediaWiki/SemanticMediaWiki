@@ -4,11 +4,15 @@ namespace SMW;
 
 // Fatal error: Cannot use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunction because the name is already in use
 use MediaWiki\Parser\Parser;
+use MediaWiki\Parser\PPFrame;
+use ParamProcessor\Processor;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\ParserFunctions\DeclareParserFunction;
+use SMW\ParserFunctions\DocumentationParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;
+use SMW\ParserFunctions\InfoParserFunction;
 use SMW\ParserFunctions\RecurringEventsParserFunction as RecurringEventsParserFunc;
 use SMW\ParserFunctions\SetParserFunction;
 use SMW\ParserFunctions\ShowParserFunction;
@@ -505,6 +509,62 @@ class ParserFunctionFactory {
 		};
 
 		return [ 'declare', $declareParserFunctionDefinition, Parser::SFH_OBJECT_ARGS ];
+	}
+
+	/**
+	 * @since 5.1
+	 *
+	 * @return array
+	 */
+	public function getDocumentationParserFunctionDefinition() {
+		$smwdocDefinition = static function ( Parser $parser, PPFrame $frame, array $args ) {
+			$expandedArgs = [];
+			foreach ( $args as $arg ) {
+				$expandedArgs[] = $frame->expand( $arg );
+			}
+
+			$processor = Processor::newDefault();
+			$processor->setFunctionParams(
+				$expandedArgs,
+				DocumentationParserFunction::getParamDefinitions(),
+				DocumentationParserFunction::getDefaultParams()
+			);
+
+			$result = $processor->processParameters();
+
+			$handler = new DocumentationParserFunction();
+			return [ $handler->handle( $parser, $result ) ];
+		};
+
+		return [ 'smwdoc', $smwdocDefinition, Parser::SFH_OBJECT_ARGS ];
+	}
+
+	/**
+	 * @since 5.1
+	 *
+	 * @return array
+	 */
+	public function getInfoParserFunctionDefinition() {
+		$infoDefinition = static function ( Parser $parser, PPFrame $frame, array $args ) {
+			$expandedArgs = [];
+			foreach ( $args as $arg ) {
+				$expandedArgs[] = $frame->expand( $arg );
+			}
+
+			$processor = Processor::newDefault();
+			$processor->setFunctionParams(
+				$expandedArgs,
+				InfoParserFunction::getParamDefinitions(),
+				InfoParserFunction::getDefaultParams()
+			);
+
+			$result = $processor->processParameters();
+
+			$handler = new InfoParserFunction();
+			return [ $handler->handle( $parser, $result ) ];
+		};
+
+		return [ 'info', $infoDefinition, Parser::SFH_OBJECT_ARGS ];
 	}
 
 }
