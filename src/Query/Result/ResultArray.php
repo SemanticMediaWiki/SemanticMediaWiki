@@ -2,16 +2,16 @@
 
 namespace SMW\Query\Result;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\RecordValue;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryToken;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDataValue;
-use SMWRecordValue;
 
 /**
  * Container for the contents of a single result field of a query result,
@@ -42,20 +42,20 @@ class ResultArray {
 	private $queryToken;
 
 	/**
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	private $contextPage;
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $resultPage
+	 * @param WikiPage $resultPage
 	 * @param PrintRequest $printRequest
 	 * @param QueryResult $queryResult
 	 *
 	 * @return self
 	 */
-	public static function factory( DIWikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
+	public static function factory( WikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
 		$resultArray = new self(
 			$resultPage,
 			$printRequest,
@@ -72,7 +72,7 @@ class ResultArray {
 	}
 
 	public function __construct(
-		private readonly DIWikiPage $result,
+		private readonly WikiPage $result,
 		private readonly PrintRequest $printRequest,
 		private readonly Store $store,
 		private ?FieldItemFinder $fieldItemFinder = null,
@@ -94,11 +94,11 @@ class ResultArray {
 	}
 
 	/**
-	 * Returns the DIWikiPage object to which this ResultArray refers.
+	 * Returns the WikiPage object to which this ResultArray refers.
 	 * If you only care for those objects, consider using \SMW\Query\QueryResult::getResults()
 	 * directly.
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function getResultSubject() {
 		return $this->result;
@@ -129,9 +129,9 @@ class ResultArray {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -191,12 +191,12 @@ class ResultArray {
 	}
 
 	/**
-	 * Return an SMWDataValue object for the next SMWDataItem object or
+	 * Return an DataValue object for the next SMWDataItem object or
 	 * false if no further object exists.
 	 *
 	 * @since 1.6
 	 *
-	 * @return SMWDataValue|false
+	 * @return DataValue|false
 	 */
 	public function getNextDataValue() {
 		$dataItem = $this->getNextDataItem();
@@ -219,7 +219,7 @@ class ResultArray {
 			$this->printRequest->getParameter( 'index' ) !== false ) {
 
 			/**
-			 * @var SMWRecordValue $recordValue
+			 * @var RecordValue $recordValue
 			 */
 			$recordValue = DataValueFactory::getInstance()->newDataValueByItem(
 				$dataItem,

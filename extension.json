@@ -61,7 +61,9 @@
 		"SMWExpData": "src/Export/ExpData.php",
 		"SMWExportController": "src/Export/ExportController.php",
 		"SMWExporter": "src/Export/Exporter.php",
-		"SMW\\MessageFormatter": "src/Formatters/MessageFormatter.php"
+		"SMW\\MessageFormatter": "src/Formatters/MessageFormatter.php",
+		"SMWQuery": "src/Query/Query.php",
+		"SMWQueryProcessor": "src/Query/QueryProcessor.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

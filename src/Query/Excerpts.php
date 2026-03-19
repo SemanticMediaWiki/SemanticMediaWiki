@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * Record excerpts for query results that support an excerpt retrieval function.
@@ -42,16 +42,16 @@ class Excerpts {
 	}
 
 	/**
-	 * @note The hash is expected to be equivalent to DIWikiPage::getHash to
+	 * @note The hash is expected to be equivalent to WikiPage::getHash to
 	 * easily match result subjects available in an QueryResult instance.
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|string $hash
+	 * @param WikiPage|string $hash
 	 * @param string|int $excerpt
 	 */
 	public function addExcerpt( $hash, $excerpt ) {
-		if ( $hash instanceof DIWikiPage ) {
+		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}
 
@@ -61,12 +61,12 @@ class Excerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|string $hash
+	 * @param WikiPage|string $hash
 	 *
 	 * @return string|int|false
 	 */
 	public function getExcerpt( $hash ) {
-		if ( $hash instanceof DIWikiPage ) {
+		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}
 

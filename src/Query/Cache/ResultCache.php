@@ -6,15 +6,15 @@ use Onoi\BlobStore\BlobStore;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Excerpts;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\Timer;
-use SMWQuery as Query;
 
 /**
  * The prefetcher only caches the subject list from a computed a query
@@ -238,7 +238,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage|array $items
+	 * @param WikiPage|array $items
 	 * @param string $context
 	 */
 	public function invalidateCache( $items, $context = '' ) {
@@ -313,7 +313,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			$incrStats = ( $query->getContextPage() !== null ? 'hits.embedded.' : 'hits.nonEmbedded.' ) . $context;
 
 			foreach ( $container->get( 'results' ) as $hash ) {
-				$results[] = DIWikiPage::doUnserialize( $hash );
+				$results[] = WikiPage::doUnserialize( $hash );
 			}
 
 			$hasFurtherResults = $container->get( 'continue' );
@@ -444,7 +444,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	}
 
 	private function getHashFrom( $subject ) {
-		if ( $subject instanceof DIWikiPage ) {
+		if ( $subject instanceof WikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly
 			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
 				$subject = $subobjectName;

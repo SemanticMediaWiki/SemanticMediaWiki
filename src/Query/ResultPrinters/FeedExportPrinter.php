@@ -10,17 +10,17 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\Sanitizer;
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Query\ExportPrinter;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\Result\StringResult;
 use SMW\Site;
-use SMWDataValue;
-use SMWQuery;
-use SMWQueryProcessor;
-use WikiPage;
+use WikiPage as MWWikiPage;
 
 /**
  * Result printer that exports query results as RSS/Atom feed
@@ -108,10 +108,10 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 * @return int
 	 */
 	public function getQueryMode( $mode ): int {
-		if ( $mode == SMWQueryProcessor::SPECIAL_PAGE ) {
-			return SMWQuery::MODE_INSTANCES;
+		if ( $mode == QueryProcessor::SPECIAL_PAGE ) {
+			return Query::MODE_INSTANCES;
 		}
-		return SMWQuery::MODE_NONE;
+		return Query::MODE_NONE;
 	}
 
 	/**
@@ -287,7 +287,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		 * Loop over all properties within a row
 		 *
 		 * @var ResultArray $field
-		 * @var SMWDataValue $object
+		 * @var DataValue $object
 		 */
 		foreach ( $row as $field ) {
 			$itemSegments = [];
@@ -297,7 +297,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 			// Loop over all values for the property.
 			$dataValue = $field->getNextDataValue();
 			while ( $dataValue !== false ) {
-				if ( $dataValue->getDataItem() instanceof DIWikiPage ) {
+				if ( $dataValue->getDataItem() instanceof WikiPage ) {
 
 					$linker = null;
 
@@ -330,11 +330,11 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @since 1.8
 	 *
-	 * @param WikiPage $wikiPage
+	 * @param MWWikiPage $wikiPage
 	 *
 	 * @return string
 	 */
-	protected function getPageContent( WikiPage $wikiPage ) {
+	protected function getPageContent( MWWikiPage $wikiPage ) {
 		if ( !in_array( $this->params['page'], [ 'abstract', 'full' ] ) ) {
 			return '';
 		}
@@ -392,7 +392,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 			// #1741
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-				DIWikipage::newFromTitle( $title )
+				Wikipage::newFromTitle( $title )
 			);
 
 			// Ensures that the namespace prefix (Help:...) is used in cases where

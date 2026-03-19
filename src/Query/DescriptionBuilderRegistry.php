@@ -3,13 +3,13 @@
 namespace SMW\Query;
 
 use RuntimeException;
+use SMW\DataValues\DataValue;
 use SMW\Query\DescriptionBuilders\DescriptionBuilder;
 use SMW\Query\DescriptionBuilders\MonolingualTextValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
 use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later

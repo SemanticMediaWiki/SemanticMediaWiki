@@ -3,15 +3,15 @@
 namespace SMW\Query\ResultPrinters;
 
 use MediaWiki\Html\Html;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\QueryStringifier;
 use SMW\Query\Result\ResultArray;
 use SMW\Utils\HtmlTable;
-use SMWDataValue;
-use SMWDIBlob as DIBlob;
 
 /**
  * Print query results in tables
@@ -248,7 +248,7 @@ class TableResultPrinter extends ResultPrinter {
 	 * @return string
 	 */
 	protected function getCellForPropVals( ResultArray $resultArray, $outputMode, $columnClass ) {
-		/** @var SMWDataValue[] $dataValues */
+		/** @var DataValue[] $dataValues */
 		$dataValues = [];
 
 		$dv = $resultArray->getNextDataValue();
@@ -319,7 +319,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @since 1.6.1
 	 *
-	 * @param SMWDataValue[] $dataValues
+	 * @param DataValue[] $dataValues
 	 * @param $outputMode
 	 * @param bool $isSubject
 	 *
@@ -334,8 +334,8 @@ class TableResultPrinter extends ResultPrinter {
 			// Restore output in Special:Ask on:
 			// - file/image parsing
 			// - text formatting on string elements including italic, bold etc.
-			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIWikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
-				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof DIBlob ) ) {
+			if ( ( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof WikiPage && $dv->getDataItem()->getNamespace() === NS_FILE ) ||
+				( $outputMode === SMW_OUTPUT_HTML && $dv->getDataItem() instanceof Blob ) ) {
 				// Too lazy to handle the Parser object and besides the Message
 				// parse does the job and ensures no other hook is executed
 				$value = Message::get(

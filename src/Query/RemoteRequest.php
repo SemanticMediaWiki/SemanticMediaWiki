@@ -9,8 +9,7 @@ use RuntimeException;
 use SMW\Localizer\Message;
 use SMW\Query\Result\StringResult;
 use SMW\QueryEngine;
-use SMWQuery as Query;
-use WANObjectCache;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * @license GPL-2.0-or-later

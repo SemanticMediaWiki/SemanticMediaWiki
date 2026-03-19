@@ -4,8 +4,8 @@ namespace SMW\Query\DescriptionBuilders;
 
 use DateInterval;
 use InvalidArgumentException;
-use SMWDITime as DITime;
-use SMWTimeValue as TimeValue;
+use SMW\DataItems\Time;
+use SMW\DataValues\TimeValue;
 
 /**
  * @private
@@ -104,13 +104,13 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 			return $this->addError( 'Cannot compute interval for ' . $dataItem->getSerialization() );
 		}
 
-		if ( $prec === DITime::PREC_Y ) {
+		if ( $prec === Time::PREC_Y ) {
 			$dateTime->add( new DateInterval( 'P1Y' ) );
-		} elseif ( $prec === DITime::PREC_YM ) {
+		} elseif ( $prec === Time::PREC_YM ) {
 			$dateTime->add( new DateInterval( 'P1M' ) );
-		} elseif ( $prec === DITime::PREC_YMD ) {
+		} elseif ( $prec === Time::PREC_YMD ) {
 			$dateTime->add( new DateInterval( 'P1D' ) );
-		} elseif ( $prec === DITime::PREC_YMDT ) {
+		} elseif ( $prec === Time::PREC_YMDT ) {
 
 			if ( $dataItem->getSecond() > 0 ) {
 				$dateTime->add( new DateInterval( 'PT1S' ) );
@@ -123,7 +123,7 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 			}
 		}
 
-		return DITime::doUnserialize( $dataItem->getCalendarModel() . '/' . $dateTime->format( 'Y/m/d/H/i/s' ) );
+		return Time::doUnserialize( $dataItem->getCalendarModel() . '/' . $dateTime->format( 'Y/m/d/H/i/s' ) );
 	}
 
 }

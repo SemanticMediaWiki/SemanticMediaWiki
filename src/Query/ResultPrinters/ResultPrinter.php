@@ -9,12 +9,12 @@ use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
 use SMW\Parser\RecursiveTextProcessor;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
 use SMWInfolink;
 use SMWOutputs as ResourceManager;
-use SMWQuery;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
@@ -546,7 +546,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	public function getQueryMode( $context ) {
 		// TODO: Now that we are using RequestContext object maybe
 		// $context is misleading
-		return SMWQuery::MODE_INSTANCES;
+		return Query::MODE_INSTANCES;
 	}
 
 	/**

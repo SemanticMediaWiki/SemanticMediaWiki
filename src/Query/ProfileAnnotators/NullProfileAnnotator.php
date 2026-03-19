@@ -2,9 +2,9 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDIContainer as DIContainer;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,7 +17,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	/**
 	 * @since 1.9
 	 */
-	public function __construct( private readonly DIContainer $container ) {
+	public function __construct( private readonly Container $container ) {
 	}
 
 	/**
@@ -37,7 +37,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 * @return array
 	 */
 	public function getProperty() {
-		return new DIProperty( '_ASK' );
+		return new Property( '_ASK' );
 	}
 
 	/**
@@ -45,7 +45,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
 	public function getContainer() {
 		return $this->container;

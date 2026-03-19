@@ -4,7 +4,6 @@ namespace SMW\Query;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Parser\ParserOutput;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later

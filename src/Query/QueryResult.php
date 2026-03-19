@@ -2,7 +2,7 @@
 
 namespace SMW\Query;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Result\FieldItemFinder;
 use SMW\Query\Result\FilterMap;
 use SMW\Query\Result\ItemFetcher;
@@ -11,7 +11,6 @@ use SMW\Query\Result\ResultArray;
 use SMW\SerializerFactory;
 use SMW\Store;
 use SMWInfolink;
-use SMWQuery as Query;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -39,9 +38,9 @@ class QueryResult {
 	const QUICK_HASH = 'quick';
 
 	/**
-	 * Array of DIWikiPage objects that are the basis for this result
+	 * Array of WikiPage objects that are the basis for this result
 	 *
-	 * @var DIWikiPage[]
+	 * @var WikiPage[]
 	 */
 	protected $mResults;
 
@@ -266,7 +265,7 @@ class QueryResult {
 		return $row;
 	}
 
-	private function newResultArray( DIWikiPage $page, PrintRequest $pr ) {
+	private function newResultArray( WikiPage $page, PrintRequest $pr ) {
 		$resultArray = ResultArray::factory( $page, $pr, $this );
 		$resultArray->setItemJournal( $this->itemJournal );
 		return $resultArray;
@@ -282,10 +281,10 @@ class QueryResult {
 	}
 
 	/**
-	 * Return an array of SMWDIWikiPage objects that make up the
+	 * Return an array of WikiPage objects that make up the
 	 * results stored in this object.
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
 	public function getResults() {
 		return $this->mResults;

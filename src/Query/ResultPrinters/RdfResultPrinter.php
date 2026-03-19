@@ -2,7 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Exporter\ExporterFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
@@ -143,7 +143,7 @@ class RdfResultPrinter extends FileExportPrinter {
 					$property = $printRequest->getData()->getDataItem();
 					break;
 				case PrintRequest::PRINT_CATS:
-					$property = new DIProperty( '_TYPE' );
+					$property = new Property( '_TYPE' );
 					break;
 				case PrintRequest::PRINT_CCAT:
 					// not serialised right now

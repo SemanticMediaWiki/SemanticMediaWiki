@@ -2,12 +2,12 @@
 
 namespace SMW\Query\Language;
 
+use SMW\Dataitems\DataItem;
+use SMW\Dataitems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\NumberValue;
+use SMW\DataValues\URIValue;
 use SMW\Query\QueryComparator;
-use SMWDataItem as DataItem;
-use SMWNumberValue as NumberValue;
-use SMWURIValue as UriValue;
 
 /**
  * Description of one data value, or of a range of data values.
@@ -27,7 +27,7 @@ class ValueDescription extends Description {
 
 	public function __construct(
 		private readonly DataItem $dataItem,
-		private readonly ?DIProperty $property = null,
+		private readonly ?Property $property = null,
 		private $comparator = SMW_CMP_EQ,
 	) {
 	}
@@ -69,7 +69,7 @@ class ValueDescription extends Description {
 	/**
 	 * @since  2.1
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getProperty() {
 		return $this->property;
@@ -99,7 +99,7 @@ class ValueDescription extends Description {
 
 		// Set option to ensure that the output doesn't alter the display
 		// characteristics of a value
-		$dataValue->setOption( UriValue::VALUE_RAW, true );
+		$dataValue->setOption( URIValue::VALUE_RAW, true );
 		$dataValue->setOption( NumberValue::NO_DISP_PRECISION_LIMIT, true );
 
 		if ( $asValue ) {

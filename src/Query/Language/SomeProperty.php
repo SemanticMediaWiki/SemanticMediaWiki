@@ -2,7 +2,7 @@
 
 namespace SMW\Query\Language;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * Description of a set of instances that have an attribute with some value
@@ -25,7 +25,7 @@ class SomeProperty extends Description {
 	protected $description;
 
 	/**
-	 * @var DIProperty
+	 * @var Property
 	 */
 	protected $property;
 
@@ -40,10 +40,10 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param Description $description
 	 */
-	public function __construct( DIProperty $property, Description $description ) {
+	public function __construct( Property $property, Description $description ) {
 		$this->property = $property;
 		$this->description = $description;
 	}
@@ -100,7 +100,7 @@ class SomeProperty extends Description {
 	}
 
 	/**
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getProperty() {
 		return $this->property;
