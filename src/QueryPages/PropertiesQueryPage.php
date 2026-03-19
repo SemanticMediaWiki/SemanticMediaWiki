@@ -7,6 +7,7 @@ use MediaWiki\Title\Title;
 use Skin;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
+use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;

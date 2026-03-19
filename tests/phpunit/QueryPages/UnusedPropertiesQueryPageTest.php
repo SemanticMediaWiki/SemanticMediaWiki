@@ -8,6 +8,7 @@ use SMW\DataItemFactory;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\Settings;
 use SMW\Store;
+use SMW\Tests\TestEnvironment;
 use SMW\UnusedPropertiesQueryPage;
 
 /**
