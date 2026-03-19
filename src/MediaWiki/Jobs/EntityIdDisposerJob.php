@@ -139,7 +139,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @since 2.5
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->hasParameter( 'id' ) ) {
 			$this->dispose( $this->getParameter( 'id' ) );
 		} else {

@@ -79,7 +79,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return true;
 	}
 

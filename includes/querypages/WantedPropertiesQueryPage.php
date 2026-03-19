@@ -63,7 +63,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	public function isExpensive() {
+	public function isExpensive(): bool {
 		// disables caching for now
 		return false;
 	}
@@ -72,7 +72,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	public function isSyndicated() {
+	public function isSyndicated(): bool {
 		// TODO: why not?
 		return false;
 	}

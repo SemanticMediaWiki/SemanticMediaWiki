@@ -208,7 +208,7 @@ class NumberValue extends DataValue {
 	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
 			return false;
 		}

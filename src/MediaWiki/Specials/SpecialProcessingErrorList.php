@@ -26,7 +26,7 @@ class SpecialProcessingErrorList extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$limit = ApplicationFactory::getInstance()->getSettings()->dotGet( 'smwgPagingLimit.errorlist' );
 
 		$this->getOutput()->redirect(

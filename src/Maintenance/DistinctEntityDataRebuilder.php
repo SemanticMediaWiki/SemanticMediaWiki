@@ -101,7 +101,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function doRebuild() {
+	public function doRebuild(): bool {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
 		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .

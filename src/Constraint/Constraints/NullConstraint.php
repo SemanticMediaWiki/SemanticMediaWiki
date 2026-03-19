@@ -17,7 +17,7 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return false;
 	}
 

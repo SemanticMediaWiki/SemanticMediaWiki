@@ -39,7 +39,7 @@ class ErrorValue extends DataValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() == DataItem::TYPE_ERROR ) {
 			$this->addError( $dataItem->getErrors() );
 			$this->m_caption = $this->getErrorText();
@@ -73,7 +73,7 @@ class ErrorValue extends DataValue {
 		return $this->getErrorText();
 	}
 
-	public function isValid() {
+	public function isValid(): bool {
 		return false;
 	}
 

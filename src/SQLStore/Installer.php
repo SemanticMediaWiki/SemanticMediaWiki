@@ -261,7 +261,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param bool $verbose
 	 */
-	public function uninstall( $verbose = true ) {
+	public function uninstall( $verbose = true ): bool {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 
 		$this->initMessageReporter( $verbose );
@@ -427,7 +427,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printBottom() {
+	private function printBottom(): bool {
 		if ( $this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) ) {
 			$this->messageReporter->reportMessage( $this->cliMsgFormatter->section( '', 0, '=' ) );
 			$this->messageReporter->reportMessage( "\n" );

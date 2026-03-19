@@ -115,7 +115,7 @@ class PropertyValueParser implements ValueParser {
 		return $this->getNormalizedValueFrom( $userValue );
 	}
 
-	private function hasValidCharacters( $value ) {
+	private function hasValidCharacters( $value ): bool {
 		if ( trim( $value ) === '' ) {
 			$this->errors[] = [ 'smw_emptystring' ];
 			return false;

@@ -99,7 +99,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function rebuild() {
+	public function rebuild(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

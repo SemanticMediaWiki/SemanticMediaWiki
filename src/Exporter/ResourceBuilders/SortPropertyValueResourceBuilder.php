@@ -29,7 +29,7 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return $property->getKey() === '_SKEY';
 	}
 

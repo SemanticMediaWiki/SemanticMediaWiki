@@ -201,7 +201,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasPropertyInvalidCharacter( $row ) {
+	public function hasPropertyInvalidCharacter( $row ): bool {
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
 		}
@@ -222,7 +222,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isRetiredProperty( $row ) {
+	public function isRetiredProperty( $row ): bool {
 		if ( $row->smw_namespace !== SMW_NS_PROPERTY ) {
 			return false;
 		}

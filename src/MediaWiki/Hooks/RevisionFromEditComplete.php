@@ -56,7 +56,7 @@ class RevisionFromEditComplete implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Title $title ) {
+	public function process( Title $title ): bool {
 		$this->editInfo->fetchEditInfo();
 
 		$parserOutput = $this->editInfo->getOutput();

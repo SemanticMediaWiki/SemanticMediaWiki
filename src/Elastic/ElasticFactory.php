@@ -564,7 +564,7 @@ class ElasticFactory {
 	 *
 	 * @param Store $store
 	 */
-	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ) {
+	public function onEntityReferenceCleanUpComplete( Store $store, $id, $subject, $isRedirect ): bool {
 		if ( !$store instanceof ElasticStore || $store->getConnection( 'elastic' ) instanceof DummyClient ) {
 			return true;
 		}
@@ -610,7 +610,7 @@ class ElasticFactory {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Event::RegisterEventListeners
 	 * @since 3.1
 	 */
-	public function onRegisterEventListeners( $eventListener ) {
+	public function onRegisterEventListeners( $eventListener ): bool {
 		$eventListener->registerCallback( 'InvalidateEntityCache', [ $this, 'onInvalidateEntityCache' ] );
 
 		return true;
@@ -620,7 +620,7 @@ class ElasticFactory {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Maintenance::AfterUpdateEntityCollationComplete
 	 * @since 3.1
 	 */
-	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ) {
+	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ): bool {
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {

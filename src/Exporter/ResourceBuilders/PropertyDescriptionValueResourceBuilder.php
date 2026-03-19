@@ -24,7 +24,7 @@ class PropertyDescriptionValueResourceBuilder extends PropertyValueResourceBuild
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return $property->getKey() === '_PDESC';
 	}
 

@@ -40,7 +40,7 @@ class RevisionGuard {
 	 *
 	 * @return bool
 	 */
-	public function isSkippableUpdate( Title $title, &$latestRevID = null ) {
+	public function isSkippableUpdate( Title $title, &$latestRevID = null ): bool {
 		$flag = IDBAccessObject::READ_LATEST;
 
 		if ( $latestRevID === null ) {

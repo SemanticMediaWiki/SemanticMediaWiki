@@ -20,7 +20,7 @@ class TrueCondition extends Condition {
 		return '';
 	}
 
-	public function isSafe() {
+	public function isSafe(): bool {
 		return false;
 	}
 }

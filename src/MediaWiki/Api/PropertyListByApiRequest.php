@@ -137,7 +137,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @return bool
 	 */
-	public function findPropertyListBy( $property = '' ) {
+	public function findPropertyListBy( $property = '' ): bool {
 		$requestOptions = new RequestOptions();
 		$requestOptions->sort = true;
 		$requestOptions->limit = $this->limit;

@@ -104,7 +104,7 @@ class ExportController {
 	 *
 	 * @return bool
 	 */
-	protected function prepareSerialization( $outfilename = '' ) {
+	protected function prepareSerialization( $outfilename = '' ): bool {
 		$this->serializer->clear();
 		$this->queue->clear();
 

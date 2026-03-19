@@ -86,7 +86,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( array &$extraStats ) {
+	public function process( array &$extraStats ): bool {
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}

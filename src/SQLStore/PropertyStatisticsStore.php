@@ -66,7 +66,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return bool Success indicator
 	 */
-	public function addToUsageCount( $pid, $value ) {
+	public function addToUsageCount( $pid, $value ): bool {
 		$usageVal = 0;
 		$nullVal = 0;
 
@@ -180,7 +180,7 @@ class PropertyStatisticsStore {
 	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
-	public function insertUsageCount( $propertyId, $value ) {
+	public function insertUsageCount( $propertyId, $value ): bool {
 		$usageCount = 0;
 		$nullCount = 0;
 

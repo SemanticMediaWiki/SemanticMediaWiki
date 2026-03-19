@@ -61,7 +61,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
 	}
 
@@ -72,7 +72,7 @@ class CategoryResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return true;
 	}
 

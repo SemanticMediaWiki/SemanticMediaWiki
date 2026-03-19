@@ -61,7 +61,7 @@ class ExpensiveFuncExecutionWatcher {
 	 *
 	 * @return bool
 	 */
-	public function hasReachedExpensiveLimit( Query $query ) {
+	public function hasReachedExpensiveLimit( Query $query ): bool {
 		if ( $this->expensiveExecutionLimit === false ) {
 			return false;
 		}

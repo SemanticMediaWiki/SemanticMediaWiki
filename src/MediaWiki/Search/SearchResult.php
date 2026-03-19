@@ -199,7 +199,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return bool
 	 */
-	public function isFileMatch() {
+	public function isFileMatch(): bool {
 		return false;
 	}
 

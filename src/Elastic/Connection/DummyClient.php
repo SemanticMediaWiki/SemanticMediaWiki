@@ -98,7 +98,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::hasIndex
 	 */
-	public function hasIndex( $type, $useCache = true ) {
+	public function hasIndex( $type, $useCache = true ): bool {
 		return true;
 	}
 
@@ -156,21 +156,21 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::ping
 	 */
-	public function ping() {
+	public function ping(): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::quick_ping
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::exists
 	 */
-	public function exists( array $params ) {
+	public function exists( array $params ): bool {
 		return false;
 	}
 
@@ -262,7 +262,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::hasMaintenanceLock
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return false;
 	}
 
@@ -281,14 +281,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::hasLock
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return false;
 	}
 
 	/**
 	 * @see Client::getLock
 	 */
-	public function getLock( $type ) {
+	public function getLock( $type ): bool {
 		return false;
 	}
 

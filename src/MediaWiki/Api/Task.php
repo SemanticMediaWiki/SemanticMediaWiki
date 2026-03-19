@@ -127,7 +127,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::mustBePosted
 	 */
-	public function mustBePosted() {
+	public function mustBePosted(): bool {
 		return true;
 	}
 
@@ -135,7 +135,7 @@ class Task extends ApiBase {
 	 * @codeCoverageIgnore
 	 * @see ApiBase::isWriteMode
 	 */
-	public function isWriteMode() {
+	public function isWriteMode(): bool {
 		return true;
 	}
 

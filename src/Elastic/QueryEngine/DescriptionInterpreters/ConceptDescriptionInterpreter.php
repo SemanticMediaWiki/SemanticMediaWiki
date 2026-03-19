@@ -99,7 +99,7 @@ class ConceptDescriptionInterpreter {
 		return $params;
 	}
 
-	private function hasCircularConceptDescription( $description, $concept ) {
+	private function hasCircularConceptDescription( $description, $concept ): bool {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );

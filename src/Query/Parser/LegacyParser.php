@@ -821,7 +821,7 @@ class LegacyParser implements Parser {
 		return in_array( $this->normalizeTitleText( $chunk ), $prefix );
 	}
 
-	private function isClass( $chunk ) {
+	private function isClass( $chunk ): bool {
 		$chunk = $this->normalizeTitleText( $chunk );
 
 		if (

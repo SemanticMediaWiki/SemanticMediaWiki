@@ -163,7 +163,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return bool
 	 */
-	public function searchContainedSyntax() {
+	public function searchContainedSyntax(): bool {
 		return true;
 	}
 

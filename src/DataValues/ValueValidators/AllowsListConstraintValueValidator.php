@@ -221,7 +221,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return $isAllowed;
 	}
 
-	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ) {
+	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ): bool {
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
@@ -249,7 +249,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return false;
 	}
 
-	private function check_bounds( $value, $allowedValue, &$isAllowed, &$allowedValueList ) {
+	private function check_bounds( $value, $allowedValue, &$isAllowed, &$allowedValueList ): bool {
 		$v = $allowedValue->getString();
 
 		if ( strpos( $v, '...' ) === false ) {

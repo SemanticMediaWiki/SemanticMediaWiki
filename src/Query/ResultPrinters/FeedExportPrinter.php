@@ -51,7 +51,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isExportFormat() {
+	public function isExportFormat(): bool {
 		return true;
 	}
 
@@ -76,7 +76,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): bool {
 		return false;
 	}
 

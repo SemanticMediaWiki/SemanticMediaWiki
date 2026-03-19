@@ -235,7 +235,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function canUpdate() {
+	private function canUpdate(): bool {
 		$title = $this->getSubject()->getTitle();
 
 		// Protect against null and namespace -1 see Bug 50153
@@ -251,7 +251,7 @@ class DataUpdater {
 	 * check if semantic data should be processed and displayed for a page in
 	 * the given namespace
 	 */
-	public function runUpdate() {
+	public function runUpdate(): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $this->canCreateUpdateJob === null ) {
@@ -399,7 +399,7 @@ class DataUpdater {
 		$this->changePropagationNotifier->checkAndNotify( $this->semanticData );
 	}
 
-	private function updateData() {
+	private function updateData(): bool {
 		$this->store->setOption(
 			Store::OPT_CREATE_UPDATE_JOB,
 			$this->canCreateUpdateJob

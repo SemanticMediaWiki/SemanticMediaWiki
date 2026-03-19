@@ -120,7 +120,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool
 	 */
-	public function doHttpPost( $payload ) {
+	public function doHttpPost( $payload ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
@@ -163,7 +163,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @since 2.0
 	 */
-	public function doUpdate( $sparql ) {
+	public function doUpdate( $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}

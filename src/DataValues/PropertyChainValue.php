@@ -144,7 +144,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}

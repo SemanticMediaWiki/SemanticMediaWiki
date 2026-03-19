@@ -342,7 +342,7 @@ class CachedFactbox {
 		return $factbox->tabs( $content, $attachmentContent );
 	}
 
-	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ) {
+	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ): bool {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
 			$this->isCached = false;
 			return false;

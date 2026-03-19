@@ -44,7 +44,7 @@ class EditPageForm implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( EditPage $editPage ) {
+	public function process( EditPage $editPage ): bool {
 		$html = '';
 
 		if (

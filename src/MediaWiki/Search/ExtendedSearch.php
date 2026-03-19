@@ -296,7 +296,7 @@ class ExtendedSearch {
 		return $this->fallbackSearchEngine->completionSearch( $search );
 	}
 
-	private function hasPrefixAndMinLenForCompletionSearch( $search, $minLen ) {
+	private function hasPrefixAndMinLenForCompletionSearch( $search, $minLen ): bool {
 		// Only act on when `in:foo`, `has:SomeProperty`, or `phrase:some text`
 		// is actively used as prefix
 		$defaultPrefixMap = [ 'in', 'has', 'phrase', 'not' ];

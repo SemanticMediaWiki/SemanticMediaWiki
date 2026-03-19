@@ -438,7 +438,7 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
 		foreach ( $hosts as $host ) {

@@ -29,7 +29,7 @@ class SpecialPropertyLabelSimilarity extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->setHeaders();
 		$output = $this->getOutput();
 		$webRequest = $this->getRequest();

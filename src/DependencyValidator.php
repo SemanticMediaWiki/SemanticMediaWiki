@@ -116,7 +116,7 @@ class DependencyValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( DIWikiPage $subject ): bool {
 		$title = $subject->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
@@ -158,7 +158,7 @@ class DependencyValidator {
 	 *
 	 * @return bool
 	 */
-	public function canKeepParserCache( DIWikiPage $subject ) {
+	public function canKeepParserCache( DIWikiPage $subject ): bool {
 		$key = $this->makeCacheKey( $subject->getTitle() );
 
 		// Test for a recent rejection, being unrelated etc.

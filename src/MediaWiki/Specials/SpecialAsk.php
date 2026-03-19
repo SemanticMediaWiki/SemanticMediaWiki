@@ -88,7 +88,7 @@ class SpecialAsk extends SpecialPage {
 	 *
 	 * @return bool
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 

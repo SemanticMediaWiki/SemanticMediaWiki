@@ -27,7 +27,7 @@ class SpecialPendingTaskList extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->addHelpLink(
 			$this->msg( 'smw-helplink', 'Pending_tasks' )->escaped(),
 			true

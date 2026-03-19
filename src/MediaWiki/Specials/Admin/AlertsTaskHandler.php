@@ -37,7 +37,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasAction() {
+	public function hasAction(): bool {
 		return false;
 	}
 
@@ -46,7 +46,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isTaskFor( $action ) {
+	public function isTaskFor( $action ): bool {
 		return false;
 	}
 

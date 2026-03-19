@@ -19,7 +19,7 @@ class FalseCondition extends Condition {
 		return "<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .\n";
 	}
 
-	public function isSafe() {
+	public function isSafe(): bool {
 		return true;
 	}
 }

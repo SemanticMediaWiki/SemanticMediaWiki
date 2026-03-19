@@ -24,7 +24,7 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return $property->getKey() === '_IMPO';
 	}
 

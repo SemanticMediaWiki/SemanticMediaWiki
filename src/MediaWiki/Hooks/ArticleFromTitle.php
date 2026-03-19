@@ -35,7 +35,7 @@ class ArticleFromTitle implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Title &$title, ?Article &$page = null ) {
+	public function process( Title &$title, ?Article &$page = null ): bool {
 		$ns = $title->getNamespace();
 
 		if ( $ns !== SMW_NS_PROPERTY && $ns !== SMW_NS_CONCEPT ) {

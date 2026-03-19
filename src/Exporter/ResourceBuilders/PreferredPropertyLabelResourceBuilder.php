@@ -23,7 +23,7 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return $property->getKey() === '_PPLB';
 	}
 

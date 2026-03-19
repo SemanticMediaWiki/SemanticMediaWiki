@@ -250,7 +250,7 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private static function hasPipe( $key, $value ) {
+	private static function hasPipe( $key, $value ): bool {
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}

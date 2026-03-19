@@ -121,7 +121,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return bool
 	 */
-	public function isBooleanTrue() {
+	public function isBooleanTrue(): bool {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );

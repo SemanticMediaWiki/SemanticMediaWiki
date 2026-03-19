@@ -47,7 +47,7 @@ class ChangePropagationUpdateJob extends Job {
 	 *
 	 * @since 3.0
 	 */
-	public function run() {
+	public function run(): bool {
 		ChangePropagationDispatchJob::cleanUp(
 			DIWikiPage::newFromTitle( $this->getTitle() )
 		);

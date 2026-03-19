@@ -218,7 +218,7 @@ class TypesValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( ( $dataItem instanceof Uri ) && ( $dataItem->getScheme() == 'http' ) &&
 			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 			( $dataItem->getQuery() === '' ) ) {

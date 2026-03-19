@@ -21,7 +21,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return !$property->isUserDefined() && $this->requiresAuxiliary( $property->getKey() );
 	}
 

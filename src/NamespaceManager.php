@@ -86,7 +86,7 @@ class NamespaceManager {
 	 *
 	 * @param array &$namespaces
 	 */
-	public static function initCanonicalNamespaces( array &$namespaces ) {
+	public static function initCanonicalNamespaces( array &$namespaces ): bool {
 		$instance_newVars = self::initCustomNamespace( $GLOBALS );
 		Globals::replace( $instance_newVars['newVars'] );
 		$canonicalNames = $instance_newVars['instance']->getCanonicalNames();

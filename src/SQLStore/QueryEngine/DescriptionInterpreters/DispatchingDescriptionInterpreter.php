@@ -32,7 +32,7 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		foreach ( $this->interpreters as $interpreter ) {
 			if ( $interpreter->canInterpretDescription( $description ) ) {
 				return true;

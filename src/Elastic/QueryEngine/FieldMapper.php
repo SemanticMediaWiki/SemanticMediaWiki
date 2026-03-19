@@ -98,7 +98,7 @@ class FieldMapper {
 	 *
 	 * @return bool
 	 */
-	public function containsReservedChar( $value ) {
+	public function containsReservedChar( $value ): bool {
 		$reservedChars = [
 			'+', '-', '=', '&&', '||', '>', '<', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '//'
 		];

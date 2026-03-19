@@ -48,7 +48,7 @@ class ConceptDescription extends Description {
 		return $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 

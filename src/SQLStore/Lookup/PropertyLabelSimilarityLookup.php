@@ -185,7 +185,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return bool
 	 */
-	private function isExempted( DIProperty $first, DIProperty $second ) {
+	private function isExempted( DIProperty $first, DIProperty $second ): bool {
 		if ( $this->exemptionProperty === null ) {
 			return false;
 		}

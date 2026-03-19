@@ -214,7 +214,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
@@ -322,7 +322,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 		if ( !$this->isValid() ) {
 			return true;
 		}

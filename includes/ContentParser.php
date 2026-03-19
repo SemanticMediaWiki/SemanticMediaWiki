@@ -109,7 +109,7 @@ class ContentParser {
 	/**
 	 * @since 1.9
 	 */
-	public function skipInTextAnnotationParser() {
+	public function skipInTextAnnotationParser(): bool {
 		$this->skipInTextAnnotationParser = true;
 		return true;
 	}

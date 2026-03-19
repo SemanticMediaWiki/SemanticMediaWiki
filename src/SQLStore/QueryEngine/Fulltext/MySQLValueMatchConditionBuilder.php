@@ -20,7 +20,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( ValueDescription $description ) {
+	public function canHaveMatchCondition( ValueDescription $description ): bool {
 		if ( !$this->isEnabled() ) {
 			return false;
 		}
