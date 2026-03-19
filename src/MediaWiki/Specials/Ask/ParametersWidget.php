@@ -203,7 +203,10 @@ class ParametersWidget {
 		return $resultHtml;
 	}
 
-	private static function optionList( $definitions, $values ) {
+	/**
+	 * @return non-falsy-string[]
+	 */
+	private static function optionList( $definitions, $values ): array {
 		$html = [];
 
 		/**

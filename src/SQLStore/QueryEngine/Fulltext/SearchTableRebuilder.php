@@ -127,7 +127,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return array
 	 */
-	public function getQualifiedTableList() {
+	public function getQualifiedTableList(): array {
 		$tableList = [];
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {

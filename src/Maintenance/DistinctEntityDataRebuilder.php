@@ -233,7 +233,10 @@ class DistinctEntityDataRebuilder {
 		return $this->store->getQueryResult( $query )->getResults();
 	}
 
-	private function getPagesFromFilters() {
+	/**
+	 * @return mixed[]
+	 */
+	private function getPagesFromFilters(): array {
 		$pages = [];
 
 		if ( !$this->hasFilters() ) {
@@ -261,7 +264,10 @@ class DistinctEntityDataRebuilder {
 		return $titleLookup->getRedirectPages();
 	}
 
-	private function normalize( $list ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function normalize( $list ): array {
 		$titleCache = [];
 		$p = [];
 

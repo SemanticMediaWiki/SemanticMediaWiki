@@ -143,7 +143,10 @@ class JsonResultPrinter extends FileExportPrinter {
 		return json_encode( $result, $flags );
 	}
 
-	private function buildSimpleList( $res ) {
+	/**
+	 * @return list[][]
+	 */
+	private function buildSimpleList( $res ): array {
 		$result = [];
 
 		$row = $res->getNext();

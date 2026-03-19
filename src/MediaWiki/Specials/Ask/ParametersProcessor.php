@@ -199,7 +199,10 @@ class ParametersProcessor {
 		return $parameterList;
 	}
 
-	private static function checkParameterList( $request, $parameterList, $printouts ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function checkParameterList( $request, $parameterList, $printouts ): array {
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );

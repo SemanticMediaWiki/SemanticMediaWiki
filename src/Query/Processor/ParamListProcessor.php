@@ -57,7 +57,7 @@ class ParamListProcessor {
 	 *
 	 * @return array
 	 */
-	public function preprocess( array $parameters, $showMode = false ) {
+	public function preprocess( array $parameters, $showMode = false ): array {
 		$previousPrintout = null;
 
 		$serialization = [

@@ -20,9 +20,9 @@ class Restrictions {
 	 * @param PrintRequest $printRequest
 	 * @param DataItem[] $content
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public static function applySortRestriction( PrintRequest $printRequest, array $content ) {
+	public static function applySortRestriction( PrintRequest $printRequest, array $content ): array {
 		if ( $content === [] ) {
 			return $content;
 		}

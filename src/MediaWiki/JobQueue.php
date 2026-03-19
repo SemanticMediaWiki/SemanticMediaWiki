@@ -53,9 +53,9 @@ class JobQueue {
 	 *
 	 * @param array $list
 	 *
-	 * @return
+	 * @return list[]
 	 */
-	public function runFromQueue( array $list ) {
+	public function runFromQueue( array $list ): array {
 		$log = [];
 
 		foreach ( $list as $type => $amount ) {

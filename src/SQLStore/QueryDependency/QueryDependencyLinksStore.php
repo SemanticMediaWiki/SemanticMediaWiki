@@ -170,7 +170,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(

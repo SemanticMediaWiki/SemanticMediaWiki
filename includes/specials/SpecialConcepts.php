@@ -66,7 +66,7 @@ class SpecialConcepts extends SpecialPage {
 	 *
 	 * @return DIWikiPage[]
 	 */
-	public function fetchFromTable( $limit, $offset ) {
+	public function fetchFromTable( $limit, $offset ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$results = [];
 

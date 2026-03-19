@@ -105,7 +105,7 @@ class GeoCoord extends DataItem {
 	 *
 	 * @return array
 	 */
-	public function getCoordinateSet() {
+	public function getCoordinateSet(): array {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
 		if ( $this->altitude !== null ) {

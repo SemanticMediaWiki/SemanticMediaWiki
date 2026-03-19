@@ -390,7 +390,10 @@ class SMWSpecialTypes extends SpecialPage {
 		);
 	}
 
-	private function makeTypeList( $typeLabels ) {
+	/**
+	 * @return non-empty-array<list>
+	 */
+	private function makeTypeList( $typeLabels ): array {
 		$contents = [];
 		$linker = smwfGetLinker();
 

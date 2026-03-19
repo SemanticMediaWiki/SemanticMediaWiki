@@ -275,7 +275,7 @@ class SpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getAllowedValues( DIProperty $property ) {
+	public function getAllowedValues( DIProperty $property ): array {
 		$allowsValues = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVAL' ) );
 
@@ -293,7 +293,7 @@ class SpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getAllowedListValues( DIProperty $property ) {
+	public function getAllowedListValues( DIProperty $property ): array {
 		$allowsListValue = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_PVALI' ) );
 
@@ -330,7 +330,7 @@ class SpecificationLookup {
 	 *
 	 * @return array
 	 */
-	public function getDisplayUnits( DIProperty $property ) {
+	public function getDisplayUnits( DIProperty $property ): array {
 		$units = [];
 		$dataItems = $this->getSpecification( $property, new DIProperty( '_UNIT' ) );
 

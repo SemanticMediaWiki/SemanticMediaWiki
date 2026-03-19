@@ -49,7 +49,7 @@ class TitleFactory {
 	 *
 	 * @return Title[]
 	 */
-	public function newFromIDs( $ids ) {
+	public function newFromIDs( $ids ): array {
 		if ( !count( $ids ) ) {
 			return [];
 		}

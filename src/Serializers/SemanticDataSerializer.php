@@ -38,7 +38,7 @@ class SemanticDataSerializer implements Serializer {
 		return $data + [ 'serializer' => __CLASS__, 'version' => 2 ];
 	}
 
-	private function doSerialize( SemanticData $semanticData ) {
+	private function doSerialize( SemanticData $semanticData ): array {
 		$data = [
 			'subject' => $semanticData->getSubject()->getSerialization(),
 			'data'    => $this->doSerializeProperty( $semanticData )
@@ -62,7 +62,7 @@ class SemanticDataSerializer implements Serializer {
 	 * @param SemanticData $semanticData The semantic data of the current subject.
 	 * @return array List of serialized direct properties with their values.
 	 */
-	private function doSerializeProperty( $semanticData ) {
+	private function doSerializeProperty( $semanticData ): array {
 		$properties = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -83,7 +83,7 @@ class SemanticDataSerializer implements Serializer {
 	 * @param SemanticData $semanticData The semantic data of the current subject.
 	 * @return array List of serialized inverse properties and referencing subjects.
 	 */
-	private function doSerializeInverseProperties( SemanticData $semanticData ) {
+	private function doSerializeInverseProperties( SemanticData $semanticData ): array {
 		$inverseData = [];
 		$dataItem = $semanticData->getSubject();
 
@@ -126,7 +126,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	private function doSerializeDataItem( $semanticData, $property ) {
+	private function doSerializeDataItem( $semanticData, $property ): array {
 		$dataItems = [];
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
@@ -144,7 +144,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	protected function doSerializeSubSemanticData( $subSemanticData ) {
+	protected function doSerializeSubSemanticData( $subSemanticData ): array {
 		$subobjects = [];
 
 		foreach ( $subSemanticData as $semanticData ) {

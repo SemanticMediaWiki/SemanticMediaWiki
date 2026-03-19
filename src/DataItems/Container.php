@@ -94,7 +94,10 @@ class Container extends DataItem {
 		// return $this->m_semanticData->getHash();
 	}
 
-	private function getValueHash( $semanticData ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getValueHash( $semanticData ): array {
 		$hash = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {

@@ -113,7 +113,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return array
 	 */
-	public function compareAndFindLabels( ?RequestOptions $requestOptions = null ) {
+	public function compareAndFindLabels( ?RequestOptions $requestOptions = null ): array {
 		$withType = false;
 		$propertyList = $this->getPropertyList( $requestOptions );
 
@@ -135,7 +135,10 @@ class PropertyLabelSimilarityLookup {
 		return $similarities;
 	}
 
-	private function matchLabels( $propertyList, $withType ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function matchLabels( $propertyList, $withType ): array {
 		$similarities = [];
 		$lookupComplete = [];
 
@@ -252,7 +255,10 @@ class PropertyLabelSimilarityLookup {
 		];
 	}
 
-	private function getPropertyList( ?RequestOptions $requestOptions = null ) {
+	/**
+	 * @return \SMW\DIProperty[]
+	 */
+	private function getPropertyList( ?RequestOptions $requestOptions = null ): array {
 		$propertyList = [];
 
 		// the query needs to do the filtering of internal properties, else LIMIT is wrong

@@ -128,7 +128,10 @@ class OrderCondition {
 		$conditionBuilder->getQuerySegmentList();
 	}
 
-	private function findDescriptionsFromSortKeys( $querySegment ) {
+	/**
+	 * @return Description[]
+	 */
+	private function findDescriptionsFromSortKeys( $querySegment ): array {
 		$extraDescriptions = [];
 
 		foreach ( $this->sortKeys as $label => $order ) {

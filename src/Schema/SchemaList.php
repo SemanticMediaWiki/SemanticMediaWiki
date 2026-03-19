@@ -66,9 +66,9 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public function merge( SchemaList $schemaList ) {
+	public function merge( SchemaList $schemaList ): array {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
@@ -130,9 +130,9 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$list = [];
 
 		foreach ( $this->getList() as $schemaDefinition ) {

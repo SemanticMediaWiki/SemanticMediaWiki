@@ -204,7 +204,7 @@ class ListResultBuilder {
 	/**
 	 * @return string[]
 	 */
-	private function getRowTexts() {
+	private function getRowTexts(): array {
 		$queryResult = $this->getQueryResult();
 		$queryResult->reset();
 

@@ -131,7 +131,7 @@ class ItemFetcher {
 	 *
 	 * @return array
 	 */
-	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ) {
+	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ): array {
 		if ( $this->prefetch === false ) {
 			return $this->legacyFetch( $dataItems, $property, $requestOptions );
 		}
@@ -195,7 +195,10 @@ class ItemFetcher {
 		return $propertyValues;
 	}
 
-	private function legacyFetch( $dataItems, $property, $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function legacyFetch( $dataItems, $property, $requestOptions ): array {
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );

@@ -288,7 +288,7 @@ class ExpData implements Element {
 	 *
 	 * @return array<array{Element, Element, Element}> array of ExpElement
 	 */
-	public function getTripleList( ?Element $subject = null ) {
+	public function getTripleList( ?Element $subject = null ): array {
 		global $smwgBnodeCount;
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;

@@ -176,7 +176,10 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $this->htmlColumns->getHtml();
 	}
 
-	private function getContents( QueryResult $res, $outputMode ) {
+	/**
+	 * @return non-empty-list[]
+	 */
+	private function getContents( QueryResult $res, $outputMode ): array {
 		$contents = [];
 
 		// Print all result rows:

@@ -141,7 +141,10 @@ class MySQLTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getCurrentFields( $tableName ): array {
 		$sql = 'DESCRIBE ' . $tableName;
 
 		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
@@ -328,7 +331,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * @return array indexname => columns
 	 */
-	private function getIndexInfo( $tableName ) {
+	private function getIndexInfo( $tableName ): array {
 		$indices = [];
 
 		$res = $this->connection->query(

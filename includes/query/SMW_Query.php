@@ -465,7 +465,7 @@ class SMWQuery implements QueryContext {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$serialized = [];
 
 		$serialized['conditions'] = $this->getQueryString();

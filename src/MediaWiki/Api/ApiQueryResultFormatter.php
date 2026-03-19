@@ -124,7 +124,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return array
 	 */
-	protected function formatResults( array $queryResult ) {
+	protected function formatResults( array $queryResult ): array {
 		$this->type = 'query';
 		$results    = [];
 

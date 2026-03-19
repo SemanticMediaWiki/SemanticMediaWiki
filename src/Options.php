@@ -147,7 +147,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function filter( array $keys ) {
+	public function filter( array $keys ): array {
 		$options = [];
 
 		foreach ( $keys as $key ) {

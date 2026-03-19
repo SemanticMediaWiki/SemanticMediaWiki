@@ -39,7 +39,10 @@ class TableStatisticsLookup {
 		return $this->{$key}( $this->store->getConnection( 'mw.db' ) );
 	}
 
-	private function loadFromDB( $connection ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function loadFromDB( $connection ): array {
 		$start_time = -microtime( true );
 		$duplicates = $this->store->getObjectIds()->findDuplicates();
 
@@ -218,7 +221,10 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function rows_group_by_namespace( $connection ) {
+	/**
+	 * @return int[]
+	 */
+	private function rows_group_by_namespace( $connection ): array {
 		$res = $connection->select(
 			SQLStore::ID_TABLE,
 			[

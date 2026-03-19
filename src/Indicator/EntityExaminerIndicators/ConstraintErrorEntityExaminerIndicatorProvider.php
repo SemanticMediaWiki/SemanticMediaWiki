@@ -273,7 +273,10 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		return $this->decodeErrors( $errors );
 	}
 
-	private function decodeErrors( $errors ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function decodeErrors( $errors ): array {
 		if ( $errors === 'null' ) {
 			return [];
 		}

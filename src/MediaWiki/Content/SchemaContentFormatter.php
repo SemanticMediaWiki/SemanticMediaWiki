@@ -156,7 +156,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return array
 	 */
-	public function getUsage( ?Schema $schema = null ) {
+	public function getUsage( ?Schema $schema = null ): array {
 		if ( $schema === null || !isset( $this->type['usage_lookup'] ) ) {
 			return [ '', 0 ];
 		}
@@ -286,7 +286,10 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_body', $params );
 	}
 
-	private function attributes_extra( $schema ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function attributes_extra( $schema ): array {
 		if ( $schema === null ) {
 			return [];
 		}
@@ -318,7 +321,10 @@ class SchemaContentFormatter {
 		return $params;
 	}
 
-	private function error_params( $validator_schema, array $errors = [] ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function error_params( $validator_schema, array $errors = [] ): array {
 		if ( $errors === [] ) {
 			return [];
 		}

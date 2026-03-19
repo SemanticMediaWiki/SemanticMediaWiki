@@ -99,7 +99,7 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function getTableUsageInfo( SemanticData $semanticData ) {
+	public function getTableUsageInfo( SemanticData $semanticData ): array {
 		$state = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -204,7 +204,7 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
 		$ids = [];
 		$isSubject = true;
 		$entityIdManager = $this->store->getObjectIds();
@@ -306,7 +306,7 @@ class SemanticDataLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
+	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
 		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
 
 		// stop if there is not enough data:
@@ -359,7 +359,10 @@ class SemanticDataLookup {
 		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
 	}
 
-	private function fetchSemanticDataFromTableByList( $list, $pid, $propTable, $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function fetchSemanticDataFromTableByList( $list, $pid, $propTable, $requestOptions ): array {
 		if ( $list === [] ) {
 			return [];
 		}
@@ -389,7 +392,10 @@ class SemanticDataLookup {
 		return $this->fetchFromTable( $query, $propTable, $isSubject, $requestOptions );
 	}
 
-	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function fetchFromTable( $query, $propTable, $isSubject, $requestOptions, $field = '' ): array {
 		$result = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -659,7 +665,7 @@ class SemanticDataLookup {
 		}
 	}
 
-	private function buildResultFromRow( $row, $params ) {
+	private function buildResultFromRow( $row, $params ): array {
 		$hash = '';
 		$sortField = '';
 

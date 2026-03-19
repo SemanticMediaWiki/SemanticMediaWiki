@@ -198,7 +198,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithIcu( $text, $language, $useWordBoundary ) {
+	private function tokenizeWithIcu( $text, $language, $useWordBoundary ): array {
 		$tokens = [];
 
 		$tokenizer = IntlRuleBasedBreakIterator::createWordInstance( $language ?? 'en' );
@@ -283,7 +283,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithNgram( $text, $ngramSize = 2 ) {
+	private function tokenizeWithNgram( $text, $ngramSize = 2 ): array {
 		$ngramList = [];
 
 		// Text is already lowercased by sanitize() before reaching here
@@ -307,7 +307,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function filterTokens( $tokens, $language, $exemptionList ) {
+	private function filterTokens( $tokens, $language, $exemptionList ): array {
 		if ( !$tokens || !is_array( $tokens ) ) {
 			return [];
 		}

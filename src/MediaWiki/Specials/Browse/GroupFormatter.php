@@ -236,7 +236,10 @@ class GroupFormatter {
 		return $group;
 	}
 
-	private function prepareListFromSchema( $schemaList ) {
+	/**
+	 * @return array{properties: array, msg_key: mixed, item: mixed}[]
+	 */
+	private function prepareListFromSchema( $schemaList ): array {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {

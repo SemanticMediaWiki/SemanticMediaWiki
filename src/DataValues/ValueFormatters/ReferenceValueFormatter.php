@@ -92,7 +92,10 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $result;
 	}
 
-	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ): array {
 		$results = [];
 
 		foreach ( $propertyDataItems as $propertyDataItem ) {

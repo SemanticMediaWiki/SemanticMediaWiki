@@ -71,7 +71,7 @@ class Csv {
 	 *
 	 * @return array
 	 */
-	public function merge( $rows, $sep = ',' ) {
+	public function merge( $rows, $sep = ',' ): array {
 		$map = [];
 		$order = [];
 

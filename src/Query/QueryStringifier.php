@@ -31,7 +31,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function toArray( Query $query, $printParameters = false ) {
+	public static function toArray( Query $query, $printParameters = false ): array {
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();
 
@@ -102,7 +102,10 @@ class QueryStringifier {
 		return $string;
 	}
 
-	private static function printouts( $query, $showParams = false ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function printouts( $query, $showParams = false ): array {
 		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
@@ -118,7 +121,10 @@ class QueryStringifier {
 		return $printouts;
 	}
 
-	private static function sortKeys( $query ) {
+	/**
+	 * @return mixed[][][]|string[][]
+	 */
+	private static function sortKeys( $query ): array {
 		$sort = [];
 		$order = [];
 

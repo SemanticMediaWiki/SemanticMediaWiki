@@ -214,7 +214,7 @@ class QueryEngine implements QueryEngineInterface {
 	 *
 	 * @return array
 	 */
-	protected function getOptions( Query $query, Condition $compoundCondition ) {
+	protected function getOptions( Query $query, Condition $compoundCondition ): array {
 		$options = [
 			'LIMIT' => $query->getLimit() + 1,
 			'OFFSET' => $query->getOffset()

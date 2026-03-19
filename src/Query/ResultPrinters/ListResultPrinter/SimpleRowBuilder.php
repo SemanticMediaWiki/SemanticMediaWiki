@@ -53,7 +53,7 @@ class SimpleRowBuilder extends RowBuilder {
 	 *
 	 * @return array
 	 */
-	private function getFieldTexts( array $fields ) {
+	private function getFieldTexts( array $fields ): array {
 		$columnNumber = 0;
 		$fieldTexts = [];
 

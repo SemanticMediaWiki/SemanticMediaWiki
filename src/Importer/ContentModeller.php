@@ -16,9 +16,9 @@ class ContentModeller {
 	 * @param string $fileDir
 	 * @param array $fileContents
 	 *
-	 * @return ImportContents[]|[]
+	 * @return mixed[]
 	 */
-	public function makeContentList( $fileDir, array $fileContents ) {
+	public function makeContentList( $fileDir, array $fileContents ): array {
 		$contents = [];
 
 		if ( !isset( $fileContents['import'] ) ) {

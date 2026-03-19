@@ -144,7 +144,10 @@ class Info extends ApiBase {
 		return __CLASS__ . ': $Id$';
 	}
 
-	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ): array {
 		$resultInfo = [];
 
 		foreach ( $map as $apiName => $smwName ) {

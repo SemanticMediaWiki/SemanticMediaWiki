@@ -112,7 +112,7 @@ class NamespaceManager {
 	 *
 	 * @return array
 	 */
-	public static function getCanonicalNames() {
+	public static function getCanonicalNames(): array {
 		$canonicalNames = [
 			SMW_NS_PROPERTY      => 'Property',
 			SMW_NS_PROPERTY_TALK => 'Property_talk',
@@ -132,7 +132,7 @@ class NamespaceManager {
 	 *
 	 * @return array
 	 */
-	public static function buildNamespaceIndex( $offset ) {
+	public static function buildNamespaceIndex( $offset ): array {
 		// 100 and 101 used to be occupied by SMW's now obsolete namespaces
 		// "Relation" and "Relation_Talk"
 

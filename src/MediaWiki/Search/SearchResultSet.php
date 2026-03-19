@@ -181,7 +181,10 @@ class SearchResultSet extends \SearchResultSet {
 		return $this->getTokens();
 	}
 
-	private function getTokens() {
+	/**
+	 * @return string[]
+	 */
+	private function getTokens(): array {
 		$tokens = [];
 
 		if ( $this->queryToken === null ) {

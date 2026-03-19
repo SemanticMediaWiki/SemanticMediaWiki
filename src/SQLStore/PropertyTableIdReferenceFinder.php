@@ -118,7 +118,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @return array
 	 */
-	public function searchAllTablesToFindAtLeastOneReferenceById( $id ) {
+	public function searchAllTablesToFindAtLeastOneReferenceById( $id ): array {
 		$references = [];
 
 		foreach ( $this->store->getPropertyTables() as $proptable ) {

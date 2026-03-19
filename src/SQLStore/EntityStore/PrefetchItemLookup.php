@@ -78,7 +78,10 @@ class PrefetchItemLookup {
 		return $this->prefetchSemanticData( $subjects, $property, $requestOptions );
 	}
 
-	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ): array {
 		$tableid = $this->store->findPropertyTableID( $property );
 		$entityIdManager = $this->store->getObjectIds();
 
@@ -243,7 +246,10 @@ class PrefetchItemLookup {
 		return $result;
 	}
 
-	private function buildList( $diHandler, $itemList, $requestOptions, $sequenceMap ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function buildList( $diHandler, $itemList, $requestOptions, $sequenceMap ): array {
 		$values = [];
 		$i = 0;
 

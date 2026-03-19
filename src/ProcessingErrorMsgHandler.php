@@ -266,8 +266,9 @@ class ProcessingErrorMsgHandler {
 	/**
 	 * Flip [ '_type_1' => [ 'a', 'b'], '_type_2' => 'c', 'd' ] ]
 	 * to  [ 'a' => '_type_1', 'b' => '_type_1', 'c' => '_type_2', 'd' => '_type_2' ]
+	 * @return mixed[]
 	 */
-	private function flip( $array ) {
+	private function flip( $array ): array {
 		$flipped = [];
 
 		foreach ( $array as $key => $value ) {

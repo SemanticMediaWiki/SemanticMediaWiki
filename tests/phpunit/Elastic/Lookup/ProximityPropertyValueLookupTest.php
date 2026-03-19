@@ -80,7 +80,8 @@ class ProximityPropertyValueLookupTest extends TestCase {
 
 		$this->elasticClient->expects( $this->once() )
 			->method( 'search' )
-			->with( $params );
+			->with( $params )
+			->willReturn( [ [], [] ] );
 
 		$instance = new ProximityPropertyValueLookup(
 			$this->store

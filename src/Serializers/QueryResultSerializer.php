@@ -179,7 +179,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @return array
 	 */
-	public static function getSerializedQueryResult( QueryResult $queryResult ) {
+	public static function getSerializedQueryResult( QueryResult $queryResult ): array {
 		$results = [];
 		$printRequests = [];
 
@@ -249,7 +249,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 		return $serialization;
 	}
 
-	private static function serialize_printrequest( $printRequest ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function serialize_printrequest( $printRequest ): array {
 		$serialized = [
 			'label'  => $printRequest->getLabel(),
 			'key'    => '',

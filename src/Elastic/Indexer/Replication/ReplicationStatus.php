@@ -75,9 +75,9 @@ class ReplicationStatus {
 	 *
 	 * @param string $id
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	private function modification_date_associated_revision( $id ) {
+	private function modification_date_associated_revision( $id ): array {
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,

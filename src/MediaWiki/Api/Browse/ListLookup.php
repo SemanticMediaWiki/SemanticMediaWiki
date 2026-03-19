@@ -44,7 +44,7 @@ class ListLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$requestOptions = $this->newRequestOptions(
 			$parameters
 		);

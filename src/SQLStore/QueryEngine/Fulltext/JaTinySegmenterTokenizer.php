@@ -69,7 +69,10 @@ class JaTinySegmenterTokenizer {
 		return $this;
 	}
 
-	protected function segment( $input, $encoding = null ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function segment( $input, $encoding = null ): array {
 		if ( !$input ) {
 			return [];
 		}
@@ -204,7 +207,10 @@ class JaTinySegmenterTokenizer {
 		return "O";
 	}
 
-	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ) {
+	/**
+	 * @return string[]
+	 */
+	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ): array {
 		$result = [];
 		$length = mb_strlen( $str, $encoding );
 

@@ -308,7 +308,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return [];
 		}

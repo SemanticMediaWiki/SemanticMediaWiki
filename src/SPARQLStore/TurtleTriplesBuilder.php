@@ -110,7 +110,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array
 	 */
-	public function getChunkedTriples() {
+	public function getChunkedTriples(): array {
 		$chunkedTriples = [];
 
 		if ( $this->triples === null ) {
@@ -186,7 +186,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return array of SMWExpData
 	 */
-	private function prepareUpdateExpData( SemanticData $semanticData ) {
+	private function prepareUpdateExpData( SemanticData $semanticData ): array {
 		$result = [];
 
 		$expData = Exporter::getInstance()->makeExportData( $semanticData );

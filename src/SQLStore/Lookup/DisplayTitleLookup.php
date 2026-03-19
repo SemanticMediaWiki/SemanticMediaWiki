@@ -29,7 +29,7 @@ class DisplayTitleLookup {
 	 *
 	 * @return Iterator|array
 	 */
-	public function prefetchFromList( array $dataItems ) {
+	public function prefetchFromList( array $dataItems ): array {
 		$list = [];
 		$prefetch = [];
 		$connection = $this->store->getConnection( 'mw.db' );

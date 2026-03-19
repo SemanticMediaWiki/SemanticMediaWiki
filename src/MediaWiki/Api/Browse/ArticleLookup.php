@@ -40,7 +40,7 @@ class ArticleLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 50;
 		$offset = 0;
 		$namespace = null;

@@ -29,7 +29,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return array
 	 */
-	public static function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public static function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ): array {
 		$sqlConds = [];
 
 		if ( $requestOptions === null ) {

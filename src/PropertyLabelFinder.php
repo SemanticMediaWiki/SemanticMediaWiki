@@ -155,9 +155,9 @@ class PropertyLabelFinder {
 	 * @param string $text
 	 * @param string $languageCode
 	 *
-	 * @return DIProperty[]|[]
+	 * @return mixed[]
 	 */
-	public function findPropertyListFromLabelByLanguageCode( $text, $languageCode = '' ) {
+	public function findPropertyListFromLabelByLanguageCode( $text, $languageCode = '' ): array {
 		if ( $text === '' ) {
 			return [];
 		}

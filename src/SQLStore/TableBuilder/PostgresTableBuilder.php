@@ -119,7 +119,10 @@ class PostgresTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getCurrentFields( $tableName ): array {
 		$tableName = str_replace( '"', '', $tableName );
 		// Use the data dictionary in postgresql to get an output comparable to DESCRIBE.
 /*
@@ -371,7 +374,10 @@ EOT;
 		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
 	}
 
-	private function getIndexInfo( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getIndexInfo( $tableName ): array {
 		$indices = [];
 
 		$sql = "SELECT  i.relname AS indexname,"

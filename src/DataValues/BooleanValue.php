@@ -236,7 +236,10 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ): array {
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )

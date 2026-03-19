@@ -260,7 +260,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return array
 	 */
-	public function getUsageCounts( array $propertyIds ) {
+	public function getUsageCounts( array $propertyIds ): array {
 		if ( $propertyIds === [] ) {
 			return [];
 		}

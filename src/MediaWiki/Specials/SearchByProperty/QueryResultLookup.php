@@ -41,7 +41,7 @@ class QueryResultLookup {
 	 *
 	 * @return array
 	 */
-	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ) {
+	public function doQueryLinksReferences( PageRequestOptions $pageRequestOptions ): array {
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( $pageRequestOptions->limit + 1 );
 		$requestOptions->setOffset( $pageRequestOptions->offset );
@@ -80,7 +80,7 @@ class QueryResultLookup {
 	 * @return array of array(SMWWikiPageValue, SMWDataValue) with the
 	 * first being the entity, and the second the value
 	 */
-	public function doQuery( PageRequestOptions $pageRequestOptions ) {
+	public function doQuery( PageRequestOptions $pageRequestOptions ): array {
 		$requestOptions = new RequestOptions();
 		$requestOptions->limit = $pageRequestOptions->limit + 1;
 		$requestOptions->offset = $pageRequestOptions->offset;
@@ -118,7 +118,7 @@ class QueryResultLookup {
 	 * @return array of array of SMWWikiPageValue, SMWDataValue with the
 	 * first being the entity, and the second the value
 	 */
-	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ) {
+	public function doQueryForNearbyResults( PageRequestOptions $pageRequestOptions, $count, $greater = true ): array {
 		$comparator = $greater ? SMW_CMP_GRTR : SMW_CMP_LESS;
 		$sortOrder = $greater ? 'ASC' : 'DESC';
 

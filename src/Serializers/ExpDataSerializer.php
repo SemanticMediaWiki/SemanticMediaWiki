@@ -45,7 +45,10 @@ class ExpDataSerializer implements Serializer {
 		return $serialization + [ 'data' => $properties ];
 	}
 
-	private function doSerializeChildren( array $elements ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function doSerializeChildren( array $elements ): array {
 		$children = [];
 
 		if ( $elements === [] ) {
