@@ -1,13 +1,15 @@
 <?php
 
-namespace SMW;
+namespace SMW\Specials;
 
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\SpecialPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
 
@@ -64,7 +66,7 @@ class SpecialConcepts extends SpecialPage {
 	 * @param int $limit
 	 * @param int $offset
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
 	public function fetchFromTable( $limit, $offset ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -103,7 +105,7 @@ class SpecialConcepts extends SpecialPage {
 		);
 
 		foreach ( $res as $row ) {
-			$results[] = new DIWikiPage( $row->smw_title, SMW_NS_CONCEPT );
+			$results[] = new WikiPage( $row->smw_title, SMW_NS_CONCEPT );
 		}
 
 		return $results;
@@ -112,7 +114,7 @@ class SpecialConcepts extends SpecialPage {
 	/**
 	 * @since 1.9
 	 *
-	 * @param DIWikiPage[] $dataItems
+	 * @param WikiPage[] $dataItems
 	 * @param int $limit
 	 * @param int $offset
 	 *
@@ -180,3 +182,8 @@ class SpecialConcepts extends SpecialPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialConcepts::class, 'SMW\SpecialConcepts' );

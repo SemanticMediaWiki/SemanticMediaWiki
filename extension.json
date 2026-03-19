@@ -67,7 +67,14 @@
 		"SMW\\UnusedPropertiesQueryPage": "src/QueryPages/UnusedPropertiesQueryPage.php",
 		"SMW\\WantedPropertiesQueryPage": "src/QueryPages/WantedPropertiesQueryPage.php",
 		"SMWQuery": "src/Query/Query.php",
-		"SMWQueryProcessor": "src/Query/QueryProcessor.php"
+		"SMWQueryProcessor": "src/Query/QueryProcessor.php",
+		"SMWSpecialOWLExport": "src/Specials/SpecialOWLExport.php",
+		"SMWSpecialTypes": "src/Specials/SpecialTypes.php",
+		"SMW\\SpecialConcepts": "src/Specials/SpecialConcepts.php",
+		"SMW\\SpecialPage": "src/Specials/SpecialPage.php",
+		"SMW\\SpecialProperties": "src/Specials/SpecialProperties.php",
+		"SMW\\SpecialUnusedProperties": "src/Specials/SpecialUnusedProperties.php",
+		"SMW\\SpecialWantedProperties": "src/Specials/SpecialWantedProperties.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

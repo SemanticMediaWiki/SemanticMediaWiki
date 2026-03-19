@@ -1,12 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\Specials;
 
+use SMW\QueryPages\PropertiesQueryPage;
 use SMWOutputs;
 
 /**
- * Special page (Special:WantedProperties) for MediaWiki shows all
- * wanted properties
+ * Special page (Special:Properties) for MediaWiki shows all
+ * used properties
  *
  *
  * @license GPL-2.0-or-later
@@ -18,19 +19,18 @@ use SMWOutputs;
  */
 
 /**
- * This special page (Special:WantedProperties) for MediaWiki shows all wanted
- * properties (used but not having a page).
+ * This special page for MediaWiki shows all used properties.
  *
  * @ingroup SpecialPage
  */
-class SpecialWantedProperties extends SpecialPage {
+class SpecialProperties extends SpecialPage {
 
 	/**
 	 * @see SpecialPage::__construct
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-		parent::__construct( 'WantedProperties' );
+		parent::__construct( 'Properties' );
 	}
 
 	/**
@@ -38,24 +38,17 @@ class SpecialWantedProperties extends SpecialPage {
 	 */
 	public function execute( $param ): void {
 		$this->setHeaders();
-
 		$out = $this->getOutput();
 
-		$out->addModuleStyles( [
-			'ext.smw.special.styles'
-		] );
+		$out->setPageTitle( $this->msg( 'properties' )->text() );
 
-		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
-
-		$page = new WantedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
+		$page = new PropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
-		$page->setTitle( $this->getPageTitle() );
 
 		[ $limit, $offset ] = $this->getLimitOffset();
-		$page->doQuery( $offset, $limit );
+		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
 
 		// Ensure locally collected output data is pushed to the output!
-		// ?? still needed !!
 		SMWOutputs::commitToOutputPage( $out );
 	}
 
@@ -72,3 +65,8 @@ class SpecialWantedProperties extends SpecialPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialProperties::class, 'SMW\SpecialProperties' );
