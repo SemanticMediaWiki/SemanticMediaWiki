@@ -29,7 +29,7 @@ class NullPropertyAnnotator implements Annotator {
 	 *
 	 * @since 1.9
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): SemanticData {
 		return $this->semanticData;
 	}
 

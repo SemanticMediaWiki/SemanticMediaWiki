@@ -34,7 +34,6 @@ use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\SomeValueInterpreter;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
-use SMW\Options;
 use SMW\QueryEngine;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -63,7 +62,7 @@ class ElasticFactoryTest extends TestCase {
 
 		$this->messageReporter = $this->testEnvironment->getUtilityFactory()->newSpyMessageReporter();
 
-		$options = $this->getMockBuilder( Options::class )
+		$options = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 

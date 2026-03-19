@@ -47,7 +47,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @return Container
 	 */
-	public function getContainer() {
+	public function getContainer(): Container {
 		return $this->container;
 	}
 

@@ -161,7 +161,7 @@ class ConditionBuilder {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 
@@ -170,7 +170,7 @@ class ConditionBuilder {
 	 *
 	 * @return TermsLookup
 	 */
-	public function getTermsLookup() {
+	public function getTermsLookup(): TermsLookup {
 		return $this->termsLookup;
 	}
 

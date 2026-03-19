@@ -87,7 +87,7 @@ class EventListenerRegistry implements EventListenerCollection {
 		return $this->eventListenerCollection->getCollection();
 	}
 
-	private function addListenersToCollection() {
+	private function addListenersToCollection(): EventListenerCollection {
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
 		$this->eventListenerCollection->registerCallback(

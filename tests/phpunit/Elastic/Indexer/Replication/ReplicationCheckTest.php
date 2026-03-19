@@ -4,13 +4,13 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\Config;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\EntityCache;
 use SMW\Localizer\MessageLocalizer;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
 use SMWDITime as DITime;
@@ -264,7 +264,7 @@ class ReplicationCheckTest extends TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -319,7 +319,7 @@ class ReplicationCheckTest extends TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -379,7 +379,7 @@ class ReplicationCheckTest extends TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -437,7 +437,7 @@ class ReplicationCheckTest extends TestCase {
 			]
 		);
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 

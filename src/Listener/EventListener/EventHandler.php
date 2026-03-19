@@ -50,7 +50,7 @@ class EventHandler {
 	 *
 	 * @return EventDispatcher
 	 */
-	public function getEventDispatcher() {
+	public function getEventDispatcher(): EventDispatcher {
 		return $this->eventDispatcher;
 	}
 

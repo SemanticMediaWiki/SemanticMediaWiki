@@ -60,7 +60,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryClient
 	 */
-	public function getRepositoryClient() {
+	public function getRepositoryClient(): RepositoryClient {
 		return $this->repositoryClient;
 	}
 

@@ -95,7 +95,7 @@ class HtmlFormRenderer {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function getMessageBuilder() {
+	public function getMessageBuilder(): MessageBuilder {
 		return $this->messageBuilder;
 	}
 

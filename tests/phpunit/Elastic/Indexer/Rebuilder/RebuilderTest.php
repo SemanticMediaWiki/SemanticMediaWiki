@@ -5,6 +5,7 @@ namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 use Onoi\MessageReporter\NullMessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\DocumentCreator;
@@ -13,7 +14,6 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\Elastic\Installer;
 use SMW\MediaWiki\Connection\Database;
-use SMW\Options;
 use SMW\SemanticData;
 use SMW\Store;
 
@@ -209,7 +209,7 @@ class RebuilderTest extends TestCase {
 	}
 
 	public function testRebuild() {
-		$options = $this->getMockBuilder( Options::class )
+		$options = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -51,7 +51,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): ?SemanticData {
 		return $this->semanticData;
 	}
 

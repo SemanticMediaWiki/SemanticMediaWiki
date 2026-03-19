@@ -4,8 +4,8 @@ namespace SMW\DataModel;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exception\SubSemanticDataException;
 use SMW\SemanticData;
 
@@ -45,7 +45,7 @@ class SubSemanticData implements JsonUnserializable {
 	 * @since 2.5
 	 */
 	public function __construct(
-		private readonly DIWikiPage $subject,
+		private readonly WikiPage $subject,
 		private $noDuplicates = true,
 	) {
 		$this->clear();
@@ -71,9 +71,9 @@ class SubSemanticData implements JsonUnserializable {
 	/**
 	 * Return subject to which the stored semantic annotations refer to.
 	 *
-	 * @return DIWikiPage subject
+	 * @return WikiPage subject
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->subject;
 	}
 

@@ -92,7 +92,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @return array
 	 */
-	public function getResult() {
+	public function getResult(): array {
 		return $this->result;
 	}
 

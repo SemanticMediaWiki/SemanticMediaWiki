@@ -54,7 +54,7 @@ class ValueDescription extends Description {
 	 * @deprecated Use getDataItem() and DataValueFactory::getInstance()->newDataValueByItem() if needed. Vanishes before SMW 1.7
 	 * @return DataItem
 	 */
-	public function getDataValue() {
+	public function getDataValue(): DataItem {
 		// FIXME: remove
 		return $this->dataItem;
 	}
@@ -62,7 +62,7 @@ class ValueDescription extends Description {
 	/**
 	 * @return DataItem
 	 */
-	public function getDataItem() {
+	public function getDataItem(): DataItem {
 		return $this->dataItem;
 	}
 
@@ -71,7 +71,7 @@ class ValueDescription extends Description {
 	 *
 	 * @return Property|null
 	 */
-	public function getProperty() {
+	public function getProperty(): ?Property {
 		return $this->property;
 	}
 

@@ -134,7 +134,7 @@ class MessageBuilder {
 		return $message->inLanguage( $this->getLanguage() )->title( $GLOBALS['wgTitle'] );
 	}
 
-	private function getLanguage() {
+	private function getLanguage(): Language {
 		if ( $this->language instanceof Language ) {
 			return $this->language;
 		}

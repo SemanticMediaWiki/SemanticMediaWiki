@@ -4,7 +4,7 @@ namespace SMW\SQLStore\ChangeOp;
 
 use ArrayIterator;
 use IteratorAggregate;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -54,7 +54,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @since 2.3
 	 */
 	public function __construct(
-		private readonly ?DIWikiPage $subject = null,
+		private readonly ?WikiPage $subject = null,
 		private array $diff = [],
 	) {
 	}
@@ -71,9 +71,9 @@ class ChangeOp implements IteratorAggregate {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): ?WikiPage {
 		return $this->subject;
 	}
 

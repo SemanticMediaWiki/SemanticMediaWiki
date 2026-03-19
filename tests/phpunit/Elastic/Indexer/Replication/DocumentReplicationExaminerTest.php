@@ -4,11 +4,11 @@ namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
+use SMW\Elastic\Config;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
 use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
-use SMW\Options;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
 use SMWDITime as DITime;
@@ -311,7 +311,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -387,7 +387,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -450,7 +450,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
 		$time = DITime::newFromTimestamp( 1272508903 );
 
-		$config = $this->getMockBuilder( Options::class )
+		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 

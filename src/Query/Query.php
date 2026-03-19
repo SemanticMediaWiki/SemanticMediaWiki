@@ -258,7 +258,7 @@ class Query implements QueryContext {
 		$this->applyRestrictions();
 	}
 
-	public function getDescription() {
+	public function getDescription(): ?Description {
 		return $this->description;
 	}
 

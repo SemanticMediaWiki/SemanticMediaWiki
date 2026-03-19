@@ -28,7 +28,7 @@ class SearchTableUpdater {
 	 *
 	 * @return SearchTable
 	 */
-	public function getSearchTable() {
+	public function getSearchTable(): SearchTable {
 		return $this->searchTable;
 	}
 

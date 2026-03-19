@@ -197,7 +197,7 @@ class ListResultBuilder {
 	/**
 	 * @return QueryResult
 	 */
-	private function getQueryResult() {
+	private function getQueryResult(): QueryResult {
 		return $this->queryResult;
 	}
 

@@ -58,7 +58,7 @@ class QueryToken {
 	 *
 	 * @return array
 	 */
-	public function getTokens() {
+	public function getTokens(): array {
 		return $this->tokens;
 	}
 
@@ -140,7 +140,7 @@ class QueryToken {
 		return preg_replace( $pattern, $replacement, $text );
 	}
 
-	private function addTokensFromText( $text ) {
+	private function addTokensFromText( $text ): array {
 		// Remove query related chars
 		$text = str_replace(
 			[ '*', '"', '~', '_', '+', '-' ],

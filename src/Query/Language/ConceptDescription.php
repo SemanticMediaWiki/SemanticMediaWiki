@@ -33,7 +33,7 @@ class ConceptDescription extends Description {
 	/**
 	 * @return WikiPage
 	 */
-	public function getConcept() {
+	public function getConcept(): WikiPage {
 		return $this->concept;
 	}
 
