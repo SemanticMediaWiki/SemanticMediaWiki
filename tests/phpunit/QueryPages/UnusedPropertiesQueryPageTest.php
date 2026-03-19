@@ -6,10 +6,10 @@ use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\DataItemFactory;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\QueryPages\UnusedPropertiesQueryPage;
 use SMW\Settings;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMW\UnusedPropertiesQueryPage;
 
 /**
  * @covers \SMW\QueryPages\UnusedPropertiesQueryPage
