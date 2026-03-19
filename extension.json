@@ -57,7 +57,10 @@
 		"SMWRecordValue": "src/DataValues/RecordValue.php",
 		"SMWTimeValue": "src/DataValues/TimeValue.php",
 		"SMWURIValue": "src/DataValues/URIValue.php",
-		"SMWWikiPageValue": "src/DataValues/WikiPageValue.php"
+		"SMWWikiPageValue": "src/DataValues/WikiPageValue.php",
+		"SMWExpData": "src/Export/ExpData.php",
+		"SMWExportController": "src/Export/ExportController.php",
+		"SMWExporter": "src/Export/Exporter.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
