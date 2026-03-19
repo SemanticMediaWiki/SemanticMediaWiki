@@ -92,55 +92,42 @@ class ConfigPreloadPrimaryKeyTableMutator {
 /**
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md
  */
-MediaWikiServices::getInstance()->getHookContainer()->register( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', static function ( array $tables, MessageReporter $messageReporter ) {
-	$cliMsgFormatter = new CliMsgFormatter();
-	$configPreloadPrimaryKeyTableMutator = new ConfigPreloadPrimaryKeyTableMutator();
+$GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][] =
+	function ( array $tables, MessageReporter $messageReporter ) {
 
-	$messageReporter->reportMessage(
-		$cliMsgFormatter->section( 'Primary key(s)', 3, '-', true )
-	);
+		$cliMsgFormatter = new CliMsgFormatter();
+		$configPreloadPrimaryKeyTableMutator =
+			new ConfigPreloadPrimaryKeyTableMutator();
 
-	$i = 0;
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->section( 'Primary key(s)', 3, '-', true )
+		);
 
-	$text = [
-		'The following updates adds primary key information for the tables',
-		'owned by Semantic MediaWiki.'
-	];
+		$i = 0;
 
-	$messageReporter->reportMessage(
-		"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
-	);
+		foreach ( $tables as $table ) {
 
-	$messageReporter->reportMessage(
-		"\n" . $cliMsgFormatter->oneCol( "Checking table definitions ..." )
-	);
+			$tableName = $table->getName();
 
-	/**
-	 * @var \SMW\SQLStore\TableBuilder\Table[]
-	 */
-	foreach ( $tables as $table ) {
+			if ( !$configPreloadPrimaryKeyTableMutator->hasKey( $tableName ) ) {
+				continue;
+			}
 
-		$tableName = $table->getName();
+			$i++;
 
-		if ( !$configPreloadPrimaryKeyTableMutator->hasKey( $tableName ) ) {
-			continue;
+			$table->setPrimaryKey(
+				$configPreloadPrimaryKeyTableMutator->getKey( $tableName )
+			);
 		}
 
-		$i++;
-
-		$table->setPrimaryKey(
-			$configPreloadPrimaryKeyTableMutator->getKey( $tableName )
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->twoCols(
+				"... run table definition update ...",
+				"$i (tables)",
+				3
+			)
 		);
-	}
-
-	$messageReporter->reportMessage(
-		$cliMsgFormatter->twoCols( "... run table definition update ...", "$i (tables)", 3 )
-	);
-
-	$messageReporter->reportMessage(
-		$cliMsgFormatter->oneCol( "... done.", 3 )
-	);
-} );
+	};
 
 return [
 
