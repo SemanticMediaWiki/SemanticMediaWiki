@@ -7,6 +7,7 @@ use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -41,7 +42,7 @@ class IdChanger {
 	 * @param int $curid
 	 * @param int $targetid
 	 *
-	 * @return \stdClass
+	 * @return stdClass
 	 */
 	public function move( $curid, $targetid = 0 ) {
 		$connection = $this->store->getConnection( 'mw.db' );

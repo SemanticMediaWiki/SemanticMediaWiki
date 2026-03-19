@@ -48,7 +48,7 @@ class JobListTaskTest extends TestCase {
 		$this->jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
 			->with( [ 'FooJob' => 1 ] )
-			->willReturn( '--job-done' );
+			->willReturn( [ '--job-done' ] );
 
 		$instance = new JobListTask(
 			$this->jobQueue

@@ -50,7 +50,10 @@ class QueryLinker {
 		return $link;
 	}
 
-	private static function getParameters( $query ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function getParameters( $query ): array {
 		$params = [ trim( $query->getQueryString( true ) ?? '' ) ];
 
 		foreach ( $query->getExtraPrintouts() as /* PrintRequest */ $printout ) {

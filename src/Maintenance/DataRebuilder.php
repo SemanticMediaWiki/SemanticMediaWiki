@@ -233,7 +233,7 @@ class DataRebuilder {
 		return $this->exceptionCount;
 	}
 
-	private function rebuildFromSelection( $params = [] ) {
+	private function rebuildFromSelection( $params = [] ): bool {
 		if ( $params !== [] ) {
 			foreach ( $params as $key => $value ) {
 				$this->options->set( $key, $value );
@@ -275,7 +275,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function rebuildAll() {
+	private function rebuildAll(): bool {
 		$this->entityRebuildDispatcher = $this->store->refreshData(
 			$this->start,
 			1
@@ -492,7 +492,7 @@ class DataRebuilder {
 		return [ $text, "[$prefix " . ( is_string( $entity ) && $entity !== '' ? $entity : 'N/A' ) . ']' ];
 	}
 
-	private function performFullDelete() {
+	private function performFullDelete(): bool {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Delete data' )
 		);
@@ -585,7 +585,7 @@ class DataRebuilder {
 		$outdatedDisposer->run();
 	}
 
-	private function is_writable( $startIdFile ) {
+	private function is_writable( $startIdFile ): bool {
 		if ( !is_writable( file_exists( $startIdFile ) ? $startIdFile : dirname( $startIdFile ) ) ) {
 			die( "Cannot use a startidfile that we can't write to.\n" );
 		}

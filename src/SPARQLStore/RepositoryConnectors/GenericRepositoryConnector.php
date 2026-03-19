@@ -484,7 +484,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function doUpdate( $sparql ) {
+	public function doUpdate( $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -538,7 +538,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function doHttpPost( $payload ) {
+	public function doHttpPost( $payload ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
@@ -605,7 +605,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'n/a';
 	}
 

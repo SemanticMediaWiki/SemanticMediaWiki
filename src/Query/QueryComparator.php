@@ -151,7 +151,10 @@ class QueryComparator {
 		throw new Exception( "Comparator $comparator does not have a string representatation" );
 	}
 
-	private function getEnabledComparators( $comparatorList, $strictComparators ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getEnabledComparators( $comparatorList, $strictComparators ): array {
 		// Note: Comparators that contain other comparators at the beginning of
 		// the string need to be at beginning of the array.
 		$comparators = [

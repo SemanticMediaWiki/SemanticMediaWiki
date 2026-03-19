@@ -21,7 +21,6 @@ use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Services\ServicesFactory;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\UrlArgs;
 use SMWInfolink as Infolink;
@@ -89,7 +88,7 @@ class SpecialAsk extends SpecialPage {
 	 *
 	 * @return bool
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -184,7 +183,7 @@ class SpecialAsk extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 
@@ -232,7 +231,7 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = ApplicationFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		ParametersWidget::setTooltipDisplay(
 			$userOptionsLookup->getOption( $this->getUser(), 'smw-prefs-ask-options-tooltip-display' )
 		);

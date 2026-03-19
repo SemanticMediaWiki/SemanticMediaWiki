@@ -523,7 +523,10 @@ class LocalLanguage {
 		return '';
 	}
 
-	private function getDateFormatsByLanguageCode( $languageCode ) {
+	/**
+	 * @return array<int, list<mixed>>
+	 */
+	private function getDateFormatsByLanguageCode( $languageCode ): array {
 		$dateformats = [];
 
 		foreach ( $this->languageContents->get( 'date.format', $languageCode ) as $row ) {

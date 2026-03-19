@@ -24,7 +24,7 @@ class Error extends DataItem {
 	) {
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_ERROR;
 	}
 
@@ -41,7 +41,7 @@ class Error extends DataItem {
 		return $this->userValue;
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return 'error';
 	}
 

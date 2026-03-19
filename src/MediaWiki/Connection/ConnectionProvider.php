@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use Profiler;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -143,7 +144,7 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 
 		$transactionHandler->setTransactionProfiler(
-			\Profiler::instance()->getTransactionProfiler()
+			Profiler::instance()->getTransactionProfiler()
 		);
 
 		return $transactionHandler;

@@ -275,7 +275,7 @@ class PostProcHandler {
 		);
 	}
 
-	private function checkDiff( $changeDiff ) {
+	private function checkDiff( $changeDiff ): ?bool {
 		$propertyList = $changeDiff->getPropertyList(
 			'flip'
 		);

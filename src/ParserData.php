@@ -221,7 +221,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function hasAnnotationBlock() {
+	public function hasAnnotationBlock(): bool {
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
 			$this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) ) {
@@ -395,7 +395,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function updateStore( $opts = [] ) {
+	public function updateStore( $opts = [] ): bool {
 		$isDeferrableUpdate = false;
 
 		// @legacy

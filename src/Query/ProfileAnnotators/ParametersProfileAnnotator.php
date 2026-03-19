@@ -45,7 +45,10 @@ class ParametersProfileAnnotator extends ProfileAnnotatorDecorator {
 		);
 	}
 
-	private function doSerializeSortKeys( $query ) {
+	/**
+	 * @return mixed[][]
+	 */
+	private function doSerializeSortKeys( $query ): array {
 		$sort = [];
 		$order = [];
 

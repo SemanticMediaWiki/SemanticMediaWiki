@@ -63,7 +63,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// SELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -138,7 +138,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_hash';
 	}
 
@@ -147,7 +147,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_hash';
 	}
 

@@ -43,7 +43,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string[]
 	 */
-	private function getValueTexts( ResultArray $field, $column ) {
+	private function getValueTexts( ResultArray $field, $column ): array {
 		$valueTexts = [];
 
 		$field->reset();

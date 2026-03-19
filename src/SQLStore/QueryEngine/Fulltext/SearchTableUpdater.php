@@ -62,7 +62,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function optimize() {
+	public function optimize(): bool {
 		if ( !$this->connection->isType( 'mysql' ) ) {
 			return false;
 		}

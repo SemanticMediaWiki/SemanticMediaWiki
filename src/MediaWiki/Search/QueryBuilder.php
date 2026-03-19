@@ -194,9 +194,9 @@ class QueryBuilder {
 	 * @param string $form
 	 * @param array $data
 	 *
-	 * @return
+	 * @return mixed[]|\non-empty-list<array{mixed, mixed}>[]|\non-empty-list<array{mixed, 'and'}>[]
 	 */
-	public function fetchFieldValues( $form, array $data ) {
+	public function fetchFieldValues( $form, array $data ): array {
 		$fieldValues = [];
 
 		if ( !isset( $data['forms'] ) ) {

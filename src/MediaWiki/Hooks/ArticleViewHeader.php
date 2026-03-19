@@ -48,7 +48,7 @@ class ArticleViewHeader implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Article $page, &$outputDone, &$useParserCache ) {
+	public function process( Article $page, &$outputDone, &$useParserCache ): bool {
 		$title = $page->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {

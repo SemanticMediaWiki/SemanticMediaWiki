@@ -94,7 +94,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatParameters() {
+	protected function formatParameters(): array {
 		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {
@@ -117,7 +117,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatConditions( $condition ) {
+	protected function formatConditions( $condition ): string {
 		return "[[$condition]]";
 	}
 

@@ -89,7 +89,7 @@ class WikiPage extends DataItem {
 		$this->m_subobjectname = $subobjectname;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_WIKIPAGE;
 	}
 

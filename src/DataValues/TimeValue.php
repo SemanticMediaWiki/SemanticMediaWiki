@@ -213,7 +213,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return bool stating if successful
 	 */
-	protected function interpretDateComponents( $datecomponents, &$date ) {
+	protected function interpretDateComponents( $datecomponents, &$date ): bool {
 		// The following code segment creates a bit vector to encode
 		// which role each digit of the entered date can take (day,
 		// year, month). The vector starts with 1 and contains three
@@ -319,7 +319,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return bool stating if successful
 	 */
-	protected function setDateFromParsedValues( $components ) {
+	protected function setDateFromParsedValues( $components ): bool {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
 		$era = $components->get( 'era' );
@@ -439,7 +439,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return int either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 */
-	protected function getCalendarModel( $presetmodel, $year, $month, $day ) {
+	protected function getCalendarModel( $presetmodel, $year, $month, $day ): int {
 		// Old Style is a notational convention of Julian dates only
 		if ( $presetmodel == 'OS' ) {
 			$presetmodel = 'Jl';
@@ -472,7 +472,7 @@ class TimeValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_TIME ) {
 			return false;
 		}
@@ -535,7 +535,7 @@ class TimeValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isNumeric() {
+	public function isNumeric(): bool {
 		return true;
 	}
 

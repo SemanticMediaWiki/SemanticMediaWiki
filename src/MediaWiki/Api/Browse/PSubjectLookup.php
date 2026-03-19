@@ -42,7 +42,7 @@ class PSubjectLookup extends Lookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( array $parameters ) {
+	public function lookup( array $parameters ): array {
 		$limit = 20;
 		$offset = 0;
 

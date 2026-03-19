@@ -52,7 +52,7 @@ class SMWPageLister {
 	 * @param $query array that associates parameter names to parameter values
 	 * @return string
 	 */
-	public function getNavigationLinks( Title $title, $query = [] ) {
+	public function getNavigationLinks( Title $title, $query = [] ): string {
 		$limitText = Localizer::getInstance()->getUserLanguage()->formatNum( $this->mLimit );
 
 		$resultCount = count( $this->mDiWikiPages );
@@ -205,7 +205,7 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-		if ( $diWikiPages instanceof \Iterator ) {
+		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
@@ -232,7 +232,7 @@ class SMWPageLister {
 				}
 
 				$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
-				$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
+				$searchlink = SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
 				// check for change of starting letter or beginning of chunk
 				$sortkey = StoreFactory::getStore()->getWikiPageSortKey( $diWikiPages[$index] );
@@ -287,12 +287,12 @@ class SMWPageLister {
 	 * @return string
 	 */
 	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
-		if ( $diWikiPages instanceof \Iterator ) {
+		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
 
 		$startDv = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$start], $diProperty );
-		$searchlink = \SMWInfolink::newBrowsingLink( '+', $startDv->getWikiValue() );
+		$searchlink = SMWInfolink::newBrowsingLink( '+', $startDv->getWikiValue() );
 
 		// For a redirect, disable the DisplayTitle to show the original (aka source) page
 		if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {
@@ -307,7 +307,7 @@ class SMWPageLister {
 		$prevStartChar = $startChar;
 		for ( $index = $start + 1; $index < $end; $index++ ) {
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $diWikiPages[$index], $diProperty );
-			$searchlink = \SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
+			$searchlink = SMWInfolink::newBrowsingLink( '+', $dataValue->getWikiValue() );
 
 			// For a redirect, disable the DisplayTitle to show the original (aka source) page
 			if ( $diProperty !== null && $diProperty->getKey() == '_REDI' ) {

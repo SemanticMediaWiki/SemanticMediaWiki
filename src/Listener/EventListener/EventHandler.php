@@ -2,6 +2,7 @@
 
 namespace SMW\Listener\EventListener;
 
+use Closure;
 use Onoi\EventDispatcher\EventDispatcher;
 use Onoi\EventDispatcher\EventDispatcherFactory;
 
@@ -68,7 +69,7 @@ class EventHandler {
 	 * @param string $event
 	 * @param Closure $callback
 	 */
-	public function addCallbackListener( $event, \Closure $callback ) {
+	public function addCallbackListener( $event, Closure $callback ) {
 		$listener = EventDispatcherFactory::getInstance()->newGenericCallbackEventListener();
 		$listener->registerCallback( $callback );
 

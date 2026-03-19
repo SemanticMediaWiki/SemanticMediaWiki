@@ -218,7 +218,7 @@ class WikiPageValue extends DataValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
 			// might throw an exception, we just pass it through
 			$dataItem = $dataItem->getSemanticData()->getSubject();

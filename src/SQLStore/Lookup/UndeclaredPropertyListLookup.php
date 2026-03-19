@@ -56,7 +56,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
@@ -120,7 +120,10 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		return $res;
 	}
 
-	private function buildPropertyList( $res ) {
+	/**
+	 * @return array{mixed, mixed}[]
+	 */
+	private function buildPropertyList( $res ): array {
 		$result = [];
 
 		foreach ( $res as $row ) {

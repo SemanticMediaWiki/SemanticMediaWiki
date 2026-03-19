@@ -51,7 +51,7 @@ class Container extends DataItem {
 		$this->m_semanticData = $semanticData;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_CONTAINER;
 	}
 
@@ -59,7 +59,7 @@ class Container extends DataItem {
 		return $this->m_semanticData;
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return '';
 	}
 
@@ -94,7 +94,10 @@ class Container extends DataItem {
 		// return $this->m_semanticData->getHash();
 	}
 
-	private function getValueHash( $semanticData ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getValueHash( $semanticData ): array {
 		$hash = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {

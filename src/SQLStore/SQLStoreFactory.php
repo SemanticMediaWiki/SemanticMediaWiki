@@ -305,7 +305,7 @@ class SQLStoreFactory {
 	 * @return DeferredCallableUpdate
 	 */
 	public function newDeferredCallableCachedListLookupUpdate() {
-		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function () {
+		$deferredTransactionalUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate( function (): void {
 			$this->newPropertyUsageCachedListLookup()->deleteCache();
 			$this->newUnusedPropertyCachedListLookup()->deleteCache();
 			$this->newUndeclaredPropertyCachedListLookup()->deleteCache();

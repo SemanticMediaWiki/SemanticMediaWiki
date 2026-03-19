@@ -49,7 +49,7 @@ class RefreshJob extends Job {
 	 *
 	 * @return bool
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->hasParameter( 'spos' ) ) {
 			$this->refreshData( $this->getParameter( 'spos' ) );
 		}
@@ -75,7 +75,7 @@ class RefreshJob extends Job {
 	/**
 	 * @param $spos start index
 	 */
-	protected function refreshData( $spos ) {
+	protected function refreshData( $spos ): bool {
 		$run = $this->hasParameter( 'run' ) ? $this->getParameter( 'run' ) : 1;
 
 		$entityRebuildDispatcher = ApplicationFactory::getInstance()->getStore()->refreshData(

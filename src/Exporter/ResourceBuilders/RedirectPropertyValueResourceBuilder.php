@@ -21,7 +21,7 @@ class RedirectPropertyValueResourceBuilder extends PredefinedPropertyValueResour
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return $property->getKey() === '_REDI';
 	}
 

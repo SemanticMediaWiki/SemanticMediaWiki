@@ -64,7 +64,7 @@ class Uri extends DataItem {
 		$this->m_hierpart = $hierpart;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_URI;
 	}
 

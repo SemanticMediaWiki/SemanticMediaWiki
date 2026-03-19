@@ -147,7 +147,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return TableChangeOp[]
 	 */
-	public function getDataOps() {
+	public function getDataOps(): array {
 		$dataChangeOps = [];
 
 		foreach ( $this->data as $hash => $data ) {
@@ -199,9 +199,9 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @param string|null $table
 	 *
-	 * @return TableChangeOp[]|[]
+	 * @return TableChangeOp[]
 	 */
-	public function getTableChangeOps( $table = null ) {
+	public function getTableChangeOps( $table = null ): array {
 		$tableChangeOps = [];
 
 		foreach ( $this->getOrderedDiffByTable( $table ) as $tableName => $diff ) {

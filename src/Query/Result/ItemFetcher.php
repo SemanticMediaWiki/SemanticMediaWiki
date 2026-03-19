@@ -131,7 +131,7 @@ class ItemFetcher {
 	 *
 	 * @return array
 	 */
-	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ) {
+	public function fetch( array $dataItems, DIProperty $property, RequestOptions $requestOptions ): array {
 		if ( $this->prefetch === false ) {
 			return $this->legacyFetch( $dataItems, $property, $requestOptions );
 		}
@@ -188,14 +188,17 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function ( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ): void {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 
 		return $propertyValues;
 	}
 
-	private function legacyFetch( $dataItems, $property, $requestOptions ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function legacyFetch( $dataItems, $property, $requestOptions ): array {
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );
@@ -220,7 +223,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function ( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ): void {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 

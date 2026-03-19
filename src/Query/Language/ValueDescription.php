@@ -118,7 +118,7 @@ class ValueDescription extends Description {
 		return $this->comparator == SMW_CMP_EQ;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		return 1;
 	}
 

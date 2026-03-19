@@ -394,7 +394,10 @@ class ValueListBuilder {
 		);
 	}
 
-	private function filterByValue( $property, $value, $options ) {
+	/**
+	 * @return \SMW\DIWikiPage[]
+	 */
+	private function filterByValue( $property, $value, $options ): array {
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$queryParser = $queryFactory->newQueryParser();
 

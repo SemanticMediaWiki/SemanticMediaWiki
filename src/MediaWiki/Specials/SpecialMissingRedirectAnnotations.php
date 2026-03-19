@@ -29,7 +29,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->setHeaders();
 		$output = $this->getOutput();
 
@@ -85,7 +85,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/maintenance';
 	}
 

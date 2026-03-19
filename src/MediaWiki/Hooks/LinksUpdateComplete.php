@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Psr\Log\LoggerAwareTrait;
 use SMW\MediaWiki\HookListener;
@@ -60,7 +61,7 @@ class LinksUpdateComplete implements HookListener {
 	/**
 	 * @since 1.9
 	 *
-	 * @param LinksUpdate|MediaWiki\Deferred\LinksUpdate\LinksUpdate $linksUpdate
+	 * @param LinksUpdate $linksUpdate
 	 *
 	 * @return true
 	 */
@@ -148,7 +149,7 @@ class LinksUpdateComplete implements HookListener {
 		return $parserOutput->getExtensionData( 'smwdata' );
 	}
 
-	private function doAbort() {
+	private function doAbort(): bool {
 		$this->logger->info(
 			"LinksUpdateConstructed was invoked but the site isn't ready yet, aborting the processing."
 		);

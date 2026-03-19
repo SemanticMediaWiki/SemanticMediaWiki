@@ -32,7 +32,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 

@@ -3,6 +3,7 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use Iterator;
+use ReturnTypeWillChange;
 use SMW\Exporter\Element\ExpLiteral;
 
 /**
@@ -120,7 +121,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return bool
 	 */
-	public function isBooleanTrue() {
+	public function isBooleanTrue(): bool {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );
@@ -165,7 +166,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (ExpElement or null), or false at end of data
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		return current( $this->data );
 	}
@@ -176,7 +177,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (ExpElement or null), or false at end of data
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function next() {
 		return next( $this->data );
 	}
@@ -187,7 +188,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of (ExpElement or null), or false at end of data
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function key() {
 		return key( $this->data );
 	}

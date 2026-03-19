@@ -21,7 +21,7 @@ class PredefinedPropertyValueResourceBuilder extends PropertyValueResourceBuilde
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return !$property->isUserDefined();
 	}
 

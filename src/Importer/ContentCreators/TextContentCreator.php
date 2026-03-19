@@ -121,7 +121,7 @@ class TextContentCreator implements ContentCreator {
 		// Avoid a possible "Notice: WikiPage::doUserEditContent: Transaction already
 		// in progress (from DatabaseUpdater::doUpdates), performing implicit
 		// commit ..."
-		$this->connection->onTransactionCommitOrIdle( function () use ( $page, $title, $importContents, $action ) {
+		$this->connection->onTransactionCommitOrIdle( function () use ( $page, $title, $importContents, $action ): void {
 			$this->doCreateContent( $page, $title, $importContents, $action );
 		} );
 	}

@@ -55,7 +55,7 @@ class SMWQueryProcessor implements QueryContext {
 	 *
 	 * @return ProcessedParam[]
 	 */
-	public static function getProcessedParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ) {
+	public static function getProcessedParams( array $params, array $printRequests = [], $unknownInvalid = true, $context = null, $showMode = false ): array {
 		// #4261
 		// The `ProcessedParam` library creates inconsistent results pending the
 		// input types especially between conversion of string to integer, so to

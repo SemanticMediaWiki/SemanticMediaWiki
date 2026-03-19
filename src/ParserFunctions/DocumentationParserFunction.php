@@ -120,7 +120,7 @@ class DocumentationParserFunction {
 	 *
 	 * @return string
 	 */
-	private function getOutputForErrors( $errors ) {
+	private function getOutputForErrors( $errors ): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #smwdoc parser function';
 	}

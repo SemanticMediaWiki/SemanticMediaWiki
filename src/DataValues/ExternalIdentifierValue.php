@@ -198,7 +198,10 @@ class ExternalIdentifierValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function filterParameters( &$value ) {
+	/**
+	 * @return string[]
+	 */
+	private function filterParameters( &$value ): array {
 		$parameters = [];
 		$matches = [];
 

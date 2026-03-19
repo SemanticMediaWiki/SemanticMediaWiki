@@ -11,6 +11,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
 use SMWDataItem as DataItem;
+use Traversable;
 
 /**
  * @license GPL-2.0-or-later
@@ -129,7 +130,7 @@ class DuplicateEntitiesDisposer {
 	 * @since 3.0
 	 */
 	private function is_iterable( $obj ) {
-		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof \Traversable ) );
+		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
 	private function wikipage_table( $table, $duplicates, &$log ) {

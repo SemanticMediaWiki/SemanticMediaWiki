@@ -221,7 +221,10 @@ class ParametersProcessor {
 		return $params;
 	}
 
-	private function makeParameters( $query, $request ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function makeParameters( $query, $request ): array {
 		$this->queryString = $query[0] ?? '';
 
 		$parameters = [];
@@ -294,7 +297,10 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private function fieldConditions( $fields ) {
+	/**
+	 * @return true[]
+	 */
+	private function fieldConditions( $fields ): array {
 		if ( !is_array( $fields ) || $fields === [] ) {
 			return [];
 		}
@@ -327,7 +333,10 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function propertyFilterConditions( $values, $clear ) {
+	/**
+	 * @return true[]
+	 */
+	private function propertyFilterConditions( $values, $clear ): array {
 		$filters = array_keys( (array)$values );
 		$this->propertyFilters = $filters;
 
@@ -354,7 +363,10 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function categoryFilterConditions( $values, $clear ) {
+	/**
+	 * @return true[]
+	 */
+	private function categoryFilterConditions( $values, $clear ): array {
 		$filters = (array)$values;
 		$conditions = [];
 		$printRequests = [];
@@ -461,7 +473,10 @@ class ParametersProcessor {
 		}
 	}
 
-	private function addDefaultPrintRequests( string $query ) {
+	/**
+	 * @return true[]
+	 */
+	private function addDefaultPrintRequests( string $query ): array {
 		preg_match_all( '/\[\[(.*?)\]\]/i', $query, $matches );
 		$printRequests = [];
 

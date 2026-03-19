@@ -270,7 +270,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function fetchCurrentContentsForPropertyTable( $sid, PropertyTableDefinition $propertyTable ) {
+	private function fetchCurrentContentsForPropertyTable( $sid, PropertyTableDefinition $propertyTable ): array {
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );
 		}

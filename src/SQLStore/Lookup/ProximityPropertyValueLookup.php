@@ -48,7 +48,7 @@ class ProximityPropertyValueLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ) {
+	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ): array {
 		$options = [];
 		$list = [];
 
@@ -131,7 +131,10 @@ class ProximityPropertyValueLookup {
 		return $list;
 	}
 
-	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ) {
+	/**
+	 * @return mixed[][]|string[]
+	 */
+	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$continueOffset = 0;
 		$res = [];

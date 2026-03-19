@@ -211,7 +211,7 @@ class URIValue extends DataValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_URI ) {
 			return false;
 		}

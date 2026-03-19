@@ -127,7 +127,7 @@ class SearchTableRebuilder {
 	 *
 	 * @return array
 	 */
-	public function getQualifiedTableList() {
+	public function getQualifiedTableList(): array {
 		$tableList = [];
 
 		if ( !$this->searchTableUpdater->isEnabled() ) {
@@ -159,7 +159,7 @@ class SearchTableRebuilder {
 		}
 	}
 
-	private function doOptimize() {
+	private function doOptimize(): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

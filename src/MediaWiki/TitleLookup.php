@@ -157,7 +157,10 @@ class TitleLookup {
 		);
 	}
 
-	protected function makeTitlesFromSelection( $res ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function makeTitlesFromSelection( $res ): array {
 		$pages = [];
 
 		if ( $res === false ) {

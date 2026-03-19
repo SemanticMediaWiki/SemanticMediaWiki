@@ -20,7 +20,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( ValueDescription $description ) {
+	public function canHaveMatchCondition( ValueDescription $description ): bool {
 		if ( !$this->isEnabled() ) {
 			return false;
 		}
@@ -55,7 +55,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
+	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ): string {
 		$matchableText = $this->getMatchableTextFromDescription(
 			$description
 		);

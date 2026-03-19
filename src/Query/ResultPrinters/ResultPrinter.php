@@ -2,6 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use Exception;
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use ParamProcessor\Param;
@@ -496,7 +497,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param string $classAffix
 	 *
 	 * @return SMWInfolink
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
 		$link = $res->getQueryLink( $this->getSearchLabel( $outputMode ) );
@@ -527,7 +528,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param $outputMode
 	 *
 	 * @return SMWInfolink
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	protected function getFurtherResultsLink( QueryResult $res, $outputMode ) {
 		$link = $this->getLink( $res, $outputMode, 'furtherresults' );

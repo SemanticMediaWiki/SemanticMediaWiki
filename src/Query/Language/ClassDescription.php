@@ -75,7 +75,7 @@ class ClassDescription extends Description {
 	 *
 	 * @return bool
 	 */
-	public function isMergableDescription( ClassDescription $description ) {
+	public function isMergableDescription( ClassDescription $description ): bool {
 		if ( isset( $this->isNegation ) && isset( $description->isNegation ) ) {
 			return true;
 		}
@@ -156,7 +156,7 @@ class ClassDescription extends Description {
 		return $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 

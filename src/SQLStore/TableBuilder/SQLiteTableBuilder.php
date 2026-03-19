@@ -143,7 +143,10 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getCurrentFields( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getCurrentFields( $tableName ): array {
 		$sql = 'PRAGMA table_info(' . $tableName . ')';
 
 		$res = $this->connection->query( $sql, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
@@ -299,7 +302,10 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function getIndexInfo( $tableName ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getIndexInfo( $tableName ): array {
 		$tableName = $this->connection->tableName( $tableName );
 		$indices = [];
 

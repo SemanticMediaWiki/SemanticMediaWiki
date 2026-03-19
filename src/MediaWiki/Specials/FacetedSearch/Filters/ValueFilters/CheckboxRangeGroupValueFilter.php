@@ -130,7 +130,10 @@ class CheckboxRangeGroupValueFilter {
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function buildRangeGroups( $property, $values, $raw ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function buildRangeGroups( $property, $values, $raw ): array {
 		$ranges = [];
 
 		$property = DIProperty::newFromUserLabel( $property );

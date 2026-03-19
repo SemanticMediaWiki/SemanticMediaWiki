@@ -86,7 +86,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( array &$extraStats ) {
+	public function process( array &$extraStats ): bool {
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}
@@ -145,7 +145,10 @@ class SpecialStatsAddExtra implements HookListener {
 		}
 	}
 
-	private function addFormats( $key, $statistics ) {
+	/**
+	 * @return array{name: non-falsy-string, number: mixed}[]
+	 */
+	private function addFormats( $key, $statistics ): array {
 		$i = 0;
 		$formats = [];
 

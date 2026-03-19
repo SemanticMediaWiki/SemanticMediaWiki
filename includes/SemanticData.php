@@ -905,7 +905,10 @@ class SemanticData implements JsonUnserializable {
 			$unserializer->unserialize( $value );
 	}
 
-	public static function maybeUnserializeArray( $unserializer, array $value ) {
+	/**
+	 * @return mixed[]
+	 */
+	public static function maybeUnserializeArray( $unserializer, array $value ): array {
 		# Compatibility thunk for MW versions with T312589 fixed/unfixed
 		$result = [];
 		foreach ( $value as $k => $v ) {

@@ -111,7 +111,7 @@ class ProfileForm {
 	 *
 	 * @return array
 	 */
-	public static function getPrefixMap( array $data ) {
+	public static function getPrefixMap( array $data ): array {
 		$map = [];
 
 		if (

@@ -32,7 +32,7 @@ class SidebarBeforeOutput implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( $skin, &$sidebar ) {
+	public function process( $skin, &$sidebar ): bool {
 		$title = $skin->getTitle();
 
 		if ( $this->canProcess( $title, $skin ) ) {
@@ -42,7 +42,7 @@ class SidebarBeforeOutput implements HookListener {
 		return true;
 	}
 
-	private function canProcess( Title $title, Skin $skin ) {
+	private function canProcess( Title $title, Skin $skin ): bool {
 		if ( $title->isSpecialPage() || !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return false;
 		}

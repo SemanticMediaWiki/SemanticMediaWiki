@@ -49,7 +49,7 @@ class ShapeConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -162,7 +162,7 @@ class ShapeConstraint implements Constraint {
 		return $diType === $type;
 	}
 
-	private function hasMinLength( $minLength, $property ) {
+	private function hasMinLength( $minLength, $property ): bool {
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -185,7 +185,7 @@ class ShapeConstraint implements Constraint {
 		return true;
 	}
 
-	private function hasMaxCardinality( $maxCardinality, $property ) {
+	private function hasMaxCardinality( $maxCardinality, $property ): bool {
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);

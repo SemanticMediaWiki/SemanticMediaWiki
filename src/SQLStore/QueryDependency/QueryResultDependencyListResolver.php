@@ -85,9 +85,9 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param QueryResult|string $queryResult
 	 *
-	 * @return DIWikiPage[]|[]
+	 * @return mixed[]
 	 */
-	public function getDependencyListFrom( $queryResult ) {
+	public function getDependencyListFrom( $queryResult ): array {
 		if ( !$this->canResolve( $queryResult ) ) {
 			return [];
 		}

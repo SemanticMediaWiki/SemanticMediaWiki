@@ -4,6 +4,7 @@ namespace SMW\Schema;
 
 use Countable;
 use Iterator;
+use ReturnTypeWillChange;
 use SeekableIterator;
 use SMW\Iterators\SeekableIteratorTrait;
 use SMW\Utils\DotArray;
@@ -62,7 +63,7 @@ class CompartmentIterator implements Iterator, Countable, SeekableIterator {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		$data = current( $this->container );
 

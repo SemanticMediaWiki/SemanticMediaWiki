@@ -118,7 +118,7 @@ class NumberValue extends DataValue {
 	 * @return int 0 (no errors), 1 (no number found at all), 2 (number
 	 * too large for this platform)
 	 */
-	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {
+	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ): int {
 		$intlNumberFormatter = $this->getNumberFormatter();
 
 		// Parse to find $number and (possibly) $unit
@@ -208,7 +208,7 @@ class NumberValue extends DataValue {
 	 * @param $dataItem SMWDataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
 			return false;
 		}
@@ -398,7 +398,7 @@ class NumberValue extends DataValue {
 	 * Returns the empty string if no unit is given for the value.
 	 * Overwritten by subclasses that support units.
 	 */
-	public function getUnit() {
+	public function getUnit(): string {
 		return '';
 	}
 

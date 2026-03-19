@@ -374,7 +374,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getHelpUrls() {
+	public function getHelpUrls(): string {
 		return 'https://www.semantic-mediawiki.org/wiki/Help:API';
 	}
 

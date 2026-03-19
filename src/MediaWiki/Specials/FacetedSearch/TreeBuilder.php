@@ -152,7 +152,7 @@ class TreeBuilder {
 		unset( $this->nodes[$node->id] );
 	}
 
-	public function hasNode( $id ) {
+	public function hasNode( $id ): bool {
 		if ( $this->nodes === [] || $this->nodes === null ) {
 			return false;
 		}

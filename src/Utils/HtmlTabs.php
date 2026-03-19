@@ -220,8 +220,9 @@ class HtmlTabs {
 	/**
 	 * @param string $class
 	 * @param array $attr
+	 * @return mixed[]
 	 */
-	private function mergeAttributes( string $class, array $attr ) {
+	private function mergeAttributes( string $class, array $attr ): array {
 		$attributes = [];
 
 		// A bit of attribute order

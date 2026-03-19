@@ -66,7 +66,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return bool Success indicator
 	 */
-	public function addToUsageCount( $pid, $value ) {
+	public function addToUsageCount( $pid, $value ): bool {
 		$usageVal = 0;
 		$nullVal = 0;
 
@@ -147,7 +147,7 @@ class PropertyStatisticsStore {
 		$method = __METHOD__;
 
 		if ( $this->onTransactionIdle ) {
-			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ) {
+			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ): void {
 				$this->log( $method . ' (onTransactionIdle)' );
 				$this->onTransactionIdle = false;
 				$this->addToUsageCounts( $additions );
@@ -180,7 +180,7 @@ class PropertyStatisticsStore {
 	 * @return bool Success indicator
 	 * @throws PropertyStatisticsInvalidArgumentException
 	 */
-	public function insertUsageCount( $propertyId, $value ) {
+	public function insertUsageCount( $propertyId, $value ): bool {
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -260,7 +260,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return array
 	 */
-	public function getUsageCounts( array $propertyIds ) {
+	public function getUsageCounts( array $propertyIds ): array {
 		if ( $propertyIds === [] ) {
 			return [];
 		}

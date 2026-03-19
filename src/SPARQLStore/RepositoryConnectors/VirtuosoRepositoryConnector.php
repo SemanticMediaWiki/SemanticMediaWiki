@@ -149,7 +149,7 @@ class VirtuosoRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool
 	 */
-	public function doUpdate( $sparql ) {
+	public function doUpdate( $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}

@@ -206,7 +206,7 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	public function cleanUpTableEntriesById( $id ) {
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function () use ( $id ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id ): void {
 				$this->cleanUpReferencesById( $id );
 			} );
 		} else {

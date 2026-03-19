@@ -520,7 +520,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	private function getSQLOptions( Query $query, $rootId ) {
+	private function getSQLOptions( Query $query, $rootId ): array {
 		$result = [
 			'LIMIT' => $query->getLimit() + 5,
 			'OFFSET' => $query->getOffset()

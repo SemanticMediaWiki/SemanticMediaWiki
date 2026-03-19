@@ -202,7 +202,10 @@ class QueryCreator implements QueryContext {
 		return [ 'keys' => $sortKeys, 'errors' => $sortErros ];
 	}
 
-	private function normalize_order( $orderParameters ) {
+	/**
+	 * @return 'ASC'[]|'DESC'[]|'RANDOM'[]
+	 */
+	private function normalize_order( $orderParameters ): array {
 		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {

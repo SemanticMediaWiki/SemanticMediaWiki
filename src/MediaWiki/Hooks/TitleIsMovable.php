@@ -29,7 +29,7 @@ class TitleIsMovable implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( &$isMovable ) {
+	public function process( &$isMovable ): bool {
 		// We don't allow rule pages to be moved as we cannot track JSON content
 		// as redirects and therefore invalidate any rule assignment without a
 		// possibility to automatically reassign IDs

@@ -146,7 +146,7 @@ class Timezone {
 	 *
 	 * @return bool
 	 */
-	public static function isValid( $identifer ) {
+	public static function isValid( $identifer ): bool {
 		$identifer = str_replace( ' ', '_', $identifer );
 
 		if ( isset( self::$shortList[strtoupper( $identifer )] ) ) {

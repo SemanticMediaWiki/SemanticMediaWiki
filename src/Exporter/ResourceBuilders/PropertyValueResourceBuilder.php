@@ -51,7 +51,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( DIProperty $property ): bool {
 		return true;
 	}
 

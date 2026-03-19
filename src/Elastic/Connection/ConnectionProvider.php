@@ -135,7 +135,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $endpoints !== [];
 	}
 
-	private function hasAvailableClientBuilder() {
+	private function hasAvailableClientBuilder(): bool {
 		if ( $this->config->isDefaultStore() === false ) {
 			return false;
 		}

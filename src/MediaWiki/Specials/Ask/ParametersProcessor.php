@@ -199,7 +199,10 @@ class ParametersProcessor {
 		return $parameterList;
 	}
 
-	private static function checkParameterList( $request, $parameterList, $printouts ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function checkParameterList( $request, $parameterList, $printouts ): array {
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
@@ -250,7 +253,7 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private static function hasPipe( $key, $value ) {
+	private static function hasPipe( $key, $value ): bool {
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}

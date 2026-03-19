@@ -44,9 +44,9 @@ class ConstraintSchemaCompiler {
 	 *
 	 * @param DIProperty $property
 	 *
-	 * @return
+	 * @return 'PROPERTY_CONSTRAINT_SCHEMA'[]|non-empty-array[]
 	 */
-	public function compileConstraintSchema( DIProperty $property ) {
+	public function compileConstraintSchema( DIProperty $property ): array {
 		$constraintSchema = [];
 
 		$this->constraint_schema( $property, $constraintSchema );

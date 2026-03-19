@@ -2,6 +2,7 @@
 
 namespace SMW\Importer\ContentCreators;
 
+use Exception;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Importer\ContentCreator;
 use SMW\Importer\ImportContents;
@@ -105,7 +106,7 @@ class XmlContentCreator implements ContentCreator {
 
 		try {
 			$importer->doImport();
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->action = 'FAILED';
 			$importContents->addError( $e->getMessage() );
 		}

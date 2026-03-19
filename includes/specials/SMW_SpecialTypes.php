@@ -101,7 +101,7 @@ class SMWSpecialTypes extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/properties-concepts-types';
 	}
 
@@ -213,7 +213,7 @@ class SMWSpecialTypes extends SpecialPage {
 			$requestOptions
 		);
 
-		if ( $dataItems instanceof \Iterator ) {
+		if ( $dataItems instanceof Iterator ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
 
@@ -390,7 +390,10 @@ class SMWSpecialTypes extends SpecialPage {
 		);
 	}
 
-	private function makeTypeList( $typeLabels ) {
+	/**
+	 * @return non-empty-array<list>
+	 */
+	private function makeTypeList( $typeLabels ): array {
 		$contents = [];
 		$linker = smwfGetLinker();
 

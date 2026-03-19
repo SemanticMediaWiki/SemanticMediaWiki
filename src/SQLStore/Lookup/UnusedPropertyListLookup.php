@@ -50,7 +50,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
@@ -108,7 +108,10 @@ class UnusedPropertyListLookup implements ListLookup {
 		return $res;
 	}
 
-	private function buildPropertyList( $res ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function buildPropertyList( $res ): array {
 		$result = [];
 
 		foreach ( $res as $row ) {

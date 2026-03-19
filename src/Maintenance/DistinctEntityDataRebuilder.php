@@ -101,7 +101,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function doRebuild() {
+	public function doRebuild(): bool {
 		$type = ( $this->options->has( 'redirects' ) ? 'redirect' : '' ) .
 		( $this->options->has( 'categories' ) ? 'category' : '' ) .
 		( $this->options->has( 'namespace' ) ? $this->options->get( 'namespace' ) : '' ) .
@@ -233,7 +233,10 @@ class DistinctEntityDataRebuilder {
 		return $this->store->getQueryResult( $query )->getResults();
 	}
 
-	private function getPagesFromFilters() {
+	/**
+	 * @return mixed[]
+	 */
+	private function getPagesFromFilters(): array {
 		$pages = [];
 
 		if ( !$this->hasFilters() ) {
@@ -261,7 +264,10 @@ class DistinctEntityDataRebuilder {
 		return $titleLookup->getRedirectPages();
 	}
 
-	private function normalize( $list ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function normalize( $list ): array {
 		$titleCache = [];
 		$p = [];
 

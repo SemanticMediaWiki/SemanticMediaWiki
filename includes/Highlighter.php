@@ -182,7 +182,7 @@ class Highlighter {
 	 *
 	 * @return int
 	 */
-	public static function getTypeId( $type ) {
+	public static function getTypeId( $type ): int {
 		// TODO: why do we have a htmlspecialchars here?!
 		switch ( strtolower( htmlspecialchars( $type ?? '' ) ) ) {
 			case 'property':
@@ -301,7 +301,7 @@ class Highlighter {
 	 *
 	 * @return array
 	 */
-	private function getTypeConfiguration( $type ) {
+	private function getTypeConfiguration( $type ): array {
 		$settings = [];
 		$settings['type'] = $type;
 		$settings['caption'] = '';

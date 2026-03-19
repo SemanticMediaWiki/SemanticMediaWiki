@@ -95,7 +95,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( ValueDescription $description ) {
+	public function canHaveMatchCondition( ValueDescription $description ): bool {
 		return false;
 	}
 
@@ -107,7 +107,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
+	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ): string {
 		return '';
 	}
 

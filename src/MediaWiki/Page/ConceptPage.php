@@ -9,6 +9,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
+use SMWPageLister;
 
 /**
  * @license GPL-2.0-or-later
@@ -49,7 +50,7 @@ class ConceptPage extends Page {
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
 			$description = $descriptionFactory->newConceptDescription( $dataItem );
-			$query = \SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
+			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
 			$query->setLimit( $limit );
 			$query->setOffset( $offset );

@@ -417,7 +417,10 @@ class InTextAnnotationParser {
 		return $result;
 	}
 
-	protected function doStripMagicWordsFromText( &$text ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function doStripMagicWordsFromText( &$text ): array {
 		$words = [];
 
 		$this->magicWordsFinder->setOutput( $this->parserData->getOutput() );

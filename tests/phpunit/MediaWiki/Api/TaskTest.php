@@ -185,7 +185,7 @@ class TaskTest extends TestCase {
 		$jobQueue->expects( $this->atLeastOnce() )
 			->method( 'runFromQueue' )
 			->with( [ 'FooJob' => 1 ] )
-			->willReturn( '--job-done' );
+			->willReturn( [ '--job-done' ] );
 
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 

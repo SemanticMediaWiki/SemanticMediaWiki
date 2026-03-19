@@ -203,7 +203,7 @@ class MessageFormatter {
 	 *
 	 * @return array
 	 */
-	protected function doFormat( array $messages ) {
+	protected function doFormat( array $messages ): array {
 		$newArray = [];
 
 		foreach ( $messages as $msg ) {

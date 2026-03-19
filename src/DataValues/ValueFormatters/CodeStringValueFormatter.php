@@ -31,7 +31,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 * @return string
 	 * @see StringValueFormatter::doFormat
 	 */
-	protected function doFormat( $dataValue, $type, $linker ) {
+	protected function doFormat( $dataValue, $type, $linker ): string {
 		$abbreviate = $type === self::WIKI_LONG || $type === self::HTML_LONG;
 		$text = $dataValue->getDataItem()->getString();
 

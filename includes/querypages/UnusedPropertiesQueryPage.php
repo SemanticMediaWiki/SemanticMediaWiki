@@ -49,7 +49,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		return "UnusedProperties";
 	}
 
@@ -57,7 +57,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	public function isExpensive() {
+	public function isExpensive(): bool {
 		// Disables caching for now
 		return false;
 	}
@@ -66,7 +66,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return bool
 	 */
-	public function isSyndicated() {
+	public function isSyndicated(): bool {
 		// TODO: why not?
 		return false;
 	}

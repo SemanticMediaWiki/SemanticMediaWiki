@@ -62,7 +62,7 @@ class BooleanValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_BOOLEAN ) {
 			return false;
 		}
@@ -236,7 +236,10 @@ class BooleanValue extends DataValue {
 		return reset( $vals );
 	}
 
-	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getBooleanWordsFrom( $msgKey, $languageCode = null, $canonicalForm = null ): array {
 		$vals = explode(
 			',',
 			Message::get( $msgKey, Message::TEXT, $languageCode )

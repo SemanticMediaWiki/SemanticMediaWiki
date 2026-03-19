@@ -150,7 +150,10 @@ class ListBuilder {
 		return $htmlColumns->getHtml();
 	}
 
-	private function buildList( $dataItems ) {
+	/**
+	 * @return \non-empty-list<mixed>[]
+	 */
+	private function buildList( $dataItems ): array {
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		if ( $this->linker === false ) {

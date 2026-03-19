@@ -32,9 +32,9 @@ class TaskFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public function getAllowedTypes() {
+	public function getAllowedTypes(): array {
 		if ( self::$services === null ) {
 			MediaWikiServices::getInstance()
 				->getHookContainer()

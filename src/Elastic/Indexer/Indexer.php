@@ -320,7 +320,7 @@ class Indexer {
 		);
 	}
 
-	private function canReplicate() {
+	private function canReplicate(): bool {
 		$connection = $this->store->getConnection( 'elastic' );
 
 		// Make sure a node is available and is not locked by the rebuilder

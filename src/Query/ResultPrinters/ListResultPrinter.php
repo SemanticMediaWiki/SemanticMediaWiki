@@ -2,6 +2,7 @@
 
 namespace SMW\Query\ResultPrinters;
 
+use Exception;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
 use SMW\Query\QueryResult;
@@ -42,7 +43,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isDeferrable() {
+	public function isDeferrable(): bool {
 		return true;
 	}
 
@@ -124,7 +125,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return bool
 	 */
-	public function supportsRecursiveAnnotation() {
+	public function supportsRecursiveAnnotation(): bool {
 		return true;
 	}
 
@@ -136,7 +137,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @param ParamDefinition[] $definitions
 	 *
 	 * @return ParamDefinition[]
-	 * @throws \Exception
+	 * @throws Exception
 	 */
 	public function getParamDefinitions( array $definitions ) {
 		$listFormatDefinitions = [

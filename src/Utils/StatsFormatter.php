@@ -86,7 +86,7 @@ class StatsFormatter {
 	 *
 	 * @return array
 	 */
-	public static function getStatsFromFlatKey( array $stats, $separator = '.' ) {
+	public static function getStatsFromFlatKey( array $stats, $separator = '.' ): array {
 		$data = $stats;
 		$stats = [];
 
@@ -102,7 +102,11 @@ class StatsFormatter {
 	}
 
 	// https://stackoverflow.com/questions/10123604/multidimensional-array-from-string
-	private static function stringToArray( $separator, $path, $value ) {
+
+	/**
+	 * @return mixed[]
+	 */
+	private static function stringToArray( $separator, $path, $value ): array {
 		$pos = strpos( $path, $separator );
 
 		if ( $pos === false ) {

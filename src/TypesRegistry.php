@@ -246,7 +246,7 @@ class TypesRegistry {
 	 *
 	 * @return array
 	 */
-	public static function getTypesByGroup( $key = '' ) {
+	public static function getTypesByGroup( $key = '' ): array {
 		$groups = [
 			'primitive' => [
 				'_txt', '_boo', '_num', '_dat'
@@ -295,7 +295,7 @@ class TypesRegistry {
 	 *
 	 * @return array
 	 */
-	public static function getFixedProperties( $key = '' ) {
+	public static function getFixedProperties( $key = '' ): array {
 		// PROP_ID => [ ID (SQL), default_fixed, custom_fixed ]
 		$fixedProperties = [
 
@@ -358,7 +358,7 @@ class TypesRegistry {
 		];
 
 		if ( $key === 'id' ) {
-			array_walk( $fixedProperties, static function ( &$v, $k ) { $v = $v[0];
+			array_walk( $fixedProperties, static function ( &$v, $k ): void { $v = $v[0];
 			} );
 		}
 

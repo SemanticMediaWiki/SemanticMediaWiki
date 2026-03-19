@@ -242,8 +242,9 @@ class Client {
 	 * @since 3.0
 	 *
 	 * @param array
+	 * @return mixed[]
 	 */
-	public function cat( $type, $params = [] ) {
+	public function cat( $type, $params = [] ): array {
 		$res = [];
 
 		if ( $type === 'indices' ) {
@@ -438,7 +439,7 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function quick_ping( $timeout = 2 ) {
+	public function quick_ping( $timeout = 2 ): bool {
 		$hosts = $this->options->get( Config::ELASTIC_ENDPOINTS );
 
 		foreach ( $hosts as $host ) {
@@ -649,7 +650,7 @@ class Client {
 	 *
 	 * @return array
 	 */
-	public function search( array $params ) {
+	public function search( array $params ): array {
 		if ( $params === [] ) {
 			return [];
 		}

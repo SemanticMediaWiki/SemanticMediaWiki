@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use Job;
 use JobQueueGroup;
 
 /**
@@ -52,9 +53,9 @@ class JobQueue {
 	 *
 	 * @param array $list
 	 *
-	 * @return
+	 * @return list[]
 	 */
-	public function runFromQueue( array $list ) {
+	public function runFromQueue( array $list ): array {
 		$log = [];
 
 		foreach ( $list as $type => $amount ) {
@@ -101,7 +102,7 @@ class JobQueue {
 	 *
 	 * @param Job $job
 	 */
-	public function ack( \Job $job ) {
+	public function ack( Job $job ) {
 		$this->jobQueueGroup->get( $job->getType() )->ack( $job );
 	}
 

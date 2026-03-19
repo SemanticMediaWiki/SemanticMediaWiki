@@ -207,7 +207,7 @@ class ValueDescriptionInterpreter {
 	 * treatment which prevents a split and hereby causing the search match to be
 	 * worse off hence remove `*` in case of CJK usage.
 	 */
-	private function isCJK( &$text ) {
+	private function isCJK( &$text ): bool {
 		// Only use the examiner on the standard index_def since ICU provides
 		// better CJK and may handle `*` more sufficiently
 		if ( !$this->conditionBuilder->getOption( 'cjk.best.effort.proximity.match', false ) ) {

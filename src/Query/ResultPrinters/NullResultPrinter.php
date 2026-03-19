@@ -17,7 +17,7 @@ class NullResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getName() {
+	public function getName(): string {
 		return 'null';
 	}
 
@@ -26,7 +26,7 @@ class NullResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getResultText( QueryResult $queryResult, $outputMode ) {
+	protected function getResultText( QueryResult $queryResult, $outputMode ): string {
 		return '';
 	}
 

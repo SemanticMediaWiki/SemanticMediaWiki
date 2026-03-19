@@ -139,7 +139,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';

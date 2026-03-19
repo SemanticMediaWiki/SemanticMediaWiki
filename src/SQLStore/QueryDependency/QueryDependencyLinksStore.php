@@ -113,7 +113,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
+	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ): ?bool {
 		if ( !$this->isEnabled() ) {
 			return null;
 		}
@@ -170,7 +170,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
@@ -349,7 +349,7 @@ class QueryDependencyLinksStore {
 		}
 
 		// Executed as DeferredTransactionalUpdate
-		$callback = function () use( $queryResult, $subject, $sid, $hash ) {
+		$callback = function () use( $queryResult, $subject, $sid, $hash ): void {
 			$this->doUpdate( $queryResult, $subject, $sid, $hash );
 		};
 
