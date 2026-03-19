@@ -73,7 +73,7 @@
 		"SMW\\SpecialConcepts": "src/MediaWiki/Specials/SpecialConcepts.php",
 		"SMW\\SpecialPage": "src/MediaWiki/Specials/SpecialPage.php",
 		"SMW\\SpecialProperties": "src/MediaWiki/Specials/SpecialProperties.php",
-		"SMW\\SpecialUnusedProperties": "src/MediaWikiSpecials/SpecialUnusedProperties.php",
+		"SMW\\SpecialUnusedProperties": "src/MediaWiki/Specials/SpecialUnusedProperties.php",
 		"SMW\\SpecialWantedProperties": "src/MediaWiki/Specials/SpecialWantedProperties.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
