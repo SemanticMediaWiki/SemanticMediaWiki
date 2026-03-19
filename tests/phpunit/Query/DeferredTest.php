@@ -5,6 +5,7 @@ namespace SMW\Tests\Query;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Deferred;
+use SMW\Query\Query;
 
 /**
  * @covers \SMW\Query\Deferred
@@ -32,7 +33,7 @@ class DeferredTest extends TestCase {
 	}
 
 	public function testBuildHTML() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

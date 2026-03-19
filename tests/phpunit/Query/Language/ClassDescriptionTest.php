@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ThingDescription;
@@ -27,7 +27,7 @@ class ClassDescriptionTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$class = $this->getMockBuilder( DIWikiPage::class )
+		$class = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -46,7 +46,7 @@ class ClassDescriptionTest extends TestCase {
 	public function testCommonMethods() {
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
-		$class = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$class = new WikiPage( 'Foo', NS_CATEGORY );
 		$instance = new ClassDescription( $class );
 
 		$this->assertEquals( [ $class ], $instance->getCategories() );
@@ -65,8 +65,8 @@ class ClassDescriptionTest extends TestCase {
 	public function testAddDescription() {
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
-		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
-		$instance->addDescription( new ClassDescription( new DIWikiPage( 'Bar', NS_CATEGORY ) ) );
+		$instance = new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) );
+		$instance->addDescription( new ClassDescription( new WikiPage( 'Bar', NS_CATEGORY ) ) );
 
 		$this->assertEquals(
 			"[[{$ns}:Foo||Bar]]",
@@ -82,8 +82,8 @@ class ClassDescriptionTest extends TestCase {
 	public function testAddClass() {
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
-		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
-		$instance->addClass( new DIWikiPage( 'Bar', NS_CATEGORY ) );
+		$instance = new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) );
+		$instance->addClass( new WikiPage( 'Bar', NS_CATEGORY ) );
 
 		$this->assertEquals(
 			"[[{$ns}:Foo||Bar]]",
@@ -97,7 +97,7 @@ class ClassDescriptionTest extends TestCase {
 	}
 
 	public function testIsMergableDescription() {
-		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$cat = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$instance = new ClassDescription(
 			$cat
@@ -115,7 +115,7 @@ class ClassDescriptionTest extends TestCase {
 	}
 
 	public function testClass_Negation() {
-		$cat = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$cat = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$instance = new ClassDescription(
 			$cat
@@ -133,7 +133,7 @@ class ClassDescriptionTest extends TestCase {
 			$instance->getQueryString()
 		);
 
-		$instance->addClass( new DIWikiPage( 'Bar', NS_CATEGORY ) );
+		$instance->addClass( new WikiPage( 'Bar', NS_CATEGORY ) );
 
 		$this->assertEquals(
 			"[[{$this->cat_name}:!Foo||!Bar]]",
@@ -143,22 +143,22 @@ class ClassDescriptionTest extends TestCase {
 
 	public function testGetFingerprint() {
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY )
+			new WikiPage( 'Foo', NS_CATEGORY )
 		);
 
 		$instance->addDescription(
-			new ClassDescription( new DIWikiPage( 'Bar', NS_CATEGORY ) )
+			new ClassDescription( new WikiPage( 'Bar', NS_CATEGORY ) )
 		);
 
 		$expected = $instance->getFingerprint();
 
 		// Different position, same hash
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Bar', NS_CATEGORY )
+			new WikiPage( 'Bar', NS_CATEGORY )
 		);
 
 		$instance->addDescription(
-			new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) )
+			new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) )
 		);
 
 		$this->assertSame(
@@ -168,7 +168,7 @@ class ClassDescriptionTest extends TestCase {
 
 		// Adds extra description, changes hash
 		$instance->addDescription(
-			new ClassDescription( new DIWikiPage( 'Foobar', NS_CATEGORY ) )
+			new ClassDescription( new WikiPage( 'Foobar', NS_CATEGORY ) )
 		);
 
 		$this->assertNotSame(
@@ -178,7 +178,7 @@ class ClassDescriptionTest extends TestCase {
 	}
 
 	public function testPrune() {
-		$instance = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+		$instance = new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) );
 
 		$maxsize  = 1;
 		$maxDepth = 1;
@@ -201,7 +201,7 @@ class ClassDescriptionTest extends TestCase {
 
 	public function testStableFingerprint() {
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY )
+			new WikiPage( 'Foo', NS_CATEGORY )
 		);
 
 		$this->assertSame(
@@ -212,7 +212,7 @@ class ClassDescriptionTest extends TestCase {
 
 	public function testHierarchyDepthToBeCeiledOnMaxQSubcategoryDepthSetting() {
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY )
+			new WikiPage( 'Foo', NS_CATEGORY )
 		);
 
 		$instance->setHierarchyDepth( 9999999 );
@@ -227,7 +227,7 @@ class ClassDescriptionTest extends TestCase {
 		$ns = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY )
+			new WikiPage( 'Foo', NS_CATEGORY )
 		);
 
 		$instance->setHierarchyDepth( 1 );
@@ -240,14 +240,14 @@ class ClassDescriptionTest extends TestCase {
 
 	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY )
+			new WikiPage( 'Foo', NS_CATEGORY )
 		);
 
 		$instance->setHierarchyDepth( 9999 );
 		$expected = $instance->getFingerprint();
 
 		$instance = new ClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY )
+			new WikiPage( 'Foo', NS_CATEGORY )
 		);
 
 		$this->assertNotSame(

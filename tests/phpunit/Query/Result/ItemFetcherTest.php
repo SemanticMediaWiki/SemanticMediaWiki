@@ -12,7 +12,7 @@ use SMW\SQLStore\EntityStore\PrefetchCache;
 use SMW\Store;
 
 /**
- * @covers SMW\Query\Result\ItemFetcher
+ * @covers \SMW\Query\Result\ItemFetcher
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

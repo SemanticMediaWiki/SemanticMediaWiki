@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\Parser;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Parser;
 use SMW\Query\Parser\DescriptionProcessor;
@@ -80,13 +80,13 @@ class LegacyParserTest extends TestCase {
 
 		$this->assertEquals(
 			'[[Foo::Bar]]',
-			$this->queryParser->createCondition( new DIProperty( 'Foo' ), 'Bar' )
+			$this->queryParser->createCondition( new Property( 'Foo' ), 'Bar' )
 		);
 	}
 
 	public function testPropertyWildardDescription() {
 		$description = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newThingDescription()
 		);
 
@@ -109,7 +109,7 @@ class LegacyParserTest extends TestCase {
 
 	public function testPageDescription() {
 		$description = $this->descriptionFactory->newValueDescription(
-			new DIWikiPage( 'Foo', NS_MAIN, '' )
+			new WikiPage( 'Foo', NS_MAIN, '' )
 		);
 
 		$this->assertEquals(
@@ -120,10 +120,10 @@ class LegacyParserTest extends TestCase {
 
 	public function testPropertyNotEqualValueDescription() {
 		$description = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
-				new DIWikiPage( 'Bar', NS_MAIN, '' ),
-				DIProperty::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
+				new WikiPage( 'Bar', NS_MAIN, '' ),
+				Property::newFromUserLabel( 'Has foo' )->setPropertyTypeId( '_wpg' ),
 				SMW_CMP_NEQ
 			)
 		);
@@ -136,10 +136,10 @@ class LegacyParserTest extends TestCase {
 
 	public function testInversePropertyDescription() {
 		$description = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
-				new DIWikiPage( 'Bar', NS_MAIN, '' ),
-				DIProperty::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
+				new WikiPage( 'Bar', NS_MAIN, '' ),
+				Property::newFromUserLabel( 'Has foo', true )->setPropertyTypeId( '_wpg' ),
 				SMW_CMP_EQ
 			)
 		);
@@ -152,21 +152,21 @@ class LegacyParserTest extends TestCase {
 
 	public function testConjunctionForCategoryPropertyValueGreaterThanOrEqualLessThanOrEqual() {
 		$someGreaterThanOrEqualProperty = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
-				new DIWikiPage( 'A', NS_MAIN, '' ),
-				DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ), SMW_CMP_GEQ	)
+				new WikiPage( 'A', NS_MAIN, '' ),
+				Property::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ), SMW_CMP_GEQ )
 		);
 
 		$someLessThanOrEqualProperty = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newValueDescription(
-				new DIWikiPage( 'D', NS_MAIN, '' ),
-				DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_LEQ	)
+				new WikiPage( 'D', NS_MAIN, '' ),
+				Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_LEQ )
 		);
 
 		$classDescription = $this->descriptionFactory->newClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
+			new WikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
 		$description = $this->descriptionFactory->newConjunction();
@@ -182,18 +182,18 @@ class LegacyParserTest extends TestCase {
 
 	public function testConjunctionForCategoryPropertyChainDescription() {
 		$someProperty = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newSomeProperty(
-				DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
 				$this->descriptionFactory->newValueDescription(
-					new DIWikiPage( 'Bar', NS_MAIN, '' ),
-					DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
+					new WikiPage( 'Bar', NS_MAIN, '' ),
+					Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
 
 		$classDescription = $this->descriptionFactory->newClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
+			new WikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
 		$description = $this->descriptionFactory->newConjunction();
@@ -213,18 +213,18 @@ class LegacyParserTest extends TestCase {
 
 	public function testDisjunctionForCategoryPropertyChainDescription() {
 		$someProperty = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newSomeProperty(
-				DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
 				$this->descriptionFactory->newValueDescription(
-					new DIWikiPage( 'Bar', NS_MAIN, '' ),
-					DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
+					new WikiPage( 'Bar', NS_MAIN, '' ),
+					Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
 				)
 			)
 		);
 
 		$classDescription = $this->descriptionFactory->newClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
+			new WikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
 		$description = $this->descriptionFactory->newDisjunction();
@@ -244,11 +244,11 @@ class LegacyParserTest extends TestCase {
 
 	public function testDisjunctionForCategoryChainDescription() {
 		$classFooDescription = $this->descriptionFactory->newClassDescription(
-			new DIWikiPage( 'Foo', NS_CATEGORY, '' )
+			new WikiPage( 'Foo', NS_CATEGORY, '' )
 		);
 
 		$classBarDescription = $this->descriptionFactory->newClassDescription(
-			new DIWikiPage( 'Bar', NS_CATEGORY, '' )
+			new WikiPage( 'Bar', NS_CATEGORY, '' )
 		);
 
 		$description = $this->descriptionFactory->newDisjunction();
@@ -268,14 +268,14 @@ class LegacyParserTest extends TestCase {
 
 	public function testCombinedSubobjectPropertyChainDescription() {
 		$description = $this->descriptionFactory->newSomeProperty(
-			DIProperty::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
+			Property::newFromUserLabel( 'One' )->setPropertyTypeId( '_wpg' ),
 			$this->descriptionFactory->newSomeProperty(
-				DIProperty::newFromUserLabel( '_SOBJ' )->setPropertyTypeId( '__sob' ),
+				Property::newFromUserLabel( '_SOBJ' )->setPropertyTypeId( '__sob' ),
 				$this->descriptionFactory->newSomeProperty(
-					DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
+					Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ),
 					$this->descriptionFactory->newValueDescription(
-						new DIWikiPage( 'Bar', NS_MAIN, '' ),
-						DIProperty::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
+						new WikiPage( 'Bar', NS_MAIN, '' ),
+						Property::newFromUserLabel( 'Two' )->setPropertyTypeId( '_wpg' ), SMW_CMP_EQ
 					)
 				)
 			)
@@ -288,12 +288,12 @@ class LegacyParserTest extends TestCase {
 	}
 
 	public function testSubqueryDisjunction() {
-		$property = new DIProperty( 'HasSomeProperty' );
+		$property = new Property( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$disjunction = $this->descriptionFactory->newDisjunction( [
-			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
-			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+			$this->descriptionFactory->newValueDescription( new WikiPage( 'Foo', NS_MAIN ), $property ),
+			$this->descriptionFactory->newValueDescription( new WikiPage( 'Bar', NS_MAIN ), $property )
 		] );
 
 		$description = $this->descriptionFactory->newSomeProperty(
@@ -308,16 +308,16 @@ class LegacyParserTest extends TestCase {
 	}
 
 	public function testNestedPropertyConjunction() {
-		$property = DIProperty::newFromUserLabel( 'Born in' );
+		$property = Property::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$conjunction = $this->descriptionFactory->newConjunction( [
-			$this->descriptionFactory->newClassDescription( new DIWikiPage( 'City', NS_CATEGORY ) ),
+			$this->descriptionFactory->newClassDescription( new WikiPage( 'City', NS_CATEGORY ) ),
 			$this->descriptionFactory->newSomeProperty(
-				DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
+				Property::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ),
 				$this->descriptionFactory->newValueDescription(
-					new DIWikiPage( 'Outback', NS_MAIN ),
-					DIProperty::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
+					new WikiPage( 'Outback', NS_MAIN ),
+					Property::newFromUserLabel( 'Located in' )->setPropertyTypeId( '_wpg' ) )
 				)
 			]
 		);
@@ -334,12 +334,12 @@ class LegacyParserTest extends TestCase {
 	}
 
 	public function testRestrictedDefaultNamespace() {
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$description = $this->descriptionFactory->newSomeProperty(
 			$property,
-			$this->descriptionFactory->newValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+			$this->descriptionFactory->newValueDescription( new WikiPage( 'Bar', NS_MAIN ), $property )
 		);
 
 		$description = $this->descriptionFactory->newConjunction( [

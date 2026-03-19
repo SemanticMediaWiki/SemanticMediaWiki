@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\Result;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Query\Query;
 use SMW\Query\Result\StringResult;
 
 /**
@@ -19,7 +20,7 @@ class StringResultTest extends TestCase {
 	private $query;
 
 	protected function setUp(): void {
-		$this->query = $this->getMockBuilder( '\SMWQuery' )
+		$this->query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

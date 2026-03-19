@@ -7,6 +7,21 @@ use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
 
 /**
+ * This file contains the class for representing queries in SMW, each
+ * consisting of a query description and possible query parameters.
+ * @ingroup SMWQuery
+ * @author Markus Krötzsch
+ */
+
+/**
+ * This group contains all parts of SMW that relate to processing semantic queries.
+ * SMW components that relate to plain storage access (for querying or otherwise)
+ * have their own group.
+ * @defgroup SMWQuery SMWQuery
+ * @ingroup SMW
+ */
+
+/**
  * Representation of queries in SMW, each consisting of a query
  * description and various parameters. Some settings might also lead to
  * changes in the query description.
@@ -14,11 +29,7 @@ use SMW\Query\Language\Description;
  * Most additional query parameters (limit, sort, ascending, ...) are
  * interpreted as in RequestOptions (though the latter contains some
  * additional settings).
- *
- * @author Markus Krötzsch
- * @defgroup SMWQuery SMWQuery
  * @ingroup SMWQuery
- * @ingroup SMW
  */
 class Query implements QueryContext {
 

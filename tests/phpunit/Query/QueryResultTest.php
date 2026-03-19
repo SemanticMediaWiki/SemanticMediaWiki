@@ -3,7 +3,8 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\FilterMap;
 use SMW\Store;
@@ -19,7 +20,7 @@ use SMW\Store;
 class QueryResultTest extends TestCase {
 
 	public function testCanConstruct() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -37,7 +38,7 @@ class QueryResultTest extends TestCase {
 	}
 
 	public function testGetFilterMap() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -62,7 +63,7 @@ class QueryResultTest extends TestCase {
 	}
 
 	public function testVerifyThatAfterSerializeToArrayResultNextCanBeUsed() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -73,8 +74,8 @@ class QueryResultTest extends TestCase {
 		$printRequests = [];
 
 		$results = [
-			new DIWikiPage( 'Foo', 0 ),
-			new DIWikiPage( 'Bar', 0 )
+			new WikiPage( 'Foo', 0 ),
+			new WikiPage( 'Bar', 0 )
 		];
 
 		$instance = new QueryResult( $printRequests, $query, $results, $store );
@@ -95,7 +96,7 @@ class QueryResultTest extends TestCase {
 	}
 
 	public function testIsFromCache() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -125,7 +126,7 @@ class QueryResultTest extends TestCase {
 	}
 
 	public function testGetHash() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

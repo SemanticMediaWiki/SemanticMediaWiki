@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequestFactory;
 
@@ -29,7 +29,7 @@ class PrintRequestFactoryTest extends TestCase {
 		$instance = new PrintRequestFactory();
 
 		$printRequest = $instance->newFromProperty(
-			new DIProperty( 'Foo' )
+			new Property( 'Foo' )
 		);
 
 		$this->assertInstanceOf(

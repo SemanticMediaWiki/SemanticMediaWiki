@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\ScoreSet;
 
 /**
@@ -40,7 +40,7 @@ class ScoreSetTest extends TestCase {
 	}
 
 	public function testAddScore_DIWikiPage() {
-		$dataItem = DIWikiPage::newFromText( 'Bar' );
+		$dataItem = WikiPage::newFromText( 'Bar' );
 		$instance = new ScoreSet();
 
 		$instance->addScore( $dataItem, 10 );

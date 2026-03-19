@@ -5,9 +5,10 @@ namespace SMW\Tests\Query\Cache;
 use Onoi\BlobStore\BlobStore;
 use Onoi\BlobStore\Container;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Cache\CacheStats;
 use SMW\Query\Cache\ResultCache;
+use SMW\Query\Query;
 use SMW\QueryEngine;
 use SMW\QueryFactory;
 use SMW\Store;
@@ -59,7 +60,7 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testGetQueryResultForEmptyQuery() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -92,7 +93,7 @@ class ResultCacheTest extends TestCase {
 			->method( 'read' )
 			->willReturn( $this->container );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -106,7 +107,7 @@ class ResultCacheTest extends TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$queryEngine = $this->getMockBuilder( QueryEngine::class )
 			->disableOriginalConstructor()
@@ -161,7 +162,7 @@ class ResultCacheTest extends TestCase {
 			->method( 'canUse' )
 			->willReturn( true );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -171,7 +172,7 @@ class ResultCacheTest extends TestCase {
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getOption' )
@@ -198,7 +199,7 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testMissingQueryEngineThrowsException() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -214,7 +215,7 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testPurgeCacheBySubject() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
@@ -242,7 +243,7 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWithHasHMutation() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$this->blobStore->expects( $this->atLeastOnce() )
 			->method( 'canUse' )
@@ -271,7 +272,7 @@ class ResultCacheTest extends TestCase {
 	}
 
 	public function testPurgeCacheBySubjectWith_QUERY() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

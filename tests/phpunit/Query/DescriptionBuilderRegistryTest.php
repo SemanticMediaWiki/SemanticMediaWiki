@@ -3,6 +3,10 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\NumberValue;
+use SMW\DataValues\RecordValue;
+use SMW\DataValues\TimeValue;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Query\DescriptionBuilders\DescriptionBuilder;
 use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
@@ -33,7 +37,7 @@ class DescriptionBuilderRegistryTest extends TestCase {
 	}
 
 	public function testCanConstructSomeValueDescriptionBuilder() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -46,7 +50,7 @@ class DescriptionBuilderRegistryTest extends TestCase {
 	}
 
 	public function testCanConstructTimeValueDescriptionBuilder() {
-		$dataValue = $this->getMockBuilder( '\SMWTimeValue' )
+		$dataValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -59,7 +63,7 @@ class DescriptionBuilderRegistryTest extends TestCase {
 	}
 
 	public function testCanConstructNumberValueDescriptionBuilder() {
-		$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$dataValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -72,7 +76,7 @@ class DescriptionBuilderRegistryTest extends TestCase {
 	}
 
 	public function testCanConstructRecordValueDescriptionBuilder() {
-		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
+		$dataValue = $this->getMockBuilder( RecordValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -94,7 +98,7 @@ class DescriptionBuilderRegistryTest extends TestCase {
 			->method( 'isBuilderFor' )
 			->willReturn( true );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

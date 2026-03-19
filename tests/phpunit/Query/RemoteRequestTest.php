@@ -5,10 +5,11 @@ namespace SMW\Tests\Query;
 use MediaWiki\Http\HttpRequestFactory;
 use MWHttpRequest;
 use PHPUnit\Framework\TestCase;
+use SMW\Query\Query;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use StatusValue;
-use WANObjectCache;
+use Wikimedia\ObjectCache\WANObjectCache;
 
 /**
  * @covers \SMW\Query\RemoteRequest
@@ -29,7 +30,7 @@ class RemoteRequestTest extends TestCase {
 		$this->httpRequestFactory = $this->createMock( HttpRequestFactory::class );
 		$this->cache = $this->createMock( WANObjectCache::class );
 
-		$this->query = $this->getMockBuilder( '\SMWQuery' )
+		$this->query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

@@ -4,6 +4,7 @@ namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Query\QueryStringifier;
 
 /**
@@ -59,7 +60,7 @@ class QueryStringifierTest extends TestCase {
 
 	public function queryProvider() {
 		# 0
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -91,7 +92,7 @@ class QueryStringifierTest extends TestCase {
 		];
 
 		# 1
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -128,7 +129,7 @@ class QueryStringifierTest extends TestCase {
 		];
 
 		# 2
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -166,7 +167,7 @@ class QueryStringifierTest extends TestCase {
 		];
 
 		# 3
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -212,7 +213,7 @@ class QueryStringifierTest extends TestCase {
 			->method( 'getSerialisation' )
 			->willReturn( '?ABC' );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -258,7 +259,7 @@ class QueryStringifierTest extends TestCase {
 			->method( 'getSerialisation' )
 			->willReturn( '?ABC' );
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

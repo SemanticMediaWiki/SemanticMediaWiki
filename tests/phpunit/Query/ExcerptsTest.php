@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Excerpts;
 
 /**
@@ -40,7 +40,7 @@ class ExcerptsTest extends TestCase {
 	}
 
 	public function testAddExcerpt_DIWikiPage() {
-		$dataItem = DIWikiPage::newFromText( 'Bar' );
+		$dataItem = WikiPage::newFromText( 'Bar' );
 		$instance = new Excerpts();
 
 		$instance->addExcerpt( $dataItem, 10 );

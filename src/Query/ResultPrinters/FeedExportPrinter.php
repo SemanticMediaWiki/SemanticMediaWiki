@@ -392,7 +392,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
 			// #1741
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-				Wikipage::newFromTitle( $title )
+				WikiPage::newFromTitle( $title )
 			);
 
 			// Ensures that the namespace prefix (Help:...) is used in cases where

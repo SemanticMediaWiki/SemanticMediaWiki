@@ -94,7 +94,7 @@ class DescriptionFactory {
 	/**
 	 * @since 2.4
 	 *
-	 * @param WikiPage|[] $category
+	 * @param WikiPage|array $category
 	 *
 	 * @return ClassDescription
 	 */

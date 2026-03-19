@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Processor;
 
 use PHPUnit\Framework\TestCase;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Query\QueryProcessor;
 
 /**
  * @covers SMWQueryProcessor

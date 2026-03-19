@@ -12,7 +12,7 @@ use SMW\RequestOptions;
 use SMW\Store;
 
 /**
- * @covers SMW\Query\Result\FieldItemFinder
+ * @covers \SMW\Query\Result\FieldItemFinder
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

@@ -3,7 +3,9 @@
 namespace SMW\Tests\Query\DescriptionBuilders;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataValues\TimeValue;
 use SMW\Query\DescriptionBuilders\TimeValueDescriptionBuilder;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -29,7 +31,7 @@ class TimeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testIsBuilderForTimeValue() {
-		$dataValue = $this->getMockBuilder( '\SMWTimeValue' )
+		$dataValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -44,7 +46,7 @@ class TimeValueDescriptionBuilderTest extends TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
+		$timeValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -54,11 +56,11 @@ class TimeValueDescriptionBuilderTest extends TestCase {
 
 		$timeValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->willReturn( new \SMWDITime( 1, '1970' ) );
+			->willReturn( new Time( 1, '1970' ) );
 
 		$timeValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->willReturn( new DIProperty( 'Foo' ) );
+			->willReturn( new Property( 'Foo' ) );
 
 		$instance = new TimeValueDescriptionBuilder();
 
@@ -69,7 +71,7 @@ class TimeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testInvalidTimeValueReturnsThingDescription() {
-		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
+		$timeValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -86,7 +88,7 @@ class TimeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-		$timeValue = $this->getMockBuilder( '\SMWTimeValue' )
+		$timeValue = $this->getMockBuilder( TimeValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

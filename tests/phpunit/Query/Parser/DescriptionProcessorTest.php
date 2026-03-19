@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\Parser;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\Disjunction;
@@ -51,7 +51,7 @@ class DescriptionProcessorTest extends TestCase {
 
 		$this->assertInstanceOf(
 			Description::class,
-			$instance->newDescriptionForPropertyObjectValue( new DIProperty( 'Foo' ), 'bar' )
+			$instance->newDescriptionForPropertyObjectValue( new Property( 'Foo' ), 'bar' )
 		);
 	}
 
@@ -66,7 +66,7 @@ class DescriptionProcessorTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$valueDescription->getDataItem()
 		);
 	}
@@ -77,7 +77,7 @@ class DescriptionProcessorTest extends TestCase {
 		$valueDescription = $instance->newDescriptionForWikiPageValueChunk( '~bar' );
 
 		$this->assertEquals(
-			new DIWikiPage( 'bar', NS_MAIN ),
+			new WikiPage( 'bar', NS_MAIN ),
 			$valueDescription->getDataItem()
 		);
 	}
@@ -88,7 +88,7 @@ class DescriptionProcessorTest extends TestCase {
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 
@@ -104,7 +104,7 @@ class DescriptionProcessorTest extends TestCase {
 		$currentDescription = new Conjunction();
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 
@@ -120,7 +120,7 @@ class DescriptionProcessorTest extends TestCase {
 		$currentDescription = new Disjunction();
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 
@@ -158,7 +158,7 @@ class DescriptionProcessorTest extends TestCase {
 		$currentDescription = $instance->newDescriptionForWikiPageValueChunk( 'bar' );
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 
@@ -174,7 +174,7 @@ class DescriptionProcessorTest extends TestCase {
 		$currentDescription = new Conjunction();
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 
@@ -190,7 +190,7 @@ class DescriptionProcessorTest extends TestCase {
 		$currentDescription = new Disjunction();
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 
@@ -226,13 +226,13 @@ class DescriptionProcessorTest extends TestCase {
 		$instance = new DescriptionProcessor();
 
 		$instance->setContextPage(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$currentDescription = new Disjunction();
 
 		$newDescription = $instance->newDescriptionForPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			'foobar'
 		);
 

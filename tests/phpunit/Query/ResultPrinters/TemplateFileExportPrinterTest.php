@@ -5,6 +5,7 @@ namespace SMW\Tests\Query\ResultPrinters;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\TemplateFileExportPrinter;
+use SMWInfolink;
 
 /**
  * @covers \SMW\Query\ResultPrinters\TemplateFileExportPrinter
@@ -42,7 +43,7 @@ class TemplateFileExportPrinterTest extends TestCase {
 	}
 
 	public function testLink() {
-		$link = $this->getMockBuilder( '\SMWInfolink' )
+		$link = $this->getMockBuilder( SMWInfolink::class )
 			->disableOriginalConstructor()
 			->getMock();
 

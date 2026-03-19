@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotatorFactory;
@@ -12,7 +12,7 @@ use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @covers \SMW\Query\ProfileAnnotatorFactory
@@ -37,13 +37,13 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
@@ -62,13 +62,13 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
@@ -87,13 +87,13 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
@@ -116,13 +116,13 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
@@ -150,13 +150,13 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )
@@ -184,7 +184,7 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -209,13 +209,13 @@ class ProfileAnnotatorFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$query->expects( $this->atLeastOnce() )
 			->method( 'getContextPage' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$query->expects( $this->once() )
 			->method( 'getDescription' )

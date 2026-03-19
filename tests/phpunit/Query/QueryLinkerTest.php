@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Query\Query;
 use SMW\Query\QueryLinker;
 
 /**
@@ -24,7 +25,7 @@ class QueryLinkerTest extends TestCase {
 	}
 
 	public function testGet() {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

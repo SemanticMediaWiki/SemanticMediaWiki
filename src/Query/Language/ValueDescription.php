@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Language;
 
-use SMW\Dataitems\DataItem;
-use SMW\Dataitems\Property;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\NumberValue;
 use SMW\DataValues\URIValue;
