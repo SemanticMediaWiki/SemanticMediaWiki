@@ -304,10 +304,10 @@ class Settings extends Options {
 	 * @param string $key
 	 * @param mixed $mung
 	 *
-	 * @return mixed
+	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function mung( string $key, $mung ): string {
+	public function mung( string $key, mixed $mung ): string {
 		if ( is_string( $mung ) ) {
 			return (string)$this->get( $key ) . $mung;
 		}
