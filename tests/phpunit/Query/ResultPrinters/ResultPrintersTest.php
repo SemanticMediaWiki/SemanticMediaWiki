@@ -4,8 +4,8 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use ParamProcessor\ParamDefinition;
 use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryProcessor;
 use SMW\Query\ResultPrinters\ResultPrinter;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @covers \SMW\Query\ResultPrinters\ResultPrinter
@@ -25,7 +25,7 @@ class ResultPrintersTest extends TestCase {
 		$instance = new $class( $format, $isInline );
 
 		$this->assertInstanceOf(
-			'\SMW\Query\ResultPrinter',
+			\SMW\Query\ResultPrinter::class,
 			$instance
 		);
 	}

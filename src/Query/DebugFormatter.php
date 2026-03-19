@@ -3,7 +3,6 @@
 namespace SMW\Query;
 
 use SMW\ProcessingErrorMsgHandler;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -67,7 +66,7 @@ class DebugFormatter {
 	 * contexts.
 	 *
 	 * @param $entries array of name => value of informative entries to display
-	 * @param null $query SMWQuery or null, if given add basic data about this query as well
+	 * @param Query|null $query Query or null, if given add basic data about this query as well
 	 *
 	 * @return string
 	 */

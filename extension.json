@@ -65,7 +65,9 @@
 		"SMW\\PropertiesQueryPage": "src/QueryPages/PropertiesQueryPage.php",
 		"SMW\\QueryPage": "src/QueryPages/QueryPage.php",
 		"SMW\\UnusedPropertiesQueryPage": "src/QueryPages/UnusedPropertiesQueryPage.php",
-		"SMW\\WantedPropertiesQueryPage": "src/QueryPages/WantedPropertiesQueryPage.php"
+		"SMW\\WantedPropertiesQueryPage": "src/QueryPages/WantedPropertiesQueryPage.php",
+		"SMWQuery": "src/Query/Query.php",
+		"SMWQueryProcessor": "src/Query/QueryProcessor.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

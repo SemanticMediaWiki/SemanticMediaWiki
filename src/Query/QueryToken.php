@@ -2,13 +2,13 @@
 
 namespace SMW\Query;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\Tokenizer;
-use SMWDIBlob as DIBlob;
 
 /**
  * For a wildcard search, build tokens from the query string, and allow to highlight
@@ -85,12 +85,12 @@ class QueryToken {
 		$isProximate = $description->getComparator() === SMW_CMP_LIKE || $description->getComparator() === SMW_CMP_PRIM_LIKE;
 
 		// [[SomeProperty::~*Foo*]] / [[SomeProperty::like:*Foo*]]
-		if ( $isProximate && $description->getDataItem() instanceof DIBlob ) {
+		if ( $isProximate && $description->getDataItem() instanceof Blob ) {
 			return $this->addTokensFromText( $description->getDataItem()->getString() );
 		}
 
 		// [[~~* ... *]]
-		if ( $description->getDataItem() instanceof DIWikiPage && strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
+		if ( $description->getDataItem() instanceof WikiPage && strpos( $description->getDataItem()->getDBKey(), '~' ) !== false ) {
 			return $this->addTokensFromText( $description->getDataItem()->getDBKey() );
 		}
 	}

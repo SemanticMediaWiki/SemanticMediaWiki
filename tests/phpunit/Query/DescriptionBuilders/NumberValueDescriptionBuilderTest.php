@@ -3,7 +3,9 @@
 namespace SMW\Tests\Query\DescriptionBuilders;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataValues\NumberValue;
 use SMW\Query\DescriptionBuilders\NumberValueDescriptionBuilder;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\ThingDescription;
@@ -28,7 +30,7 @@ class NumberValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testIsBuilderForNumberValue() {
-		$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$dataValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -43,7 +45,7 @@ class NumberValueDescriptionBuilderTest extends TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$numberValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -53,11 +55,11 @@ class NumberValueDescriptionBuilderTest extends TestCase {
 
 		$numberValue->expects( $this->any() )
 			->method( 'getDataItem' )
-			->willReturn( new \SMWDINumber( 42 ) );
+			->willReturn( new Number( 42 ) );
 
 		$numberValue->expects( $this->any() )
 			->method( 'getProperty' )
-			->willReturn( new DIProperty( 'Foo' ) );
+			->willReturn( new Property( 'Foo' ) );
 
 		$instance = new NumberValueDescriptionBuilder();
 
@@ -68,7 +70,7 @@ class NumberValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testInvalidNumberValueReturnsThingDescription() {
-		$numberValue = $this->getMockBuilder( '\SMWNumberValue' )
+		$numberValue = $this->getMockBuilder( NumberValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

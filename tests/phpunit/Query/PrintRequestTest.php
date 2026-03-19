@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
 use SMW\Query\PrintRequest;
 
 /**
@@ -35,7 +35,7 @@ class PrintRequestTest extends TestCase {
 
 	public function testSetLabel() {
 		$propertyValue = new PropertyValue( '__pro' );
-		$propertyValue->setDataItem( new DIProperty( 'Foo' ) );
+		$propertyValue->setDataItem( new Property( 'Foo' ) );
 
 		$instance = new PrintRequest( PrintRequest::PRINT_PROP, null, $propertyValue );
 

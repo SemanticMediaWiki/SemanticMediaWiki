@@ -4,14 +4,16 @@ namespace SMW\Tests\Query\ResultPrinters;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
+use SMW\DataValues\NumberValue;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
 use SMW\Query\ResultPrinters\ResultPrinter;
 use SMW\Tests\TestEnvironment;
-use SMWDataItem;
-use SMWDINumber;
+use SMWInfolink;
 
 /**
  * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
@@ -107,10 +109,10 @@ class AggregatablePrinterTest extends TestCase {
 
 			// Set expected result and create dataItem
 			$expected[$name] = isset( $expected[$name] ) ? $expected[$name] + $random : $random;
-			$dataItem = new SMWDINumber( $random );
+			$dataItem = new Number( $random );
 
 			$this->assertEquals( $random, $dataItem->getNumber() );
-			$this->assertEquals( SMWDataItem::TYPE_NUMBER, $dataItem->getDIType() );
+			$this->assertEquals( DataItem::TYPE_NUMBER, $dataItem->getDIType() );
 
 			$result = $method->invokeArgs(
 				$this->aggregatablePrinter,
@@ -254,19 +256,19 @@ class AggregatablePrinterTest extends TestCase {
 
 			$printRequests[] = $printRequest;
 
-			$dataItem = $this->getMockBuilder( '\SMWDINumber' )
+			$dataItem = $this->getMockBuilder( Number::class )
 				->disableOriginalConstructor()
 				->getMock();
 
 			$dataItem->expects( $this->any() )
 				->method( 'getDIType' )
-				->willReturn( SMWDataItem::TYPE_NUMBER );
+				->willReturn( DataItem::TYPE_NUMBER );
 
 			$dataItem->expects( $this->any() )
 				->method( 'getNumber' )
 				->willReturn( $value['number'] );
 
-			$dataValue = $this->getMockBuilder( '\SMWNumberValue' )
+			$dataValue = $this->getMockBuilder( NumberValue::class )
 				->disableOriginalConstructor()
 				->getMock();
 
@@ -320,7 +322,7 @@ class AggregatablePrinterTest extends TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getLink' )
-			->willReturn( new \SMWInfolink( true, 'Lala', 'Lula' ) );
+			->willReturn( new SMWInfolink( true, 'Lala', 'Lula' ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'hasFurtherResults' )

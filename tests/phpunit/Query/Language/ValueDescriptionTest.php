@@ -3,10 +3,10 @@
 namespace SMW\Tests\Query\Language;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ValueDescription;
-use SMWDINumber as DINumber;
 
 /**
  * @covers \SMW\Query\Language\ValueDescription
@@ -20,7 +20,7 @@ use SMWDINumber as DINumber;
 class ValueDescriptionTest extends TestCase {
 
 	public function testCanConstruct() {
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -98,7 +98,7 @@ class ValueDescriptionTest extends TestCase {
 	}
 
 	public function valueDescriptionProvider() {
-		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
+		$dataItem = new WikiPage( 'Foo', NS_MAIN );
 
 		$provider[] = [
 			$dataItem,
@@ -128,8 +128,8 @@ class ValueDescriptionTest extends TestCase {
 			]
 		];
 
-		$property = DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
-		$dataItem = new DINumber( 9001 );
+		$property = Property::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
+		$dataItem = new Number( 9001 );
 
 		$provider['num.1'] = [
 			$dataItem,
@@ -145,8 +145,8 @@ class ValueDescriptionTest extends TestCase {
 			]
 		];
 
-		$property = DIProperty::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
-		$dataItem = new DINumber( 9001.356 );
+		$property = Property::newFromUserLabel( 'Foo' )->setPropertyTypeId( '_num' );
+		$dataItem = new Number( 9001.356 );
 
 		$provider['num.2'] = [
 			$dataItem,
@@ -168,30 +168,30 @@ class ValueDescriptionTest extends TestCase {
 	public function comparativeHashProvider() {
 		$provider[] = [
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
 			true
 		];
 
 		$provider[] = [
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
+				new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
 			),
 			false
 		];
 
 		$provider[] = [
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 			),
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), new Property( 'Bar' ), SMW_CMP_EQ
 			),
 			false
 		];
@@ -199,10 +199,10 @@ class ValueDescriptionTest extends TestCase {
 		// Inverse case
 		$provider[] = [
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar', true ), SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), new Property( 'Bar', true ), SMW_CMP_EQ
 			),
 			new ValueDescription(
-				new DIWikiPage( 'Foo', NS_MAIN ), new DIProperty( 'Bar' ), SMW_CMP_EQ
+				new WikiPage( 'Foo', NS_MAIN ), new Property( 'Bar' ), SMW_CMP_EQ
 			),
 			false
 		];

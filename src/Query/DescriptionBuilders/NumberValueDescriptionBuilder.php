@@ -2,8 +2,8 @@
 
 namespace SMW\Query\DescriptionBuilders;
 
-use SMWDINumber as DINumber;
-use SMWNumberValue as NumberValue;
+use SMW\DataItems\Number;
+use SMW\DataValues\NumberValue;
 
 /**
  * @private
@@ -80,7 +80,7 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 			// `[[Has number::in:99]]` -> `[[Has number:: [[≥0]] [[≤99]] ]]`)
 			$description = $this->descriptionFactory->newConjunction(
 				[
-					$this->descriptionFactory->newValueDescription( new DINumber( 0 ), $property, SMW_CMP_GEQ ),
+					$this->descriptionFactory->newValueDescription( new Number( 0 ), $property, SMW_CMP_GEQ ),
 					$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_LEQ )
 				]
 			);
@@ -89,7 +89,7 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 			$description = $this->descriptionFactory->newConjunction(
 				[
 					$this->descriptionFactory->newValueDescription( $dataItem, $property, SMW_CMP_GEQ ),
-					$this->descriptionFactory->newValueDescription( new DINumber( 0 ), $property, SMW_CMP_LEQ )
+					$this->descriptionFactory->newValueDescription( new Number( 0 ), $property, SMW_CMP_LEQ )
 				]
 			);
 		}

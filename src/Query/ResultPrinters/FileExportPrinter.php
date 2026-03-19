@@ -3,9 +3,9 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\Query\ExportPrinter;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
-use SMWQuery;
-use SMWQueryProcessor;
 
 /**
  * Base class for file export result printers
@@ -93,7 +93,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
-		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
+		return $mode == QueryProcessor::SPECIAL_PAGE ? Query::MODE_INSTANCES : Query::MODE_NONE;
 	}
 
 	/**

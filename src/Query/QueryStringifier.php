@@ -2,8 +2,6 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
-
 /**
  * @license GPL-2.0-or-later
  * @since 2.5

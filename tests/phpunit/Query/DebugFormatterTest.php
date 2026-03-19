@@ -5,6 +5,7 @@ namespace SMW\Tests\Query;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 
 /**
  * @covers \SMW\Query\DebugFormatter
@@ -40,7 +41,7 @@ class DebugFormatterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

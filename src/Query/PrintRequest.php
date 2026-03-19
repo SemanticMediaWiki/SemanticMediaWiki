@@ -4,13 +4,13 @@ namespace SMW\Query;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest\Deserializer;
 use SMW\Query\PrintRequest\Formatter;
 use SMW\Query\PrintRequest\Serializer;
-use SMWDataValue;
 
 /**
  * Container class for request for printout, as used in queries to
@@ -256,7 +256,7 @@ class PrintRequest {
 
 		if ( $this->m_data instanceof Title ) {
 			$this->m_hash .= $this->m_data->getPrefixedText() . ':';
-		} elseif ( $this->m_data instanceof SMWDataValue ) {
+		} elseif ( $this->m_data instanceof DataValue ) {
 			$this->m_hash .= $this->m_data->getHash() . ':';
 		}
 
@@ -334,7 +334,7 @@ class PrintRequest {
 	public function setLabel( $label ) {
 		$this->m_label = $label;
 
-		if ( $this->m_data instanceof SMWDataValue ) {
+		if ( $this->m_data instanceof DataValue ) {
 			$this->m_data->setCaption( $label );
 		}
 	}

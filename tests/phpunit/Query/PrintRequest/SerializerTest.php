@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\PrintRequest;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequest\Serializer;
@@ -40,7 +40,7 @@ class SerializerTest extends TestCase {
 		];
 
 		$provider['print-ccat'] = [
-			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', DIWikiPage::newFromText( 'Bar' )->getTitle() ),
+			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', WikiPage::newFromText( 'Bar' )->getTitle() ),
 			false,
 			'?Bar=Foo'
 		];

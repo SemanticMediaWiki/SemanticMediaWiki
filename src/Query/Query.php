@@ -1,12 +1,10 @@
 <?php
 
-use SMW\DIWikiPage;
+namespace SMW\Query;
+
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
-use SMW\Query\PrintRequest;
-use SMW\Query\QueryContext;
-use SMW\Query\QueryStringifier;
-use SMW\Query\QueryToken;
 
 /**
  * This file contains the class for representing queries in SMW, each
@@ -33,7 +31,7 @@ use SMW\Query\QueryToken;
  * additional settings).
  * @ingroup SMWQuery
  */
-class SMWQuery implements QueryContext {
+class Query implements QueryContext {
 
 	const ID_PREFIX = '_QUERY';
 
@@ -96,7 +94,7 @@ class SMWQuery implements QueryContext {
 	private $m_mainlabel = ''; // Since 1.6
 
 	/**
-	 * @var DIWikiPage|null
+	 * @var WikiPage|null
 	 */
 	private $contextPage;
 
@@ -177,16 +175,16 @@ class SMWQuery implements QueryContext {
 	/**
 	 * @since 2.3
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
 	/**
 	 * @since 2.3
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getContextPage() {
 		return $this->contextPage;
@@ -557,3 +555,8 @@ class SMWQuery implements QueryContext {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Query::class, 'SMWQuery' );

@@ -2,9 +2,9 @@
 
 namespace SMW\Query\ProfileAnnotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\Query\ProfileAnnotator;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -35,8 +35,8 @@ class SourceProfileAnnotator extends ProfileAnnotatorDecorator {
 
 	private function addQuerySource( $querySource ) {
 		$this->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( '_ASKSC' ),
-			new DIBlob( $querySource )
+			new Property( '_ASKSC' ),
+			new Blob( $querySource )
 		);
 	}
 

@@ -2,10 +2,9 @@
 
 namespace SMW\Query;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMWInfolink as Infolink;
-use SMWQuery as Query;
 
 /**
  * Representing a Special:Ask query link to further query results
@@ -102,7 +101,7 @@ class QueryLinker {
 
 			// Avoid predefined properties to appear as key as in _MDAT
 			if ( $key !== '' && $key[0] === '_' ) {
-				$key = DIProperty::newFromUserLabel( $key )->getLabel();
+				$key = Property::newFromUserLabel( $key )->getLabel();
 			} else {
 				$key = str_replace( '_', ' ', $key );
 			}

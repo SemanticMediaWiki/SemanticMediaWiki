@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\DescriptionBuilders;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataValues\DataValue;
 use SMW\Query\DescriptionBuilders\SomeValueDescriptionBuilder;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\ThingDescription;
@@ -36,7 +37,7 @@ class SomeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testIsBuilderForDataValue() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -51,7 +52,7 @@ class SomeValueDescriptionBuilderTest extends TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $decription ) {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();
@@ -86,7 +87,7 @@ class SomeValueDescriptionBuilderTest extends TestCase {
 	 * @dataProvider likeNotLikeProvider
 	 */
 	public function testnNewDescriptionForLikeNotLike( $value ) {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'setUserValue' ] )
 			->getMockForAbstractClass();
@@ -103,7 +104,7 @@ class SomeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testInvalidDataValueRetunsThingDescription() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
@@ -121,7 +122,7 @@ class SomeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -132,7 +133,7 @@ class SomeValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testWikiPageValueOnNonMainNamespace() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getDataItem', 'getProperty', 'setUserValue' ] )
 			->getMockForAbstractClass();

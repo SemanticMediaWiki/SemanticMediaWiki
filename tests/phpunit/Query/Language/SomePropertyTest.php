@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\Language;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
@@ -23,7 +23,7 @@ use SMW\Query\Language\ValueDescription;
 class SomePropertyTest extends TestCase {
 
 	public function testCanConstruct() {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,10 +101,10 @@ class SomePropertyTest extends TestCase {
 
 	public function somePropertyProvider() {
 		# 0
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$property
 		);
 
@@ -124,11 +124,11 @@ class SomePropertyTest extends TestCase {
 		];
 
 		# 1
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Yui' ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), null )
+			new Property( 'Yui' ),
+			new ValueDescription( new WikiPage( 'Bar', NS_MAIN ), null )
 		);
 
 		$provider[] = [
@@ -147,10 +147,10 @@ class SomePropertyTest extends TestCase {
 		];
 
 		# 2
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Yui' ),
+			new Property( 'Yui' ),
 			new NamespaceDescription( NS_MAIN )
 		);
 
@@ -170,12 +170,12 @@ class SomePropertyTest extends TestCase {
 		];
 
 		# 3, 1096
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Yui' ),
+			new Property( 'Yui' ),
 			new SomeProperty(
-				new DIProperty( 'Bar', true ),
+				new Property( 'Bar', true ),
 				new NamespaceDescription( NS_MAIN )
 			)
 		);
@@ -196,12 +196,12 @@ class SomePropertyTest extends TestCase {
 		];
 
 		# 4, 1096
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Yui' ),
+			new Property( 'Yui' ),
 			new SomeProperty(
-				new DIProperty( '_SOBJ', true ),
+				new Property( '_SOBJ', true ),
 				new NamespaceDescription( NS_MAIN )
 			)
 		);
@@ -225,10 +225,10 @@ class SomePropertyTest extends TestCase {
 	}
 
 	public function testPrune() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$property
 		);
 
@@ -257,10 +257,10 @@ class SomePropertyTest extends TestCase {
 	}
 
 	public function testStableFingerprint() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$property
 		);
 
@@ -276,10 +276,10 @@ class SomePropertyTest extends TestCase {
 	}
 
 	public function testHierarchyDepthToBeCeiledOnMaxQSubpropertyDepthSetting() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$property
 		);
 
@@ -297,10 +297,10 @@ class SomePropertyTest extends TestCase {
 	}
 
 	public function testGetQueryStringWithHierarchyDepth() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$property
 		);
 
@@ -318,10 +318,10 @@ class SomePropertyTest extends TestCase {
 	}
 
 	public function testVaryingHierarchyDepthCausesDifferentFingerprint() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Bar', NS_MAIN ),
+			new WikiPage( 'Bar', NS_MAIN ),
 			$property
 		);
 
@@ -348,11 +348,11 @@ class SomePropertyTest extends TestCase {
 		// Same property, different description === different hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new NamespaceDescription( NS_HELP )
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new NamespaceDescription( NS_MAIN )
 			),
 			false
@@ -361,11 +361,11 @@ class SomePropertyTest extends TestCase {
 		// Inverse property, same description === different hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo', true ),
+				new Property( 'Foo', true ),
 				new NamespaceDescription( NS_MAIN )
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new NamespaceDescription( NS_MAIN )
 			),
 			false
@@ -374,11 +374,11 @@ class SomePropertyTest extends TestCase {
 		// Same property, different description === different hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo', true ),
+				new Property( 'Foo', true ),
 				new NamespaceDescription( NS_MAIN )
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new ThingDescription()
 			),
 			false
@@ -387,13 +387,13 @@ class SomePropertyTest extends TestCase {
 		// Property.chain, different description === different hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo', true ),
+				new Property( 'Foo', true ),
 				new ThingDescription()
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new ThingDescription()
 				)
 			),
@@ -403,16 +403,16 @@ class SomePropertyTest extends TestCase {
 		// Property.chain, same description === same hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new ThingDescription()
 				)
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new ThingDescription()
 				)
 			),
@@ -422,16 +422,16 @@ class SomePropertyTest extends TestCase {
 		// Property.chain, different description (inverse prop) === different hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new ThingDescription()
 				)
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo', true ),
+					new Property( 'Foo', true ),
 					new ThingDescription()
 				)
 			),
@@ -441,15 +441,15 @@ class SomePropertyTest extends TestCase {
 		// Property.chain, different description === different hash
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new ThingDescription()
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new SomeProperty(
-						new DIProperty( 'Foo' ),
+						new Property( 'Foo' ),
 						new ThingDescription()
 					)
 				)
@@ -461,24 +461,24 @@ class SomePropertyTest extends TestCase {
 		// "[[Foo.Foo::Foo]]" !== "[[Foo.Foo.Foo::Foo]]"
 		$provider[] = [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new SomeProperty(
-						new DIProperty( 'Foo' ),
-						new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+						new Property( 'Foo' ),
+						new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) )
 					)
 				)
 			),
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
+				new Property( 'Foo' ),
 				new SomeProperty(
-					new DIProperty( 'Foo' ),
+					new Property( 'Foo' ),
 					new SomeProperty(
-						new DIProperty( 'Foo' ),
+						new Property( 'Foo' ),
 						new SomeProperty(
-							new DIProperty( 'Foo' ),
-							new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+							new Property( 'Foo' ),
+							new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) )
 						)
 					)
 				)

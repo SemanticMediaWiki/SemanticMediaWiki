@@ -3,13 +3,13 @@
 namespace SMW\Tests\Query\ProfileAnnotators;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Container;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\FormatProfileAnnotator
@@ -42,9 +42,9 @@ class FormatProfileAnnotatorTest extends TestCase {
 	}
 
 	public function testCreateProfile() {
-		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', 'foo' );
+		$subject = new WikiPage( __METHOD__, NS_MAIN, '', 'foo' );
 
-		$container = new DIContainer(
+		$container = new Container(
 			new ContainerSemanticData( $subject	)
 		);
 

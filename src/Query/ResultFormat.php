@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
 use ParamProcessor\IParamDefinition;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Definition for the format parameter.

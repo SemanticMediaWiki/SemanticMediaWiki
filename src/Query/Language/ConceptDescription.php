@@ -2,8 +2,8 @@
 
 namespace SMW\Query\Language;
 
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 
 /**
  * Description of a single class as described by a concept page in the wiki.
@@ -17,7 +17,7 @@ use SMW\DIWikiPage;
  */
 class ConceptDescription extends Description {
 
-	public function __construct( private readonly DIWikiPage $concept ) {
+	public function __construct( private readonly WikiPage $concept ) {
 	}
 
 	/**
@@ -31,7 +31,7 @@ class ConceptDescription extends Description {
 	}
 
 	/**
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function getConcept() {
 		return $this->concept;

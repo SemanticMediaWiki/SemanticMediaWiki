@@ -2,8 +2,9 @@
 
 namespace SMW\Query;
 
+use SMW\DataItems\Container;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotators\DescriptionProfileAnnotator;
 use SMW\Query\ProfileAnnotators\DurationProfileAnnotator;
 use SMW\Query\ProfileAnnotators\FormatProfileAnnotator;
@@ -12,8 +13,6 @@ use SMW\Query\ProfileAnnotators\ParametersProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SchemaLinkProfileAnnotator;
 use SMW\Query\ProfileAnnotators\SourceProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
-use SMWDIContainer as DIContainer;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -143,7 +142,7 @@ class ProfileAnnotatorFactory {
 		if ( $subject === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 		} else {
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
@@ -153,7 +152,7 @@ class ProfileAnnotatorFactory {
 			$containerSemanticData = new ContainerSemanticData( $subject );
 		}
 
-		return new DIContainer(
+		return new Container(
 			$containerSemanticData
 		);
 	}

@@ -4,12 +4,14 @@ namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
@@ -62,7 +64,7 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructValueDescription() {
-		$dataItem = $this->getMockBuilder( '\SMWDataItem' )
+		$dataItem = $this->getMockBuilder( DataItem::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -75,7 +77,7 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructSomeProperty() {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -172,7 +174,7 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructClassDescription() {
-		$category = $this->getMockBuilder( DIWikiPage::class )
+		$category = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -185,11 +187,11 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructClassDescription_Categories() {
-		$category_1 = $this->getMockBuilder( DIWikiPage::class )
+		$category_1 = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$category_2 = $this->getMockBuilder( DIWikiPage::class )
+		$category_2 = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -202,7 +204,7 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructConceptDescription() {
-		$concept = $this->getMockBuilder( DIWikiPage::class )
+		$concept = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -215,7 +217,7 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructDescriptionFromInvalidDataValue() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid' ] )
 			->getMockForAbstractClass();
@@ -233,7 +235,7 @@ class DescriptionFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructDescriptionFromValidDataValue() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'isValid', 'getProperty', 'getDataItem', 'getWikiValue' ] )
 			->getMockForAbstractClass();
