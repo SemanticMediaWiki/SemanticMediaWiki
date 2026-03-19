@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Query\Processor;
+namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Query\QueryProcessor;
 
 /**
- * @covers SMWQueryProcessor
+ * @covers \SMW\Query\QueryProcessor
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
