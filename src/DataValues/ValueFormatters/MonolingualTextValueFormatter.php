@@ -3,11 +3,11 @@
 namespace SMW\DataValues\ValueFormatters;
 
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -55,7 +55,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 		if ( $this->dataValue->getProperty() !== null && $this->dataValue->getProperty()->isInverse() ) {
 
 			$dataItems = $this->dataValue->getDataItem()->getSemanticData()->getPropertyValues(
-				new DIProperty( $this->dataValue->getProperty()->getKey() )
+				new Property( $this->dataValue->getProperty()->getKey() )
 			);
 
 			$dataItem = reset( $dataItems );

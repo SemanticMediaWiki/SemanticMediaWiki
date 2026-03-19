@@ -1,8 +1,8 @@
 <?php
 
-/**
- * @ingroup SMWDataValues
- */
+namespace SMW\DataValues;
+
+use SMW\DataItems\Number;
 
 /**
  * This datavalue implements unit support custom units, for which users have
@@ -10,9 +10,9 @@
  * are retrieved from a property page associated with this object.
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWQuantityValue extends SMWNumberValue {
+class QuantityValue extends NumberValue {
 
 	/**
 	 * DV identifier
@@ -50,7 +50,7 @@ class SMWQuantityValue extends SMWNumberValue {
 			$this->m_unitin = $this->m_unitids[$unit];
 			// phpcs:ignore MediaWiki.Usage.ForbiddenFunctions.assert
 			assert( $this->m_unitfactors[$this->m_unitin] != 0 /* Should be filtered by initConversionData() */ );
-			$this->m_dataitem = new SMWDINumber( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
+			$this->m_dataitem = new Number( $number / $this->m_unitfactors[$this->m_unitin], $this->m_typeid );
 			return true;
 		} else { // unsupported unit
 			return false;
@@ -205,3 +205,8 @@ class SMWQuantityValue extends SMWNumberValue {
 		}
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( QuantityValue::class, 'SMWQuantityValue' );

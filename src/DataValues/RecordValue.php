@@ -1,17 +1,18 @@
 <?php
 
+namespace SMW\DataValues;
+
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMW\DataValues\AbstractMultiValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWDIContainer as DIContainer;
 
 /**
- * SMWDataValue implements the handling of small sets of property-value pairs.
+ * DataValue implements the handling of small sets of property-value pairs.
  * The declaration of Records in SMW uses the order of values to encode the
  * property that should be used, so the user only needs to enter a list of
  * values. Internally, however, the property-value assignments are not stored
@@ -19,11 +20,11 @@ use SMWDIContainer as DIContainer;
  * the declaration. This is why it is not supported to have Records using the
  * same property for more than one value.
  *
- * The class uses DIContainer objects to return its inner state. See the
- * documentation for DIContainer for details on how this "pseudo" data
+ * The class uses Container objects to return its inner state. See the
+ * documentation for Container for details on how this "pseudo" data
  * encapsulated many property assignments. Such data is stored internally
  * like a page with various property-value assignments. Indeed, record values
- * can be created from DIWikiPage objects (the missing information will
+ * can be created from WikiPage objects (the missing information will
  * be fetched from the store).
  *
  * @todo Enforce limitation of maximal number of values.
@@ -31,9 +32,9 @@ use SMWDIContainer as DIContainer;
  * @todo Complete internationalisation.
  *
  * @author Markus Krötzsch
- * @ingroup SMWDataValues
+ * @ingroup DataValues
  */
-class SMWRecordValue extends AbstractMultiValue {
+class RecordValue extends AbstractMultiValue {
 
 	/// cache for properties for the fields of this data value
 	protected $m_diProperties = null;
@@ -48,7 +49,7 @@ class SMWRecordValue extends AbstractMultiValue {
 	/**
 	 * @since 2.3
 	 *
-	 * @return DIProperty[]|null
+	 * @return Property[]|null
 	 */
 	public function getProperties() {
 		return $this->m_diProperties;
@@ -137,11 +138,11 @@ class SMWRecordValue extends AbstractMultiValue {
 		// Remember the data to extend the sortkey
 		$containerSemanticData->setExtensionData( 'sort.data', implode( ';', $sortKeys ) );
 
-		$this->m_dataitem = new DIContainer( $containerSemanticData );
+		$this->m_dataitem = new Container( $containerSemanticData );
 	}
 
 	/**
-	 * @see SMWDataValue::loadDataItem()
+	 * @see DataValue::loadDataItem()
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
@@ -166,13 +167,13 @@ class SMWRecordValue extends AbstractMultiValue {
 			if (
 				$semanticData instanceof SemanticData &&
 				$semanticData->hasSubSemanticData( $subobjectName ) ) {
-				$this->m_dataitem = new DIContainer(
+				$this->m_dataitem = new Container(
 					$semanticData->findSubSemanticData( $subobjectName )
 				);
 			} else {
 				$semanticData = new ContainerSemanticData( $dataItem );
 				$semanticData->copyDataFrom( ApplicationFactory::getInstance()->getStore()->getSemanticData( $dataItem ) );
-				$this->m_dataitem = new DIContainer( $semanticData );
+				$this->m_dataitem = new Container( $semanticData );
 			}
 
 			return true;
@@ -212,7 +213,7 @@ class SMWRecordValue extends AbstractMultiValue {
 	 * @todo This is not a full reset yet (the case that property is changed after a value
 	 * was set does not occur in the normal flow of things, hence this has low priority).
 	 */
-	public function setProperty( DIProperty $property ) {
+	public function setProperty( Property $property ) {
 		parent::setProperty( $property );
 		$this->m_diProperties = null;
 	}
@@ -220,11 +221,11 @@ class SMWRecordValue extends AbstractMultiValue {
 	/**
 	 * @since 2.1
 	 *
-	 * @param DIProperty[] $properties
+	 * @param Property[] $properties
 	 */
 	public function setFieldProperties( array $properties ) {
 		foreach ( $properties as $property ) {
-			if ( $property instanceof DIProperty ) {
+			if ( $property instanceof Property ) {
 				$this->m_diProperties[] = $property;
 			}
 		}
@@ -247,7 +248,7 @@ class SMWRecordValue extends AbstractMultiValue {
 	 *
 	 * @todo I18N for error message.
 	 *
-	 * @return array of DIProperty
+	 * @return array of Property
 	 */
 	public function getPropertyDataItems() {
 		if ( $this->m_diProperties !== null ) {
@@ -293,7 +294,7 @@ class SMWRecordValue extends AbstractMultiValue {
 		return $result;
 	}
 
-	protected function makeValueOutputText( $type, SMWDataValue $dataValue, $linker ) {
+	protected function makeValueOutputText( $type, DataValue $dataValue, $linker ) {
 		switch ( $type ) {
 			case 0:
 				return $dataValue->getShortWikiText( $linker );
@@ -315,7 +316,7 @@ class SMWRecordValue extends AbstractMultiValue {
 		} else {
 			$subobjectName = '_' . hash( 'md4', $value, false ); // md4 is probably fastest of PHP's hashes
 
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$this->m_contextPage->getDBkey(),
 				$this->m_contextPage->getNamespace(),
 				$this->m_contextPage->getInterwiki(),
@@ -329,3 +330,8 @@ class SMWRecordValue extends AbstractMultiValue {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( RecordValue::class, 'SMWRecordValue' );

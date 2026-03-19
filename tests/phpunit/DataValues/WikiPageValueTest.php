@@ -4,12 +4,12 @@ namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataValues\WikiPageValue;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
-use SMWWikiPageValue as WikiPageValue;
 
 /**
- * @covers \SMWWikiPageValue
+ * @covers \SMW\DataValues\WikiPageValue
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

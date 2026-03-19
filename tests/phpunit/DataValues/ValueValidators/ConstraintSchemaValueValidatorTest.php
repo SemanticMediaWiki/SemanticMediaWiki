@@ -7,6 +7,7 @@ use SMW\Constraint\ConstraintCheckRunner;
 use SMW\DataItemFactory;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueValidators\ConstraintSchemaValueValidator;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
@@ -51,7 +52,7 @@ class ConstraintSchemaValueValidatorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

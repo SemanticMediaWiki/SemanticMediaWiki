@@ -2,12 +2,11 @@
 
 namespace SMW\DataValues;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\MediaWikiNsContentReader;
 use SMW\Services\ServicesFactory;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -110,12 +109,12 @@ class ImportValue extends DataValue {
 				$this->addErrorMsg( $message );
 			}
 
-			$this->m_dataitem = new DIBlob( 'ERROR' );
+			$this->m_dataitem = new Blob( 'ERROR' );
 			return;
 		}
 
 		// Encoded string for DB storage
-		$this->m_dataitem = new DIBlob(
+		$this->m_dataitem = new Blob(
 			$this->namespace . ' ' .
 			$this->term . ' ' .
 			$this->uri . ' ' .
@@ -136,7 +135,7 @@ class ImportValue extends DataValue {
 	 * @return bool
 	 */
 	protected function loadDataItem( DataItem $dataItem ) {
-		if ( !$dataItem instanceof DIBlob ) {
+		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
 

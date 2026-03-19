@@ -3,19 +3,19 @@
 namespace SMW\Tests\Export;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
 use SMW\Subobject;
 use SMW\Tests\Utils\Fixtures\FixturesProvider;
 use SMW\Tests\Utils\SemanticDataFactory;
 use SMW\Tests\Utils\Validators\ExportDataValidator;
-use SMWExporter as Exporter;
 
 /**
- * @covers \SMWExporter
+ * @covers \SMW\Export\Exporter
  *
  *
  * @group SMW
@@ -47,12 +47,12 @@ class ExportSemanticDataTest extends TestCase {
 	public function testExportRedirect() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$redirectProperty = new DIProperty( '_REDI' );
-		$redirectTarget = new DIWikiPage( 'FooRedirectTarget', NS_MAIN, '' );
+		$redirectProperty = new Property( '_REDI' );
+		$redirectTarget = new WikiPage( 'FooRedirectTarget', NS_MAIN, '' );
 
 		$semanticData->addPropertyObjectValue(
 			$redirectProperty,
-			DIWikiPage::newFromTitle( $redirectTarget->getTitle(), '__red' )
+			WikiPage::newFromTitle( $redirectTarget->getTitle() )
 		);
 
 		$exporter = Exporter::getInstance();
@@ -86,11 +86,11 @@ class ExportSemanticDataTest extends TestCase {
 	public function testExportPageWithNumericProperty() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$property = new DIProperty( '123' );
+		$property = new Property( '123' );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( '345', NS_MAIN )
+			new WikiPage( '345', NS_MAIN )
 		);
 
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -99,7 +99,7 @@ class ExportSemanticDataTest extends TestCase {
 			Escaper::encodePage( $property->getDiWikiPage() ),
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
-			new DIWikiPage( '123', SMW_NS_PROPERTY )
+			new WikiPage( '123', SMW_NS_PROPERTY )
 		);
 
 		$this->assertCount(
@@ -116,7 +116,7 @@ class ExportSemanticDataTest extends TestCase {
 			'345',
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
-			new DIWikiPage( '345', NS_MAIN )
+			new WikiPage( '345', NS_MAIN )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
@@ -129,11 +129,11 @@ class ExportSemanticDataTest extends TestCase {
 	public function testExportPageWithNonNumericProperty() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
-		$property = new DIProperty( 'A123' );
+		$property = new Property( 'A123' );
 
 		$semanticData->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( '345', NS_MAIN )
+			new WikiPage( '345', NS_MAIN )
 		);
 
 		$exportData = Exporter::getInstance()->makeExportData( $semanticData );
@@ -142,7 +142,7 @@ class ExportSemanticDataTest extends TestCase {
 			'A123',
 			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
-			new DIWikiPage( 'A123', SMW_NS_PROPERTY )
+			new WikiPage( 'A123', SMW_NS_PROPERTY )
 		);
 
 		$this->assertCount(
@@ -159,7 +159,7 @@ class ExportSemanticDataTest extends TestCase {
 			'345',
 			Exporter::getInstance()->getNamespaceUri( 'wiki' ),
 			'wiki',
-			new DIWikiPage( '345', NS_MAIN )
+			new WikiPage( '345', NS_MAIN )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
@@ -171,11 +171,11 @@ class ExportSemanticDataTest extends TestCase {
 
 	public function testExportSubproperty() {
 		$semanticData = $this->semanticDataFactory
-			->setSubject( new DIWikiPage( 'SomeSubproperty', SMW_NS_PROPERTY ) )
+			->setSubject( new WikiPage( 'SomeSubproperty', SMW_NS_PROPERTY ) )
 			->newEmptySemanticData();
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_SUBP' ), 'SomeTopProperty' )
+			$this->dataValueFactory->newDataValueByProperty( new Property( '_SUBP' ), 'SomeTopProperty' )
 		);
 
 		$exporter = Exporter::getInstance();
@@ -191,7 +191,7 @@ class ExportSemanticDataTest extends TestCase {
 			'SomeTopProperty',
 			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
-			new DIWikiPage( 'SomeTopProperty', SMW_NS_PROPERTY )
+			new WikiPage( 'SomeTopProperty', SMW_NS_PROPERTY )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
@@ -205,7 +205,7 @@ class ExportSemanticDataTest extends TestCase {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData( __METHOD__ );
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_INST' ), 'SomeCategory' )
+			$this->dataValueFactory->newDataValueByProperty( new Property( '_INST' ), 'SomeCategory' )
 		);
 
 		$exporter = Exporter::getInstance();
@@ -221,7 +221,7 @@ class ExportSemanticDataTest extends TestCase {
 			'SomeCategory',
 			Exporter::getInstance()->getNamespaceUri( 'category' ),
 			'category',
-			new DIWikiPage( 'SomeCategory', NS_CATEGORY )
+			new WikiPage( 'SomeCategory', NS_CATEGORY )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
@@ -233,11 +233,11 @@ class ExportSemanticDataTest extends TestCase {
 
 	public function testExportSubcategory() {
 		$semanticData = $this->semanticDataFactory
-			->setSubject( new DIWikiPage( 'SomeSubcategory', NS_CATEGORY ) )
+			->setSubject( new WikiPage( 'SomeSubcategory', NS_CATEGORY ) )
 			->newEmptySemanticData();
 
 		$semanticData->addDataValue(
-			$this->dataValueFactory->newDataValueByProperty( new DIProperty( '_SUBC' ), 'SomeTopCategory' )
+			$this->dataValueFactory->newDataValueByProperty( new Property( '_SUBC' ), 'SomeTopCategory' )
 		);
 
 		$exporter = Exporter::getInstance();
@@ -253,7 +253,7 @@ class ExportSemanticDataTest extends TestCase {
 			'SomeTopCategory',
 			Exporter::getInstance()->getNamespaceUri( 'category' ),
 			'category',
-			new DIWikiPage( 'SomeTopCategory', NS_CATEGORY )
+			new WikiPage( 'SomeTopCategory', NS_CATEGORY )
 		);
 
 		$this->exportDataValidator->assertThatExportDataContainsResource(
@@ -280,7 +280,7 @@ class ExportSemanticDataTest extends TestCase {
 			$this->transformPropertyLabelToAuxiliary( $subobject->getProperty() ),
 			Exporter::getInstance()->getNamespaceUri( 'property' ),
 			'property',
-			new DIWikiPage( 'Has_subobject', SMW_NS_PROPERTY )
+			new WikiPage( 'Has_subobject', SMW_NS_PROPERTY )
 		);
 
 		$this->assertTrue(
@@ -341,7 +341,7 @@ class ExportSemanticDataTest extends TestCase {
 		);
 	}
 
-	private function transformPropertyLabelToAuxiliary( DIProperty $property ) {
+	private function transformPropertyLabelToAuxiliary( Property $property ) {
 		return str_replace( ' ', '_', $property->getLabel() );
 	}
 

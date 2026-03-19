@@ -3,6 +3,8 @@
 namespace SMW\Tests\DataValues;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueParsers\MonolingualTextValueParser;
@@ -110,13 +112,13 @@ class MonolingualTextValueMappingTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$instance->getDataItem()
 		);
 
 		foreach ( $instance->getDataItems() as $dataItem ) {
 			$this->assertInstanceOf(
-				'\SMWDIBlob',
+				Blob::class,
 				$dataItem
 			);
 		}

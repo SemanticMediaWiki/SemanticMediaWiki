@@ -1,10 +1,11 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Formatters;
 
 use MediaWiki\Message\Message;
 use ReflectionClass;
-use SMW\MessageFormatter;
+use SMW\Formatters\MessageFormatter;
+use SMW\Tests\SemanticMediaWikiTestCase;
 
 /**
  * Tests for the MessageFormatter class
@@ -18,7 +19,7 @@ use SMW\MessageFormatter;
  */
 
 /**
- * @covers \SMW\MessageFormatter
+ * @covers \SMW\Formatters\MessageFormatter
  *
  *
  * @group SMW
@@ -97,7 +98,7 @@ class MessageFormatterTest extends SemanticMediaWikiTestCase {
 		$this->assertCount( 3, $messages );
 
 		foreach ( $messages as $msg ) {
-			$this->assertInstanceOf( '\Message', $msg );
+			$this->assertInstanceOf( Message::class, $msg );
 
 			foreach ( $msg->getParams() as $result ) {
 				$this->assertEquals( $param, $result );

@@ -4,11 +4,12 @@ namespace SMW\Tests\DataValues\ValueFormatters;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\PropertyValueFormatter;
 use SMW\DataValues\ValueParsers\PropertyValueParser;
 use SMW\DataValues\ValueValidators\ConstraintValueValidator;
-use SMW\DIProperty;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRegistry;
@@ -488,13 +489,13 @@ class PropertyValueFormatterTest extends TestCase {
 	}
 
 	public function formattedLabelProvider() {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->willReturn( \SMWDataItem::TYPE_PROPERTY );
+			->willReturn( DataItem::TYPE_PROPERTY );
 
 		$property->expects( $this->any() )
 			->method( 'getPreferredLabel' )

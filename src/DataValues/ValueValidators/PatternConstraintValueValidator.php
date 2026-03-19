@@ -2,9 +2,9 @@
 
 namespace SMW\DataValues\ValueValidators;
 
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 
 /**
  * To support regular expressions in connection with the `Allows pattern`

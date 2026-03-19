@@ -4,6 +4,7 @@ namespace SMW\Tests\DataValues\ValueValidators;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueParsers\AllowsPatternValueParser;
 use SMW\DataValues\ValueValidators\PatternConstraintValueValidator;
 use SMW\MediaWiki\MediaWikiNsContentReader;
@@ -73,7 +74,7 @@ class PatternConstraintValueValidatorTest extends TestCase {
 			->method( 'getAllowedPatternBy' )
 			->willReturn( 'Foo' );
 
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getProperty', 'getDataItem', 'getTypeID' ] )
 			->getMockForAbstractClass();

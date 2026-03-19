@@ -2,8 +2,7 @@
 
 namespace SMW\DataValues;
 
-use SMWDINumber as DINumber;
-use SMWNumberValue as NumberValue;
+use SMW\DataItems\Number;
 
 /**
  * This datavalue implements unit support for measuring temperatures. This is
@@ -39,7 +38,7 @@ class TemperatureValue extends NumberValue {
 			return false;
 		}
 
-		$this->m_dataitem = new DINumber( $value );
+		$this->m_dataitem = new Number( $value );
 
 		return true;
 	}

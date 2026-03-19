@@ -1,14 +1,14 @@
 <?php
 
-namespace SMW\Tests\Exporter;
+namespace SMW\Tests\Export;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
-use SMWExpData as ExpData;
 
 /**
- * @covers \SMWExpData
+ * @covers \SMW\Export\ExpData
  *
  * @group semantic-mediawiki
  *
@@ -25,7 +25,7 @@ class ExpDataTest extends TestCase {
 			->getMock();
 
 		$this->assertInstanceOf(
-			'\SMWExpData',
+			ExpData::class,
 			new ExpData( $expNsResource )
 		);
 	}

@@ -3,10 +3,9 @@
 namespace SMW\DataValues;
 
 use SMW\Constraint\Constraint;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Property\SpecificationLookup;
-use SMWWikiPageValue as WikiPageValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -42,13 +41,13 @@ class ConstraintSchemaValue extends WikiPageValue {
 		$schema = null;
 		$error = [];
 
-		if ( !$dataItem instanceof DIWikiPage || $contextPage === null ) {
+		if ( !$dataItem instanceof WikiPage || $contextPage === null ) {
 			return;
 		}
 
 		$definitions = $this->specificationLookup->getSpecification(
 			$dataItem,
-			new DIProperty( '_SCHEMA_DEF' )
+			new Property( '_SCHEMA_DEF' )
 		);
 
 		foreach ( $definitions as $definition ) {

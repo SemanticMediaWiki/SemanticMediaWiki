@@ -1,29 +1,25 @@
 <?php
 
-namespace SMW;
+namespace SMW\Formatters;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Message\Message;
+use SMW\Highlighter;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
- * Class implementing message output formatting
+ * Class implementing message output formatting.
  *
- *
- * @license GPL-2.0-or-later
- * @since   1.9
- *
- * @author mwjames
- */
-
-/**
- * This class is implementing message output formatting to avoid having
- * classes to invoke a language object that is not a direct dependency (which
- * means that context relevant information is mostly missing from the invoking
- * class) therefore it is more appropriate to collect Message objects from the
- * source and initiate an output formatting only when necessary and requested.
+ * This class handles message output formatting to avoid requiring calling
+ * classes to directly depend on a language object (which would otherwise lack
+ * necessary context). Instead, it collects Message objects from the source and
+ * performs formatting only when explicitly needed.
  *
  * @ingroup Formatter
+ * @since 1.9
+ * @license GPL-2.0-or-later
+ * @author mwjames
  */
 class MessageFormatter {
 
@@ -287,3 +283,8 @@ class MessageFormatter {
 		return $this->exists() ? $this->getString( false ) : '';
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( MessageFormatter::class, 'SMW\MessageFormatter' );
