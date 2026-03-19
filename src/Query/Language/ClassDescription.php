@@ -42,7 +42,7 @@ class ClassDescription extends Description {
 		} elseif ( is_array( $content ) ) {
 			$this->m_diWikiPages = $content;
 		} else {
-			throw new Exception( "ClassDescription::__construct(): parameter must be an WikiPage object or an array of such objects." );
+			throw new Exception( "ClassDescription::__construct(): parameter must be a WikiPage Object or an array of such objects." );
 		}
 	}
 
