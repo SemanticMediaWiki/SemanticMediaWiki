@@ -13,6 +13,7 @@ use SMW\DataValues\DataValue;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
+use SMW\Options;
 use SMW\ProcessingErrorMsgHandler;
 
 /**
