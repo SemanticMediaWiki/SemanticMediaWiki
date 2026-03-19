@@ -325,7 +325,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	protected function getCellContent( array $dataValues, $outputMode, $isSubject ) {
+	protected function getCellContent( array $dataValues, $outputMode, $isSubject ): string {
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
 		$values = [];

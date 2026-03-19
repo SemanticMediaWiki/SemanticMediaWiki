@@ -53,7 +53,7 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$this->pageRequestOptions->initialize();
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 

@@ -119,7 +119,7 @@ class GeoCoord extends DataItem {
 	 * (non-PHPdoc)
 	 * @see DataItem::getSortKey()
 	 */
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ',' . $this->altitude : '' );
 	}
 
@@ -127,7 +127,7 @@ class GeoCoord extends DataItem {
 	 * (non-PHPdoc)
 	 * @see DataItem::getSerialization()
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return implode( ',', $this->getCoordinateSet() );
 	}
 

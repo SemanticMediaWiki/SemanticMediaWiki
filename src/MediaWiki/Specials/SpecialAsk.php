@@ -546,7 +546,7 @@ class SpecialAsk extends SpecialPage {
 	 * The return value is not HTML-safe; the caller must take care of escaping it.
 	 * @return string
 	 */
-	private function print_code() {
+	private function print_code(): string {
 		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {

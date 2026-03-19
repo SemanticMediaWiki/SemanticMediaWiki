@@ -53,7 +53,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey( $subject ) {
+	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof Title ) {
 			$subject = DIWikiPage::newFromTitle( $subject );
 		}

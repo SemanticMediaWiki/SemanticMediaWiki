@@ -82,7 +82,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public static function toLowerCase( $key ) {
+	public static function toLowerCase( $key ): string {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
 	}
 
@@ -130,7 +130,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildFormList() {
+	public function buildFormList(): string {
 		$list = [];
 		$name = '';
 		$value = '';
@@ -179,7 +179,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( array $data ) {
+	public function buildForm( array $data ): string {
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
 		}

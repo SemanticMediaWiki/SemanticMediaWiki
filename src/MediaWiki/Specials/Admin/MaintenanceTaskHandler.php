@@ -65,7 +65,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$tasks = '';
 		$html = '';
 
@@ -134,7 +134,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 		);
 	}
 
-	private function buildHTML() {
+	private function buildHTML(): string {
 		$html = Html::rawElement(
 			'p',
 			[

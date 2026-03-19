@@ -484,7 +484,7 @@ class SetupCheck {
 		return $this->templateEngine->publish( $value['type'] );
 	}
 
-	private function createProgressIndicator( $value ) {
+	private function createProgressIndicator( $value ): string {
 		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
 		$content = '';
 

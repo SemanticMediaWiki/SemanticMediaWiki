@@ -72,7 +72,7 @@ class Stats {
 	/**
 	 * @since 3.1
 	 */
-	public function makeCacheKey( $id ) {
+	public function makeCacheKey( $id ): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, [ $id, self::VERSION ] );
 	}
 

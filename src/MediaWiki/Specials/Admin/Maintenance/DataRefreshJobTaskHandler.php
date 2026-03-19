@@ -143,7 +143,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function getProgressBar( $prog ) {
+	private function getProgressBar( $prog ): string {
 		return Html::rawElement(
 			'div',
 			[ 'style' => 'float: left; background: #DDDDDD; border: 1px solid grey; width: 300px;' ],

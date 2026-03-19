@@ -78,7 +78,7 @@ class Field {
 	 *
 	 * @return string
 	 */
-	public function select( $attributes = [] ) {
+	public function select( $attributes = [] ): string {
 		$list = [];
 		$html = [];
 		$selected = false;

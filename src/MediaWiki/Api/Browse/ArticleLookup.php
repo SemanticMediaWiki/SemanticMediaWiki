@@ -29,7 +29,7 @@ class ArticleLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'ArticleLookup:' . self::VERSION;
 	}
 

@@ -36,7 +36,7 @@ class Template {
 	 *
 	 * @return string
 	 */
-	public function text() {
+	public function text(): string {
 		$text = '{{' . $this->name;
 
 		foreach ( $this->fields as $key => $value ) {

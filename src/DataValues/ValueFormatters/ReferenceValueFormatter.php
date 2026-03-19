@@ -57,7 +57,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $this->createOutput( $type, $linker );
 	}
 
-	private function createOutput( $type, $linker ) {
+	private function createOutput( $type, $linker ): string {
 		$results = $this->getListOfFormattedPropertyDataItems(
 			$type,
 			$linker,

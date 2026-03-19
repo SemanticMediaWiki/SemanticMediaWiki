@@ -228,7 +228,7 @@ class DIBlobHandler extends DataItemHandler {
 		return $length;
 	}
 
-	private function getCharFieldType() {
+	private function getCharFieldType(): string {
 		// http://sqlite.1065341.n5.nabble.com/Leading-zeros-disappear-td60515.html
 		// @Test:[p-0430]
 		if ( $this->isDbType( 'sqlite' ) ) {

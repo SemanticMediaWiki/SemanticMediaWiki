@@ -76,7 +76,7 @@ class ConstraintSchemaValue extends WikiPageValue {
 	 *
 	 * @return string
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		return $this->getPrefixedText();
 	}
 

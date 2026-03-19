@@ -41,7 +41,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return string
 	 */
-	protected function getValidFormatName( $value ) {
+	protected function getValidFormatName( $value ): string {
 		global $smwgResultFormats;
 
 		$value = strtolower( trim( $value ) );

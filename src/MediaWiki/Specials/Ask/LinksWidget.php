@@ -198,7 +198,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function resultSubmitLink( $isEmpty = false ) {
+	public static function resultSubmitLink( $isEmpty = false ): string {
 		if ( !$isEmpty ) {
 			return '';
 		}

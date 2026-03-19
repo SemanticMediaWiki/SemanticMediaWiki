@@ -70,7 +70,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( array $entries, ?Query $query = null ) {
+	public function buildHTML( array $entries, ?Query $query = null ): string {
 		if ( $query instanceof Query ) {
 			$preEntries = [];
 			$description = $query->getDescription();
@@ -121,7 +121,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function prettifyExplain( iterable $res ) {
+	public function prettifyExplain( iterable $res ): string {
 		$output = '';
 
 		// https://dev.mysql.com/doc/refman/5.0/en/explain-output.html
@@ -219,7 +219,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function prettifySPARQL( $sparql ) {
+	public function prettifySPARQL( $sparql ): string {
 		$sparql = str_replace(
 			[
 				'[',
@@ -249,7 +249,7 @@ class DebugFormatter {
 	 *
 	 * @return string
 	 */
-	public function prettifySQL( $sql, $alias ) {
+	public function prettifySQL( $sql, $alias ): string {
 		$matches = [];
 		$i = 0;
 

@@ -77,7 +77,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getQName() {
+	public function getQName(): string {
 		return $this->namespaceId . ':' . $this->localName;
 	}
 

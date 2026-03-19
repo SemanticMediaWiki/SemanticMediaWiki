@@ -45,11 +45,11 @@ class Error extends DataItem {
 		return 'error';
 	}
 
-	public function getString() {
+	public function getString(): string {
 		return $this->getSerialization();
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return serialize( $this->m_errors );
 	}
 

@@ -112,7 +112,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return string
 	 */
-	private function safeIncrement( string $field, int $delta ) {
+	private function safeIncrement( string $field, int $delta ): string {
 		if ( $delta < 0 ) {
 			return $field . '=' . $this->connection->conditional(
 				$this->connection->expr( $field, '>=', abs( $delta ) ),

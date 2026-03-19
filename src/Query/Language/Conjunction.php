@@ -86,7 +86,7 @@ class Conjunction extends Description {
 		}
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asvalue = false ): string {
 		$result = '';
 
 		foreach ( $this->descriptions as $desc ) {

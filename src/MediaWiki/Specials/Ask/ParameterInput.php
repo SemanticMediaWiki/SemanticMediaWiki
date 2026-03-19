@@ -262,7 +262,7 @@ class ParameterInput {
 	 *
 	 * @return string
 	 */
-	protected function getCheckboxListInput( array $valueList ) {
+	protected function getCheckboxListInput( array $valueList ): string {
 		$boxes = [];
 		$currentValues = [];
 

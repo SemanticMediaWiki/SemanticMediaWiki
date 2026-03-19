@@ -87,7 +87,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return string
 	 */
-	public function getTextWithLanguageTag( $text, $languageCode ) {
+	public function getTextWithLanguageTag( $text, $languageCode ): string {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 
 		// @TODO test de-formal with PropertyListByApiRequest
@@ -342,7 +342,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return string
 	 */
-	public function toString() {
+	public function toString(): string {
 		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return '';
 		}

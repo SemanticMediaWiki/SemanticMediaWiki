@@ -198,7 +198,7 @@ class SpecialAdmin extends SpecialPage {
 		return $html;
 	}
 
-	private function msg_text( $key, $type = Message::TEXT ) {
+	private function msg_text( $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, Message::USER_LANGUAGE );
 	}
 

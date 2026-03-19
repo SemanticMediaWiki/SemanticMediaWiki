@@ -40,7 +40,7 @@ class JSONParseException extends RuntimeException {
 	 * and allow users to make an informed decision about the state of the
 	 * JSON.
 	 */
-	protected function getParseError( $json ) {
+	protected function getParseError( $json ): string {
 		$parser = new JsonParser();
 
 		try {
@@ -52,7 +52,7 @@ class JSONParseException extends RuntimeException {
 		return '';
 	}
 
-	private function buildMessage( $json ) {
+	private function buildMessage( $json ): string {
 		return $this->getParseError( $json );
 	}
 

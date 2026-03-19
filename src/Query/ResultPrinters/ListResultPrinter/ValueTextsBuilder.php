@@ -31,7 +31,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	public function getValuesText( ResultArray $field, $column = 0 ) {
+	public function getValuesText( ResultArray $field, $column = 0 ): string {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return implode( $this->get( 'valuesep' ), $valueTexts );

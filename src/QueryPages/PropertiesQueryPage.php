@@ -71,7 +71,7 @@ class PropertiesQueryPage extends QueryPage {
 	/**
 	 * @return string
 	 */
-	public function getPageHeader() {
+	public function getPageHeader(): string {
 		return Html::rawElement(
 			'p',
 			[ 'class' => 'smw-sp-properties-docu' ],
@@ -128,7 +128,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @param int $useCount
 	 * @return string
 	 */
-	protected function formatPropertyItem( Property $property, $useCount ) {
+	protected function formatPropertyItem( Property $property, $useCount ): string {
 		// Clear formatter before invoking messages
 		$this->getMessageFormatter()->clear();
 

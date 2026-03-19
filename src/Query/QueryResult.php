@@ -483,7 +483,7 @@ class QueryResult {
 	 *
 	 * @return string
 	 */
-	public function getHash( $type = null ) {
+	public function getHash( $type = null ): string {
 		// Just iterate over available subjects to create a "quick" hash given
 		// that resolving the entire object tree is costly due to recursive
 		// processing of all data items including its printouts

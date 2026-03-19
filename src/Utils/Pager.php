@@ -127,7 +127,7 @@ class Pager {
 	 *
 	 * @return string
 	 */
-	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ) {
+	public static function getPagingLinks( Title $title, $limit, $offset, $count = 0, array $query = [], $prefix = '' ): string {
 		$list = [];
 		$limit = (int)$limit;
 		$offset = (int)$offset;

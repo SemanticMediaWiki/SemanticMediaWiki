@@ -125,7 +125,7 @@ class ScoreSet {
 	 *
 	 * @return string
 	 */
-	public function asTable( $class = '' ) {
+	public function asTable( $class = '' ): string {
 		if ( $this->scores === [] ) {
 			return '';
 		}

@@ -120,7 +120,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return string
 	 */
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$subDescription = $this->description;
 
 		// Use the canonical label to ensure that conditions contain

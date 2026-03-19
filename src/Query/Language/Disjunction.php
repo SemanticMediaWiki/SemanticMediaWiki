@@ -126,7 +126,7 @@ class Disjunction extends Description {
 		$description->setPrintRequests( [] );
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		if ( $this->isTrue ) {
 			return '+';
 		}

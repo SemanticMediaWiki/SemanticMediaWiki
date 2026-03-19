@@ -187,7 +187,7 @@ class InfoLinksProvider {
 	 *
 	 * @return string
 	 */
-	public function getInfolinkText( $outputformat, $linker = null ) {
+	public function getInfolinkText( $outputformat, $linker = null ): string {
 		$result = '';
 		$first = true;
 		$extralinks = [];

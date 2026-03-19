@@ -132,7 +132,7 @@ class ParametersWidget {
 	 *
 	 * @return string
 	 */
-	public static function parameterList( array $values ) {
+	public static function parameterList( array $values ): string {
 		$format = 'broadtable';
 
 		if ( isset( $values['format'] ) ) {

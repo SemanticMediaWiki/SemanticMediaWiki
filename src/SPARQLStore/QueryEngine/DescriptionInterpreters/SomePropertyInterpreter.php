@@ -205,7 +205,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return [ $subjectName, $objectName, $nonInverseProperty ];
 	}
 
-	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ) {
+	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ): string {
 		$condition = "$subjectName $propertyName $objectName .\n";
 
 		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();

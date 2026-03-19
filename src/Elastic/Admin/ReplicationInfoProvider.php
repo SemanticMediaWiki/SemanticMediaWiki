@@ -151,7 +151,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function buildFromFile( $title ) {
+	private function buildFromFile( $title ): string {
 		$response = '';
 
 		$key = $this->entityCache->makeCacheKey(
@@ -193,7 +193,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		) . "&nbsp;($response)";
 	}
 
-	private function error( $error ) {
+	private function error( $error ): string {
 		return Html::rawElement(
 			'span',
 			[

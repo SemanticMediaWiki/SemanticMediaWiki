@@ -41,7 +41,7 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ) {
+	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ): string {
 		if ( $visibleLinks === [] ) {
 			return '';
 		}

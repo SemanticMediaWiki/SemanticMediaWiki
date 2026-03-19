@@ -76,7 +76,7 @@ class Concept extends DataItem {
 		return $this->m_docu;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return serialize( $this );
 	}
 

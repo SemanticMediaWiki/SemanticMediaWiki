@@ -105,7 +105,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 		return [ $condition, $namespaces ];
 	}
 
-	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ) {
+	private function tryToAddClassHierarchyPattern( $category, $depth, &$categoryExpName ): string {
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBC ) || ( $depth !== null && $depth < 1 ) ) {
 			return '';
 		}

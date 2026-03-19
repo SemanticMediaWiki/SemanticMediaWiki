@@ -503,7 +503,7 @@ class Query implements QueryContext {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		// Only use elements that directly influence the result list
 		$serialized = [];
 
@@ -550,7 +550,7 @@ class Query implements QueryContext {
 	 *
 	 * @return string
 	 */
-	public function getQueryId() {
+	public function getQueryId(): string {
 		return self::ID_PREFIX . $this->getHash();
 	}
 

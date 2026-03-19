@@ -31,7 +31,7 @@ class ParameterListDocBuilder {
 	 *
 	 * @return string
 	 */
-	public function getParameterTable( array $paramDefinitions ) {
+	public function getParameterTable( array $paramDefinitions ): string {
 		$tableRows = [];
 		$hasAliases = $this->containsAliases( $paramDefinitions );
 
@@ -81,7 +81,7 @@ class ParameterListDocBuilder {
 	 *
 	 * @return string
 	 */
-	private function getDescriptionRow( ParamDefinition $parameter, $hasAliases ) {
+	private function getDescriptionRow( ParamDefinition $parameter, $hasAliases ): string {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : ' -';

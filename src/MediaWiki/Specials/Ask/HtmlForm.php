@@ -150,7 +150,7 @@ class HtmlForm {
 		return Html::rawElement( 'form', $params, $html );
 	}
 
-	private function buildHTML( $urlArgs, $queryResult, array $queryLog ) {
+	private function buildHTML( $urlArgs, $queryResult, array $queryLog ): string {
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;
@@ -318,7 +318,7 @@ class HtmlForm {
 		return $html;
 	}
 
-	private function editElements( $urlArgs ) {
+	private function editElements( $urlArgs ): string {
 		$html = '';
 
 		$html .= Html::hidden( 'title', $this->title->getPrefixedDBKey() );

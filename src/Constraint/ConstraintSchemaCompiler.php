@@ -31,7 +31,7 @@ class ConstraintSchemaCompiler {
 	 *
 	 * @return string
 	 */
-	public function prettify( array $constraintSchema ) {
+	public function prettify( array $constraintSchema ): string {
 		if ( $constraintSchema === [] ) {
 			return '';
 		}

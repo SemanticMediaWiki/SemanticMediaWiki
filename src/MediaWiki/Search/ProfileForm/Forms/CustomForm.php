@@ -76,7 +76,7 @@ class CustomForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition ) {
+	public function makeFields( $definition ): string {
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];

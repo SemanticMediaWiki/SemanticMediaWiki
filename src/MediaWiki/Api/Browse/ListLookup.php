@@ -33,7 +33,7 @@ class ListLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'ListLookup:' . self::VERSION;
 	}
 

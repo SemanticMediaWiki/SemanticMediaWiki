@@ -86,7 +86,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return true;
 	}
 
-	private function search_sheet() {
+	private function search_sheet(): string {
 		$text = $this->element( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );
 

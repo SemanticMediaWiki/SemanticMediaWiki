@@ -84,7 +84,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return string
 	 */
-	public static function getSQLConditions( Store $store, ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public static function getSQLConditions( Store $store, ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ): string {
 		$sqlConds = '';
 
 		if ( $requestOptions === null ) {

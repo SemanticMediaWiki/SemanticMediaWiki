@@ -304,7 +304,7 @@ class ConceptCacheRebuilder {
 		echo "\n";
 	}
 
-	private function getCacheDateInfo( $date ) {
+	private function getCacheDateInfo( $date ): string {
 		return date( 'Y-m-d H:i:s', $date ) . ' (' . floor( ( strtotime( 'now' ) - $date ) / 60 ) . ' minutes old)';
 	}
 

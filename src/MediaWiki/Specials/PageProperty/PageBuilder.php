@@ -40,7 +40,7 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( $count = 0 ) {
+	public function buildForm( $count = 0 ): string {
 		$html = Html::rawElement(
 			'p',
 			[

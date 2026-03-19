@@ -90,7 +90,7 @@ class SortWidget {
 		);
 	}
 
-	private static function sortingOptions( array $sorts, array $orders ) {
+	private static function sortingOptions( array $sorts, array $orders ): string {
 		$result = '';
 
 		foreach ( $orders as $i => $order ) {

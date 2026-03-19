@@ -17,7 +17,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function rawUrlEncode( Query $query ) {
+	public static function rawUrlEncode( Query $query ): string {
 		return rawurlencode( self::toString( $query ) );
 	}
 

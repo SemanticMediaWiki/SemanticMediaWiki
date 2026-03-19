@@ -198,7 +198,7 @@ class ImportValue extends DataValue {
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		return htmlspecialchars( $this->qname );
 	}
 
@@ -257,11 +257,11 @@ class ImportValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getImportReference() {
+	public function getImportReference(): string {
 		return $this->namespace . ':' . $this->term . '|' . $this->uri;
 	}
 
-	private function createCaption( $namespace, $qname, $uri, $declarativeName ) {
+	private function createCaption( $namespace, $qname, $uri, $declarativeName ): string {
 		return "[[MediaWiki:" . self::IMPORT_PREFIX . $namespace . "|" . $qname . "]] " . Message::get( [ 'parentheses', "[$uri $namespace] | " . $declarativeName ], Message::TEXT );
 	}
 

@@ -679,7 +679,7 @@ class Hooks {
 		return true;
 	}
 
-	private function getETag( $parserCache, $page, $pOpts ) {
+	private function getETag( $parserCache, $page, $pOpts ): string {
 		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
 			"--" . $page->getTouched() . '"';
 	}

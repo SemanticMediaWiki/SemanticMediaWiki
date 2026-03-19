@@ -70,7 +70,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 		return $this->doFormatFinalOutputFor( $type, $linker );
 	}
 
-	private function doFormatFinalOutputFor( $type, $linker ) {
+	private function doFormatFinalOutputFor( $type, $linker ): string {
 		$text = '';
 		$languagecode = '';
 

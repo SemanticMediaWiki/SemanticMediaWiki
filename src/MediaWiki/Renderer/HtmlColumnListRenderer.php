@@ -236,7 +236,7 @@ class HtmlColumnListRenderer {
 		);
 	}
 
-	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ) {
+	private function makeList( $key, $listContinuesAbbrev, $items, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';

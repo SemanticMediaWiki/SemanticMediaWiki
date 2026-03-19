@@ -133,7 +133,7 @@ class ItemListBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
+	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ): string {
 		$subjectList = $this->store->getPropertySubjects(
 			$property,
 			$dataItem,
@@ -198,7 +198,7 @@ class ItemListBuilder {
 		};
 	}
 
-	private function msg( $key, $type = Message::TEXT ) {
+	private function msg( $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, $this->languageCode );
 	}
 }

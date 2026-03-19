@@ -78,7 +78,7 @@ class ListResultBuilder {
 	/**
 	 * @return string
 	 */
-	public function getResultText() {
+	public function getResultText(): string {
 		$this->prepareBuilt();
 
 		return $this->getTemplateCall( 'introtemplate' ) .
@@ -160,7 +160,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function replaceVariables( $subject ) {
+	private function replaceVariables( $subject ): string {
 		return str_replace( [ '$START$', '$CLASS$' ], [ htmlspecialchars( $this->get( 'offset' ) + 1 ), htmlspecialchars( $this->get( 'class' ) ) ], $subject );
 	}
 

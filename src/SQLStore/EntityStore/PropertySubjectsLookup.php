@@ -383,7 +383,7 @@ class PropertySubjectsLookup {
 		}
 	}
 
-	private function getIndexHint( $dataItemHandler, $pid, $dataItem = null ) {
+	private function getIndexHint( $dataItemHandler, $pid, $dataItem = null ): string {
 		$index = '';
 
 		if ( $dataItem !== null || $dataItemHandler->getIndexHint( $dataItemHandler::IHINT_PSUBJECTS ) === '' ) {

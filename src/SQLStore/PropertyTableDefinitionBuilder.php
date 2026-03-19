@@ -133,7 +133,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public static function makeTableName( $tableName ) {
+	public static function makeTableName( $tableName ): string {
 		return self::PROPERTY_TABLE_PREFIX . strtolower( $tableName );
 	}
 
@@ -145,7 +145,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return string
 	 */
-	public function createHashedTableNameFrom( $tableName ) {
+	public function createHashedTableNameFrom( $tableName ): string {
 		return self::PROPERTY_TABLE_PREFIX . '_' . substr( base_convert( md5( $tableName ), 16, 32 ), 0, 12 );
 	}
 

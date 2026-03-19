@@ -23,7 +23,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string {
 		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
 
 		$fieldTypes = [
@@ -368,7 +368,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function getCumulatedIndexName( $tableName, $columns ) {
+	private function getCumulatedIndexName( $tableName, $columns ): string {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
 		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );

@@ -217,7 +217,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return string
 	 */
-	private function getDebugQueryResult( Query $query, $rootid ) {
+	private function getDebugQueryResult( Query $query, $rootid ): string {
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 

@@ -154,7 +154,7 @@ class JsonContentsFileReader {
 		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
-	private function getLanguageFile( $languageCode ) {
+	private function getLanguageFile( $languageCode ): string {
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {

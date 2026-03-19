@@ -49,7 +49,7 @@ class TableSchemaManager {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {

@@ -88,7 +88,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return string
 	 */
-	public function findPropertyLabelById( $id ) {
+	public function findPropertyLabelById( $id ): string {
 		if ( array_key_exists( $id, $this->languageDependentPropertyLabels ) ) {
 			return $this->languageDependentPropertyLabels[$id];
 		}

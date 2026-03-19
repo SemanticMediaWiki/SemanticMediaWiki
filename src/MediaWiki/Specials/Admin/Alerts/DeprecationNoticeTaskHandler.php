@@ -210,7 +210,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function createItems( $message, $values ) {
+	private function createItems( $message, $values ): string {
 		$list = [];
 
 		if ( !is_array( $values ) ) {

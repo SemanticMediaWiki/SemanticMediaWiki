@@ -268,7 +268,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return string
 	 */
-	public function getCalendarModelLiteral() {
+	public function getCalendarModelLiteral(): string {
 		$literal = [
 			self::CM_GREGORIAN => '',
 			self::CM_JULIAN    => 'JL'
@@ -443,7 +443,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return string
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		$result = strval( $this->m_model ) . '/' . ( $this->era > 0 ? '+' : '' ) . strval( $this->m_year );
 
 		if ( $this->m_precision >= self::PREC_YM ) {

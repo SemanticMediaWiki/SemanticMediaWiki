@@ -62,7 +62,7 @@ class FileFetcher {
 	 *
 	 * @return string
 	 */
-	public static function normalize( $file ) {
+	public static function normalize( $file ): string {
 		return str_replace( [ '\\', '//', '/', '\\\\' ], DIRECTORY_SEPARATOR, $file );
 	}
 

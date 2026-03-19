@@ -30,7 +30,7 @@ class TemplateSet {
 	 *
 	 * @return string
 	 */
-	public function text() {
+	public function text(): string {
 		$text = '';
 
 		foreach ( $this->templates as $template ) {

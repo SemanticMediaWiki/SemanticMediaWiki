@@ -143,7 +143,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getSha1() {
+	public function getSha1(): string {
 		return sha1( json_encode( [ $this->m_dbkey, $this->m_namespace, $this->m_interwiki, $this->m_subobjectname ] ) );
 	}
 
@@ -262,7 +262,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		$segments = [
 			$this->m_dbkey,
 			$this->m_namespace,

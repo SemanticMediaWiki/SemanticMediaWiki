@@ -67,7 +67,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return $this->params['type'] === 'atom' ? 'application/atom+xml' : 'application/rss+xml';
 	}
 

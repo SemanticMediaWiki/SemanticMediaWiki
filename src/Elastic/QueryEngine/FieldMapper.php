@@ -53,7 +53,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public static function getFieldType( DIProperty $property ) {
+	public static function getFieldType( DIProperty $property ): string {
 		return str_replace( [ '_' ], [ '' ], DataTypeRegistry::getInstance()->getFieldType( $property->findPropertyValueType() ) );
 	}
 
@@ -65,7 +65,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public static function getField( DIProperty $property, $affix = 'Field' ) {
+	public static function getField( DIProperty $property, $affix = 'Field' ): string {
 		return self::getFieldType( $property ) . $affix;
 	}
 

@@ -109,7 +109,7 @@ class ClassDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		$hash = [];
 
 		foreach ( $this->m_diWikiPages as $subject ) {
@@ -129,7 +129,7 @@ class ClassDescription extends Description {
 		return $this->m_diWikiPages;
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$first = true;
 		$namespaceText = Localizer::getInstance()->getNsText( NS_CATEGORY );
 

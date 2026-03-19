@@ -357,7 +357,7 @@ class SearchTableRebuilder {
 		}
 	}
 
-	private function getIndexableTextFromRow( $searchTable, $row ) {
+	private function getIndexableTextFromRow( $searchTable, $row ): string {
 		$indexableText = '';
 
 		// Page, Uri, or blob?

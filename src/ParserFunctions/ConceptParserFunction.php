@@ -119,7 +119,7 @@ class ConceptParserFunction {
 		return $this->createHtml( $title, $conceptQueryString, $conceptDocu );
 	}
 
-	private function createHtml( Title $title, $queryString, $documentation ) {
+	private function createHtml( Title $title, $queryString, $documentation ): string {
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {

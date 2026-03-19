@@ -182,7 +182,7 @@ class TreeBuilder {
 		}
 	}
 
-	public function getTree() {
+	public function getTree(): string {
 		$text = '';
 
 		if ( $this->nodes === [] || $this->nodes === null ) {

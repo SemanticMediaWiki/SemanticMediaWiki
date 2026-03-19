@@ -125,7 +125,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getNextVariable( $prefix = 'v' ) {
+	public function getNextVariable( $prefix = 'v' ): string {
 		return $prefix . ( ++$this->variableCounter );
 	}
 

@@ -75,7 +75,7 @@ class Container extends DataItem {
 		);
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return serialize( $this->m_semanticData );
 	}
 
@@ -84,7 +84,7 @@ class Container extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		$hash = $this->getValueHash( $this->m_semanticData );
 		sort( $hash );
 

@@ -225,7 +225,7 @@ class HtmlColumns {
 	 *
 	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$result = '';
 		$usedColumnCloser = false;
 		$this->numRows = 0;
@@ -283,7 +283,7 @@ class HtmlColumns {
 		);
 	}
 
-	private function makeList( $key, $items, $rowsPerColumn, &$usedColumnCloser ) {
+	private function makeList( $key, $items, $rowsPerColumn, &$usedColumnCloser ): string {
 		$result = '';
 		$previousKey = "";
 		$dir = $this->isRTL ? 'rtl' : 'ltr';

@@ -28,7 +28,7 @@ class PValueLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
 	}
 

@@ -382,7 +382,7 @@ class SpecificationLookup {
 		return $text;
 	}
 
-	private function getPredefinedPropertyDescription( $property, $languageCode, $linker ) {
+	private function getPredefinedPropertyDescription( $property, $languageCode, $linker ): string {
 		$description = '';
 		$key = $property->getKey();
 

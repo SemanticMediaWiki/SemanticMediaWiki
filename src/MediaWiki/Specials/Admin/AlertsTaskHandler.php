@@ -55,7 +55,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = '';
 		$tabs = [];
 

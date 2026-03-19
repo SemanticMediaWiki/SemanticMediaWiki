@@ -63,7 +63,7 @@ class CacheFactory {
 	 *
 	 * @return string
 	 */
-	public static function getPurgeCacheKey( $key ) {
+	public static function getPurgeCacheKey( $key ): string {
 		if ( $key instanceof Title ) {
 			$key = $key->getArticleID();
 		}

@@ -218,7 +218,7 @@ class PropertyLabelSimilarityLookup {
 		return false;
 	}
 
-	private function getHash( DIProperty $first, DIProperty $second ) {
+	private function getHash( DIProperty $first, DIProperty $second ): string {
 		$hashing = [];
 		$hashing[] = $first->getKey();
 		$hashing[] = $second->getKey();

@@ -27,7 +27,7 @@ class Task extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey( $key ) {
+	public static function makeCacheKey( $key ): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, [ $key ] );
 	}
 
@@ -180,7 +180,7 @@ class Task extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __CLASS__ . ':' . SMW_VERSION;
 	}
 

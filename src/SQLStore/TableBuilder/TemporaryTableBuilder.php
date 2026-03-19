@@ -83,7 +83,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @return string
 	 */
-	private function getSQLCodeFor( $tableName ) {
+	private function getSQLCodeFor( $tableName ): string {
 		// PostgreSQL: no memory tables, use RULE to emulate INSERT IGNORE
 		if ( $this->connection->isType( 'postgres' ) ) {
 

@@ -60,7 +60,7 @@ class MaintenanceHelper {
 	 *
 	 * @return string
 	 */
-	public function getFormattedRuntimeValues( $indent = '' ) {
+	public function getFormattedRuntimeValues( $indent = '' ): string {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$output = '';
 

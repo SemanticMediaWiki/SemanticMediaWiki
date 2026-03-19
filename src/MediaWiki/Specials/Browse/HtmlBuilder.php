@@ -217,7 +217,7 @@ class HtmlBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML() {
+	public function buildHTML(): string {
 		if ( ( $offset = $this->getOption( 'offset' ) ) ) {
 			$this->offset = $offset;
 		}

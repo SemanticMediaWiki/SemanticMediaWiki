@@ -41,7 +41,7 @@ function smwfContLang(): LocalLanguage {
  *
  * @param string $text
  */
-function smwfNormalTitleDBKey( $text ) {
+function smwfNormalTitleDBKey( $text ): string {
 	global $wgCapitalLinks;
 
 	$text = trim( $text );
@@ -66,7 +66,7 @@ function smwfNormalTitleText( $text ) {
  *
  * @param string|null $text
  */
-function smwfXMLContentEncode( ?string $text ) {
+function smwfXMLContentEncode( ?string $text ): string {
 	return str_replace( [ '&', '<', '>' ], [ '&amp;', '&lt;', '&gt;' ], Sanitizer::decodeCharReferences( $text ?? '' ) );
 }
 
@@ -76,7 +76,7 @@ function smwfXMLContentEncode( ?string $text ) {
  *
  * @param string|null $text
  */
-function smwfHTMLtoUTF8( ?string $text ) {
+function smwfHTMLtoUTF8( ?string $text ): string {
 	return Sanitizer::decodeCharReferences( $text ?? '' );
 }
 
@@ -166,7 +166,7 @@ function &smwfGetStore() {
  *
  * @return string
  */
-function smwfCacheKey( $namespace, $key ) {
+function smwfCacheKey( $namespace, $key ): string {
 	$cachePrefix = $GLOBALS['wgCachePrefix'] === false ?
 		WikiMap::getCurrentWikiId() : $GLOBALS['wgCachePrefix'];
 

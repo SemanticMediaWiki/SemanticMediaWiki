@@ -186,7 +186,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 		);
 	}
 
-	private function outputJobStatistics() {
+	private function outputJobStatistics(): string {
 		return Html::rawElement( 'p', [ 'class' => 'plainlinks' ], $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) ) . Html::rawElement(
 			'div',
 			[

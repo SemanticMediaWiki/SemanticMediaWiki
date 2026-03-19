@@ -127,7 +127,7 @@ class ValueListBuilder {
 	 *
 	 * @return string
 	 */
-	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ) {
+	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
 		$from = isset( $query['from'] ) ? $query['from'] : 0;
@@ -249,7 +249,7 @@ class ValueListBuilder {
 		);
 	}
 
-	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ) {
+	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}

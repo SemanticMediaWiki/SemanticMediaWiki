@@ -158,7 +158,7 @@ final class QueryPrinterFactory {
 	 * @return string
 	 * @throws ResultFormatNotFoundException
 	 */
-	private function getPrinterClass( $formatName ) {
+	private function getPrinterClass( $formatName ): string {
 		$formatName = $this->getCanonicalName( $formatName );
 
 		if ( !array_key_exists( $formatName, $this->formats ) ) {
@@ -178,7 +178,7 @@ final class QueryPrinterFactory {
 	 * @return string
 	 * @throws InvalidArgumentException
 	 */
-	public function getCanonicalName( $formatName ) {
+	public function getCanonicalName( $formatName ): string {
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}

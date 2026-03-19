@@ -86,7 +86,7 @@ class AutoRecovery {
 	 *
 	 * @return string
 	 */
-	public function getFile() {
+	public function getFile(): string {
 		return $this->dir . "/" . SetupFile::FILE_NAME;
 	}
 

@@ -704,7 +704,7 @@ class EntityIdManager {
 	 *
 	 * @return string
 	 */
-	public function getPropertyInterwiki( DIProperty $property ) {
+	public function getPropertyInterwiki( DIProperty $property ): string {
 		return ( $property->getLabel() !== '' ) ? '' : SMW_SQL3_SMWINTDEFIW;
 	}
 
@@ -940,7 +940,7 @@ class EntityIdManager {
 	 *
 	 * @return string
 	 */
-	public function computeSha1( $args = '' ) {
+	public function computeSha1( $args = '' ): string {
 		return IdCacheManager::computeSha1( $args );
 	}
 

@@ -82,7 +82,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 */
-	public function getShortWikiText( $linker = null ) {
+	public function getShortWikiText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getShortWikiText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -93,7 +93,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getLongWikiText
 	 */
-	public function getLongWikiText( $linker = null ) {
+	public function getLongWikiText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getLongWikiText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -104,7 +104,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getShortHTMLText
 	 */
-	public function getShortHTMLText( $linker = null ) {
+	public function getShortHTMLText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getShortHTMLText( $linker ) . $this->doHintPropertyChainMembers();
 		}
@@ -115,7 +115,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getLongHTMLText
 	 */
-	public function getLongHTMLText( $linker = null ) {
+	public function getLongHTMLText( $linker = null ): string {
 		if ( $this->lastPropertyChainValue !== null ) {
 			return $this->lastPropertyChainValue->getLongHTMLText( $linker ) . $this->doHintPropertyChainMembers();
 		}

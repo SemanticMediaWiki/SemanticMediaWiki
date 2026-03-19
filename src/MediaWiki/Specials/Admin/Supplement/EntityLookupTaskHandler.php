@@ -141,7 +141,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		$manualEntryLogger->log( 'admin', $this->user, 'Special:SMWAdmin', 'Forced removal of ID ' . $id );
 	}
 
-	private function getForm( $webRequest, $id ) {
+	private function getForm( $webRequest, $id ): string {
 		[ $result, $error ] = $this->createInfoMessageById( $webRequest, $id );
 
 		if ( $id < 1 ) {

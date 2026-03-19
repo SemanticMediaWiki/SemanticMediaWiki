@@ -89,7 +89,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 		return 'smw_group/maintenance';
 	}
 
-	private function buildHTML( $count, $contents ) {
+	private function buildHTML( $count, $contents ): string {
 		$htmlColumns = new HtmlColumns();
 		$htmlColumns->setContents( $contents, HtmlColumns::INDEXED_LIST );
 

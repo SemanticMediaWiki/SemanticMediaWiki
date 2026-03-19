@@ -443,7 +443,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		);
 	}
 
-	private function getHashFrom( $subject ) {
+	private function getHashFrom( $subject ): string {
 		if ( $subject instanceof WikiPage ) {
 			// In case the we detect a _QUERY subobject, use it directly
 			if ( ( $subobjectName = $subject->getSubobjectName() ) !== '' && strpos( $subobjectName, Query::ID_PREFIX ) !== false ) {
@@ -464,7 +464,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$this->logger->info( $message, $context );
 	}
 
-	private function noCacheExemption( $query ) {
+	private function noCacheExemption( $query ): string {
 		$id = 'noCache.misc';
 
 		if ( !$this->canUse( $query ) ) {

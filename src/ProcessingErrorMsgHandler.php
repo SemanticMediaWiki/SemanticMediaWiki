@@ -111,7 +111,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return string
 	 */
-	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
+	public static function getMessagesAsString( array $messages, $type = null, $language = null ): string {
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = [];
 

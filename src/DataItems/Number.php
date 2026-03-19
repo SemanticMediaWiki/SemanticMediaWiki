@@ -47,7 +47,7 @@ class Number extends DataItem {
 		return $this;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return strval( $this->m_number );
 	}
 

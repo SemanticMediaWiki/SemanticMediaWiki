@@ -130,7 +130,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return string
 	 */
-	public function getText( $text, ?Schema $schema = null, array $errors = [] ) {
+	public function getText( $text, ?Schema $schema = null, array $errors = [] ): string {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		// 'footer' => [ $schema ]
@@ -361,7 +361,7 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_unknown_type', $params );
 	}
 
-	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $key, $type, $lang );
 	}
 

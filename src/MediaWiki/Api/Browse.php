@@ -364,7 +364,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __CLASS__ . ':' . SMW_VERSION;
 	}
 

@@ -105,7 +105,8 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::createIndex
 	 */
-	public function createIndex( $type ) {
+	public function createIndex( $type ): string {
+		return '';
 	}
 
 	/**

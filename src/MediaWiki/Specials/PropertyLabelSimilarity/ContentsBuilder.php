@@ -30,7 +30,7 @@ class ContentsBuilder {
 	 *
 	 * @param RequestOptions $requestOptions
 	 */
-	public function getHtml( RequestOptions $requestOptions ) {
+	public function getHtml( RequestOptions $requestOptions ): string {
 		$threshold = 90;
 		$type = '';
 
@@ -71,7 +71,7 @@ class ContentsBuilder {
 		return $html;
 	}
 
-	private function getForm( $limit, $offset, $resultCount, $threshold, $type ) {
+	private function getForm( $limit, $offset, $resultCount, $threshold, $type ): string {
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
 		$lookupCount = $this->propertyLabelSimilarityLookup->getLookupCount();
 
@@ -122,7 +122,7 @@ class ContentsBuilder {
 		return Html::rawElement( 'div', [ 'class' => 'plainlinks' ], $html ) . Html::element( 'p', [], '' );
 	}
 
-	private function msg( $parameters, $type = Message::TEXT ) {
+	private function msg( $parameters, $type = Message::TEXT ): string {
 		return Message::get( $parameters, $type, Message::USER_LANGUAGE );
 	}
 

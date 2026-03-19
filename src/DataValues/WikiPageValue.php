@@ -484,7 +484,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		if ( $this->getOption( self::SHORT_FORM, false ) ) {
 			$text = $this->getText();
 		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {

@@ -99,7 +99,7 @@ class Timer {
 	 *
 	 * @return string
 	 */
-	public static function getElapsedTimeAsLoggableMessage( $name, $round = null ) {
+	public static function getElapsedTimeAsLoggableMessage( $name, $round = null ): string {
 		return $name . ' (procTime in sec: ' . self::getElapsedTime( $name, $round ) . ')';
 	}
 

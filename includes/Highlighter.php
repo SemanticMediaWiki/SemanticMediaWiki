@@ -128,7 +128,7 @@ class Highlighter {
 	 *
 	 * @return string
 	 */
-	public static function decode( $text ) {
+	public static function decode( $text ): string {
 		// #2347, '[' is handled by the MediaWiki parser/sanitizer itself
 		return str_replace(
 			[ '&amp;', '&lt;', '&gt;', '&#160;', '<nowiki>', '</nowiki>' ],
@@ -364,7 +364,7 @@ class Highlighter {
 		return $settings;
 	}
 
-	private function title( $content, $language ) {
+	private function title( $content, $language ): string {
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
 		$content = $content ?? '';

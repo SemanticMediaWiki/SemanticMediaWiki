@@ -314,7 +314,7 @@ class ProfileForm {
 		];
 	}
 
-	private function findErrors( $searchEngine ) {
+	private function findErrors( $searchEngine ): string {
 		if ( ( $errors = $searchEngine->getErrors() ) === [] ) {
 			return '';
 		}
@@ -354,7 +354,7 @@ class ProfileForm {
 		return $form;
 	}
 
-	private function profile_sheet( $query, $queryLink, $termPrefixes ) {
+	private function profile_sheet( $query, $queryLink, $termPrefixes ): string {
 		$text = Message::get( 'smw-search-profile-extended-help-intro', Message::PARSE, Message::USER_LANGUAGE );
 
 		$link = $queryLink !== null ? $queryLink->getHtml() : '';
@@ -439,7 +439,7 @@ class ProfileForm {
 		);
 	}
 
-	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $msg, $type, $lang );
 	}
 

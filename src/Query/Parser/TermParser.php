@@ -158,7 +158,7 @@ class TermParser {
 		return self::$cache[$hash];
 	}
 
-	private function close( &$custom, $prefix ) {
+	private function close( &$custom, $prefix ): string {
 		// Standard closing
 		if ( $custom === '' ) {
 			return "]]";

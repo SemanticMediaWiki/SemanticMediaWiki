@@ -173,7 +173,7 @@ class SMWPageLister {
 	 * @param $cutoff integer, use columns for more results than that
 	 * @return string
 	 */
-	public function formatList( $cutoff = 6 ) {
+	public function formatList( $cutoff = 6 ): string {
 		$end = count( $this->mDiWikiPages );
 		$start = 0;
 		if ( $end > $this->mLimit ) {
@@ -204,7 +204,7 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
+	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -286,7 +286,7 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
+	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}

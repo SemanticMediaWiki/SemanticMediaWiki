@@ -183,7 +183,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function like( $k, $v ) {
+	public function like( $k, $v ): string {
 		return "$k LIKE " . $this->connection->addQuotes( $v );
 	}
 
@@ -195,7 +195,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function in( $k, array $v ) {
+	public function in( $k, array $v ): string {
 		return "$k IN (" . $this->connection->makeList( $v ) . ')';
 	}
 
@@ -207,7 +207,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function eq( $k, $v ) {
+	public function eq( $k, $v ): string {
 		return "$k=" . $this->connection->addQuotes( $v );
 	}
 
@@ -219,7 +219,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function neq( $k, $v ) {
+	public function neq( $k, $v ): string {
 		return "$k!=" . $this->connection->addQuotes( $v );
 	}
 
@@ -314,7 +314,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function getSQL() {
+	public function getSQL(): string {
 		return $this->sql();
 	}
 
@@ -323,7 +323,7 @@ class Query {
 	 *
 	 * @return string
 	 */
-	public function build() {
+	public function build(): string {
 		$statement = $this->sql();
 
 		$this->type = '';
@@ -349,7 +349,7 @@ class Query {
 		return $this->connection->readQuery( $this, $fname );
 	}
 
-	private function sql() {
+	private function sql(): string {
 		$i = 0;
 		$sql = "";
 		$fields = [];

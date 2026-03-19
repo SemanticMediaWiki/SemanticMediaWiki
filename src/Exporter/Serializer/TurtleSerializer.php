@@ -298,7 +298,7 @@ class TurtleSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	public static function getTurtleNameForExpElement( ExpElement $expElement ) {
+	public static function getTurtleNameForExpElement( ExpElement $expElement ): string {
 		if ( $expElement instanceof ExpResource ) {
 			if ( $expElement->isBlankNode() ) {
 				return '[]';
@@ -323,7 +323,7 @@ class TurtleSerializer extends Serializer {
 		throw new InvalidArgumentException( 'The method can only serialize atomic elements of type ExpResource or ExpLiteral.' );
 	}
 
-	private static function getCorrectLexicalForm( $expElement ) {
+	private static function getCorrectLexicalForm( $expElement ): string {
 		$lexicalForm = str_replace( [ '\\', "\n", '"' ], [ '\\\\', "\\n", '\"' ], $expElement->getLexicalForm() );
 
 		if ( $expElement->getLang() !== '' && ( $expElement->getDatatype() === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString' ) ) {

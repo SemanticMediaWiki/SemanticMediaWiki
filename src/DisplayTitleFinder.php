@@ -194,7 +194,7 @@ class DisplayTitleFinder {
 	 *
 	 * @return string
 	 */
-	public function findDisplayTitle( DIWikiPage $subject ) {
+	public function findDisplayTitle( DIWikiPage $subject ): string {
 		if ( $this->canUse === false ) {
 			return '';
 		}

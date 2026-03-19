@@ -81,7 +81,7 @@ class StringCondition {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return $this->string . '#' . (string)$this->condition . '#' . (string)$this->isOr . '#' . (string)$this->isNot;
 	}
 

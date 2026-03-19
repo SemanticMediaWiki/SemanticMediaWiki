@@ -307,7 +307,7 @@ class Settings extends Options {
 	 * @return mixed
 	 * @throws RuntimeException
 	 */
-	public function mung( string $key, $mung ) {
+	public function mung( string $key, $mung ): string {
 		if ( is_string( $mung ) ) {
 			return (string)$this->get( $key ) . $mung;
 		}

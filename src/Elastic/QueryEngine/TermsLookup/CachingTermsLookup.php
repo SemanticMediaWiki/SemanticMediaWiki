@@ -45,7 +45,7 @@ class CachingTermsLookup extends TermsLookup {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey() {
+	public static function makeCacheKey(): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, func_get_args() );
 	}
 

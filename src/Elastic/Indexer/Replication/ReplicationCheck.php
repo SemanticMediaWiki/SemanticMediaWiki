@@ -241,7 +241,7 @@ class ReplicationCheck {
 		return $this->wrapHTML( $html );
 	}
 
-	private function buildHTML( ReplicationError $error, $title_text ) {
+	private function buildHTML( ReplicationError $error, $title_text ): string {
 		$this->errorTitle = 'smw-es-replication-error';
 
 		if ( $error->is( ReplicationError::TYPE_EXCEPTION ) ) {
@@ -259,7 +259,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function connectionError() {
+	private function connectionError(): string {
 		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
@@ -286,7 +286,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function maintenanceError() {
+	private function maintenanceError(): string {
 		$html = '';
 
 		$this->errorTitle = 'smw-es-replication-error';
@@ -313,7 +313,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function exceptionError( ReplicationError $error ) {
+	private function exceptionError( ReplicationError $error ): string {
 		$html = '';
 
 		if ( $error->get( 'exception_error' ) === 'BadRequest400Exception' ) {
@@ -346,7 +346,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function modificationDateDiffError( ReplicationError $error, $title_text ) {
+	private function modificationDateDiffError( ReplicationError $error, $title_text ): string {
 		$html = '';
 
 		$this->templateEngine->compile(
@@ -384,7 +384,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function associatedRevisionDiffError( ReplicationError $error, $title_text ) {
+	private function associatedRevisionDiffError( ReplicationError $error, $title_text ): string {
 		$html = '';
 
 		$this->severityType = self::SEVERITY_TYPE_WARNING;
@@ -425,7 +425,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function missingDocumentError( ReplicationError $error, $title_text ) {
+	private function missingDocumentError( ReplicationError $error, $title_text ): string {
 		$html = '';
 
 		$this->severityType = self::SEVERITY_TYPE_ERROR;
@@ -451,7 +451,7 @@ class ReplicationCheck {
 		return $html;
 	}
 
-	private function fileAttachmentError( ReplicationError $error, $title_text ) {
+	private function fileAttachmentError( ReplicationError $error, $title_text ): string {
 		$html = '';
 		$this->severityType = self::SEVERITY_TYPE_WARNING;
 

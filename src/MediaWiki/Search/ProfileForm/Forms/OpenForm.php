@@ -60,7 +60,7 @@ class OpenForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition = [] ) {
+	public function makeFields( $definition = [] ): string {
 		$this->parameters = [];
 
 		$group = '';

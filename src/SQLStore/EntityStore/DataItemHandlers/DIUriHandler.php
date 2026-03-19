@@ -161,7 +161,7 @@ class DIUriHandler extends DataItemHandler {
 		return $length;
 	}
 
-	private function getCharFieldType() {
+	private function getCharFieldType(): string {
 		$fieldType = FieldType::FIELD_TITLE;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_NOCASE ) ) {

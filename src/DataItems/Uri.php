@@ -69,7 +69,7 @@ class Uri extends DataItem {
 	}
 
 	/// @todo This should be changed to the spelling getUri().
-	public function getURI() {
+	public function getURI(): string {
 		$schemesWithDoubleslesh = [
 			'http', 'https', 'ftp'
 		];
@@ -108,11 +108,11 @@ class Uri extends DataItem {
 	 *
 	 * @return string
 	 */
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return urldecode( $this->getURI() );
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return $this->getURI();
 	}
 

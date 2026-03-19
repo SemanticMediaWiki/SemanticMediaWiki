@@ -74,7 +74,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getResultText( QueryResult $queryResult, $outputMode ) {
+	protected function getResultText( QueryResult $queryResult, $outputMode ): string {
 		/**
 		 * @see ResultPrinter::transcludeAnnotation
 		 *
@@ -93,7 +93,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return $this->buildText( $queryResult, $outputMode );
 	}
 
-	private function buildText( $queryResult, $outputMode ) {
+	private function buildText( $queryResult, $outputMode ): string {
 		// REMOVE the parser reference
 		// Use $queryResult->getQuery()->getContextPage()
 		// No page should embed itself, find out who we are:

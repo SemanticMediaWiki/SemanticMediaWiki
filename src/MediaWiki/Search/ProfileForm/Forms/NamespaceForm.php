@@ -115,7 +115,7 @@ class NamespaceForm {
 	 *
 	 * @return string
 	 */
-	public function makeFields() {
+	public function makeFields(): string {
 		$divider = "<div class='divider'></div>";
 		$rows = [];
 		$tableRows = [];

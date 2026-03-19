@@ -318,7 +318,7 @@ class RDFXMLSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	protected function makeValueEntityString( $string ) {
+	protected function makeValueEntityString( $string ): string {
 		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 
