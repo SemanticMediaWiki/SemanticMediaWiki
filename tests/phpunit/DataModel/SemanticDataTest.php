@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\DataModel;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
@@ -9,18 +9,18 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
-use SMW\Subobject;
 use stdClass;
 
 /**
- * @covers \SMW\SemanticData
+ * @covers \SMW\DataModel\SemanticData
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

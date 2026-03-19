@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Exception;
 use SMW\Services\ServicesFactory;
 
 /**

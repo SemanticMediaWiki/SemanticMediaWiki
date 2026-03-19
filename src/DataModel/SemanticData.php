@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataModel;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
@@ -8,13 +8,12 @@ use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DataModel\ContainerSemanticData;
-use SMW\DataModel\SequenceMap;
-use SMW\DataModel\SubSemanticData;
+use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Class for representing chunks of semantic data for one given

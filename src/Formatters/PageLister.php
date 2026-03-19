@@ -1,18 +1,21 @@
 <?php
 
-namespace SMW;
+namespace SMW\Formatters;
 
 use Iterator;
 use MediaWiki\Title\Title;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
 use SMW\Query\Query;
+use SMW\RequestOptions;
+use SMW\StoreFactory;
 
 /**
  * Helper class to generate HTML lists of wiki pages, with support for paged

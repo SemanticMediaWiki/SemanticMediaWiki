@@ -1,16 +1,16 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Exception\ResultFormatNotFoundException;
+use SMW\Query\QueryPrinterFactory;
 use SMW\Query\ResultPrinter;
 use SMW\Query\ResultPrinters\ListResultPrinter;
-use SMW\QueryPrinterFactory;
 use SMW\TableResultPrinter;
 
 /**
- * @covers \SMW\QueryPrinterFactory
+ * @covers \SMW\Query\QueryPrinterFactory
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

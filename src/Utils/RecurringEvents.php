@@ -1,8 +1,9 @@
 <?php
 
-namespace SMW;
+namespace SMW\Utils;
 
 use SMW\DataItems\Time;
+use SMW\DataValueFactory;
 use SMW\Localizer\Message;
 
 /**

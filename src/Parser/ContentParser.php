@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Parser;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;

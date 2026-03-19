@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki;
 
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\Parser;

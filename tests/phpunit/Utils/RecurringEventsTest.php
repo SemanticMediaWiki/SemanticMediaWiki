@@ -1,13 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Utils;
 
 use PHPUnit\Framework\TestCase;
 use SMW\ParserParameterProcessor;
-use SMW\RecurringEvents;
+use SMW\Utils\RecurringEvents;
 
 /**
- * @covers \SMW\RecurringEvents
+ * @covers \SMW\Utils\RecurringEvents
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

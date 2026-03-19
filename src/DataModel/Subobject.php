@@ -1,13 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataModel;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
 use SMW\DataItems\Container;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValues\DataValue;
 use SMW\Exception\SubSemanticDataException;
 

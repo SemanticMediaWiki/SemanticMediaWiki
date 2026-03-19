@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Formatters;
 
 use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;

@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki;
 
 use InvalidArgumentException;
 use SMW\Query\Exception\ResultFormatNotFoundException;
+use SMW\Query\QueryResultPrinter;
 
 /**
  * Factory for "result formats", ie classes implementing QueryResultPrinter.
