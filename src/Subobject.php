@@ -4,10 +4,12 @@ namespace SMW;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Exception\SubSemanticDataException;
-use SMWDataValue;
-use SMWDIContainer;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:Subobject
@@ -54,7 +56,7 @@ class Subobject {
 	/**
 	 * @since 2.1
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function getSubject() {
 		return $this->getSemanticData()->getSubject();
@@ -82,6 +84,8 @@ class Subobject {
 	 * @since 1.9
 	 *
 	 * @param array|string $error
+	 *
+	 * @return void
 	 */
 	public function addError( $error ): void {
 		if ( is_string( $error ) ) {
@@ -106,7 +110,7 @@ class Subobject {
 			throw new InvalidArgumentException( 'Expected a valid (non-empty) indentifier' );
 		}
 
-		$subWikiPage = new DIWikiPage(
+		$subWikiPage = new WikiPage(
 			$this->title->getDBkey(),
 			$this->title->getNamespace(),
 			$this->title->getInterwiki(),
@@ -131,6 +135,7 @@ class Subobject {
 	 * @since 1.9
 	 *
 	 * @return ContainerSemanticData
+	 * @throws SubSemanticDataException
 	 */
 	public function getSemanticData() {
 		if ( !( $this->semanticData instanceof ContainerSemanticData ) ) {
@@ -145,10 +150,10 @@ class Subobject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function getProperty() {
-		return new DIProperty( DIProperty::TYPE_SUBOBJECT );
+		return new Property( Property::TYPE_SUBOBJECT );
 	}
 
 	/**
@@ -156,20 +161,21 @@ class Subobject {
 	 *
 	 * @since 1.9
 	 *
-	 * @return SMWDIContainer
+	 * @return Container
 	 */
 	public function getContainer() {
-		return new SMWDIContainer( $this->getSemanticData() );
+		return new Container( $this->getSemanticData() );
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param SMWDataValue $dataValue
+	 * @param DataValue $dataValue
 	 *
+	 * @return void
 	 * @throws SubSemanticDataException
 	 */
-	public function addDataValue( SMWDataValue $dataValue ): void {
+	public function addDataValue( DataValue $dataValue ): void {
 		if ( !( $this->semanticData instanceof ContainerSemanticData ) ) {
 			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}

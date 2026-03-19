@@ -101,7 +101,7 @@ class ContentParserTest extends TestCase {
 		$instance->parse( $text );
 
 		$this->assertInstanceOf(
-			'\ParserOutput',
+			ParserOutput::class,
 			$instance->getOutput()
 		);
 	}
@@ -147,7 +147,7 @@ class ContentParserTest extends TestCase {
 		$instance->parse();
 
 		$this->assertInstanceOf(
-			'\ParserOutput',
+			ParserOutput::class,
 			$instance->getOutput()
 		);
 	}

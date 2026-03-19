@@ -4,10 +4,10 @@ namespace SMW\Tests;
 
 use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
-use SMWInfolink as Infolink;
+use SMW\Infolink;
 
 /**
- * @covers \SMWInfolink
+ * @covers \SMW\Infolink
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

@@ -4,7 +4,6 @@ namespace SMW;
 
 use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
-use SMWOutputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
@@ -145,9 +144,9 @@ class Highlighter {
 	 * @return string
 	 */
 	public function getHtml() {
-		SMWOutputs::requireStyle( 'ext.smw.styles' );
-		SMWOutputs::requireStyle( 'ext.smw.tooltip.styles' );
-		SMWOutputs::requireResource( 'ext.smw.tooltip' );
+		Outputs::requireStyle( 'ext.smw.styles' );
+		Outputs::requireStyle( 'ext.smw.tooltip.styles' );
+		Outputs::requireResource( 'ext.smw.tooltip' );
 		return $this->getContainer();
 	}
 

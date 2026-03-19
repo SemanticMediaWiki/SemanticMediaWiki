@@ -5,13 +5,15 @@ namespace SMW\Tests;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\DataValue;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Property\SpecificationLookup;
 use SMW\Subobject;
-use SMWDIBlob;
 
 /**
  * @covers \SMW\Subobject
@@ -111,7 +113,7 @@ class SubobjectTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			DIProperty::class,
+			Property::class,
 			$instance->getProperty()
 		);
 	}
@@ -150,7 +152,7 @@ class SubobjectTest extends TestCase {
 	 * @dataProvider newDataValueProvider
 	 */
 	public function testDataValueExaminer( array $parameters, array $expected ) {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,7 +189,7 @@ class SubobjectTest extends TestCase {
 	}
 
 	public function testAddDataValueWithInvalidSemanticDataThrowsException() {
-		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
+		$dataValue = $this->getMockBuilder( DataValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -230,7 +232,7 @@ class SubobjectTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'\SMWDIContainer',
+			Container::class,
 			$instance->getContainer()
 		);
 	}
@@ -362,7 +364,7 @@ class SubobjectTest extends TestCase {
 					'label'  => 'Blob.example',
 					'key'    => 'Blob.example'
 				],
-				'dataItem' => new SMWDIBlob( '<a href="http://username@example.org/path">Example</a>' )
+				'dataItem' => new Blob( '<a href="http://username@example.org/path">Example</a>' )
 			],
 			[
 				'errors' => 0,

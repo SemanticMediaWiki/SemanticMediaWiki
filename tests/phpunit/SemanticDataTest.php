@@ -5,10 +5,11 @@ namespace SMW\Tests;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
@@ -16,7 +17,7 @@ use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Subobject;
-use SMWDITime as DITime;
+use stdClass;
 
 /**
  * @covers \SMW\SemanticData
@@ -80,11 +81,11 @@ class SemanticDataTest extends TestCase {
 		);
 
 		$this->assertEmpty(
-			$instance->getPropertyValues( new DIProperty( 'Foo', true ) )
+			$instance->getPropertyValues( new Property( 'Foo', true ) )
 		);
 
 		$this->assertEmpty(
-			$instance->getPropertyValues( new DIProperty( 'Foo' ) )
+			$instance->getPropertyValues( new Property( 'Foo' ) )
 		);
 	}
 
@@ -430,11 +431,11 @@ class SemanticDataTest extends TestCase {
 		);
 
 		$this->assertFalse(
-			$instance->hasSubSemanticData( new \stdClass )
+			$instance->hasSubSemanticData( new stdClass )
 		);
 
 		$this->assertEmpty(
-			$instance->findSubSemanticData( new \stdClass )
+			$instance->findSubSemanticData( new stdClass )
 		);
 	}
 
@@ -457,8 +458,8 @@ class SemanticDataTest extends TestCase {
 		);
 
 		$instance->addPropertyObjectValue(
-			new DIProperty( '_MDAT' ),
-			DITime::newFromTimestamp( 1272508903 )
+			new Property( '_MDAT' ),
+			Time::newFromTimestamp( 1272508903 )
 		);
 
 		$this->assertEquals(
@@ -502,7 +503,7 @@ class SemanticDataTest extends TestCase {
 	}
 
 	public function testRemoveProperty() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyObjectValue(
@@ -522,7 +523,7 @@ class SemanticDataTest extends TestCase {
 	}
 
 	public function testGetPropertyValuesToReturnAnUnmappedArray() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyObjectValue(
@@ -541,8 +542,8 @@ class SemanticDataTest extends TestCase {
 		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$instance->addPropertyObjectValue(
-			new DIProperty( '_MDAT' ),
-			DITime::newFromTimestamp( 1272508903 )
+			new Property( '_MDAT' ),
+			Time::newFromTimestamp( 1272508903 )
 		);
 
 		$this->assertFalse( $instance->isEmpty() );
@@ -609,8 +610,8 @@ class SemanticDataTest extends TestCase {
 		// #0
 		$provider[] = [
 			$title,
-			new DIProperty( '_MDAT' ),
-			DITime::newFromTimestamp( 1272508903 )
+			new Property( '_MDAT' ),
+			Time::newFromTimestamp( 1272508903 )
 		];
 
 		// #1

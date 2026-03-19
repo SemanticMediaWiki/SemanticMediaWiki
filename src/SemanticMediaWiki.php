@@ -1,9 +1,8 @@
 <?php
 
-use SMW\Globals;
-use SMW\NamespaceManager;
+namespace SMW;
+
 use SMW\Services\ServicesFactory;
-use SMW\Setup;
 
 /**
  * @codeCoverageIgnore
@@ -547,3 +546,8 @@ class SemanticMediaWiki {
 		}
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SemanticMediaWiki::class, 'SemanticMediaWiki' );
