@@ -4,9 +4,9 @@ namespace SMW\Query\ResultPrinters\ListResultPrinter;
 
 use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
+use SMW\DataValues\DataValue;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\PrefixParameterProcessor;
-use SMWDataValue;
 
 /**
  * Class ValueTextsBuilder
@@ -61,12 +61,12 @@ class ValueTextsBuilder {
 	}
 
 	/**
-	 * @param SMWDataValue $value
+	 * @param DataValue $value
 	 * @param int $column
 	 *
 	 * @return string
 	 */
-	private function getValueText( SMWDataValue $value, $column = 0 ) {
+	private function getValueText( DataValue $value, $column = 0 ) {
 		$isSubject = ( $column === 0 );
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 

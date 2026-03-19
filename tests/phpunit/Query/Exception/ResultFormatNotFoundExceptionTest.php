@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query\Exception;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\Query\Exception\ResultFormatNotFoundException;
 
 /**
@@ -25,7 +26,7 @@ class ResultFormatNotFoundExceptionTest extends TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\RuntimeException',
+			RuntimeException::class,
 			$instance
 		);
 	}

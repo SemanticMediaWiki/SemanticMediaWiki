@@ -3,7 +3,8 @@
 namespace SMW\Tests\Query\DescriptionBuilders;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataValues\RecordValue;
 use SMW\Query\DescriptionBuilders\RecordValueDescriptionBuilder;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
@@ -28,7 +29,7 @@ class RecordValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testIsBuilderForTimeValue() {
-		$dataValue = $this->getMockBuilder( '\SMWRecordValue' )
+		$dataValue = $this->getMockBuilder( RecordValue::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
@@ -43,7 +44,7 @@ class RecordValueDescriptionBuilderTest extends TestCase {
 	 * @dataProvider valueProvider
 	 */
 	public function testNewDescription( $value, $propertyDataItems, $decription ) {
-		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
+		$recordValue = $this->getMockBuilder( RecordValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -67,7 +68,7 @@ class RecordValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testInvalidRecordValueReturnsThingDescription() {
-		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
+		$recordValue = $this->getMockBuilder( RecordValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -88,7 +89,7 @@ class RecordValueDescriptionBuilderTest extends TestCase {
 	}
 
 	public function testNonStringThrowsException() {
-		$recordValue = $this->getMockBuilder( '\SMWRecordValue' )
+		$recordValue = $this->getMockBuilder( RecordValue::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -101,19 +102,19 @@ class RecordValueDescriptionBuilderTest extends TestCase {
 	public function valueProvider() {
 		$provider[] = [
 			'Jan;1970',
-			[ new DIProperty( 'Foo' ) ],
+			[ new Property( 'Foo' ) ],
 			SomeProperty::class
 		];
 
 		$provider[] = [
 			'Jan;1970',
-			[ new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ],
+			[ new Property( 'Foo' ), new Property( 'Bar' ) ],
 			Conjunction::class
 		];
 
 		$provider[] = [
 			'?',
-			[ new DIProperty( 'Foo' ), new DIProperty( 'Bar' ) ],
+			[ new Property( 'Foo' ), new Property( 'Bar' ) ],
 			ThingDescription::class
 		];
 

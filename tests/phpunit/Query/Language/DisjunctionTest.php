@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
@@ -113,17 +113,17 @@ class DisjunctionTest extends TestCase {
 		];
 
 		$descriptions = [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
 			new Disjunction( [
-				new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-				new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+				new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) ),
+				new ValueDescription( new WikiPage( 'Yim', NS_MAIN ) )
 			] )
 		];
 
 		$expectedDescriptions = [
-			'V:903e513c13559ffaa66a23270a2922ff' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			'V:246b70c7cb6a9fe4613cad14405b682f' => new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-			'V:a3f71a427c6f9533ea1f093ff47bf958' => new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+			'V:903e513c13559ffaa66a23270a2922ff' => new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
+			'V:246b70c7cb6a9fe4613cad14405b682f' => new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) ),
+			'V:a3f71a427c6f9533ea1f093ff47bf958' => new ValueDescription( new WikiPage( 'Yim', NS_MAIN ) )
 		];
 
 		$provider[] = [
@@ -140,10 +140,10 @@ class DisjunctionTest extends TestCase {
 		];
 
 		$descriptions = [
-			'V:903e513c13559ffaa66a23270a2922ff' => new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			'V:903e513c13559ffaa66a23270a2922ff' => new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
 			'C:d0da0541e2e099655342be3af203814e' => new Conjunction( [
-				new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
-				new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) )
+				new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) ),
+				new ValueDescription( new WikiPage( 'Yim', NS_MAIN ) )
 			] )
 		];
 
@@ -165,8 +165,8 @@ class DisjunctionTest extends TestCase {
 
 	public function testPrune() {
 		$descriptions = [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) ),
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
+			new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) ),
 		];
 
 		$instance = new Disjunction( $descriptions );
@@ -243,7 +243,7 @@ class DisjunctionTest extends TestCase {
 		);
 
 		$disjunction->addDescription(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) )
 		);
 
 		$provider[] = [
@@ -257,7 +257,7 @@ class DisjunctionTest extends TestCase {
 
 	public function testVaryingHierarchyDepthCausesClassDescriptionToYieldDifferentFingerprint() {
 		$descriptions = [
-			new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) )
+			new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) )
 		];
 
 		$instance = new Disjunction(
@@ -267,7 +267,7 @@ class DisjunctionTest extends TestCase {
 		$expected = $instance->getFingerprint();
 
 		$descriptions = [
-			new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) )
+			new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) )
 		];
 
 		$instance = new Disjunction(

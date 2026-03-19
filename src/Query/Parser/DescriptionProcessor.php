@@ -2,9 +2,10 @@
 
 namespace SMW\Query\Parser;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
@@ -16,7 +17,6 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\QueryComparator;
 use SMW\Site;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -43,7 +43,7 @@ class DescriptionProcessor {
 	private $queryFeatures;
 
 	/**
-	 * @var DIWikiPage|null
+	 * @var WikiPage|null
 	 */
 	private $contextPage;
 
@@ -71,9 +71,9 @@ class DescriptionProcessor {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -130,12 +130,12 @@ class DescriptionProcessor {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $chunk
 	 *
 	 * @return Description|null
 	 */
-	public function newDescriptionForPropertyObjectValue( DIProperty $property, $chunk ) {
+	public function newDescriptionForPropertyObjectValue( Property $property, $chunk ) {
 		$dataValue = $this->dataValueFactory->newDataValueByProperty( $property );
 		$dataValue->setContextPage( $this->contextPage );
 

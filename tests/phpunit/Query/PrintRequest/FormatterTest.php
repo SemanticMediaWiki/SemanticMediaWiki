@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\PrintRequest;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
 use SMW\Query\PrintRequest\Formatter;
 
@@ -45,14 +45,14 @@ class FormatterTest extends TestCase {
 		];
 
 		$provider['print-ccat-html'] = [
-			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', DIWikiPage::newFromText( 'Bar' )->getTitle() ),
+			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', WikiPage::newFromText( 'Bar' )->getTitle() ),
 			null,
 			Formatter::FORMAT_HTML,
 			'Foo'
 		];
 
 		$provider['print-ccat-wiki'] = [
-			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', DIWikiPage::newFromText( 'Bar' )->getTitle() ),
+			new PrintRequest( PrintRequest::PRINT_CCAT, 'Foo', WikiPage::newFromText( 'Bar' )->getTitle() ),
 			null,
 			Formatter::FORMAT_WIKI,
 			'Foo'

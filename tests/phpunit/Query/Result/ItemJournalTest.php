@@ -3,8 +3,8 @@
 namespace SMW\Tests\Query\Result;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Result\ItemJournal;
 
 /**
@@ -26,7 +26,7 @@ class ItemJournalTest extends TestCase {
 	}
 
 	public function testRecordItem() {
-		$dataItem = DIWikiPage::newFromText( 'Foo' );
+		$dataItem = WikiPage::newFromText( 'Foo' );
 		$instance = new ItemJournal();
 
 		$instance->prune();
@@ -45,7 +45,7 @@ class ItemJournalTest extends TestCase {
 	}
 
 	public function testRecordProperty() {
-		$property = new DIProperty( 'Bar' );
+		$property = new Property( 'Bar' );
 		$instance = new ItemJournal();
 
 		$instance->recordProperty( $property );

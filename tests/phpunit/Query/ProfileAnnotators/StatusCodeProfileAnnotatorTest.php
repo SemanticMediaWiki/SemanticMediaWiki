@@ -3,13 +3,13 @@
 namespace SMW\Tests\Query\ProfileAnnotators;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Container;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Query\ProfileAnnotator;
 use SMW\Query\ProfileAnnotators\NullProfileAnnotator;
 use SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator;
 use SMW\Tests\TestEnvironment;
-use SMWDIContainer as DIContainer;
 
 /**
  * @covers \SMW\Query\ProfileAnnotators\StatusCodeProfileAnnotator
@@ -45,9 +45,9 @@ class StatusCodeProfileAnnotatorTest extends TestCase {
 	 * @dataProvider codesDataProvider
 	 */
 	public function testCreateProfile( $codes, $expected ) {
-		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_QUERYe7d20a88' );
+		$subject = new WikiPage( __METHOD__, NS_MAIN, '', '_QUERYe7d20a88' );
 
-		$container = new DIContainer(
+		$container = new Container(
 			new ContainerSemanticData( $subject	)
 		);
 

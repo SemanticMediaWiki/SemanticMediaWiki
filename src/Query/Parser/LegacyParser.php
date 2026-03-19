@@ -4,10 +4,10 @@ namespace SMW\Query\Parser;
 
 use MediaWiki\Title\Title;
 use RuntimeException;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
@@ -85,7 +85,7 @@ class LegacyParser implements Parser {
 	private $conceptPrefixCannonical;
 
 	/**
-	 * @var DIWikiPage|null
+	 * @var WikiPage|null
 	 */
 	private $contextPage;
 
@@ -110,9 +110,9 @@ class LegacyParser implements Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ) {
 		$this->contextPage = $contextPage;
 	}
 
@@ -213,7 +213,7 @@ class LegacyParser implements Parser {
 	 * {@inheritDoc}
 	 */
 	public function createCondition( $property, $value ): string {
-		if ( $property instanceof DIProperty ) {
+		if ( $property instanceof Property ) {
 			$property = $property->getLabel();
 		}
 
@@ -466,7 +466,7 @@ class LegacyParser implements Parser {
 				}
 
 				if ( $title !== null ) {
-					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
+					$diWikiPage = new WikiPage( $title->getDBkey(), $title->getNamespace(), '' );
 
 					if ( !$this->selfReference && $this->contextPage !== null ) {
 						$this->selfReference = $diWikiPage->equals( $this->contextPage );

@@ -2,9 +2,9 @@
 
 namespace SMW\Query\Result;
 
+use SMW\DataItems\DataItem;
 use SMW\DataTypeRegistry;
 use SMW\Query\PrintRequest;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later

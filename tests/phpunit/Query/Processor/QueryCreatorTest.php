@@ -4,6 +4,7 @@ namespace SMW\Tests\Query\Processor;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Processor\QueryCreator;
+use SMW\Query\Query;
 use SMW\QueryFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -40,7 +41,7 @@ class QueryCreatorTest extends TestCase {
 		$query = $instance->create( $queryString, $params );
 
 		$this->assertInstanceOf(
-			'\SMWQuery',
+			Query::class,
 			$query
 		);
 

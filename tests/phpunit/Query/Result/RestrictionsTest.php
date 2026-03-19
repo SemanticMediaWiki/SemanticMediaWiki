@@ -8,7 +8,7 @@ use SMW\Query\PrintRequest;
 use SMW\Query\Result\Restrictions;
 
 /**
- * @covers SMW\Query\Result\Restrictions
+ * @covers \SMW\Query\Result\Restrictions
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

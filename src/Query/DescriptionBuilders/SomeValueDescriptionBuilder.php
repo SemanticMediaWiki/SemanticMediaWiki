@@ -3,8 +3,8 @@
 namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
-use SMW\DIWikiPage;
-use SMWDataValue as DataValue;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
 
 /**
  * @private
@@ -76,7 +76,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 		);
 
 		// Ensure [[>Help:Foo]] === [[Help:>Foo]] / [[Help:~Foo*]] === [[~Help:Foo*]]
-		if ( $dataItem instanceof DIWikiPage && $dataItem->getNamespace() !== NS_MAIN ) {
+		if ( $dataItem instanceof WikiPage && $dataItem->getNamespace() !== NS_MAIN ) {
 			$description = $this->makeDescription( $comparator, $property, $dataItem, $description );
 		}
 

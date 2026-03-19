@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\NamespaceDescription;
@@ -110,9 +110,9 @@ class ConjunctionTest extends TestCase {
 			]
 		];
 
-		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
-		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
-		$valueDescriptionYim = new ValueDescription( new DIWikiPage( 'Yim', NS_MAIN ) );
+		$valueDescriptionFoo = new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) );
+		$valueDescriptionBar = new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) );
+		$valueDescriptionYim = new ValueDescription( new WikiPage( 'Yim', NS_MAIN ) );
 
 		$descriptions = [
 			$valueDescriptionFoo,
@@ -145,8 +145,8 @@ class ConjunctionTest extends TestCase {
 	}
 
 	public function testPrune() {
-		$valueDescriptionFoo = new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) );
-		$valueDescriptionBar = new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) );
+		$valueDescriptionFoo = new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) );
+		$valueDescriptionBar = new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) );
 
 		$descriptions = [
 			$valueDescriptionFoo,
@@ -227,7 +227,7 @@ class ConjunctionTest extends TestCase {
 		);
 
 		$conjunction->addDescription(
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) )
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) )
 		);
 
 		$provider[] = [

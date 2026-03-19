@@ -2,9 +2,9 @@
 
 namespace SMW\Query\Result;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDataItem;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 
 /**
  * This class records selected entities used in a QueryResult by the time the
@@ -26,7 +26,7 @@ class ItemJournal {
 	/**
 	 * @since 2.4
 	 *
-	 * @return SMWDataItem[]
+	 * @return DataItem[]
 	 */
 	public function getEntityList() {
 		return $this->dataItems;
@@ -35,7 +35,7 @@ class ItemJournal {
 	/**
 	 * @since 3.0
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 */
 	public function getPropertyList() {
 		return $this->properties;
@@ -52,10 +52,10 @@ class ItemJournal {
 	/**
 	 * @since 2.4
 	 *
-	 * @param SMWDataItem $dataItem
+	 * @param DataItem $dataItem
 	 */
-	public function recordItem( SMWDataItem $dataItem ) {
-		if ( $dataItem instanceof DIWikiPage ) {
+	public function recordItem( DataItem $dataItem ) {
+		if ( $dataItem instanceof WikiPage ) {
 			$this->dataItems[$dataItem->getHash()] = $dataItem;
 		}
 	}
@@ -63,9 +63,9 @@ class ItemJournal {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 */
-	public function recordProperty( ?DIProperty $property = null ) {
+	public function recordProperty( ?Property $property = null ) {
 		if ( $property !== null ) {
 			$this->properties[$property->getKey()] = $property;
 		}

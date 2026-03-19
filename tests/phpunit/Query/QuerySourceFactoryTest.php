@@ -3,6 +3,7 @@
 namespace SMW\Tests\Query;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Query\Query;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryEngine;
 use SMW\SPARQLStore\SPARQLStore;
@@ -10,7 +11,6 @@ use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\StoreAware;
 use SMW\Tests\TestEnvironment;
-use SMWQuery as Query;
 
 /**
  * @covers SMW\Query\QuerySourceFactory

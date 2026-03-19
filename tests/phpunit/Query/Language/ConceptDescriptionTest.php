@@ -3,7 +3,7 @@
 namespace SMW\Tests\Query\Language;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\ThingDescription;
@@ -20,7 +20,7 @@ use SMW\Query\Language\ThingDescription;
 class ConceptDescriptionTest extends TestCase {
 
 	public function testCanConstruct() {
-		$concept = $this->getMockBuilder( DIWikiPage::class )
+		$concept = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -33,7 +33,7 @@ class ConceptDescriptionTest extends TestCase {
 	public function testCommonMethods() {
 		$ns = Localizer::getInstance()->getNsText( SMW_NS_CONCEPT );
 
-		$concept = new DIWikiPage( 'Foo', SMW_NS_CONCEPT );
+		$concept = new WikiPage( 'Foo', SMW_NS_CONCEPT );
 		$instance = new ConceptDescription( $concept );
 
 		$this->assertEquals( $concept, $instance->getConcept() );
@@ -51,13 +51,13 @@ class ConceptDescriptionTest extends TestCase {
 
 	public function testGetFingerprint() {
 		$instance = new ConceptDescription(
-			new DIWikiPage( 'Foo', SMW_NS_CONCEPT )
+			new WikiPage( 'Foo', SMW_NS_CONCEPT )
 		);
 
 		$expected = $instance->getFingerprint();
 
 		$instance = new ConceptDescription(
-			new DIWikiPage( 'Bar', SMW_NS_CONCEPT )
+			new WikiPage( 'Bar', SMW_NS_CONCEPT )
 		);
 
 		$this->assertNotSame(
@@ -67,7 +67,7 @@ class ConceptDescriptionTest extends TestCase {
 	}
 
 	public function testPrune() {
-		$instance = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$instance = new ConceptDescription( new WikiPage( 'Foo', SMW_NS_CONCEPT ) );
 
 		$maxsize  = 1;
 		$maxDepth = 1;
