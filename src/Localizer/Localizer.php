@@ -2,6 +2,7 @@
 
 namespace SMW\Localizer;
 
+use Exception;
 use MediaWiki\Context\IContextSource;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Language\Language;
@@ -167,7 +168,7 @@ class Localizer {
 			// is not registered
 			try {
 				$language = $title->getPageLanguage();
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 
 			}
 		}

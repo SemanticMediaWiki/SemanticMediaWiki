@@ -213,7 +213,7 @@ class SMWSpecialTypes extends SpecialPage {
 			$requestOptions
 		);
 
-		if ( $dataItems instanceof \Iterator ) {
+		if ( $dataItems instanceof Iterator ) {
 			$dataItems = iterator_to_array( $dataItems );
 		}
 

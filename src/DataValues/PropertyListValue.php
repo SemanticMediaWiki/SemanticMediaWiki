@@ -5,6 +5,7 @@ namespace SMW\DataValues;
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\DataValueFactory;
 use SMW\Exception\DataItemException;
 use SMW\Localizer\Localizer;
 
@@ -138,7 +139,7 @@ class PropertyListValue extends DataValue {
 			if ( $result !== '' ) {
 				$result .= $sep;
 			}
-			$propertyValue = \SMW\DataValueFactory::getInstance()->newDataValueByItem( $diProperty, null );
+			$propertyValue = DataValueFactory::getInstance()->newDataValueByItem( $diProperty, null );
 			$result .= $this->makeValueOutputText( $type, $propertyValue, $linker );
 		}
 		return $result;

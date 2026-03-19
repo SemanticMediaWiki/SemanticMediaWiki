@@ -115,7 +115,7 @@ class QueryLinksTableDisposer {
 		}
 
 		if ( $this->onTransactionIdle ) {
-			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ) {
+			return $this->connection->onTransactionCommitOrIdle( function () use ( $id, $fname ): void {
 				$this->connection->delete(
 					SQLStore::QUERY_LINKS_TABLE,
 					[

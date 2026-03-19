@@ -6,7 +6,6 @@ use Exception;
 use RuntimeException;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
-use Wikimedia\Rdbms\Database as MWDatabase;
 use Wikimedia\Rdbms\DBConnRef;
 use Wikimedia\Rdbms\DBError;
 use Wikimedia\Rdbms\IDatabase;
@@ -681,7 +680,7 @@ class Database {
 	}
 
 	/**
-	 * @TransactionHandler::beginSectionTransaction
+	 * @TransactionHandler
 	 *
 	 * @since 3.1
 	 *

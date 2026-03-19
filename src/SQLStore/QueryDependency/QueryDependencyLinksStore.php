@@ -349,7 +349,7 @@ class QueryDependencyLinksStore {
 		}
 
 		// Executed as DeferredTransactionalUpdate
-		$callback = function () use( $queryResult, $subject, $sid, $hash ) {
+		$callback = function () use( $queryResult, $subject, $sid, $hash ): void {
 			$this->doUpdate( $queryResult, $subject, $sid, $hash );
 		};
 

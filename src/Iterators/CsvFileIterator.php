@@ -4,6 +4,7 @@ namespace SMW\Iterators;
 
 use Countable;
 use Iterator;
+use ReturnTypeWillChange;
 use RuntimeException;
 use SMW\Exception\FileNotFoundException;
 use SplFileObject;
@@ -71,7 +72,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function count() {
 		if ( $this->count ) {
 			return $this->count;
@@ -113,7 +114,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		// First iteration to match the header
 		if ( $this->parseHeader && $this->key == 0 ) {
@@ -133,7 +134,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function key() {
 		return $this->key;
 	}
@@ -145,7 +146,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function next() {
 		return !$this->file->eof();
 	}

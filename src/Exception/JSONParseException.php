@@ -2,6 +2,7 @@
 
 namespace SMW\Exception;
 
+use Exception;
 use RuntimeException;
 use Seld\JsonLint\JsonParser;
 
@@ -44,7 +45,7 @@ class JSONParseException extends RuntimeException {
 
 		try {
 			$parser->parse( $json );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			return $e->getMessage();
 		}
 

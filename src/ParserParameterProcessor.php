@@ -315,7 +315,7 @@ class ParserParameterProcessor {
 			return $results;
 		}
 
-		array_walk( $params, static function ( &$value, $key ) {
+		array_walk( $params, static function ( &$value, $key ): void {
 			if ( $value === '' ) {
 				$value = [];
 			}

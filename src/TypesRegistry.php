@@ -358,7 +358,7 @@ class TypesRegistry {
 		];
 
 		if ( $key === 'id' ) {
-			array_walk( $fixedProperties, static function ( &$v, $k ) { $v = $v[0];
+			array_walk( $fixedProperties, static function ( &$v, $k ): void { $v = $v[0];
 			} );
 		}
 

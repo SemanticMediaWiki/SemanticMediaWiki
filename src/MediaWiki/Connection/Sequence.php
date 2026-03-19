@@ -80,7 +80,7 @@ class Sequence {
 
 		$sequence = self::makeSequence( $table, $field );
 
-		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ) {
+		$this->connection->onTransactionCommitOrIdle( function () use( $sequence, $seq_num, $fname ): void {
 			$this->connection->query( "ALTER SEQUENCE {$sequence} RESTART WITH {$seq_num}", $fname, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		} );
 

@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
@@ -345,7 +346,7 @@ class DataUpdater {
 					$title->getDBKey(),
 					$pageInfoProvider->getNativeData()
 				);
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$schema = null;
 			}
 

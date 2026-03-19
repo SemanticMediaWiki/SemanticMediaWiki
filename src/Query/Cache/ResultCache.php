@@ -367,7 +367,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 			Timer::getElapsedTime( __CLASS__, 5 )
 		);
 
-		$callback = function () use( $queryResult, $queryId, $container, $query ) {
+		$callback = function () use( $queryResult, $queryId, $container, $query ): void {
 			$this->doCacheQueryResult( $queryResult, $queryId, $container, $query );
 		};
 

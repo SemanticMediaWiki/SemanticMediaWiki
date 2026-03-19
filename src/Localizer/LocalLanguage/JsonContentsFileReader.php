@@ -2,6 +2,7 @@
 
 namespace SMW\Localizer\LocalLanguage;
 
+use Exception;
 use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use RuntimeException;
@@ -81,7 +82,7 @@ class JsonContentsFileReader {
 
 		try {
 			$canReadByLanguageCode = $this->getLanguageFile( $languageCode );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$canReadByLanguageCode = '';
 		}
 

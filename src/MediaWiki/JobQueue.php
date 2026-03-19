@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki;
 
+use Job;
 use JobQueueGroup;
 
 /**
@@ -101,7 +102,7 @@ class JobQueue {
 	 *
 	 * @param Job $job
 	 */
-	public function ack( \Job $job ) {
+	public function ack( Job $job ) {
 		$this->jobQueueGroup->get( $job->getType() )->ack( $job );
 	}
 

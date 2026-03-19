@@ -1,5 +1,7 @@
 <?php
 
+use SMW\SQLStore\SQLStore;
+
 /**
  * DO NOT EDIT!
  *
@@ -139,7 +141,7 @@ return ( static function () {
 		#
 		# @since 0.7
 		##
-		'smwgDefaultStore' => SMW\SQLStore\SQLStore::class,
+		'smwgDefaultStore' => SQLStore::class,
 		# #
 
 		##

@@ -188,7 +188,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function ( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ): void {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 
@@ -220,7 +220,7 @@ class ItemFetcher {
 			unset( $pv );
 		}
 
-		array_walk( $propertyValues, function ( &$dataItem ) {
+		array_walk( $propertyValues, function ( &$dataItem ): void {
 			$dataItem = $this->highlightTokens( $dataItem );
 		} );
 

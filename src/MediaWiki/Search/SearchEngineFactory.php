@@ -62,7 +62,7 @@ class SearchEngineFactory {
 	 *
 	 * @return ExtendedSearch
 	 */
-	public function newExtendedSearch( \SearchEngine $fallbackSearchEngine ) {
+	public function newExtendedSearch( SearchEngine $fallbackSearchEngine ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$searchEngineConfig = $applicationFactory->create( 'SearchEngineConfig' );
 

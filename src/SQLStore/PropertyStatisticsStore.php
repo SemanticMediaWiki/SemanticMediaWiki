@@ -147,7 +147,7 @@ class PropertyStatisticsStore {
 		$method = __METHOD__;
 
 		if ( $this->onTransactionIdle ) {
-			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ) {
+			$this->connection->onTransactionCommitOrIdle( function () use ( $method, $additions ): void {
 				$this->log( $method . ' (onTransactionIdle)' );
 				$this->onTransactionIdle = false;
 				$this->addToUsageCounts( $additions );

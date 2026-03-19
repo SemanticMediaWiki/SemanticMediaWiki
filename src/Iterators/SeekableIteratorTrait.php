@@ -3,6 +3,7 @@
 namespace SMW\Iterators;
 
 use OutOfBoundsException;
+use ReturnTypeWillChange;
 
 /**
  * @note Traits cannot implement interfaces which means the class that uses this
@@ -75,7 +76,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		if ( $this->position !== null ) {
 			return $this->container[$this->position];
@@ -90,7 +91,7 @@ trait SeekableIteratorTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function key() {
 		return $this->position;
 	}

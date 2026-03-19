@@ -17,6 +17,7 @@ use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Services\ServicesFactory;
 use SMW\Utils\UrlArgs;
+use SMWOutputs;
 
 /**
  * @license GPL-2.0-or-later
@@ -168,7 +169,7 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		// Add any resources that were registered by a specific result
 		// printer
-		\SMWOutputs::commitToOutputPage( $output );
+		SMWOutputs::commitToOutputPage( $output );
 
 		$output->addHTML( $html );
 	}

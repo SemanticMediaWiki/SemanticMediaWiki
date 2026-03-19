@@ -6,6 +6,7 @@ use ArrayIterator;
 use Countable;
 use Iterator;
 use IteratorIterator;
+use ReturnTypeWillChange;
 use RuntimeException;
 
 /**
@@ -68,7 +69,7 @@ class MappingIterator extends IteratorIterator implements Countable {
 	 *
 	 * {@inheritDoc}
 	 */
-	#[\ReturnTypeWillChange]
+	#[ReturnTypeWillChange]
 	public function current() {
 		return call_user_func( $this->callback, parent::current() );
 	}
