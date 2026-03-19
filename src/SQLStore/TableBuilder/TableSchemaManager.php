@@ -261,7 +261,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newFulltextSearchTable() {
+	private function newFulltextSearchTable(): ?Table {
 		// Avoid the creation unless it is enabled hereby avoids issues in
 		// regards to the default `MyISAM` storage engine (especially when mixed with
 		// InnoDB, transactional mode).Those who enable the full-text need to

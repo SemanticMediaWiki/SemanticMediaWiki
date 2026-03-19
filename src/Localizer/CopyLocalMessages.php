@@ -129,7 +129,7 @@ class CopyLocalMessages {
 		];
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( $file ): array {
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {

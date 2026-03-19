@@ -5,11 +5,11 @@ namespace SMW\Tests\Elastic\Indexer;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use SMW\DIWikiPage;
+use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
-use SMW\Options;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 
@@ -34,7 +34,7 @@ class IndexerTest extends TestCase {
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
 
-		$options = $this->getMockBuilder( Options::class )
+		$options = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
 			->getMock();
 

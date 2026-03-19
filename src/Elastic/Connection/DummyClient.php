@@ -39,7 +39,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getConfig
 	 */
-	public function getConfig() {
+	public function getConfig(): ?Config {
 		return $this->config;
 	}
 

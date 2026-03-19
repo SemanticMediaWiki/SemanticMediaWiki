@@ -72,7 +72,7 @@ class AnnotationProcessor {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): SemanticData {
 		return $this->semanticData;
 	}
 

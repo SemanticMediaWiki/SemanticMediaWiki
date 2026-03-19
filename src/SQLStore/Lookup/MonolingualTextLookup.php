@@ -59,7 +59,7 @@ class MonolingualTextLookup {
 	 *
 	 * @return DIContainer|null
 	 */
-	public function newDIContainer( DIWikiPage $subject, DIProperty $property, $languageCode = null ) {
+	public function newDIContainer( DIWikiPage $subject, DIProperty $property, $languageCode = null ): ?DIContainer {
 		if ( $subject->getSubobjectName() !== '' && $languageCode !== null ) {
 			throw new InvalidArgumentException( "Expected for a container reference no language code." );
 		}

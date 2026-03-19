@@ -178,7 +178,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, ?RequestOptions $requestOptions = null ) {
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
 		return $this->semanticDataLookup->newRequestOptions( $propertyTableDef, $property, $requestOptions );
 	}
 

@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\ChangeOp;
 
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Utils\HmacSerializer;
 
 /**
@@ -43,7 +43,7 @@ class ChangeDiff {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private readonly DIWikiPage $subject,
+		private readonly WikiPage $subject,
 		private readonly array $tableChangeOps,
 		private readonly array $dataOps,
 		private readonly array $propertyList,
@@ -73,9 +73,9 @@ class ChangeDiff {
 	/**
 	 * @since 3.0
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->subject;
 	}
 
@@ -84,7 +84,7 @@ class ChangeDiff {
 	 *
 	 * @return TableChangeOps[]
 	 */
-	public function getTableChangeOps() {
+	public function getTableChangeOps(): array {
 		return $this->tableChangeOps;
 	}
 
@@ -93,7 +93,7 @@ class ChangeDiff {
 	 *
 	 * @return TableChangeOps[]
 	 */
-	public function getDataOps() {
+	public function getDataOps(): array {
 		return $this->dataOps;
 	}
 
@@ -102,7 +102,7 @@ class ChangeDiff {
 	 *
 	 * @return
 	 */
-	public function getTextItems() {
+	public function getTextItems(): array {
 		return $this->textItems;
 	}
 
@@ -227,9 +227,9 @@ class ChangeDiff {
 	 * @since 3.0
 	 *
 	 * @param Cache $cache
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public static function fetch( Cache $cache, DIWikiPage $subject ) {
+	public static function fetch( Cache $cache, WikiPage $subject ) {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$subject->getHash()

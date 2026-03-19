@@ -320,7 +320,7 @@ class ExtendedSearch {
 		return false;
 	}
 
-	private function newSearchResultSet( $term, $count = true, $highlight = true ) {
+	private function newSearchResultSet( $term, $count = true, $highlight = true ): ?SearchResultSet {
 		$query = $this->getSearchQuery( $term );
 
 		if ( $query === null ) {

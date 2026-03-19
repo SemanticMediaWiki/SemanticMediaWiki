@@ -489,7 +489,7 @@ class Exporter {
 	 * @param int $forNamespace integer the namespace of the page which has a value for this property
 	 * @return ExpNsResource|null
 	 */
-	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
+	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ): ?ExpNsResource {
 		switch ( $propertyKey ) {
 			case '_INST':
 				return self::getSpecialNsResource( 'rdf', 'type' );

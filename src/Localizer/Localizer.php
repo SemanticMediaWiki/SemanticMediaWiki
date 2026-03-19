@@ -78,7 +78,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getContentLanguage() {
+	public function getContentLanguage(): Language {
 		return $this->contentLanguage;
 	}
 
@@ -152,7 +152,7 @@ class Localizer {
 	 *
 	 * @return Language
 	 */
-	public function getPreferredContentLanguage( $title = null ) {
+	public function getPreferredContentLanguage( $title = null ): Language {
 		$language = '';
 
 		if ( $title instanceof DIWikiPage ) {

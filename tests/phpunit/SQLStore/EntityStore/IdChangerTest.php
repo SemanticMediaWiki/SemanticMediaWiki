@@ -104,13 +104,13 @@ class IdChangerTest extends TestCase {
 
 		$this->connection->expects( $this->once() )
 			->method( 'nextSequenceValue' )
-			->willReturn( '__seq__' );
+			->willReturn( 1 );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insert' )
 			->with(
 				$this->anything(),
-				[ 'smw_id' => '__seq__' ] + $row );
+				[ 'smw_id' => 1 ] + $row );
 
 		$this->connection->expects( $this->once() )
 			->method( 'insertId' )

@@ -43,7 +43,7 @@ class ElementFactory {
 	 * @return Element|null
 	 * @throws RuntimeException
 	 */
-	public function newFromDataItem( DataItem $dataItem ) {
+	public function newFromDataItem( DataItem $dataItem ): ?Element {
 		if ( $this->dataItemMappers === [] ) {
 			$this->initDefaultMappers();
 		}

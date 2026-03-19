@@ -129,7 +129,7 @@ class XmlResponseParser implements HttpResponseParser {
 		return xml_parse( $this->parser, $xmlResultData, true );
 	}
 
-	private function getLastError() {
+	private function getLastError(): ?string {
 		return xml_error_string( xml_get_error_code( $this->parser ) );
 	}
 

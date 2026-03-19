@@ -50,7 +50,7 @@ class AttachmentAnnotator implements Annotator {
 	 *
 	 * @return SemanticData
 	 */
-	public function getSemanticData() {
+	public function getSemanticData(): ContainerSemanticData {
 		return $this->containerSemanticData;
 	}
 

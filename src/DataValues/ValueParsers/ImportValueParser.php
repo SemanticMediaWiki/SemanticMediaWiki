@@ -40,7 +40,7 @@ class ImportValueParser implements ValueParser {
 	 *
 	 * @return array|null
 	 */
-	public function parse( $value ) {
+	public function parse( $value ): ?array {
 		[ $namespace, $section, $controlledVocabulary ] = $this->splitByNamespaceSection(
 			$value
 		);
@@ -76,7 +76,7 @@ class ImportValueParser implements ValueParser {
 	/**
 	 * @return array|null
 	 */
-	private function splitByNamespaceSection( $value ) {
+	private function splitByNamespaceSection( $value ): ?array {
 		if ( strpos( $value, ':' ) === false ) {
 
 			$this->errors[] = [

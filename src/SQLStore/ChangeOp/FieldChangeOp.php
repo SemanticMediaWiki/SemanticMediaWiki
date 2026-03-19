@@ -63,7 +63,7 @@ class FieldChangeOp {
 	 *
 	 * @return array
 	 */
-	public function getChangeOp() {
+	public function getChangeOp(): array {
 		return $this->changeOp;
 	}
 

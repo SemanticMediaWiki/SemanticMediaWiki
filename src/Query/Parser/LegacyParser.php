@@ -203,7 +203,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return QueryToken
 	 */
-	public function getQueryToken() {
+	public function getQueryToken(): QueryToken {
 		return $this->queryToken;
 	}
 

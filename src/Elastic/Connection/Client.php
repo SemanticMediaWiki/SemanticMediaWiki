@@ -86,7 +86,7 @@ class Client {
 	 *
 	 * @return Options
 	 */
-	public function getConfig() {
+	public function getConfig(): ?Config {
 		return $this->options;
 	}
 

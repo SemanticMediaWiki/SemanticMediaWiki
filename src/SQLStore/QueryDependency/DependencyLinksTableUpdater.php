@@ -33,7 +33,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 

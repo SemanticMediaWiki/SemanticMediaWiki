@@ -37,7 +37,7 @@ class DataItemMatchFinder {
 	 *
 	 * @return DataItem|null
 	 */
-	public function matchExpElement( ExpElement $expElement ) {
+	public function matchExpElement( ExpElement $expElement ): ?DIWikiPage {
 		$dataItem = null;
 
 		if ( !$expElement instanceof ExpResource ) {
@@ -62,7 +62,7 @@ class DataItemMatchFinder {
 		return $dataItem;
 	}
 
-	private function matchToWikiNamespaceUri( $uri ) {
+	private function matchToWikiNamespaceUri( $uri ): ?DIWikiPage {
 		$dataItem = null;
 		$localName = substr( $uri, strlen( $this->wikiNamespace ) );
 
@@ -116,7 +116,7 @@ class DataItemMatchFinder {
 		return $namespaceId;
 	}
 
-	private function matchToUnknownWikiNamespaceUri( $uri ) {
+	private function matchToUnknownWikiNamespaceUri( $uri ): ?DIWikiPage {
 		$dataItem = null;
 
 		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17

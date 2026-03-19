@@ -89,7 +89,7 @@ class ResultArray {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->store;
 	}
 
@@ -100,7 +100,7 @@ class ResultArray {
 	 *
 	 * @return WikiPage
 	 */
-	public function getResultSubject() {
+	public function getResultSubject(): WikiPage {
 		return $this->result;
 	}
 
@@ -152,7 +152,7 @@ class ResultArray {
 	 *
 	 * @return PrintRequest
 	 */
-	public function getPrintRequest() {
+	public function getPrintRequest(): PrintRequest {
 		return $this->printRequest;
 	}
 

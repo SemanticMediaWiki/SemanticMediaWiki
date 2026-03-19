@@ -349,7 +349,7 @@ class PrintRequest {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ) {
+	public static function newFromText( $text, $showMode = false, $useCanonicalLabel = false ): ?PrintRequest {
 		$options = [
 			'show_mode' => $showMode,
 			'canonical_label' => $useCanonicalLabel

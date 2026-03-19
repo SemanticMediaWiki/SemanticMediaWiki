@@ -100,7 +100,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 		}
 	}
 
-	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ) {
+	private function getDescriptionForProperty( $diProperty, $values, &$valueIndex, $propertyIndex ): ?SomeProperty {
 		$values[$valueIndex] = str_replace( "-3B", ";", $values[$valueIndex] );
 		$beforePrepareValue = $values[$valueIndex];
 

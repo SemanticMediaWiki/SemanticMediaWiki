@@ -12,7 +12,6 @@ use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
-use SMW\Options;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -113,7 +112,7 @@ class IndexerRecoveryJobTest extends TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->willReturn( ( new Options() ) );
+			->willReturn( ( new Config() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -139,7 +138,7 @@ class IndexerRecoveryJobTest extends TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->willReturn( ( new Options() ) );
+			->willReturn( ( new Config() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )
@@ -162,7 +161,7 @@ class IndexerRecoveryJobTest extends TestCase {
 
 		$this->connection->expects( $this->any() )
 			->method( 'getConfig' )
-			->willReturn( ( new Options() ) );
+			->willReturn( ( new Config() ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getConnection' )

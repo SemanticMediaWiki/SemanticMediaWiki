@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Indexer\Attachment;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
 use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client;
@@ -192,7 +193,7 @@ class FileAttachmentTest extends TestCase {
 			->method( 'getProperty' )
 			->willReturn( $property );
 
-		$semanticData = $this->getMockBuilder( SemanticData::class )
+		$semanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -241,7 +242,7 @@ class FileAttachmentTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( SemanticData::class )
+		$semanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -272,7 +273,7 @@ class FileAttachmentTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$semanticData = $this->getMockBuilder( SemanticData::class )
+		$semanticData = $this->getMockBuilder( ContainerSemanticData::class )
 			->disableOriginalConstructor()
 			->getMock();
 

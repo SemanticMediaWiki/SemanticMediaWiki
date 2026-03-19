@@ -455,7 +455,7 @@ class Database {
 	 *
 	 * @return int|null
 	 */
-	public function nextSequenceValue( $seqName ) {
+	public function nextSequenceValue( $seqName ): ?int {
 		$this->insertId = null;
 
 		if ( !$this->isType( 'postgres' ) ) {

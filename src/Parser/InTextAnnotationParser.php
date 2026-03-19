@@ -228,7 +228,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return LinksEncoder::obfuscateAnnotation( $text );
 	}
 
