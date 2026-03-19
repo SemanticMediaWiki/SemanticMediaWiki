@@ -162,7 +162,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_TIME;
 	}
 

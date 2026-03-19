@@ -48,7 +48,7 @@ class Concept extends DataItem {
 	) {
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_CONCEPT;
 	}
 

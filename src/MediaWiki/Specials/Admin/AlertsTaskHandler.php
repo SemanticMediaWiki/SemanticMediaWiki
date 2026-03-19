@@ -28,7 +28,7 @@ class AlertsTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_ALERTS;
 	}
 

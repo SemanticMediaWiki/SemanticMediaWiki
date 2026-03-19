@@ -28,7 +28,7 @@ class Boolean extends DataItem {
 		$this->m_boolean = ( $boolean == true );
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_BOOLEAN;
 	}
 

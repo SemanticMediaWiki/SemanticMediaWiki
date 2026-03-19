@@ -113,7 +113,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param ChangeOp $changeOp
 	 */
-	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ) {
+	public function pruneOutdatedTargetLinks( ChangeOp $changeOp ): ?bool {
 		if ( !$this->isEnabled() ) {
 			return null;
 		}

@@ -439,7 +439,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return int either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 */
-	protected function getCalendarModel( $presetmodel, $year, $month, $day ) {
+	protected function getCalendarModel( $presetmodel, $year, $month, $day ): int {
 		// Old Style is a notational convention of Julian dates only
 		if ( $presetmodel == 'OS' ) {
 			$presetmodel = 'Jl';

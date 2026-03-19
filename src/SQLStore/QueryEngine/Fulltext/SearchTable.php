@@ -182,7 +182,7 @@ class SearchTable {
 	 *
 	 * @return string
 	 */
-	public function getTableName() {
+	public function getTableName(): string {
 		return SQLStore::FT_SEARCH_TABLE;
 	}
 

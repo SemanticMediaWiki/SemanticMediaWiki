@@ -27,7 +27,7 @@ class Number extends DataItem {
 		$this->m_number = $number;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_NUMBER;
 	}
 

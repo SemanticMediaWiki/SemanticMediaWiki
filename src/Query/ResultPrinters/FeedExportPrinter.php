@@ -107,7 +107,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return int
 	 */
-	public function getQueryMode( $mode ) {
+	public function getQueryMode( $mode ): int {
 		if ( $mode == SMWQueryProcessor::SPECIAL_PAGE ) {
 			return SMWQuery::MODE_INSTANCES;
 		}

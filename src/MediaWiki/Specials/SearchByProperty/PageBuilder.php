@@ -118,7 +118,10 @@ class PageBuilder {
 		return $html;
 	}
 
-	private function getResultHtml() {
+	/**
+	 * @return mixed[]
+	 */
+	private function getResultHtml(): array {
 		$resultList = '';
 		$resultMessage = '';
 
@@ -168,7 +171,10 @@ class PageBuilder {
 		return [ str_replace( '_', ' ', $resultMessage ?? '' ), $resultList, $exactCount ];
 	}
 
-	private function getNearbyResults( $exactResults, $exactCount ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getNearbyResults( $exactResults, $exactCount ): array {
 		$resultList = '';
 
 		$greaterResults = $this->queryResultLookup->doQueryForNearbyResults(

@@ -32,7 +32,7 @@ class MaintenanceTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_MAINTENANCE;
 	}
 

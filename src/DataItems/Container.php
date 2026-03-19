@@ -51,7 +51,7 @@ class Container extends DataItem {
 		$this->m_semanticData = $semanticData;
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_CONTAINER;
 	}
 

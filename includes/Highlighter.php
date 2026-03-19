@@ -182,7 +182,7 @@ class Highlighter {
 	 *
 	 * @return int
 	 */
-	public static function getTypeId( $type ) {
+	public static function getTypeId( $type ): int {
 		// TODO: why do we have a htmlspecialchars here?!
 		switch ( strtolower( htmlspecialchars( $type ?? '' ) ) ) {
 			case 'property':

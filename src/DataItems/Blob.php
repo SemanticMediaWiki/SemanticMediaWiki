@@ -24,7 +24,7 @@ class Blob extends DataItem {
 		$this->m_string = trim( $string ?? '' );
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_BLOB;
 	}
 

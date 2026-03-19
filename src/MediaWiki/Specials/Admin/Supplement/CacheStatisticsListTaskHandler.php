@@ -31,7 +31,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 

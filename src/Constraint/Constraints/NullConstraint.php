@@ -26,7 +26,7 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 

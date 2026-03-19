@@ -95,7 +95,7 @@ class GeoCoord extends DataItem {
 	 * (non-PHPdoc)
 	 * @see DataItem::getDIType()
 	 */
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_GEO;
 	}
 
