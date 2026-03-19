@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Specials\Browse;
 
 use MediaWiki\Html\Html;
 use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
