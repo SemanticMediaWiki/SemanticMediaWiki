@@ -118,7 +118,7 @@ class NumberValue extends DataValue {
 	 * @return int 0 (no errors), 1 (no number found at all), 2 (number
 	 * too large for this platform)
 	 */
-	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ) {
+	public function parseNumberValue( $value, &$number, &$unit, &$asPrefix = false ): int {
 		$intlNumberFormatter = $this->getNumberFormatter();
 
 		// Parse to find $number and (possibly) $unit

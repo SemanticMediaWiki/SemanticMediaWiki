@@ -171,14 +171,14 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return int
 	 */
-	public function getWordCount() {
+	public function getWordCount(): int {
 		return 0;
 	}
 
 	/**
 	 * @return int
 	 */
-	public function getByteSize() {
+	public function getByteSize(): int {
 		return 0;
 	}
 

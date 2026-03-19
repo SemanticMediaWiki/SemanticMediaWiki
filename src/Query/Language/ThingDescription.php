@@ -24,7 +24,7 @@ class ThingDescription extends Description {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		return 0; // no real condition, no size or depth
 	}
 

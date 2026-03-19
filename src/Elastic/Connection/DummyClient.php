@@ -60,7 +60,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getIndexDefFileModificationTimeByType
 	 */
-	public function getIndexDefFileModificationTimeByType( $type ) {
+	public function getIndexDefFileModificationTimeByType( $type ): int {
 		return 0;
 	}
 
@@ -209,7 +209,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::count
 	 */
-	public function count( array $params ) {
+	public function count( array $params ): int {
 		return 0;
 	}
 
