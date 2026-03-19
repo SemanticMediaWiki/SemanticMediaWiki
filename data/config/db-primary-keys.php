@@ -1,6 +1,5 @@
 <?php
 
-use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use SMW\Utils\CliMsgFormatter;
 
@@ -93,8 +92,7 @@ class ConfigPreloadPrimaryKeyTableMutator {
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/examples/hook.sqlstore.installer.beforecreatetablescomplete.md
  */
 $GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][] =
-	function ( array $tables, MessageReporter $messageReporter ) {
-
+	static function ( array $tables, MessageReporter $messageReporter ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$configPreloadPrimaryKeyTableMutator =
 			new ConfigPreloadPrimaryKeyTableMutator();
