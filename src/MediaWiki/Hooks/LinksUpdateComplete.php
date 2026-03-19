@@ -47,14 +47,14 @@ class LinksUpdateComplete implements HookListener {
 	 *
 	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ) {
+	public function isReady( $isReady ): void {
 		$this->isReady = (bool)$isReady;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function disableDeferredUpdate() {
+	public function disableDeferredUpdate(): void {
 		$this->enabledDeferredUpdate = false;
 	}
 
@@ -122,7 +122,7 @@ class LinksUpdateComplete implements HookListener {
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateSemanticData( &$parserData, $title, $reason = '' ) {
+	private function updateSemanticData( &$parserData, $title, $reason = '' ): void {
 		$this->logger->info(
 			[
 				'LinksUpdateConstructed',

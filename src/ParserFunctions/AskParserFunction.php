@@ -92,7 +92,7 @@ class AskParserFunction {
 	 *
 	 * @param PostProcHandler $postProcHandler
 	 */
-	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+	public function setPostProcHandler( PostProcHandler $postProcHandler ): void {
 		$this->postProcHandler = $postProcHandler;
 	}
 
@@ -101,7 +101,7 @@ class AskParserFunction {
 	 *
 	 * @param RecursiveTextProcessor $recursiveTextProcessor
 	 */
-	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ): void {
 		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
@@ -122,7 +122,7 @@ class AskParserFunction {
 	 *
 	 * @param bool $curtailmentMode
 	 */
-	public function setCurtailmentMode( $curtailmentMode ) {
+	public function setCurtailmentMode( $curtailmentMode ): void {
 		$this->curtailmentMode = (bool)$curtailmentMode;
 	}
 
@@ -383,7 +383,7 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format, $extraKeys ) {
+	private function addQueryProfile( $query, $format, $extraKeys ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -416,7 +416,7 @@ class AskParserFunction {
 		);
 	}
 
-	private function addProcessingError( $errors ) {
+	private function addProcessingError( $errors ): void {
 		if ( $errors === [] ) {
 			return;
 		}

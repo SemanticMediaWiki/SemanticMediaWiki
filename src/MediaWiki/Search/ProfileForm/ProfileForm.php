@@ -64,7 +64,7 @@ class ProfileForm {
 	 * @param string $type
 	 * @param array &$profiles
 	 */
-	public static function addProfile( $type, array &$profiles, array $options ) {
+	public static function addProfile( $type, array &$profiles, array $options ): void {
 		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
 			return;
 		}
@@ -128,7 +128,7 @@ class ProfileForm {
 	 *
 	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -138,7 +138,7 @@ class ProfileForm {
 	 * @param string &$form
 	 * @param array $opts
 	 */
-	public function buildForm( &$form, array $opts = [] ) {
+	public function buildForm( &$form, array $opts = [] ): void {
 		$hidden = '';
 		$html = '';
 

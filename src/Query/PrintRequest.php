@@ -115,7 +115,7 @@ class PrintRequest {
 	 *
 	 * @param bool $isDisconnected
 	 */
-	public function isDisconnected( $isDisconnected ) {
+	public function isDisconnected( $isDisconnected ): void {
 		$this->isDisconnected = (bool)$isDisconnected;
 	}
 
@@ -124,7 +124,7 @@ class PrintRequest {
 	 *
 	 * @param string $text
 	 */
-	public function markThisLabel( $text ) {
+	public function markThisLabel( $text ): void {
 		if ( $this->m_mode !== self::PRINT_THIS ) {
 			return;
 		}
@@ -308,7 +308,7 @@ class PrintRequest {
 	 * @param $key string Name of the parameter
 	 * @param $value string Value for the parameter
 	 */
-	public function setParameter( $key, $value ) {
+	public function setParameter( $key, $value ): void {
 		$this->m_params[$key] = $value;
 	}
 
@@ -319,7 +319,7 @@ class PrintRequest {
 	 *
 	 * @param string $key
 	 */
-	public function removeParameter( $key ) {
+	public function removeParameter( $key ): void {
 		unset( $this->m_params[$key] );
 	}
 
@@ -331,7 +331,7 @@ class PrintRequest {
 	 *
 	 * @param string $label
 	 */
-	public function setLabel( $label ) {
+	public function setLabel( $label ): void {
 		$this->m_label = $label;
 
 		if ( $this->m_data instanceof DataValue ) {

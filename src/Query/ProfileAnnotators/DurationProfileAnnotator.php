@@ -33,7 +33,7 @@ class DurationProfileAnnotator extends ProfileAnnotatorDecorator {
 		}
 	}
 
-	private function addGreaterThanZeroQueryDuration( $duration ) {
+	private function addGreaterThanZeroQueryDuration( $duration ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKDU' ),
 			new Number( $duration )

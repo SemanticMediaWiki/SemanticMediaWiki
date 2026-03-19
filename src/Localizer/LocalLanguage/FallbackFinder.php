@@ -31,7 +31,7 @@ class FallbackFinder {
 	/**
 	 * @since 2.5
 	 */
-	public function emptyByLanguageCode( $languageCode ) {
+	public function emptyByLanguageCode( $languageCode ): void {
 		unset( $this->fallbackLanguages[strtolower( trim( $languageCode ) )] );
 	}
 

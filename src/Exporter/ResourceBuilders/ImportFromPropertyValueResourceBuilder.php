@@ -33,7 +33,7 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		$diSubject = $expData->getSubject()->getDataItem();
 
 		if ( $diSubject === null ) {

@@ -284,7 +284,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function preselect_namespaces( $preselect ) {
+	private function preselect_namespaces( $preselect ): void {
 		foreach ( $preselect as $k => $values ) {
 			$k = self::toLowerCase( $k );
 			$this->preselectNsList[$k] = [];
@@ -301,7 +301,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function hidden_namespaces( $hidden ) {
+	private function hidden_namespaces( $hidden ): void {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );

@@ -36,7 +36,7 @@ class Queue {
 	/**
 	 * @since 3.2
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->queue = [];
 		$this->done = [];
 	}
@@ -55,7 +55,7 @@ class Queue {
 	 *
 	 * @param string $key
 	 */
-	public function remove( string $key ) {
+	public function remove( string $key ): void {
 		unset( $this->queue[$key] );
 	}
 
@@ -81,7 +81,7 @@ class Queue {
 	 * @param DIWikiPage $dataItem
 	 * @param int $recdepth
 	 */
-	public function add( DIWikiPage $dataItem, int $recdepth ) {
+	public function add( DIWikiPage $dataItem, int $recdepth ): void {
 		if ( $this->isDone( $dataItem, $recdepth ) ) {
 			return;
 		}
@@ -126,7 +126,7 @@ class Queue {
 	 * @param DIWikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 */
-	public function done( DIWikiPage $dataItem, int $recdepth ) {
+	public function done( DIWikiPage $dataItem, int $recdepth ): void {
 		$hash = $dataItem->getSha1();
 
 		if ( count( $this->done ) >= self::MAX_CACHE_SIZE ) {

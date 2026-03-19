@@ -33,7 +33,7 @@ class RepositoryRedirectLookup {
 	/**
 	 * @since 2.1
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		InMemoryPoolCache::getInstance()->resetPoolCacheById( self::POOLCACHE_ID );
 	}
 

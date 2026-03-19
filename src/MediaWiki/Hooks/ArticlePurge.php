@@ -65,7 +65,7 @@ class ArticlePurge implements HookListener {
 		return true;
 	}
 
-	private function invalidateResultCache( $store, $title ) {
+	private function invalidateResultCache( $store, $title ): void {
 		$dependency_list = $store->getPropertyValues(
 			DIWikiPage::newFromTitle( $title ),
 			new DIProperty( '_ASK' )

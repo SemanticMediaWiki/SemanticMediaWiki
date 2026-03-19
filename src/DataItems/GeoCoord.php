@@ -67,7 +67,7 @@ class GeoCoord extends DataItem {
 		}
 	}
 
-	private function setLatitude( $latitude ) {
+	private function setLatitude( $latitude ): void {
 		if ( is_int( $latitude ) ) {
 			$latitude = (float)$latitude;
 		}
@@ -79,7 +79,7 @@ class GeoCoord extends DataItem {
 		$this->latitude = $latitude;
 	}
 
-	private function setLongitude( $longitude ) {
+	private function setLongitude( $longitude ): void {
 		if ( is_int( $longitude ) ) {
 			$longitude = (float)$longitude;
 		}

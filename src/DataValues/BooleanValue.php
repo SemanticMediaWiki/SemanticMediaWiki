@@ -76,7 +76,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::setOutputFormat
 	 */
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring == $this->m_outformat ) {
 			return;
 		}
@@ -211,7 +211,7 @@ class BooleanValue extends DataValue {
 		return $boolvalue;
 	}
 
-	private function setLocalizedCaptions( &$formatstring ) {
+	private function setLocalizedCaptions( &$formatstring ): void {
 		if ( !( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) ) {
 			$languageCode = $this->getOption( 'user.language' );
 		}

@@ -58,7 +58,7 @@ class SchemaFactory {
 	 *
 	 * @param Schema|null $schema
 	 */
-	public function pushChangePropagationDispatchJob( ?Schema $schema = null ) {
+	public function pushChangePropagationDispatchJob( ?Schema $schema = null ): void {
 		if ( $schema === null ) {
 			return;
 		}

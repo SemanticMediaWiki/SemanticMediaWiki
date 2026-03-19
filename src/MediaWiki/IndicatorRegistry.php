@@ -43,7 +43,7 @@ class IndicatorRegistry {
 	 *
 	 * @param IndicatorProvider|null $indicatorProvider
 	 */
-	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ) {
+	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ): void {
 		if ( $indicatorProvider === null ) {
 			return;
 		}
@@ -94,7 +94,7 @@ class IndicatorRegistry {
 	 *
 	 * @param OutputPage $outputPage
 	 */
-	public function attachIndicators( OutputPage $outputPage ) {
+	public function attachIndicators( OutputPage $outputPage ): void {
 		$outputPage->addModules( $this->modules );
 		$outputPage->setIndicators( $this->indicators );
 		$outputPage->addInlineStyle( implode( '', $this->inlineStyles ) );

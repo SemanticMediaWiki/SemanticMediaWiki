@@ -47,7 +47,7 @@ class StoreFactory {
 	/**
 	 * @since 1.9
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = [];
 	}
 

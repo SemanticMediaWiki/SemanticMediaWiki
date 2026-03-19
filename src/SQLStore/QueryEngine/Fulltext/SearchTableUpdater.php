@@ -156,7 +156,7 @@ class SearchTableUpdater {
 	 * @param int $sid
 	 * @param int $pid
 	 */
-	public function insert( $sid, $pid ) {
+	public function insert( $sid, $pid ): void {
 		$this->connection->insert(
 			$this->searchTable->getTableName(),
 			[
@@ -174,7 +174,7 @@ class SearchTableUpdater {
 	 * @param int $sid
 	 * @param int $pid
 	 */
-	public function delete( $sid, $pid ) {
+	public function delete( $sid, $pid ): void {
 		$this->connection->delete(
 			$this->searchTable->getTableName(),
 			[
@@ -188,7 +188,7 @@ class SearchTableUpdater {
 	/**
 	 * @since 2.5
 	 */
-	public function flushTable() {
+	public function flushTable(): void {
 		$this->connection->delete(
 			$this->searchTable->getTableName(),
 			'*',

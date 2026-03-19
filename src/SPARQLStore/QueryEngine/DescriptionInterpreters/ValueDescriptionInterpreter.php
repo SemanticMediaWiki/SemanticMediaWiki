@@ -263,7 +263,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function lcase( $dataItem, &$orderByVariable, &$valueName ) {
+	private function lcase( $dataItem, &$orderByVariable, &$valueName ): void {
 		$isValidDataItem = $dataItem instanceof DIBlob || $dataItem instanceof DIUri || $dataItem instanceof DIWikiPage;
 
 		// https://stackoverflow.com/questions/10660030/how-to-write-sparql-query-that-efficiently-matches-string-literals-while-ignorin

@@ -38,7 +38,7 @@ class FileFetcher {
 	 *
 	 * @param string $dir
 	 */
-	public function setDir( $dir ) {
+	public function setDir( $dir ): void {
 		$this->dir = $dir;
 	}
 
@@ -47,7 +47,7 @@ class FileFetcher {
 	 *
 	 * @param string $sort
 	 */
-	public function sort( $sort ) {
+	public function sort( $sort ): void {
 		$sort = strtolower( $sort );
 
 		if ( in_array( $sort, [ 'asc', 'desc' ] ) ) {
@@ -71,7 +71,7 @@ class FileFetcher {
 	 *
 	 * @param int $maxDepth
 	 */
-	public function setMaxDepth( int $maxDepth ) {
+	public function setMaxDepth( int $maxDepth ): void {
 		$this->maxDepth = $maxDepth;
 	}
 

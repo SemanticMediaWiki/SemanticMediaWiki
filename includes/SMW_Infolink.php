@@ -62,7 +62,7 @@ class SMWInfolink {
 	 *
 	 * @param bool $isRestricted
 	 */
-	public function isRestricted( $isRestricted ) {
+	public function isRestricted( $isRestricted ): void {
 		$this->isRestricted = (bool)$isRestricted;
 	}
 
@@ -71,7 +71,7 @@ class SMWInfolink {
 	 *
 	 * @param bool $isCompactLink
 	 */
-	public function setCompactLink( $isCompactLink = true ) {
+	public function setCompactLink( $isCompactLink = true ): void {
 		$this->isCompactLink = (bool)$isCompactLink;
 	}
 
@@ -177,7 +177,7 @@ class SMWInfolink {
 	 * @param mixed $value
 	 * @param mixed $key
 	 */
-	public function setParameter( $value, $key = false ) {
+	public function setParameter( $value, $key = false ): void {
 		if ( $key === false ) {
 			$this->mParams[] = $value;
 		} else {
@@ -200,14 +200,14 @@ class SMWInfolink {
 	/**
 	 * Change the link text.
 	 */
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		$this->mCaption = $caption;
 	}
 
 	/**
 	 * Change the link's CSS class.
 	 */
-	public function setStyle( $style ) {
+	public function setStyle( $style ): void {
 		$this->mStyle = $style;
 	}
 
@@ -218,7 +218,7 @@ class SMWInfolink {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 	}
 

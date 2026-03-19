@@ -64,7 +64,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $showHiddenCategories
 	 */
-	public function showHiddenCategories( $showHiddenCategories ) {
+	public function showHiddenCategories( $showHiddenCategories ): void {
 		$this->showHiddenCategories = (bool)$showHiddenCategories;
 	}
 
@@ -73,7 +73,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryInstance
 	 */
-	public function useCategoryInstance( $useCategoryInstance ) {
+	public function useCategoryInstance( $useCategoryInstance ): void {
 		$this->useCategoryInstance = (bool)$useCategoryInstance;
 	}
 
@@ -82,7 +82,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryHierarchy
 	 */
-	public function useCategoryHierarchy( $useCategoryHierarchy ) {
+	public function useCategoryHierarchy( $useCategoryHierarchy ): void {
 		$this->useCategoryHierarchy = (bool)$useCategoryHierarchy;
 	}
 
@@ -91,7 +91,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $useCategoryRedirect
 	 */
-	public function useCategoryRedirect( $useCategoryRedirect ) {
+	public function useCategoryRedirect( $useCategoryRedirect ): void {
 		$this->useCategoryRedirect = (bool)$useCategoryRedirect;
 	}
 

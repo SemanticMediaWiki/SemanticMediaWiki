@@ -95,7 +95,7 @@ class ExtendedSearch {
 	 *
 	 * @param array $extraPrefixMap
 	 */
-	public function setExtraPrefixMap( array $extraPrefixMap ) {
+	public function setExtraPrefixMap( array $extraPrefixMap ): void {
 		foreach ( $extraPrefixMap as $key => $value ) {
 			if ( is_string( $key ) ) {
 				$this->extraPrefixMap[] = $key;
@@ -110,7 +110,7 @@ class ExtendedSearch {
 	 *
 	 * @param QueryBuilder $queryBuilder
 	 */
-	public function setQueryBuilder( QueryBuilder $queryBuilder ) {
+	public function setQueryBuilder( QueryBuilder $queryBuilder ): void {
 		$this->queryBuilder = $queryBuilder;
 	}
 
@@ -119,7 +119,7 @@ class ExtendedSearch {
 	 *
 	 * @param string $prefix
 	 */
-	public function setPrefix( $prefix ) {
+	public function setPrefix( $prefix ): void {
 		$this->prefix = $prefix;
 	}
 
@@ -128,7 +128,7 @@ class ExtendedSearch {
 	 *
 	 * @param array $namespaces
 	 */
-	public function setNamespaces( array $namespaces ) {
+	public function setNamespaces( array $namespaces ): void {
 		$this->namespaces = $namespaces;
 	}
 
@@ -137,7 +137,7 @@ class ExtendedSearch {
 	 *
 	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -147,7 +147,7 @@ class ExtendedSearch {
 	 * @param int $limit
 	 * @param int $offset
 	 */
-	public function setLimitOffset( $limit, $offset = 0 ) {
+	public function setLimitOffset( $limit, $offset = 0 ): void {
 		$this->limit = intval( $limit );
 		$this->offset = intval( $offset );
 	}
@@ -157,7 +157,7 @@ class ExtendedSearch {
 	 *
 	 * @param string $completionSearchTerm
 	 */
-	public function setCompletionSearchTerm( $completionSearchTerm ) {
+	public function setCompletionSearchTerm( $completionSearchTerm ): void {
 		$this->completionSearchTerm = $completionSearchTerm;
 	}
 

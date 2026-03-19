@@ -113,7 +113,7 @@ class ResultArray {
 	 *
 	 * @param ItemJournal $itemJournal
 	 */
-	public function setItemJournal( ItemJournal $itemJournal ) {
+	public function setItemJournal( ItemJournal $itemJournal ): void {
 		$this->itemJournal = $itemJournal;
 	}
 
@@ -122,7 +122,7 @@ class ResultArray {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		$this->queryToken = $queryToken;
 	}
 
@@ -131,7 +131,7 @@ class ResultArray {
 	 *
 	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?WikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 

@@ -63,7 +63,7 @@ class SearchTable {
 	 *
 	 * @param array $propertyExemptionList
 	 */
-	public function setPropertyExemptionList( array $propertyExemptionList ) {
+	public function setPropertyExemptionList( array $propertyExemptionList ): void {
 		$this->propertyExemptionList = array_flip(
 			str_replace( ' ', '_', $propertyExemptionList )
 		);
@@ -74,7 +74,7 @@ class SearchTable {
 	 *
 	 * @param int $indexableDataTypes
 	 */
-	public function setIndexableDataTypes( $indexableDataTypes ) {
+	public function setIndexableDataTypes( $indexableDataTypes ): void {
 		$this->indexableDataTypes = $indexableDataTypes;
 	}
 
@@ -164,7 +164,7 @@ class SearchTable {
 	 *
 	 * @param bool $enabled
 	 */
-	public function setEnabled( $enabled ) {
+	public function setEnabled( $enabled ): void {
 		$this->isEnabled = (bool)$enabled;
 	}
 
@@ -218,7 +218,7 @@ class SearchTable {
 	 *
 	 * @return int $minTokenSize
 	 */
-	public function setMinTokenSize( $minTokenSize ) {
+	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = (int)$minTokenSize;
 	}
 

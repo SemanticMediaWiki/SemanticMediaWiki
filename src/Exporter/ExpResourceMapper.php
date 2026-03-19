@@ -60,7 +60,7 @@ class ExpResourceMapper {
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): void {
 		$this->inMemoryPoolCache->resetPoolCacheById( 'exporter.expresource.mapper' );
 	}
 
@@ -69,7 +69,7 @@ class ExpResourceMapper {
 	 *
 	 * @param bool $bcAuxiliaryUse
 	 */
-	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
+	public function setBCAuxiliaryUse( $bcAuxiliaryUse ): void {
 		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
 	}
 
@@ -78,7 +78,7 @@ class ExpResourceMapper {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function invalidateCache( DIWikiPage $subject ) {
+	public function invalidateCache( DIWikiPage $subject ): void {
 		$hash = $subject->getHash();
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById(

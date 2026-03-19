@@ -58,7 +58,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param bool $checkReplication
 	 */
-	public function canCheckReplication( $checkReplication ) {
+	public function canCheckReplication( $checkReplication ): void {
 		$this->checkReplication = (bool)$checkReplication;
 	}
 
@@ -67,7 +67,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -181,7 +181,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return null
 	 */
-	private function runCheck( $subject, $options ) {
+	private function runCheck( $subject, $options ): void {
 		$html = $this->replicationCheck->checkReplication( $subject, $options );
 
 		$this->templateEngine = new TemplateEngine();

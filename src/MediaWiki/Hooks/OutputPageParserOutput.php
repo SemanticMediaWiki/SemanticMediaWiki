@@ -51,7 +51,7 @@ class OutputPageParserOutput implements HookListener {
 	 *
 	 * @param IndicatorRegistry $indicatorRegistry
 	 */
-	public function setIndicatorRegistry( IndicatorRegistry $indicatorRegistry ) {
+	public function setIndicatorRegistry( IndicatorRegistry $indicatorRegistry ): void {
 		$this->indicatorRegistry = $indicatorRegistry;
 	}
 

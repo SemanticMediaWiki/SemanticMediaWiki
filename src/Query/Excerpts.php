@@ -37,7 +37,7 @@ class Excerpts {
 	/**
 	 * @since 3.0
 	 */
-	public function noHighlight() {
+	public function noHighlight(): void {
 		$this->noHighlight = true;
 	}
 
@@ -50,7 +50,7 @@ class Excerpts {
 	 * @param WikiPage|string $hash
 	 * @param string|int $excerpt
 	 */
-	public function addExcerpt( $hash, $excerpt ) {
+	public function addExcerpt( $hash, $excerpt ): void {
 		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}

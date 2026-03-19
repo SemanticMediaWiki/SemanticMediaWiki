@@ -30,7 +30,7 @@ class InvalidateEntityCacheEventListener implements EventListener {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function execute( ?DispatchContext $dispatchContext = null ) {
+	public function execute( ?DispatchContext $dispatchContext = null ): void {
 		if ( $dispatchContext->has( 'subject' ) ) {
 			$subject = $dispatchContext->get( 'subject' );
 			$id = $subject->getHash();

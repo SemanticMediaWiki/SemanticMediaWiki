@@ -87,7 +87,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @param string|int $key
 	 * @param mixed
 	 */
-	public function setConfig( $key, $value ) {
+	public function setConfig( $key, $value ): void {
 		$this->config[$key] = $value;
 	}
 
@@ -98,7 +98,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -109,7 +109,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		if ( $this->messageReporter === null ) {
 			return;
 		}
@@ -199,7 +199,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function optimize( Table $table ) {
+	public function optimize( Table $table ): void {
 		$this->doOptimize( $table->getName() );
 	}
 

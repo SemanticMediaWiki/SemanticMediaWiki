@@ -55,7 +55,7 @@ class SchemaContentFormatter {
 	 *
 	 * @param bool $isYaml
 	 */
-	public function isYaml( $isYaml ) {
+	public function isYaml( $isYaml ): void {
 		$this->isYaml = $isYaml;
 	}
 
@@ -64,7 +64,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function setType( $type ) {
+	public function setType( $type ): void {
 		$this->type = $type;
 	}
 
@@ -117,7 +117,7 @@ class SchemaContentFormatter {
 	 *
 	 * @param string $type
 	 */
-	public function setUnknownType( $type ) {
+	public function setUnknownType( $type ): void {
 		$this->unknownType = $type;
 	}
 

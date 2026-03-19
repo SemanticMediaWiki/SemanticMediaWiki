@@ -40,7 +40,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param array $predefinedPropertyList
 	 */
-	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+	public function setPredefinedPropertyList( array $predefinedPropertyList ): void {
 		$this->predefinedPropertyList = $predefinedPropertyList;
 	}
 

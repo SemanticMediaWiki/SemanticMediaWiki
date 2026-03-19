@@ -162,7 +162,7 @@ class QueryResult {
 	 *
 	 * @param ItemJournal $itemJournal
 	 */
-	public function setItemJournal( ItemJournal $itemJournal ) {
+	public function setItemJournal( ItemJournal $itemJournal ): void {
 		$this->itemJournal = $itemJournal;
 	}
 
@@ -180,7 +180,7 @@ class QueryResult {
 	 *
 	 * @param bool $isFromCache
 	 */
-	public function setFromCache( $isFromCache ) {
+	public function setFromCache( $isFromCache ): void {
 		$this->isFromCache = (bool)$isFromCache;
 	}
 
@@ -191,7 +191,7 @@ class QueryResult {
 	 *
 	 * @param ScoreSet $scoreSet
 	 */
-	public function setScoreSet( ScoreSet $scoreSet ) {
+	public function setScoreSet( ScoreSet $scoreSet ): void {
 		$this->scoreSet = $scoreSet;
 	}
 
@@ -211,7 +211,7 @@ class QueryResult {
 	 *
 	 * @param Excerpts $excerpts
 	 */
-	public function setExcerpts( Excerpts $excerpts ) {
+	public function setExcerpts( Excerpts $excerpts ): void {
 		$this->excerpts = $excerpts;
 	}
 
@@ -352,7 +352,7 @@ class QueryResult {
 	 *
 	 * @param int $countValue
 	 */
-	public function setCountValue( $countValue ) {
+	public function setCountValue( $countValue ): void {
 		$this->countValue = (int)$countValue;
 	}
 
@@ -380,7 +380,7 @@ class QueryResult {
 	 *
 	 * @param array $errors
 	 */
-	public function addErrors( array $errors ) {
+	public function addErrors( array $errors ): void {
 		$this->mQuery->addErrors( $errors );
 	}
 
@@ -422,7 +422,7 @@ class QueryResult {
 	 *
 	 * @since 3.0
 	 */
-	public function setSerializerVersion( $version ) {
+	public function setSerializerVersion( $version ): void {
 		$this->serializer_version = $version;
 	}
 

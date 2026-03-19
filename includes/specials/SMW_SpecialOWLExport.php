@@ -24,7 +24,7 @@ class SMWSpecialOWLExport extends SpecialPage {
 		parent::__construct( 'ExportRDF' );
 	}
 
-	public function execute( $page ) {
+	public function execute( $page ): void {
 		$this->setHeaders();
 
 		$out = $this->getOutput();

@@ -51,7 +51,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param bool $canUse
 	 */
-	public function setCanUse( $canUse ) {
+	public function setCanUse( $canUse ): void {
 		$this->canUse = (bool)$canUse;
 	}
 
@@ -60,7 +60,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function prefetchFromSemanticData( SemanticData $semanticData ) {
+	public function prefetchFromSemanticData( SemanticData $semanticData ): void {
 		if ( $this->canUse === false ) {
 			return;
 		}
@@ -111,7 +111,7 @@ class DisplayTitleFinder {
 	 *
 	 * @param array $dataItems
 	 */
-	public function prefetchFromList( $dataItems ) {
+	public function prefetchFromList( $dataItems ): void {
 		if ( $this->canUse === false || !is_iterable( $dataItems ) ) {
 			return;
 		}

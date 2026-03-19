@@ -70,7 +70,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
@@ -82,7 +82,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -100,7 +100,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @param bool $isEnabled
 	 */
-	public function setEnabled( $isEnabled ) {
+	public function setEnabled( $isEnabled ): void {
 		$this->isEnabled = (bool)$isEnabled;
 	}
 

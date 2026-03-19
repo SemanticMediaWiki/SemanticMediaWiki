@@ -33,7 +33,7 @@ class PropertyTypeFinder {
 	 *
 	 * @param string $typeTableName
 	 */
-	public function setTypeTableName( $typeTableName ) {
+	public function setTypeTableName( $typeTableName ): void {
 		$this->typeTableName = $typeTableName;
 	}
 

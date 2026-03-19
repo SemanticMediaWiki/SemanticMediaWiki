@@ -45,7 +45,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function loadListeners() {
+	public function loadListeners(): void {
 		if ( $this->initListeners === true ) {
 			return;
 		}
@@ -60,7 +60,7 @@ class PropertyChangeListener implements ChangeListener {
 	 * @param DIProperty $property
 	 * @param callable $callback
 	 */
-	public function addListenerCallback( DIProperty $property, callable $callback ) {
+	public function addListenerCallback( DIProperty $property, callable $callback ): void {
 		$key = $property->getKey();
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID(
@@ -84,7 +84,7 @@ class PropertyChangeListener implements ChangeListener {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function recordChange( int $pid, array $record ) {
+	public function recordChange( int $pid, array $record ): void {
 		if ( $this->initListeners === false ) {
 			throw new RuntimeException(
 				"Hook wasn't run, possible listeners weren't registered from the available hook!"
@@ -106,7 +106,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function triggerChangeListeners() {
+	public function triggerChangeListeners(): void {
 		$keyIdMap = array_flip( $this->propertyIdKeyMap );
 
 		foreach ( $this->changeListeners as $key => $changeListeners ) {
@@ -131,7 +131,7 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 */
-	public function runChangeListeners() {
+	public function runChangeListeners(): void {
 		$this->store->getConnection( 'mw.db' )->onTransactionCommitOrIdle( [ $this, 'triggerChangeListeners' ] );
 	}
 

@@ -63,7 +63,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param bool $redirectRemoval
 	 */
-	public function setRedirectRemoval( $redirectRemoval ) {
+	public function setRedirectRemoval( $redirectRemoval ): void {
 		$this->redirectRemoval = $redirectRemoval;
 	}
 
@@ -72,7 +72,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param bool $fulltextTableUsage
 	 */
-	public function setFulltextTableUsage( bool $fulltextTableUsage ) {
+	public function setFulltextTableUsage( bool $fulltextTableUsage ): void {
 		$this->fulltextTableUsage = $fulltextTableUsage;
 	}
 
@@ -81,14 +81,14 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param array $namespacesWithSemanticLinks
 	 */
-	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ): void {
 		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = true;
 	}
 
@@ -188,7 +188,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @param stdClass $row
 	 */
-	public function cleanUpTableEntriesByRow( $row ) {
+	public function cleanUpTableEntriesByRow( $row ): void {
 		if ( !isset( $row->smw_id ) ) {
 			return;
 		}
@@ -214,7 +214,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function cleanUpReferencesById( $id ) {
+	private function cleanUpReferencesById( $id ): void {
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 		$isRedirect = false;
 
@@ -274,7 +274,7 @@ class PropertyTableIdReferenceDisposer {
 			);
 	}
 
-	private function cleanUpSecondaryReferencesById( $id, $isRedirect ) {
+	private function cleanUpSecondaryReferencesById( $id, $isRedirect ): void {
 		// When marked as redirect, don't remove the reference
 		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
 			$this->connection->delete(
@@ -325,7 +325,7 @@ class PropertyTableIdReferenceDisposer {
 		}
 	}
 
-	private function triggerCleanUpEvents( $subject ) {
+	private function triggerCleanUpEvents( $subject ): void {
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}

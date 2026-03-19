@@ -53,7 +53,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param array $invalidCharacterList
 	 */
-	public function setInvalidCharacterList( array $invalidCharacterList ) {
+	public function setInvalidCharacterList( array $invalidCharacterList ): void {
 		$this->invalidCharacterList = $invalidCharacterList;
 	}
 
@@ -64,7 +64,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = (bool)$isCapitalLinks;
 	}
 
@@ -76,7 +76,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $reqCapitalizedFirstChar
 	 */
-	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ) {
+	public function reqCapitalizedFirstChar( $reqCapitalizedFirstChar ): void {
 		$this->reqCapitalizedFirstChar = (bool)$reqCapitalizedFirstChar;
 	}
 
@@ -88,7 +88,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @param bool $isQueryContext
 	 */
-	public function isQueryContext( $isQueryContext ) {
+	public function isQueryContext( $isQueryContext ): void {
 		$this->isQueryContext = (bool)$isQueryContext;
 	}
 

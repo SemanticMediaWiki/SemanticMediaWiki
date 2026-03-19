@@ -263,7 +263,7 @@ class PropertyTableRowMapper {
 	 * @param int $sid
 	 * @param array &$insertData
 	 */
-	private function mapConceptTable( $sid, &$insertData ) {
+	private function mapConceptTable( $sid, &$insertData ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Make sure that there is exactly one row to be written:

@@ -34,14 +34,14 @@ class MissingRedirectLookup {
 	 *
 	 * @param array $namespaces
 	 */
-	public function setNamespaceMatrix( array $namespaces ) {
+	public function setNamespaceMatrix( array $namespaces ): void {
 		$this->namespaces = $namespaces;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function noSort() {
+	public function noSort(): void {
 		$this->nosort = true;
 	}
 

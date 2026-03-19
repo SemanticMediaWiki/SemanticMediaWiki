@@ -173,7 +173,7 @@ class EntityIdManager {
 	 *
 	 * @param int $equalitySupport
 	 */
-	public function setEqualitySupport( int $equalitySupport ) {
+	public function setEqualitySupport( int $equalitySupport ): void {
 		$this->equalitySupport = new Flag( $equalitySupport );
 	}
 
@@ -186,7 +186,7 @@ class EntityIdManager {
 	 * @param string $key
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ): void {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -246,7 +246,7 @@ class EntityIdManager {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function addRedirect( $id, $title, $namespace ) {
+	public function addRedirect( $id, $title, $namespace ): void {
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -263,7 +263,7 @@ class EntityIdManager {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function updateRedirect( $id, $title, $namespace ) {
+	public function updateRedirect( $id, $title, $namespace ): void {
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -279,7 +279,7 @@ class EntityIdManager {
 	 * @param string $title
 	 * @param int $namespace
 	 */
-	public function deleteRedirect( $title, $namespace ) {
+	public function deleteRedirect( $title, $namespace ): void {
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -715,7 +715,7 @@ class EntityIdManager {
 	 * @param DIWikiPage $subject
 	 * @param int|string|null $interwiki
 	 */
-	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ) {
+	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ): void {
 		if ( $interwiki === null ) {
 			$interwiki = $subject->getInterWiki();
 		}
@@ -786,7 +786,7 @@ class EntityIdManager {
 	 * @param int $sid
 	 * @param int $rev_id
 	 */
-	public function updateRevField( $sid, $rev_id ) {
+	public function updateRevField( $sid, $rev_id ): void {
 		$this->tableFieldUpdater->updateRevField( $sid, $rev_id );
 	}
 
@@ -911,7 +911,7 @@ class EntityIdManager {
 	 * @param int $curid
 	 * @param int $targetid
 	 */
-	public function moveSMWPageID( $curid, $targetid = 0 ) {
+	public function moveSMWPageID( $curid, $targetid = 0 ): void {
 		$idChanger = $this->factory->newIdChanger();
 
 		$row = $idChanger->move(
@@ -950,7 +950,7 @@ class EntityIdManager {
 	 * @param array $list
 	 * @param string|null $flag
 	 */
-	public function warmUpCache( $list = [], $flag = null ) {
+	public function warmUpCache( $list = [], $flag = null ): void {
 		$this->cacheWarmer->prepareCache( $list );
 
 		if ( $flag === RedirectTargetLookup::PREPARE_CACHE ) {
@@ -972,7 +972,7 @@ class EntityIdManager {
 	 * @param int $id
 	 * @param string $sortkey
 	 */
-	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
+	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ): void {
 		$this->idCacheManager->setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey );
 	}
 
@@ -1018,14 +1018,14 @@ class EntityIdManager {
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
-	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
+	public function deleteCache( $title, $namespace, $interwiki, $subobject ): void {
 		$this->idCacheManager->deleteCache( $title, $namespace, $interwiki, $subobject );
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function initCache() {
+	public function initCache(): void {
 		// Tests indicate that it is more memory efficient to have two
 		// arrays (IDs and sortkeys) than to have one array that stores both
 		// values in some data structure (other than a single string).
@@ -1087,7 +1087,7 @@ class EntityIdManager {
 	 * @param int $sid ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $sid, $hash = null ) {
+	public function setPropertyTableHashes( $sid, $hash = null ): void {
 		$this->propertyTableHashes->setPropertyTableHashes( $sid, $hash );
 	}
 
@@ -1117,7 +1117,7 @@ class EntityIdManager {
 	 * @param array|null $sequenceMap
 	 * @param array|null $countMap
 	 */
-	public function updateFieldMaps( $sid, ?array $sequenceMap = null, ?array $countMap = null ) {
+	public function updateFieldMaps( $sid, ?array $sequenceMap = null, ?array $countMap = null ): void {
 		$this->auxiliaryFields->setFieldMaps( $sid, $sequenceMap, $countMap );
 	}
 
@@ -1148,7 +1148,7 @@ class EntityIdManager {
 	 *
 	 * @param array $ids
 	 */
-	public function loadSequenceMap( array $ids ) {
+	public function loadSequenceMap( array $ids ): void {
 		$this->sequenceMapFinder->prefetchSequenceMap( $ids );
 	}
 

@@ -66,7 +66,7 @@ class NamespaceManager {
 	/**
 	 * @since 3.2
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$initLanguageCode = '';
 		self::$initNamespaceIndex = null;
 	}
@@ -236,7 +236,7 @@ class NamespaceManager {
 		throw new SiteLanguageChangeException( self::$initLanguageCode, $vars['wgLanguageCode'] );
 	}
 
-	private function addNamespaceSettings( &$vars ) {
+	private function addNamespaceSettings( &$vars ): void {
 		/**
 		 * Default settings for the SMW specific NS which can only
 		 * be defined after SMW_NS_PROPERTY is declared
@@ -260,7 +260,7 @@ class NamespaceManager {
 		$vars['wgNamespaceContentModels'][SMW_NS_SCHEMA] = CONTENT_MODEL_SMW_SCHEMA;
 	}
 
-	private function addExtraNamespaceSettings( &$vars ) {
+	private function addExtraNamespaceSettings( &$vars ): void {
 		/**
 		 * Indicating which namespaces allow sub-pages
 		 *

@@ -281,7 +281,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setExtensionData( $key, $value ) {
+	public function setExtensionData( $key, $value ): void {
 		$this->extensionData[$key] = $value;
 	}
 
@@ -326,7 +326,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -350,7 +350,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @since  1.9
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
@@ -400,7 +400,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * @since 2.5
 	 */
-	public function clearSubSemanticData() {
+	public function clearSubSemanticData(): void {
 		if ( $this->subContainerDepthCounter > 0 ) {
 			$this->subContainerDepthCounter--;
 		}
@@ -448,7 +448,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param $property DIProperty
 	 * @param $dataItem SMWDataItem
 	 */
-	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ): void {
 		$this->hash = null;
 
 		if ( $dataItem instanceof SMWDIContainer ) {
@@ -531,7 +531,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param $propertyName string
 	 * @param $dataItem SMWDataItem
 	 */
-	public function addPropertyValue( $propertyName, SMWDataItem $dataItem ) {
+	public function addPropertyValue( $propertyName, SMWDataItem $dataItem ): void {
 		$propertyKey = smwfNormalTitleDBKey( $propertyName );
 
 		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
@@ -558,7 +558,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param SMWDataValue $dataValue
 	 */
-	public function addDataValue( SMWDataValue $dataValue ) {
+	public function addDataValue( SMWDataValue $dataValue ): void {
 		if ( !$dataValue->getProperty() instanceof DIProperty || !$dataValue->isValid() ) {
 
 			$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
@@ -585,7 +585,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param Subobject $subobject
 	 */
-	public function addSubobject( Subobject $subobject ) {
+	public function addSubobject( Subobject $subobject ): void {
 		$this->addPropertyObjectValue(
 			$subobject->getProperty(),
 			$subobject->getContainer()
@@ -608,7 +608,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @since 1.8
 	 */
-	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ) {
+	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ): void {
 		$this->hash = null;
 
 		// delete associated subSemanticData
@@ -671,7 +671,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param $property DIProperty
 	 */
-	public function removeProperty( DIProperty $property ) {
+	public function removeProperty( DIProperty $property ): void {
 		$this->hash = null;
 		$key = $property->getKey();
 
@@ -699,7 +699,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * Delete all data other than the subject.
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->mPropVals = [];
 		$this->mProperties = [];
 		$this->mHasVisibleProps = false;
@@ -732,7 +732,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @throws SemanticDataImportException
 	 */
-	public function importDataFrom( SemanticData $semanticData ) {
+	public function importDataFrom( SemanticData $semanticData ): void {
 		if ( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			throw new SemanticDataImportException( "SemanticData can only represent data about one subject. Importing data for another subject is not possible." );
 		}
@@ -802,7 +802,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function removeDataFrom( SemanticData $semanticData ) {
+	public function removeDataFrom( SemanticData $semanticData ): void {
 		if ( !$this->mSubject->equals( $semanticData->getSubject() ) ) {
 			return;
 		}
@@ -847,7 +847,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param SemanticData $semanticData
 	 * @throws SubSemanticDataException
 	 */
-	public function addSubSemanticData( SemanticData $semanticData ) {
+	public function addSubSemanticData( SemanticData $semanticData ): void {
 		$this->hash = null;
 		$this->subSemanticData->addSubSemanticData( $semanticData );
 	}
@@ -858,7 +858,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function removeSubSemanticData( SemanticData $semanticData ) {
+	public function removeSubSemanticData( SemanticData $semanticData ): void {
 		$this->hash = null;
 		$this->subSemanticData->removeSubSemanticData( $semanticData );
 	}

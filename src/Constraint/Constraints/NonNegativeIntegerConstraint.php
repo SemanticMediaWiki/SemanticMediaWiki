@@ -49,7 +49,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -63,7 +63,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 		}
 	}
 
-	private function check( $dataValue ) {
+	private function check( $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
@@ -78,7 +78,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 		$this->reportError( $dataValue, $number );
 	}
 
-	private function reportError( $dataValue, $number ) {
+	private function reportError( $dataValue, $number ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError( new ConstraintError( [

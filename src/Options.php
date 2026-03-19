@@ -33,7 +33,7 @@ class Options implements JsonUnserializable {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -42,7 +42,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		unset( $this->options[$key] );
 	}
 

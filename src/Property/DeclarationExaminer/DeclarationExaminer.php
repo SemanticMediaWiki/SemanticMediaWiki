@@ -73,7 +73,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function check( DIProperty $property ) {
+	public function check( DIProperty $property ): void {
 		$this->declarationExaminer->check( $property );
 		$this->messages = array_merge( $this->messages, $this->declarationExaminer->getMessages() );
 		$this->validate( $property );

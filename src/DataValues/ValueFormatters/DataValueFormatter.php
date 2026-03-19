@@ -85,7 +85,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 *
 	 * @param DataValue $dataValue
 	 */
-	public function setDataValue( DataValue $dataValue ) {
+	public function setDataValue( DataValue $dataValue ): void {
 		$this->dataValue = $dataValue;
 		$this->options = null;
 	}
@@ -105,7 +105,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}

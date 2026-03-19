@@ -179,7 +179,7 @@ class SQLStore extends Store {
 	 *
 	 * @param SQLStoreFactory $factory
 	 */
-	public function setFactory( SQLStoreFactory $factory ) {
+	public function setFactory( SQLStoreFactory $factory ): void {
 		$this->factory = $factory;
 	}
 
@@ -488,7 +488,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Title $concept
 	 */
-	public function deleteConceptCache( $concept ) {
+	public function deleteConceptCache( $concept ): void {
 		$this->factory->newMasterConceptCache()->deleteConceptCache( $concept );
 	}
 
@@ -614,7 +614,7 @@ class SQLStore extends Store {
 	 *
 	 * @since 1.9.1.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->factory->newSemanticDataLookup()->clear();
 		$this->propertyTableInfoFetcher = null;

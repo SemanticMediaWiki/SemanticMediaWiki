@@ -33,7 +33,7 @@ class HtmlTable {
 	 * @param string $content
 	 * @param array $attributes
 	 */
-	public function header( $content = '', $attributes = [] ) {
+	public function header( $content = '', $attributes = [] ): void {
 		if ( $content !== '' ) {
 			$this->headers[] = [ 'content' => $content, 'attributes' => $attributes ];
 		}
@@ -45,7 +45,7 @@ class HtmlTable {
 	 * @param string $content
 	 * @param array $attributes
 	 */
-	public function cell( $content = '', $attributes = [] ) {
+	public function cell( $content = '', $attributes = [] ): void {
 		if ( $content !== '' ) {
 			$this->cells[] = Html::rawElement( 'td', $attributes, $content );
 		}
@@ -58,7 +58,7 @@ class HtmlTable {
 	 *
 	 * @return void
 	 */
-	public function row( $attributes = [] ) {
+	public function row( $attributes = [] ): void {
 		if ( $this->cells !== [] ) {
 			$this->rows[] = [ 'cells' => $this->cells, 'attributes' => $attributes ];
 			$this->cells = [];

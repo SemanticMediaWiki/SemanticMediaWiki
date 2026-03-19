@@ -161,7 +161,7 @@ class ListValueFilter {
 		];
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, $clear, &$list ) {
+	private function matchFilter( $property, $key, $label, $count, $valueFilters, $clear, &$list ): void {
 		if ( !isset( $list[$count] ) ) {
 			$list[$count] = [ 'linked' => [], 'unlinked' => [] ];
 		}

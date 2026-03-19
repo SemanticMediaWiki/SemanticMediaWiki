@@ -37,7 +37,7 @@ class FixedProperties {
 	 *
 	 * @param array $fixedProperties
 	 */
-	public function setFixedProperties( array $fixedProperties = [] ) {
+	public function setFixedProperties( array $fixedProperties = [] ): void {
 		$this->fixedProperties = $fixedProperties;
 	}
 
@@ -46,7 +46,7 @@ class FixedProperties {
 	 *
 	 * @param array $properties
 	 */
-	public function setProperties( array $properties = [] ) {
+	public function setProperties( array $properties = [] ): void {
 		$this->properties = $properties;
 	}
 
@@ -55,7 +55,7 @@ class FixedProperties {
 	 *
 	 * @param array $opts
 	 */
-	public function check( array $opts = [] ) {
+	public function check( array $opts = [] ): void {
 		$this->messageReporter->reportMessage( "Checking selected fixed properties IDs ...\n" );
 
 		if ( $this->fixedProperties === [] ) {

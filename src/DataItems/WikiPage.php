@@ -152,7 +152,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @param string $sortkey
 	 */
-	public function setSortKey( $sortkey ) {
+	public function setSortKey( $sortkey ): void {
 		$this->sortkey = str_replace( '_', ' ', $sortkey ?? '' );
 	}
 
@@ -175,7 +175,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @param string $contextReference
 	 */
-	public function setContextReference( $contextReference ) {
+	public function setContextReference( $contextReference ): void {
 		$this->contextReference = $contextReference;
 	}
 
@@ -214,7 +214,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @param int $id
 	 */
-	public function setId( $id ) {
+	public function setId( $id ): void {
 		$this->id = (int)$id;
 	}
 

@@ -29,7 +29,7 @@ class ElementFactory {
 	 * @param int $type
 	 * @param callable $dataItemMapper
 	 */
-	public function registerCallableMapper( $type, callable $dataItemMapper ) {
+	public function registerCallableMapper( $type, callable $dataItemMapper ): void {
 		$this->dataItemMappers[$type] = $dataItemMapper;
 	}
 
@@ -188,7 +188,7 @@ class ElementFactory {
 		return null;
 	}
 
-	private function initDefaultMappers() {
+	private function initDefaultMappers(): void {
 		$this->dataItemMappers[DataItem::TYPE_NUMBER] = [ $this, 'newFromNumber' ];
 		$this->dataItemMappers[DataItem::TYPE_BLOB] = [ $this, 'newFromBlob' ];
 		$this->dataItemMappers[DataItem::TYPE_BOOLEAN] = [ $this, 'newFromBoolean' ];

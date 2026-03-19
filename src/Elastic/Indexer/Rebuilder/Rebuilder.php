@@ -68,7 +68,7 @@ class Rebuilder {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -129,7 +129,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function prepare() {
+	public function prepare(): void {
 		$this->client->setMaintenanceLock();
 
 		$this->prepareIndexByType( ElasticClient::TYPE_DATA );
@@ -139,7 +139,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function deleteAndSetupIndices() {
+	public function deleteAndSetupIndices(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "\n" );
@@ -178,7 +178,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function createIndices() {
+	public function createIndices(): void {
 		$this->createIndexByType( ElasticClient::TYPE_DATA );
 		$this->createIndexByType( ElasticClient::TYPE_LOOKUP );
 	}
@@ -217,7 +217,7 @@ class Rebuilder {
 	 *
 	 * @param int $id
 	 */
-	public function delete( $id ) {
+	public function delete( $id ): void {
 		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
 
 		if ( isset( $this->versions[ElasticClient::TYPE_DATA] ) ) {
@@ -242,7 +242,7 @@ class Rebuilder {
 	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
-	public function rebuild( $id, SemanticData $semanticData ) {
+	public function rebuild( $id, SemanticData $semanticData ): void {
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );
 
@@ -321,7 +321,7 @@ class Rebuilder {
 		return '';
 	}
 
-	private function prepareIndexByType( $type ) {
+	private function prepareIndexByType( $type ): void {
 		$index = $this->client->getIndexName( $type );
 
 		if ( isset( $this->versions[$type] ) ) {
@@ -342,11 +342,11 @@ class Rebuilder {
 		$this->client->putSettings( $params );
 	}
 
-	private function refreshIndexByType( $type ) {
+	private function refreshIndexByType( $type ): void {
 		$this->client->refresh( [ 'index' => $this->client->getIndexName( $type ) ] );
 	}
 
-	private function setDefaultByType( $type ) {
+	private function setDefaultByType( $type ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -413,7 +413,7 @@ class Rebuilder {
 		);
 	}
 
-	private function createIndexByType( $type ) {
+	private function createIndexByType( $type ): void {
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
 		if ( ( $version = $this->client->getLock( $type ) ) === false ) {
@@ -441,7 +441,7 @@ class Rebuilder {
 		$this->client->setLock( $type, $version );
 	}
 
-	private function rolloverByTypeAndVersion( $type, $version ) {
+	private function rolloverByTypeAndVersion( $type, $version ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$old = $this->installer->rollover(

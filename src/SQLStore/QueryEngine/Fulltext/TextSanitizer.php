@@ -66,7 +66,7 @@ class TextSanitizer {
 	 *
 	 * @param array $languageDetection
 	 */
-	public function setLanguageDetection( array $languageDetection ) {
+	public function setLanguageDetection( array $languageDetection ): void {
 		$this->languageDetection = $languageDetection;
 	}
 
@@ -75,7 +75,7 @@ class TextSanitizer {
 	 *
 	 * @param int $minTokenSize
 	 */
-	public function setMinTokenSize( $minTokenSize ) {
+	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = $minTokenSize;
 	}
 

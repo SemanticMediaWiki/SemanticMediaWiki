@@ -40,7 +40,7 @@ class LockManager {
 	/**
 	 * @since 3.1
 	 */
-	public function setMaintenanceLock() {
+	public function setMaintenanceLock(): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			self::TYPE_MAINTENANCE
@@ -55,7 +55,7 @@ class LockManager {
 	 * @param string $type
 	 * @param string $version
 	 */
-	public function setLock( $type, $version ) {
+	public function setLock( $type, $version ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]
@@ -101,7 +101,7 @@ class LockManager {
 	 *
 	 * @param string $type
 	 */
-	public function releaseLock( $type ) {
+	public function releaseLock( $type ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]

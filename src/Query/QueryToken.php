@@ -102,7 +102,7 @@ class QueryToken {
 	 *
 	 * @param string $outputFormat
 	 */
-	public function setOutputFormat( $outputFormat ) {
+	public function setOutputFormat( $outputFormat ): void {
 		$this->outputFormat = $outputFormat;
 	}
 

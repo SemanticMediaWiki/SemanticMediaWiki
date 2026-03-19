@@ -570,7 +570,7 @@ class SpecialAsk extends SpecialPage {
 		return '{{#ask: ' . $code . '}}';
 	}
 
-	private function print_borrowed_msg( &$html, &$searchInfoText ) {
+	private function print_borrowed_msg( &$html, &$searchInfoText ): void {
 		if ( !$this->isBorrowedMode ) {
 			return;
 		}

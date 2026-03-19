@@ -66,7 +66,7 @@ class ItemListBuilder {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -75,7 +75,7 @@ class ItemListBuilder {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -84,7 +84,7 @@ class ItemListBuilder {
 	 *
 	 * @param bool $isUserDefined
 	 */
-	public function isUserDefined( $isUserDefined ) {
+	public function isUserDefined( $isUserDefined ): void {
 		$this->isUserDefined = $isUserDefined;
 	}
 
@@ -93,7 +93,7 @@ class ItemListBuilder {
 	 *
 	 * @param int $listLimit
 	 */
-	public function setListLimit( $listLimit ) {
+	public function setListLimit( $listLimit ): void {
 		$this->listLimit = $listLimit;
 	}
 
@@ -102,7 +102,7 @@ class ItemListBuilder {
 	 *
 	 * @param string $listHeader
 	 */
-	public function setListHeader( $listHeader ) {
+	public function setListHeader( $listHeader ): void {
 		$this->listHeader = $listHeader;
 	}
 
@@ -111,7 +111,7 @@ class ItemListBuilder {
 	 *
 	 * @param bool $checkProperty
 	 */
-	public function checkProperty( $checkProperty ) {
+	public function checkProperty( $checkProperty ): void {
 		$this->checkProperty = $checkProperty;
 	}
 

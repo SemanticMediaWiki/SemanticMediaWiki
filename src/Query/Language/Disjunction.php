@@ -70,7 +70,7 @@ class Disjunction extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		$this->fingerprint = null;
 
 		if ( $this->classDescription !== null ) {
@@ -88,7 +88,7 @@ class Disjunction extends Description {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 		$fingerprint = $description->getFingerprint();
 

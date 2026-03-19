@@ -40,7 +40,7 @@ class SMWSpecialTypes extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $param ) {
+	public function execute( $param ): void {
 		$this->setHeaders();
 		$out = $this->getOutput();
 

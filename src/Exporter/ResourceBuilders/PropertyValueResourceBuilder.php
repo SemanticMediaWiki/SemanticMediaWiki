@@ -60,7 +60,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);

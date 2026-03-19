@@ -31,14 +31,14 @@ class Aggregations {
 	 *
 	 * @param Aggregations $aggregations
 	 */
-	public function addSubAggregations( Aggregations $aggregations ) {
+	public function addSubAggregations( Aggregations $aggregations ): void {
 		$this->subAggregations[] = $aggregations;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function plain() {
+	public function plain(): void {
 		$this->plain = true;
 	}
 

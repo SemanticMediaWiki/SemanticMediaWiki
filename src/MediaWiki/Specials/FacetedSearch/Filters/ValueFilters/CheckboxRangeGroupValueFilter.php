@@ -93,7 +93,7 @@ class CheckboxRangeGroupValueFilter {
 		);
 	}
 
-	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ) {
+	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ): void {
 		$key = $range['min'] . '|' . $range['max'];
 
 		if ( $key === '' ) {

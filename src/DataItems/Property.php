@@ -265,7 +265,7 @@ class Property extends DataItem {
 	 *
 	 * @param string $interwiki
 	 */
-	public function setInterwiki( string $interwiki ) {
+	public function setInterwiki( string $interwiki ): void {
 		$this->interwiki = $interwiki;
 	}
 

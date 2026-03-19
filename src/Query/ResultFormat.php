@@ -130,7 +130,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @param PrintRequest[] $printRequests
 	 */
-	public function setPrintRequests( array $printRequests ) {
+	public function setPrintRequests( array $printRequests ): void {
 		$this->printRequests = $printRequests;
 	}
 
@@ -139,7 +139,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @param bool $showMode
 	 */
-	public function setShowMode( $showMode ) {
+	public function setShowMode( $showMode ): void {
 		$this->showMode = $showMode;
 	}
 

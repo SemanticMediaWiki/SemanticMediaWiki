@@ -149,7 +149,7 @@ class ExpData implements Element {
 	 * @param ExpNsResource $property
 	 * @param Element $child
 	 */
-	public function addPropertyObjectValue( ExpNsResource $property, Element $child ) {
+	public function addPropertyObjectValue( ExpNsResource $property, Element $child ): void {
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {

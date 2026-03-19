@@ -41,7 +41,7 @@ class EventHandler {
 	/**
 	 * @since 2.2
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -69,7 +69,7 @@ class EventHandler {
 	 * @param string $event
 	 * @param Closure $callback
 	 */
-	public function addCallbackListener( $event, Closure $callback ) {
+	public function addCallbackListener( $event, Closure $callback ): void {
 		$listener = EventDispatcherFactory::getInstance()->newGenericCallbackEventListener();
 		$listener->registerCallback( $callback );
 

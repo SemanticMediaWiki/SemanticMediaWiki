@@ -33,7 +33,7 @@ class DuplicateLookupTask extends Task {
 	 *
 	 * @param array $cacheUsage
 	 */
-	public function setCacheUsage( array $cacheUsage ) {
+	public function setCacheUsage( array $cacheUsage ): void {
 		$this->cacheUsage = $cacheUsage;
 	}
 

@@ -95,7 +95,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param bool $isLinksInValues
 	 */
-	public function isLinksInValues( $isLinksInValues ) {
+	public function isLinksInValues( $isLinksInValues ): void {
 		$this->isLinksInValues = $isLinksInValues;
 	}
 
@@ -104,7 +104,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param bool $showErrors
 	 */
-	public function showErrors( $showErrors ) {
+	public function showErrors( $showErrors ): void {
 		$this->showErrors = (bool)$showErrors;
 	}
 
@@ -125,7 +125,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string &$text
 	 */
-	public function parse( &$text ) {
+	public function parse( &$text ): void {
 		$title = $this->parserData->getTitle();
 		Timer::start( __CLASS__ );
 
@@ -248,7 +248,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -257,7 +257,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param Title|null $redirectTarget
 	 */
-	public function setRedirectTarget( ?Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ): void {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 

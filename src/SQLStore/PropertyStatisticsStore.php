@@ -44,14 +44,14 @@ class PropertyStatisticsStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
@@ -306,7 +306,7 @@ class PropertyStatisticsStore {
 		);
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

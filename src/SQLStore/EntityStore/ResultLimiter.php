@@ -27,7 +27,7 @@ class ResultLimiter {
 	 *
 	 * @param RequestOptions $requestOptions
 	 */
-	public function calcSize( RequestOptions $requestOptions ) {
+	public function calcSize( RequestOptions $requestOptions ): void {
 		$this->size = -1;
 		$this->counter = [];
 

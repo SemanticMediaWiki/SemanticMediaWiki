@@ -248,7 +248,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 
 		if ( $this->getWikiPageValue() instanceof DataValue ) {
@@ -256,14 +256,14 @@ class PropertyValue extends DataValue {
 		}
 	}
 
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		parent::setCaption( $caption );
 		if ( $this->getWikiPageValue() instanceof DataValue ) { // pass caption to embedded datavalue (used for printout)
 			$this->m_wikipage->setCaption( $caption );
 		}
 	}
 
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring === false || $formatstring === '' ) {
 			return;
 		}

@@ -157,7 +157,7 @@ class Query implements QueryContext {
 	 *
 	 * @param integer
 	 */
-	public function setQueryMode( $queryMode ) {
+	public function setQueryMode( $queryMode ): void {
 		// FIXME 3.0; $this->querymode is a public property
 		// declare it private and rename it to $this->queryMode
 		$this->querymode = $queryMode;
@@ -177,7 +177,7 @@ class Query implements QueryContext {
 	 *
 	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?WikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 
@@ -195,7 +195,7 @@ class Query implements QueryContext {
 	 *
 	 * @param string
 	 */
-	public function setQuerySource( $querySource ) {
+	public function setQuerySource( $querySource ): void {
 		$this->querySource = $querySource;
 	}
 
@@ -213,7 +213,7 @@ class Query implements QueryContext {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		$this->queryToken = $queryToken;
 	}
 
@@ -233,7 +233,7 @@ class Query implements QueryContext {
 	 *
 	 * @param string $mainlabel
 	 */
-	public function setMainLabel( $mainlabel ) {
+	public function setMainLabel( $mainlabel ): void {
 		$this->m_mainlabel = $mainlabel;
 	}
 
@@ -248,7 +248,7 @@ class Query implements QueryContext {
 		return $this->m_mainlabel;
 	}
 
-	public function setDescription( Description $description ) {
+	public function setDescription( Description $description ): void {
 		$this->description = $description;
 		$this->queryString = false;
 
@@ -262,7 +262,7 @@ class Query implements QueryContext {
 		return $this->description;
 	}
 
-	public function setExtraPrintouts( $extraprintouts ) {
+	public function setExtraPrintouts( $extraprintouts ): void {
 		$this->m_extraprintouts = $extraprintouts;
 
 		if ( $this->description !== null ) {
@@ -282,7 +282,7 @@ class Query implements QueryContext {
 	/**
 	 * @since 3.0
 	 */
-	public function clearErrors() {
+	public function clearErrors(): void {
 		$this->errors = [];
 	}
 
@@ -290,11 +290,11 @@ class Query implements QueryContext {
 		return $this->errors;
 	}
 
-	public function addErrors( $errors ) {
+	public function addErrors( $errors ): void {
 		$this->errors = array_merge( $this->errors, $errors );
 	}
 
-	public function setQueryString( $querystring ) {
+	public function setQueryString( $querystring ): void {
 		$this->queryString = $querystring;
 	}
 
@@ -304,7 +304,7 @@ class Query implements QueryContext {
 	 * @param string|int $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -369,7 +369,7 @@ class Query implements QueryContext {
 	 *
 	 * @param int $offset
 	 */
-	public function setUnboundOffset( $offset ) {
+	public function setUnboundOffset( $offset ): void {
 		$this->offset = (int)$offset;
 	}
 
@@ -398,7 +398,7 @@ class Query implements QueryContext {
 	 *
 	 * @param int $limit
 	 */
-	public function setUnboundLimit( $limit ) {
+	public function setUnboundLimit( $limit ): void {
 		$this->limit = (int)$limit;
 	}
 
@@ -409,7 +409,7 @@ class Query implements QueryContext {
 	 *
 	 * @param array $sortKeys
 	 */
-	public function setSortKeys( array $sortKeys ) {
+	public function setSortKeys( array $sortKeys ): void {
 		$this->sortkeys = $sortKeys;
 	}
 
@@ -425,7 +425,7 @@ class Query implements QueryContext {
 	/**
 	 * Apply structural restrictions to the current description.
 	 */
-	public function applyRestrictions() {
+	public function applyRestrictions(): void {
 		global $smwgQMaxSize, $smwgQMaxDepth, $smwgQConceptMaxSize, $smwgQConceptMaxDepth;
 
 		if ( $this->description !== null ) {

@@ -40,7 +40,7 @@ class Sequence {
 	/**
 	 * @since 3.0
 	 */
-	public function tablePrefix( $tablePrefix = '' ) {
+	public function tablePrefix( $tablePrefix = '' ): void {
 		$this->tablePrefix = $tablePrefix;
 	}
 

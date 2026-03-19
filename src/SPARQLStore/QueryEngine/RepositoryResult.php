@@ -96,7 +96,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @param $errorCode integer error code
 	 */
-	public function setErrorCode( $errorCode ) {
+	public function setErrorCode( $errorCode ): void {
 		if ( $errorCode != self::ERROR_NOERROR ) {
 			$this->errorCode = $errorCode;
 		}

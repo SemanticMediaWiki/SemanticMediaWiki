@@ -288,7 +288,7 @@ class TimeValue extends DataValue {
 	/**
 	 * Initialise data from an anticipated JD value.
 	 */
-	private function setDateFromJD( $components ) {
+	private function setDateFromJD( $components ): void {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
 		$era = $components->get( 'era' );

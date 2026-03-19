@@ -54,7 +54,7 @@ class LinkBatch {
 	/**
 	 * @since 3.1
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		self::$instance = null;
 	}
 
@@ -63,7 +63,7 @@ class LinkBatch {
 	 *
 	 * @param string $caller
 	 */
-	public function setCaller( $caller ) {
+	public function setCaller( $caller ): void {
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch();
 		}
@@ -76,7 +76,7 @@ class LinkBatch {
 	 *
 	 * @param DataItem[] $dataItems
 	 */
-	public function addFromList( array $dataItems ) {
+	public function addFromList( array $dataItems ): void {
 		foreach ( $dataItems as $dataItem ) {
 			$this->add( $dataItem );
 		}
@@ -87,7 +87,7 @@ class LinkBatch {
 	 *
 	 * @param $dataItem
 	 */
-	public function add( $dataItem ) {
+	public function add( $dataItem ): void {
 		if ( !$dataItem instanceof DIWikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
 			return;
 		}
@@ -125,7 +125,7 @@ class LinkBatch {
 	/**
 	 * @since 3.1
 	 */
-	public function execute() {
+	public function execute(): void {
 		if ( $this->linkBatch === null ) {
 			$this->linkBatch = MediaWikiServices::getInstance()->getLinkBatchFactory()->newLinkBatch();
 		}

@@ -30,7 +30,7 @@ class JobFactory {
 	 *
 	 * @param array $jobs
 	 */
-	public static function batchInsert( array $jobs ) {
+	public static function batchInsert( array $jobs ): void {
 		Job::batchInsert( $jobs );
 	}
 

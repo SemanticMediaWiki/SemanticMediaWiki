@@ -66,7 +66,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 			if ( $property instanceof Property ) {
 				$this->properties[] = $property;

@@ -105,7 +105,7 @@ class SimpleRowBuilder extends RowBuilder {
 	/**
 	 * @param Linker $linker
 	 */
-	public function setLinker( Linker $linker ) {
+	public function setLinker( Linker $linker ): void {
 		$this->linker = $linker;
 	}
 

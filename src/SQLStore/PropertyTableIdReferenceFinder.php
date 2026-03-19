@@ -46,7 +46,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @param booelan $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = $isCapitalLinks;
 	}
 

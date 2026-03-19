@@ -93,7 +93,7 @@ class IdCacheManager {
 	 * @param int $id
 	 * @param string $sortkey
 	 */
-	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
+	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ): void {
 		if ( is_array( $title ) ) {
 			throw new RuntimeException( "Expected a string instead an array was detected!" );
 		}
@@ -129,7 +129,7 @@ class IdCacheManager {
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
-	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
+	public function deleteCache( $title, $namespace, $interwiki, $subobject ): void {
 		$hash = $this->computeSha1(
 			[ $title, (int)$namespace, $interwiki, $subobject ]
 		);
@@ -147,7 +147,7 @@ class IdCacheManager {
 	 *
 	 * @param string $id
 	 */
-	public function deleteCacheById( $id ) {
+	public function deleteCacheById( $id ): void {
 		$dataItem = $this->caches['entity.lookup']->fetch( $id );
 
 		if ( !$dataItem instanceof DIWikiPage ) {

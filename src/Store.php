@@ -268,7 +268,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param DIWikiPage $di
 	 */
-	public function clearData( DIWikiPage $di ) {
+	public function clearData( DIWikiPage $di ): void {
 		$this->updateData( new SemanticData( $di ) );
 	}
 
@@ -528,7 +528,7 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @since 2.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}
@@ -550,7 +550,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param ConnectionManager $connectionManager
 	 */
-	public function setConnectionManager( ConnectionManager $connectionManager ) {
+	public function setConnectionManager( ConnectionManager $connectionManager ): void {
 		$this->connectionManager = $connectionManager;
 	}
 

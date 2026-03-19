@@ -72,7 +72,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function registerFormat( $formatName, $class ) {
+	public function registerFormat( $formatName, $class ): void {
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
@@ -96,7 +96,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function registerAliases( $formatName, array $aliases ) {
+	public function registerAliases( $formatName, array $aliases ): void {
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}

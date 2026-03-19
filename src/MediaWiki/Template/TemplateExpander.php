@@ -40,7 +40,7 @@ class TemplateExpander {
 	 *
 	 * @param Title $title
 	 */
-	public function setTitle( Title $title ) {
+	public function setTitle( Title $title ): void {
 		$this->title = $title;
 	}
 

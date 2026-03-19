@@ -58,7 +58,7 @@ class GroupFormatter {
 	 *
 	 * @param bool $showGroup
 	 */
-	public function showGroup( $showGroup ) {
+	public function showGroup( $showGroup ): void {
 		$this->showGroup = $showGroup;
 	}
 
@@ -85,7 +85,7 @@ class GroupFormatter {
 	 *
 	 * @param array &$properties
 	 */
-	public function findGroupMembership( array &$properties ) {
+	public function findGroupMembership( array &$properties ): void {
 		$list = $this->prepareListFromSchema(
 			$this->schemaFinder->getSchemaListByType( 'PROPERTY_GROUP_SCHEMA' )
 		);

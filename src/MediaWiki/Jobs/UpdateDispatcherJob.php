@@ -110,7 +110,7 @@ class UpdateDispatcherJob extends Job {
 		return true;
 	}
 
-	private function initServices() {
+	private function initServices(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$this->setStore( $applicationFactory->getStore() );
 
@@ -121,7 +121,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function dispatch_by_id( $id ) {
+	private function dispatch_by_id( $id ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$queryDependencyLinksStoreFactory = $applicationFactory->singleton( 'QueryDependencyLinksStoreFactory' );
 
@@ -157,7 +157,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function create_secondary_dispatch_run( $jobs ) {
+	private function create_secondary_dispatch_run( $jobs ): void {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$origin = $this->getTitle()->getPrefixedText();
 
@@ -179,7 +179,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function dispatchUpdateForSubject( DIWikiPage $subject ) {
+	private function dispatchUpdateForSubject( DIWikiPage $subject ): void {
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			$this->addUpdateJobsForProperties(
 				$this->store->getProperties( $subject )
@@ -193,13 +193,13 @@ class UpdateDispatcherJob extends Job {
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function dispatchUpdateForProperty( DIProperty $property ) {
+	private function dispatchUpdateForProperty( DIProperty $property ): void {
 		$this->addUpdateJobsForProperties( [ $property ] );
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function addUpdateJobsForProperties( array $properties ) {
+	private function addUpdateJobsForProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 
 			if ( !$property->isUserDefined() ) {
@@ -276,7 +276,7 @@ class UpdateDispatcherJob extends Job {
 		return $list;
 	}
 
-	private function addUpdateJobsForSubjectsThatContainTypeError() {
+	private function addUpdateJobsForSubjectsThatContainTypeError(): void {
 		$subjects = $this->store->getPropertySubjects(
 			new DIProperty( DIProperty::TYPE_ERROR ),
 			DIWikiPage::newFromTitle( $this->getTitle() )
@@ -287,7 +287,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function addUpdateJobsFromDeserializedSemanticData() {
+	private function addUpdateJobsFromDeserializedSemanticData(): void {
 		if ( !$this->hasParameter( 'semanticData' ) ) {
 			return;
 		}
@@ -301,7 +301,7 @@ class UpdateDispatcherJob extends Job {
 		);
 	}
 
-	private function add_job( $subjects = [] ) {
+	private function add_job( $subjects = [] ): void {
 		foreach ( $subjects as $subject ) {
 
 			// Not trying to get the title here as it is waste of resources

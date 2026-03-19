@@ -33,7 +33,7 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		$dataItem = new DIBlob(
 			DIBlob::normalize( $dataItem->getString() )
 		);

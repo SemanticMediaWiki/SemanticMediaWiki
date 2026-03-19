@@ -146,7 +146,7 @@ class PageInfoProvider implements PageInfo {
 	/**
 	 * @since 4.0
 	 */
-	public function setRevisionLookup( RevisionLookup $revisionLookup ) {
+	public function setRevisionLookup( RevisionLookup $revisionLookup ): void {
 		$this->revisionLookup = $revisionLookup;
 	}
 

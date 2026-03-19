@@ -31,7 +31,7 @@ class FormatProfileAnnotator extends ProfileAnnotatorDecorator {
 		$this->addQueryFormat( $this->format );
 	}
 
-	private function addQueryFormat( $format ) {
+	private function addQueryFormat( $format ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKFO' ),
 			new Blob( $format )

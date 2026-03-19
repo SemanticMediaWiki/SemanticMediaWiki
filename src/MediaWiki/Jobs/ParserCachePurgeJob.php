@@ -32,7 +32,7 @@ class ParserCachePurgeJob extends Job {
 	 *
 	 * @param WikiPage|null $page
 	 */
-	public function updateParserCache( ?WikiPage $page = null ) {
+	public function updateParserCache( ?WikiPage $page = null ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$logger = $applicationFactory->getMediaWikiLogger();
 

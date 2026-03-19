@@ -25,7 +25,7 @@ class ReplicationDataTruncator {
 	 *
 	 * @param array $propertyExemptionList
 	 */
-	public function setPropertyExemptionList( array $propertyExemptionList ) {
+	public function setPropertyExemptionList( array $propertyExemptionList ): void {
 		$this->propertyExemptionList = str_replace( ' ', '_', $propertyExemptionList );
 	}
 

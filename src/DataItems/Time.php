@@ -593,7 +593,7 @@ class Time extends DataItem implements CalendarModel {
 		return $this->m_day > self::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model );
 	}
 
-	private function setPrecisionLevelBy( $month, $day, $hour ) {
+	private function setPrecisionLevelBy( $month, $day, $hour ): void {
 		if ( $month === false ) {
 			$this->m_precision = self::PREC_Y;
 		} elseif ( $day === false ) {

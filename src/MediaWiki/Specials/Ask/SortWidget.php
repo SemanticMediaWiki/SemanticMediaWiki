@@ -30,7 +30,7 @@ class SortWidget {
 	 *
 	 * @param bool $sortingSupport
 	 */
-	public static function setSortingSupport( $sortingSupport ) {
+	public static function setSortingSupport( $sortingSupport ): void {
 		self::$sortingSupport = (bool)$sortingSupport;
 	}
 
@@ -39,7 +39,7 @@ class SortWidget {
 	 *
 	 * @param bool $randSortingSupport
 	 */
-	public static function setRandSortingSupport( $randSortingSupport ) {
+	public static function setRandSortingSupport( $randSortingSupport ): void {
 		self::$randSortingSupport = (bool)$randSortingSupport;
 	}
 

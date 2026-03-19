@@ -39,7 +39,7 @@ class MonolingualTextLookup {
 	/**
 	 * @since 3.1
 	 */
-	public function clearLookupCache() {
+	public function clearLookupCache(): void {
 		self::$lookupCache = [];
 	}
 
@@ -48,7 +48,7 @@ class MonolingualTextLookup {
 	 *
 	 * @param string $caller
 	 */
-	public function setCaller( $caller ) {
+	public function setCaller( $caller ): void {
 		$this->caller = $caller;
 	}
 

@@ -69,7 +69,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setUser( $user = null ) {
+	public function setUser( $user = null ): void {
 		$this->user = $user;
 	}
 
@@ -127,7 +127,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 	/**
 	 * @param int $id
 	 */
-	private function doDispose( $id ) {
+	private function doDispose( $id ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$entityIdDisposerJob = $applicationFactory->newJobFactory()->newEntityIdDisposerJob(
@@ -289,7 +289,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return [ $output, $error ];
 	}
 
-	private function addFulltextInfo( $id, &$references ) {
+	private function addFulltextInfo( $id, &$references ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( !$connection->tableExists( SQLStore::FT_SEARCH_TABLE, __METHOD__ ) ) {

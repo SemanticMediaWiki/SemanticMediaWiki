@@ -61,7 +61,7 @@ class Conjunction extends Description {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 
 		if ( !( $description instanceof ThingDescription ) ) {

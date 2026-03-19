@@ -31,7 +31,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param bool $autoCommitFlag
 	 */
-	public function setAutoCommitFlag( $autoCommitFlag ) {
+	public function setAutoCommitFlag( $autoCommitFlag ): void {
 		$this->autoCommitFlag = (bool)$autoCommitFlag;
 	}
 
@@ -40,7 +40,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function create( $tableName ) {
+	public function create( $tableName ): void {
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}
@@ -57,7 +57,7 @@ class TemporaryTableBuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function drop( $tableName ) {
+	public function drop( $tableName ): void {
 		if ( $this->autoCommitFlag ) {
 			$this->connection->setFlag( Database::AUTO_COMMIT );
 		}

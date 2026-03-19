@@ -51,7 +51,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @param Schema|SchemaList $schema
 	 */
-	public function add( $schema ) {
+	public function add( $schema ): void {
 		if ( $schema instanceof SchemaDefinition ) {
 			$this->list[] = $schema;
 		}

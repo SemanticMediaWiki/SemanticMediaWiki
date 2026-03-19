@@ -75,14 +75,14 @@ class IntlNumberFormatter {
 	/**
 	 * @since 2.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$instance = null;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function reset() {
+	public function reset(): void {
 		$this->options->set( self::DECIMAL_SEPARATOR, false );
 		$this->options->set( self::THOUSANDS_SEPARATOR, false );
 		$this->options->set( self::USER_LANGUAGE, false );
@@ -98,7 +98,7 @@ class IntlNumberFormatter {
 	 *
 	 * @return void
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options->set( $key, $value );
 	}
 

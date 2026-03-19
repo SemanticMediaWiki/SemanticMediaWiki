@@ -365,7 +365,7 @@ class PropertySubjectsLookup {
 		return $this->dataItemHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
 	}
 
-	private function getWhereConds( $query, $dataItem ) {
+	private function getWhereConds( $query, $dataItem ): void {
 		$conds = '';
 
 		if ( $dataItem instanceof SMWDIContainer ) {

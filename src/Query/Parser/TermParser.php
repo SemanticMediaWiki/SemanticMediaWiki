@@ -191,7 +191,7 @@ class TermParser {
 		);
 	}
 
-	private function normalize_compact_form( $exp, $pattern, &$term ) {
+	private function normalize_compact_form( $exp, $pattern, &$term ): void {
 		if ( strpos( $term, "$exp:(" ) === false ) {
 			return;
 		}

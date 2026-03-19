@@ -69,7 +69,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * @param ElasticFactory $elasticFactory
 	 */
-	public function setElasticFactory( ElasticFactory $elasticFactory ) {
+	public function setElasticFactory( ElasticFactory $elasticFactory ): void {
 		$this->elasticFactory = $elasticFactory;
 	}
 
@@ -314,7 +314,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setup( $options = true ) {
+	public function setup( $options = true ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -389,7 +389,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -436,7 +436,7 @@ class ElasticStore extends SQLStore {
 	 * @see SQLStore::clear
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->indexer = null;
 		$this->queryEngine = null;

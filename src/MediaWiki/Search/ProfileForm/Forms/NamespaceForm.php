@@ -62,7 +62,7 @@ class NamespaceForm {
 	 *
 	 * @param array $activeNamespaces
 	 */
-	public function setActiveNamespaces( array $activeNamespaces ) {
+	public function setActiveNamespaces( array $activeNamespaces ): void {
 		$this->activeNamespaces = $activeNamespaces;
 	}
 
@@ -71,7 +71,7 @@ class NamespaceForm {
 	 *
 	 * @param bool $hideList
 	 */
-	public function setHideList( $hideList ) {
+	public function setHideList( $hideList ): void {
 		$this->hideList = (bool)$hideList;
 	}
 
@@ -80,7 +80,7 @@ class NamespaceForm {
 	 *
 	 * @param array $hiddenNamespaces
 	 */
-	public function setHiddenNamespaces( array $hiddenNamespaces ) {
+	public function setHiddenNamespaces( array $hiddenNamespaces ): void {
 		$this->hiddenNamespaces = $hiddenNamespaces;
 	}
 
@@ -89,7 +89,7 @@ class NamespaceForm {
 	 *
 	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -100,7 +100,7 @@ class NamespaceForm {
 	 *
 	 * @param SpecialSearch $specialSearch
 	 */
-	public function checkNamespaceEditToken( SpecialSearch $specialSearch ) {
+	public function checkNamespaceEditToken( SpecialSearch $specialSearch ): void {
 		$user = $specialSearch->getUser();
 
 		if ( !$user->isRegistered() ) {

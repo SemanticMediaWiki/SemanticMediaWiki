@@ -35,7 +35,7 @@ class ScoreSet {
 	 *
 	 * @param string|int $max_score
 	 */
-	public function max_score( $max_score ) {
+	public function max_score( $max_score ): void {
 		$this->max_score = $max_score;
 	}
 
@@ -44,7 +44,7 @@ class ScoreSet {
 	 *
 	 * @param string|int $min_score
 	 */
-	public function min_score( $min_score ) {
+	public function min_score( $min_score ): void {
 		$this->min_score = $min_score;
 	}
 
@@ -57,7 +57,7 @@ class ScoreSet {
 	 * @param WikiPage|string $hash
 	 * @param string|int $score
 	 */
-	public function addScore( $hash, $score, $pos = null ) {
+	public function addScore( $hash, $score, $pos = null ): void {
 		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}
@@ -104,7 +104,7 @@ class ScoreSet {
 	 *
 	 * @param bool $usort
 	 */
-	public function usort( $usort ) {
+	public function usort( $usort ): void {
 		if ( !$usort || $this->scores === [] ) {
 			return;
 		}

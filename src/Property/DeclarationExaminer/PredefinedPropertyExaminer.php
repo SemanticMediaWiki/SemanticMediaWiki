@@ -43,7 +43,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$this->checkGeoProperty( $property );
 	}
 
-	private function checkMessages( DIProperty $property ) {
+	private function checkMessages( DIProperty $property ): void {
 		if ( Message::exists( 'smw-property-introductory-message-special' ) ) {
 			$this->messages[] = [ 'info', 'smw-property-introductory-message-special', $property->getLabel() ];
 		}
@@ -88,7 +88,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'plain', '_merge' => $messages ];
 	}
 
-	private function checkTypeDeclaration( DIProperty $property ) {
+	private function checkTypeDeclaration( DIProperty $property ): void {
 		$semanticData = $this->getSemanticData();
 
 		if ( !$semanticData->hasProperty( new DIProperty( '_TYPE' ) ) ) {
@@ -119,7 +119,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkGeoProperty( DIProperty $property ) {
+	private function checkGeoProperty( DIProperty $property ): void {
 		if ( $property->getKey() !== '_geo' || ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			return;
 		}

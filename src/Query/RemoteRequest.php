@@ -56,7 +56,7 @@ class RemoteRequest implements QueryEngine {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$isConnected = null;
 	}
 

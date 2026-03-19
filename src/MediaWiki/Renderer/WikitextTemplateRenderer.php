@@ -26,7 +26,7 @@ class WikitextTemplateRenderer {
 	 * @param string $field
 	 * @param mixed $value
 	 */
-	public function addField( $field, $value ) {
+	public function addField( $field, $value ): void {
 		$this->fields[$field] = $value;
 	}
 
@@ -35,7 +35,7 @@ class WikitextTemplateRenderer {
 	 *
 	 * @param string $templateName
 	 */
-	public function packFieldsForTemplate( $templateName ) {
+	public function packFieldsForTemplate( $templateName ): void {
 		$this->template .= '{{' . $templateName;
 
 		foreach ( $this->fields as $key => $value ) {

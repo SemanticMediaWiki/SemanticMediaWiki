@@ -42,7 +42,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 */
-	public function setLocalConnectionConf( array $localConnectionConf ) {
+	public function setLocalConnectionConf( array $localConnectionConf ): void {
 		$this->localConnectionConf = $localConnectionConf;
 	}
 
@@ -77,7 +77,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 2.1
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		if ( $this->connection !== null ) {
 			$this->connection->releaseConnection();
 		}

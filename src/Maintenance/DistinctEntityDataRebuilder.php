@@ -65,7 +65,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$this->options = $options;
 	}
 
@@ -74,7 +74,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @param MessageReporter $reporter
 	 */
-	public function setMessageReporter( MessageReporter $reporter ) {
+	public function setMessageReporter( MessageReporter $reporter ): void {
 		$this->reporter = $reporter;
 	}
 
@@ -83,7 +83,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @param ExceptionFileLogger $exceptionFileLogger
 	 */
-	public function setExceptionFileLogger( ExceptionFileLogger $exceptionFileLogger ) {
+	public function setExceptionFileLogger( ExceptionFileLogger $exceptionFileLogger ): void {
 		$this->exceptionFileLogger = $exceptionFileLogger;
 	}
 
@@ -187,7 +187,7 @@ class DistinctEntityDataRebuilder {
 		}
 	}
 
-	private function findFilters() {
+	private function findFilters(): void {
 		$this->filters = [];
 
 		if ( $this->options->has( 'categories' ) ) {
@@ -293,7 +293,7 @@ class DistinctEntityDataRebuilder {
 		return $p;
 	}
 
-	private function reportMessage( $message, $output = true ) {
+	private function reportMessage( $message, $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

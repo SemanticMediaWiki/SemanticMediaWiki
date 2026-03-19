@@ -24,7 +24,7 @@ class Parameters {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->parameters[$key] = $value;
 	}
 
@@ -34,7 +34,7 @@ class Parameters {
 	 * @param string $key
 	 * @param array $value
 	 */
-	public function merge( $key, array $value ) {
+	public function merge( $key, array $value ): void {
 		if ( !isset( $this->parameters[$key] ) ) {
 			$this->parameters[$key] = [];
 		}

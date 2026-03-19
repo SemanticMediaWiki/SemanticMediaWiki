@@ -39,7 +39,7 @@ class DependencyLinksValidator {
 	 *
 	 * @param bool $checkDependencies
 	 */
-	public function setCheckDependencies( $checkDependencies ) {
+	public function setCheckDependencies( $checkDependencies ): void {
 		$this->checkDependencies = (bool)$checkDependencies;
 	}
 

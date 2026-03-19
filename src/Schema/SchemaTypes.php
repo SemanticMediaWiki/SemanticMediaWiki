@@ -97,7 +97,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @param array $schemaTypes
 	 */
-	public function registerSchemaTypes( array $schemaTypes = [] ) {
+	public function registerSchemaTypes( array $schemaTypes = [] ): void {
 		if ( $this->onRegisterSchemaTypes ) {
 			return;
 		}
@@ -127,7 +127,7 @@ class SchemaTypes implements JsonSerializable {
 	 *
 	 * @throws SchemaTypeAlreadyExistsException
 	 */
-	public function registerSchemaType( string $type, array $params ) {
+	public function registerSchemaType( string $type, array $params ): void {
 		if ( isset( $this->schemaTypes[$type] ) ) {
 			throw new SchemaTypeAlreadyExistsException( $type );
 		}

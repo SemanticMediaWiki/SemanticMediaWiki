@@ -69,7 +69,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 

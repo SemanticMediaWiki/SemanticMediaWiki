@@ -103,7 +103,7 @@ class DataUpdater {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -112,7 +112,7 @@ class DataUpdater {
 	 *
 	 * @param bool $isChangeProp
 	 */
-	public function isChangeProp( $isChangeProp ) {
+	public function isChangeProp( $isChangeProp ): void {
 		$this->isChangeProp = (bool)$isChangeProp;
 	}
 
@@ -121,7 +121,7 @@ class DataUpdater {
 	 *
 	 * @param bool $isDeferrableUpdate
 	 */
-	public function isDeferrableUpdate( $isDeferrableUpdate ) {
+	public function isDeferrableUpdate( $isDeferrableUpdate ): void {
 		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
 	}
 
@@ -130,7 +130,7 @@ class DataUpdater {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -148,7 +148,7 @@ class DataUpdater {
 	 *
 	 * @param bool $canCreateUpdateJob
 	 */
-	public function canCreateUpdateJob( $canCreateUpdateJob ) {
+	public function canCreateUpdateJob( $canCreateUpdateJob ): void {
 		$this->canCreateUpdateJob = (bool)$canCreateUpdateJob;
 	}
 
@@ -388,7 +388,7 @@ class DataUpdater {
 	 * @note Comparison must happen *before* the storage update;
 	 * even finding uses of a property fails after its type changed.
 	 */
-	private function checkChangePropagation() {
+	private function checkChangePropagation(): void {
 		// canCreateUpdateJob: if it is not enabled there's not much to do here
 		// isChangeProp: means the update is part of the ChangePropagationDispatchJob
 		// therefore skip

@@ -79,7 +79,7 @@ class ValueListBuilder {
 	 *
 	 * @param int $pagingLimit
 	 */
-	public function setPagingLimit( $pagingLimit ) {
+	public function setPagingLimit( $pagingLimit ): void {
 		$this->pagingLimit = $pagingLimit;
 	}
 
@@ -88,7 +88,7 @@ class ValueListBuilder {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -97,7 +97,7 @@ class ValueListBuilder {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -106,7 +106,7 @@ class ValueListBuilder {
 	 *
 	 * @param bool $localTimeOffset
 	 */
-	public function applyLocalTimeOffset( $localTimeOffset ) {
+	public function applyLocalTimeOffset( $localTimeOffset ): void {
 		$this->localTimeOffset = $localTimeOffset;
 	}
 
@@ -115,7 +115,7 @@ class ValueListBuilder {
 	 *
 	 * @param int $maxPropertyValues
 	 */
-	public function setMaxPropertyValues( $maxPropertyValues ) {
+	public function setMaxPropertyValues( $maxPropertyValues ): void {
 		$this->maxPropertyValues = $maxPropertyValues;
 	}
 

@@ -130,7 +130,7 @@ class StubSemanticData extends SemanticData {
 	 * @param int $sid
 	 * @param $sequenceMap
 	 */
-	public function setSequenceMap( $sid, $sequenceMap ) {
+	public function setSequenceMap( $sid, $sequenceMap ): void {
 		$this->sequenceMap = is_array( $sequenceMap ) ? $sequenceMap : [];
 	}
 
@@ -140,7 +140,7 @@ class StubSemanticData extends SemanticData {
 	 * @param int $sid
 	 * @param $countMap
 	 */
-	public function setCountMap( $sid, $countMap ) {
+	public function setCountMap( $sid, $countMap ): void {
 		$this->countMap = is_array( $countMap ) ? $countMap : [];
 	}
 
@@ -268,7 +268,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 */
-	public function removePropertyObjectValue( DIProperty $property, DataItem $dataItem ) {
+	public function removePropertyObjectValue( DIProperty $property, DataItem $dataItem ): void {
 		$this->unstubProperties();
 		$this->getPropertyValues( $property );
 		parent::removePropertyObjectValue( $property, $dataItem );
@@ -311,7 +311,7 @@ class StubSemanticData extends SemanticData {
 	 * @param string $propertyKey
 	 * @param array|string $valueKeys
 	 */
-	public function addPropertyStubValue( $propertyKey, $valueKeys ) {
+	public function addPropertyStubValue( $propertyKey, $valueKeys ): void {
 		$this->mStubPropVals[$propertyKey][] = $valueKeys;
 	}
 
@@ -320,7 +320,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @since 1.8
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->mStubPropVals = [];
 		parent::clear();
 	}
@@ -380,7 +380,7 @@ class StubSemanticData extends SemanticData {
 		return $this->store->getObjectIds()->isRedirect( $this->mSubject );
 	}
 
-	private function unstubPropertyValues( DIProperty $property ) {
+	private function unstubPropertyValues( DIProperty $property ): void {
 		// Not catching exception here; the
 		$this->unstubProperty( $property->getKey(), $property );
 		$propertyTypeId = $property->findPropertyTypeID();
@@ -406,7 +406,7 @@ class StubSemanticData extends SemanticData {
 		unset( $this->mStubPropVals[$property->getKey()] );
 	}
 
-	private function initSubSemanticData( DIProperty $property ) {
+	private function initSubSemanticData( DIProperty $property ): void {
 		foreach ( $this->getPropertyValues( $property ) as $value ) {
 
 			if ( !$value instanceof DIWikiPage || $value->getSubobjectName() === '' ) {

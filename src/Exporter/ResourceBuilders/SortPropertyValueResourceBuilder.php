@@ -38,7 +38,7 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 *
 	 * @param bool $enabledCollationField
 	 */
-	public function enabledCollationField( $enabledCollationField ) {
+	public function enabledCollationField( $enabledCollationField ): void {
 		$this->enabledCollationField = (bool)$enabledCollationField;
 	}
 
@@ -47,7 +47,7 @@ class SortPropertyValueResourceBuilder extends PredefinedPropertyValueResourceBu
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		if ( !$dataItem instanceof DIBlob ) {
 			$dataItem = new DIBlob( $dataItem->getSortKey() );
 		}

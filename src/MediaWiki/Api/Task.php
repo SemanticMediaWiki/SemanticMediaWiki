@@ -34,7 +34,7 @@ class Task extends ApiBase {
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		$parameters = json_decode(

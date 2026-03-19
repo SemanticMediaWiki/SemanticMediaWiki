@@ -50,7 +50,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @param int $queryFeatures
 	 */
-	public function setQFeatures( $queryFeatures ) {
+	public function setQFeatures( $queryFeatures ): void {
 		$this->queryFeatures = $queryFeatures;
 	}
 
@@ -59,7 +59,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @param int $conceptFeatures
 	 */
-	public function setQConceptFeatures( $conceptFeatures ) {
+	public function setQConceptFeatures( $conceptFeatures ): void {
 		$this->conceptFeatures = $conceptFeatures;
 	}
 

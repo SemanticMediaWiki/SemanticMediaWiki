@@ -40,7 +40,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$updateList = [];
 	}
 
@@ -66,7 +66,7 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		foreach ( self::$updateList as $sid => $dependencyList ) {
 
 			if ( $dependencyList === [] ) {
@@ -83,7 +83,7 @@ class DependencyLinksTableUpdater {
 	 *
 	 * @param array $deleteIdList
 	 */
-	public function deleteDependenciesFromList( array $deleteIdList ) {
+	public function deleteDependenciesFromList( array $deleteIdList ): void {
 		$this->logger->info(
 			[ 'QueryDependency', 'Delete dependencies: {list}' ],
 			[ 'method' => __METHOD__, 'role' => 'developer', 'list' => json_encode( $deleteIdList ) ]

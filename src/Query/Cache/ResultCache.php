@@ -129,7 +129,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param string|int $cacheKeyExtension
 	 */
-	public function setCacheKeyExtension( $cacheKeyExtension ) {
+	public function setCacheKeyExtension( $cacheKeyExtension ): void {
 		if ( is_array( $cacheKeyExtension ) ) {
 			$cacheKeyExtension = implode( '|', $cacheKeyExtension );
 		}
@@ -144,7 +144,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function setLogger( LoggerInterface $logger ) {
+	public function setLogger( LoggerInterface $logger ): void {
 		$this->logger = $logger;
 	}
 
@@ -153,7 +153,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param QueryEngine $queryEngine
 	 */
-	public function setQueryEngine( QueryEngine $queryEngine ) {
+	public function setQueryEngine( QueryEngine $queryEngine ): void {
 		$this->queryEngine = $queryEngine;
 	}
 
@@ -169,14 +169,14 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	/**
 	 * @since 2.5
 	 */
-	public function disableCache() {
+	public function disableCache(): void {
 		$this->enabledCache = false;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function recordStats() {
+	public function recordStats(): void {
 		$this->cacheStats->recordStats();
 	}
 
@@ -185,7 +185,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @param int|bool $nonEmbeddedCacheLifetime
 	 */
-	public function setNonEmbeddedCacheLifetime( $nonEmbeddedCacheLifetime ) {
+	public function setNonEmbeddedCacheLifetime( $nonEmbeddedCacheLifetime ): void {
 		$this->nonEmbeddedCacheLifetime = $nonEmbeddedCacheLifetime;
 	}
 
@@ -241,7 +241,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 * @param WikiPage|array $items
 	 * @param string $context
 	 */
-	public function invalidateCache( $items, $context = '' ) {
+	public function invalidateCache( $items, $context = '' ): void {
 		if ( !$this->blobStore->canUse() ) {
 			return;
 		}
@@ -353,7 +353,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addQueryResultToCache( $queryResult, $queryId, $container, $query ) {
+	private function addQueryResultToCache( $queryResult, $queryId, $container, $query ): void {
 		if ( ( $context = $query->getOption( Query::PROC_CONTEXT ) ) === false ) {
 			$context = 'Undefined';
 		}
@@ -427,7 +427,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return $queryResult;
 	}
 
-	private function addToLinkedList( $contextPage, $queryId ) {
+	private function addToLinkedList( $contextPage, $queryId ): void {
 		// Ensure that without QueryDependencyLinksStore being enabled recorded
 		// subjects related to a query can be discoverable and purged separately
 		$container = $this->blobStore->read(
@@ -456,7 +456,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return md5( $subject . self::VERSION . $this->cacheKeyExtension );
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

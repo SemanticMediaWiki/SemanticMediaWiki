@@ -51,7 +51,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	public function setTitle( $title ) {
+	public function setTitle( $title ): void {
 		$this->title = $title;
 	}
 

@@ -68,7 +68,7 @@ class Container extends DataItem {
 	 *
 	 * @param string $sortKey
 	 */
-	public function setSortKey( $sortKey ) {
+	public function setSortKey( $sortKey ): void {
 		$this->m_semanticData->addPropertyObjectValue(
 			new Property( '_SKEY' ),
 			new Blob( $this->m_semanticData->getSubject()->getSortKey() . '#' . $sortKey )

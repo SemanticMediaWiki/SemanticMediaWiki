@@ -47,7 +47,7 @@ class PropertyStatisticsRebuildJob extends Job {
 		return true;
 	}
 
-	public function rebuild() {
+	public function rebuild(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 

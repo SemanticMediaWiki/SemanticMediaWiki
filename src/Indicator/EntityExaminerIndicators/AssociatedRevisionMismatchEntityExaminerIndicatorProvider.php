@@ -71,7 +71,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -178,7 +178,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return $this->indicators !== [];
 	}
 
-	private function buildHTML( $latestRevID, $associatedRev, $options ) {
+	private function buildHTML( $latestRevID, $associatedRev, $options ): void {
 		$content = '';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
 

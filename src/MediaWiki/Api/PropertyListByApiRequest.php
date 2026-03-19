@@ -72,7 +72,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param int $limit
 	 */
-	public function setLimit( $limit ) {
+	public function setLimit( $limit ): void {
 		$this->limit = (int)$limit;
 	}
 
@@ -81,7 +81,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param bool $listOnly
 	 */
-	public function setListOnly( $listOnly ) {
+	public function setListOnly( $listOnly ): void {
 		$this->listOnly = (bool)$listOnly;
 	}
 
@@ -90,7 +90,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = (string)$languageCode;
 	}
 
@@ -221,7 +221,7 @@ class PropertyListByApiRequest {
 		return $requestOptions;
 	}
 
-	private function addPropertyToList( array $value ) {
+	private function addPropertyToList( array $value ): void {
 		if ( $value === [] || !$value[0] instanceof DIProperty ) {
 			return;
 		}
@@ -262,7 +262,7 @@ class PropertyListByApiRequest {
 		];
 	}
 
-	private function matchPropertiesToPreferredLabelBy( $label ) {
+	private function matchPropertiesToPreferredLabelBy( $label ): void {
 		$propertyLabelFinder = ApplicationFactory::getInstance()->getPropertyLabelFinder();
 
 		// Use the proximity search on a text field

@@ -36,7 +36,7 @@ class CachingTermsLookup extends TermsLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->quick_cache = [];
 	}
 

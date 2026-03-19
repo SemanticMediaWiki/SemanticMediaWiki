@@ -40,14 +40,14 @@ class PropertyStatisticsRebuilder {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function rebuild() {
+	public function rebuild(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(

@@ -35,7 +35,7 @@ class SpecialBrowse extends SpecialPage {
 	 *
 	 * @param string $query string
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$this->setHeaders();
 		$webRequest = $this->getRequest();
 

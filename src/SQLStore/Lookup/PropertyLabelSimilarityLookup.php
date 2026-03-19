@@ -53,7 +53,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return bool
 	 */
-	public function setThreshold( $threshold ) {
+	public function setThreshold( $threshold ): void {
 		$this->threshold = $threshold;
 	}
 
@@ -65,7 +65,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @param string $exemptionProperty
 	 */
-	public function setExemptionProperty( $exemptionProperty ) {
+	public function setExemptionProperty( $exemptionProperty ): void {
 		if ( $exemptionProperty === '' ) {
 			return;
 		}

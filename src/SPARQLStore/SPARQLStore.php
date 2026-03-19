@@ -126,7 +126,7 @@ class SPARQLStore extends Store {
 	 * @see Store::deleteSubject()
 	 * @since 1.6
 	 */
-	public function deleteSubject( Title $subject ) {
+	public function deleteSubject( Title $subject ): void {
 		$this->doSparqlDataDelete( DIWikiPage::newFromTitle( $subject ) );
 		$this->baseStore->deleteSubject( $subject );
 	}
@@ -135,7 +135,7 @@ class SPARQLStore extends Store {
 	 * @see Store::changeTitle()
 	 * @since 1.6
 	 */
-	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ) {
+	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ): void {
 		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
 		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getInstance()->newExpElement( $oldWikiPage );
@@ -185,7 +185,7 @@ class SPARQLStore extends Store {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doSparqlDataUpdate( SemanticData $semanticData ) {
+	public function doSparqlDataUpdate( SemanticData $semanticData ): void {
 		$connection = $this->getConnection( 'sparql' );
 
 		if (
@@ -219,7 +219,7 @@ class SPARQLStore extends Store {
 	 * @param SemanticData $semanticData
 	 * @param TurtleTriplesBuilder $turtleTriplesBuilder
 	 */
-	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ) {
+	private function doSparqlFlatDataUpdate( SemanticData $semanticData, TurtleTriplesBuilder $turtleTriplesBuilder ): void {
 		$turtleTriplesBuilder->doBuildTriplesFrom( $semanticData );
 
 		if ( !$turtleTriplesBuilder->hasTriples() ) {
@@ -385,7 +385,7 @@ class SPARQLStore extends Store {
 	 * @see Store::setup()
 	 * @since 1.8
 	 */
-	public function setup( $options = true ) {
+	public function setup( $options = true ): void {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 
 		$cliMsgFormatter = new CliMsgFormatter();
@@ -429,7 +429,7 @@ class SPARQLStore extends Store {
 	 * @see Store::drop()
 	 * @since 1.6
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): void {
 		$this->baseStore->setMessageReporter( $this->messageReporter );
 		$this->baseStore->drop( $verbose );
 		$this->getConnection()->deleteAll();
@@ -476,7 +476,7 @@ class SPARQLStore extends Store {
 	/**
 	 * @since  1.9.2
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->baseStore->clear();
 	}
 

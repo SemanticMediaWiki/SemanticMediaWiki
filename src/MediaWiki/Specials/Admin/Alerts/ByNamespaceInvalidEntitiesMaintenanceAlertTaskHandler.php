@@ -32,7 +32,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	 *
 	 * @param array $namespacesWithSemanticLinks
 	 */
-	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ): void {
 		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 

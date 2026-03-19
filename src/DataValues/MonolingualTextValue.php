@@ -67,7 +67,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param Property[] $properties
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		// Keep the interface while the properties for this type
 		// are fixed.
 	}
@@ -75,7 +75,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @see AbstractMultiValue::getProperties
 	 */
-	public function getProperties() {
+	public function getProperties(): void {
 		self::$properties;
 	}
 

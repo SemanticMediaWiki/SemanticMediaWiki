@@ -67,7 +67,7 @@ class TableSchemaManager {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -92,7 +92,7 @@ class TableSchemaManager {
 	 *
 	 * @param int $featureFlags
 	 */
-	public function setFeatureFlags( $featureFlags ) {
+	public function setFeatureFlags( $featureFlags ): void {
 		$this->featureFlags = $featureFlags;
 	}
 
@@ -396,7 +396,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( ?Table $table = null ) {
+	private function addTable( ?Table $table = null ): void {
 		if ( $table === null ) {
 			return;
 		}

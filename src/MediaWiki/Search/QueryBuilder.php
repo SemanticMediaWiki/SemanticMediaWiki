@@ -76,7 +76,7 @@ class QueryBuilder {
 	 * @param Query|null $query
 	 * @param array $searchableNamespaces
 	 */
-	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ) {
+	public function addNamespaceCondition( ?Query $query = null, $searchableNamespaces = [] ): void {
 		if ( $query === null ) {
 			return;
 		}
@@ -104,7 +104,7 @@ class QueryBuilder {
 	 *
 	 * @param Query|null $query
 	 */
-	public function addSort( ?Query $query = null ) {
+	public function addSort( ?Query $query = null ): void {
 		if ( $query === null ) {
 			return;
 		}

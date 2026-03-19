@@ -61,7 +61,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -70,7 +70,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param bool $reportVerbose
 	 */
-	public function reportVerbose( $reportVerbose ) {
+	public function reportVerbose( $reportVerbose ): void {
 		$this->reportVerbose = (bool)$reportVerbose;
 	}
 
@@ -79,7 +79,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param bool $optimization
 	 */
-	public function requestOptimization( $optimization ) {
+	public function requestOptimization( $optimization ): void {
 		$this->optimization = (bool)$optimization;
 	}
 
@@ -116,7 +116,7 @@ class SearchTableRebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function flushTable() {
+	public function flushTable(): void {
 		if ( $this->searchTableUpdater->isEnabled() ) {
 			$this->searchTableUpdater->flushTable();
 		}
@@ -151,7 +151,7 @@ class SearchTableRebuilder {
 	 *
 	 * @param string $tableName
 	 */
-	public function rebuildByTable( $tableName ) {
+	public function rebuildByTable( $tableName ): void {
 		foreach ( $this->searchTableUpdater->getPropertyTables() as $proptable ) {
 			if ( $proptable->getName() === $tableName && $this->getSearchTable()->isValidByType( $proptable->getDiType() ) ) {
 				$this->doRebuildByPropertyTable( $proptable );
@@ -185,7 +185,7 @@ class SearchTableRebuilder {
 		return true;
 	}
 
-	private function doRebuild() {
+	private function doRebuild(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$propertyTables = [];
 
@@ -351,7 +351,7 @@ class SearchTableRebuilder {
 		$this->reportMessage( "\n" );
 	}
 
-	private function reportMessage( $message, $verbose = true ) {
+	private function reportMessage( $message, $verbose = true ): void {
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( $message );
 		}

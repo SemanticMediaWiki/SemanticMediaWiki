@@ -51,7 +51,7 @@ class ClassDescription extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubcategoryDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubcategoryDepth'];
 		}
@@ -92,14 +92,14 @@ class ClassDescription extends Description {
 	 *
 	 * @param WikiPage $dataItem
 	 */
-	public function addClass( WikiPage $dataItem ) {
+	public function addClass( WikiPage $dataItem ): void {
 		$this->m_diWikiPages[] = $dataItem;
 	}
 
 	/**
 	 * @param ClassDescription $description
 	 */
-	public function addDescription( ClassDescription $description ) {
+	public function addDescription( ClassDescription $description ): void {
 		$this->m_diWikiPages = array_merge( $this->m_diWikiPages, $description->getCategories() );
 	}
 

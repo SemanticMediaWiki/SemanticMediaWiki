@@ -103,7 +103,7 @@ class DataRebuilder {
 	 *
 	 * @param MessageReporter $reporter
 	 */
-	public function setMessageReporter( MessageReporter $reporter ) {
+	public function setMessageReporter( MessageReporter $reporter ): void {
 		$this->reporter = $reporter;
 	}
 
@@ -112,7 +112,7 @@ class DataRebuilder {
 	 *
 	 * @param AutoRecovery $autoRecovery
 	 */
-	public function setAutoRecovery( AutoRecovery $autoRecovery ) {
+	public function setAutoRecovery( AutoRecovery $autoRecovery ): void {
 		$this->autoRecovery = $autoRecovery;
 	}
 
@@ -121,7 +121,7 @@ class DataRebuilder {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$this->options = $options;
 
 		if ( $options->has( 'server' ) ) {
@@ -447,7 +447,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function doUpdateById( &$id ) {
+	private function doUpdateById( &$id ): void {
 		if ( !$this->options->has( 'ignore-exceptions' ) ) {
 			$this->entityRebuildDispatcher->rebuild( $id );
 		} else {
@@ -568,7 +568,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function runOutdatedDisposer() {
+	private function runOutdatedDisposer(): void {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Disposal (outdated)', 3, '-', true ) . "\n"
 		);
@@ -593,7 +593,7 @@ class DataRebuilder {
 		return true;
 	}
 
-	private function write_to_file( $id ) {
+	private function write_to_file( $id ): void {
 		if ( $this->canWriteToIdFile ) {
 			file_put_contents( $this->startIdFile, "$id" );
 		}
@@ -602,7 +602,7 @@ class DataRebuilder {
 	/**
 	 * @param array $options
 	 */
-	private function setFiltersFromOptions( Options $options ) {
+	private function setFiltersFromOptions( Options $options ): void {
 		$this->filters = [];
 
 		if ( $options->has( 'categories' ) ) {
@@ -618,7 +618,7 @@ class DataRebuilder {
 		}
 	}
 
-	private function reportMessage( $message, $output = true ) {
+	private function reportMessage( $message, $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

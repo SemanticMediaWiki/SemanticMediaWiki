@@ -90,7 +90,7 @@ class ListResultBuilder {
 			$this->getTemplateCall( 'outrotemplate' );
 	}
 
-	private function prepareBuilt() {
+	private function prepareBuilt(): void {
 		$format = $this->getEffectiveFormat();
 
 		$this->configuration->setDefault(
@@ -140,7 +140,7 @@ class ListResultBuilder {
 	 * @param string|string[] $setting
 	 * @param string|null $value
 	 */
-	public function set( $setting, $value = null ) {
+	public function set( $setting, $value = null ): void {
 		$this->configuration->set( $setting, $value );
 	}
 

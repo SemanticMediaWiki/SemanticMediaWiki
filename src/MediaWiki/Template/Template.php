@@ -27,7 +27,7 @@ class Template {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function field( $key, $value ) {
+	public function field( $key, $value ): void {
 		$this->fields[$key] = $value;
 	}
 

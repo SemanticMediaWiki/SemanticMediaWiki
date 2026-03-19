@@ -53,7 +53,7 @@ class SomeProperty extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubpropertyDepth'];
 		}

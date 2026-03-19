@@ -63,7 +63,7 @@ class ListBuilder {
 	 *
 	 * @param DIProperty $property
 	 */
-	public function setProperty( DIProperty $property ) {
+	public function setProperty( DIProperty $property ): void {
 		$this->property = $property;
 	}
 
@@ -72,7 +72,7 @@ class ListBuilder {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( $isRTL ) {
+	public function isRTL( $isRTL ): void {
 		$this->isRTL = (bool)$isRTL;
 	}
 
@@ -81,7 +81,7 @@ class ListBuilder {
 	 *
 	 * @param callable $itemFormatter
 	 */
-	public function setItemFormatter( callable $itemFormatter ) {
+	public function setItemFormatter( callable $itemFormatter ): void {
 		$this->itemFormatter = $itemFormatter;
 	}
 
@@ -90,7 +90,7 @@ class ListBuilder {
 	 *
 	 * @param callable $lastItemFormatter
 	 */
-	public function setLastItemFormatter( callable $lastItemFormatter ) {
+	public function setLastItemFormatter( callable $lastItemFormatter ): void {
 		$this->lastItemFormatter = $lastItemFormatter;
 	}
 
@@ -99,7 +99,7 @@ class ListBuilder {
 	 *
 	 * @param Linker|false $linker
 	 */
-	public function setLinker( $linker ) {
+	public function setLinker( $linker ): void {
 		$this->linker = $linker;
 	}
 
@@ -108,7 +108,7 @@ class ListBuilder {
 	 *
 	 * @param int $sort
 	 */
-	public function sort( $sort ) {
+	public function sort( $sort ): void {
 		$this->sort = $sort;
 	}
 

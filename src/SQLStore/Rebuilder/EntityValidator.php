@@ -49,7 +49,7 @@ class EntityValidator {
 	 *
 	 * @param array $propertyInvalidCharacterList
 	 */
-	public function setPropertyInvalidCharacterList( array $propertyInvalidCharacterList ) {
+	public function setPropertyInvalidCharacterList( array $propertyInvalidCharacterList ): void {
 		$this->propertyInvalidCharacterList = $propertyInvalidCharacterList;
 	}
 
@@ -58,7 +58,7 @@ class EntityValidator {
 	 *
 	 * @param array $propertyRetiredList
 	 */
-	public function setPropertyRetiredList( array $propertyRetiredList ) {
+	public function setPropertyRetiredList( array $propertyRetiredList ): void {
 		$this->propertyRetiredList = $propertyRetiredList;
 	}
 
@@ -67,7 +67,7 @@ class EntityValidator {
 	 *
 	 * @param array|false $namespaces
 	 */
-	public function setNamespaceRestriction( $namespaces ) {
+	public function setNamespaceRestriction( $namespaces ): void {
 		$this->namespaces = $namespaces;
 	}
 

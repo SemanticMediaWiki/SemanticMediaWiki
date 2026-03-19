@@ -65,7 +65,7 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param DescriptionInterpreter $interpreter
 	 */
-	public function addInterpreter( DescriptionInterpreter $interpreter ) {
+	public function addInterpreter( DescriptionInterpreter $interpreter ): void {
 		$this->interpreters[] = $interpreter;
 	}
 
@@ -74,7 +74,7 @@ class DispatchingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param DescriptionInterpreter $defaultInterpreter
 	 */
-	public function addDefaultInterpreter( DescriptionInterpreter $defaultInterpreter ) {
+	public function addDefaultInterpreter( DescriptionInterpreter $defaultInterpreter ): void {
 		$this->defaultInterpreter = $defaultInterpreter;
 	}
 

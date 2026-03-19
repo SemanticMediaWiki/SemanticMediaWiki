@@ -98,7 +98,7 @@ class HtmlBuilder {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -117,7 +117,7 @@ class HtmlBuilder {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 

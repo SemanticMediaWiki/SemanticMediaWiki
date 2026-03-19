@@ -141,7 +141,7 @@ class XmlResponseParser implements HttpResponseParser {
 		return xml_get_current_column_number( $this->parser );
 	}
 
-	private function handleDefault( $parser, $data ) {
+	private function handleDefault( $parser, $data ): void {
 		if ( substr( $data, 0, 4 ) == '<!--' ) {
 			$comment = substr( $data, 4, strlen( $data ) - 7 );
 			$this->comments[] = trim( $comment );
@@ -151,7 +151,7 @@ class XmlResponseParser implements HttpResponseParser {
 	/**
 	 * @see xml_set_element_handler
 	 */
-	private function handleOpenElement( $parser, $elementTag, $attributes ) {
+	private function handleOpenElement( $parser, $elementTag, $attributes ): void {
 		$this->currentDataType = '';
 
 		$prevTag = end( $this->xmlOpenTags );
@@ -184,14 +184,14 @@ class XmlResponseParser implements HttpResponseParser {
 	/**
 	 * @see xml_set_element_handler
 	 */
-	private function handleCloseElement( $parser, $elementTag ) {
+	private function handleCloseElement( $parser, $elementTag ): void {
 		array_pop( $this->xmlOpenTags );
 	}
 
 	/**
 	 * @see xml_set_character_data_handler
 	 */
-	private function handleCharacterData( $parser, $characterData ) {
+	private function handleCharacterData( $parser, $characterData ): void {
 		$prevTag = end( $this->xmlOpenTags );
 		$rowcount = count( $this->data ) - 1;
 

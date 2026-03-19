@@ -53,7 +53,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @param MessageReporter $reporter
 	 */
-	public function setMessageReporter( MessageReporter $reporter ) {
+	public function setMessageReporter( MessageReporter $reporter ): void {
 		$this->reporter = $reporter;
 	}
 
@@ -62,7 +62,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @param array $parameters
 	 */
-	public function setParameters( array $parameters ) {
+	public function setParameters( array $parameters ): void {
 		$options = [ 'hard', 'update', 'old', 'quiet', 'status', 'verbose' ];
 
 		foreach ( $options as $option ) {
@@ -279,7 +279,7 @@ class ConceptCacheRebuilder {
 		return isset( $this->options[$key] );
 	}
 
-	private function reportMessage( $message, $output = true ) {
+	private function reportMessage( $message, $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}
@@ -290,7 +290,7 @@ class ConceptCacheRebuilder {
 	 *
 	 * @since 4.0
 	 */
-	private function countDown( $seconds ) {
+	private function countDown( $seconds ): void {
 		for ( $i = $seconds; $i >= 0; $i-- ) {
 			if ( $i != $seconds ) {
 				echo str_repeat( "\x08", strlen( $i + 1 ) );

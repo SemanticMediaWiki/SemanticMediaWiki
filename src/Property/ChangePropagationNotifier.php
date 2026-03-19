@@ -58,7 +58,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @param array $propertyList
 	 */
-	public function setPropertyList( array $propertyList ) {
+	public function setPropertyList( array $propertyList ): void {
 		$this->propertyList = $propertyList;
 	}
 
@@ -70,7 +70,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -122,7 +122,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @since 1.9
 	 */
-	public function checkAndNotify( SemanticData &$semanticData ) {
+	public function checkAndNotify( SemanticData &$semanticData ): void {
 		if ( !$this->inNamespace( $semanticData->getSubject() ) ) {
 			return;
 		}
@@ -154,7 +154,7 @@ class ChangePropagationNotifier {
 		$this->doNotifyAndPostpone( $semanticData );
 	}
 
-	private function doCompare( $semanticData, $key ) {
+	private function doCompare( $semanticData, $key ): void {
 		$property = new DIProperty( $key );
 
 		$newValues = $semanticData->getPropertyValues( $property );
@@ -167,7 +167,7 @@ class ChangePropagationNotifier {
 		$this->setDiff( !$this->isEqual( $oldValues, $newValues ), $key );
 	}
 
-	private function setDiff( $hasDiff, $key ) {
+	private function setDiff( $hasDiff, $key ): void {
 		if ( !$hasDiff || $this->hasDiff ) {
 			return;
 		}
@@ -209,7 +209,7 @@ class ChangePropagationNotifier {
 		return $oldDataValueHash == $newDataValueHash;
 	}
 
-	private function doNotifyAndPostpone( SemanticData &$semanticData ) {
+	private function doNotifyAndPostpone( SemanticData &$semanticData ): void {
 		if ( !$this->hasDiff() ) {
 			return;
 		}

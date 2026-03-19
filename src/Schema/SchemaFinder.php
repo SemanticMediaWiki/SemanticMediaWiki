@@ -53,7 +53,7 @@ class SchemaFinder {
 	 *
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
-	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
+	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ): void {
 		$propertyChangeListener->addListenerCallback( new DIProperty( '_SCHEMA_TYPE' ), [ $this, 'invalidateCache' ] );
 	}
 
@@ -63,7 +63,7 @@ class SchemaFinder {
 	 * @param DIProperty $property
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
+	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ): void {
 		if ( $property->getKey() !== '_SCHEMA_TYPE' ) {
 			return;
 		}
@@ -142,7 +142,7 @@ class SchemaFinder {
 		return new SchemaList( $schemaList );
 	}
 
-	private function findSchemaDefinition( $subject, &$schemaList ) {
+	private function findSchemaDefinition( $subject, &$schemaList ): void {
 		if ( !$subject instanceof DIWikiPage ) {
 			return;
 		}

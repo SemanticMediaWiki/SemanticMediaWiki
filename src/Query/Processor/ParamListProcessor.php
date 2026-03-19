@@ -187,7 +187,7 @@ class ParamListProcessor {
 		);
 	}
 
-	private function addPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
+	private function addPrintRequest( $name, $param, &$previousPrintout, array &$serialization ): void {
 		$param = substr( $param, 1 );
 
 		// Currently we don't filter any duplicates hence the additional
@@ -201,7 +201,7 @@ class ParamListProcessor {
 		];
 	}
 
-	private function addThisPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
+	private function addThisPrintRequest( $name, $param, &$previousPrintout, array &$serialization ): void {
 		$param = substr( $param, 1 );
 
 		$parts = explode( '=', $param, 2 );
@@ -209,7 +209,7 @@ class ParamListProcessor {
 		$previousPrintout = self::PRINT_THIS;
 	}
 
-	private function addPrintRequestParameter( $name, $param, $previousPrintout, array &$serialization ) {
+	private function addPrintRequestParameter( $name, $param, $previousPrintout, array &$serialization ): void {
 		if ( $previousPrintout === null ) {
 			return;
 		}
@@ -232,7 +232,7 @@ class ParamListProcessor {
 		}
 	}
 
-	private function addOtherParameters( $name, $param, array &$serialization, $showMode ) {
+	private function addOtherParameters( $name, $param, array &$serialization, $showMode ): void {
 		// #1645
 		$parts = $showMode && $name == 0 ? $param : explode( '=', $param, 2 );
 

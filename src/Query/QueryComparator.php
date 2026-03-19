@@ -57,7 +57,7 @@ class QueryComparator {
 	/**
 	 * @since 2.3
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 

@@ -46,7 +46,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param ChangeOp|null $changeOp
 	 */
-	public function setChangeOp( ?ChangeOp $changeOp = null ) {
+	public function setChangeOp( ?ChangeOp $changeOp = null ): void {
 		$this->changeOp = $changeOp;
 	}
 
@@ -55,7 +55,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param bool $checkRemnantEntities
 	 */
-	public function checkRemnantEntities( $checkRemnantEntities ) {
+	public function checkRemnantEntities( $checkRemnantEntities ): void {
 		$this->checkRemnantEntities = (bool)$checkRemnantEntities;
 	}
 

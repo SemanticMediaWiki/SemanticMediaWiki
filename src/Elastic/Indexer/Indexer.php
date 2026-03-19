@@ -68,7 +68,7 @@ class Indexer {
 	 *
 	 * @param $versions
 	 */
-	public function setVersions( array $versions ) {
+	public function setVersions( array $versions ): void {
 		$this->versions = $versions;
 	}
 
@@ -77,7 +77,7 @@ class Indexer {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -106,7 +106,7 @@ class Indexer {
 	 *
 	 * @param bool $isRebuild
 	 */
-	public function isRebuild( $isRebuild = true ) {
+	public function isRebuild( $isRebuild = true ): void {
 		$this->isRebuild = $isRebuild;
 	}
 

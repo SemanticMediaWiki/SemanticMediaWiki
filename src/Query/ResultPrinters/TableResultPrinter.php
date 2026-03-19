@@ -222,7 +222,7 @@ class TableResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ) {
+	private function getRowForSubject( array $subject, $outputMode, array $columnClasses ): void {
 		foreach ( $subject as $i => $field ) {
 			// $columnClasses will be empty if "headers=hide"
 			// was set.
@@ -388,7 +388,7 @@ class TableResultPrinter extends ResultPrinter {
 		];
 	}
 
-	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ) {
+	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ): void {
 		$tableAttrs['width'] = '100%';
 		$tableAttrs['style'] = 'opacity:.0; display:none;';
 

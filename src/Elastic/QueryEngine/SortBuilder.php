@@ -45,7 +45,7 @@ class SortBuilder {
 	 *
 	 * @param string $scoreField
 	 */
-	public function setScoreField( $scoreField ) {
+	public function setScoreField( $scoreField ): void {
 		$this->scoreField = $scoreField;
 	}
 
@@ -108,7 +108,7 @@ class SortBuilder {
 		return [ $sort, $sortFields, $isRandom, $isConstantScore ];
 	}
 
-	private function addDefaultField( &$sort, $order, $sortKeysCount ) {
+	private function addDefaultField( &$sort, $order, $sortKeysCount ): void {
 		$sort['subject.sortkey.sort'] = [ 'order' => $order ];
 
 		// Add title as extra criteria in case an entity uses the same sortkey
@@ -120,7 +120,7 @@ class SortBuilder {
 		}
 	}
 
-	private function addField( &$sort, &$sortFields, $key, $order ) {
+	private function addField( &$sort, &$sortFields, $key, $order ): void {
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 		$chain = false;
 

@@ -227,9 +227,9 @@ class NumberValue extends DataValue {
 	 *
 	 * @param string $formatString
 	 */
-	public function setOutputFormat( $formatString ) {
+	public function setOutputFormat( $formatString ): void {
 		if ( $formatString == $this->m_outformat ) {
-			return null;
+			return;
 		}
 
 		// #1591
@@ -573,7 +573,7 @@ class NumberValue extends DataValue {
 		return $this->intlNumberFormatter;
 	}
 
-	private function findPreferredLanguageFrom( &$formatstring ) {
+	private function findPreferredLanguageFrom( &$formatstring ): void {
 		// Localized preferred user language
 		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) !== false ) {
 			$this->intlNumberFormatter->setOption(

@@ -44,7 +44,7 @@ class ItemJournal {
 	/**
 	 * @since 2.4
 	 */
-	public function prune() {
+	public function prune(): void {
 		$this->dataItems = [];
 		$this->properties = [];
 	}
@@ -54,7 +54,7 @@ class ItemJournal {
 	 *
 	 * @param DataItem $dataItem
 	 */
-	public function recordItem( DataItem $dataItem ) {
+	public function recordItem( DataItem $dataItem ): void {
 		if ( $dataItem instanceof WikiPage ) {
 			$this->dataItems[$dataItem->getHash()] = $dataItem;
 		}
@@ -65,7 +65,7 @@ class ItemJournal {
 	 *
 	 * @param Property|null $property
 	 */
-	public function recordProperty( ?Property $property = null ) {
+	public function recordProperty( ?Property $property = null ): void {
 		if ( $property !== null ) {
 			$this->properties[$property->getKey()] = $property;
 		}

@@ -32,7 +32,7 @@ class PreferredPropertyLabelResourceBuilder extends PropertyValueResourceBuilder
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(

@@ -104,7 +104,7 @@ class Profile {
 		return $this->defaultProfile->get( $key, $default );
 	}
 
-	private function loadProfile() {
+	private function loadProfile(): void {
 		$schemaList = $this->schemaFactory->newSchemaFinder()->getSchemaListByType(
 			self::SCHEMA_TYPE
 		);
@@ -130,7 +130,7 @@ class Profile {
 		}
 	}
 
-	private function addProfile( Compartment $profile ) {
+	private function addProfile( Compartment $profile ): void {
 		$name = str_replace( '_profile', '', $profile->get( Compartment::ASSOCIATED_SECTION ) );
 
 		$this->profileList[$name] = $profile->get( 'message_key' );

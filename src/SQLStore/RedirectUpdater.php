@@ -47,7 +47,7 @@ class RedirectUpdater {
 	 *
 	 * @param int $equalitySupport
 	 */
-	public function setEqualitySupport( int $equalitySupport ) {
+	public function setEqualitySupport( int $equalitySupport ): void {
 		$this->equalitySupport = new Flag( $equalitySupport );
 	}
 
@@ -60,7 +60,7 @@ class RedirectUpdater {
 	 * @param string $key
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ): void {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -79,7 +79,7 @@ class RedirectUpdater {
 	 * @param string $target
 	 * @param int $newnamespace
 	 */
-	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ) {
+	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ): void {
 		$idTable = $this->store->getObjectIds();
 
 		// Currently we have no way to change title and namespace across all entries.
@@ -119,7 +119,7 @@ class RedirectUpdater {
 	 * @param DIWikiPage $target
 	 * @param array $options
 	 */
-	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ) {
+	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ): void {
 		$idTable = $this->store->getObjectIds();
 		$this->lookupCache = [];
 
@@ -153,7 +153,7 @@ class RedirectUpdater {
 	 *
 	 * @param CachingSemanticDataLookup $semanticDataLookup
 	 */
-	public function invalidateLookupCache( CachingSemanticDataLookup $semanticDataLookup ) {
+	public function invalidateLookupCache( CachingSemanticDataLookup $semanticDataLookup ): void {
 		foreach ( $this->lookupCache as $id ) {
 			$semanticDataLookup->invalidateCache( $id );
 		}
@@ -166,7 +166,7 @@ class RedirectUpdater {
 	 * @param Title $target
 	 * @param array $options
 	 */
-	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ) {
+	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ): void {
 		if ( $options['redirect_id'] == 0 ) {
 			$source = null;
 		}
@@ -195,7 +195,7 @@ class RedirectUpdater {
 	 * @param DIWikiPage $subject
 	 * @param array $redirects
 	 */
-	public function cleanUpAnnotationsAndRedirects( DIWikiPage $subject, array $redirects ) {
+	public function cleanUpAnnotationsAndRedirects( DIWikiPage $subject, array $redirects ): void {
 		$this->updateRedirects( $subject, end( $redirects ) );
 	}
 
@@ -204,7 +204,7 @@ class RedirectUpdater {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function discardRemnantRedirects( DIWikiPage $subject ) {
+	public function discardRemnantRedirects( DIWikiPage $subject ): void {
 		$entityIdManager = $this->store->getObjectIds();
 		$target_id = 0;
 
@@ -434,7 +434,7 @@ class RedirectUpdater {
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
 	}
 
-	private function updateTarget( $source, $target, &$sid ) {
+	private function updateTarget( $source, $target, &$sid ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 
@@ -520,7 +520,7 @@ class RedirectUpdater {
 		// which will hopefully be done to fix the double redirect.
 	}
 
-	private function moveAsRedirect( $source, $target, $sid, $tid, $options ) {
+	private function moveAsRedirect( $source, $target, $sid, $tid, $options ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 

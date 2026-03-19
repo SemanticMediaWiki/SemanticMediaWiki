@@ -38,7 +38,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param bool $isTypePropagation
 	 */
-	public function isTypePropagation( $isTypePropagation ) {
+	public function isTypePropagation( $isTypePropagation ): void {
 		$this->isTypePropagation = (bool)$isTypePropagation;
 	}
 

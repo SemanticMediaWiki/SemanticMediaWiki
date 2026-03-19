@@ -57,7 +57,7 @@ class ChangeDiff {
 	 *
 	 * @param int $associatedRev
 	 */
-	public function setAssociatedRev( $associatedRev ) {
+	public function setAssociatedRev( $associatedRev ): void {
 		$this->associatedRev = $associatedRev;
 	}
 
@@ -149,7 +149,7 @@ class ChangeDiff {
 	 * @param string $type
 	 * @param array $changes
 	 */
-	public function setChangeList( $type, array $changes ) {
+	public function setChangeList( $type, array $changes ): void {
 		$this->changeList[$type] = $changes;
 	}
 
@@ -213,7 +213,7 @@ class ChangeDiff {
 	 *
 	 * @param Cache $cache
 	 */
-	public function save( Cache $cache ) {
+	public function save( Cache $cache ): void {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			$this->subject->getHash()

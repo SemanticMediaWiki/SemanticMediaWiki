@@ -197,7 +197,7 @@ class SetupCheck {
 	/**
 	 * @since 3.2
 	 */
-	public function disableHeader() {
+	public function disableHeader(): void {
 		$this->sentHeader = false;
 	}
 
@@ -215,7 +215,7 @@ class SetupCheck {
 	 *
 	 * @param string $traceString
 	 */
-	public function setTraceString( $traceString ) {
+	public function setTraceString( $traceString ): void {
 		$this->traceString = $traceString;
 	}
 
@@ -224,7 +224,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorMessage
 	 */
-	public function setErrorMessage( string $errorMessage ) {
+	public function setErrorMessage( string $errorMessage ): void {
 		$this->errorMessage = $errorMessage;
 	}
 
@@ -233,7 +233,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorType
 	 */
-	public function setErrorType( string $errorType ) {
+	public function setErrorType( string $errorType ): void {
 		$this->errorType = $errorType;
 	}
 
@@ -357,7 +357,7 @@ class SetupCheck {
 	 *
 	 * @return never
 	 */
-	public function showErrorAndAbort( $isCli = false ) {
+	public function showErrorAndAbort( $isCli = false ): void {
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {
@@ -369,7 +369,7 @@ class SetupCheck {
 		die();
 	}
 
-	private function header( $text ) {
+	private function header( $text ): void {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}

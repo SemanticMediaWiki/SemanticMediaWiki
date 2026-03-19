@@ -23,7 +23,7 @@ class Info extends ApiBase {
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 		$requestedInfo = $params['info'];
 

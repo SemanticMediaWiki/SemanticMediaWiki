@@ -66,7 +66,7 @@ class FieldItemFinder {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function setPrintRequest( PrintRequest $printRequest ) {
+	public function setPrintRequest( PrintRequest $printRequest ): void {
 		$this->printRequest = $printRequest;
 		$this->itemFetcher->setPrintRequest( $this->printRequest );
 	}
@@ -76,7 +76,7 @@ class FieldItemFinder {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		if ( $queryToken === null ) {
 			return;
 		}

@@ -254,7 +254,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 	}
 
@@ -263,7 +263,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @param array $queryParameters
 	 */
-	public function setQueryParameters( array $queryParameters ) {
+	public function setQueryParameters( array $queryParameters ): void {
 		$this->queryParameters = $queryParameters;
 	}
 

@@ -92,7 +92,7 @@ class NamespaceConstraint implements Constraint {
 		$this->reportError( $dataValue, $error );
 	}
 
-	private function reportError( $dataValue, $error ) {
+	private function reportError( $dataValue, $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

@@ -23,7 +23,7 @@ class Ask extends Query {
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );

@@ -78,7 +78,7 @@ class Query {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function type( $type ) {
+	public function type( $type ): void {
 		$type = strtoupper( $type );
 
 		if ( !in_array( $type, [ self::TYPE_SELECT ] ) ) {
@@ -93,7 +93,7 @@ class Query {
 	 *
 	 * @param array $fields
 	 */
-	public function fields( array $fields ) {
+	public function fields( array $fields ): void {
 		$this->fields = $fields;
 	}
 
@@ -102,7 +102,7 @@ class Query {
 	 *
 	 * @param array ...$field
 	 */
-	public function field( ...$field ) {
+	public function field( ...$field ): void {
 		$this->fields[] = $field;
 	}
 
@@ -135,7 +135,7 @@ class Query {
 	 *
 	 * @param array ...$table
 	 */
-	public function table( ...$table ) {
+	public function table( ...$table ): void {
 		if ( strpos( $table[0] ?? '', 'SELECT' ) !== false ) {
 			$tableName = '(' . $table[0] . ')';
 		} else {
@@ -150,7 +150,7 @@ class Query {
 	 *
 	 * @param string ...$join
 	 */
-	public function join( ...$join ) {
+	public function join( ...$join ): void {
 		if ( strpos( $join[0], 'JOIN' ) === false ) {
 			throw new InvalidArgumentException( "A join type is missing!" );
 		}
@@ -254,7 +254,7 @@ class Query {
 	 *
 	 * @param string|array $condition
 	 */
-	public function condition( $condition ) {
+	public function condition( $condition ): void {
 		if ( $condition === '' ) {
 			return;
 		}
@@ -271,7 +271,7 @@ class Query {
 	 *
 	 * @param array $options
 	 */
-	public function options( array $options ) {
+	public function options( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -281,7 +281,7 @@ class Query {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function option( $key, $value ) {
+	public function option( $key, $value ): void {
 		if ( $value === null ) {
 			unset( $this->options[$key] );
 		} else {

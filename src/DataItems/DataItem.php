@@ -220,7 +220,7 @@ abstract class DataItem implements JsonUnserializable {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}

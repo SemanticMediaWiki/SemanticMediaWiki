@@ -37,7 +37,7 @@ class OutdatedDisposer {
 	/**
 	 * @since 3.1
 	 */
-	public function run() {
+	public function run(): void {
 		$this->messageReporter->reportMessage(
 			"Removing outdated and invalid entities ...\n"
 		);
@@ -107,7 +107,7 @@ class OutdatedDisposer {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function disposeOutdatedEntities( $resultIterator, $count ) {
+	private function disposeOutdatedEntities( $resultIterator, $count ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$chunkedIterator = $this->iteratorFactory->newChunkedIterator( $resultIterator, 200 );
 
@@ -133,7 +133,7 @@ class OutdatedDisposer {
 		);
 	}
 
-	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ) {
+	private function disposeOutdatedQueryLinks( $resultIterator, $count, $label ): void {
 		$this->messageReporter->reportMessage( "\n" );
 		$counter = 0;
 

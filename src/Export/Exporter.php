@@ -142,7 +142,7 @@ class Exporter {
 	 *
 	 * @return void
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 		self::$m_exporturl = false;
 	}
@@ -154,7 +154,7 @@ class Exporter {
 	 *
 	 * @return void
 	 */
-	public function resetCacheBy( WikiPage $diWikiPage ) {
+	public function resetCacheBy( WikiPage $diWikiPage ): void {
 		self::$expResourceMapper->invalidateCache( $diWikiPage );
 	}
 
@@ -163,7 +163,7 @@ class Exporter {
 	 *
 	 * @return void
 	 */
-	public static function initBaseURIs() {
+	public static function initBaseURIs(): void {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
@@ -406,7 +406,7 @@ class Exporter {
 	 * @param DataItem[] $dataItems of DataItem objects for the given property
 	 * @param ExpData &$expData to add the data to
 	 */
-	public static function addPropertyValues( Property $property, array $dataItems, ExpData &$expData ) {
+	public static function addPropertyValues( Property $property, array $dataItems, ExpData &$expData ): void {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {

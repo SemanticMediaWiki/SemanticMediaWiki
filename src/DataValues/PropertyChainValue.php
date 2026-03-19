@@ -71,7 +71,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see DataValue::getShortWikiText
 	 */
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		$this->m_caption = $caption;
 
 		if ( $this->lastPropertyChainValue !== null ) {

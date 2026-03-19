@@ -38,7 +38,7 @@ class EntityIdFinder {
 	 *
 	 * @param bool $fetchPropertyTableHashes
 	 */
-	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ) {
+	public function setFetchPropertyTableHashes( $fetchPropertyTableHashes ): void {
 		$this->fetchPropertyTableHashes = $fetchPropertyTableHashes;
 	}
 

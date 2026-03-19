@@ -101,7 +101,7 @@ class SubobjectParserFunction {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -112,7 +112,7 @@ class SubobjectParserFunction {
 	 *
 	 * @param bool $isCapitalLinks
 	 */
-	public function isCapitalLinks( $isCapitalLinks ) {
+	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = $isCapitalLinks;
 	}
 
@@ -125,7 +125,7 @@ class SubobjectParserFunction {
 	 *
 	 * @param bool $isComparableContent
 	 */
-	public function isComparableContent( $isComparableContent = true ) {
+	public function isComparableContent( $isComparableContent = true ): void {
 		$this->isComparableContent = (bool)$isComparableContent;
 	}
 

@@ -40,7 +40,7 @@ class NamespaceExaminer {
 	 *
 	 * @param array $validNamespaces
 	 */
-	public function setValidNamespaces( array $validNamespaces ) {
+	public function setValidNamespaces( array $validNamespaces ): void {
 		$this->validNamespaces = $validNamespaces;
 	}
 

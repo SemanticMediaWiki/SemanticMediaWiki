@@ -126,7 +126,7 @@ class TextContentCreator implements ContentCreator {
 		} );
 	}
 
-	private function doCreateContent( $page, $title, $importContents, $action ) {
+	private function doCreateContent( $page, $title, $importContents, $action ): void {
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title

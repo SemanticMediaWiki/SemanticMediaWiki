@@ -220,7 +220,7 @@ class PropertyLabelFinder {
 	 * @param string $id
 	 * @param string $label
 	 */
-	public function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+	public function registerPropertyLabel( $id, $label, $asCanonical = true ): void {
 		// Prevent an extension from overriding an already registered
 		// canonical label that may point to a different ID
 		if ( isset( $this->canonicalPropertyLabels[$label] ) && $this->canonicalPropertyLabels[$label] !== $id ) {

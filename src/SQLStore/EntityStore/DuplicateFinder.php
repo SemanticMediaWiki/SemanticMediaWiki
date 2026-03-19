@@ -140,7 +140,7 @@ class DuplicateFinder {
 		return $mappingIterator;
 	}
 
-	private function id_table( $table, $query ) {
+	private function id_table( $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -157,7 +157,7 @@ class DuplicateFinder {
 		);
 	}
 
-	private function common_table( $table, $query ) {
+	private function common_table( $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );

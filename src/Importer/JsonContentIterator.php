@@ -31,7 +31,7 @@ class JsonContentIterator implements ContentIterator {
 	 *
 	 * @param string $description
 	 */
-	public function setDescription( $description ) {
+	public function setDescription( $description ): void {
 		$this->description = $description;
 	}
 

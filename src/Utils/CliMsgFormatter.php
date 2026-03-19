@@ -145,7 +145,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $startTime
 	 */
-	public function setStartTime( int $startTime ) {
+	public function setStartTime( int $startTime ): void {
 		$this->startTime = $startTime;
 	}
 
@@ -332,7 +332,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $firstColLen
 	 */
-	public function setFirstColLen( int $firstColLen ) {
+	public function setFirstColLen( int $firstColLen ): void {
 		$this->firstColLen = $firstColLen;
 	}
 
@@ -341,7 +341,7 @@ class CliMsgFormatter {
 	 *
 	 * @param int $len
 	 */
-	public function incrFirstColLen( int $len ) {
+	public function incrFirstColLen( int $len ): void {
 		$this->firstColLen += $len;
 	}
 

@@ -26,7 +26,7 @@ class GroupPermissions {
 	 *
 	 * @param array &$vars
 	 */
-	public function initPermissions( &$vars ) {
+	public function initPermissions( &$vars ): void {
 		$groups = [
 			'smwadministrator' => $this->forAdminRole(),
 			'smwcurator' => $this->forCuratorRole(),

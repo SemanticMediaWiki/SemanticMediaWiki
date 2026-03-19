@@ -82,7 +82,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 2.4
 	 */
-	public function skipAnonymousCheck() {
+	public function skipAnonymousCheck(): void {
 		$this->skipAnonymousCheck = true;
 	}
 
@@ -133,7 +133,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( ?SemanticData $semanticData = null ) {
+	public function copyDataFrom( ?SemanticData $semanticData = null ): void {
 		if ( $semanticData === null ) {
 			return;
 		}

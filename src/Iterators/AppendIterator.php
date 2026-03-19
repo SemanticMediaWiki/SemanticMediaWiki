@@ -27,7 +27,7 @@ class AppendIterator extends \AppendIterator implements Countable {
 	 *
 	 * @param Traversable|array $iterable
 	 */
-	public function add( $iterable ) {
+	public function add( $iterable ): void {
 		if ( is_array( $iterable ) ) {
 			$iterable = new ArrayIterator( $iterable );
 		}

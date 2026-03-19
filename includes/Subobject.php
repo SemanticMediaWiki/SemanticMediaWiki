@@ -86,7 +86,7 @@ class Subobject {
 	 *
 	 * @param array|string $error
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		if ( is_string( $error ) ) {
 			$error = [ md5( $error ) => $error ];
 		}
@@ -124,7 +124,7 @@ class Subobject {
 	/**
 	 * @deprecated since 2.0
 	 */
-	public function setSemanticData( $identifier ) {
+	public function setSemanticData( $identifier ): void {
 		$this->setEmptyContainerForId( $identifier );
 	}
 
@@ -172,7 +172,7 @@ class Subobject {
 	 *
 	 * @throws SubSemanticDataException
 	 */
-	public function addDataValue( SMWDataValue $dataValue ) {
+	public function addDataValue( SMWDataValue $dataValue ): void {
 		if ( !( $this->semanticData instanceof ContainerSemanticData ) ) {
 			throw new SubSemanticDataException( 'The semantic data container is not initialized' );
 		}

@@ -63,7 +63,7 @@ class SpecificationLookup {
 	 *
 	 * @param bool $skipCache
 	 */
-	public function skipCache( $skipCache = true ) {
+	public function skipCache( $skipCache = true ): void {
 		$this->skipCache = $skipCache;
 	}
 
@@ -72,7 +72,7 @@ class SpecificationLookup {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( $languageCode ) {
+	public function setLanguageCode( $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -81,7 +81,7 @@ class SpecificationLookup {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function invalidateCache( DIWikiPage $subject ) {
+	public function invalidateCache( DIWikiPage $subject ): void {
 		$this->entityCache->invalidate( $subject );
 
 		$this->entityCache->delete(

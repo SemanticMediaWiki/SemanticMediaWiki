@@ -66,7 +66,7 @@ class IndexerRecoveryJob extends Job {
 	 *
 	 * @param Document $document
 	 */
-	public static function pushFromDocument( Document $document ) {
+	public static function pushFromDocument( Document $document ): void {
 		$cache = ApplicationFactory::getInstance()->getCache();
 		$subject = $document->getSubject();
 
@@ -90,7 +90,7 @@ class IndexerRecoveryJob extends Job {
 	 * @param Title $title
 	 * @param array $params
 	 */
-	public static function pushFromParams( Title $title, array $params ) {
+	public static function pushFromParams( Title $title, array $params ): void {
 		$indexerRecoveryJob = new IndexerRecoveryJob(
 			$title,
 			$params
@@ -182,15 +182,15 @@ class IndexerRecoveryJob extends Job {
 		$job->insert();
 	}
 
-	private function delete( array $idList ) {
+	private function delete( array $idList ): void {
 		$this->indexer->delete( $idList );
 	}
 
-	private function create( $hash ) {
+	private function create( $hash ): void {
 		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
 	}
 
-	private function index( $cache, $hash ) {
+	private function index( $cache, $hash ): void {
 		$key = self::makeCacheKey(
 			DIWikiPage::doUnserialize( $hash )
 		);

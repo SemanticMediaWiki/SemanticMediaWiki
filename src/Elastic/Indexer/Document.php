@@ -73,7 +73,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param array $priorityDeleteList
 	 */
-	public function setPriorityDeleteList( array $priorityDeleteList ) {
+	public function setPriorityDeleteList( array $priorityDeleteList ): void {
 		$this->priorityDeleteList = $priorityDeleteList;
 	}
 
@@ -92,7 +92,7 @@ class Document implements JsonSerializable {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setField( $key, $value ) {
+	public function setField( $key, $value ): void {
 		$this->data[$key] = $value;
 	}
 
@@ -101,7 +101,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param string $text
 	 */
-	public function setTextBody( string $text ) {
+	public function setTextBody( string $text ): void {
 		if ( $text !== '' ) {
 			$this->data['text_raw'] = TextSanitizer::removeLinks( $text );
 		}
@@ -112,7 +112,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param Document $document
 	 */
-	public function addSubDocument( Document $document ) {
+	public function addSubDocument( Document $document ): void {
 		$this->subDocuments[$document->getId()] = $document;
 	}
 

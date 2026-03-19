@@ -109,7 +109,7 @@ class EntityIdDisposerJob extends Job {
 	 *
 	 * @param int|stdClass $id
 	 */
-	public function disposeQueryLinks( $id ) {
+	public function disposeQueryLinks( $id ): void {
 		if ( $this->queryLinksTableDisposer === null ) {
 			$this->queryLinksTableDisposer = $this->newQueryLinksTableDisposer();
 		}

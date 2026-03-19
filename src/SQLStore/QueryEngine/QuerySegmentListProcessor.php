@@ -60,7 +60,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param &$querySegmentList
 	 */
-	public function setQuerySegmentList( &$querySegmentList ) {
+	public function setQuerySegmentList( &$querySegmentList ): void {
 		$this->querySegmentList =& $querySegmentList;
 	}
 
@@ -69,7 +69,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param integer
 	 */
-	public function setQueryMode( $queryMode ) {
+	public function setQueryMode( $queryMode ): void {
 		$this->queryMode = $queryMode;
 	}
 
@@ -82,7 +82,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function process( $id ) {
+	public function process( $id ): void {
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = [];
 
@@ -94,7 +94,7 @@ class QuerySegmentListProcessor {
 		$this->segment( $this->querySegmentList[$id] );
 	}
 
-	private function segment( QuerySegment &$query ) {
+	private function segment( QuerySegment &$query ): void {
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // .
 				$this->table( $query );
@@ -117,7 +117,7 @@ class QuerySegmentListProcessor {
 	/**
 	 * Resolves normal queries with possible conjunctive subconditions
 	 */
-	private function table( QuerySegment &$query ) {
+	private function table( QuerySegment &$query ): void {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
@@ -191,7 +191,7 @@ class QuerySegmentListProcessor {
 		$query->components = [];
 	}
 
-	private function conjunction( QuerySegment &$query ) {
+	private function conjunction( QuerySegment &$query ): void {
 		reset( $query->components );
 		$key = false;
 
@@ -221,7 +221,7 @@ class QuerySegmentListProcessor {
 		$query = $result;
 	}
 
-	private function disjunction( QuerySegment &$query ) {
+	private function disjunction( QuerySegment &$query ): void {
 		if ( $this->queryMode !== Query::MODE_NONE ) {
 			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
 		}
@@ -285,7 +285,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param QuerySegment &$query
 	 */
-	private function hierarchy( QuerySegment &$query ) {
+	private function hierarchy( QuerySegment &$query ): void {
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';
@@ -350,7 +350,7 @@ class QuerySegmentListProcessor {
 	 * @todo I might be better to keep the tables and possibly reuse them later
 	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */
-	public function cleanUp() {
+	public function cleanUp(): void {
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
 		}

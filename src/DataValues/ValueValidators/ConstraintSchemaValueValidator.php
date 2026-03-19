@@ -58,7 +58,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -76,7 +76,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function validate( $dataValue ) {
+	public function validate( $dataValue ): void {
 		$this->hasConstraintViolation = false;
 
 		if ( !$dataValue instanceof DataValue || $dataValue->getProperty() === null ) {
@@ -129,7 +129,7 @@ class ConstraintSchemaValueValidator implements ConstraintValueValidator {
 		}
 	}
 
-	private function triggerDeferredCheck( $contextPage ) {
+	private function triggerDeferredCheck( $contextPage ): void {
 		if ( $contextPage === null || $this->isCommandLineMode ) {
 			return;
 		}

@@ -61,7 +61,7 @@ class HtmlTabs {
 	 *
 	 * @param bool $isRTL
 	 */
-	public function isRTL( bool $isRTL ) {
+	public function isRTL( bool $isRTL ): void {
 		$this->isRTL = $isRTL;
 	}
 
@@ -70,7 +70,7 @@ class HtmlTabs {
 	 *
 	 * @param string $activeTab
 	 */
-	public function setActiveTab( string $activeTab ) {
+	public function setActiveTab( string $activeTab ): void {
 		$this->activeTab = $activeTab;
 	}
 
@@ -83,7 +83,7 @@ class HtmlTabs {
 	 *
 	 * @param bool $isSubTab
 	 */
-	public function isSubTab( bool $isSubTab = true ) {
+	public function isSubTab( bool $isSubTab = true ): void {
 		$this->isSubTab = $isSubTab;
 	}
 
@@ -92,7 +92,7 @@ class HtmlTabs {
 	 *
 	 * @param string $group
 	 */
-	public function setGroup( string $group ) {
+	public function setGroup( string $group ): void {
 		$this->group = $group;
 	}
 
@@ -144,7 +144,7 @@ class HtmlTabs {
 	 *
 	 * @return void
 	 */
-	public function html( string $html, array $params = [] ) {
+	public function html( string $html, array $params = [] ): void {
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
 			return;
 		}
@@ -159,7 +159,7 @@ class HtmlTabs {
 	 * @param string $name
 	 * @param array $params
 	 */
-	public function tab( string $id, string $name = '', array $params = [] ) {
+	public function tab( string $id, string $name = '', array $params = [] ): void {
 		if ( isset( $params['hide'] ) && $params['hide'] ) {
 			$this->hidden[$id] = true;
 			return;
@@ -200,7 +200,7 @@ class HtmlTabs {
 	 * @param string $id
 	 * @param string $content
 	 */
-	public function content( string $id, string $content ) {
+	public function content( string $id, string $content ): void {
 		// Tab hidden?
 		if ( isset( $this->hidden[$id] ) ) {
 			return;

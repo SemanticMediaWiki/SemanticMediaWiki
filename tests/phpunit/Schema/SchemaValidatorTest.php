@@ -35,8 +35,7 @@ class SchemaValidatorTest extends TestCase {
 			->getMock();
 
 		$jsonSchemaValidator->expects( $this->never() )
-			->method( 'validate' )
-			->willReturn( false );
+			->method( 'validate' );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 
@@ -55,8 +54,7 @@ class SchemaValidatorTest extends TestCase {
 			->getMock();
 
 		$jsonSchemaValidator->expects( $this->once() )
-			->method( 'validate' )
-			->willReturn( false );
+			->method( 'validate' );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'isValid' )
@@ -79,8 +77,7 @@ class SchemaValidatorTest extends TestCase {
 			->getMock();
 
 		$jsonSchemaValidator->expects( $this->once() )
-			->method( 'validate' )
-			->willReturn( false );
+			->method( 'validate' );
 
 		$jsonSchemaValidator->expects( $this->once() )
 			->method( 'isValid' )
@@ -107,8 +104,7 @@ class SchemaValidatorTest extends TestCase {
 			->getMock();
 
 		$jsonSchemaValidator->expects( $this->never() )
-			->method( 'validate' )
-			->willReturn( false );
+			->method( 'validate' );
 
 		$instance = new SchemaValidator( $jsonSchemaValidator );
 

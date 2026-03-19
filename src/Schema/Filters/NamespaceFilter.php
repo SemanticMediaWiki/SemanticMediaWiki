@@ -32,7 +32,7 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 		return 'namespace';
 	}
 
-	private function match( Compartment $compartment ) {
+	private function match( Compartment $compartment ): void {
 		$namespaces = $compartment->get( 'if.namespace' );
 
 		// In case the filter was marked as elective allows sets to remain in

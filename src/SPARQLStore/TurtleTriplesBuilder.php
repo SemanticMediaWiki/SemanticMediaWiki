@@ -66,7 +66,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param int $triplesChunkSize
 	 */
-	public function setTriplesChunkSize( $triplesChunkSize ) {
+	public function setTriplesChunkSize( $triplesChunkSize ): void {
 		$this->triplesChunkSize = (int)$triplesChunkSize;
 	}
 
@@ -75,7 +75,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doBuildTriplesFrom( SemanticData $semanticData ) {
+	public function doBuildTriplesFrom( SemanticData $semanticData ): void {
 		$this->hasTriplesForUpdate = false;
 		$this->triples = '';
 		$this->prefixes = [];
@@ -144,11 +144,11 @@ class TurtleTriplesBuilder {
 	/**
 	 * @since 2.0
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		TurtleSerializer::reset();
 	}
 
-	private function doSerialize( SemanticData $semanticData ) {
+	private function doSerialize( SemanticData $semanticData ): void {
 		$expDataArray = $this->prepareUpdateExpData( $semanticData );
 
 		if ( count( $expDataArray ) > 0 ) {

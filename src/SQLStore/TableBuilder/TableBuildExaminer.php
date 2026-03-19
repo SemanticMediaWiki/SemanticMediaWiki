@@ -59,7 +59,7 @@ class TableBuildExaminer {
 	 *
 	 * @param array $propertyList
 	 */
-	public function setPredefinedPropertyList( array $propertyList ) {
+	public function setPredefinedPropertyList( array $propertyList ): void {
 		$fixedPropertyList = EntityIdManager::$special_ids;
 		$predefinedPropertyList = [];
 
@@ -81,7 +81,7 @@ class TableBuildExaminer {
 	 *
 	 * @param TableBuilder $tableBuilder
 	 */
-	public function checkOnPostCreation( ITableBuilder $tableBuilder ) {
+	public function checkOnPostCreation( ITableBuilder $tableBuilder ): void {
 		$fixedProperties = $this->tableBuildExaminerFactory->newFixedProperties(
 			$this->store
 		);
@@ -154,7 +154,7 @@ class TableBuildExaminer {
 	 *
 	 * @param TableBuilder $tableBuilder
 	 */
-	public function checkOnPostDestruction( ITableBuilder $tableBuilder ) {
+	public function checkOnPostDestruction( ITableBuilder $tableBuilder ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Find orphaned tables that have not been removed but were produced and
@@ -172,7 +172,7 @@ class TableBuildExaminer {
 		$tableBuilder->checkOn( TableBuilder::POST_DESTRUCTION );
 	}
 
-	private function checkSortField( $log ) {
+	private function checkSortField( $log ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		$tableName = $connection->tableName( SQLStore::ID_TABLE );

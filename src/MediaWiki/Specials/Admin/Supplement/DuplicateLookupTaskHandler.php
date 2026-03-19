@@ -80,7 +80,7 @@ class DuplicateLookupTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-duplookup-title' ) ] )
 		);

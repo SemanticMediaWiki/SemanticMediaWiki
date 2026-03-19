@@ -57,7 +57,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addOption( string $key, $value ) {
+	public function addOption( string $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -66,7 +66,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function sortMatches( $type, $order = 'desc' ) {
+	public function sortMatches( $type, $order = 'desc' ): void {
 		if ( $this->matches === [] ) {
 			return;
 		}
@@ -89,7 +89,7 @@ class CompositeFilter implements SchemaFilter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function filter( iterable $compartments ) {
+	public function filter( iterable $compartments ): void {
 		$nodeFilter = null;
 
 		foreach ( $this->filters as $filter ) {

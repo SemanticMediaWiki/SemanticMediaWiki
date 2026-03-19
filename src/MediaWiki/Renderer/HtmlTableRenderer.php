@@ -100,7 +100,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function addHeaderItem( $element, $content = '', $attributes = [] ) {
+	public function addHeaderItem( $element, $content = '', $attributes = [] ): void {
 		$this->headerItems[] = Html::rawElement( $element, $attributes, $content );
 	}
 

@@ -66,7 +66,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @param Language|string $language
 	 */
-	public function setLanguage( $language ) {
+	public function setLanguage( $language ): void {
 		$this->language = $language;
 	}
 
@@ -75,7 +75,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @param array
 	 */
-	public function setDataTypeLabels( $dataTypeLabels ) {
+	public function setDataTypeLabels( $dataTypeLabels ): void {
 		$this->dataTypeLabels = $dataTypeLabels;
 	}
 
@@ -96,7 +96,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return true;
 	}
 
-	private function copyStatistics( &$extraStats ) {
+	private function copyStatistics( &$extraStats ): void {
 		$statistics = $this->store->getStatistics();
 		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
 

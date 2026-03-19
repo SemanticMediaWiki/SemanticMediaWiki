@@ -213,7 +213,7 @@ class RecordValue extends AbstractMultiValue {
 	 * @todo This is not a full reset yet (the case that property is changed after a value
 	 * was set does not occur in the normal flow of things, hence this has low priority).
 	 */
-	public function setProperty( Property $property ) {
+	public function setProperty( Property $property ): void {
 		parent::setProperty( $property );
 		$this->m_diProperties = null;
 	}
@@ -223,7 +223,7 @@ class RecordValue extends AbstractMultiValue {
 	 *
 	 * @param Property[] $properties
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 			if ( $property instanceof Property ) {
 				$this->m_diProperties[] = $property;

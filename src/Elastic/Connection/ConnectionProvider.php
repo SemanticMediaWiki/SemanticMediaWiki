@@ -108,7 +108,7 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connection = null;
 	}
 

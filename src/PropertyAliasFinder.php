@@ -71,7 +71,7 @@ class PropertyAliasFinder {
 	 *
 	 * @param string $contentLanguageCode
 	 */
-	public function setContentLanguageCode( $contentLanguageCode ) {
+	public function setContentLanguageCode( $contentLanguageCode ): void {
 		$this->contentLanguageCode = $contentLanguageCode;
 	}
 
@@ -157,7 +157,7 @@ class PropertyAliasFinder {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerAliasByMsgKey( $id, $msgKey ) {
+	public function registerAliasByMsgKey( $id, $msgKey ): void {
 		$this->propertyAliasesByMsgKey[$msgKey] = $id;
 
 		// Make sure the label is resolved and registered immediately

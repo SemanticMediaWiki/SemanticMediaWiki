@@ -46,7 +46,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		return 'category';
 	}
 
-	private function match( Compartment $compartment ) {
+	private function match( Compartment $compartment ): void {
 		if ( $this->isLoaded === false ) {
 			$this->loadCategories();
 		}
@@ -169,7 +169,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 		}
 	}
 
-	private function loadCategories() {
+	private function loadCategories(): void {
 		// Allow categories to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->categories ) ) {

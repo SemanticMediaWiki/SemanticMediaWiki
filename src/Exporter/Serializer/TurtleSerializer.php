@@ -52,7 +52,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->sparql_namespaces = [];
 	}
@@ -60,7 +60,7 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * @since 2.3
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		InMemoryPoolCache::getInstance()->resetPoolCacheById( 'turtle.serializer' );
 	}
 
@@ -142,14 +142,14 @@ class TurtleSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeDeclaration( $uri, $typename ) {
+	public function serializeDeclaration( $uri, $typename ): void {
 		$this->post_ns_buffer .= "<" . Exporter::getInstance()->expandURI( $uri ) . "> rdf:type $typename .\n";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeExpData( ExpData $expData ) {
+	public function serializeExpData( ExpData $expData ): void {
 		$this->subExpData = [ $expData ];
 
 		while ( count( $this->subExpData ) > 0 ) {

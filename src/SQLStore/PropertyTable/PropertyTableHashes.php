@@ -34,7 +34,7 @@ class PropertyTableHashes {
 	 * @param int $id ID of the page as stored in SMW IDs table
 	 * @param string[] of hash values with table names as keys
 	 */
-	public function setPropertyTableHashes( $id, $hash = null ) {
+	public function setPropertyTableHashes( $id, $hash = null ): void {
 		$update = [];
 
 		if ( $hash === null ) {
@@ -131,7 +131,7 @@ class PropertyTableHashes {
 	 *
 	 * @param $id integer
 	 */
-	public function clearPropertyTableHashCacheById( $id ) {
+	public function clearPropertyTableHashCacheById( $id ): void {
 		$this->setPropertyTableHashesCache( $id, null );
 	}
 
@@ -141,7 +141,7 @@ class PropertyTableHashes {
 	 * @param $id integer
 	 * @param string|null $hash
 	 */
-	public function setPropertyTableHashesCache( $id, $hash = null ) {
+	public function setPropertyTableHashesCache( $id, $hash = null ): void {
 		// never cache 0
 		if ( $id == 0 ) {
 			return;

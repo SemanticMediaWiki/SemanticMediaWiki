@@ -72,7 +72,7 @@ class DocumentCreator {
 	 *
 	 * @param bool $compatibilityMode
 	 */
-	public function setCompatibilityMode( $compatibilityMode ) {
+	public function setCompatibilityMode( $compatibilityMode ): void {
 		$this->compatibilityMode = $compatibilityMode;
 	}
 

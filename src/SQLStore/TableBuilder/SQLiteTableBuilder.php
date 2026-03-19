@@ -171,7 +171,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ): void {
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -218,12 +218,12 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ) {
+	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ): void {
 		$this->reportMessage( "   ... changing field type is not supported in SQLite (http://www.sqlite.org/omitted.html) \n" );
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName, $attributes ) {
+	private function doDropField( $tableName, $fieldName, $attributes ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
@@ -292,7 +292,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doDropObsoleteIndices( $tableName, array &$indices ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ): void {
 		$currentIndices = $this->getIndexInfo( $tableName );
 
 		// TODO We do not currently get the right column definitions in
@@ -327,7 +327,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ) {
+	private function doDropIndex( $tableName, $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );

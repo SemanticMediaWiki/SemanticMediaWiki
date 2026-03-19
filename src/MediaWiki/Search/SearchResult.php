@@ -105,7 +105,7 @@ class SearchResult extends \SearchResult {
 	 * @param string|null $text
 	 * @param bool $hasHighlight
 	 */
-	public function setExcerpt( $text = null, $hasHighlight = false ) {
+	public function setExcerpt( $text = null, $hasHighlight = false ): void {
 		$this->mText = $text;
 		$this->hasHighlight = $hasHighlight;
 	}

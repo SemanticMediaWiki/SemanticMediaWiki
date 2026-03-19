@@ -48,7 +48,7 @@ class RestrictionExaminer {
 	 *
 	 * @param User $user
 	 */
-	public function setUser( User $user ) {
+	public function setUser( User $user ): void {
 		$this->user = $user;
 	}
 
@@ -57,7 +57,7 @@ class RestrictionExaminer {
 	 *
 	 * @param string|bool $createProtectionRight
 	 */
-	public function setCreateProtectionRight( $createProtectionRight ) {
+	public function setCreateProtectionRight( $createProtectionRight ): void {
 		$this->createProtectionRight = $createProtectionRight;
 	}
 
@@ -66,7 +66,7 @@ class RestrictionExaminer {
 	 *
 	 * @param bool $isQueryContext
 	 */
-	public function isQueryContext( $isQueryContext ) {
+	public function isQueryContext( $isQueryContext ): void {
 		$this->isQueryContext = (bool)$isQueryContext;
 	}
 
@@ -111,7 +111,7 @@ class RestrictionExaminer {
 	 * @param DIProperty $property
 	 * @param DIWikiPage|null $contextPage
 	 */
-	public function checkRestriction( DIProperty $property, ?DIWikiPage $contextPage = null ) {
+	public function checkRestriction( DIProperty $property, ?DIWikiPage $contextPage = null ): void {
 		$this->error = [];
 
 		if ( $this->isDeclarative( $property, $contextPage ) ) {

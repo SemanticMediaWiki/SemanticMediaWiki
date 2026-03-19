@@ -38,7 +38,7 @@ class SequenceMapFinder {
 	 * @param int $sid
 	 * @param array|null $map
 	 */
-	public function setMap( $sid, ?array $map = null ) {
+	public function setMap( $sid, ?array $map = null ): void {
 		if ( $map === null ) {
 			return;
 		}
@@ -113,7 +113,7 @@ class SequenceMapFinder {
 	 *
 	 * @param array $ids
 	 */
-	public function prefetchSequenceMap( array $ids ) {
+	public function prefetchSequenceMap( array $ids ): void {
 		sort( $ids );
 		$hash = md5( json_encode( $ids ) );
 

@@ -76,7 +76,7 @@ class ParserFunctionFactory {
 	 *
 	 * @param Parser $parser
 	 */
-	public function registerFunctionHandlers( Parser $parser ) {
+	public function registerFunctionHandlers( Parser $parser ): void {
 		[ $name, $definition, $flag ] = $this->getAskParserFunctionDefinition();
 		$parser->setFunctionHook( $name, $definition, $flag );
 

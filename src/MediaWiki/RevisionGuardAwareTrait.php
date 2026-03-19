@@ -20,7 +20,7 @@ trait RevisionGuardAwareTrait {
 	 *
 	 * @param RevisionGuard $revisionGuard
 	 */
-	public function setRevisionGuard( RevisionGuard $revisionGuard ) {
+	public function setRevisionGuard( RevisionGuard $revisionGuard ): void {
 		$this->revisionGuard = $revisionGuard;
 	}
 

@@ -30,7 +30,7 @@ class QueryProcessor implements QueryContext {
 	 *
 	 * @param RecursiveTextProcessor|null $recursiveTextProcessor
 	 */
-	public static function setRecursiveTextProcessor( ?RecursiveTextProcessor $recursiveTextProcessor = null ) {
+	public static function setRecursiveTextProcessor( ?RecursiveTextProcessor $recursiveTextProcessor = null ): void {
 		self::$recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
@@ -191,7 +191,7 @@ class QueryProcessor implements QueryContext {
 	 * @param array &$printRequests
 	 * @param array $rawParams
 	 */
-	public static function addThisPrintout( array &$printRequests, array $rawParams ) {
+	public static function addThisPrintout( array &$printRequests, array $rawParams ): void {
 		if ( $printRequests === null ) {
 			return;
 		}

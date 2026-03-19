@@ -89,7 +89,7 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 */
-	public function deleteEntireReplicationTrail() {
+	public function deleteEntireReplicationTrail(): void {
 		$this->entityCache->delete( $this->makeCacheKey( self::REPLICATION_CHECK_TASK_CACKE_KEY ) );
 	}
 
@@ -98,7 +98,7 @@ class ReplicationCheck {
 	 *
 	 * @param DIWikiPage|Title $subject
 	 */
-	public function deleteReplicationTrail( $subject ) {
+	public function deleteReplicationTrail( $subject ): void {
 		if ( $subject instanceof Title ) {
 			$subject = DIWikiPage::newFromTitle( $subject );
 		}
@@ -118,7 +118,7 @@ class ReplicationCheck {
 	 *
 	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL > 0 ? $cacheTTL : 3600;
 	}
 

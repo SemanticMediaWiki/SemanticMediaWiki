@@ -31,7 +31,7 @@ class File {
 	 * @param string $contents
 	 * @param int $flags
 	 */
-	public function write( $file, $contents, $flags = 0 ) {
+	public function write( $file, $contents, $flags = 0 ): void {
 		$file = self::dir( $file );
 
 		if ( !is_writable( dirname( $file ) ) ) {
@@ -80,7 +80,7 @@ class File {
 	 *
 	 * @param string $file
 	 */
-	public function delete( $file ) {
+	public function delete( $file ): void {
 		@unlink( self::dir( $file ) );
 	}
 

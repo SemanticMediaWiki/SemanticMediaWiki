@@ -27,7 +27,7 @@ class BrowseByProperty extends ApiBase {
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 		$applicationFactory = ApplicationFactory::getInstance();
 

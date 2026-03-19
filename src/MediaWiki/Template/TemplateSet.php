@@ -21,7 +21,7 @@ class TemplateSet {
 	 *
 	 * @param Template $template
 	 */
-	public function addTemplate( Template $template ) {
+	public function addTemplate( Template $template ): void {
 		$this->templates[] = $template;
 	}
 
