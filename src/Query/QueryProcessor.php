@@ -381,7 +381,7 @@ class QueryProcessor implements QueryContext {
 	}
 
 	/**
-	 * Find suitable SMWResultPrinter for the given format. The context in
+	 * Find suitable ResultPrinter for the given format. The context in
 	 * which the query is to be used determines some basic settings of the
 	 * returned printer object. Possible contexts are
 	 * QueryProcessor::SPECIAL_PAGE, QueryProcessor::INLINE_QUERY,
