@@ -14,6 +14,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\Parser\ContentParser;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Parser\ContentParser

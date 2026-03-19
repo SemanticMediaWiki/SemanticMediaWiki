@@ -14,6 +14,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Property\SpecificationLookup;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\DataModel\Subobject

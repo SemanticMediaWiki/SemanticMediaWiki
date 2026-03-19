@@ -17,6 +17,7 @@ use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
+use SMW\Tests\TestEnvironment;
 use stdClass;
 
 /**

@@ -4,7 +4,7 @@ namespace SMW\Formatters;
 
 use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
-use SMW\Outputs;
+use SMW\MediaWiki\Outputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
