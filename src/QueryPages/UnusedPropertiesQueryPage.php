@@ -1,14 +1,19 @@
 <?php
 
-namespace SMW;
+namespace SMW\QueryPages;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use Skin;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\RequestOptions;
+use SMW\Settings;
 use SMW\SQLStore\Lookup\ListLookup;
-use SMWDIError;
+use SMW\Store;
 
 /**
  * Query page that provides content to Special:UnusedProperties
@@ -109,8 +114,8 @@ class UnusedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * Format a result in the list of results as a string. We expect the
-	 * result to be an object of type DIProperty (normally) or maybe
-	 * SMWDIError (if something went wrong).
+	 * result to be an object of type Property (normally) or maybe
+	 * Error (if something went wrong).
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
 	 * @param mixed $result
@@ -119,9 +124,9 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @throws PropertyNotFoundException if the result was not of a supported type
 	 */
 	public function formatResult( $skin, $result ) {
-		if ( $result instanceof DIProperty ) {
+		if ( $result instanceof Property ) {
 			return $this->formatPropertyItem( $result );
-		} elseif ( $result instanceof SMWDIError ) {
+		} elseif ( $result instanceof Error ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
 				->addFromArray( [ $result->getErrors() ] )
@@ -139,11 +144,11 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	protected function formatPropertyItem( DIProperty $property ) {
+	protected function formatPropertyItem( Property $property ) {
 		// Clear formatter before invoking messages and
 		// avoid having previous data to be present
 		$this->getMessageFormatter()->clear();
@@ -162,12 +167,12 @@ class UnusedPropertiesQueryPage extends QueryPage {
 			);
 
 			$types = $this->store->getPropertyValues(
-				$property->getDiWikiPage(), new DIProperty( '_TYPE' )
+				$property->getDiWikiPage(), new Property( '_TYPE' )
 			);
 
 			if ( is_array( $types ) && count( $types ) >= 1 ) {
 				$typeDataValue = DataValueFactory::getInstance()
-							   ->newDataValueByItem( current( $types ), new DIProperty( '_TYPE' ) );
+					->newDataValueByItem( current( $types ), new Property( '_TYPE' ) );
 			} else {
 				$typeDataValue = TypesValue::newFromTypeId( '_wpg' );
 				$this->getMessageFormatter()
@@ -177,7 +182,8 @@ class UnusedPropertiesQueryPage extends QueryPage {
 		} else {
 			$typeDataValue = TypesValue::newFromTypeId( $property->findPropertyTypeID() );
 			$propertyLink  = DataValueFactory::getInstance()
-						   ->newDataValueByItem( $property, null )->getShortHtmlText( $this->getLinker() );
+				->newDataValueByItem( $property, null )
+				->getShortHtmlText( $this->getLinker() );
 		}
 
 		return $this->msg(
@@ -190,10 +196,15 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param RequestOptions $requestOptions
-	 * @return array of DIProperty|SMWDIError
+	 * @return array of Property|Error
 	 */
 	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getUnusedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( UnusedPropertiesQueryPage::class, 'SMW\UnusedPropertiesQueryPage' );

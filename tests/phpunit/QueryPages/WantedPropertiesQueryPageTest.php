@@ -1,15 +1,16 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\QueryPages;
 
 use PHPUnit\Framework\TestCase;
+use Skin;
 use SMW\DataItemFactory;
+use SMW\QueryPages\WantedPropertiesQueryPage;
 use SMW\Settings;
 use SMW\Store;
-use SMW\WantedPropertiesQueryPage;
 
 /**
- * @covers \SMW\WantedPropertiesQueryPage
+ * @covers \SMW\QueryPages\WantedPropertiesQueryPage
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -31,7 +32,7 @@ class WantedPropertiesQueryPageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->skin = $this->getMockBuilder( '\Skin' )
+		$this->skin = $this->getMockBuilder( Skin::class )
 			->disableOriginalConstructor()
 			->getMock();
 

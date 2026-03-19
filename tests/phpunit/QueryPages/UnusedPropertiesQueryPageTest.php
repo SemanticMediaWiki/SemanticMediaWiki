@@ -1,16 +1,18 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\QueryPages;
 
 use PHPUnit\Framework\TestCase;
+use Skin;
 use SMW\DataItemFactory;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\QueryPages\UnusedPropertiesQueryPage;
 use SMW\Settings;
 use SMW\Store;
-use SMW\UnusedPropertiesQueryPage;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\UnusedPropertiesQueryPage
+ * @covers \SMW\QueryPages\UnusedPropertiesQueryPage
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -35,7 +37,7 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->skin = $this->getMockBuilder( '\Skin' )
+		$this->skin = $this->getMockBuilder( Skin::class )
 			->disableOriginalConstructor()
 			->getMock();
 

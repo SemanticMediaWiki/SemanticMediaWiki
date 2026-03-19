@@ -1,10 +1,14 @@
 <?php
 
-namespace SMW;
+namespace SMW\QueryPages;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\RequestOptions;
+use SMW\Settings;
 use SMW\SQLStore\Lookup\ListLookup;
+use SMW\Store;
 
 /**
  * Query class that provides content for the Special:WantedProperties page
@@ -146,7 +150,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 
 	/**
 	 * @param $skin
-	 * @param array $result First item is DIProperty, second item is int
+	 * @param array $result First item is Property, second item is int
 	 *
 	 * @return string
 	 */
@@ -155,7 +159,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 		// custom predefined (fixed) properties are mixed within the result
 		// (did not use their own fixedProperty table and therefore were
 		// selected as well e.g _SF_PDF etc.)
-		if ( !$result[0] instanceof DIProperty || !$result[0]->isUserDefined() ) {
+		if ( !$result[0] instanceof Property || !$result[0]->isUserDefined() ) {
 			return '';
 		}
 
@@ -182,10 +186,15 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param RequestOptions $requestOptions
-	 * @return array of DIProperty|SMWDIError
+	 * @return array of Property|SMWDIError
 	 */
 	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getWantedPropertiesSpecial( $requestOptions );
 		return $this->listLookup->fetchList();
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( WantedPropertiesQueryPage::class, 'SMW\WantedPropertiesQueryPage' );
