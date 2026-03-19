@@ -15,6 +15,7 @@ use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
 use SMW\Options;
 use SMW\ProcessingErrorMsgHandler;
+use SMW\HashBuilder;
 
 /**
  * Class for representing chunks of semantic data for one given
