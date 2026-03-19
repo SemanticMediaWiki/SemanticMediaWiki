@@ -10,6 +10,7 @@ use Onoi\Cache\Cache;
 use Onoi\Cache\CacheFactory as OnoiCacheFactory;
 use RuntimeException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -79,7 +80,7 @@ class CacheFactory {
 	 * @return object
 	 * @throws RuntimeException
 	 */
-	public function newCacheOptions( array $cacheOptions ) {
+	public function newCacheOptions( array $cacheOptions ): stdClass {
 		if ( !isset( $cacheOptions['useCache'] ) || !isset( $cacheOptions['ttl'] ) ) {
 			throw new RuntimeException( "Cache options is missing a useCache/ttl parameter" );
 		}

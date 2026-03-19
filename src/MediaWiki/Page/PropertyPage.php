@@ -86,7 +86,7 @@ class PropertyPage extends Page {
 	 *
 	 * @return string
 	 */
-	protected function initHtml() {
+	protected function initHtml(): string {
 		$redirectTarget = $this->store->getRedirectTarget( $this->property );
 
 		if ( !$redirectTarget->equals( $this->property ) ) {
