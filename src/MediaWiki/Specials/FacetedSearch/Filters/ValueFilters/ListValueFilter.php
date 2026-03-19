@@ -128,7 +128,7 @@ class ListValueFilter {
 		);
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 

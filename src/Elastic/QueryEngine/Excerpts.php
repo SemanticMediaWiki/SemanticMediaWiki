@@ -39,7 +39,7 @@ class Excerpts extends BaseExcerpts {
 	 *
 	 * @return bool
 	 */
-	public function hasHighlight() {
+	public function hasHighlight(): bool {
 		return $this->noHighlight ? false : true;
 	}
 
