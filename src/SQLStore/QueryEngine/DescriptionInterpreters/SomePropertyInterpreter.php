@@ -57,7 +57,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof SomeProperty;
 	}
 

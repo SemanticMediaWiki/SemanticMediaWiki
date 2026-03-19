@@ -149,7 +149,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( $subject, $options ): bool {
 		$this->indicators = [];
 
 		$latestRevID = $this->revisionGuard->getLatestRevID(

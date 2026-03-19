@@ -195,7 +195,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return bool
 	 */
-	public static function hasMarker( $text ) {
+	public static function hasMarker( $text ): bool {
 		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
 	}
 
@@ -206,7 +206,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return bool
 	 */
-	public static function hasPropertyLink( $text ) {
+	public static function hasPropertyLink( $text ): bool {
 		return strpos( $text, '::@@@' ) !== false;
 	}
 

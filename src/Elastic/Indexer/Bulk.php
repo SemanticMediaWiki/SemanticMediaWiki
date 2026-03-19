@@ -92,7 +92,7 @@ class Bulk implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 */
-	public function isEmpty() {
+	public function isEmpty(): bool {
 		return $this->bulk === [];
 	}
 

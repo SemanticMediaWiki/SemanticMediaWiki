@@ -164,7 +164,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasEditProtectionOnNamespace( Title $title ) {
+	public function hasEditProtectionOnNamespace( Title $title ): bool {
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);

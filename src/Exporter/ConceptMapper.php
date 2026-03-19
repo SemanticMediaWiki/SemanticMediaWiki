@@ -44,7 +44,7 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @return bool
 	 */
-	public function isMapperFor( DataItem $dataItem ) {
+	public function isMapperFor( DataItem $dataItem ): bool {
 		return $dataItem instanceof DIConcept;
 	}
 

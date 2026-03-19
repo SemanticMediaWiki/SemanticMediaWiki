@@ -141,7 +141,7 @@ class SearchTable {
 	 *
 	 * @return bool
 	 */
-	public function isValidByType( $type ) {
+	public function isValidByType( $type ): bool {
 		$indexType = SMW_FT_NONE;
 
 		if ( $type === DataItem::TYPE_BLOB ) {
@@ -229,7 +229,7 @@ class SearchTable {
 	 *
 	 * @return bool
 	 */
-	public function hasMinTokenLength( $token ) {
+	public function hasMinTokenLength( $token ): bool {
 		return mb_strlen( $token ) >= $this->minTokenSize;
 	}
 

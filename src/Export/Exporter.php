@@ -716,13 +716,13 @@ class Exporter {
 	 *
 	 * @return bool
 	 */
-	public static function hasHelperExpElement( Property $property ) {
+	public static function hasHelperExpElement( Property $property ): bool {
 		return ( $property->findPropertyTypeID() === '_dat' ||
 			$property->findPropertyTypeID() === '_geo' ) ||
 			( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
-	protected static function hasSpecialPropertyResource( Property $property ) {
+	protected static function hasSpecialPropertyResource( Property $property ): bool {
 		return $property->getKey() === '_SKEY' ||
 			$property->getKey() === '_INST' ||
 			$property->getKey() === '_MDAT' ||

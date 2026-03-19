@@ -265,7 +265,7 @@ class ParametersProcessor {
 		return false;
 	}
 
-	private static function hasLink( $value ) {
+	private static function hasLink( $value ): bool {
 		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 

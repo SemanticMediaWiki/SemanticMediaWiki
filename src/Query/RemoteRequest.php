@@ -67,7 +67,7 @@ class RemoteRequest implements QueryEngine {
 	 *
 	 * @return bool
 	 */
-	public function hasFeature( $flag ) {
+	public function hasFeature( $flag ): bool {
 		return ( ( (int)$this->features & $flag ) == $flag );
 	}
 

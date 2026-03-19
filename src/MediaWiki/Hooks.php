@@ -91,7 +91,7 @@ class Hooks {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $name ) {
+	public function isRegistered( $name ): bool {
 		return isset( $this->handlers[$name] );
 	}
 

@@ -150,7 +150,7 @@ class PrintRequest {
 	 *
 	 * @return bool
 	 */
-	public function isMode( $mode ) {
+	public function isMode( $mode ): bool {
 		return $this->m_mode === $mode;
 	}
 

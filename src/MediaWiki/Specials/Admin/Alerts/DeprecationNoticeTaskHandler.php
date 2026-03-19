@@ -251,7 +251,7 @@ class DeprecationNoticeTaskHandler extends TaskHandler {
 		return implode( '', $list );
 	}
 
-	private function hasOption( $setting, $option ) {
+	private function hasOption( $setting, $option ): bool {
 		return isset( $GLOBALS[$setting][$option] ) || ( is_array( $GLOBALS[$setting] ) && array_search( $option, $GLOBALS[$setting] ) );
 	}
 

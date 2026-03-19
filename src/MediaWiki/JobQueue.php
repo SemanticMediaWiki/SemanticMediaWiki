@@ -173,7 +173,7 @@ class JobQueue {
 	 *
 	 * @return bool
 	 */
-	public function hasPendingJob( $type ) {
+	public function hasPendingJob( $type ): bool {
 		return $this->getQueueSize( $type ) > 0;
 	}
 

@@ -34,7 +34,7 @@ class DuplicateFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasDuplicate( DataItem $dataItem ) {
+	public function hasDuplicate( DataItem $dataItem ): bool {
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {

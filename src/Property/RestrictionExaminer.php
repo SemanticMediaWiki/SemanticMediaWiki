@@ -75,7 +75,7 @@ class RestrictionExaminer {
 	 *
 	 * @return bool
 	 */
-	public function hasRestriction() {
+	public function hasRestriction(): bool {
 		return $this->error !== [];
 	}
 

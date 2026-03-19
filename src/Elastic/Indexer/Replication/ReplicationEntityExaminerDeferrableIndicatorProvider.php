@@ -108,7 +108,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
 		}

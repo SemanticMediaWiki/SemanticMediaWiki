@@ -56,7 +56,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return bool
 	 */
-	public function hasResults() {
+	public function hasResults(): bool {
 		return $this->numRows() > 0;
 	}
 

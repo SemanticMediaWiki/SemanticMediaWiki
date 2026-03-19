@@ -38,7 +38,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ClassDescription;
 	}
 

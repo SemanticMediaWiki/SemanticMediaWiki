@@ -99,7 +99,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		if ( $this->type === '' ) {
 			$this->type = $this->connRef->getConnection( 'read' )->getType();
 		}

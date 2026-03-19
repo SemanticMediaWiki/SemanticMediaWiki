@@ -95,7 +95,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @return bool
 	 */
-	private function hasTemplates() {
+	private function hasTemplates(): bool {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 

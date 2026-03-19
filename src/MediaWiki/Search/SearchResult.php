@@ -73,7 +73,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isBrokenTitle
 	 */
-	public function isBrokenTitle() {
+	public function isBrokenTitle(): bool {
 		return $this->mTitle === null;
 	}
 

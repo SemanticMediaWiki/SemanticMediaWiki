@@ -79,7 +79,7 @@ class JsonSchemaValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasSchemaValidator() {
+	public function hasSchemaValidator(): bool {
 		return $this->schemaValidator !== null;
 	}
 

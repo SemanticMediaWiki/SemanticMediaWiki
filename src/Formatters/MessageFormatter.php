@@ -171,7 +171,7 @@ class MessageFormatter {
 	 *
 	 * @return bool
 	 */
-	public function exists() {
+	public function exists(): bool {
 		return $this->messages !== [];
 	}
 

@@ -167,7 +167,7 @@ class SortBuilder {
 		}
 	}
 
-	private function sort_field( $field ) {
+	private function sort_field( $field ): bool {
 		return strpos( $field, 'txt' ) !== false || strpos( $field, 'wpgField' ) !== false || strpos( $field, 'uriField' ) !== false;
 	}
 

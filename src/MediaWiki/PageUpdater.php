@@ -156,7 +156,7 @@ class PageUpdater implements DeferrableUpdate {
 	 *
 	 * @return bool
 	 */
-	public function canUpdate() {
+	public function canUpdate(): bool {
 		return !MediaWikiServices::getInstance()->getReadOnlyMode()->isReadOnly();
 	}
 

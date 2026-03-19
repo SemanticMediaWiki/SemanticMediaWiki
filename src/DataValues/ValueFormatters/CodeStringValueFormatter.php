@@ -19,7 +19,7 @@ class CodeStringValueFormatter extends StringValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue->getTypeID() === '_cod';
 	}
 

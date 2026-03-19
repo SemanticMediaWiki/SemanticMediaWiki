@@ -68,7 +68,7 @@ class CircularReferenceGuard {
 	 *
 	 * @return bool
 	 */
-	public function isCircular( $hash ) {
+	public function isCircular( $hash ): bool {
 		return $this->get( $hash ) > $this->maxRecursionDepth;
 	}
 

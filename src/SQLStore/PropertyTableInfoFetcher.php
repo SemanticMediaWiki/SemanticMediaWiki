@@ -134,7 +134,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return bool
 	 */
-	public function isFixedTableProperty( DIProperty $property ) {
+	public function isFixedTableProperty( DIProperty $property ): bool {
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}

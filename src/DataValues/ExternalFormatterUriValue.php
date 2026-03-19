@@ -53,7 +53,7 @@ class ExternalFormatterUriValue extends URIValue {
 	 *
 	 * @return bool
 	 */
-	public function hasMultiSubstitute() {
+	public function hasMultiSubstitute(): bool {
 		$dataItem = $this->getDataItem();
 		$uri = str_replace( [ '%24' ], [ '$' ], $dataItem->getUri() );
 

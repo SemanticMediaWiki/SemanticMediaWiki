@@ -545,7 +545,7 @@ class Time extends DataItem implements CalendarModel {
 	 * @param $calendarmodel integer either Time::CM_GREGORIAN or Time::CM_JULIAN
 	 * @return bool
 	 */
-	public static function isLeapYear( $year, $calendarmodel ) {
+	public static function isLeapYear( $year, $calendarmodel ): bool {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 		if ( $calendarmodel == self::CM_JULIAN ) {
 			return ( $astroyear % 4 ) == 0;
@@ -582,14 +582,14 @@ class Time extends DataItem implements CalendarModel {
 		return $di->getSortKey() === $this->getSortKey();
 	}
 
-	private function isOutOfBoundsBySome() {
+	private function isOutOfBoundsBySome(): bool {
 		return ( $this->m_hours < 0 ) || ( $this->m_hours > 23 ) ||
 		( $this->m_minutes < 0 ) || ( $this->m_minutes > 59 ) ||
 		( $this->m_seconds < 0 ) || ( $this->m_seconds > 59 ) ||
 		( $this->m_month < 1 ) || ( $this->m_month > 12 );
 	}
 
-	private function isOutOfBoundsByDayNumberOfMonth() {
+	private function isOutOfBoundsByDayNumberOfMonth(): bool {
 		return $this->m_day > self::getDayNumberForMonth( $this->m_month, $this->m_year, $this->m_model );
 	}
 

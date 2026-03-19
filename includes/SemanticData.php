@@ -253,7 +253,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function hasProperty( DIProperty $property ) {
+	public function hasProperty( DIProperty $property ): bool {
 		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
 	}
 

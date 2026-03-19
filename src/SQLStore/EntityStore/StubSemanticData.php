@@ -164,7 +164,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return bool
 	 */
-	public function hasProperty( DIProperty $property ) {
+	public function hasProperty( DIProperty $property ): bool {
 		$this->unstubProperties();
 		return parent::hasProperty( $property );
 	}

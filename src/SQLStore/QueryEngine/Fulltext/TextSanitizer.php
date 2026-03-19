@@ -390,7 +390,7 @@ class TextSanitizer {
 	 *
 	 * @return bool
 	 */
-	private function isStopWord( $reader, $word ) {
+	private function isStopWord( $reader, $word ): bool {
 		return $reader->get( $word ) !== false;
 	}
 

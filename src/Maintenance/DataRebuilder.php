@@ -211,7 +211,7 @@ class DataRebuilder {
 		return $this->rebuildAll();
 	}
 
-	private function hasFilters() {
+	private function hasFilters(): bool {
 		return $this->filters !== [];
 	}
 

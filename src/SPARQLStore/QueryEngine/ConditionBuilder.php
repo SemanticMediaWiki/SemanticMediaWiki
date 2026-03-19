@@ -399,7 +399,7 @@ class ConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function isSetFlag( $featureFlag ) {
+	public function isSetFlag( $featureFlag ): bool {
 		$canUse = true;
 
 		// Adhere additional condition

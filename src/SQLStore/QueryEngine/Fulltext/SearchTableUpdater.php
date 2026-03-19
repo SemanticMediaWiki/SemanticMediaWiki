@@ -84,7 +84,7 @@ class SearchTableUpdater {
 	 *
 	 * @return bool
 	 */
-	public function exists( $sid, $pid ) {
+	public function exists( $sid, $pid ): bool {
 		$row = $this->connection->selectRow(
 			$this->searchTable->getTableName(),
 			[ 's_id' ],

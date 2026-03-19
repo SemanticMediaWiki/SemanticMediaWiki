@@ -28,7 +28,7 @@ class LockManager {
 	/**
 	 * @since 3.1
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			self::TYPE_MAINTENANCE
@@ -71,7 +71,7 @@ class LockManager {
 	 *
 	 * @return bool
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		$key = smwfCacheKey(
 			self::CACHE_NAMESPACE,
 			[ 'lock', $type ]

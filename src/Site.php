@@ -96,7 +96,7 @@ class Site {
 	 *
 	 * @return bool
 	 */
-	public static function isCommandLineMode() {
+	public static function isCommandLineMode(): bool {
 		return MW_ENTRY_POINT === 'cli' || defined( 'MEDIAWIKI_JOB_RUNNER' );
 	}
 

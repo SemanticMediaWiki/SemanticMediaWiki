@@ -54,7 +54,7 @@ class ProfileForm {
 	 *
 	 * @return bool
 	 */
-	public static function isValidProfile( $profile ) {
+	public static function isValidProfile( $profile ): bool {
 		return $profile === self::PROFILE_NAME;
 	}
 

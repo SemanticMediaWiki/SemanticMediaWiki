@@ -275,7 +275,7 @@ class ConceptCacheRebuilder {
 		return $titleLookup->selectByIdRange( $this->startId, $endId );
 	}
 
-	private function hasOption( $key ) {
+	private function hasOption( $key ): bool {
 		return isset( $this->options[$key] );
 	}
 

@@ -103,7 +103,7 @@ class TableSchemaManager {
 	 *
 	 * @return bool
 	 */
-	public function hasFeatureFlag( $feature ) {
+	public function hasFeatureFlag( $feature ): bool {
 		return ( (int)$this->featureFlags & $feature ) != 0;
 	}
 

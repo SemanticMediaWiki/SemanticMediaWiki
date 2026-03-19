@@ -206,7 +206,7 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function isCli() {
+	public function isCli(): bool {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
 	}
 
@@ -251,7 +251,7 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function hasError() {
+	public function hasError(): bool {
 		$this->errorType = '';
 
 		if ( $this->setupFile->inMaintenanceMode() ) {

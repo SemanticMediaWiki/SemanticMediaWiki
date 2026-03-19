@@ -99,7 +99,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @return bool
 	 */
-	public function isFilePage() {
+	public function isFilePage(): bool {
 		return $this->wikiPage instanceof WikiFilePage;
 	}
 

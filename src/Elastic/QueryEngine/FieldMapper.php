@@ -76,7 +76,7 @@ class FieldMapper {
 	 *
 	 * @return bool
 	 */
-	public static function isPhrase( $value = '' ) {
+	public static function isPhrase( $value = '' ): bool {
 		return $value[0] === '"' && substr( $value, -1 ) === '"';
 	}
 
@@ -87,7 +87,7 @@ class FieldMapper {
 	 *
 	 * @return bool
 	 */
-	public static function hasWildcard( $value = '' ) {
+	public static function hasWildcard( $value = '' ): bool {
 		return strpos( $value, '*' ) !== false && strpos( $value, '\*' ) === false;
 	}
 

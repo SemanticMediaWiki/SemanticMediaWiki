@@ -130,7 +130,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return bool
 	 */
-	public function hasFormat( $formatName ) {
+	public function hasFormat( $formatName ): bool {
 		$formatName = $this->getCanonicalName( $formatName );
 		return array_key_exists( $formatName, $this->formats );
 	}

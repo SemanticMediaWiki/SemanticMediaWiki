@@ -104,7 +104,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isProperty( $row ) {
+	public function isProperty( $row ): bool {
 		return $row->smw_namespace === SMW_NS_PROPERTY && $row->smw_iw == '' && $row->smw_subobject == '';
 	}
 
@@ -115,7 +115,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isOutdated( $row ) {
+	public function isOutdated( $row ): bool {
 		return $row->smw_iw == SMW_SQL3_SMWIW_OUTDATED || $row->smw_iw == SMW_SQL3_SMWDELETEIW;
 	}
 
@@ -126,7 +126,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( $row ) {
+	public function isRedirect( $row ): bool {
 		return $row->smw_iw == SMW_SQL3_SMWREDIIW;
 	}
 
@@ -284,7 +284,7 @@ class EntityValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasLatestRevID( Title $title, $row = false ) {
+	public function hasLatestRevID( Title $title, $row = false ): bool {
 		$latestRevID = $this->revisionGuard->getLatestRevID( $title );
 
 		if ( $row !== false ) {

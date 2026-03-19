@@ -101,7 +101,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
 		return $this->checkIndicators( $subject, $options ) !== [];
 	}
 

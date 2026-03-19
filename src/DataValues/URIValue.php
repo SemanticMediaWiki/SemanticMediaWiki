@@ -201,7 +201,7 @@ class URIValue extends DataValue {
 	 * Only global phone numbers are supported, and no full validation
 	 * of parameters (appended via ;param=value) is performed.
 	 */
-	protected static function isValidTelURI( $s ) {
+	protected static function isValidTelURI( $s ): bool {
 		$tel_uri_regex = '<^tel:\+[0-9./-]*[0-9][0-9./-]*(;[0-9a-zA-Z-]+=(%[0-9a-zA-Z][0-9a-zA-Z]|[0-9a-zA-Z._~:/?#[\]@!$&\'()*+,;=-])*)*$>';
 		return (bool)preg_match( $tel_uri_regex, $s );
 	}

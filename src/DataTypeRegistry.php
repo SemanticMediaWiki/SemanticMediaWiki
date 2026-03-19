@@ -186,7 +186,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $typeId ) {
+	public function isRegistered( $typeId ): bool {
 		return isset( $this->typeDataItemIds[$typeId] );
 	}
 
@@ -208,7 +208,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isSubDataType( $typeId ) {
+	public function isSubDataType( $typeId ): bool {
 		return isset( $this->subTypes[$typeId] ) && $this->subTypes[$typeId];
 	}
 
@@ -219,7 +219,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isBrowsableType( $typeId ) {
+	public function isBrowsableType( $typeId ): bool {
 		return isset( $this->browsableTypes[$typeId] ) && $this->browsableTypes[$typeId];
 	}
 
@@ -231,7 +231,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isEqualByType( $srcType, $tagType ) {
+	public function isEqualByType( $srcType, $tagType ): bool {
 		return $this->getDataItemByType( $srcType ) === $this->getDataItemByType( $tagType );
 	}
 

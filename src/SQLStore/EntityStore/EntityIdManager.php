@@ -420,7 +420,7 @@ class EntityIdManager {
 	 *
 	 * @return bool
 	 */
-	public function isUnique( DataItem $dataItem ) {
+	public function isUnique( DataItem $dataItem ): bool {
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}
@@ -494,7 +494,7 @@ class EntityIdManager {
 	 *
 	 * @param boolean
 	 */
-	public function exists( DIWikiPage $subject ) {
+	public function exists( DIWikiPage $subject ): bool {
 		return $this->getId( $subject ) > 0;
 	}
 

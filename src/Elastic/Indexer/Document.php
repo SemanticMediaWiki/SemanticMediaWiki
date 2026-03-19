@@ -64,7 +64,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return bool
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		return $this->type === $type;
 	}
 
@@ -132,7 +132,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return bool
 	 */
-	public function hasSubDocumentById( $id ) {
+	public function hasSubDocumentById( $id ): bool {
 		return isset( $this->subDocuments[$id] );
 	}
 

@@ -313,7 +313,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @note Every user defined property is necessarily visible.
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getCanonicalLabel() !== '' );
 	}
 

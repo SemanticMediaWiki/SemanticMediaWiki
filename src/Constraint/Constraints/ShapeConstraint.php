@@ -127,7 +127,7 @@ class ShapeConstraint implements Constraint {
 		$this->reportError( $dataValue, $errors );
 	}
 
-	private function isType( $type, $property ) {
+	private function isType( $type, $property ): bool {
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeId()
 		);

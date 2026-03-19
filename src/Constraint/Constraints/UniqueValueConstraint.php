@@ -174,7 +174,7 @@ class UniqueValueConstraint implements Constraint {
 		return false;
 	}
 
-	private function hasAnnotation( $dataValue ) {
+	private function hasAnnotation( $dataValue ): bool {
 		$key = $dataValue->getProperty()->getKey();
 		$hash = $dataValue->getContextPage()->getHash();
 

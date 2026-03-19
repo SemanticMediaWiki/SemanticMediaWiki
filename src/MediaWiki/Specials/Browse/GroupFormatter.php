@@ -67,7 +67,7 @@ class GroupFormatter {
 	 *
 	 * @return bool
 	 */
-	public function isLastGroup( $group ) {
+	public function isLastGroup( $group ): bool {
 		return $this->lastGroup === $group;
 	}
 
@@ -76,7 +76,7 @@ class GroupFormatter {
 	 *
 	 * @return bool
 	 */
-	public function hasGroups() {
+	public function hasGroups(): bool {
 		return $this->groupLinks !== [];
 	}
 

@@ -22,7 +22,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof MonolingualTextValue;
 	}
 

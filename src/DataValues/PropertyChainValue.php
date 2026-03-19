@@ -46,7 +46,7 @@ class PropertyChainValue extends StringValue {
 	 *
 	 * @return bool
 	 */
-	public static function isChained( $value ) {
+	public static function isChained( $value ): bool {
 		return strpos( $value, '.' ) !== false;
 	}
 
@@ -133,7 +133,7 @@ class PropertyChainValue extends StringValue {
 	/**
 	 * @see PropertyValue::isVisible
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->lastPropertyChainValue->getDataItem()->isUserDefined() || $this->lastPropertyChainValue->getDataItem()->getLabel() !== '' );
 	}
 

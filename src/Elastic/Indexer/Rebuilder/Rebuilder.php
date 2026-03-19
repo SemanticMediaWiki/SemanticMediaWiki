@@ -170,7 +170,7 @@ class Rebuilder {
 	 *
 	 * @return bool
 	 */
-	public function hasIndices() {
+	public function hasIndices(): bool {
 		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
 			$this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
 	}

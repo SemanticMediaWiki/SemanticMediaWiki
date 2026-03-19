@@ -236,7 +236,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return !$this->hasAnnotationBlock();
 	}
 

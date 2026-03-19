@@ -88,7 +88,7 @@ class NamespaceExaminer {
 		return $this->isEnabled( $namespace );
 	}
 
-	private function isEnabled( $namespace ) {
+	private function isEnabled( $namespace ): bool {
 		return !empty( $this->registeredNamespaces[$namespace] );
 	}
 

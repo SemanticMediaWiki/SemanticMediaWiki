@@ -517,7 +517,7 @@ class SPARQLStore extends Store {
 		return parent::getConnection( $type );
 	}
 
-	private function hasQueryEndpoint() {
+	private function hasQueryEndpoint(): bool {
 		return $this->getConnection( 'sparql' )->getRepositoryClient()->getQueryEndpoint() !== false;
 	}
 

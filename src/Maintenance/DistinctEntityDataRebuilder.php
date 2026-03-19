@@ -203,7 +203,7 @@ class DistinctEntityDataRebuilder {
 		}
 	}
 
-	private function hasFilters() {
+	private function hasFilters(): bool {
 		return $this->filters !== [];
 	}
 

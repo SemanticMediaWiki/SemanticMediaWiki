@@ -409,7 +409,7 @@ class NumberValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function hasPrefixalUnitPreference( $unit ) {
+	public function hasPrefixalUnitPreference( $unit ): bool {
 		return isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit];
 	}
 
@@ -453,7 +453,7 @@ class NumberValue extends DataValue {
 	 * @param $unit string after the numericla user input
 	 * @return bool specifying if the unit string is allowed
 	 */
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->m_dataitem = new Number( $number );
 		$this->m_unitin = '';
 		return ( $unit === '' );

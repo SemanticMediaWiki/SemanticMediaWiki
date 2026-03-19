@@ -56,7 +56,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return $this->get( $key, false ) !== false;
 	}
 

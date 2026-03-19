@@ -109,7 +109,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @return bool
 	 */
-	public function inNamespace( DIWikiPage $subject ) {
+	public function inNamespace( DIWikiPage $subject ): bool {
 		return $subject->getNamespace() === SMW_NS_PROPERTY || $subject->getNamespace() === NS_CATEGORY;
 	}
 
@@ -186,7 +186,7 @@ class ChangePropagationNotifier {
 	 *
 	 * @return bool
 	 */
-	private function isEqual( array $oldDataValue, array $newDataValue ) {
+	private function isEqual( array $oldDataValue, array $newDataValue ): bool {
 		// The hashes of all values of both arrays are taken, then sorted
 		// and finally concatenated, thus creating one long hash out of each
 		// of the data value arrays. These are compared.

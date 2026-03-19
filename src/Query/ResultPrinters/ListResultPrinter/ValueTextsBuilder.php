@@ -124,7 +124,7 @@ class ValueTextsBuilder {
 	/**
 	 * @return bool
 	 */
-	private function isSimpleList() {
+	private function isSimpleList(): bool {
 		$format = $this->get( 'format' );
 		return $format !== 'ul' && $format !== 'ol';
 	}

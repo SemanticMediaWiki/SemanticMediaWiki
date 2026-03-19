@@ -30,7 +30,7 @@ class RecordValueDescriptionBuilder extends DescriptionBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isBuilderFor( $serialization ) {
+	public function isBuilderFor( $serialization ): bool {
 		return $serialization instanceof RecordValue || $serialization instanceof ReferenceValue;
 	}
 

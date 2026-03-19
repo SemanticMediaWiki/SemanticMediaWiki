@@ -94,7 +94,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}

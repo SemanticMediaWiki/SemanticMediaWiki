@@ -109,7 +109,7 @@ final class Setup {
 	 *
 	 * @return bool
 	 */
-	public static function isEnabled() {
+	public static function isEnabled(): bool {
 		return defined( 'SMW_VERSION' ) && defined( 'SMW_EXTENSION_LOADED' );
 	}
 

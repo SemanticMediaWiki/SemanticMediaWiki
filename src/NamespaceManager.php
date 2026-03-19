@@ -292,7 +292,7 @@ class NamespaceManager {
 		];
 	}
 
-	protected function isDefinedConstant( $constant ) {
+	protected function isDefinedConstant( $constant ): bool {
 		return defined( $constant );
 	}
 

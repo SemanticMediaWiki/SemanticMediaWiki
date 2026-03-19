@@ -48,7 +48,7 @@ class File {
 	 *
 	 * @return bool
 	 */
-	public function exists( $file ) {
+	public function exists( $file ): bool {
 		return file_exists( self::dir( $file ) );
 	}
 

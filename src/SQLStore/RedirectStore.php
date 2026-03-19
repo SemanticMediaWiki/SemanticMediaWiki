@@ -84,7 +84,7 @@ class RedirectStore {
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( $title, $namespace ) {
+	public function isRedirect( $title, $namespace ): bool {
 		return $this->findRedirect( $title, $namespace ) != 0;
 	}
 
@@ -297,7 +297,7 @@ class RedirectStore {
 		);
 	}
 
-	private function canCreateUpdateJobs() {
+	private function canCreateUpdateJobs(): bool {
 		return $this->store->getOption( Store::OPT_CREATE_UPDATE_JOB, true ) && $this->store->getOption( 'smwgEnableUpdateJobs' );
 	}
 
