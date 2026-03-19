@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\SemanticData;
 use SMW\Store;
@@ -50,7 +50,7 @@ class HtmlBuilderTest extends TestCase {
 	public function testCanConstruct() {
 		$instance = new HtmlBuilder(
 			$this->store,
-			DIWikiPage::newFromText( 'Foo' )
+			WikiPage::newFromText( 'Foo' )
 		);
 
 		$this->assertInstanceOf(
@@ -60,7 +60,7 @@ class HtmlBuilderTest extends TestCase {
 	}
 
 	public function testOptions() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new HtmlBuilder(
 			$this->store,
@@ -95,7 +95,7 @@ class HtmlBuilderTest extends TestCase {
 	 * @dataProvider buildHTMLProvider
 	 */
 	public function testBuildHTML( $options ) {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
@@ -192,7 +192,7 @@ class HtmlBuilderTest extends TestCase {
 	}
 
 	public function testLegacy() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )
@@ -210,7 +210,7 @@ class HtmlBuilderTest extends TestCase {
 	}
 
 	public function testGetPlaceholderData() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getSemanticData' )

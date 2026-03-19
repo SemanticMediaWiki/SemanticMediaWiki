@@ -1,7 +1,8 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Specials;
 
+use SMW\QueryPages\UnusedPropertiesQueryPage;
 use SMWOutputs;
 
 /**
@@ -66,3 +67,8 @@ class SpecialUnusedProperties extends SpecialPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialUnusedProperties::class, 'SMW\SpecialUnusedProperties' );

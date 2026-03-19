@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\Encoder;
-use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
 
 /**
  * @license GPL-2.0-or-later

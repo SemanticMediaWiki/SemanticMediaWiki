@@ -1,12 +1,13 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
-use SMW\SpecialConcepts;
+use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\Specials\SpecialConcepts;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @group semantic-mediawiki
@@ -78,7 +79,7 @@ class SpecialConceptsTest extends TestCase {
 	 * @depends testGetHtmlForAnEmptySubject
 	 */
 	public function testGetHtmlForSingleSubject() {
-		$subject  = DIWikiPage::newFromText( __METHOD__ );
+		$subject  = WikiPage::newFromText( __METHOD__ );
 		$instance = new SpecialConcepts();
 
 		$this->stringValidator->assertThatStringContains(

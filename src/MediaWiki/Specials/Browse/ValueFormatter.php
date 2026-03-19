@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Specials\Browse;
 
 use MediaWiki\User\User;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DIProperty;
 use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 use SMWInfolink as Infolink;
 
 /**
@@ -39,7 +39,7 @@ class ValueFormatter {
 		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {
 
 			$dv = DataValueFactory::getInstance()->newDataValueByItem(
-				DIProperty::newFromUserLabel( $dataValue->getDataItem()->getDBKey() )
+				Property::newFromUserLabel( $dataValue->getDataItem()->getDBKey() )
 			);
 
 			$label = $dv->getFormattedLabel( DataValueFormatter::WIKI_LONG );
@@ -119,7 +119,7 @@ class ValueFormatter {
 			$infolink = Infolink::newInversePropertySearchLink( '+', $dataValue->getTitle(), $propertyValue->getDataItem()->getLabel(), 'smwsearch' );
 			$infolink->setCompactLink( $isCompactLink );
 			$html .= "&#160;" . $infolink->getHTML( $linker );
-		} elseif ( $dataValue->getProperty() instanceof DIProperty && !in_array( $dataValue->getProperty()->getKey(), $noInfolinks ) ) {
+		} elseif ( $dataValue->getProperty() instanceof Property && !in_array( $dataValue->getProperty()->getKey(), $noInfolinks ) ) {
 			$html .= $dataValue->getInfolinkText( SMW_OUTPUT_HTML, $linker );
 		}
 

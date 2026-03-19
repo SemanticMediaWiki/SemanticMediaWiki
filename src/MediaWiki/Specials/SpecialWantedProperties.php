@@ -1,12 +1,13 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Specials;
 
+use SMW\QueryPages\WantedPropertiesQueryPage;
 use SMWOutputs;
 
 /**
- * Special page (Special:Properties) for MediaWiki shows all
- * used properties
+ * Special page (Special:WantedProperties) for MediaWiki shows all
+ * wanted properties
  *
  *
  * @license GPL-2.0-or-later
@@ -18,18 +19,19 @@ use SMWOutputs;
  */
 
 /**
- * This special page for MediaWiki shows all used properties.
+ * This special page (Special:WantedProperties) for MediaWiki shows all wanted
+ * properties (used but not having a page).
  *
  * @ingroup SpecialPage
  */
-class SpecialProperties extends SpecialPage {
+class SpecialWantedProperties extends SpecialPage {
 
 	/**
 	 * @see SpecialPage::__construct
 	 * @codeCoverageIgnore
 	 */
 	public function __construct() {
-		parent::__construct( 'Properties' );
+		parent::__construct( 'WantedProperties' );
 	}
 
 	/**
@@ -37,17 +39,24 @@ class SpecialProperties extends SpecialPage {
 	 */
 	public function execute( $param ): void {
 		$this->setHeaders();
+
 		$out = $this->getOutput();
 
-		$out->setPageTitle( $this->msg( 'properties' )->text() );
+		$out->addModuleStyles( [
+			'ext.smw.special.styles'
+		] );
 
-		$page = new PropertiesQueryPage( $this->getStore(), $this->getSettings() );
+		$out->setPageTitle( $this->msg( 'wantedproperties' )->text() );
+
+		$page = new WantedPropertiesQueryPage( $this->getStore(), $this->getSettings() );
 		$page->setContext( $this->getContext() );
+		$page->setTitle( $this->getPageTitle() );
 
 		[ $limit, $offset ] = $this->getLimitOffset();
-		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
+		$page->doQuery( $offset, $limit );
 
 		// Ensure locally collected output data is pushed to the output!
+		// ?? still needed !!
 		SMWOutputs::commitToOutputPage( $out );
 	}
 
@@ -64,3 +73,8 @@ class SpecialProperties extends SpecialPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialWantedProperties::class, 'SMW\SpecialWantedProperties' );

@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 use MediaWiki\Message\Message;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
@@ -84,8 +84,8 @@ class PageBuilderTest extends TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [
-				new DIWikiPage( 'ResultOne', NS_MAIN ),
-				new DIWikiPage( 'ResultTwo', NS_HELP ) ] );
+				new WikiPage( 'ResultOne', NS_MAIN ),
+				new WikiPage( 'ResultTwo', NS_HELP ) ] );
 
 		$instance =	new PageBuilder(
 			new HtmlFormRenderer( $title, $messageBuilder ),
@@ -146,8 +146,8 @@ class PageBuilderTest extends TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [
-				new DIWikiPage( 'ResultOne', NS_MAIN ),
-				new DIWikiPage( 'ResultTwo', NS_HELP ) ] );
+				new WikiPage( 'ResultOne', NS_MAIN ),
+				new WikiPage( 'ResultTwo', NS_HELP ) ] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getQueryResult' )

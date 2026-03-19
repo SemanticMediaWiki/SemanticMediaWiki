@@ -3,17 +3,17 @@
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
 use MediaWiki\Html\Html;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
-use SMWDIError;
 use SMWInfolink as Infolink;
 
 /**
@@ -60,7 +60,7 @@ class PageBuilder {
 		[ $resultMessage, $resultList, $resultCount ] = $this->getResultHtml();
 
 		if ( ( $resultList === '' || $resultList === null ) &&
-			$this->pageRequestOptions->property->getDataItem() instanceof DIProperty &&
+			$this->pageRequestOptions->property->getDataItem() instanceof Property &&
 			$this->pageRequestOptions->valueString === '' ) {
 			[ $resultMessage, $resultList, $resultCount ] = $this->tryToFindAtLeastOnePropertyTableReferenceFor(
 				$this->pageRequestOptions->property->getDataItem()
@@ -290,7 +290,7 @@ class PageBuilder {
 			// or if the current results are to be highlighted:
 			if ( array_key_exists( 1, $result ) &&
 				( $result[1] instanceof DataValue ) &&
-				( !$result[1]->getDataItem() instanceof SMWDIError ) &&
+				( !$result[1]->getDataItem() instanceof Error ) &&
 				( !$this->pageRequestOptions->value->getDataItem()->equals( $result[1]->getDataItem() )
 					|| $highlight ) ) {
 
@@ -325,7 +325,7 @@ class PageBuilder {
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
 	}
 
-	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ): array {
+	private function tryToFindAtLeastOnePropertyTableReferenceFor( Property $property ): array {
 		$resultList = '';
 		$resultMessage = '';
 		$resultCount = 0;
@@ -335,7 +335,7 @@ class PageBuilder {
 			$property
 		);
 
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			$resultMessage = 'No reference found.';
 			return [ $resultMessage, $resultList, $resultCount ];
 		}
@@ -344,7 +344,7 @@ class PageBuilder {
 		// for removal
 		if ( $dataItem->getInterWiki() === ':smw-delete' ) {
 			$resultMessage = 'Item reference "' . $dataItem->getSubobjectName() . '" has already been marked for removal.';
-			$dataItem = new DIWikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
+			$dataItem = new WikiPage( $dataItem->getDBKey(), $dataItem->getNamespace() );
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(

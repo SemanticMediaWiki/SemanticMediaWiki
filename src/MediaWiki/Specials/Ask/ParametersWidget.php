@@ -6,8 +6,8 @@ use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use ParamProcessor\ParamDefinition;
 use SMW\Localizer\Message;
+use SMW\Query\QueryProcessor;
 use SMW\Utils\HtmlDivTable;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @private

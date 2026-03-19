@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Utils\UrlArgs;
 
@@ -60,7 +60,7 @@ class CheckboxValueFilter {
 		$valueFilters = $this->getValueFilters( $property );
 		$isClear = $this->urlArgs->find( "clear.$property", false );
 
-		$prop = DIProperty::newFromUserLabel( $property );
+		$prop = Property::newFromUserLabel( $property );
 
 		$isRecordType = DataTypeRegistry::getInstance()->isRecordType(
 			$prop->findPropertyTypeID()

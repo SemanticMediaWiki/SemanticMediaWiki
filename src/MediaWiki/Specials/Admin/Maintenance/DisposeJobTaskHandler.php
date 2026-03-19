@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Admin\Maintenance;
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\SpecialPage\SpecialPage;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\ActionableTask;
@@ -82,7 +82,7 @@ class DisposeJobTaskHandler extends TaskHandler implements ActionableTask {
 	 * {@inheritDoc}
 	 */
 	public function getHtml() {
-		$subject = DIWikiPage::newFromTitle( SpecialPage::getTitleFor( 'SMWAdmin' ) );
+		$subject = WikiPage::newFromTitle( SpecialPage::getTitleFor( 'SMWAdmin' ) );
 
 		// smw-admin-outdateddisposal
 		$this->htmlFormRenderer

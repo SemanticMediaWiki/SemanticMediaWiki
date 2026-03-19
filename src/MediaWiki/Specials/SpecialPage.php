@@ -1,9 +1,12 @@
 <?php
 
-namespace SMW;
+namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\SpecialPage\SpecialPage as MWSpecialPage;
 use SMW\Services\ServicesFactory;
+use SMW\Settings;
+use SMW\Store;
+use SMW\StoreFactory;
 
 /**
  * Semantic MediaWiki SpecialPage base class
@@ -93,3 +96,8 @@ class SpecialPage extends MWSpecialPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialPage::class, 'SMW\SpecialPage' );

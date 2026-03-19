@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\MediaWiki\Specials;
+
 use MediaWiki\MediaWikiServices;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\Exporter\ExporterFactory;
@@ -15,7 +17,7 @@ use SMW\Exporter\ExporterFactory;
  * @author Markus Krötzsch
  * @author Jeroen De Dauw
  */
-class SMWSpecialOWLExport extends SpecialPage {
+class SpecialOWLExport extends SpecialPage {
 
 	/// Export controller object to be used for serializing data
 	protected $export_controller;
@@ -79,6 +81,8 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 	/**
 	 * Create the HTML user interface for this special page.
+	 *
+	 * @return void
 	 */
 	protected function showForm() {
 		global $smwgAllowRecursiveExport, $smwgExportBacklinks, $smwgExportAll;
@@ -112,6 +116,8 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 	/**
 	 * Prepare $this->getOutput() for printing non-HTML data.
+	 *
+	 * @return void
 	 */
 	protected function startRDFExport() {
 		$out = $this->getOutput();
@@ -148,7 +154,10 @@ class SMWSpecialOWLExport extends SpecialPage {
 
 	/**
 	 * Export the given pages to RDF.
+	 *
 	 * @param array $pages containing the string names of pages to be exported
+	 *
+	 * @return void
 	 */
 	protected function exportPages( $pages ) {
 		global $smwgExportBacklinks, $smwgAllowRecursiveExport;
@@ -211,7 +220,15 @@ class SMWSpecialOWLExport extends SpecialPage {
 		$this->export_controller->printPages( $pages, $recursive, $date );
 	}
 
+	/**
+	 * @return string
+	 */
 	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialOWLExport::class, 'SMWSpecialOWLExport' );

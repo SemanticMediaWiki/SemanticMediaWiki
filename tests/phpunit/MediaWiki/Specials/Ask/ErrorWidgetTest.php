@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials\Ask;
 use MediaWiki\Html\Html;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
+use SMW\Query\Query;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\ErrorWidget
@@ -42,7 +43,7 @@ class ErrorWidgetTest extends TestCase {
 	 * @dataProvider queryErrorProvider
 	 */
 	public function testGetFormattedQueryErrorElement( $errors, $expected ) {
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

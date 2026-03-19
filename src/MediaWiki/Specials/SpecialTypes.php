@@ -1,12 +1,18 @@
 <?php
 
+namespace SMW\MediaWiki\Specials;
+
+use Iterator;
 use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use MediaWiki\SpecialPage\SpecialPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\ErrorValue;
 use SMW\DataValues\TypesValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
@@ -15,7 +21,6 @@ use SMW\TypesRegistry;
 use SMW\Utils\HtmlColumns;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
-use SMWErrorValue as ErrorValue;
 use SMWInfolink as Infolink;
 
 /**
@@ -28,7 +33,7 @@ use SMWInfolink as Infolink;
  * @author mwjames
  * @author Markus Krötzsch
  */
-class SMWSpecialTypes extends SpecialPage {
+class SpecialTypes extends SpecialPage {
 
 	/**
 	 * @see SpecialPage::execute
@@ -71,7 +76,7 @@ class SMWSpecialTypes extends SpecialPage {
 	 * @since 3.0
 	 *
 	 * @param DataValue $dataValue
-	 * @param Link $linker
+	 * @param Linker $linker
 	 *
 	 * @return string
 	 */
@@ -81,7 +86,7 @@ class SMWSpecialTypes extends SpecialPage {
 			$dataItem = $dataValue->getDataItem();
 
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-				new DIWikiPage( $dataItem->getDBKey(), SMW_NS_PROPERTY ),
+				new WikiPage( $dataItem->getDBKey(), SMW_NS_PROPERTY ),
 				null
 			);
 
@@ -208,7 +213,7 @@ class SMWSpecialTypes extends SpecialPage {
 		$requestOptions->setOffset( $offset );
 
 		$dataItems = $store->getPropertySubjects(
-			new DIProperty( '_TYPE' ),
+			new Property( '_TYPE' ),
 			$typeValue->getDataItem(),
 			$requestOptions
 		);
@@ -457,3 +462,8 @@ class SMWSpecialTypes extends SpecialPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SpecialTypes::class, 'SMWSpecialTypes' );

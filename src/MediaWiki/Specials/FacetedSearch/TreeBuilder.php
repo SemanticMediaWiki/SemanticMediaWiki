@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\Store;
@@ -84,7 +84,7 @@ class TreeBuilder {
 
 		$propertyValues = $prefetchItemLookup->getPropertyValues(
 			$subjects,
-			new DIProperty( $property ),
+			new Property( $property ),
 			$requestOptions
 		);
 

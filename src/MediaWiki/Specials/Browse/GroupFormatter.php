@@ -3,11 +3,11 @@
 namespace SMW\MediaWiki\Specials\Browse;
 
 use MediaWiki\Html\Html;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -136,18 +136,18 @@ class GroupFormatter {
 	 * @since 3.0
 	 *
 	 * @param string $id
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return string
 	 */
-	public function getMessageClassLink( $id, DIWikiPage $dataItem ) {
+	public function getMessageClassLink( $id, WikiPage $dataItem ) {
 		$gr = str_replace( '_', ' ', $dataItem->getDBKey() );
 		$key = mb_strtolower( str_replace( ' ', '-', $gr ) );
 
 		return Html::rawElement(
 			'a',
 			[
-				'href' => DIWikiPage::newFromText( $id . $key, NS_MEDIAWIKI )->getTitle()->getFullURL(),
+				'href' => WikiPage::newFromText( $id . $key, NS_MEDIAWIKI )->getTitle()->getFullURL(),
 				'class' => !Message::exists( $id . $key ) ? 'new' : ''
 			],
 			$id . $key
@@ -274,7 +274,7 @@ class GroupFormatter {
 				$list[$group] = [
 					'properties' => array_flip( $property_keys ),
 					'msg_key' => $message_key,
-					'item' => DIWikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
+					'item' => WikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
 				];
 			}
 		}

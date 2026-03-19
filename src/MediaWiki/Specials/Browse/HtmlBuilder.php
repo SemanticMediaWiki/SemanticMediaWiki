@@ -6,15 +6,15 @@ use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Skin\SkinComponentUtils;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
-use SMWDataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -80,7 +80,7 @@ class HtmlBuilder {
 	 */
 	private $language = 'en';
 
-	private SMWDataValue $dataValue;
+	private DataValue $dataValue;
 
 	private string $articletext;
 
@@ -89,7 +89,7 @@ class HtmlBuilder {
 	 */
 	public function __construct(
 		private readonly Store $store,
-		private readonly DIWikiPage $subject,
+		private readonly WikiPage $subject,
 	) {
 	}
 
@@ -754,7 +754,7 @@ class HtmlBuilder {
 		$data = [];
 		$contextPage = $semanticData->getSubject();
 
-		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new DIProperty( '_PPGR' ) ) ) {
+		if ( $contextPage->getNamespace() !== NS_CATEGORY || !$semanticData->hasProperty( new Property( '_PPGR' ) ) ) {
 			return $data;
 		}
 
