@@ -374,3 +374,8 @@ class RecurringEvents {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( RecurringEvents::class, 'SMW\RecurringEvents' );

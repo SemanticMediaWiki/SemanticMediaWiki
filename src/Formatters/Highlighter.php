@@ -380,3 +380,8 @@ class Highlighter {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Highlighter::class, 'SMW\Highlighter' );

@@ -952,3 +952,8 @@ class SemanticData implements JsonUnserializable {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SemanticData::class, 'SMW\SemanticData' );

@@ -192,3 +192,8 @@ final class QueryPrinterFactory {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( QueryPrinterFactory::class, 'SMW\QueryPrinterFactory' );

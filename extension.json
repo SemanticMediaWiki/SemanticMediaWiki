@@ -78,7 +78,13 @@
 		"SemanticMediaWiki": "src/SemanticMediaWiki.php",
 		"SMWInfolink": "src/Formatters/Infolink.php",
 		"SMWPageLister": "src/Formatters/PageLister.php",
-		"SMWPageSchemas": "src/MediaWiki/PageSchemas.php"
+		"SMWPageSchemas": "src/MediaWiki/PageSchemas.php",
+		"SMW\\ContentParser": "src/Parser/ContentParser.php",
+		"SMW\\Highlighter": "src/Formatters/Highlighter.php",
+		"SMW\\QueryPrinterFactory": "src/Query/QueryPrinterFactory.php",
+		"SMW\\RecurringEvents": "src/Utils/RecurringEvents.php",
+		"SMW\\SemanticData": "src/DataModel/SemanticData.php",
+		"SMW\\Subobject": "src/DataModel/Subobject.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

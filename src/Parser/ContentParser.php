@@ -214,3 +214,8 @@ class ContentParser {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( ContentParser::class, 'SMW\ContentParser' );
