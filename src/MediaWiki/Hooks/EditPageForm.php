@@ -79,7 +79,7 @@ class EditPageForm implements HookListener {
 		);
 	}
 
-	private function getMessageKey( $title ) {
+	private function getMessageKey( $title ): string {
 		$text = $title->getText();
 		$namespace = $title->getNamespace();
 

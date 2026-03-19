@@ -20,7 +20,7 @@ class SettingsInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSupplementTask() {
+	public function getSupplementTask(): string {
 		return 'settings';
 	}
 

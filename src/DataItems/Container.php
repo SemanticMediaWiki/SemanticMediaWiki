@@ -59,7 +59,7 @@ class Container extends DataItem {
 		return $this->m_semanticData;
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return '';
 	}
 

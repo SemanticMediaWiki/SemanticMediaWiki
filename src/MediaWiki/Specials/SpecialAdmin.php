@@ -130,7 +130,7 @@ class SpecialAdmin extends SpecialPage {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group';
 	}
 

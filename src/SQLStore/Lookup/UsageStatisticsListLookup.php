@@ -86,7 +86,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return 'statistics-lookup';
 	}
 

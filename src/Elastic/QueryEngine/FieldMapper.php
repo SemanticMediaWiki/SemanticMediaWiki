@@ -42,7 +42,7 @@ class FieldMapper {
 	 *
 	 * @return string
 	 */
-	public static function getPID( $id ) {
+	public static function getPID( $id ): string {
 		return "P:$id";
 	}
 

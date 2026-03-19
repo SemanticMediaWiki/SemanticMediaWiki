@@ -152,7 +152,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::getUnit
 	 */
-	public function getUnit() {
+	public function getUnit(): string {
 		return 'K';
 	}
 

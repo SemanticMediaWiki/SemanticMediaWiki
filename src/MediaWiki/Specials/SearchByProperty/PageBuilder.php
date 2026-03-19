@@ -247,7 +247,7 @@ class PageBuilder {
 	 *
 	 * @return string HTML with the bullet list, including header
 	 */
-	private function makeResultList( $results, $number, $first, $highlight = false ) {
+	private function makeResultList( $results, $number, $first, $highlight = false ): string {
 		if ( $number > 0 ) {
 			$results = $first ?
 				array_slice( $results, 0, $number ) :

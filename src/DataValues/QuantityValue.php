@@ -150,7 +150,7 @@ class QuantityValue extends NumberValue {
 		return array_keys( $this->m_unitfactors );
 	}
 
-	public function getUnit() {
+	public function getUnit(): string {
 		$this->initConversionData();
 		return $this->m_mainunit;
 	}

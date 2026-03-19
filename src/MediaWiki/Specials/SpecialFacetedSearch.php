@@ -177,7 +177,7 @@ class SpecialFacetedSearch extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 

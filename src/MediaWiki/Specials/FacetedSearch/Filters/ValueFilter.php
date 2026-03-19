@@ -145,7 +145,7 @@ class ValueFilter {
 		throw new DefaultValueFilterNotFoundException( $property );
 	}
 
-	private function getType( $property ) {
+	private function getType( $property ): string {
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyValueType()
 		);

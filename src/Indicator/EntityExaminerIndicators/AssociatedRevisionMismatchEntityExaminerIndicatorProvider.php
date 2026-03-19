@@ -145,7 +145,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 

@@ -15,7 +15,7 @@ namespace SMW\SPARQLStore\QueryEngine\Condition;
  */
 class FalseCondition extends Condition {
 
-	public function getCondition() {
+	public function getCondition(): string {
 		return "<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .\n";
 	}
 

@@ -117,7 +117,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatConditions( $condition ) {
+	protected function formatConditions( $condition ): string {
 		return "[[$condition]]";
 	}
 

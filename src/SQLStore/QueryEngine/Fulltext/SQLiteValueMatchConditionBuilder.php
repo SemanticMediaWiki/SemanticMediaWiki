@@ -55,7 +55,7 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
+	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ): string {
 		$matchableText = $this->getMatchableTextFromDescription(
 			$description
 		);

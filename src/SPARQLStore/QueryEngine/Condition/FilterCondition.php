@@ -22,7 +22,7 @@ class FilterCondition extends Condition {
 		$this->namespaces = $namespaces;
 	}
 
-	public function getCondition() {
+	public function getCondition(): string {
 		return "FILTER( {$this->filter} )\n";
 	}
 

@@ -234,7 +234,7 @@ class TypesValue extends DataValue {
 		return false;
 	}
 
-	private function getSpecialPageTitleText() {
+	private function getSpecialPageTitleText(): string {
 		return "Types/$this->typeLabel";
 	}
 

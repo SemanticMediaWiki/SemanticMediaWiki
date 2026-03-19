@@ -398,7 +398,7 @@ class NumberValue extends DataValue {
 	 * Returns the empty string if no unit is given for the value.
 	 * Overwritten by subclasses that support units.
 	 */
-	public function getUnit() {
+	public function getUnit(): string {
 		return '';
 	}
 

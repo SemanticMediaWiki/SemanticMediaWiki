@@ -136,7 +136,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return string
 	 */
-	public function getRedirectSnippet() {
+	public function getRedirectSnippet(): string {
 		return '';
 	}
 
@@ -150,21 +150,21 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return string
 	 */
-	public function getSectionSnippet() {
+	public function getSectionSnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getCategorySnippet() {
+	public function getCategorySnippet(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getTimestamp() {
+	public function getTimestamp(): string {
 		return '';
 	}
 
@@ -185,14 +185,14 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @return string
 	 */
-	public function getInterwikiPrefix() {
+	public function getInterwikiPrefix(): string {
 		return '';
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getInterwikiNamespaceText() {
+	public function getInterwikiNamespaceText(): string {
 		return '';
 	}
 

@@ -62,7 +62,7 @@ class LinksProcessor {
 	 *
 	 * @return string
 	 */
-	public static function getRegexpPattern( $linksInValues = false ) {
+	public static function getRegexpPattern( $linksInValues = false ): string {
 		if ( $linksInValues ) {
 			return '/\[\[             # Beginning of the link
 				(?:([^:][^]]*):[=:])+ # Property name (or a list of those)
@@ -186,7 +186,7 @@ class LinksProcessor {
 		return [ $properties, $value, $valueCaption ];
 	}
 
-	private function setAnnotation( $value ) {
+	private function setAnnotation( $value ): string {
 		switch ( $value ) {
 			case 'on':
 				$this->isAnnotation = true;

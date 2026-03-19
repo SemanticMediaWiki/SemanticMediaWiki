@@ -605,7 +605,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'n/a';
 	}
 

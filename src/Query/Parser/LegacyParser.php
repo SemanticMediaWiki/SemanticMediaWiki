@@ -212,7 +212,7 @@ class LegacyParser implements Parser {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function createCondition( $property, $value ) {
+	public function createCondition( $property, $value ): string {
 		if ( $property instanceof DIProperty ) {
 			$property = $property->getLabel();
 		}

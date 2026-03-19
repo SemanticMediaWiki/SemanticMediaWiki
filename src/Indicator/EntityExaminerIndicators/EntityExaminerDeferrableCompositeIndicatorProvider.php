@@ -128,7 +128,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		return '';
 	}
 

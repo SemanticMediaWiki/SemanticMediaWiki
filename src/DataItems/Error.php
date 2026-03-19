@@ -41,7 +41,7 @@ class Error extends DataItem {
 		return $this->userValue;
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return 'error';
 	}
 

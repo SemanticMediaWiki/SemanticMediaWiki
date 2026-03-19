@@ -158,7 +158,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getDefaultSort() {
+	public function getDefaultSort(): string {
 		return 'DESC';
 	}
 
@@ -380,7 +380,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * @return string
 	 */
-	protected function feedItemComments() {
+	protected function feedItemComments(): string {
 		return '';
 	}
 

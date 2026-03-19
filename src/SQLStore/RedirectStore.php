@@ -323,7 +323,7 @@ class RedirectStore {
 		$res->free();
 	}
 
-	private function makeHash( $title, $namespace ) {
+	private function makeHash( $title, $namespace ): string {
 		return "$title#$namespace";
 	}
 

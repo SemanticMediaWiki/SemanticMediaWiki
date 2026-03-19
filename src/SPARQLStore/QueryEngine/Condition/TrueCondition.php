@@ -16,7 +16,7 @@ namespace SMW\SPARQLStore\QueryEngine\Condition;
  */
 class TrueCondition extends Condition {
 
-	public function getCondition() {
+	public function getCondition(): string {
 		return '';
 	}
 

@@ -52,7 +52,7 @@ class Sequence {
 	 *
 	 * @return string
 	 */
-	public static function makeSequence( $table, $field ) {
+	public static function makeSequence( $table, $field ): string {
 		return "{$table}_{$field}_seq";
 	}
 

@@ -344,7 +344,7 @@ class HtmlColumns {
 		return $result;
 	}
 
-	private function element( $type, $attributes, $content ) {
+	private function element( $type, $attributes, $content ): string {
 		$attr = '';
 		$attributes = (array)$attributes;
 

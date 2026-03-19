@@ -52,7 +52,7 @@ class SMWPageLister {
 	 * @param $query array that associates parameter names to parameter values
 	 * @return string
 	 */
-	public function getNavigationLinks( Title $title, $query = [] ) {
+	public function getNavigationLinks( Title $title, $query = [] ): string {
 		$limitText = Localizer::getInstance()->getUserLanguage()->formatNum( $this->mLimit );
 
 		$resultCount = count( $this->mDiWikiPages );
