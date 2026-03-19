@@ -56,7 +56,7 @@ class AllowsPatternValueParser implements ValueParser {
 		return $contentList[$userValue];
 	}
 
-	private function doParseContent( $contents ) {
+	private function doParseContent( $contents ): ?array {
 		$list = [];
 
 		if ( $contents === '' ) {

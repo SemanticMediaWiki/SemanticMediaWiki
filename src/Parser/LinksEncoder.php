@@ -87,7 +87,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
 			static function ( array $matches ) {

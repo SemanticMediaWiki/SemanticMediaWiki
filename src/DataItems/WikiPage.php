@@ -233,7 +233,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return Title|null
 	 */
-	public function getTitle() {
+	public function getTitle(): ?Title {
 		return MediaWikiServices::getInstance()->getTitleFactory()->makeTitleSafe(
 			$this->m_namespace,
 			$this->m_dbkey,

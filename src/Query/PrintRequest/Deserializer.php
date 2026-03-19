@@ -34,7 +34,7 @@ class Deserializer {
 	 *
 	 * @return PrintRequest|null
 	 */
-	public static function deserialize( $text, array $options = [] ) {
+	public static function deserialize( $text, array $options = [] ): ?PrintRequest {
 		$showMode = false;
 		$useCanonicalLabel = false;
 

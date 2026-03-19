@@ -21,7 +21,7 @@ class CharArmor {
 	 *
 	 * @return string
 	 */
-	public static function removeControlChars( $text ) {
+	public static function removeControlChars( $text ): ?string {
 		return preg_replace( '/[^\PC\s]/u', '', $text );
 	}
 

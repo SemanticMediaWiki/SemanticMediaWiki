@@ -173,7 +173,7 @@ class FieldItemFinder {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function getRequestOptions( $useLimit = true ) {
+	public function getRequestOptions( $useLimit = true ): ?RequestOptions {
 		$limit = $useLimit ? $this->printRequest->getParameter( 'limit' ) : false;
 		$offset = $useLimit ? $this->printRequest->getParameter( 'offset' ) : false;
 		$order = trim( $this->printRequest->getParameter( 'order' ) );

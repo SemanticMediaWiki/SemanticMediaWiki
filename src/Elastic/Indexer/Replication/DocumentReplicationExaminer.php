@@ -83,7 +83,7 @@ class DocumentReplicationExaminer {
 		return $this->findError( $subject, $params, $dataItems, $id );
 	}
 
-	private function findError( $subject, $params, $dataItems, $id ) {
+	private function findError( $subject, $params, $dataItems, $id ): ?ReplicationError {
 		$replicationError = $this->hasMissingModificationDate( $dataItems, $id );
 
 		if ( $replicationError instanceof ReplicationError ) {

@@ -362,7 +362,7 @@ class TextSanitizer {
 	 *
 	 * @return Reader|null
 	 */
-	private function openStopwordReader( $language ) {
+	private function openStopwordReader( $language ): ?Reader {
 		if ( $language === null ) {
 			return null;
 		}

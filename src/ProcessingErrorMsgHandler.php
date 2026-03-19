@@ -187,7 +187,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return DIContainer|null
 	 */
-	public function newErrorContainerFromDataValue( DataValue $dataValue ) {
+	public function newErrorContainerFromDataValue( DataValue $dataValue ): ?DIContainer {
 		if ( $dataValue->getErrors() === [] ) {
 			return null;
 		}

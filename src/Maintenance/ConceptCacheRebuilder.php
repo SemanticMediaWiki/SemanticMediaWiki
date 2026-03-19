@@ -254,7 +254,7 @@ class ConceptCacheRebuilder {
 		return $this->createMultipleConcepts();
 	}
 
-	private function createConcept() {
+	private function createConcept(): ?Title {
 		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 

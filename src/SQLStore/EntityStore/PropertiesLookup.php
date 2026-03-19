@@ -26,7 +26,7 @@ class PropertiesLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( ?RequestOptions $requestOptions = null ) {
+	public function newRequestOptions( ?RequestOptions $requestOptions = null ): ?RequestOptions {
 		if ( $requestOptions !== null ) {
 			$clone = clone $requestOptions;
 			$clone->limit = $requestOptions->limit + $requestOptions->offset;
