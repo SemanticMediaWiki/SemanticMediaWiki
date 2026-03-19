@@ -92,7 +92,7 @@ function smwfNumberFormat( $value, $decplaces = 3 ) {
  *
  * @param string $text
  */
-function smwfAbort( $text ) {
+function smwfAbort( $text ): void {
 	if ( PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg' ) {
 		$text = strip_tags( $text );
 	}
