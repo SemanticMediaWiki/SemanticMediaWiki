@@ -277,11 +277,11 @@ class IntlNumberFormatter {
 		return strpos( $value, 'E' ) !== false || strpos( $value, 'e' ) !== false;
 	}
 
-	private function applyDefaultPrecision( $value ) {
+	private function applyDefaultPrecision( $value ): float {
 		return round( $value, $this->defaultPrecision );
 	}
 
-	private function getPrecisionFrom( $value ) {
+	private function getPrecisionFrom( $value ): int {
 		return strlen( strrchr( $value, "." ) ) - 1;
 	}
 

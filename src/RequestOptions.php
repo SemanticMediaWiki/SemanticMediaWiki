@@ -241,7 +241,7 @@ class RequestOptions {
 	 *
 	 * @return int
 	 */
-	public function getLimit() {
+	public function getLimit(): int {
 		return (int)$this->limit;
 	}
 
@@ -259,7 +259,7 @@ class RequestOptions {
 	 *
 	 * @return int
 	 */
-	public function getOffset() {
+	public function getOffset(): int {
 		return (int)$this->offset;
 	}
 

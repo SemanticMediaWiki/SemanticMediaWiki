@@ -314,7 +314,7 @@ class EntityIdManager {
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
-	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ) {
+	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ): int {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
 		if ( $id != 0 ) {
 			return (int)$id;
@@ -558,7 +558,7 @@ class EntityIdManager {
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
-	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ) {
+	public function getSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $fetchHashes = false ): int {
 		$sort = '';
 		return $this->getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, $sort, $canonical, $fetchHashes );
 	}
@@ -587,7 +587,7 @@ class EntityIdManager {
 	 *
 	 * @return int SMW id or 0 if there is none
 	 */
-	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ) {
+	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ): int {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
 		if ( $id != 0 ) {
 			return (int)$id;
@@ -834,7 +834,7 @@ class EntityIdManager {
 	 *
 	 * @return int
 	 */
-	public function makeSMWPropertyID( DIProperty $property ) {
+	public function makeSMWPropertyID( DIProperty $property ): int {
 		$key = $property->getKey();
 
 		if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) ) {
@@ -876,7 +876,7 @@ class EntityIdManager {
 	 *
 	 * @return int predefined id or 0 if none
 	 */
-	protected function getPredefinedData( &$title, &$namespace, &$iw, &$subobjectName, &$sortkey ) {
+	protected function getPredefinedData( &$title, &$namespace, &$iw, &$subobjectName, &$sortkey ): int {
 		if ( $namespace == SMW_NS_PROPERTY &&
 			( $iw === '' || $iw == SMW_SQL3_SMWINTDEFIW ) && $title != '' ) {
 

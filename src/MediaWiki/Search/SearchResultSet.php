@@ -47,7 +47,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return int|void
 	 */
-	public function numRows() {
+	public function numRows(): int {
 		return count( $this->pages );
 	}
 

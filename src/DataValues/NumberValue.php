@@ -434,7 +434,7 @@ class NumberValue extends DataValue {
 	 * so that, e.g., "km²" and "km<sup>2</sup>" do not need to be
 	 * distinguished.
 	 */
-	public function normalizeUnit( $unit ) {
+	public function normalizeUnit( $unit ): string {
 		$unit = str_replace( [ '[[', ']]' ], '', trim( $unit ) ); // allow simple links to be used inside annotations
 		$unit = str_replace( [ '²', '<sup>2</sup>' ], '&sup2;', $unit );
 		$unit = str_replace( [ '³', '<sup>3</sup>' ], '&sup3;', $unit );

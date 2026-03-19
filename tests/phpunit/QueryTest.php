@@ -133,6 +133,10 @@ class QueryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$printRequest->expects( $this->any() )
+			->method( 'getSerialisation' )
+			->willReturn( '?Foo' );
+
 		$instance = new Query( $description, Query::INLINE_QUERY );
 		$instance->setExtraPrintouts( [ $printRequest ] );
 

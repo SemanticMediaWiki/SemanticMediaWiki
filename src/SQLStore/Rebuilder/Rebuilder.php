@@ -138,7 +138,7 @@ class Rebuilder {
 	 *
 	 * @return int
 	 */
-	public function getMaxId() {
+	public function getMaxId(): int {
 		$db = $this->store->getConnection( 'mw.db' );
 
 		$maxByPageId = (int)$db->selectField(

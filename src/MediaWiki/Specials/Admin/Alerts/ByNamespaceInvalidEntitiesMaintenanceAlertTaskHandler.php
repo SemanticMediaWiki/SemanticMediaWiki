@@ -51,7 +51,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 		return $this->buildHTML( $count );
 	}
 
-	private function fetchCount() {
+	private function fetchCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(

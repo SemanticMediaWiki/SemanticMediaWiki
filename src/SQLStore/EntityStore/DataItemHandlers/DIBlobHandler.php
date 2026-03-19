@@ -218,7 +218,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * @since 3.0
 	 */
-	private function getMaxLength() {
+	private function getMaxLength(): int {
 		$length = 72;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {

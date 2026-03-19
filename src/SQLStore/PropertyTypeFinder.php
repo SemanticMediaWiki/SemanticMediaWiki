@@ -44,7 +44,7 @@ class PropertyTypeFinder {
 	 *
 	 * @return int
 	 */
-	public function countByType( $type ) {
+	public function countByType( $type ): int {
 		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}

@@ -58,7 +58,7 @@ class DocumentCreatorTest extends TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
+			->willReturn( 42 );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
@@ -122,7 +122,7 @@ class DocumentCreatorTest extends TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
+			->willReturn( 42 );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
@@ -176,7 +176,7 @@ class DocumentCreatorTest extends TestCase {
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPageID' )
-			->willReturnOnConsecutiveCalls( [ 42, 43 ] );
+			->willReturn( 42 );
 
 		$entityIdManager->expects( $this->any() )
 			->method( 'getSMWPropertyID' )

@@ -160,7 +160,7 @@ class ClassDescription extends Description {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		if ( $GLOBALS['smwgQSubcategoryDepth'] > 0 ) {
 			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
 		}

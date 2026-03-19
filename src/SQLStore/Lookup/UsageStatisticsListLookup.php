@@ -95,7 +95,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getImproperValueForCount() {
+	public function getImproperValueForCount(): int {
 		return $this->propertyStatisticsStore->getUsageCount(
 			$this->store->getObjectIds()->getSMWPropertyID( new DIProperty( '_ERRP' ) )
 		);
@@ -106,7 +106,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getQueryCount() {
+	public function getQueryCount(): int {
 		return $this->count( '_ASK' );
 	}
 
@@ -115,7 +115,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getQuerySize() {
+	public function getQuerySize(): int {
 		return $this->count( '_ASKSI' );
 	}
 
@@ -124,7 +124,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getConceptCount() {
+	public function getConceptCount(): int {
 		return $this->count( '_CONC' );
 	}
 
@@ -133,7 +133,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getSubobjectCount() {
+	public function getSubobjectCount(): int {
 		return $this->count( DIProperty::TYPE_SUBOBJECT );
 	}
 
@@ -142,7 +142,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getDeclaredPropertiesCount() {
+	public function getDeclaredPropertiesCount(): int {
 		return $this->count( DIProperty::TYPE_HAS_TYPE );
 	}
 
@@ -216,7 +216,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getPropertyUsageCount() {
+	public function getPropertyUsageCount(): int {
 		$count = 0;
 
 		$row = $this->store->getConnection()->selectRow(
@@ -236,7 +236,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getTotalPropertiesCount() {
+	public function getTotalPropertiesCount(): int {
 		$count = 0;
 
 		$conditions = [
@@ -262,7 +262,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getTotalEntitiesCount() {
+	public function getTotalEntitiesCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -312,7 +312,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return number
 	 */
-	public function getDeleteCount() {
+	public function getDeleteCount(): int {
 		$count = 0;
 
 		$row = $this->store->getConnection()->selectRow(
@@ -327,7 +327,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		return (int)$count;
 	}
 
-	private function count( $type ) {
+	private function count( $type ): int {
 		$res = $this->store->getConnection()->select(
 			$this->findPropertyTableByType( $type )->getName(),
 			'COUNT(s_id) AS count',

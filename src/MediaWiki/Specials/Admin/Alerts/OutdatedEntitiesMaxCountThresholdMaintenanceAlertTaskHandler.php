@@ -43,7 +43,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 		return $this->buildHTML( $count );
 	}
 
-	private function fetchCount() {
+	private function fetchCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(

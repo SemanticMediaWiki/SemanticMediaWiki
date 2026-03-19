@@ -44,7 +44,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function getJD( $calendarModel, $year, $month, $day, $hour, $minute, $second ) {
+	public static function getJD( $calendarModel, $year, $month, $day, $hour, $minute, $second ): float {
 		return self::format( self::date2JD( $calendarModel, $year, $month, $day ) + self::time2JDoffset( $hour, $minute, $second ) );
 	}
 
@@ -61,7 +61,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function format( $value ) {
+	public static function format( $value ): float {
 		// Keep microseconds to a certain degree distinguishable
 		return floatval( number_format( $value, 7, '.', '' ) );
 	}
@@ -76,7 +76,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float
 	 */
-	public static function getModifiedJulianDate( $jdValue ) {
+	public static function getModifiedJulianDate( $jdValue ): float {
 		return $jdValue - self::MJD;
 	}
 
@@ -93,7 +93,7 @@ class JulianDay implements CalendarModel {
 	 * @return float Julian Day number
 	 * @throws RuntimeException
 	 */
-	protected static function date2JD( $calendarmodel, $year, $month, $day ) {
+	protected static function date2JD( $calendarmodel, $year, $month, $day ): float {
 		$astroyear = ( $year < 1 ) ? ( $year + 1 ) : $year;
 
 		if ( $calendarmodel === self::CM_GREGORIAN ) {

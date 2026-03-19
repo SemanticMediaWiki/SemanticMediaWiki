@@ -271,7 +271,7 @@ class PrintRequest {
 	 * @param $showParams boolean that sets if the serialization should
 	 *                include the extra print request parameters
 	 */
-	public function getSerialisation( $showParams = false ) {
+	public function getSerialisation( $showParams = false ): string {
 		// In case of  disconnected instance (QueryProcessor::addThisPrintout as
 		// part of a post-processing) return an empty serialization when the
 		// mainLabel is available to avoid an extra `?...`

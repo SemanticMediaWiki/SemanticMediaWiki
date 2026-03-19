@@ -234,7 +234,7 @@ class RedirectStore {
 		$this->cache->delete( $hash );
 	}
 
-	private function select( $title, $namespace ) {
+	private function select( $title, $namespace ): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(

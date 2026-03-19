@@ -20,7 +20,7 @@ class SQLiteTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string {
 		// SQLite has no native support for an ENUM type
 		// https://stackoverflow.com/questions/5299267/how-to-create-enum-type-in-sqlite
 		if ( is_array( $fieldType ) && $fieldType[0] === FieldType::TYPE_ENUM ) {

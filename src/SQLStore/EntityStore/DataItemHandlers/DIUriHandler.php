@@ -151,7 +151,7 @@ class DIUriHandler extends DataItemHandler {
 		return DIUri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
 	}
 
-	private function getMaxLength() {
+	private function getMaxLength(): int {
 		$length = 255;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {

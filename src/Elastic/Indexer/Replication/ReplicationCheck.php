@@ -69,7 +69,7 @@ class ReplicationCheck {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey( $subject ) {
+	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof DIWikiPage ) {
 			$subject = $subject->getHash();
 		}

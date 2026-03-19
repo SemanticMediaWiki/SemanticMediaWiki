@@ -276,7 +276,7 @@ class QueryResult {
 	 *
 	 * @return int
 	 */
-	public function getCount() {
+	public function getCount(): int {
 		return count( $this->mResults );
 	}
 
@@ -314,7 +314,7 @@ class QueryResult {
 	 *
 	 * @return int
 	 */
-	public function getColumnCount() {
+	public function getColumnCount(): int {
 		return count( $this->mPrintRequests );
 	}
 

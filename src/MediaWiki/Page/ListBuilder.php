@@ -130,7 +130,7 @@ class ListBuilder {
 	 *
 	 * @return string
 	 */
-	public function getColumnList( array $dataItems, $colsThreshold = 10 ) {
+	public function getColumnList( array $dataItems, $colsThreshold = 10 ): string {
 		$htmlColumns = new HtmlColumns();
 
 		$htmlColumns->setResponsiveCols();

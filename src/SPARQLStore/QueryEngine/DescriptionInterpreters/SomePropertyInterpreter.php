@@ -141,7 +141,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return [ $innerOrderByProperty, $innerCondition, $innerJoinVariable ];
 	}
 
-	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ) {
+	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ): string {
 		if ( !$innerCondition instanceof SingletonCondition ) {
 			return '?' . $innerJoinVariable;
 		}

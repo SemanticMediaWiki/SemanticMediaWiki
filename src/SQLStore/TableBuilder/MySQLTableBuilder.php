@@ -21,7 +21,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string {
 		$charLongLength = FieldType::CHAR_LONG_LENGTH;
 
 		$fieldTypes = [

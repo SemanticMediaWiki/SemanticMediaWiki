@@ -138,7 +138,7 @@ class CachedFactbox {
 	 *
 	 * @return int
 	 */
-	public static function makeCacheKey( $id ) {
+	public static function makeCacheKey( $id ): string {
 		if ( $id instanceof Title ) {
 			$id = $id->getArticleID();
 		}

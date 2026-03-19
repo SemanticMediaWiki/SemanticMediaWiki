@@ -226,7 +226,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return int
 	 */
-	public function getUsageCount( $propertyId ) {
+	public function getUsageCount( $propertyId ): int {
 		if ( !is_int( $propertyId ) ) {
 			return 0;
 		}

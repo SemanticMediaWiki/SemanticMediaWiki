@@ -538,7 +538,7 @@ class SQLStore extends Store {
 	 *
 	 * @return string
 	 */
-	public function getSQLConditions( ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public function getSQLConditions( ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ): string {
 		return RequestOptionsProcessor::getSQLConditions( $this, $requestOptions, $valueCol, $labelCol, $addAnd );
 	}
 

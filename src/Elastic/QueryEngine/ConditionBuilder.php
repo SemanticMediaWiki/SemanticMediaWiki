@@ -246,7 +246,7 @@ class ConditionBuilder {
 	 *
 	 * @return int
 	 */
-	public function getID( $dataItem ) {
+	public function getID( $dataItem ): int {
 		if ( $dataItem instanceof DIProperty ) {
 			return (int)$this->store->getObjectIds()->getSMWPropertyID(
 				$dataItem

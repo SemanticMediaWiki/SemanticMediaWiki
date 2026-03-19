@@ -113,11 +113,11 @@ class FileFetcher {
 		return $matches;
 	}
 
-	private function sort_asc( $a, $b ) {
+	private function sort_asc( $a, $b ): int {
 		return strnatcasecmp( $a[0], $b[0] );
 	}
 
-	private function sort_desc( $a, $b ) {
+	private function sort_desc( $a, $b ): int {
 		return strnatcasecmp( $b[0], $a[0] );
 	}
 

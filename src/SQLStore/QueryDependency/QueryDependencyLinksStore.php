@@ -208,7 +208,7 @@ class QueryDependencyLinksStore {
 	 *
 	 * @return int
 	 */
-	public function countDependencies( $id ) {
+	public function countDependencies( $id ): int {
 		$count = 0;
 		$ids = !is_array( $id ) ? (array)$id : $id;
 
