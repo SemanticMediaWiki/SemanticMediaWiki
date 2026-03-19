@@ -12,10 +12,10 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
+use SMW\HashBuilder;
 use SMW\Localizer\Localizer;
 use SMW\Options;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\HashBuilder;
 
 /**
  * Class for representing chunks of semantic data for one given
