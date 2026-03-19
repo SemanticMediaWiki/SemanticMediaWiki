@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\PageProperty;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\PageProperty\PageBuilder;
 use SMW\Options;
@@ -107,7 +107,7 @@ class PagePropertyTest extends TestCase {
 
 		$this->assertIsString(
 
-			$instance->buildHtml( [ DIWikiPage::newFromText( 'Foo' ) ] )
+			$instance->buildHtml( [ WikiPage::newFromText( 'Foo' ) ] )
 		);
 	}
 

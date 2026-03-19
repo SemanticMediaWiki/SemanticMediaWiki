@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials\Ask;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Specials\Ask\HtmlForm;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Utils\UrlArgs;
 
@@ -39,7 +40,7 @@ class HtmlFormTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$query = $this->getMockBuilder( '\SMWQuery' )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
 			->getMock();
 

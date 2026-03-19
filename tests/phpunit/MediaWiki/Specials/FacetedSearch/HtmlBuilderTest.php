@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Specials\FacetedSearch;
 
 use MediaWiki\Html\TemplateParser;
 use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\HtmlBuilder;
@@ -57,7 +58,7 @@ class HtmlBuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->exploreListBuilder = $this->getMockBuilder( '\SMW\MediaWiki\Specials\FacetedSearch\exploreListBuilder' )
+		$this->exploreListBuilder = $this->getMockBuilder( ExploreListBuilder::class )
 			->disableOriginalConstructor()
 			->getMock();
 	}

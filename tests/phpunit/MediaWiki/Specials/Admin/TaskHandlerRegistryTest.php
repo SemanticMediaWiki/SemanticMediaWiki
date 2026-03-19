@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Specials\Admin;
 
+use MediaWiki\Request\WebRequest;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
@@ -156,7 +157,7 @@ class TaskHandlerRegistryTest extends TestCase {
 				return '';
 			}
 
-			public function handleRequest( \WebRequest $webRequest ) {
+			public function handleRequest( WebRequest $webRequest ) {
 				return '';
 			}
 		};

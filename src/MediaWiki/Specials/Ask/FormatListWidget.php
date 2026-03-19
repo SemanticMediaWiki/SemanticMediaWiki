@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use SMW\Localizer\Message;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Query\QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later

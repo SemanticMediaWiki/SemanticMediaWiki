@@ -5,6 +5,7 @@ namespace SMW\Tests\MediaWiki\Specials\Admin\Maintenance;
 use MediaWiki\Request\WebRequest;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\JobFactory;
+use SMW\MediaWiki\JobQueue;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\MediaWiki\Specials\Admin\Maintenance\DisposeJobTaskHandler;
@@ -40,7 +41,7 @@ class DisposeJobTaskHandlerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
+		$this->jobQueue = $this->getMockBuilder( JobQueue::class )
 			->disableOriginalConstructor()
 			->getMock();
 

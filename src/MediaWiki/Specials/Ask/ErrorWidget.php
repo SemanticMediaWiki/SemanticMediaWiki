@@ -5,7 +5,7 @@ namespace SMW\MediaWiki\Specials\Ask;
 use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @license GPL-2.0-or-later

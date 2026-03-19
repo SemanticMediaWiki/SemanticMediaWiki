@@ -15,6 +15,8 @@ use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Query\QuerySourceFactory;
 use SMW\Query\RemoteRequest;
@@ -25,8 +27,6 @@ use SMW\Utils\HtmlModal;
 use SMW\Utils\UrlArgs;
 use SMWInfolink as Infolink;
 use SMWOutputs;
-use SMWQuery;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -669,14 +669,14 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		if ( $this->getRequest()->getVal( 'cache' ) === 'no' ) {
-			$queryobj->setOption( SMWQuery::NO_CACHE, true );
+			$queryobj->setOption( Query::NO_CACHE, true );
 		}
 
 		if ( $this->getRequest()->getVal( 'native_result', false ) ) {
 			$queryobj->setOption( 'native_result', true );
 		}
 
-		$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
+		$queryobj->setOption( Query::PROC_CONTEXT, 'SpecialAsk' );
 		$source = $params['source']->getValue();
 		$noSource = $source === '';
 

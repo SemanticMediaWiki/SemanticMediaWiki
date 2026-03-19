@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Specials;
+namespace SMW\MediaWiki\Specials;
 
 use MediaWiki\SpecialPage\SpecialPage as MWSpecialPage;
 use SMW\Services\ServicesFactory;

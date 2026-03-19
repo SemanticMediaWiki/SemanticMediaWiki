@@ -4,11 +4,11 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
+use SMW\Query\Query;
 use SMW\Query\QueryLinker;
 use SMW\Query\QueryResult;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\UrlArgs;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later

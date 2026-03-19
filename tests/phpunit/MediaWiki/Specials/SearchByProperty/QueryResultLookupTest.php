@@ -3,12 +3,14 @@
 namespace SMW\Tests\MediaWiki\Specials\SearchByProperty;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Specials\SearchByProperty\PageRequestOptions;
 use SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SearchByProperty\QueryResultLookup
@@ -44,7 +46,7 @@ class QueryResultLookupTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->with(
 				$this->isType( 'null' ),
-				$this->isInstanceOf( DIProperty::class ),
+				$this->isInstanceOf( Property::class ),
 				$this->anything() )
 			->willReturn( [] );
 
@@ -67,7 +69,7 @@ class QueryResultLookupTest extends TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				$this->isInstanceOf( DIProperty::class ),
+				$this->isInstanceOf( Property::class ),
 				$this->anything(),
 				$this->anything() )
 			->willReturn( [] );
@@ -97,7 +99,7 @@ class QueryResultLookupTest extends TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getQueryResult' )
-			->with( $this->isInstanceOf( '\SMWQuery' ) )
+			->with( $this->isInstanceOf( Query::class ) )
 			->willReturn( $queryResult );
 
 		$instance = new QueryResultLookup( $store );
@@ -108,7 +110,7 @@ class QueryResultLookupTest extends TestCase {
 	}
 
 	public function testDoQueryLinksReferences() {
-		$idTable = $this->getMockBuilder( '\stdClass' )
+		$idTable = $this->getMockBuilder( stdClass::class )
 			->setMethods( [ 'getId' ] )
 			->getMock();
 

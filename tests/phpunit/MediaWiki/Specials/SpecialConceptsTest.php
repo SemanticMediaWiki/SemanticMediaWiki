@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests\Specials;
+namespace SMW\Tests\MediaWiki\Specials;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
-use SMW\Specials\SpecialConcepts;
+use SMW\MediaWiki\Specials\SpecialConcepts;
 use SMW\Tests\TestEnvironment;
 
 /**

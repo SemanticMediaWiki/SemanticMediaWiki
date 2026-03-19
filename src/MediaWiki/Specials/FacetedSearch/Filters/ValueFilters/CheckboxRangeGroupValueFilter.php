@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters\ValueFilters;
 
 use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\Schema\CompartmentIterator;
 use SMW\Utils\UrlArgs;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -136,7 +136,7 @@ class CheckboxRangeGroupValueFilter {
 	private function buildRangeGroups( $property, $values, $raw ): array {
 		$ranges = [];
 
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 
 		$diType = DataTypeRegistry::getInstance()->getDataItemId(
 			$property->findPropertyTypeID()

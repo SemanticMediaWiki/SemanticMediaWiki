@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
 use MediaWiki\Html\TemplateParser;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Utils\UrlArgs;
@@ -99,7 +99,7 @@ class CategoryFilter {
 	}
 
 	private function matchFilter( $categoryFilters, $key, $count, &$list, $clear ) {
-		$category = DIWikiPage::newFromText( $key, NS_CATEGORY );
+		$category = WikiPage::newFromText( $key, NS_CATEGORY );
 		$key = str_replace( '_', ' ', $key );
 
 		if ( isset( $categoryFilters[$key] ) && $clear !== $key ) {

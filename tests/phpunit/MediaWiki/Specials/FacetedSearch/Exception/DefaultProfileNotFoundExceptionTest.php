@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Specials\FacetedSearch\Exception;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultProfileNotFoundException;
 
 /**
@@ -25,7 +26,7 @@ class DefaultProfileNotFoundExceptionTest extends TestCase {
 		);
 
 		$this->assertInstanceof(
-			'\RuntimeException',
+			RuntimeException::class,
 			$instance
 		);
 	}

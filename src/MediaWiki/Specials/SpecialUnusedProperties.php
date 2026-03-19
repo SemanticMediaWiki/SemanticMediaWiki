@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Specials;
+namespace SMW\MediaWiki\Specials;
 
 use SMW\QueryPages\UnusedPropertiesQueryPage;
 use SMWOutputs;

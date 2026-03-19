@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Specials\Browse\GroupFormatter;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaDefinition;
@@ -47,7 +47,7 @@ class GroupFormatterTest extends TestCase {
 	public function testFindGroupMembership() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
+			->willReturn( new WikiPage( 'Bar', NS_CATEGORY ) );
 
 		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
@@ -67,7 +67,7 @@ class GroupFormatterTest extends TestCase {
 		);
 
 		$properties = [
-			new DIProperty( 'Foo' )
+			new Property( 'Foo' )
 		];
 
 		$instance->findGroupMembership( $properties );
@@ -131,7 +131,7 @@ class GroupFormatterTest extends TestCase {
 		);
 
 		$properties = [
-			new DIProperty( 'Foo' )
+			new Property( 'Foo' )
 		];
 
 		$instance->findGroupMembership( $properties );
@@ -158,7 +158,7 @@ class GroupFormatterTest extends TestCase {
 	public function testFindGroupMembershipWhereShowGroupIsDisabled() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getPropertyGroup' )
-			->willReturn( new DIWikiPage( 'Bar', NS_CATEGORY ) );
+			->willReturn( new WikiPage( 'Bar', NS_CATEGORY ) );
 
 		$schemaList = $this->getMockBuilder( SchemaList::class )
 			->disableOriginalConstructor()
@@ -180,7 +180,7 @@ class GroupFormatterTest extends TestCase {
 		$instance->showGroup( false );
 
 		$properties = [
-			new DIProperty( 'Foo' )
+			new Property( 'Foo' )
 		];
 
 		$instance->findGroupMembership( $properties );
@@ -200,7 +200,7 @@ class GroupFormatterTest extends TestCase {
 			$this->schemaFinder
 		);
 
-		$di = new DIWikiPage( 'Foo bar', NS_CATEGORY );
+		$di = new WikiPage( 'Foo bar', NS_CATEGORY );
 
 		$this->assertStringContainsString(
 			'smw-property-group-label-foo-bar',

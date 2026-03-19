@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
 use MediaWiki\Html\TemplateParser;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\Exception\DefaultValueFilterNotFoundException;
 use SMW\Schema\SchemaFinder;
 use SMW\Utils\UrlArgs;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -83,13 +83,13 @@ class ValueFilter {
 	}
 
 	private function newValueFilter( $property ) {
-		$prop = DIProperty::newFromUserLabel(
+		$prop = Property::newFromUserLabel(
 			$property
 		);
 
 		$schemaList = $this->schemaFinder->newSchemaList(
 			$prop,
-			new DIProperty( '_PROFILE_SCHEMA' )
+			new Property( '_PROFILE_SCHEMA' )
 		);
 
 		$compartmentIterator = $schemaList->newCompartmentIteratorByKey( 'profile' );

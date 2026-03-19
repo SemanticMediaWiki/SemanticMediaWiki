@@ -68,13 +68,13 @@
 		"SMW\\WantedPropertiesQueryPage": "src/QueryPages/WantedPropertiesQueryPage.php",
 		"SMWQuery": "src/Query/Query.php",
 		"SMWQueryProcessor": "src/Query/QueryProcessor.php",
-		"SMWSpecialOWLExport": "src/Specials/SpecialOWLExport.php",
-		"SMWSpecialTypes": "src/Specials/SpecialTypes.php",
-		"SMW\\SpecialConcepts": "src/Specials/SpecialConcepts.php",
-		"SMW\\SpecialPage": "src/Specials/SpecialPage.php",
-		"SMW\\SpecialProperties": "src/Specials/SpecialProperties.php",
-		"SMW\\SpecialUnusedProperties": "src/Specials/SpecialUnusedProperties.php",
-		"SMW\\SpecialWantedProperties": "src/Specials/SpecialWantedProperties.php"
+		"SMWSpecialOWLExport": "src/MediaWiki/Specials/SpecialOWLExport.php",
+		"SMWSpecialTypes": "src/MediaWiki/Specials/SpecialTypes.php",
+		"SMW\\SpecialConcepts": "src/MediaWiki/Specials/SpecialConcepts.php",
+		"SMW\\SpecialPage": "src/MediaWiki/Specials/SpecialPage.php",
+		"SMW\\SpecialProperties": "src/MediaWiki/Specials/SpecialProperties.php",
+		"SMW\\SpecialUnusedProperties": "src/MediaWikiSpecials/SpecialUnusedProperties.php",
+		"SMW\\SpecialWantedProperties": "src/MediaWiki/Specials/SpecialWantedProperties.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

@@ -2,17 +2,17 @@
 
 namespace SMW\MediaWiki\Specials\SearchByProperty;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\QueryDependencyLinksStoreFactory;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 
 // phpcs:disable MediaWiki.Commenting.ClassAnnotations.UnrecognizedAnnotation
 
@@ -64,7 +64,7 @@ class QueryResultLookup {
 
 		foreach ( $queryBacklinks as $result ) {
 			$results[] = [
-				$dataValueFactory->newDataValueByItem( DIWikiPage::doUnserialize( $result ), null ),
+				$dataValueFactory->newDataValueByItem( WikiPage::doUnserialize( $result ), null ),
 				$pageRequestOptions->value
 			];
 		}
@@ -207,7 +207,7 @@ class QueryResultLookup {
 		);
 	}
 
-	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ): array {
+	private function destructureDIContainer( Property $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ): array {
 		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$DIProperty
