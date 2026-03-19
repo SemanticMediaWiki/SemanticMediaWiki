@@ -1,12 +1,15 @@
 <?php
 
-namespace SMW;
+namespace SMW\QueryPages;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\SpecialPage\QueryPage as MWQueryPage;
 use MediaWiki\Xml\Xml;
+use SMW\Formatters\MessageFormatter;
 use SMW\MediaWiki\MessageBuilder;
+use SMW\RequestOptions;
+use SMW\StringCondition;
 
 /**
  * An abstract query page base class that supports array-based
@@ -266,3 +269,8 @@ abstract class QueryPage extends MWQueryPage {
 		return null;
 	}
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( QueryPage::class, 'SMW\QueryPage' );

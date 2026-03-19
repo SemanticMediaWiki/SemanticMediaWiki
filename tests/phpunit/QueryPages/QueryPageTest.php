@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\QueryPages;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
@@ -8,11 +8,11 @@ use MediaWiki\Request\FauxRequest;
 use MediaWiki\Request\WebRequest;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use SMW\QueryPage;
+use SMW\QueryPages\QueryPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
 /**
- * @covers \SMW\QueryPage
+ * @covers \SMW\QueryPages\QueryPage
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

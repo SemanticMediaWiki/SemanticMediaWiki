@@ -1,16 +1,17 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\QueryPages;
 
 use PHPUnit\Framework\TestCase;
+use Skin;
 use SMW\DataItemFactory;
 use SMW\Exception\PropertyNotFoundException;
-use SMW\PropertiesQueryPage;
+use SMW\QueryPages\PropertiesQueryPage;
 use SMW\Settings;
 use SMW\Store;
 
 /**
- * @covers \SMW\PropertiesQueryPage
+ * @covers \SMW\QueryPages\PropertiesQueryPage
  * @group semantic-mediawiki
  * @group Database
  *
@@ -33,7 +34,7 @@ class PropertiesQueryPageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->skin = $this->getMockBuilder( '\Skin' )
+		$this->skin = $this->getMockBuilder( Skin::class )
 			->disableOriginalConstructor()
 			->getMock();
 

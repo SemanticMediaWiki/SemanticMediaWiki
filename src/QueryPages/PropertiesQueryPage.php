@@ -1,15 +1,19 @@
 <?php
 
-namespace SMW;
+namespace SMW\QueryPages;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
 use Skin;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\RequestOptions;
+use SMW\Settings;
 use SMW\SQLStore\Lookup\ListLookup;
-use SMWDIError;
+use SMW\Store;
 use SMWInfolink;
 
 /**
@@ -89,8 +93,8 @@ class PropertiesQueryPage extends QueryPage {
 
 	/**
 	 * Format a result in the list of results as a string. We expect the
-	 * result to be an array with one object of type DIProperty
-	 * (normally) or maybe SMWDIError (if something went wrong), followed
+	 * result to be an array with one object of type Property
+	 * (normally) or maybe Error (if something went wrong), followed
 	 * by a number (how often the property is used).
 	 *
 	 * @param Skin $skin provided by MediaWiki, not needed here
@@ -101,9 +105,9 @@ class PropertiesQueryPage extends QueryPage {
 	public function formatResult( $skin, $result ) {
 		[ $dataItem, $useCount ] = $result;
 
-		if ( $dataItem instanceof DIProperty ) {
+		if ( $dataItem instanceof Property ) {
 			return $this->formatPropertyItem( $dataItem, $useCount );
-		} elseif ( $dataItem instanceof SMWDIError ) {
+		} elseif ( $dataItem instanceof Error ) {
 			return $this->getMessageFormatter()->clear()
 				->setType( 'warning' )
 				->addFromArray( [ $dataItem->getErrors(), 'ID: ' . ( isset( $dataItem->id ) ? $dataItem->id : 'N/A' ) ] )
@@ -119,11 +123,11 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param int $useCount
 	 * @return string
 	 */
-	protected function formatPropertyItem( DIProperty $property, $useCount ) {
+	protected function formatPropertyItem( Property $property, $useCount ) {
 		// Clear formatter before invoking messages
 		$this->getMessageFormatter()->clear();
 
@@ -188,7 +192,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * @since 1.9
 	 *
 	 * @param Title $title
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param int $useCount
 	 *
 	 * @return array
@@ -220,7 +224,7 @@ class PropertiesQueryPage extends QueryPage {
 			$this->getMessageFormatter()->addFromKey( 'smw_propertylackspage' );
 		}
 
-		$typeProperty = new DIProperty( '_TYPE' );
+		$typeProperty = new Property( '_TYPE' );
 		$types = $this->store->getPropertyValues( $property->getDiWikiPage(), $typeProperty );
 
 		if ( is_array( $types ) && count( $types ) >= 1 ) {
@@ -238,11 +242,11 @@ class PropertiesQueryPage extends QueryPage {
 	 *
 	 * @since 1.9
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return array
 	 */
-	private function getPredefinedPropertyInfo( DIProperty $property ) {
+	private function getPredefinedPropertyInfo( Property $property ) {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem( $property, null );
 
 		$dataValue->setLinkAttributes( [
@@ -265,7 +269,7 @@ class PropertiesQueryPage extends QueryPage {
 	 * Get the list of results.
 	 *
 	 * @param RequestOptions $requestOptions
-	 * @return array of array( DIProperty|SMWDIError, integer )
+	 * @return array of array( Property|Error, integer )
 	 */
 	public function getResults( $requestOptions ) {
 		$this->listLookup = $this->store->getPropertiesSpecial( $requestOptions );
@@ -280,3 +284,8 @@ class PropertiesQueryPage extends QueryPage {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( PropertiesQueryPage::class, 'SMW\PropertiesQueryPage' );
