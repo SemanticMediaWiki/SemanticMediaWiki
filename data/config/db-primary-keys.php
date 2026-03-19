@@ -105,6 +105,19 @@ $GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][
 
 		$i = 0;
 
+		$text = [
+			'The following updates adds primary key information for the tables',
+			'owned by Semantic MediaWiki.'
+		];
+
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->wordwrap( $text ) . "\n"
+		);
+
+		$messageReporter->reportMessage(
+			"\n" . $cliMsgFormatter->oneCol( "Checking table definitions ..." )
+		);
+
 		foreach ( $tables as $table ) {
 
 			$tableName = $table->getName();
@@ -121,13 +134,13 @@ $GLOBALS[ 'wgHooks' ][ 'SMW::SQLStore::Installer::BeforeCreateTablesComplete' ][
 		}
 
 		$messageReporter->reportMessage(
-			$cliMsgFormatter->twoCols(
-				"... run table definition update ...",
-				"$i (tables)",
-				3
-			)
+			$cliMsgFormatter->twoCols( "... run table definition update ...", "$i (tables)", 3 )
 		);
-	};
+
+		$messageReporter->reportMessage(
+			$cliMsgFormatter->oneCol( "... done.", 3 )
+		);
+};
 
 return [
 
