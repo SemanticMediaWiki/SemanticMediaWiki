@@ -60,7 +60,8 @@
 		"SMWWikiPageValue": "src/DataValues/WikiPageValue.php",
 		"SMWExpData": "src/Export/ExpData.php",
 		"SMWExportController": "src/Export/ExportController.php",
-		"SMWExporter": "src/Export/Exporter.php"
+		"SMWExporter": "src/Export/Exporter.php",
+		"SMW\\MessageFormatter": "src/Formatters/MessageFormatter.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [
