@@ -16,7 +16,7 @@ use SMW\MediaWiki\RevisionGuard;
 use SMW\Parser\ContentParser;
 
 /**
- * @covers \SMW\ParserContentParser
+ * @covers \SMW\Parser\ContentParser
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
