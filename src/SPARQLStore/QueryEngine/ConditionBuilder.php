@@ -125,7 +125,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getNextVariable( $prefix = 'v' ) {
+	public function getNextVariable( $prefix = 'v' ): string {
 		return $prefix . ( ++$this->variableCounter );
 	}
 
@@ -162,7 +162,7 @@ class ConditionBuilder {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error, $type = Message::TEXT ) {
+	public function addError( $error, $type = Message::TEXT ): void {
 		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
 	}
 
@@ -171,7 +171,7 @@ class ConditionBuilder {
 	 *
 	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function setCircularReferenceGuard( CircularReferenceGuard $circularReferenceGuard ) {
+	public function setCircularReferenceGuard( CircularReferenceGuard $circularReferenceGuard ): void {
 		$this->circularReferenceGuard = $circularReferenceGuard;
 	}
 
@@ -189,7 +189,7 @@ class ConditionBuilder {
 	 *
 	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function setHierarchyLookup( HierarchyLookup $hierarchyLookup ) {
+	public function setHierarchyLookup( HierarchyLookup $hierarchyLookup ): void {
 		$this->hierarchyLookup = $hierarchyLookup;
 	}
 
@@ -208,7 +208,7 @@ class ConditionBuilder {
 	 * @param string $joinVariable name of the variable that conditions
 	 * will refer to
 	 */
-	public function setJoinVariable( $joinVariable ) {
+	public function setJoinVariable( $joinVariable ): void {
 		$this->joinVariable = $joinVariable;
 	}
 
@@ -228,7 +228,7 @@ class ConditionBuilder {
 	 * this is the property the values of which this condition will refer
 	 * to, and the condition should also enable ordering by this value
 	 */
-	public function setOrderByProperty( $orderByProperty ) {
+	public function setOrderByProperty( $orderByProperty ): void {
 		$this->orderByProperty = $orderByProperty;
 	}
 
@@ -399,7 +399,7 @@ class ConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function isSetFlag( $featureFlag ) {
+	public function isSetFlag( $featureFlag ): bool {
 		$canUse = true;
 
 		// Adhere additional condition
@@ -423,7 +423,7 @@ class ConditionBuilder {
 	 * @param mixed $orderByProperty DIProperty or null
 	 * @param int $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
-	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
+	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ): void {
 		if ( $orderByProperty === null ) {
 			return;
 		}
@@ -443,7 +443,7 @@ class ConditionBuilder {
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param int $diType DataItem type id
 	 */
-	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
+	public function addOrderByData( Condition &$condition, $mainVariable, $diType ): void {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
 			$condition->orderByVariable = $mainVariable;
 			return;
@@ -579,7 +579,7 @@ class ConditionBuilder {
 	 *	}
 	 * }
 	 */
-	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ) {
+	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ): void {
 		if ( $this->redirectByVariableReplacementMap === [] ) {
 			return;
 		}
@@ -605,7 +605,7 @@ class ConditionBuilder {
 	 *
 	 * Remove entities that contain a "swivt:redirectsTo" predicate
 	 */
-	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ) {
+	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ): void {
 		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 

@@ -38,7 +38,7 @@ class ValueDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		$property = null;
 
 		if ( $this->property !== null ) {
@@ -87,7 +87,7 @@ class ValueDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$comparator = QueryComparator::getInstance()->getStringForComparator(
 			$this->comparator
 		);
@@ -114,7 +114,7 @@ class ValueDescription extends Description {
 		return '[[' . $comparator . $dataValue->getWikiValue() . ']]';
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return $this->comparator == SMW_CMP_EQ;
 	}
 

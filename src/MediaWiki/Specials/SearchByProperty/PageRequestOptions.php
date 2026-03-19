@@ -70,7 +70,7 @@ class PageRequestOptions {
 	/**
 	 * @since 2.1
 	 */
-	public function initialize() {
+	public function initialize(): void {
 		$params = explode( '/', $this->queryString );
 		reset( $params );
 		$escaped = false;
@@ -133,13 +133,13 @@ class PageRequestOptions {
 		return $value;
 	}
 
-	private function setLimit() {
+	private function setLimit(): void {
 		if ( isset( $this->requestOptions['limit'] ) ) {
 			$this->limit = intval( $this->requestOptions['limit'] );
 		}
 	}
 
-	private function setOffset() {
+	private function setOffset(): void {
 		if ( isset( $this->requestOptions['offset'] ) ) {
 			$this->offset = intval( $this->requestOptions['offset'] );
 		}

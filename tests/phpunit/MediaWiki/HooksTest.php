@@ -40,6 +40,7 @@ use SMW\Schema\SchemaFactory;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
 use SMW\SemanticData;
+use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableInfoFetcher;
@@ -1657,6 +1658,22 @@ class HooksTest extends TestCase {
 		$changeOp->expects( $this->any() )
 			->method( 'getFixedPropertyRecords' )
 			->willReturn( [] );
+
+		$changeDiff = $this->getMockBuilder( ChangeDiff::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff->expects( $this->any() )
+			->method( 'getTableChangeOps' )
+			->willReturn( [] );
+
+		$changeDiff->expects( $this->any() )
+			->method( 'getTextItems' )
+			->willReturn( [] );
+
+		$changeOp->expects( $this->any() )
+			->method( 'newChangeDiff' )
+			->willReturn( $changeDiff );
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )

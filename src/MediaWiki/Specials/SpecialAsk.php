@@ -546,7 +546,7 @@ class SpecialAsk extends SpecialPage {
 	 * The return value is not HTML-safe; the caller must take care of escaping it.
 	 * @return string
 	 */
-	private function print_code() {
+	private function print_code(): string {
 		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
@@ -570,7 +570,7 @@ class SpecialAsk extends SpecialPage {
 		return '{{#ask: ' . $code . '}}';
 	}
 
-	private function print_borrowed_msg( &$html, &$searchInfoText ) {
+	private function print_borrowed_msg( &$html, &$searchInfoText ): void {
 		if ( !$this->isBorrowedMode ) {
 			return;
 		}
@@ -604,7 +604,7 @@ class SpecialAsk extends SpecialPage {
 		}
 	}
 
-	private function newUrlArgs() {
+	private function newUrlArgs(): UrlArgs {
 		$urlArgs = new UrlArgs();
 
 		// build parameter strings for URLs, based on current settings
@@ -653,7 +653,7 @@ class SpecialAsk extends SpecialPage {
 		return $urlArgs;
 	}
 
-	private function fetchQueryResult( $params ) {
+	private function fetchQueryResult( $params ): array {
 		$res = null;
 		$debug = '';
 		$duration = 0;

@@ -51,7 +51,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	public function setTitle( $title ) {
+	public function setTitle( $title ): void {
 		$this->title = $title;
 	}
 
@@ -101,7 +101,7 @@ class WantedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	public function getPageHeader() {
+	public function getPageHeader(): string {
 		$filer = $this->getRequest()->getVal( 'filter', '' );
 
 		if ( $filer !== 'unapprove' ) {

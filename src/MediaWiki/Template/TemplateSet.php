@@ -21,7 +21,7 @@ class TemplateSet {
 	 *
 	 * @param Template $template
 	 */
-	public function addTemplate( Template $template ) {
+	public function addTemplate( Template $template ): void {
 		$this->templates[] = $template;
 	}
 
@@ -30,7 +30,7 @@ class TemplateSet {
 	 *
 	 * @return string
 	 */
-	public function text() {
+	public function text(): string {
 		$text = '';
 
 		foreach ( $this->templates as $template ) {

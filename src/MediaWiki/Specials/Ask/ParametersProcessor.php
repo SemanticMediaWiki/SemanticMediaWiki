@@ -29,7 +29,7 @@ class ParametersProcessor {
 	 *
 	 * @param int $defaultLimit
 	 */
-	public static function setDefaultLimit( $defaultLimit ) {
+	public static function setDefaultLimit( $defaultLimit ): void {
 		self::$defaultLimit = $defaultLimit;
 	}
 
@@ -38,7 +38,7 @@ class ParametersProcessor {
 	 *
 	 * @param int $maxInlineLimit
 	 */
-	public static function setMaxInlineLimit( $maxInlineLimit ) {
+	public static function setMaxInlineLimit( $maxInlineLimit ): void {
 		self::$maxInlineLimit = $maxInlineLimit;
 	}
 
@@ -50,7 +50,7 @@ class ParametersProcessor {
 	 *
 	 * @return string
 	 */
-	public static function process( WebRequest $request, $params ) {
+	public static function process( WebRequest $request, $params ): array {
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
 		$parameterList = self::getParameterList( $request, $params );
@@ -265,7 +265,7 @@ class ParametersProcessor {
 		return false;
 	}
 
-	private static function hasLink( $value ) {
+	private static function hasLink( $value ): bool {
 		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 

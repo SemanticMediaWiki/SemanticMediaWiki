@@ -44,7 +44,7 @@ class CacheWarmer {
 	 *
 	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ) {
+	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ): void {
 		$this->displayTitleFinder = $displayTitleFinder;
 	}
 
@@ -53,7 +53,7 @@ class CacheWarmer {
 	 *
 	 * @param int $thresholdLimit
 	 */
-	public function setThresholdLimit( $thresholdLimit ) {
+	public function setThresholdLimit( $thresholdLimit ): void {
 		$this->thresholdLimit = $thresholdLimit;
 	}
 
@@ -62,7 +62,7 @@ class CacheWarmer {
 	 *
 	 * @param array $list
 	 */
-	public function prepareCache( $list = [] ) {
+	public function prepareCache( $list = [] ): void {
 		$hashList = [];
 		$linkBatch = LinkBatch::singleton();
 		$linkBatch->setCaller( __METHOD__ );
@@ -126,7 +126,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function prefetchFromList( $hashList = [] ) {
+	public function prefetchFromList( $hashList = [] ): void {
 		if ( $hashList === [] ) {
 			return;
 		}
@@ -178,7 +178,7 @@ class CacheWarmer {
 	 *
 	 * @param array $idList
 	 */
-	public function loadByIds( $idList = [] ) {
+	public function loadByIds( $idList = [] ): void {
 		if ( $idList === [] ) {
 			return;
 		}

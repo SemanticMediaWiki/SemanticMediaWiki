@@ -36,7 +36,7 @@ class TableChangeOp {
 	 *
 	 * @return bool
 	 */
-	public function isFixedPropertyOp() {
+	public function isFixedPropertyOp(): bool {
 		return isset( $this->changeOps['property'] );
 	}
 
@@ -74,7 +74,7 @@ class TableChangeOp {
 	 *
 	 * @return bool
 	 */
-	public function hasChangeOp( $opType ) {
+	public function hasChangeOp( $opType ): bool {
 		return isset( $this->changeOps[$opType] );
 	}
 
@@ -138,7 +138,7 @@ class TableChangeOp {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return [ $this->tableName => $this->changeOps ];
 	}
 

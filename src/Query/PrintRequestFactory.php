@@ -21,7 +21,7 @@ class PrintRequestFactory {
 	 *
 	 * @return PrintRequest
 	 */
-	public function newFromProperty( Property $property ) {
+	public function newFromProperty( Property $property ): PrintRequest {
 		$propertyValue = DataValueFactory::getInstance()->newDataValueByType( PropertyValue::TYPE_ID );
 		$propertyValue->setDataItem( $property );
 
@@ -57,7 +57,7 @@ class PrintRequestFactory {
 	 *
 	 * @return PrintRequest
 	 */
-	public function newThisPrintRequest( $label = '', array $parameters = [] ) {
+	public function newThisPrintRequest( $label = '', array $parameters = [] ): PrintRequest {
 		return new PrintRequest( PrintRequest::PRINT_THIS, $label, null, false, $parameters );
 	}
 

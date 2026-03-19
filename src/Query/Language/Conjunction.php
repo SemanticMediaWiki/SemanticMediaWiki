@@ -61,7 +61,7 @@ class Conjunction extends Description {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 
 		if ( !( $description instanceof ThingDescription ) ) {
@@ -86,7 +86,7 @@ class Conjunction extends Description {
 		}
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asvalue = false ): string {
 		$result = '';
 
 		foreach ( $this->descriptions as $desc ) {

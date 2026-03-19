@@ -93,7 +93,7 @@ class Client {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$ping = null;
 	}
 
@@ -176,7 +176,7 @@ class Client {
 	 *
 	 * @return array
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => $this->isOpenSearch() ?
 				"[https://opensearch.org OpenSearch]" :
@@ -285,7 +285,7 @@ class Client {
 	 *
 	 * @param string $type
 	 */
-	public function createIndex( $type ) {
+	public function createIndex( $type ): string {
 		$index = $this->getIndexName( $type );
 		$version = 'v1';
 
@@ -319,7 +319,7 @@ class Client {
 	 *
 	 * @param string $index
 	 */
-	public function deleteIndex( string $index ) {
+	public function deleteIndex( string $index ): void {
 		$params = [
 			'index' => $index,
 		];
@@ -339,7 +339,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function putSettings( array $params ) {
+	public function putSettings( array $params ): void {
 		$this->client->indices()->putSettings( $params );
 	}
 
@@ -348,7 +348,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function putMapping( array $params ) {
+	public function putMapping( array $params ): void {
 		$this->client->indices()->putMapping( $params );
 	}
 
@@ -375,7 +375,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function refresh( array $params ) {
+	public function refresh( array $params ): void {
 		$this->client->indices()->refresh( [ 'index' => $params['index'] ] );
 	}
 
@@ -708,7 +708,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function updateAliases( array $params ) {
+	public function updateAliases( array $params ): void {
 		$this->client->indices()->updateAliases( $params );
 	}
 
@@ -739,7 +739,7 @@ class Client {
 	 *
 	 * @param string $index
 	 */
-	public function openIndex( string $index ) {
+	public function openIndex( string $index ): void {
 		$this->client->indices()->open( [ 'index' => $index ] );
 	}
 
@@ -748,7 +748,7 @@ class Client {
 	 *
 	 * @param string $index
 	 */
-	public function closeIndex( string $index ) {
+	public function closeIndex( string $index ): void {
 		$this->client->indices()->close( [ 'index' => $index ] );
 	}
 
@@ -757,7 +757,7 @@ class Client {
 	 *
 	 * @param array $params
 	 */
-	public function ingestPutPipeline( array $params ) {
+	public function ingestPutPipeline( array $params ): void {
 		$this->client->ingest()->putPipeline( $params );
 	}
 
@@ -773,7 +773,7 @@ class Client {
 	/**
 	 * @since 3.1
 	 */
-	public function setMaintenanceLock() {
+	public function setMaintenanceLock(): void {
 		$this->lockManager->setMaintenanceLock();
 	}
 
@@ -783,7 +783,7 @@ class Client {
 	 * @param string $type
 	 * @param string $version
 	 */
-	public function setLock( $type, $version ) {
+	public function setLock( $type, $version ): void {
 		$this->lockManager->setLock( $type, $version );
 	}
 
@@ -814,7 +814,7 @@ class Client {
 	 *
 	 * @param string $type
 	 */
-	public function releaseLock( $type ) {
+	public function releaseLock( $type ): void {
 		$this->lockManager->releaseLock( $type );
 	}
 

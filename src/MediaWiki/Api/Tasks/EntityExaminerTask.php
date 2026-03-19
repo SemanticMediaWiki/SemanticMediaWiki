@@ -36,7 +36,7 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	 *
 	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
 	}
 

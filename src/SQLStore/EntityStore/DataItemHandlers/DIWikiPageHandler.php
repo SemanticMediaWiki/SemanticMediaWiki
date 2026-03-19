@@ -33,7 +33,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
@@ -42,7 +42,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
@@ -51,7 +51,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			'o_id',
 
@@ -130,7 +130,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		$oid = $this->store->getObjectIds()->getSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -146,7 +146,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		$oid = $this->store->getObjectIds()->makeSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -211,7 +211,7 @@ class DIWikiPageHandler extends DataItemHandler {
 		return $this->newDiWikiPage( $dbkeys );
 	}
 
-	private function newDiWikiPage( $dbkeys ) {
+	private function newDiWikiPage( $dbkeys ): DIWikiPage {
 		$diWikiPage = new DIWikiPage(
 			$dbkeys[0],
 			intval( $dbkeys[1] ),

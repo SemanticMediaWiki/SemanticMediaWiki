@@ -100,7 +100,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function addHeaderItem( $element, $content = '', $attributes = [] ) {
+	public function addHeaderItem( $element, $content = '', $attributes = [] ): void {
 		$this->headerItems[] = Html::rawElement( $element, $attributes, $content );
 	}
 
@@ -111,7 +111,7 @@ class HtmlTableRenderer {
 	 *
 	 * @return string
 	 */
-	public function getHeaderItems() {
+	public function getHeaderItems(): string {
 		return implode( '', $this->headerItems );
 	}
 
@@ -225,7 +225,7 @@ class HtmlTableRenderer {
 		return implode( '', $this->tableRows );
 	}
 
-	private function buildStandardTable() {
+	private function buildStandardTable(): string {
 		$this->tableHeaders = [];
 		$this->tableRows = [];
 
@@ -264,7 +264,7 @@ class HtmlTableRenderer {
 		);
 	}
 
-	private function buildTransposedTable() {
+	private function buildTransposedTable(): string {
 		$this->tableRows = [];
 
 		foreach ( $this->rawHeaders as $hIndex => $header ) {

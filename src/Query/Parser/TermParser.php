@@ -158,7 +158,7 @@ class TermParser {
 		return self::$cache[$hash];
 	}
 
-	private function close( &$custom, $prefix ) {
+	private function close( &$custom, $prefix ): string {
 		// Standard closing
 		if ( $custom === '' ) {
 			return "]]";
@@ -191,7 +191,7 @@ class TermParser {
 		);
 	}
 
-	private function normalize_compact_form( $exp, $pattern, &$term ) {
+	private function normalize_compact_form( $exp, $pattern, &$term ): void {
 		if ( strpos( $term, "$exp:(" ) === false ) {
 			return;
 		}

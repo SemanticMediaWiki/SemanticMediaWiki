@@ -84,7 +84,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getSortIndexField( $temporaryTable = '' ) {
+	public function getSortIndexField( $temporaryTable = '' ): string {
 		return ( $temporaryTable !== '' ? $temporaryTable . '.' : '' ) . $this->searchTable->getSortField();
 	}
 

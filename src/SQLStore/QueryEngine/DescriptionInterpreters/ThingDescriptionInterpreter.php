@@ -27,7 +27,7 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ThingDescription;
 	}
 
@@ -38,7 +38,7 @@ class ThingDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 		$query->type = QuerySegment::Q_NOQUERY;
 

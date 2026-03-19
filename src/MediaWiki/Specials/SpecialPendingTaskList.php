@@ -51,7 +51,7 @@ class SpecialPendingTaskList extends SpecialPage {
 		return 'smw_group/maintenance';
 	}
 
-	private function buildHTML() {
+	private function buildHTML(): string {
 		$isEmpty = true;
 
 		$htmlTabs = new HtmlTabs();

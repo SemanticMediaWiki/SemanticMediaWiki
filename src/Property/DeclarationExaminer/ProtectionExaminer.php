@@ -41,7 +41,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 		$this->checkEditProtectionRight( $title, $property );
 	}
 
-	private function checkCreateProtectionRight( $title, $property ) {
+	private function checkCreateProtectionRight( $title, $property ): void {
 		if ( !$this->protectionValidator->hasCreateProtection( $title ) ) {
 			return;
 		}
@@ -56,7 +56,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'warning', $msg, $property->getLabel(), $createProtectionRight ];
 	}
 
-	private function checkEditProtectionRight( $title, $property ) {
+	private function checkEditProtectionRight( $title, $property ): void {
 		$editProtectionRight = $this->protectionValidator->getEditProtectionRight();
 
 		if ( $this->protectionValidator->hasEditProtection( $title ) ) {

@@ -69,7 +69,7 @@ class Localizer {
 	/**
 	 * @since 2.1
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -220,7 +220,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function getNsText( $index ) {
+	public function getNsText( $index ): string {
 		return str_replace( '_', ' ', $this->contentLanguage->getNsText( $index ) );
 	}
 
@@ -317,7 +317,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function createTextWithNamespacePrefix( $index, $text ) {
+	public function createTextWithNamespacePrefix( $index, $text ): string {
 		return $this->getNsText( $index ) . ':' . $text;
 	}
 
@@ -329,7 +329,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public function getCanonicalizedUrlByNamespace( $index, $url ) {
+	public function getCanonicalizedUrlByNamespace( $index, $url ): string {
 		$namespace = $this->getNsText( $index );
 
 		if ( strpos( $url, 'title=' ) !== false ) {
@@ -412,7 +412,7 @@ class Localizer {
 	 *
 	 * @return string
 	 */
-	public static function convertDoubleWidth( $string ) {
+	public static function convertDoubleWidth( $string ): string {
 		static $full = null;
 		static $half = null;
 

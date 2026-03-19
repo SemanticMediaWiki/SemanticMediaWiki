@@ -35,7 +35,7 @@ class SingleEntityQueryLookup implements QueryEngine {
 	 *
 	 * @return QueryResult
 	 */
-	public function getQueryResult( Query $query ) {
+	public function getQueryResult( Query $query ): QueryResult {
 		$description = $query->getDescription();
 		$results = [];
 		$furtherResults = false;

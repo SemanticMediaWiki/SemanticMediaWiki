@@ -45,7 +45,7 @@ class ConceptParserFunction {
 	 *
 	 * @param PostProcHandler $postProcHandler
 	 */
-	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+	public function setPostProcHandler( PostProcHandler $postProcHandler ): void {
 		$this->postProcHandler = $postProcHandler;
 	}
 
@@ -119,7 +119,7 @@ class ConceptParserFunction {
 		return $this->createHtml( $title, $conceptQueryString, $conceptDocu );
 	}
 
-	private function createHtml( Title $title, $queryString, $documentation ) {
+	private function createHtml( Title $title, $queryString, $documentation ): string {
 		$message = '';
 
 		if ( wfMessage( 'smw-concept-introductory-message' )->exists() ) {
@@ -160,7 +160,7 @@ class ConceptParserFunction {
 		return $query;
 	}
 
-	private function addQueryProfile( $query ) {
+	private function addQueryProfile( $query ): void {
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
 			return;

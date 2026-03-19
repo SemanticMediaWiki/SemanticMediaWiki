@@ -19,7 +19,7 @@ class LinksWidget {
 	/**
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [ 'onoi.clipboard' ];
 	}
 
@@ -198,7 +198,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function resultSubmitLink( $isEmpty = false ) {
+	public static function resultSubmitLink( $isEmpty = false ): string {
 		if ( !$isEmpty ) {
 			return '';
 		}

@@ -75,7 +75,7 @@ class ArticleViewHeader implements HookListener {
 		return true;
 	}
 
-	private function updateCategoryTop( $title, $output ) {
+	private function updateCategoryTop( $title, $output ): bool {
 		$message = '';
 
 		$subject = DIWikiPage::newFromTitle(

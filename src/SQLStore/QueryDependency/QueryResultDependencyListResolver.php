@@ -44,7 +44,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param array $propertyDependencyExemptionlist
 	 */
-	public function setPropertyDependencyExemptionlist( array $propertyDependencyExemptionlist ) {
+	public function setPropertyDependencyExemptionlist( array $propertyDependencyExemptionlist ): void {
 		// Make sure that user defined properties are correctly normalized and flip
 		// to build an index based map
 		$this->propertyDependencyExemptionlist = array_flip(
@@ -124,11 +124,11 @@ class QueryResultDependencyListResolver {
 	 * Resolving dependencies for non-embedded queries or limit=0 (which only
 	 * links to Special:Ask via further results) is not required
 	 */
-	private function canResolve( $queryResult ) {
+	private function canResolve( $queryResult ): bool {
 		return $queryResult instanceof QueryResult && $queryResult->getQuery() !== null && $queryResult->getQuery()->getContextPage() !== null && $queryResult->getQuery()->getLimit() > 0;
 	}
 
-	private function doResolveDependenciesFromDescription( &$subjects, $store, $description ) {
+	private function doResolveDependenciesFromDescription( &$subjects, $store, $description ): void {
 		// Ignore entities that use a comparator other than SMW_CMP_EQ
 		// [[Has page::~Foo*]] or similar is going to be ignored
 		if ( $description instanceof ValueDescription &&
@@ -171,7 +171,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchProperty( &$subjects, DIProperty $property ) {
+	private function doMatchProperty( &$subjects, DIProperty $property ): void {
 		if ( $property->isInverse() ) {
 			$property = new DIProperty( $property->getKey() );
 		}
@@ -190,7 +190,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubcategory( &$subjects, DIWikiPage $category ) {
+	private function doMatchSubcategory( &$subjects, DIWikiPage $category ): void {
 		$hash = $category->getHash();
 		$subcategories = [];
 
@@ -210,7 +210,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubproperty( &$subjects, $subject, DIProperty $property ) {
+	private function doMatchSubproperty( &$subjects, $subject, DIProperty $property ): void {
 		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for
@@ -235,7 +235,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doResolveDependenciesFromPrintRequest( &$subjects, array $printRequests ) {
+	private function doResolveDependenciesFromPrintRequest( &$subjects, array $printRequests ): void {
 		foreach ( $printRequests as $printRequest ) {
 			$data = $printRequest->getData();
 

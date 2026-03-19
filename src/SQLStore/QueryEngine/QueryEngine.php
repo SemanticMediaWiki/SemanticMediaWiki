@@ -90,7 +90,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @param LoggerInterface $logger
 	 */
-	public function setLogger( LoggerInterface $logger ) {
+	public function setLogger( LoggerInterface $logger ): void {
 		$this->logger = $logger;
 	}
 
@@ -217,7 +217,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 *
 	 * @return string
 	 */
-	private function getDebugQueryResult( Query $query, $rootid ) {
+	private function getDebugQueryResult( Query $query, $rootid ): string {
 		$qobj = $this->querySegmentList[$rootid] ?? 0;
 		$entries = [];
 
@@ -557,7 +557,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

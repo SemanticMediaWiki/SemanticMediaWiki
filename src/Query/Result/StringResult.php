@@ -47,7 +47,7 @@ class StringResult extends QueryResult {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -56,7 +56,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @param int $count
 	 */
-	public function setCount( $count ) {
+	public function setCount( $count ): void {
 		$this->count = $count;
 	}
 
@@ -65,7 +65,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @return int
 	 */
-	public function getCount() {
+	public function getCount(): int {
 		return $this->count;
 	}
 
@@ -85,7 +85,7 @@ class StringResult extends QueryResult {
 	 *
 	 * @param callable $preOutputCallback
 	 */
-	public function setPreOutputCallback( callable $preOutputCallback ) {
+	public function setPreOutputCallback( callable $preOutputCallback ): void {
 		$this->preOutputCallback = $preOutputCallback;
 	}
 

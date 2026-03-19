@@ -36,7 +36,7 @@ class SpecialPageProperty extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$request = $this->getRequest();
 
 		if ( $request->getText( 'cl', '' ) !== '' ) {
@@ -88,7 +88,7 @@ class SpecialPageProperty extends SpecialPage {
 		return 'smw_group/search';
 	}
 
-	private function load( $options ) {
+	private function load( $options ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 

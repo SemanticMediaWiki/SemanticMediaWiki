@@ -46,7 +46,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param ChangeOp|null $changeOp
 	 */
-	public function setChangeOp( ?ChangeOp $changeOp = null ) {
+	public function setChangeOp( ?ChangeOp $changeOp = null ): void {
 		$this->changeOp = $changeOp;
 	}
 
@@ -55,7 +55,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param bool $checkRemnantEntities
 	 */
-	public function checkRemnantEntities( $checkRemnantEntities ) {
+	public function checkRemnantEntities( $checkRemnantEntities ): void {
 		$this->checkRemnantEntities = (bool)$checkRemnantEntities;
 	}
 
@@ -92,7 +92,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
+	public function computeTableRowDiff( $sid, SemanticData $semanticData ): array {
 		$tablesDeleteRows = [];
 		$tablesInsertRows = [];
 
@@ -251,7 +251,7 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createHash( $tableName, $newData, $hashMutator = '' ) {
+	private function createHash( $tableName, $newData, $hashMutator = '' ): string {
 		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
@@ -323,7 +323,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ) {
+	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ): array {
 		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
 
 		// Cycle through old values

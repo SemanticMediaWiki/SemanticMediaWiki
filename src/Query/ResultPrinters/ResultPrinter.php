@@ -197,7 +197,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param RecursiveTextProcessor $recursiveTextProcessor
 	 */
-	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ): void {
 		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
@@ -231,7 +231,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param array $modules
 	 * @param array $styleModules
 	 */
-	public function registerResources( array $modules = [], array $styleModules = [] ) {
+	public function registerResources( array $modules = [], array $styleModules = [] ): void {
 		foreach ( $modules as $module ) {
 			ResourceManager::requireResource( $module );
 		}
@@ -576,7 +576,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @param bool $show
 	 */
-	public function setShowErrors( $show ) {
+	public function setShowErrors( $show ): void {
 		$this->mShowErrors = $show;
 	}
 

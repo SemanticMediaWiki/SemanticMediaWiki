@@ -32,7 +32,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(): string {
 		// Give grep a chance to find the usages:
 		// smw_printername_list, smw_printername_ol,smw_printername_ul, smw_printername_plainlist, smw_printername_template
 		return Message::get( 'smw_printername_' . $this->mFormat, Message::TEXT, Message::USER_LANGUAGE );
@@ -74,7 +74,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return ListResultBuilder
 	 */
-	private function getBuilder( QueryResult $queryResult ) {
+	private function getBuilder( QueryResult $queryResult ): ListResultBuilder {
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker, $GLOBALS['smwgPlainList'] );
 
 		$builder->set( $this->params );
@@ -95,7 +95,7 @@ class ListResultPrinter extends ResultPrinter {
 	/**
 	 * @return bool
 	 */
-	private function hasTemplates() {
+	private function hasTemplates(): bool {
 		return $this->params['template'] !== '' || $this->params['introtemplate'] !== '' || $this->params['outrotemplate'] !== '';
 	}
 

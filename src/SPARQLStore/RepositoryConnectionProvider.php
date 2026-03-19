@@ -107,7 +107,7 @@ class RepositoryConnectionProvider implements ConnectionProvider {
 	 *
 	 * @since 2.0
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connection = null;
 	}
 

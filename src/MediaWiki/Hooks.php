@@ -91,7 +91,7 @@ class Hooks {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $name ) {
+	public function isRegistered( $name ): bool {
 		return isset( $this->handlers[$name] );
 	}
 
@@ -100,7 +100,7 @@ class Hooks {
 	 *
 	 * @param string $name
 	 */
-	public function clear( string $name = '' ) {
+	public function clear( string $name = '' ): void {
 		if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 			return;
 		}
@@ -139,7 +139,7 @@ class Hooks {
 	/**
 	 * @since 2.1
 	 */
-	public function register() {
+	public function register(): void {
 		foreach ( $this->handlers as $name => $callback ) {
 			$this->hookContainer->register( $name, $callback );
 		}
@@ -153,7 +153,7 @@ class Hooks {
 	 *
 	 * @param array &$vars
 	 */
-	public static function registerExtensionCheck( array &$vars ) {
+	public static function registerExtensionCheck( array &$vars ): void {
 		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( $outputPage ) {
 			$beforePageDisplay = new BeforePageDisplay();
 
@@ -216,7 +216,7 @@ class Hooks {
 	 *
 	 * @param array &$vars
 	 */
-	public static function registerEarly( array &$vars ) {
+	public static function registerEarly( array &$vars ): void {
 		// Remove the hook registered via `Hook::registerExtensionCheck` given
 		// that at this point we know the extension was loaded and hereby is
 		// available.
@@ -225,7 +225,7 @@ class Hooks {
 		}
 	}
 
-	private function registerHandlers() {
+	private function registerHandlers(): void {
 		$elasticFactory = ApplicationFactory::getInstance()->singleton( 'ElasticFactory' );
 
 		$this->handlers = $elasticFactory->newHooks()->getHandlers();
@@ -679,7 +679,7 @@ class Hooks {
 		return true;
 	}
 
-	private function getETag( $parserCache, $page, $pOpts ) {
+	private function getETag( $parserCache, $page, $pOpts ): string {
 		return 'W/"' . $parserCache->makeParserOutputKey( $page, $pOpts	) .
 			"--" . $page->getTouched() . '"';
 	}

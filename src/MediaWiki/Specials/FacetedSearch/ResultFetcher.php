@@ -208,7 +208,7 @@ class ResultFetcher {
 	 *
 	 * @param ParametersProcessor $parametersProcessor
 	 */
-	public function fetchQueryResult( ParametersProcessor $parametersProcessor ) {
+	public function fetchQueryResult( ParametersProcessor $parametersProcessor ): void {
 		[ $queryString, $parameters, $printRequests ] = QueryProcessor::getComponentsFromFunctionParams(
 			$parametersProcessor->getParameters(),
 			false
@@ -339,7 +339,7 @@ class ResultFetcher {
 		$this->findValueFilters( $results, $valueFilterResult, $parametersProcessor->getPropertyFilters() );
 	}
 
-	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ) {
+	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ): void {
 		if ( $propertyFilters === [] ) {
 			return;
 		}

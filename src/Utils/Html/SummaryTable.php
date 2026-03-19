@@ -36,7 +36,7 @@ class SummaryTable {
 	 *
 	 * @return array
 	 */
-	public static function getModuleStyles() {
+	public static function getModuleStyles(): array {
 		return [ 'ext.smw.styles', 'smw.summarytable' ];
 	}
 
@@ -45,7 +45,7 @@ class SummaryTable {
 	 *
 	 * @param array $attributes
 	 */
-	public function setAttributes( array $attributes = [] ) {
+	public function setAttributes( array $attributes = [] ): void {
 		$this->attributes = $attributes;
 	}
 
@@ -54,14 +54,14 @@ class SummaryTable {
 	 *
 	 * @param int $columnThreshold
 	 */
-	public function setColumnThreshold( $columnThreshold ) {
+	public function setColumnThreshold( $columnThreshold ): void {
 		$this->columnThreshold = $columnThreshold;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function noImage() {
+	public function noImage(): void {
 		$this->thumbImage = Html::rawElement(
 			'div',
 			[
@@ -81,7 +81,7 @@ class SummaryTable {
 	 *
 	 * @param string $thumbImage
 	 */
-	public function setThumbImage( $thumbImage ) {
+	public function setThumbImage( $thumbImage ): void {
 		$this->thumbImage = $thumbImage;
 	}
 

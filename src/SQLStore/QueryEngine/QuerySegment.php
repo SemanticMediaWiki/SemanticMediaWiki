@@ -191,7 +191,7 @@ class QuerySegment {
 	/**
 	 * @since 2.2
 	 */
-	public function reset() {
+	public function reset(): void {
 		self::$qnum = 0;
 
 		$this->queryNumber = self::$qnum;

@@ -62,7 +62,7 @@ class SMWInfolink {
 	 *
 	 * @param bool $isRestricted
 	 */
-	public function isRestricted( $isRestricted ) {
+	public function isRestricted( $isRestricted ): void {
 		$this->isRestricted = (bool)$isRestricted;
 	}
 
@@ -71,7 +71,7 @@ class SMWInfolink {
 	 *
 	 * @param bool $isCompactLink
 	 */
-	public function setCompactLink( $isCompactLink = true ) {
+	public function setCompactLink( $isCompactLink = true ): void {
 		$this->isCompactLink = (bool)$isCompactLink;
 	}
 
@@ -86,7 +86,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newInternalLink( $caption, $target, $style = false, array $params = [] ) {
+	public static function newInternalLink( $caption, $target, $style = false, array $params = [] ): \SMWInfolink {
 		return new SMWInfolink( true, $caption, $target, $style, $params );
 	}
 
@@ -100,7 +100,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newExternalLink( $caption, $url, $style = false, array $params = [] ) {
+	public static function newExternalLink( $caption, $url, $style = false, array $params = [] ): \SMWInfolink {
 		return new SMWInfolink( false, $caption, $url, $style, $params );
 	}
 
@@ -114,7 +114,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ) {
+	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ): \SMWInfolink {
 		$infolink = new SMWInfolink(
 			true,
 			$caption,
@@ -142,7 +142,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newInversePropertySearchLink( $caption, $subject, $propertyName, $style = false ) {
+	public static function newInversePropertySearchLink( $caption, $subject, $propertyName, $style = false ): \SMWInfolink {
 		return new SMWInfolink(
 			true,
 			$caption,
@@ -161,7 +161,7 @@ class SMWInfolink {
 	 *
 	 * @return SMWInfolink
 	 */
-	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ) {
+	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ): \SMWInfolink {
 		return new SMWInfolink(
 			true,
 			$caption,
@@ -177,7 +177,7 @@ class SMWInfolink {
 	 * @param mixed $value
 	 * @param mixed $key
 	 */
-	public function setParameter( $value, $key = false ) {
+	public function setParameter( $value, $key = false ): void {
 		if ( $key === false ) {
 			$this->mParams[] = $value;
 		} else {
@@ -200,14 +200,14 @@ class SMWInfolink {
 	/**
 	 * Change the link text.
 	 */
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		$this->mCaption = $caption;
 	}
 
 	/**
 	 * Change the link's CSS class.
 	 */
-	public function setStyle( $style ) {
+	public function setStyle( $style ): void {
 		$this->mStyle = $style;
 	}
 
@@ -218,7 +218,7 @@ class SMWInfolink {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 	}
 

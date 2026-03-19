@@ -67,7 +67,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getSoftwareInfo
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => null
@@ -105,51 +105,52 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::createIndex
 	 */
-	public function createIndex( $type ) {
+	public function createIndex( $type ): string {
+		return '';
 	}
 
 	/**
 	 * @see Client::deleteIndex
 	 */
-	public function deleteIndex( $index ) {
+	public function deleteIndex( $index ): void {
 	}
 
 	/**
 	 * @see Client::putSettings
 	 */
-	public function putSettings( array $params ) {
+	public function putSettings( array $params ): void {
 	}
 
 	/**
 	 * @see Client::putMapping
 	 */
-	public function putMapping( array $params ) {
+	public function putMapping( array $params ): void {
 	}
 
 	/**
 	 * @see Client::getMapping
 	 */
-	public function getMapping( array $params ) {
+	public function getMapping( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::getSettings
 	 */
-	public function getSettings( array $params ) {
+	public function getSettings( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::refresh
 	 */
-	public function refresh( array $params ) {
+	public function refresh( array $params ): void {
 	}
 
 	/**
 	 * @see Client::validate
 	 */
-	public function validate( array $params ) {
+	public function validate( array $params ): array {
 		return [];
 	}
 
@@ -177,14 +178,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::get
 	 */
-	public function get( array $params ) {
+	public function get( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::delete
 	 */
-	public function delete( array $params ) {
+	public function delete( array $params ): array {
 		return [];
 	}
 
@@ -223,14 +224,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::explain
 	 */
-	public function explain( array $params ) {
+	public function explain( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::updateAliases
 	 */
-	public function updateAliases( array $params ) {
+	public function updateAliases( array $params ): void {
 	}
 
 	/**
@@ -250,13 +251,13 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::openIndex
 	 */
-	public function openIndex( string $index ) {
+	public function openIndex( string $index ): void {
 	}
 
 	/**
 	 * @see Client::closeIndex
 	 */
-	public function closeIndex( string $index ) {
+	public function closeIndex( string $index ): void {
 	}
 
 	/**
@@ -269,13 +270,13 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::setMaintenanceLock
 	 */
-	public function setMaintenanceLock() {
+	public function setMaintenanceLock(): void {
 	}
 
 	/**
 	 * @see Client::setLock
 	 */
-	public function setLock( $type, $version ) {
+	public function setLock( $type, $version ): void {
 	}
 
 	/**
@@ -295,7 +296,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getLock
 	 */
-	public function releaseLock( $type ) {
+	public function releaseLock( $type ): void {
 	}
 
 }

@@ -43,7 +43,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof SomeProperty;
 	}
 
@@ -120,7 +120,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ) {
+	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ): array {
 		$innerOrderByProperty = null;
 
 		// Find out if we should order by the values of this property
@@ -141,7 +141,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return [ $innerOrderByProperty, $innerCondition, $innerJoinVariable ];
 	}
 
-	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ) {
+	private function findObjectNameFromInnerCondition( $innerCondition, $innerJoinVariable, &$namespaces ): string {
 		if ( !$innerCondition instanceof SingletonCondition ) {
 			return '?' . $innerJoinVariable;
 		}
@@ -190,7 +190,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 	}
 
-	private function doExchangeForWhenInversePropertyIsUsed( DIProperty $property, $objectName, $joinVariable ) {
+	private function doExchangeForWhenInversePropertyIsUsed( DIProperty $property, $objectName, $joinVariable ): array {
 		$subjectName = '?' . $joinVariable;
 		$nonInverseProperty = $property;
 
@@ -205,7 +205,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return [ $subjectName, $objectName, $nonInverseProperty ];
 	}
 
-	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ) {
+	private function concatenateToConditionString( $subjectName, $propertyName, $objectName, $innerCondition ): string {
 		$condition = "$subjectName $propertyName $objectName .\n";
 
 		$innerConditionString = $innerCondition->getCondition() . $innerCondition->getWeakConditionString();

@@ -86,7 +86,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @since 2.3
 	 */
-	public function register( ContainerBuilder $containerBuilder ) {
+	public function register( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'Store', [ $this, 'newStore' ] );
 		$containerBuilder->registerCallback( 'IndicatorRegistry', [ $this, 'newIndicatorRegistry' ] );
 
@@ -134,7 +134,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return IndicatorRegistry
 	 */
-	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ) {
+	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ): IndicatorRegistry {
 		$indicatorRegistry = new IndicatorRegistry();
 
 		if ( !$addEntityExaminer ) {
@@ -154,7 +154,7 @@ class SharedServicesContainer implements CallbackContainer {
 		return $indicatorRegistry;
 	}
 
-	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ) {
+	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'Settings', static function ( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', Settings::class );
 
@@ -453,7 +453,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 	}
 
-	private function registerCallableFactories( ContainerBuilder $containerBuilder ) {
+	private function registerCallableFactories( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'CacheFactory', static function ( $containerBuilder, $mainCacheType = null ) {
 			$containerBuilder->registerExpectedReturnType( 'CacheFactory', CacheFactory::class );
 			return new CacheFactory( $mainCacheType );
@@ -513,7 +513,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 	}
 
-	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ) {
+	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'BlobStore', static function ( $containerBuilder, $namespace, $cacheType = null, $ttl = 0 ) {
 			$containerBuilder->registerExpectedReturnType( 'BlobStore', BlobStore::class );
 

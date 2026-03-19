@@ -43,7 +43,7 @@ class IndicatorRegistry {
 	 *
 	 * @param IndicatorProvider|null $indicatorProvider
 	 */
-	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ) {
+	public function addIndicatorProvider( ?IndicatorProvider $indicatorProvider = null ): void {
 		if ( $indicatorProvider === null ) {
 			return;
 		}
@@ -60,7 +60,7 @@ class IndicatorRegistry {
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ) {
+	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ): bool {
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);
@@ -94,7 +94,7 @@ class IndicatorRegistry {
 	 *
 	 * @param OutputPage $outputPage
 	 */
-	public function attachIndicators( OutputPage $outputPage ) {
+	public function attachIndicators( OutputPage $outputPage ): void {
 		$outputPage->addModules( $this->modules );
 		$outputPage->setIndicators( $this->indicators );
 		$outputPage->addInlineStyle( implode( '', $this->inlineStyles ) );

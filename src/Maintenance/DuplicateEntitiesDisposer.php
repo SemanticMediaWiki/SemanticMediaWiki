@@ -44,7 +44,7 @@ class DuplicateEntitiesDisposer {
 	 *
 	 * @param Iterator|array $duplicates
 	 */
-	public function verifyAndDispose( $duplicates ) {
+	public function verifyAndDispose( $duplicates ): void {
 		if ( !$this->is_iterable( $duplicates ) ) {
 			return;
 		}
@@ -62,7 +62,7 @@ class DuplicateEntitiesDisposer {
 		}
 	}
 
-	private function doDispose( $duplicates ) {
+	private function doDispose( $duplicates ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$logs = [];
 
@@ -129,11 +129,11 @@ class DuplicateEntitiesDisposer {
 	 *
 	 * @since 3.0
 	 */
-	private function is_iterable( $obj ) {
+	private function is_iterable( $obj ): bool {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
-	private function wikipage_table( $table, $duplicates, &$log ) {
+	private function wikipage_table( $table, $duplicates, &$log ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -173,7 +173,7 @@ class DuplicateEntitiesDisposer {
 		}
 	}
 
-	private function redi_table( $table, $duplicates, &$log ) {
+	private function redi_table( $table, $duplicates, &$log ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -217,7 +217,7 @@ class DuplicateEntitiesDisposer {
 		}
 	}
 
-	private function id_table( $table, $duplicates, &$log ) {
+	private function id_table( $table, $duplicates, &$log ): void {
 		$propertyTableIdReferenceDisposer = $this->store->service( 'PropertyTableIdReferenceDisposer' );
 		$propertyTableIdReferenceDisposer->setRedirectRemoval( true );
 

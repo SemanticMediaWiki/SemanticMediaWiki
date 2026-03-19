@@ -33,7 +33,7 @@ class Options implements JsonUnserializable {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -42,7 +42,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		unset( $this->options[$key] );
 	}
 
@@ -53,7 +53,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return isset( $this->options[$key] ) || array_key_exists( $key, $this->options );
 	}
 
@@ -65,7 +65,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function is( $key, $value ) {
+	public function is( $key, $value ): bool {
 		return $this->get( $key ) === $value;
 	}
 
@@ -117,7 +117,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return bool
 	 */
-	public function isFlagSet( $key, $flag ) {
+	public function isFlagSet( $key, $flag ): bool {
 		return ( ( (int)$this->safeGet( $key, 0 ) & $flag ) == $flag );
 	}
 
@@ -183,7 +183,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
 		return new self( $json['options'] );
 	}
 

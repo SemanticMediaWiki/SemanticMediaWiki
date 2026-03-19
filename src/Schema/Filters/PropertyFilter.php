@@ -47,7 +47,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		return 'property';
 	}
 
-	private function match( Compartment $compartment ) {
+	private function match( Compartment $compartment ): void {
 		if ( $this->isLoaded === false ) {
 			$this->loadProperties();
 		}
@@ -170,7 +170,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		}
 	}
 
-	private function loadProperties() {
+	private function loadProperties(): void {
 		// Allow properties to be lazy loaded when for example those are
 		// fetched from the DB
 		if ( is_callable( $this->properties ) ) {

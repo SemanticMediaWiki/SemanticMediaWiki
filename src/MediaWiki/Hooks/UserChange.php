@@ -40,7 +40,7 @@ class UserChange implements HookListener {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 

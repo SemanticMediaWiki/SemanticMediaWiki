@@ -86,7 +86,7 @@ class PropertyPage extends Page {
 	 *
 	 * @return string
 	 */
-	protected function initHtml() {
+	protected function initHtml(): string {
 		$redirectTarget = $this->store->getRedirectTarget( $this->property );
 
 		if ( !$redirectTarget->equals( $this->property ) ) {
@@ -327,7 +327,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {
+	private function makeItemList( $key, $propertyKey, $checkProperty = true ): array {
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
 			return [ '', '' ];
@@ -374,7 +374,7 @@ class PropertyPage extends Page {
 		return [ $html, $itemCount ];
 	}
 
-	private function makeValueList() {
+	private function makeValueList(): string {
 		$request = $this->getContext()->getRequest();
 		$language = $this->getContext()->getLanguage();
 		$user = $this->getContext()->getUser();
@@ -421,7 +421,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

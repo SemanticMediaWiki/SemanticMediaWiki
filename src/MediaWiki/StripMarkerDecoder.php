@@ -29,7 +29,7 @@ class StripMarkerDecoder {
 	 *
 	 * @param bool $isSupported
 	 */
-	public function isSupported( $isSupported ) {
+	public function isSupported( $isSupported ): void {
 		$this->isSupported = $isSupported;
 	}
 
@@ -101,7 +101,7 @@ class StripMarkerDecoder {
 		return $this->doUnstrip( $value );
 	}
 
-	private function addNoWikiToUnstripValue( $text ) {
+	private function addNoWikiToUnstripValue( $text ): string {
 		return '<nowiki>' . $text . '</nowiki>';
 	}
 

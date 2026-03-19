@@ -33,7 +33,7 @@ class UpdateEntityCollationComplete {
 	 *
 	 * @param int $countDown
 	 */
-	public function setCountDown( $countDown ) {
+	public function setCountDown( $countDown ): void {
 		$this->countDown = $countDown;
 	}
 
@@ -117,7 +117,7 @@ class UpdateEntityCollationComplete {
 		return true;
 	}
 
-	private function rebuild( $rebuilder, $res, $last ) {
+	private function rebuild( $rebuilder, $res, $last ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$rebuilder->set( 'skip-fileindex', true );

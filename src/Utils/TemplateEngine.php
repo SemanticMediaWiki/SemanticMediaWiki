@@ -45,7 +45,7 @@ class TemplateEngine {
 	/**
 	 * @since 3.2
 	 */
-	public function clearTemplates() {
+	public function clearTemplates(): void {
 		self::$templates = [];
 	}
 
@@ -55,7 +55,7 @@ class TemplateEngine {
 	 * @param string $target
 	 * @param string $contents
 	 */
-	public function setContents( $target, $contents ) {
+	public function setContents( $target, $contents ): void {
 		$this->container[$target] = $contents;
 	}
 
@@ -64,7 +64,7 @@ class TemplateEngine {
 	 *
 	 * @param array $files
 	 */
-	public function bulkLoad( array $files ) {
+	public function bulkLoad( array $files ): void {
 		foreach ( $files as $file => $target ) {
 			$this->load( $file, $target );
 		}
@@ -99,7 +99,7 @@ class TemplateEngine {
 	 * @param string $target
 	 * @param array $args
 	 */
-	public function compile( $target, array $args = [] ) {
+	public function compile( $target, array $args = [] ): void {
 		if ( !isset( $this->container[$target] ) ) {
 			return;
 		}

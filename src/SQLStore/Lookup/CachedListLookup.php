@@ -45,7 +45,7 @@ class CachedListLookup implements ListLookup {
 	 *
 	 * @param string $cachePrefix
 	 */
-	public function setCachePrefix( $cachePrefix ) {
+	public function setCachePrefix( $cachePrefix ): void {
 		$this->cachePrefix = $cachePrefix . ':' . $this->cachePrefix;
 	}
 
@@ -112,7 +112,7 @@ class CachedListLookup implements ListLookup {
 	/**
 	 * @since 2.3
 	 */
-	public function deleteCache() {
+	public function deleteCache(): void {
 		[ $id, $optionsKey ] = $this->getCacheKey(
 			$this->listLookup->getHash()
 		);
@@ -152,7 +152,7 @@ class CachedListLookup implements ListLookup {
 		return $data['list'];
 	}
 
-	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ) {
+	private function saveToCache( $key, $optionsKey, $list, $time, $ttl ): void {
 		$this->timestamp = $time;
 		$this->isFromCache = false;
 
@@ -170,7 +170,7 @@ class CachedListLookup implements ListLookup {
 		$this->cache->save( $optionsKey, serialize( $data ), $ttl );
 	}
 
-	private function getCacheKey( $id ) {
+	private function getCacheKey( $id ): array {
 		$optionsKey = '';
 
 		if ( strpos( $id ?? '', '#' ) !== false ) {

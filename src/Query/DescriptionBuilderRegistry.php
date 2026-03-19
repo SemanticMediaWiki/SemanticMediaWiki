@@ -37,7 +37,7 @@ class DescriptionBuilderRegistry {
 	 *
 	 * @param DescriptionBuilder $descriptionBuilder
 	 */
-	public function registerDescriptionBuilder( DescriptionBuilder $descriptionBuilder ) {
+	public function registerDescriptionBuilder( DescriptionBuilder $descriptionBuilder ): void {
 		if ( $this->descriptionBuilders === [] ) {
 			$this->initDescriptionBuilders();
 		}
@@ -71,7 +71,7 @@ class DescriptionBuilderRegistry {
 		throw new RuntimeException( "Missing registered DescriptionBuilder for: " . $dataValue->getTypeID() );
 	}
 
-	private function initDescriptionBuilders() {
+	private function initDescriptionBuilders(): void {
 		$this->descriptionBuilders[] = new TimeValueDescriptionBuilder();
 		$this->descriptionBuilders[] = new NumberValueDescriptionBuilder();
 		$this->descriptionBuilders[] = new RecordValueDescriptionBuilder();

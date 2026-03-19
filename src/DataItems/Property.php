@@ -265,7 +265,7 @@ class Property extends DataItem {
 	 *
 	 * @param string $interwiki
 	 */
-	public function setInterwiki( string $interwiki ) {
+	public function setInterwiki( string $interwiki ): void {
 		$this->interwiki = $interwiki;
 	}
 
@@ -372,7 +372,7 @@ class Property extends DataItem {
 	/**
 	 * @deprecated since 3.0, use Property::findPropertyValueType
 	 */
-	public function findPropertyTypeId() {
+	public function findPropertyTypeId(): string {
 		return $this->findPropertyValueType();
 	}
 

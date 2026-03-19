@@ -175,7 +175,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
+	public static function newFromDefaults( ?SetupFile $setupFile = null ): SetupCheck {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {
@@ -197,7 +197,7 @@ class SetupCheck {
 	/**
 	 * @since 3.2
 	 */
-	public function disableHeader() {
+	public function disableHeader(): void {
 		$this->sentHeader = false;
 	}
 
@@ -206,7 +206,7 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function isCli() {
+	public function isCli(): bool {
 		return PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg';
 	}
 
@@ -215,7 +215,7 @@ class SetupCheck {
 	 *
 	 * @param string $traceString
 	 */
-	public function setTraceString( $traceString ) {
+	public function setTraceString( $traceString ): void {
 		$this->traceString = $traceString;
 	}
 
@@ -224,7 +224,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorMessage
 	 */
-	public function setErrorMessage( string $errorMessage ) {
+	public function setErrorMessage( string $errorMessage ): void {
 		$this->errorMessage = $errorMessage;
 	}
 
@@ -233,7 +233,7 @@ class SetupCheck {
 	 *
 	 * @param string $errorType
 	 */
-	public function setErrorType( string $errorType ) {
+	public function setErrorType( string $errorType ): void {
 		$this->errorType = $errorType;
 	}
 
@@ -251,7 +251,7 @@ class SetupCheck {
 	 *
 	 * @return bool
 	 */
-	public function hasError() {
+	public function hasError(): bool {
 		$this->errorType = '';
 
 		if ( $this->setupFile->inMaintenanceMode() ) {
@@ -357,7 +357,7 @@ class SetupCheck {
 	 *
 	 * @return never
 	 */
-	public function showErrorAndAbort( $isCli = false ) {
+	public function showErrorAndAbort( $isCli = false ): void {
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {
@@ -369,7 +369,7 @@ class SetupCheck {
 		die();
 	}
 
-	private function header( $text ) {
+	private function header( $text ): void {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}
@@ -484,7 +484,7 @@ class SetupCheck {
 		return $this->templateEngine->publish( $value['type'] );
 	}
 
-	private function createProgressIndicator( $value ) {
+	private function createProgressIndicator( $value ): string {
 		$maintenanceMode = (array)$this->setupFile->getMaintenanceMode();
 		$content = '';
 

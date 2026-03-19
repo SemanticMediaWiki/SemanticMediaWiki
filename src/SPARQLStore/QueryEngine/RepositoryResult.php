@@ -74,7 +74,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return int number of result rows
 	 */
-	public function numRows() {
+	public function numRows(): int {
 		return count( $this->data );
 	}
 
@@ -96,7 +96,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @param $errorCode integer error code
 	 */
-	public function setErrorCode( $errorCode ) {
+	public function setErrorCode( $errorCode ): void {
 		if ( $errorCode != self::ERROR_NOERROR ) {
 			$this->errorCode = $errorCode;
 		}
@@ -142,7 +142,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return int
 	 */
-	public function getNumericValue() {
+	public function getNumericValue(): int {
 		if ( count( $this->data ) == 1 ) {
 			$row = reset( $this->data );
 			$expElement = reset( $row );

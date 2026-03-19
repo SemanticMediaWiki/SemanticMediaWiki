@@ -82,7 +82,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public static function toLowerCase( $key ) {
+	public static function toLowerCase( $key ): string {
 		return strtolower( str_replace( [ ' ' ], [ '' ], $key ) );
 	}
 
@@ -130,7 +130,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildFormList() {
+	public function buildFormList(): string {
 		$list = [];
 		$name = '';
 		$value = '';
@@ -179,7 +179,7 @@ class FormsBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( array $data ) {
+	public function buildForm( array $data ): string {
 		if ( !isset( $data['forms'] ) ) {
 			throw new RuntimeException( "Missing forms definition" );
 		}
@@ -284,7 +284,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function preselect_namespaces( $preselect ) {
+	private function preselect_namespaces( $preselect ): void {
 		foreach ( $preselect as $k => $values ) {
 			$k = self::toLowerCase( $k );
 			$this->preselectNsList[$k] = [];
@@ -301,7 +301,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function hidden_namespaces( $hidden ) {
+	private function hidden_namespaces( $hidden ): void {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );

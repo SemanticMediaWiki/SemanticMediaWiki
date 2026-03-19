@@ -68,7 +68,7 @@ class ConfigPreloader {
 		return $this;
 	}
 
-	private function load( $file ) {
+	private function load( $file ): void {
 		$file = str_replace( [ '\\', '//', '/' ], DIRECTORY_SEPARATOR, $file );
 
 		if ( !is_readable( $file ) ) {

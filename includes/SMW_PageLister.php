@@ -111,7 +111,7 @@ class SMWPageLister {
 	 * @param $until string can be empty if no until condition is desired
 	 * @return RequestOptions
 	 */
-	public static function getRequestOptions( $limit, $from, $until ) {
+	public static function getRequestOptions( $limit, $from, $until ): RequestOptions {
 		$options = new RequestOptions();
 		$options->limit = $limit + 1;
 		$options->sort = true;
@@ -141,7 +141,7 @@ class SMWPageLister {
 	 * @param $until string can be empty if no until condition is desired
 	 * @return SMWQuery
 	 */
-	public static function getQuery( Description $description, $limit, $from, $until ) {
+	public static function getQuery( Description $description, $limit, $from, $until ): SMWQuery {
 		if ( $from !== '' ) {
 			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_GEQ );
@@ -173,7 +173,7 @@ class SMWPageLister {
 	 * @param $cutoff integer, use columns for more results than that
 	 * @return string
 	 */
-	public function formatList( $cutoff = 6 ) {
+	public function formatList( $cutoff = 6 ): string {
 		$end = count( $this->mDiWikiPages );
 		$start = 0;
 		if ( $end > $this->mLimit ) {
@@ -204,7 +204,7 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
+	public static function getColumnList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -286,7 +286,7 @@ class SMWPageLister {
 	 *
 	 * @return string
 	 */
-	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ) {
+	public static function getShortList( $start, $end, $diWikiPages, $diProperty, $moreCallback = null ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}

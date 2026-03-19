@@ -57,7 +57,7 @@ class ItemFetcher {
 	 *
 	 * @param int $features
 	 */
-	public function setPrefetchFlag( $features ) {
+	public function setPrefetchFlag( $features ): void {
 		$this->prefetch = ( (int)$features & SMW_QUERYRESULT_PREFETCH ) != 0;
 	}
 
@@ -66,7 +66,7 @@ class ItemFetcher {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function setPrintRequest( PrintRequest $printRequest ) {
+	public function setPrintRequest( PrintRequest $printRequest ): void {
 		$this->printRequest = $printRequest;
 	}
 
@@ -75,7 +75,7 @@ class ItemFetcher {
 	 *
 	 * @param QueryToken|null $queryToken
 	 */
-	public function setQueryToken( ?QueryToken $queryToken = null ) {
+	public function setQueryToken( ?QueryToken $queryToken = null ): void {
 		$this->queryToken = $queryToken;
 	}
 

@@ -95,7 +95,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param string|int|null $uniqid
 	 */
-	public function uniqid( $uniqid = null ) {
+	public function uniqid( $uniqid = null ): void {
 		$this->uniqid = $uniqid ?? uniqid();
 	}
 
@@ -104,7 +104,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param int $maxRecursionDepth
 	 */
-	public function setMaxRecursionDepth( $maxRecursionDepth ) {
+	public function setMaxRecursionDepth( $maxRecursionDepth ): void {
 		$this->maxRecursionDepth = $maxRecursionDepth;
 	}
 
@@ -113,7 +113,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param bool $transcludeAnnotation
 	 */
-	public function transcludeAnnotation( $transcludeAnnotation ) {
+	public function transcludeAnnotation( $transcludeAnnotation ): void {
 		$parserOutput = $this->getParserOutputSafe();
 
 		if ( !$parserOutput || $transcludeAnnotation === true ) {
@@ -138,7 +138,7 @@ class RecursiveTextProcessor {
 	/**
 	 * @since 3.0
 	 */
-	public function releaseAnnotationBlock() {
+	public function releaseAnnotationBlock(): void {
 		$parserOutput = $this->getParserOutputSafe();
 
 		if ( !$parserOutput ) {
@@ -164,7 +164,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param bool $recursiveAnnotation
 	 */
-	public function setRecursiveAnnotation( $recursiveAnnotation ) {
+	public function setRecursiveAnnotation( $recursiveAnnotation ): void {
 		$this->recursiveAnnotation = (bool)$recursiveAnnotation;
 	}
 
@@ -173,7 +173,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @param ParserData $parserData
 	 */
-	public function copyData( ParserData $parserData ) {
+	public function copyData( ParserData $parserData ): void {
 		if ( $this->recursiveAnnotation ) {
 			$parserData->importFromParserOutput( $this->getParserOutputSafe() );
 		}
@@ -270,7 +270,7 @@ class RecursiveTextProcessor {
 		return $text;
 	}
 
-	private function pruneCategory( &$text ) {
+	private function pruneCategory( &$text ): void {
 		$parserOutput = $this->getParserOutputSafe();
 		if ( !$parserOutput ) {
 			return;

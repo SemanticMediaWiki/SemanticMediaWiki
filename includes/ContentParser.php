@@ -65,7 +65,7 @@ class ContentParser {
 	 *
 	 * @return Parser $parser
 	 */
-	public function setParser( Parser $parser ) {
+	public function setParser( Parser $parser ): void {
 		$this->parser = $parser;
 	}
 
@@ -182,7 +182,7 @@ class ContentParser {
 		return $this;
 	}
 
-	private function makeParserOptions() {
+	private function makeParserOptions(): ParserOptions {
 		$user = null;
 
 		if ( $this->getRevision() !== null ) {

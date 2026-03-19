@@ -53,7 +53,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return bool
 	 */
-	public function setThreshold( $threshold ) {
+	public function setThreshold( $threshold ): void {
 		$this->threshold = $threshold;
 	}
 
@@ -65,7 +65,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @param string $exemptionProperty
 	 */
-	public function setExemptionProperty( $exemptionProperty ) {
+	public function setExemptionProperty( $exemptionProperty ): void {
 		if ( $exemptionProperty === '' ) {
 			return;
 		}
@@ -218,7 +218,7 @@ class PropertyLabelSimilarityLookup {
 		return false;
 	}
 
-	private function getHash( DIProperty $first, DIProperty $second ) {
+	private function getHash( DIProperty $first, DIProperty $second ): string {
 		$hashing = [];
 		$hashing[] = $first->getKey();
 		$hashing[] = $second->getKey();
@@ -228,7 +228,7 @@ class PropertyLabelSimilarityLookup {
 		return md5( implode( '', $hashing ) );
 	}
 
-	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ) {
+	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ): array {
 		$summary = [];
 
 		if ( $withType ) {

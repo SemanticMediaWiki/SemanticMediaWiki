@@ -42,7 +42,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * @param bool $changePropagationProtection
 	 */
-	public function setChangePropagationProtection( $changePropagationProtection ) {
+	public function setChangePropagationProtection( $changePropagationProtection ): void {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;
 	}
 
@@ -84,7 +84,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 		}
 	}
 
-	private function isChangePropagation( $property ) {
+	private function isChangePropagation( $property ): void {
 		$severity = 'warning';
 		$this->isLocked = true;
 
@@ -99,7 +99,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkForPendingChangePropagationDispatchJob( $property ) {
+	private function checkForPendingChangePropagationDispatchJob( $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
 
 		if ( !ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {

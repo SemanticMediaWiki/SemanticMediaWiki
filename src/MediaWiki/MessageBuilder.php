@@ -90,7 +90,7 @@ class MessageBuilder {
 	 *
 	 * @return string
 	 */
-	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ) {
+	public function prevNextToText( Title $title, $limit, $offset, array $query, $isAtTheEnd ): string {
 		$limit = (int)$limit;
 		$offset = (int)$offset;
 		$navBuilder = new PagerNavigationBuilder( RequestContext::getMain() );

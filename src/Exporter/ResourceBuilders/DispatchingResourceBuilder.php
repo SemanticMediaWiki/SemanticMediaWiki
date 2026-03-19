@@ -83,7 +83,7 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * @param ResourceBuilder $resourceBuilder
 	 */
-	public function addResourceBuilder( ResourceBuilder $resourceBuilder ) {
+	public function addResourceBuilder( ResourceBuilder $resourceBuilder ): void {
 		$this->resourceBuilders[] = $resourceBuilder;
 	}
 
@@ -92,11 +92,11 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * @param ResourceBuilder $defaultResourceBuilder
 	 */
-	public function addDefaultResourceBuilder( ResourceBuilder $defaultResourceBuilder ) {
+	public function addDefaultResourceBuilder( ResourceBuilder $defaultResourceBuilder ): void {
 		$this->defaultResourceBuilder = $defaultResourceBuilder;
 	}
 
-	private function initResourceBuilders() {
+	private function initResourceBuilders(): void {
 		$this->addResourceBuilder( new UniquenessConstraintPropertyValueResourceBuilder() );
 
 		$sortPropertyValueResourceBuilder = new SortPropertyValueResourceBuilder();

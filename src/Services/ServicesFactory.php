@@ -110,7 +110,7 @@ class ServicesFactory {
 	/**
 	 * @since 2.0
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -120,7 +120,7 @@ class ServicesFactory {
 	 * @param string $objectName
 	 * @param callable|array $objectSignature
 	 */
-	public function registerObject( $objectName, $objectSignature ) {
+	public function registerObject( $objectName, $objectSignature ): void {
 		$this->callbackContainerBuilder->registerObject( $objectName, $objectSignature );
 	}
 
@@ -129,7 +129,7 @@ class ServicesFactory {
 	 *
 	 * @param string $file
 	 */
-	public function registerFromFile( $file ) {
+	public function registerFromFile( $file ): void {
 		$this->callbackContainerBuilder->registerFromFile( $file );
 	}
 
@@ -365,7 +365,7 @@ class ServicesFactory {
 	 *
 	 * @return InTextAnnotationParser
 	 */
-	public function newInTextAnnotationParser( ParserData $parserData ) {
+	public function newInTextAnnotationParser( ParserData $parserData ): InTextAnnotationParser {
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->callbackContainerBuilder->create( 'LinksProcessor' );
@@ -424,7 +424,7 @@ class ServicesFactory {
 	 *
 	 * @return DataUpdater
 	 */
-	public function newDataUpdater( SemanticData $semanticData ) {
+	public function newDataUpdater( SemanticData $semanticData ): DataUpdater {
 		$settings = $this->getSettings();
 
 		$changePropagationNotifier = new ChangePropagationNotifier(
@@ -470,7 +470,7 @@ class ServicesFactory {
 	 *
 	 * @return MwCollaboratorFactory
 	 */
-	public function newMwCollaboratorFactory() {
+	public function newMwCollaboratorFactory(): MwCollaboratorFactory {
 		return new MwCollaboratorFactory( $this );
 	}
 

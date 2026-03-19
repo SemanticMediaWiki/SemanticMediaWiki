@@ -27,7 +27,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof TimeValue;
 	}
 
@@ -77,7 +77,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getISO8601Date( $mindefault = true ) {
+	public function getISO8601Date( $mindefault = true ): string {
 		return $this->getISO8601DateInternal( $mindefault ? 'minimize' : 'maximize' );
 	}
 
@@ -89,7 +89,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getPartialISO8601Date() {
+	public function getPartialISO8601Date(): string {
 		return $this->getISO8601DateInternal( 'cut' );
 	}
 
@@ -114,7 +114,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * * 'maximize': complete the value with maximal conceivable value
 	 * @return string
 	 */
-	private function getISO8601DateInternal( $belowPrecisionHandling ) {
+	private function getISO8601DateInternal( $belowPrecisionHandling ): string {
 		$cut = $belowPrecisionHandling === 'cut';
 		$minimize = $belowPrecisionHandling === 'minimize';
 
@@ -220,7 +220,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getCaptionFromDataItem( Time $dataItem ) {
+	public function getCaptionFromDataItem( Time $dataItem ): string {
 		// If the language code is empty then the content language code is used
 		$lang = Localizer::getInstance()->getLang(
 			Localizer::getInstance()->getContentLanguage()
@@ -329,7 +329,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	public function getLocalizedFormat( ?Time $dataItem = null ) {
+	public function getLocalizedFormat( ?Time $dataItem = null ): string {
 		if ( $dataItem === null ) {
 			return '';
 		}
@@ -433,7 +433,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		return $this->getCaptionFromDataItem( $dataItem );
 	}
 
-	private function hintTimeCorrection( $hasTimeCorrection ) {
+	private function hintTimeCorrection( $hasTimeCorrection ): string {
 		if ( $hasTimeCorrection ) {
 			return '&nbsp;' . Html::rawElement( 'sup', [ 'title' => 'ISO: ' . $this->getISO8601Date() ], 'ᴸ' );
 		}
@@ -441,7 +441,7 @@ class TimeValueFormatter extends DataValueFormatter {
 		return '';
 	}
 
-	private function hintCalendarModel( Time $dataItem ) {
+	private function hintCalendarModel( Time $dataItem ): string {
 		if ( $this->dataValue->isEnabledFeature( SMW_DV_TIMEV_CM ) && $dataItem->getCalendarModel() !== Time::CM_GREGORIAN ) {
 			return ' ' . Html::rawElement( 'sup', [], $dataItem->getCalendarModelLiteral() );
 		}

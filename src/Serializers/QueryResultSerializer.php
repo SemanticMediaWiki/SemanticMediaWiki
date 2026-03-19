@@ -38,7 +38,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @param int $version
 	 */
-	public function version( $version ) {
+	public function version( $version ): void {
 		self::$version = (int)$version;
 	}
 

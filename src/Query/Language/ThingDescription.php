@@ -16,7 +16,7 @@ namespace SMW\Query\Language;
  */
 class ThingDescription extends Description {
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		return $asValue ? ( isset( $this->isNegation ) ? '!' : '' ) . '+' : '';
 	}
 
@@ -38,7 +38,7 @@ class ThingDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		// Avoid a simple 0 which may interfere with an associative array
 		// when compounding hash strings from different descriptions
 		return 'T:' . md5( 0 ) . ( isset( $this->isNegation ) ? '!' : '' );

@@ -128,14 +128,14 @@ class ListValueFilter {
 		);
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
 		return is_array( $valueFilters ) ? array_flip( $valueFilters ) : [];
 	}
 
-	private function sortValues( $list ) {
+	private function sortValues( $list ): array {
 		$linked = [];
 		$unlinked = [];
 
@@ -161,7 +161,7 @@ class ListValueFilter {
 		];
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, $clear, &$list ) {
+	private function matchFilter( $property, $key, $label, $count, $valueFilters, $clear, &$list ): void {
 		if ( !isset( $list[$count] ) ) {
 			$list[$count] = [ 'linked' => [], 'unlinked' => [] ];
 		}

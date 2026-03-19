@@ -55,7 +55,7 @@ class SchemaContentFormatter {
 	 *
 	 * @param bool $isYaml
 	 */
-	public function isYaml( $isYaml ) {
+	public function isYaml( $isYaml ): void {
 		$this->isYaml = $isYaml;
 	}
 
@@ -64,7 +64,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function setType( $type ) {
+	public function setType( $type ): void {
 		$this->type = $type;
 	}
 
@@ -88,7 +88,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'smw.content.schemaview' ];
 	}
 
@@ -117,7 +117,7 @@ class SchemaContentFormatter {
 	 *
 	 * @param string $type
 	 */
-	public function setUnknownType( $type ) {
+	public function setUnknownType( $type ): void {
 		$this->unknownType = $type;
 	}
 
@@ -130,7 +130,7 @@ class SchemaContentFormatter {
 	 *
 	 * @return string
 	 */
-	public function getText( $text, ?Schema $schema = null, array $errors = [] ) {
+	public function getText( $text, ?Schema $schema = null, array $errors = [] ): string {
 		$methods = [
 			'body'   => [ $schema, $errors, $text ],
 		// 'footer' => [ $schema ]
@@ -361,7 +361,7 @@ class SchemaContentFormatter {
 		return $this->htmlBuilder->build( 'schema_unknown_type', $params );
 	}
 
-	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $key, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $key, $type, $lang );
 	}
 

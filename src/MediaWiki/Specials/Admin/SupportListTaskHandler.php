@@ -33,7 +33,7 @@ class SupportListTaskHandler extends TaskHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$html = Html::rawElement(
 			'p',
 			[],
@@ -47,7 +47,7 @@ class SupportListTaskHandler extends TaskHandler {
 		return $html;
 	}
 
-	private function ennvironmentSection() {
+	private function ennvironmentSection(): string {
 		$info = $this->getStore()->getInfo() + [
 			'smw' => SMW_VERSION,
 			'mediawiki' => MW_VERSION,

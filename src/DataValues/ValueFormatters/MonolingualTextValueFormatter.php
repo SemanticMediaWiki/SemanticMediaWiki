@@ -22,7 +22,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof MonolingualTextValue;
 	}
 
@@ -70,7 +70,7 @@ class MonolingualTextValueFormatter extends DataValueFormatter {
 		return $this->doFormatFinalOutputFor( $type, $linker );
 	}
 
-	private function doFormatFinalOutputFor( $type, $linker ) {
+	private function doFormatFinalOutputFor( $type, $linker ): string {
 		$text = '';
 		$languagecode = '';
 

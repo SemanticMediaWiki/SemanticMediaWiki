@@ -195,7 +195,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ) {
+	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ): string {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -251,7 +251,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForAsk( $where, $extraNamespaces = [] ) {
+	public function getSparqlForAsk( $where, $extraNamespaces = [] ): string {
 		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
@@ -583,7 +583,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string
 	 */
-	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ) {
+	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ): string {
 		$prefixString = '';
 		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
 		$prefixOutro = $forSparql ? "\n" : " .\n";

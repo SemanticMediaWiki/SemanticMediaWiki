@@ -78,7 +78,7 @@ class ListResultBuilder {
 	/**
 	 * @return string
 	 */
-	public function getResultText() {
+	public function getResultText(): string {
 		$this->prepareBuilt();
 
 		return $this->getTemplateCall( 'introtemplate' ) .
@@ -90,7 +90,7 @@ class ListResultBuilder {
 			$this->getTemplateCall( 'outrotemplate' );
 	}
 
-	private function prepareBuilt() {
+	private function prepareBuilt(): void {
 		$format = $this->getEffectiveFormat();
 
 		$this->configuration->setDefault(
@@ -140,14 +140,14 @@ class ListResultBuilder {
 	 * @param string|string[] $setting
 	 * @param string|null $value
 	 */
-	public function set( $setting, $value = null ) {
+	public function set( $setting, $value = null ): void {
 		$this->configuration->set( $setting, $value );
 	}
 
 	/**
 	 * @return string[]
 	 */
-	private function getDefaultsFromI18N() {
+	private function getDefaultsFromI18N(): array {
 		return [
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),
@@ -160,7 +160,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function replaceVariables( $subject ) {
+	private function replaceVariables( $subject ): string {
 		return str_replace( [ '$START$', '$CLASS$' ], [ htmlspecialchars( $this->get( 'offset' ) + 1 ), htmlspecialchars( $this->get( 'class' ) ) ], $subject );
 	}
 

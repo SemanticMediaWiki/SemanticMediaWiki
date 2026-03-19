@@ -108,11 +108,11 @@ class ConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 3.0
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connection = null;
 	}
 
-	private function newClient( $clientBuilder = null ) {
+	private function newClient( $clientBuilder = null ): DummyClient|TestClient|Client {
 		if ( $clientBuilder === null ) {
 			return new DummyClient();
 		}

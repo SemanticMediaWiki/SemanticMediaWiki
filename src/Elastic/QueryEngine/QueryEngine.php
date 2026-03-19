@@ -339,7 +339,7 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function addHighlight( &$body ) {
+	private function addHighlight( &$body ): void {
 		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
 			return;
 		}

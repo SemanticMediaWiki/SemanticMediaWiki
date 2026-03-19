@@ -35,7 +35,7 @@ class SpecialBrowse extends SpecialPage {
 	 *
 	 * @param string $query string
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): void {
 		$this->setHeaders();
 		$webRequest = $this->getRequest();
 
@@ -146,7 +146,7 @@ class SpecialBrowse extends SpecialPage {
 		return $htmlBuilder->getPlaceholderData();
 	}
 
-	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ) {
+	private function newHtmlBuilder( $webRequest, $dataItem, $store, $settings ): HtmlBuilder {
 		$htmlBuilder = new HtmlBuilder(
 			$store,
 			$dataItem

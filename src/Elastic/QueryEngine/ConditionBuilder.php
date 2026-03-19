@@ -128,7 +128,7 @@ class ConditionBuilder {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$this->options = $options;
 	}
 
@@ -152,7 +152,7 @@ class ConditionBuilder {
 	 *
 	 * @param array $sortFields
 	 */
-	public function setSortFields( array $sortFields ) {
+	public function setSortFields( array $sortFields ): void {
 		$this->sortFields = $sortFields;
 	}
 
@@ -201,7 +201,7 @@ class ConditionBuilder {
 	 *
 	 * @param array $queryInfo
 	 */
-	public function addQueryInfo( array $queryInfo ) {
+	public function addQueryInfo( array $queryInfo ): void {
 		$this->queryInfo[] = $queryInfo;
 	}
 
@@ -228,7 +228,7 @@ class ConditionBuilder {
 	 *
 	 * @param array $error
 	 */
-	public function addError( array $error ) {
+	public function addError( array $error ): void {
 		$this->errors[] = $error;
 	}
 
@@ -237,7 +237,7 @@ class ConditionBuilder {
 	 *
 	 * @param array $dataItems
 	 */
-	public function prepareCache( array $dataItems ) {
+	public function prepareCache( array $dataItems ): void {
 		$this->store->getObjectIds()->warmUpCache( $dataItems );
 	}
 
@@ -246,7 +246,7 @@ class ConditionBuilder {
 	 *
 	 * @return int
 	 */
-	public function getID( $dataItem ) {
+	public function getID( $dataItem ): int {
 		if ( $dataItem instanceof DIProperty ) {
 			return (int)$this->store->getObjectIds()->getSMWPropertyID(
 				$dataItem
@@ -272,7 +272,7 @@ class ConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	public function newCondition( $params ) {
+	public function newCondition( $params ): Condition {
 		return new Condition( $params );
 	}
 
@@ -426,7 +426,7 @@ class ConditionBuilder {
 		return $this->someValueInterpreter->interpretDescription( $description, $options );
 	}
 
-	private function initServices() {
+	private function initServices(): void {
 		$this->somePropertyInterpreter = $this->servicesContainer->get( 'SomePropertyInterpreter', $this );
 		$this->conceptDescriptionInterpreter = $this->servicesContainer->get( 'ConceptDescriptionInterpreter', $this );
 		$this->classDescriptionInterpreter = $this->servicesContainer->get( 'ClassDescriptionInterpreter', $this );

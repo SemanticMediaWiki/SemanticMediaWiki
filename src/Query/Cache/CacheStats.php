@@ -15,7 +15,7 @@ class CacheStats extends Stats {
 	/**
 	 * @since 3.0
 	 */
-	public function initRecord() {
+	public function initRecord(): void {
 		parent::initRecord();
 
 		$date = date( 'Y-m-d H:i:s' );

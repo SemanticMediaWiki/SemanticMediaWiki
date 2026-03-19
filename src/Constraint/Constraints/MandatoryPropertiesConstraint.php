@@ -64,7 +64,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		}
 	}
 
-	private function check( $properties, $dataValue ) {
+	private function check( $properties, $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 		$properties = array_flip( $properties );
 
@@ -83,7 +83,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		$this->reportError( $dataValue, $properties );
 	}
 
-	private function reportError( $dataValue, $properties ) {
+	private function reportError( $dataValue, $properties ): void {
 		$this->hasViolation = true;
 
 		$error = [

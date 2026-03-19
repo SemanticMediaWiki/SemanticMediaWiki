@@ -62,7 +62,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
 	}
 
@@ -71,7 +71,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -101,7 +101,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
 		return $this->checkIndicators( $subject, $options ) !== [];
 	}
 
@@ -173,7 +173,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		return $this->indicators;
 	}
 
-	private function buildHTML( $subject, array $indicatorProviders, array $options ) {
+	private function buildHTML( $subject, array $indicatorProviders, array $options ): void {
 		$this->templateEngine = new TemplateEngine();
 
 		$this->templateEngine->bulkLoad(

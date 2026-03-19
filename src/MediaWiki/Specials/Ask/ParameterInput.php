@@ -65,7 +65,7 @@ class ParameterInput {
 	 *
 	 * @param mixed $currentValue
 	 */
-	public function setCurrentValue( $currentValue ) {
+	public function setCurrentValue( $currentValue ): void {
 		$this->currentValue = $currentValue;
 	}
 
@@ -76,7 +76,7 @@ class ParameterInput {
 	 *
 	 * @param string $name
 	 */
-	public function setInputName( $name ) {
+	public function setInputName( $name ): void {
 		$this->inputName = $name;
 	}
 
@@ -85,7 +85,7 @@ class ParameterInput {
 	 *
 	 * @param array $attributes
 	 */
-	public function setAttributes( array $attributes ) {
+	public function setAttributes( array $attributes ): void {
 		$this->attributes = $attributes;
 	}
 
@@ -262,7 +262,7 @@ class ParameterInput {
 	 *
 	 * @return string
 	 */
-	protected function getCheckboxListInput( array $valueList ) {
+	protected function getCheckboxListInput( array $valueList ): string {
 		$boxes = [];
 		$currentValues = [];
 

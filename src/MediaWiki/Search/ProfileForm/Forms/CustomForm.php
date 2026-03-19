@@ -67,7 +67,7 @@ class CustomForm {
 	 *
 	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
+	public function isActiveForm( $isActiveForm ): void {
 		$this->isActiveForm = (bool)$isActiveForm;
 	}
 
@@ -76,7 +76,7 @@ class CustomForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition ) {
+	public function makeFields( $definition ): string {
 		$fields = [];
 		$this->parameters = [];
 		$nameList = [];

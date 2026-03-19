@@ -66,14 +66,14 @@ class CachingSemanticDataLookup {
 	/**
 	 * @since 3.0
 	 */
-	public function lockCache() {
+	public function lockCache(): void {
 		self::$lookupCount++;
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function unlockCache() {
+	public function unlockCache(): void {
 		self::$lookupCount--;
 	}
 
@@ -82,7 +82,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @param int $id
 	 */
-	public function invalidateCache( $id ) {
+	public function invalidateCache( $id ): void {
 		unset( self::$data[$id] );
 		unset( self::$state[$id] );
 	}
@@ -90,7 +90,7 @@ class CachingSemanticDataLookup {
 	/**
 	 * @since 3.0
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$data = [];
 		self::$state = [];
 		self::$prefetch = [];
@@ -108,7 +108,7 @@ class CachingSemanticDataLookup {
 	 * @param int $id
 	 * @param DIWikiPage $subject
 	 */
-	public function initLookupCache( $id, DIWikiPage $subject ) {
+	public function initLookupCache( $id, DIWikiPage $subject ): void {
 		// *** Prepare the cache ***//
 		if ( !isset( self::$data[$id] ) ) {
 			self::$data[$id] = $this->semanticDataLookup->newStubSemanticData( $subject );
@@ -143,7 +143,7 @@ class CachingSemanticDataLookup {
 	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
-	public function setLookupCache( $id, SemanticData $semanticData ) {
+	public function setLookupCache( $id, SemanticData $semanticData ): void {
 		self::$data[$id] = $this->semanticDataLookup->newStubSemanticData(
 			$semanticData
 		);

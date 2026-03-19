@@ -58,7 +58,7 @@ class RecurringEvents {
 	 *
 	 * @param int $defaultNumRecurringEvents
 	 */
-	public function setDefaultNumRecurringEvents( $defaultNumRecurringEvents ) {
+	public function setDefaultNumRecurringEvents( $defaultNumRecurringEvents ): void {
 		$this->defaultNumRecurringEvents = $defaultNumRecurringEvents;
 	}
 
@@ -67,7 +67,7 @@ class RecurringEvents {
 	 *
 	 * @param int $maxNumRecurringEvents
 	 */
-	public function setMaxNumRecurringEvents( $maxNumRecurringEvents ) {
+	public function setMaxNumRecurringEvents( $maxNumRecurringEvents ): void {
 		$this->maxNumRecurringEvents = $maxNumRecurringEvents;
 	}
 
@@ -122,7 +122,7 @@ class RecurringEvents {
 	 *
 	 * @return mixed
 	 */
-	private function setError( $error ) {
+	private function setError( $error ): void {
 		$this->errors = array_merge( $error, $this->errors );
 	}
 
@@ -149,7 +149,7 @@ class RecurringEvents {
 	 *
 	 * @param array $parameters
 	 */
-	public function parse( array $parameters ) {
+	public function parse( array $parameters ): void {
 		// Initialize variables.
 		$all_date_strings = [];
 		$start_date = $end_date = $unit = $period = $week_num = null;

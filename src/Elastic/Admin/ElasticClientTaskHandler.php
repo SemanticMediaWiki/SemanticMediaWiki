@@ -77,7 +77,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$link = $this->outputFormatter->createSpecialPageLink(
 			$this->msg( 'smw-admin-supplementary-elastic-title' ),
 			[ 'action' => $this->getTask() ]
@@ -136,7 +136,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputInfo();
 	}
 
-	private function outputNoNodesAvailable( $connection ) {
+	private function outputNoNodesAvailable( $connection ): void {
 		$this->outputHead();
 		$config = $connection->getConfig();
 
@@ -161,7 +161,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->addHTML( $html );
 	}
 
-	private function outputHead() {
+	private function outputHead(): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch' );
 		$this->outputFormatter->addHelpLink( 'https://www.semantic-mediawiki.org/wiki/Help:ElasticStore' );
 
@@ -178,7 +178,7 @@ class ElasticClientTaskHandler extends TaskHandler implements ActionableTask {
 		$this->outputFormatter->addHTML( $html );
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 		$html = '';
 

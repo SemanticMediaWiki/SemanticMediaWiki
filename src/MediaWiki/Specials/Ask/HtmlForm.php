@@ -64,7 +64,7 @@ class HtmlForm {
 	 *
 	 * @param array $parameters
 	 */
-	public function setParameters( array $parameters ) {
+	public function setParameters( array $parameters ): void {
 		$this->parameters = $parameters;
 	}
 
@@ -73,7 +73,7 @@ class HtmlForm {
 	 *
 	 * @param string $queryString
 	 */
-	public function setQueryString( $queryString ) {
+	public function setQueryString( $queryString ): void {
 		$this->queryString = $queryString;
 	}
 
@@ -82,7 +82,7 @@ class HtmlForm {
 	 *
 	 * @param Query|null $query
 	 */
-	public function setQuery( ?Query $query = null ) {
+	public function setQuery( ?Query $query = null ): void {
 		$this->query = $query;
 	}
 
@@ -91,7 +91,7 @@ class HtmlForm {
 	 *
 	 * @param array $callbacks
 	 */
-	public function setCallbacks( array $callbacks ) {
+	public function setCallbacks( array $callbacks ): void {
 		$this->callbacks = $callbacks;
 	}
 
@@ -100,7 +100,7 @@ class HtmlForm {
 	 *
 	 * @param bool $isEditMode
 	 */
-	public function isEditMode( $isEditMode ) {
+	public function isEditMode( $isEditMode ): void {
 		$this->isEditMode = (bool)$isEditMode;
 	}
 
@@ -109,7 +109,7 @@ class HtmlForm {
 	 *
 	 * @param bool $isBorrowedMode
 	 */
-	public function isBorrowedMode( $isBorrowedMode ) {
+	public function isBorrowedMode( $isBorrowedMode ): void {
 		$this->isBorrowedMode = (bool)$isBorrowedMode;
 	}
 
@@ -118,7 +118,7 @@ class HtmlForm {
 	 *
 	 * @param bool $isPostSubmit
 	 */
-	public function isPostSubmit( $isPostSubmit ) {
+	public function isPostSubmit( $isPostSubmit ): void {
 		$this->isPostSubmit = (bool)$isPostSubmit;
 	}
 
@@ -150,7 +150,7 @@ class HtmlForm {
 		return Html::rawElement( 'form', $params, $html );
 	}
 
-	private function buildHTML( $urlArgs, $queryResult, array $queryLog ) {
+	private function buildHTML( $urlArgs, $queryResult, array $queryLog ): string {
 		$navigation = '';
 		$queryLink = null;
 		$isFromCache = false;
@@ -318,7 +318,7 @@ class HtmlForm {
 		return $html;
 	}
 
-	private function editElements( $urlArgs ) {
+	private function editElements( $urlArgs ): string {
 		$html = '';
 
 		$html .= Html::hidden( 'title', $this->title->getPrefixedDBKey() );

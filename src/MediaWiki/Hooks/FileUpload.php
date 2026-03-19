@@ -45,7 +45,7 @@ class FileUpload implements HookListener {
 		return true;
 	}
 
-	private function canProcess( $title ) {
+	private function canProcess( $title ): bool {
 		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
 	}
 

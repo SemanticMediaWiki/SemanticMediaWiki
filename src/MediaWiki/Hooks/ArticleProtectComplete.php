@@ -74,7 +74,7 @@ class ArticleProtectComplete implements HookListener {
 		);
 	}
 
-	private function doPrepareData( $protections, $parserData ) {
+	private function doPrepareData( $protections, $parserData ): void {
 		$isRestrictedUpdate = true;
 		$isAnnotationBySystem = false;
 

@@ -288,7 +288,7 @@ class TimeValue extends DataValue {
 	/**
 	 * Initialise data from an anticipated JD value.
 	 */
-	private function setDateFromJD( $components ) {
+	private function setDateFromJD( $components ): void {
 		$datecomponents = $components->get( 'datecomponents' );
 		$calendarmodel = $components->get( 'calendarmodel' );
 		$era = $components->get( 'era' );
@@ -670,11 +670,11 @@ class TimeValue extends DataValue {
 		}
 	}
 
-	private function isYear( $value ) {
+	private function isYear( $value ): bool {
 		return strpos( $value, ' ' ) === false && is_numeric( strval( $value ) ) && ( strval( $value ) < 0 || strlen( $value ) < 6 );
 	}
 
-	private function isTimestamp( $value ) {
+	private function isTimestamp( $value ): bool {
 		// 1200-11-02T12:03:25 or 20120320055913
 		// avoid things like 2458119.500000 (JD)
 		return ( ( strlen( $value ) > 4 && substr( $value, 10, 1 ) === 'T' ) || ( strlen( $value ) == 14 && strpos( $value, '.' ) === false ) ) && wfTimestamp( TS_MW, $value ) !== false;

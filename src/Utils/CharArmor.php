@@ -32,7 +32,7 @@ class CharArmor {
 	 *
 	 * @return string
 	 */
-	public static function removeSpecialChars( $text ) {
+	public static function removeSpecialChars( $text ): string {
 		return str_replace(
 			[ '&shy;', '&lrm;', " ", " ", " " ],
 			[ '', '', ' ', ' ', ' ' ],

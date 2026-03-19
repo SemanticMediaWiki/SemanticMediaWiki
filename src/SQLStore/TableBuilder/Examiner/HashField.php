@@ -46,7 +46,7 @@ class HashField {
 	 *
 	 * @param array $opts
 	 */
-	public function check( array $opts = [] ) {
+	public function check( array $opts = [] ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "Checking smw_hash field consistency ...\n" );

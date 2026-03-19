@@ -53,7 +53,7 @@ class SomeProperty extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubpropertyDepth'];
 		}
@@ -120,7 +120,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return string
 	 */
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$subDescription = $this->description;
 
 		// Use the canonical label to ensure that conditions contain

@@ -113,7 +113,7 @@ class ParametersProcessor {
 	 *
 	 * @param WebRequest $request
 	 */
-	public function checkRequest( WebRequest $request ) {
+	public function checkRequest( WebRequest $request ): void {
 		// Was not filtered and the query checksum is different which means
 		// the query string was modified
 		if (
@@ -145,7 +145,7 @@ class ParametersProcessor {
 	 * @param WebRequest $request
 	 * @param array|null $params
 	 */
-	public function process( WebRequest $request, $params ) {
+	public function process( WebRequest $request, $params ): void {
 		$this->parameters = [];
 
 		$query = $request->getVal( 'q' );
@@ -388,7 +388,7 @@ class ParametersProcessor {
 		return $printRequests;
 	}
 
-	private function valueFilterConditions( $values, $cond, $clear ) {
+	private function valueFilterConditions( $values, $cond, $clear ): void {
 		if ( is_string( $values ) ) {
 			$filters = array_filter( explode( '|', $values ) );
 		} else {

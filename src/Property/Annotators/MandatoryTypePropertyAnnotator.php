@@ -34,7 +34,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param bool $subpropertyParentTypeInheritance
 	 */
-	public function setSubpropertyParentTypeInheritance( $subpropertyParentTypeInheritance ) {
+	public function setSubpropertyParentTypeInheritance( $subpropertyParentTypeInheritance ): void {
 		$this->subpropertyParentTypeInheritance = (bool)$subpropertyParentTypeInheritance;
 	}
 
@@ -59,7 +59,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->enforceMandatoryTypeForSubproperty();
 	}
 
-	private function enforceMandatoryTypeForSubproperty() {
+	private function enforceMandatoryTypeForSubproperty(): void {
 		if ( !$this->subpropertyParentTypeInheritance ) {
 			return;
 		}
@@ -95,7 +95,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$semanticData->addDataValue( $dataValue );
 	}
 
-	private function enforceMandatoryTypeForImportVocabulary() {
+	private function enforceMandatoryTypeForImportVocabulary(): void {
 		$property = new DIProperty( '_IMPO' );
 
 		$dataItems = $this->getSemanticData()->getPropertyValues(
@@ -109,7 +109,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->addTypeFromImportVocabulary( $property, current( $dataItems ) );
 	}
 
-	private function addTypeFromImportVocabulary( $property, $dataItem ) {
+	private function addTypeFromImportVocabulary( $property, $dataItem ): void {
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$property
@@ -137,7 +137,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->replaceAnyTypeByImportType( $property, $dataValue );
 	}
 
-	private function replaceAnyTypeByImportType( DIProperty $property, $dataValue ) {
+	private function replaceAnyTypeByImportType( DIProperty $property, $dataValue ): void {
 		foreach ( $this->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 			$this->getSemanticData()->setOption( self::IMPO_REMOVED_TYPE, $dataItem );
 

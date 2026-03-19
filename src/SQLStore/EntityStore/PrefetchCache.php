@@ -41,14 +41,14 @@ class PrefetchCache {
 	 *
 	 * @return bool
 	 */
-	public function isCached( DIProperty $property ) {
+	public function isCached( DIProperty $property ): bool {
 		return isset( $this->cache[$property->getKey()] );
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->cache = [];
 		$this->lookupCache = [];
 	}
@@ -88,7 +88,7 @@ class PrefetchCache {
 	 * @param DIProperty $property
 	 * @param RequestOptions $requestOptions
 	 */
-	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ): void {
 		$fingerprint = '';
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 

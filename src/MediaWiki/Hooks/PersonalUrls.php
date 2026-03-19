@@ -98,7 +98,7 @@ class PersonalUrls implements HookListener {
 		return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, null, true );
 	}
 
-	private function humanReadable( $num, $decimals = 0 ) {
+	private function humanReadable( $num, $decimals = 0 ): string {
 		if ( $num < 1000 ) {
 			$num = number_format( $num );
 		} elseif ( $num < 1000000 ) {

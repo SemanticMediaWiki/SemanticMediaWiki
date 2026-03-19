@@ -141,9 +141,10 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 *
 	 * @since 3.0
 	 */
-	public function doUpdate() {
+	public function doUpdate(): void {
 		if ( $this->onTransactionIdle ) {
-			return $this->runOnTransactionIdle();
+			$this->runOnTransactionIdle();
+			return;
 		}
 
 		$this->runPreCommitCallbacks();
@@ -202,7 +203,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		parent::registerUpdate( $update );
 	}
 
-	protected function loggableContext() {
+	protected function loggableContext(): array {
 		return parent::loggableContext() + [
 			'transactionTicket' => $this->transactionTicket
 		];

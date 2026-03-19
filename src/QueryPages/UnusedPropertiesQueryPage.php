@@ -99,7 +99,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 * @codeCoverageIgnore
 	 * @return string
 	 */
-	public function getPageHeader() {
+	public function getPageHeader(): string {
 		return Html::rawElement(
 			'p',
 			[ 'class' => 'smw-unusedproperties-docu' ],
@@ -148,7 +148,7 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	 *
 	 * @return string
 	 */
-	protected function formatPropertyItem( Property $property ) {
+	protected function formatPropertyItem( Property $property ): string {
 		// Clear formatter before invoking messages and
 		// avoid having previous data to be present
 		$this->getMessageFormatter()->clear();

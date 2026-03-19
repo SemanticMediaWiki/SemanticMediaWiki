@@ -32,7 +32,7 @@ class Blob extends DataItem {
 		return $this->m_string;
 	}
 
-	public static function normalize( $text ) {
+	public static function normalize( $text ): string {
 		$text = mb_strtolower( $text );
 
 		$transliterator = Transliterator::create( 'Any-Latin; Latin-ASCII' );
@@ -69,7 +69,7 @@ class Blob extends DataItem {
 	 * ID.
 	 * @return Blob
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Blob {
 		return new Blob( $serialization );
 	}
 

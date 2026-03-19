@@ -59,7 +59,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @param bool $isRawMode
 	 */
-	public function setIsRawMode( $isRawMode ) {
+	public function setIsRawMode( $isRawMode ): void {
 		$this->isRawMode = $isRawMode;
 	}
 
@@ -101,7 +101,7 @@ class ApiQueryResultFormatter {
 	 *
 	 * @since 1.9
 	 */
-	public function doFormat() {
+	public function doFormat(): void {
 		if ( $this->queryResult->getErrors() !== [] ) {
 			$this->result = $this->formatErrors(
 				ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $this->queryResult->getErrors() )
@@ -202,7 +202,7 @@ class ApiQueryResultFormatter {
 	 * @param array &$arr
 	 * @param string|null $tag
 	 */
-	public function setIndexedTagName( &$arr, $tag = null ) {
+	public function setIndexedTagName( &$arr, $tag = null ): void {
 		if ( !$this->isRawMode ) {
 			return;
 		}

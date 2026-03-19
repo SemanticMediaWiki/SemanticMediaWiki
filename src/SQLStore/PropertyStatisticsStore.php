@@ -44,14 +44,14 @@ class PropertyStatisticsStore {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = !$this->isCommandLineMode;
 	}
 
@@ -112,7 +112,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return string
 	 */
-	private function safeIncrement( string $field, int $delta ) {
+	private function safeIncrement( string $field, int $delta ): string {
 		if ( $delta < 0 ) {
 			return $field . '=' . $this->connection->conditional(
 				$this->connection->expr( $field, '>=', abs( $delta ) ),
@@ -226,7 +226,7 @@ class PropertyStatisticsStore {
 	 *
 	 * @return int
 	 */
-	public function getUsageCount( $propertyId ) {
+	public function getUsageCount( $propertyId ): int {
 		if ( !is_int( $propertyId ) ) {
 			return 0;
 		}
@@ -306,7 +306,7 @@ class PropertyStatisticsStore {
 		);
 	}
 
-	private function log( $message, $context = [] ) {
+	private function log( $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

@@ -60,7 +60,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return bool
 	 */
-	public function isBlankNode() {
+	public function isBlankNode(): bool {
 		return $this->uri === '' || $this->uri[0] == '_';
 	}
 
@@ -100,7 +100,7 @@ class ExpResource extends ExpElement {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format" );
 		}

@@ -31,7 +31,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	public function getValuesText( ResultArray $field, $column = 0 ) {
+	public function getValuesText( ResultArray $field, $column = 0 ): string {
 		$valueTexts = $this->getValueTexts( $field, $column );
 
 		return implode( $this->get( 'valuesep' ), $valueTexts );
@@ -102,7 +102,7 @@ class ValueTextsBuilder {
 	/**
 	 * @param Linker $linker
 	 */
-	public function setLinker( Linker $linker ) {
+	public function setLinker( Linker $linker ): void {
 		$this->linker = $linker;
 	}
 
@@ -124,7 +124,7 @@ class ValueTextsBuilder {
 	/**
 	 * @return bool
 	 */
-	private function isSimpleList() {
+	private function isSimpleList(): bool {
 		$format = $this->get( 'format' );
 		return $format !== 'ul' && $format !== 'ol';
 	}

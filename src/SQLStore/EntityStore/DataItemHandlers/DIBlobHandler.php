@@ -23,7 +23,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => $this->getCharFieldType()
@@ -35,7 +35,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_hash' => $this->getCharFieldType()
@@ -47,7 +47,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 
 			's_id,o_hash',
@@ -97,7 +97,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		$isKeyword = $dataItem->getOption( 'is.keyword' );
 		$text = $dataItem->getString();
 
@@ -111,7 +111,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		$isKeyword = $dataItem->getOption( 'is.keyword' );
 
 		$text = htmlspecialchars_decode( trim( $dataItem->getString() ), ENT_QUOTES );
@@ -218,7 +218,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * @since 3.0
 	 */
-	private function getMaxLength() {
+	private function getMaxLength(): int {
 		$length = 72;
 
 		if ( $this->hasFeature( SMW_FIELDT_CHAR_LONG ) ) {
@@ -228,7 +228,7 @@ class DIBlobHandler extends DataItemHandler {
 		return $length;
 	}
 
-	private function getCharFieldType() {
+	private function getCharFieldType(): string {
 		// http://sqlite.1065341.n5.nabble.com/Leading-zeros-disappear-td60515.html
 		// @Test:[p-0430]
 		if ( $this->isDbType( 'sqlite' ) ) {

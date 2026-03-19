@@ -30,7 +30,7 @@ class ConnRef {
 	 *
 	 * @return bool
 	 */
-	public function hasConnection( $key ) {
+	public function hasConnection( $key ): bool {
 		return isset( $this->connectionProviders[$key] );
 	}
 
@@ -58,7 +58,7 @@ class ConnRef {
 	/**
 	 * @since 3.0
 	 */
-	public function releaseConnections() {
+	public function releaseConnections(): void {
 		$this->connections = [];
 
 		foreach ( $this->connectionProviders as $connectionProvider ) {

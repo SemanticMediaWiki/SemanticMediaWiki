@@ -58,7 +58,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	/**
 	 * @see 3.0
 	 */
-	public function disableHttpHeader() {
+	public function disableHttpHeader(): void {
 		$this->httpHeader = false;
 	}
 
@@ -67,7 +67,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return $this->params['type'] === 'atom' ? 'application/atom+xml' : 'application/rss+xml';
 	}
 
@@ -85,7 +85,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function outputAsFile( QueryResult $queryResult, array $params ) {
+	public function outputAsFile( QueryResult $queryResult, array $params ): void {
 		$result = $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 
 		if ( Site::isCommandLineMode() || $queryResult instanceof StringResult ) {

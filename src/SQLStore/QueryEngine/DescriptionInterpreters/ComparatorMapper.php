@@ -23,7 +23,7 @@ class ComparatorMapper {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function mapComparator( ValueDescription $description, &$value ) {
+	public function mapComparator( ValueDescription $description, &$value ): string {
 		$comparatorMap = [
 			SMW_CMP_EQ   => '=',
 			SMW_CMP_LESS => '<',

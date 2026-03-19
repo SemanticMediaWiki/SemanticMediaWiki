@@ -21,7 +21,7 @@ class StringValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof StringValue;
 	}
 
@@ -71,7 +71,7 @@ class StringValueFormatter extends DataValueFormatter {
 	 *
 	 * @return string
 	 */
-	protected function doFormat( $dataValue, $type, $linker ) {
+	protected function doFormat( $dataValue, $type, $linker ): string {
 		$text = (string)$dataValue->getDataItem()->getString();
 		$length = mb_strlen( $text );
 
@@ -104,7 +104,7 @@ class StringValueFormatter extends DataValueFormatter {
 		return $text;
 	}
 
-	private function getAbbreviatedText( $text, $length, $linker ) {
+	private function getAbbreviatedText( $text, $length, $linker ): string {
 		if ( $linker === false || $linker === null ) {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
 		} else {

@@ -48,7 +48,7 @@ class VersionExaminer {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 

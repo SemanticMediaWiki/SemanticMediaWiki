@@ -113,7 +113,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 		$this->outputBody();
 	}
 
-	private function outputHead() {
+	private function outputHead(): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-statistics-title' ) ] )
 		);
@@ -123,7 +123,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 		);
 	}
 
-	private function outputBody() {
+	private function outputBody(): void {
 		$html = Html::rawElement( 'p', [], $this->msg( [ 'smw-admin-operational-statistics' ], Message::PARSE ) );
 
 		$htmlTabs = new HtmlTabs();
@@ -149,7 +149,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$list = '';
 
 		foreach ( $this->taskHandlers as $taskHandler ) {
@@ -186,7 +186,7 @@ class OperationalStatisticsListTaskHandler extends TaskHandler implements Action
 		);
 	}
 
-	private function outputJobStatistics() {
+	private function outputJobStatistics(): string {
 		return Html::rawElement( 'p', [ 'class' => 'plainlinks' ], $this->msg( 'smw-admin-statistics-job-docu', Message::PARSE ) ) . Html::rawElement(
 			'div',
 			[

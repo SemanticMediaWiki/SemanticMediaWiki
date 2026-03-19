@@ -164,7 +164,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->queryResultFactory->newQueryResult( $repositoryResult, $query );
 	}
 
-	private function getDebugQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getDebugQueryResult( Query $query, Condition $compoundCondition ): string {
 		$entries = [];
 		$debugFormatter = new DebugFormatter();
 		$debugFormatter->setName( 'SPARQLStore' );
@@ -202,7 +202,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function isSingletonConditionWithElementMatch( $condition ) {
+	private function isSingletonConditionWithElementMatch( $condition ): bool {
 		return $condition instanceof SingletonCondition && $condition->matchElement instanceof Element;
 	}
 

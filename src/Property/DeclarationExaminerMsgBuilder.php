@@ -20,7 +20,7 @@ class DeclarationExaminerMsgBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildHTML( DeclarationExaminer $declarationExaminer ) {
+	public function buildHTML( DeclarationExaminer $declarationExaminer ): string {
 		$messages = $declarationExaminer->getMessages();
 		$html = '';
 
@@ -101,7 +101,7 @@ class DeclarationExaminerMsgBuilder {
 		}
 	}
 
-	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $msg, Message::PARSE, Message::USER_LANGUAGE );
 	}
 

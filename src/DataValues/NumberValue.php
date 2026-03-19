@@ -227,9 +227,9 @@ class NumberValue extends DataValue {
 	 *
 	 * @param string $formatString
 	 */
-	public function setOutputFormat( $formatString ) {
+	public function setOutputFormat( $formatString ): void {
 		if ( $formatString == $this->m_outformat ) {
-			return null;
+			return;
 		}
 
 		// #1591
@@ -409,7 +409,7 @@ class NumberValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function hasPrefixalUnitPreference( $unit ) {
+	public function hasPrefixalUnitPreference( $unit ): bool {
 		return isset( $this->prefixalUnitPreference[$unit] ) && $this->prefixalUnitPreference[$unit];
 	}
 
@@ -434,7 +434,7 @@ class NumberValue extends DataValue {
 	 * so that, e.g., "km²" and "km<sup>2</sup>" do not need to be
 	 * distinguished.
 	 */
-	public function normalizeUnit( $unit ) {
+	public function normalizeUnit( $unit ): string {
 		$unit = str_replace( [ '[[', ']]' ], '', trim( $unit ) ); // allow simple links to be used inside annotations
 		$unit = str_replace( [ '²', '<sup>2</sup>' ], '&sup2;', $unit );
 		$unit = str_replace( [ '³', '<sup>3</sup>' ], '&sup3;', $unit );
@@ -453,7 +453,7 @@ class NumberValue extends DataValue {
 	 * @param $unit string after the numericla user input
 	 * @return bool specifying if the unit string is allowed
 	 */
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->m_dataitem = new Number( $number );
 		$this->m_unitin = '';
 		return ( $unit === '' );
@@ -509,7 +509,7 @@ class NumberValue extends DataValue {
 	 *
 	 * Overwritten by subclasses that support units.
 	 */
-	public function getUnitList() {
+	public function getUnitList(): array {
 		return [ '' ];
 	}
 
@@ -573,7 +573,7 @@ class NumberValue extends DataValue {
 		return $this->intlNumberFormatter;
 	}
 
-	private function findPreferredLanguageFrom( &$formatstring ) {
+	private function findPreferredLanguageFrom( &$formatstring ): void {
 		// Localized preferred user language
 		if ( strpos( $formatstring, 'LOCL' ) !== false && ( $languageCode = Localizer::getLanguageCodeFrom( $formatstring ) ) !== false ) {
 			$this->intlNumberFormatter->setOption(

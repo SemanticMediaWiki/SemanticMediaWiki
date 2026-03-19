@@ -78,7 +78,7 @@ class ConditionBuilder {
 	 *
 	 * @param bool $isFilterDuplicates
 	 */
-	public function isFilterDuplicates( $isFilterDuplicates ) {
+	public function isFilterDuplicates( $isFilterDuplicates ): void {
 		$this->isFilterDuplicates = (bool)$isFilterDuplicates;
 	}
 
@@ -138,7 +138,7 @@ class ConditionBuilder {
 	 *
 	 * @param QuerySegment $query
 	 */
-	public function addQuerySegment( QuerySegment $query ) {
+	public function addQuerySegment( QuerySegment $query ): void {
 		$this->querySegmentList[$query->queryNumber] = $query;
 	}
 
@@ -165,7 +165,7 @@ class ConditionBuilder {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error, $type = Message::TEXT ) {
+	public function addError( $error, $type = Message::TEXT ): void {
 		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
 	}
 

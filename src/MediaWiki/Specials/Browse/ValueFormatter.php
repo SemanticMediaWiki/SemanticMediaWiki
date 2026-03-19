@@ -33,7 +33,7 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function getFormattedSubject( DataValue $dataValue ) {
+	public static function getFormattedSubject( DataValue $dataValue ): string {
 		$extra = '';
 
 		if ( $dataValue->getDataItem()->getNamespace() === SMW_NS_PROPERTY ) {

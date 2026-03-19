@@ -111,7 +111,7 @@ class DocumentReplicationExaminer {
 		return null;
 	}
 
-	private function newReplicationError( $type, $data ) {
+	private function newReplicationError( $type, $data ): ReplicationError {
 		return new ReplicationError( $type, $data );
 	}
 

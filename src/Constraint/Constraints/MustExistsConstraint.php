@@ -63,7 +63,7 @@ class MustExistsConstraint implements Constraint {
 		}
 	}
 
-	private function check( $must_exists, $dataValue ) {
+	private function check( $must_exists, $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $must_exists === false || $dataItem->getDIType() !== DataItem::TYPE_WIKIPAGE ) {
@@ -77,7 +77,7 @@ class MustExistsConstraint implements Constraint {
 		$this->reportError( $dataValue );
 	}
 
-	private function reportError( $dataValue ) {
+	private function reportError( $dataValue ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

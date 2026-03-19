@@ -27,7 +27,7 @@ class TableFieldUpdater {
 	 * @param int $id
 	 * @param string $tz
 	 */
-	public function updateTouchedField( $id, $tz = 0 ) {
+	public function updateTouchedField( $id, $tz = 0 ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$connection->beginAtomicTransaction( __METHOD__ );
 
@@ -49,7 +49,7 @@ class TableFieldUpdater {
 	 * @param int $id
 	 * @param string $searchKey
 	 */
-	public function updateSortField( $id, $searchKey ) {
+	public function updateSortField( $id, $searchKey ): void {
 		if ( $this->collator === null ) {
 			$this->collator = Collator::singleton();
 		}
@@ -77,7 +77,7 @@ class TableFieldUpdater {
 	 * @param int $sid
 	 * @param int $rev_id
 	 */
-	public function updateRevField( $sid, $rev_id ) {
+	public function updateRevField( $sid, $rev_id ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->update(
@@ -100,7 +100,7 @@ class TableFieldUpdater {
 	 * @param string $iw
 	 * @param string $hash
 	 */
-	public function updateIwField( $sid, $iw, $hash ) {
+	public function updateIwField( $sid, $iw, $hash ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$connection->update(

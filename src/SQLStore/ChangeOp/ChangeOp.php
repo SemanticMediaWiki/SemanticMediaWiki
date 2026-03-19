@@ -64,7 +64,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @param bool $textItemsFlag
 	 */
-	public function setTextItemsFlag( $textItemsFlag ) {
+	public function setTextItemsFlag( $textItemsFlag ): void {
 		$this->textItemsFlag = (bool)$textItemsFlag;
 	}
 
@@ -101,7 +101,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param string $tableName
 	 * @param array $fixedPropertyRecord
 	 */
-	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ) {
+	public function addFixedPropertyRecord( $tableName, array $fixedPropertyRecord ): void {
 		$this->fixedPropertyRecords[$tableName] = $fixedPropertyRecord;
 	}
 
@@ -119,7 +119,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function addPropertyList( $propertyList ) {
+	public function addPropertyList( $propertyList ): void {
 		$this->propertyList = array_merge( $this->propertyList, $propertyList );
 	}
 
@@ -138,7 +138,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param string $hash
 	 * @param array $data
 	 */
-	public function addDataOp( $hash, array $data ) {
+	public function addDataOp( $hash, array $data ): void {
 		$this->data[$hash] = $data;
 	}
 
@@ -170,7 +170,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param int $id
 	 * @param array $textItems
 	 */
-	public function addTextItems( $id, array $textItems ) {
+	public function addTextItems( $id, array $textItems ): void {
 		if ( $this->textItemsFlag ) {
 			$this->textItems[$id] = $textItems;
 		}
@@ -182,7 +182,7 @@ class ChangeOp implements IteratorAggregate {
 	 * @param array $insertOp
 	 * @param array $deleteOp
 	 */
-	public function addDiffOp( array $insertOp, array $deleteOp ) {
+	public function addDiffOp( array $insertOp, array $deleteOp ): void {
 		$diff = [
 			'insert' => $insertOp,
 			'delete' => $deleteOp
@@ -216,7 +216,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return ChangeDiff
 	 */
-	public function newChangeDiff() {
+	public function newChangeDiff(): ChangeDiff {
 		$changeDiff = new ChangeDiff(
 			$this->subject,
 			$this->getTableChangeOps(),
@@ -334,7 +334,7 @@ class ChangeOp implements IteratorAggregate {
 		return $this->getChangedEntityIdSummaryList();
 	}
 
-	private function addToIdList( &$list, $value ) {
+	private function addToIdList( &$list, $value ): void {
 		foreach ( $value as $element ) {
 
 			if ( isset( $element['p_id'] ) ) {

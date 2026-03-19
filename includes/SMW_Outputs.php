@@ -66,7 +66,7 @@ class SMWOutputs {
 	 *
 	 * @param string $moduleName
 	 */
-	public static function requireResource( $moduleName ) {
+	public static function requireResource( $moduleName ): void {
 		self::$resourceModules[$moduleName] = $moduleName;
 	}
 
@@ -75,7 +75,7 @@ class SMWOutputs {
 	 *
 	 * @param string $stylesName
 	 */
-	public static function requireStyle( $stylesName ) {
+	public static function requireStyle( $stylesName ): void {
 		self::$resourceStyles[$stylesName] = $stylesName;
 	}
 
@@ -91,7 +91,7 @@ class SMWOutputs {
 	 * @param string $id
 	 * @param string $script
 	 */
-	public static function requireScript( $id, $script ) {
+	public static function requireScript( $id, $script ): void {
 		self::$scripts[$id] = $script;
 	}
 
@@ -108,7 +108,7 @@ class SMWOutputs {
 	 * @param mixed $id
 	 * @param string $item
 	 */
-	public static function requireHeadItem( $id, $item = '' ) {
+	public static function requireHeadItem( $id, $item = '' ): void {
 		if ( is_numeric( $id ) ) {
 			switch ( $id ) {
 				case SMW_HEADER_TOOLTIP:
@@ -140,7 +140,7 @@ class SMWOutputs {
 	 *
 	 * @param ParserOutput $parserOutput
 	 */
-	public static function requireFromParserOutput( ParserOutput $parserOutput ) {
+	public static function requireFromParserOutput( ParserOutput $parserOutput ): void {
 		// Note: we do not attempt to recover which head items where scripts here.
 
 		$parserOutputHeadItems = $parserOutput->getHeadItems();
@@ -166,7 +166,7 @@ class SMWOutputs {
 	 *
 	 * @param Parser $parser
 	 */
-	public static function commitToParser( Parser $parser ) {
+	public static function commitToParser( Parser $parser ): void {
 		$po = $parser->getOutput();
 
 		if ( isset( $po ) ) {
@@ -179,7 +179,7 @@ class SMWOutputs {
 	 *
 	 * @param ParserOutput $parserOutput
 	 */
-	public static function commitToParserOutput( ParserOutput $parserOutput ) {
+	public static function commitToParserOutput( ParserOutput $parserOutput ): void {
 		foreach ( self::$scripts as $key => $script ) {
 			$parserOutput->addHeadItem( $script . "\n", $key );
 		}
@@ -206,7 +206,7 @@ class SMWOutputs {
 	 *
 	 * @param OutputPage $output
 	 */
-	public static function commitToOutputPage( OutputPage $output ) {
+	public static function commitToOutputPage( OutputPage $output ): void {
 		foreach ( self::$scripts as $script ) {
 			$output->addScript( $script );
 		}

@@ -23,7 +23,7 @@ class PostgresTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getStandardFieldType( $fieldType ) {
+	public function getStandardFieldType( $fieldType ): string {
 		// serial is a 4 bytes autoincrementing integer (1 to 2147483647)
 
 		$fieldTypes = [
@@ -185,7 +185,7 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ) {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ): void {
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -262,7 +262,7 @@ EOT;
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
+	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
@@ -280,7 +280,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ) {
+	private function doDropField( $tableName, $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -326,7 +326,7 @@ EOT;
 		}
 	}
 
-	private function doDropObsoleteIndices( $tableName, array &$indices ) {
+	private function doDropObsoleteIndices( $tableName, array &$indices ): void {
 		$tableName = $this->connection->tableName( $tableName, 'raw' );
 		$currentIndices = $this->getIndexInfo( $tableName );
 
@@ -368,7 +368,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function getCumulatedIndexName( $tableName, $columns ) {
+	private function getCumulatedIndexName( $tableName, $columns ): string {
 		// Identifiers -- table names, column names, constraint names,
 		// etc. -- are limited to a maximum length of 63 bytes
 		return str_replace( '__', '_', "{$tableName}_idx_" . str_replace( [ '_', 'smw', ',' ], [ '', '_', '_' ], $columns ) );
@@ -405,7 +405,7 @@ EOT;
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ) {
+	private function doDropIndex( $tableName, $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
@@ -464,13 +464,13 @@ EOT;
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkOn( $event ) {
+	public function checkOn( $event ): void {
 		if ( $event === self::POST_CREATION ) {
 			$this->doCheckOnPostCreation();
 		}
 	}
 
-	private function doCheckOnPostCreation() {
+	private function doCheckOnPostCreation(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$sequence = new Sequence( $this->connection );

@@ -41,7 +41,7 @@ class TreeBuilder {
 	 *
 	 * @param Node $node
 	 */
-	public function addNode( $node ) {
+	public function addNode( $node ): void {
 		$this->nodes[$node->id] = $node;
 	}
 
@@ -50,7 +50,7 @@ class TreeBuilder {
 	 *
 	 * @param array $items
 	 */
-	public function setNodes( array $items ) {
+	public function setNodes( array $items ): void {
 		$this->nodes = [];
 
 		foreach ( $items as $id => $item ) {
@@ -116,7 +116,7 @@ class TreeBuilder {
 	 * @param array $subjects
 	 * @param string $type
 	 */
-	public function buildFrom( array $subjects, string $type ) {
+	public function buildFrom( array $subjects, string $type ): void {
 		$hierarchyList = $this->getHierarchyList(
 			$subjects,
 			$type
@@ -148,7 +148,7 @@ class TreeBuilder {
 	 *
 	 * @param $node
 	 */
-	public function removeNode( $node ) {
+	public function removeNode( $node ): void {
 		unset( $this->nodes[$node->id] );
 	}
 
@@ -182,7 +182,7 @@ class TreeBuilder {
 		}
 	}
 
-	public function getTree() {
+	public function getTree(): string {
 		$text = '';
 
 		if ( $this->nodes === [] || $this->nodes === null ) {
@@ -196,7 +196,7 @@ class TreeBuilder {
 		return "<ul>$text</ul>";
 	}
 
-	public function newNode( $id, $content = '' ) {
+	public function newNode( $id, $content = '' ): object {
 		return new class ( $id, $content ) {
 
 			public $children = [];
@@ -233,7 +233,7 @@ class TreeBuilder {
 				}
 			}
 
-			public function addChild( $node ) {
+			public function addChild( $node ): void {
 				$this->children[$node->id] = $node;
 			}
 

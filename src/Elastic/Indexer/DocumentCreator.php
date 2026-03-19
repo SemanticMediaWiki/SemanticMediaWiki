@@ -72,7 +72,7 @@ class DocumentCreator {
 	 *
 	 * @param bool $compatibilityMode
 	 */
-	public function setCompatibilityMode( $compatibilityMode ) {
+	public function setCompatibilityMode( $compatibilityMode ): void {
 		$this->compatibilityMode = $compatibilityMode;
 	}
 
@@ -127,7 +127,7 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newFromData( SemanticData $semanticData, $parent_id = null ) {
+	private function newFromData( SemanticData $semanticData, $parent_id = null ): Document {
 		$subject = $semanticData->getSubject();
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
@@ -287,11 +287,11 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newHead( $id, DIWikiPage $subject, $type ) {
+	private function newHead( $id, DIWikiPage $subject, $type ): Document {
 		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
 	}
 
-	private function makeSubject( DIWikiPage $subject ) {
+	private function makeSubject( DIWikiPage $subject ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {

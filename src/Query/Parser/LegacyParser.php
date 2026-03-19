@@ -112,7 +112,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?WikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 
@@ -122,7 +122,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @since 1.6
 	 */
-	public function setDefaultNamespaces( $namespaces ) {
+	public function setDefaultNamespaces( $namespaces ): void {
 		$this->defaultNamespace = null;
 
 		if ( !is_array( $namespaces ) ) {
@@ -142,7 +142,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @param string|null $languageCode
 	 */
-	public function setDefaultPrefix( $languageCode = null ) {
+	public function setDefaultPrefix( $languageCode = null ): void {
 		$localizer = Localizer::getInstance();
 
 		if ( $languageCode === null ) {
@@ -792,7 +792,7 @@ class LegacyParser implements Parser {
 	 * Enter a new subblock in the query, which must at some time be terminated by the
 	 * given $endstring delimiter calling popDelimiter();
 	 */
-	private function pushDelimiter( $endstring ) {
+	private function pushDelimiter( $endstring ): void {
 		array_push( $this->separatorStack, $endstring );
 	}
 
@@ -801,16 +801,16 @@ class LegacyParser implements Parser {
 	 * If the delimiter does not match the top-most open block, false
 	 * will be returned. Otherwise return true.
 	 */
-	private function popDelimiter( $endstring ) {
+	private function popDelimiter( $endstring ): bool {
 		$topdelim = array_pop( $this->separatorStack );
 		return ( $topdelim == $endstring );
 	}
 
-	private function isPagePropertyType( $typeid ) {
+	private function isPagePropertyType( $typeid ): bool {
 		return $typeid == '_wpg' || $this->dataTypeRegistry->isSubDataType( $typeid );
 	}
 
-	private function hasClassPrefix( $chunk ) {
+	private function hasClassPrefix( $chunk ): bool {
 		$prefix = [
 			$this->categoryPrefix,
 			$this->conceptPrefix,

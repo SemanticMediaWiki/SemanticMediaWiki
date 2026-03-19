@@ -111,7 +111,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return string
 	 */
-	public static function getMessagesAsString( array $messages, $type = null, $language = null ) {
+	public static function getMessagesAsString( array $messages, $type = null, $language = null ): string {
 		$normalizedMessages = self::normalizeAndDecodeMessages( $messages, $type, $language );
 		$msg = [];
 
@@ -133,7 +133,7 @@ class ProcessingErrorMsgHandler {
 	 * @param SemanticData $semanticData
 	 * @param DIContainer|null $container
 	 */
-	public function addToSemanticData( SemanticData $semanticData, ?DIContainer $container = null ) {
+	public function addToSemanticData( SemanticData $semanticData, ?DIContainer $container = null ): void {
 		if ( $container === null ) {
 			return;
 		}
@@ -220,7 +220,7 @@ class ProcessingErrorMsgHandler {
 		return new DIContainer( $containerSemanticData );
 	}
 
-	private function publishError( $containerSemanticData, $property, $error, $type ) {
+	private function publishError( $containerSemanticData, $property, $error, $type ): void {
 		// `_INST` is not a real (visible) property to create a reference from
 		// and link to
 		if ( $property !== null && $property->getKey() !== '_INST' ) {

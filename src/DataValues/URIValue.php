@@ -201,7 +201,7 @@ class URIValue extends DataValue {
 	 * Only global phone numbers are supported, and no full validation
 	 * of parameters (appended via ;param=value) is performed.
 	 */
-	protected static function isValidTelURI( $s ) {
+	protected static function isValidTelURI( $s ): bool {
 		$tel_uri_regex = '<^tel:\+[0-9./-]*[0-9][0-9./-]*(;[0-9a-zA-Z-]+=(%[0-9a-zA-Z][0-9a-zA-Z]|[0-9a-zA-Z._~:/?#[\]@!$&\'()*+,;=-])*)*$>';
 		return (bool)preg_match( $tel_uri_regex, $s );
 	}
@@ -301,7 +301,7 @@ class URIValue extends DataValue {
 		return $this->getUriDataitem()->getURI();
 	}
 
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
@@ -353,7 +353,7 @@ class URIValue extends DataValue {
 		return str_replace( ':', '&#58;', $url );
 	}
 
-	private function decodeUriContext( $context, $linker ) {
+	private function decodeUriContext( $context, $linker ): array {
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {

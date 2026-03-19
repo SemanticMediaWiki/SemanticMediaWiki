@@ -93,7 +93,7 @@ class PropertyTableDefinition {
 	 *
 	 * @since 1.8
 	 */
-	public function setUsesIdSubject( $usesIdSubject ) {
+	public function setUsesIdSubject( $usesIdSubject ): void {
 		$this->idSubject = $usesIdSubject;
 	}
 
@@ -113,7 +113,7 @@ class PropertyTableDefinition {
 	 *
 	 * @param string $tableType
 	 */
-	public function setTableType( string $tableType ) {
+	public function setTableType( string $tableType ): void {
 		$this->tableType = $tableType;
 	}
 
@@ -146,7 +146,7 @@ class PropertyTableDefinition {
 	 *
 	 * @return bool
 	 */
-	public function isFixedPropertyTable() {
+	public function isFixedPropertyTable(): bool {
 		return $this->fixedProperty !== false;
 	}
 

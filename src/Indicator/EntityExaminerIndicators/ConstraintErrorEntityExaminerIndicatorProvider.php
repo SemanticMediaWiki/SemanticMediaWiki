@@ -82,7 +82,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param bool $checkConstraintErrors
 	 */
-	public function setConstraintErrorCheck( $checkConstraintErrors ) {
+	public function setConstraintErrorCheck( $checkConstraintErrors ): void {
 		$this->checkConstraintErrors = $checkConstraintErrors;
 	}
 
@@ -94,7 +94,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}
@@ -116,7 +116,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 

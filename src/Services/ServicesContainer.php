@@ -60,7 +60,7 @@ class ServicesContainer {
 	 * @param string $key
 	 * @param callable $service
 	 */
-	public function add( $key, callable $service ) {
+	public function add( $key, callable $service ): void {
 		$this->services[$key] = $service;
 	}
 

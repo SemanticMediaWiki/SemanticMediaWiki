@@ -73,7 +73,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return HashField
 	 */
-	public function newHashField( SQLStore $store ) {
+	public function newHashField( SQLStore $store ): HashField {
 		return new HashField( $store );
 	}
 
@@ -84,7 +84,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return FixedProperties
 	 */
-	public function newFixedProperties( SQLStore $store ) {
+	public function newFixedProperties( SQLStore $store ): FixedProperties {
 		return new FixedProperties( $store );
 	}
 
@@ -95,7 +95,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return TouchedField
 	 */
-	public function newTouchedField( SQLStore $store ) {
+	public function newTouchedField( SQLStore $store ): TouchedField {
 		return new TouchedField( $store );
 	}
 
@@ -106,7 +106,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return HashField
 	 */
-	public function newIdBorder( SQLStore $store ) {
+	public function newIdBorder( SQLStore $store ): IdBorder {
 		return new IdBorder( $store );
 	}
 
@@ -117,7 +117,7 @@ class TableBuildExaminerFactory {
 	 *
 	 * @return PredefinedProperties
 	 */
-	public function newPredefinedProperties( SQLStore $store ) {
+	public function newPredefinedProperties( SQLStore $store ): PredefinedProperties {
 		return new PredefinedProperties( $store );
 	}
 

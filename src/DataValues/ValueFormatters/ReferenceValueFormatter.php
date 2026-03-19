@@ -27,7 +27,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof ReferenceValue;
 	}
 
@@ -57,7 +57,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $this->createOutput( $type, $linker );
 	}
 
-	private function createOutput( $type, $linker ) {
+	private function createOutput( $type, $linker ): string {
 		$results = $this->getListOfFormattedPropertyDataItems(
 			$type,
 			$linker,

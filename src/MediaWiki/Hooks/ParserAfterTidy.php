@@ -61,7 +61,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -70,7 +70,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ) {
+	public function isReady( $isReady ): void {
 		$this->isReady = (bool)$isReady;
 	}
 
@@ -158,7 +158,7 @@ class ParserAfterTidy implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( &$text ) {
+	private function performUpdate( &$text ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -184,7 +184,7 @@ class ParserAfterTidy implements HookListener {
 		}
 	}
 
-	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
+	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ): void {
 		$parserOutput = $this->parser->getOutput();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(

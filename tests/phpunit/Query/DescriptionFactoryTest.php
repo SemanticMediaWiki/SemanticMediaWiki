@@ -305,6 +305,10 @@ class DescriptionFactoryTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$monolingualTextValueParser->expects( $this->any() )
+			->method( 'parse' )
+			->willReturn( [ 'Foo', 'en' ] );
+
 		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -365,6 +369,10 @@ class DescriptionFactoryTest extends TestCase {
 		$monolingualTextValueParser = $this->getMockBuilder( MonolingualTextValueParser::class )
 			->disableOriginalConstructor()
 			->getMock();
+
+		$monolingualTextValueParser->expects( $this->any() )
+			->method( 'parse' )
+			->willReturn( [ 'Foo', 'en' ] );
 
 		$dataValueServiceFactory = $this->getMockBuilder( DataValueServiceFactory::class )
 			->disableOriginalConstructor()

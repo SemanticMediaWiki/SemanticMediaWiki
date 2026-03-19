@@ -140,7 +140,7 @@ class TitleLookup {
 	 *
 	 * @return int
 	 */
-	public function getMaxId() {
+	public function getMaxId(): int {
 		if ( $this->namespace === NS_CATEGORY ) {
 			$tableName = 'category';
 			$var = 'MAX(cat_id)';

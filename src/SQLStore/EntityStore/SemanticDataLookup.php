@@ -613,7 +613,7 @@ class SemanticDataLookup {
 		return $result;
 	}
 
-	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ) {
+	private function addFields( &$query, &$map, $fields, $valueField, $labelField, &$valueCount, &$fieldname ): void {
 		// Select dataItem column(s)
 		foreach ( $fields as $fieldname => $fieldType ) {
 
@@ -773,7 +773,7 @@ class SemanticDataLookup {
 		return $query->execute( __METHOD__ );
 	}
 
-	private function reportDuplicate( $params ) {
+	private function reportDuplicate( $params ): void {
 		$this->logger->info(
 			"Found duplicate entry for {params}",
 			[

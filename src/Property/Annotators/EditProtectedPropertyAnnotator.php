@@ -44,7 +44,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param string|bool $editProtectionRight
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
+	public function setEditProtectionRight( $editProtectionRight ): void {
 		$this->editProtectionRight = $editProtectionRight;
 	}
 

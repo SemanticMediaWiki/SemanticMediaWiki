@@ -164,7 +164,7 @@ class Deserializer {
 		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == $text;
 	}
 
-	private static function getPartsFromText( $text ) {
+	private static function getPartsFromText( $text ): array {
 		// #1464
 		// Temporary encode "=" within a <> entity (<span>...</span>)
 		$text = preg_replace_callback( "/(<(.*?)>(.*?)>)/u", static function ( $matches ) {

@@ -47,7 +47,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return int|void
 	 */
-	public function numRows() {
+	public function numRows(): int {
 		return count( $this->pages );
 	}
 
@@ -56,7 +56,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return bool
 	 */
-	public function hasResults() {
+	public function hasResults(): bool {
 		return $this->numRows() > 0;
 	}
 
@@ -90,7 +90,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return SearchSuggestionSet
 	 */
-	public function newSearchSuggestionSet() {
+	public function newSearchSuggestionSet(): SearchSuggestionSet {
 		$suggestions = [];
 		$filter = [];
 

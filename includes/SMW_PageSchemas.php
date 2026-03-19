@@ -263,7 +263,7 @@ class SMWPageSchemas extends PSExtensionHandler {
 	 * Creates the property page for each property specified in the
 	 * passed-in Page Schemas XML object.
 	 */
-	public static function generatePages( $pageSchemaObj, $selectedPages ) {
+	public static function generatePages( $pageSchemaObj, $selectedPages ): void {
 		$services = MediaWikiServices::getInstance();
 		$titleFactory = $services->getTitleFactory();
 		$datatypeLabels = smwfContLang()->getDatatypeLabels();

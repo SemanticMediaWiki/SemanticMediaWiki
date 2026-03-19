@@ -142,7 +142,7 @@ class PropertyRegistry {
 	/**
 	 * @since 2.1
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -177,7 +177,7 @@ class PropertyRegistry {
 	 * @param bool $isAnnotable
 	 * @param bool $isDeclarative
 	 */
-	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ) {
+	public function registerProperty( $id, $valueType, $label = false, $isVisible = false, $isAnnotable = true, $isDeclarative = false ): void {
 		$signature = [ $valueType, $isVisible, $isAnnotable, $isDeclarative ];
 
 		// Don't override an existing property registration with a different signature
@@ -204,7 +204,7 @@ class PropertyRegistry {
 	 * that has used "false" for a label on registration should have an
 	 * alias.
 	 */
-	public function registerPropertyAlias( $id, $label ) {
+	public function registerPropertyAlias( $id, $label ): void {
 		$this->propertyAliasFinder->registerAliasByFixedLabel( $id, $label );
 	}
 
@@ -217,7 +217,7 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerPropertyAliasByMsgKey( $id, $msgKey ) {
+	public function registerPropertyAliasByMsgKey( $id, $msgKey ): void {
 		$this->propertyAliasFinder->registerAliasByMsgKey( $id, $msgKey );
 	}
 
@@ -230,14 +230,14 @@ class PropertyRegistry {
 	 * @param string $id
 	 * @param string $msgKey
 	 */
-	public function registerPropertyDescriptionByMsgKey( $id, $msgKey ) {
+	public function registerPropertyDescriptionByMsgKey( $id, $msgKey ): void {
 		$this->propertyDescriptionMsgKeys[$id] = $msgKey;
 	}
 
 	/**
 	 * @deprecated since 3.0, use PropertyRegistry::registerPropertyDescriptionByMsgKey
 	 */
-	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ) {
+	public function registerPropertyDescriptionMsgKeyById( $id, $msgKey ): void {
 		$this->registerPropertyDescriptionByMsgKey( $id, $msgKey );
 	}
 
@@ -440,7 +440,7 @@ class PropertyRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $id ) {
+	public function isRegistered( $id ): bool {
 		return isset( $this->propertyList[$id] ) || array_key_exists( $id, $this->propertyList );
 	}
 
@@ -501,7 +501,7 @@ class PropertyRegistry {
 		$hookContainer->run( 'SMW::Property::initProperties', [ $this ] );
 	}
 
-	private function registerPropertyLabel( $id, $label, $asCanonical = true ) {
+	private function registerPropertyLabel( $id, $label, $asCanonical = true ): void {
 		$this->propertyLabelFinder->registerPropertyLabel( $id, $label, $asCanonical );
 	}
 

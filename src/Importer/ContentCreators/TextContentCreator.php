@@ -42,7 +42,7 @@ class TextContentCreator implements ContentCreator {
 	 *
 	 * @param ImportContents $importContents
 	 */
-	public function canCreateContentsFor( ImportContents $importContents ) {
+	public function canCreateContentsFor( ImportContents $importContents ): bool {
 		return $importContents->getContentType() === ImportContents::CONTENT_TEXT;
 	}
 
@@ -126,7 +126,7 @@ class TextContentCreator implements ContentCreator {
 		} );
 	}
 
-	private function doCreateContent( $page, $title, $importContents, $action ) {
+	private function doCreateContent( $page, $title, $importContents, $action ): void {
 		$content = ContentHandler::makeContent(
 			$this->fetchContents( $importContents ),
 			$title

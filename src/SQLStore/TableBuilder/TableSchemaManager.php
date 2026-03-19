@@ -49,7 +49,7 @@ class TableSchemaManager {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {
@@ -67,7 +67,7 @@ class TableSchemaManager {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -92,7 +92,7 @@ class TableSchemaManager {
 	 *
 	 * @param int $featureFlags
 	 */
-	public function setFeatureFlags( $featureFlags ) {
+	public function setFeatureFlags( $featureFlags ): void {
 		$this->featureFlags = $featureFlags;
 	}
 
@@ -103,7 +103,7 @@ class TableSchemaManager {
 	 *
 	 * @return bool
 	 */
-	public function hasFeatureFlag( $feature ) {
+	public function hasFeatureFlag( $feature ): bool {
 		return ( (int)$this->featureFlags & $feature ) != 0;
 	}
 
@@ -160,7 +160,7 @@ class TableSchemaManager {
 		return $this->tables;
 	}
 
-	private function newEntityIdTable() {
+	private function newEntityIdTable(): Table {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// ID_TABLE
@@ -220,7 +220,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newEntityAuxiliaryTable() {
+	private function newEntityAuxiliaryTable(): Table {
 		// ID_AUXILIARY_TABLE
 		$table = new Table( SQLStore::ID_AUXILIARY_TABLE );
 
@@ -235,7 +235,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newConceptCacheTable() {
+	private function newConceptCacheTable(): Table {
 		// CONCEPT_CACHE_TABLE (member elements (s)->concepts (o) )
 		$table = new Table( SQLStore::CONCEPT_CACHE_TABLE );
 
@@ -247,7 +247,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newQueryLinksTable() {
+	private function newQueryLinksTable(): Table {
 		// QUERY_LINKS_TABLE
 		$table = new Table( SQLStore::QUERY_LINKS_TABLE );
 
@@ -293,7 +293,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newPropertyStatisticsTable() {
+	private function newPropertyStatisticsTable(): Table {
 		// PROPERTY_STATISTICS_TABLE
 		$table = new Table( SQLStore::PROPERTY_STATISTICS_TABLE );
 
@@ -311,7 +311,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newPropertyTable( $propertyTable, $diHandler ) {
+	private function newPropertyTable( $propertyTable, $diHandler ): Table {
 		// Prepare indexes. By default, property-value tables
 		// have the following indexes:
 		//
@@ -396,7 +396,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( ?Table $table = null ) {
+	private function addTable( ?Table $table = null ): void {
 		if ( $table === null ) {
 			return;
 		}

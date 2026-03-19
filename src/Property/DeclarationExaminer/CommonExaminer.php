@@ -40,7 +40,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * @param array $namespacesWithSemanticLinks
 	 */
-	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ): void {
 		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
@@ -49,7 +49,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * @param array $propertyReservedNameList
 	 */
-	public function setPropertyReservedNameList( array $propertyReservedNameList ) {
+	public function setPropertyReservedNameList( array $propertyReservedNameList ): void {
 		foreach ( $propertyReservedNameList as $name ) {
 
 			if ( strpos( $name, 'smw-property-reserved' ) !== false ) {
@@ -65,7 +65,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function check( DIProperty $property ) {
+	public function check( DIProperty $property ): void {
 		$this->validate( $property );
 	}
 
@@ -89,7 +89,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->checkCommonMessage( $propertyName );
 	}
 
-	private function checkNamespace() {
+	private function checkNamespace(): void {
 		if (
 			isset( $this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) &&
 			$this->namespacesWithSemanticLinks[SMW_NS_PROPERTY] ) {
@@ -99,7 +99,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-namespace-disabled' ];
 	}
 
-	private function checkReservedName( $propertyName ) {
+	private function checkReservedName( $propertyName ): void {
 		if ( !isset( $this->propertyReservedNameList[$propertyName] ) ) {
 			return;
 		}
@@ -107,7 +107,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-name-reserved', $propertyName ];
 	}
 
-	private function checkUniqueness( $property ) {
+	private function checkUniqueness( $property ): void {
 		if ( $this->store->getObjectIds()->isUnique( $property ) ) {
 			return;
 		}
@@ -115,7 +115,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-label-uniqueness', $property->getLabel() ];
 	}
 
-	private function checkErrorMessages() {
+	private function checkErrorMessages(): void {
 		$property = new DIProperty( '_ERRC' );
 
 		if ( $this->semanticData === null || !$this->semanticData->hasProperty( $property ) ) {
@@ -138,7 +138,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', '_msgkey' => 'smw-property-req-error-list', '_list' => $messages ];
 	}
 
-	private function checkTypeDeclaration() {
+	private function checkTypeDeclaration(): void {
 		$property = new DIProperty( '_TYPE' );
 
 		if ( $this->semanticData === null ) {
@@ -154,7 +154,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'warning', 'smw-property-req-violation-type' ];
 	}
 
-	private function checkCommonMessage( $propertyName ) {
+	private function checkCommonMessage( $propertyName ): void {
 		if ( Message::exists( 'smw-property-introductory-message' ) ) {
 			$this->messages[] = [ 'info', 'smw-property-introductory-message', $propertyName ];
 		}

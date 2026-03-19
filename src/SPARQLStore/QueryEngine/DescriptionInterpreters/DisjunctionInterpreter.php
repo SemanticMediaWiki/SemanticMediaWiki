@@ -43,7 +43,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof Disjunction;
 	}
 
@@ -227,14 +227,14 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 		return $this->createWhereCondition( $subConditionElements );
 	}
 
-	private function createFilterCondition( $subConditionElements ) {
+	private function createFilterCondition( $subConditionElements ): FilterCondition {
 		return new FilterCondition(
 			$subConditionElements->filter,
 			$subConditionElements->namespaces
 		);
 	}
 
-	private function createWhereCondition( $subConditionElements ) {
+	private function createWhereCondition( $subConditionElements ): WhereCondition {
 		return new WhereCondition(
 			$subConditionElements->unionCondition,
 			$subConditionElements->hasSafeSubconditions,

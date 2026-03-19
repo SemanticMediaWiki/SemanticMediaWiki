@@ -49,7 +49,7 @@ class SearchResult {
 	 *
 	 * @param array $errors
 	 */
-	public function setErrors( array $errors ) {
+	public function setErrors( array $errors ): void {
 		$this->errors = $errors;
 	}
 
@@ -58,7 +58,7 @@ class SearchResult {
 	 *
 	 * @param string $filterField
 	 */
-	public function setFilterField( $filterField ) {
+	public function setFilterField( $filterField ): void {
 		$this->filterField = $filterField;
 	}
 

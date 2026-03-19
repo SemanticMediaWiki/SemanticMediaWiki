@@ -30,7 +30,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
@@ -62,7 +62,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 		);
 	}
 
-	protected function requiresAuxiliary( $key ) {
+	protected function requiresAuxiliary( $key ): bool {
 		return !in_array( $key, [ '_SKEY', '_INST', '_MDAT', '_CDAT', '_SUBC', '_SUBP', '_TYPE', '_IMPO', '_URI' ] );
 	}
 

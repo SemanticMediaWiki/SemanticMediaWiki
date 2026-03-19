@@ -60,7 +60,7 @@ class ExpResourceMapper {
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): void {
 		$this->inMemoryPoolCache->resetPoolCacheById( 'exporter.expresource.mapper' );
 	}
 
@@ -69,7 +69,7 @@ class ExpResourceMapper {
 	 *
 	 * @param bool $bcAuxiliaryUse
 	 */
-	public function setBCAuxiliaryUse( $bcAuxiliaryUse ) {
+	public function setBCAuxiliaryUse( $bcAuxiliaryUse ): void {
 		$this->bcAuxiliaryUse = (bool)$bcAuxiliaryUse;
 	}
 
@@ -78,7 +78,7 @@ class ExpResourceMapper {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public function invalidateCache( DIWikiPage $subject ) {
+	public function invalidateCache( DIWikiPage $subject ): void {
 		$hash = $subject->getHash();
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById(
@@ -173,7 +173,7 @@ class ExpResourceMapper {
 		return $resource;
 	}
 
-	private function newExpNsResource( $diWikiPage, $modifier ) {
+	private function newExpNsResource( $diWikiPage, $modifier ): ExpNsResource {
 		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {
@@ -199,7 +199,7 @@ class ExpResourceMapper {
 		return $resource;
 	}
 
-	private function defineElementsForImportDataItem( DataItem $dataItem ) {
+	private function defineElementsForImportDataItem( DataItem $dataItem ): array {
 		$importValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_IMPO' )
@@ -212,7 +212,7 @@ class ExpResourceMapper {
 		];
 	}
 
-	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
+	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ): array {
 		$localName = '';
 		$hasFixedNamespace = false;
 

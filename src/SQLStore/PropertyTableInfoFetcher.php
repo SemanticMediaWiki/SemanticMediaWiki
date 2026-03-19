@@ -69,7 +69,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @param array $customFixedProperties
 	 */
-	public function setCustomFixedPropertyList( array $customFixedProperties ) {
+	public function setCustomFixedPropertyList( array $customFixedProperties ): void {
 		$this->customFixedPropertyList = $customFixedProperties;
 	}
 
@@ -78,7 +78,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @param array $customSpecialProperties
 	 */
-	public function setCustomSpecialPropertyList( array $customSpecialProperties ) {
+	public function setCustomSpecialPropertyList( array $customSpecialProperties ): void {
 		$this->customSpecialPropertyList = $customSpecialProperties;
 	}
 
@@ -134,7 +134,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return bool
 	 */
-	public function isFixedTableProperty( DIProperty $property ) {
+	public function isFixedTableProperty( DIProperty $property ): bool {
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -189,12 +189,12 @@ class PropertyTableInfoFetcher {
 	/**
 	 * @since 2.2
 	 */
-	public function clearCache() {
+	public function clearCache(): void {
 		$this->propertyTableDefinitions = null;
 		$this->fixedPropertyTableIds = null;
 	}
 
-	private function buildDefinitionsForPropertyTables() {
+	private function buildDefinitionsForPropertyTables(): void {
 		$enabledSpecialProperties = TypesRegistry::getFixedProperties( 'default_fixed' );
 
 		$customFixedSpecialPropertyList = array_flip(

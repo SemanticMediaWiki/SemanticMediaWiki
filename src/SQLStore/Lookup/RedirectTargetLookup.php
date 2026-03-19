@@ -45,7 +45,7 @@ class RedirectTargetLookup {
 	 *
 	 * @param array $list
 	 */
-	public function prepareCache( array $list ) {
+	public function prepareCache( array $list ): void {
 		$ids = array_keys( $list );
 
 		if ( $ids === [] ) {

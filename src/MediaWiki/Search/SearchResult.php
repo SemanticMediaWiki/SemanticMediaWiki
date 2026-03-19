@@ -73,7 +73,7 @@ class SearchResult extends \SearchResult {
 	/**
 	 * @see SearchResult::isBrokenTitle
 	 */
-	public function isBrokenTitle() {
+	public function isBrokenTitle(): bool {
 		return $this->mTitle === null;
 	}
 
@@ -105,7 +105,7 @@ class SearchResult extends \SearchResult {
 	 * @param string|null $text
 	 * @param bool $hasHighlight
 	 */
-	public function setExcerpt( $text = null, $hasHighlight = false ) {
+	public function setExcerpt( $text = null, $hasHighlight = false ): void {
 		$this->mText = $text;
 		$this->hasHighlight = $hasHighlight;
 	}

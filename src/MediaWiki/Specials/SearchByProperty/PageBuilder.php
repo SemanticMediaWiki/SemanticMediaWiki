@@ -53,7 +53,7 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function getHtml() {
+	public function getHtml(): string {
 		$this->pageRequestOptions->initialize();
 		$this->messageBuilder = $this->htmlFormRenderer->getMessageBuilder();
 
@@ -313,11 +313,11 @@ class PageBuilder {
 		return "<ul>$html</ul>";
 	}
 
-	private function canQueryNearbyResults( $exactCount ) {
+	private function canQueryNearbyResults( $exactCount ): bool {
 		return $exactCount < ( $this->pageRequestOptions->limit / 3 ) && $this->pageRequestOptions->nearbySearch && $this->pageRequestOptions->valueString !== '';
 	}
 
-	private function canShowSearchByPropertyLink( DataValue $dataValue ) {
+	private function canShowSearchByPropertyLink( DataValue $dataValue ): bool {
 		$dataTypeClass = DataTypeRegistry::getInstance()->getDataTypeClassById(
 			$dataValue->getTypeID()
 		);
@@ -325,7 +325,7 @@ class PageBuilder {
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
 	}
 
-	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ) {
+	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ): array {
 		$resultList = '';
 		$resultMessage = '';
 		$resultCount = 0;
@@ -368,7 +368,7 @@ class PageBuilder {
 		return [ $resultMessage, $resultList, $resultCount ];
 	}
 
-	private function isAskQueryLinksRelatedRequest() {
+	private function isAskQueryLinksRelatedRequest(): bool {
 		return $this->pageRequestOptions->property !== '' &&
 			$this->pageRequestOptions->property->getDataItem()->getKey() === '_ASK' &&
 			$this->pageRequestOptions->value->isValid() &&

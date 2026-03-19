@@ -54,7 +54,7 @@ class ProfileForm {
 	 *
 	 * @return bool
 	 */
-	public static function isValidProfile( $profile ) {
+	public static function isValidProfile( $profile ): bool {
 		return $profile === self::PROFILE_NAME;
 	}
 
@@ -64,7 +64,7 @@ class ProfileForm {
 	 * @param string $type
 	 * @param array &$profiles
 	 */
-	public static function addProfile( $type, array &$profiles, array $options ) {
+	public static function addProfile( $type, array &$profiles, array $options ): void {
 		if ( $type !== SMW_SPECIAL_SEARCHTYPE ) {
 			return;
 		}
@@ -128,7 +128,7 @@ class ProfileForm {
 	 *
 	 * @param array $searchableNamespaces
 	 */
-	public function setSearchableNamespaces( array $searchableNamespaces ) {
+	public function setSearchableNamespaces( array $searchableNamespaces ): void {
 		$this->searchableNamespaces = $searchableNamespaces;
 	}
 
@@ -138,7 +138,7 @@ class ProfileForm {
 	 * @param string &$form
 	 * @param array $opts
 	 */
-	public function buildForm( &$form, array $opts = [] ) {
+	public function buildForm( &$form, array $opts = [] ): void {
 		$hidden = '';
 		$html = '';
 
@@ -285,7 +285,7 @@ class ProfileForm {
 		return $namespaceForm->makeFields();
 	}
 
-	private function buildSearchForms( $request ) {
+	private function buildSearchForms( $request ): array {
 		$data = $this->getFormDefinitions( $this->store );
 
 		if ( $data === [] ) {
@@ -314,7 +314,7 @@ class ProfileForm {
 		];
 	}
 
-	private function findErrors( $searchEngine ) {
+	private function findErrors( $searchEngine ): string {
 		if ( ( $errors = $searchEngine->getErrors() ) === [] ) {
 			return '';
 		}
@@ -354,7 +354,7 @@ class ProfileForm {
 		return $form;
 	}
 
-	private function profile_sheet( $query, $queryLink, $termPrefixes ) {
+	private function profile_sheet( $query, $queryLink, $termPrefixes ): string {
 		$text = Message::get( 'smw-search-profile-extended-help-intro', Message::PARSE, Message::USER_LANGUAGE );
 
 		$link = $queryLink !== null ? $queryLink->getHtml() : '';
@@ -439,7 +439,7 @@ class ProfileForm {
 		);
 	}
 
-	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ) {
+	private function msg( $msg, $type = Message::PARSE, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $msg, $type, $lang );
 	}
 

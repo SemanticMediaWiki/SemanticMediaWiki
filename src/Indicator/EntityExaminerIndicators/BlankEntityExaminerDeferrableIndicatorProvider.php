@@ -43,7 +43,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param bool $isDeferredMode
 	 */
-	public function setDeferredMode( bool $isDeferredMode ) {
+	public function setDeferredMode( bool $isDeferredMode ): void {
 		$this->isDeferredMode = $isDeferredMode;
 	}
 
@@ -108,7 +108,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
@@ -121,7 +121,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 		return '';
 	}
 
-	private function runCheck( $subject, $options ) {
+	private function runCheck( $subject, $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		// Doing some checks here ...

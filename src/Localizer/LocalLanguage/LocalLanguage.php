@@ -82,7 +82,7 @@ class LocalLanguage {
 	/**
 	 * @since 2.4
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -542,7 +542,7 @@ class LocalLanguage {
 		return $dateformats;
 	}
 
-	private function initPropertyIdByLabelMap( $languageCode ) {
+	private function initPropertyIdByLabelMap( $languageCode ): void {
 		if ( isset( $this->propertyIdByLabelMap[$languageCode] ) && $this->propertyIdByLabelMap[$languageCode] !== [] ) {
 			return;
 		}

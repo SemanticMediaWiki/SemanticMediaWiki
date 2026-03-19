@@ -33,7 +33,7 @@ class ListLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'ListLookup:' . self::VERSION;
 	}
 
@@ -96,7 +96,7 @@ class ListLookup extends Lookup {
 		return $res;
 	}
 
-	private function newRequestOptions( $parameters ) {
+	private function newRequestOptions( $parameters ): RequestOptions {
 		$limit = 50;
 		$offset = 0;
 		$search = '';
@@ -168,7 +168,7 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function fetchFromTable( $ns, $requestOptions, $parameters ) {
+	private function fetchFromTable( $ns, $requestOptions, $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];

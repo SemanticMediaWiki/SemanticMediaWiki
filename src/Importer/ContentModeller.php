@@ -103,7 +103,7 @@ class ContentModeller {
 		$importContents->setContentsFile( $file );
 	}
 
-	private function normalizeFile( $fileDir, $file ) {
+	private function normalizeFile( $fileDir, $file ): string {
 		return str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $fileDir . ( $file[0] === '/' ? '' : '/' ) . $file );
 	}
 

@@ -97,7 +97,7 @@ class EntityUniquenessLookup {
 		return $result;
 	}
 
-	private function resolve_value_condition( $propertyTable, $property, $dataItem, $query ) {
+	private function resolve_value_condition( $propertyTable, $property, $dataItem, $query ): void {
 		// Collect conditions to appear as
 		// `... (t1.p_id='121913' AND t1.o_sortkey='3520062') ...`
 		$conditions = [];
@@ -147,7 +147,7 @@ class EntityUniquenessLookup {
 		$query->condition( $query->asAnd( $conditions ) );
 	}
 
-	private function resolve_container_conditions( $propertyTable, $dataItem, $query ) {
+	private function resolve_container_conditions( $propertyTable, $dataItem, $query ): void {
 		$proptables = $this->store->getPropertyTables();
 		$semanticData = $dataItem->getSemanticData();
 

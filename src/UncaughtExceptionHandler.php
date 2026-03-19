@@ -36,7 +36,7 @@ class UncaughtExceptionHandler {
 	 * @param Throwable $e
 	 * @throws Throwable
 	 */
-	public function registerHandler( Throwable $e ) {
+	public function registerHandler( Throwable $e ): void {
 		$message = $e->getMessage();
 
 		if ( $e instanceof ConfigPreloadFileNotReadableException ) {
@@ -69,7 +69,7 @@ class UncaughtExceptionHandler {
 	/**
 	 * @param ConfigPreloadFileNotReadableException $e
 	 */
-	private function reportConfigPreloadError( ConfigPreloadFileNotReadableException $e ) {
+	private function reportConfigPreloadError( ConfigPreloadFileNotReadableException $e ): void {
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -86,7 +86,7 @@ class UncaughtExceptionHandler {
 	/**
 	 * @param Throwable $e
 	 */
-	private function reportExtensionRegistryError( Throwable $e ) {
+	private function reportExtensionRegistryError( Throwable $e ): void {
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);
@@ -107,7 +107,7 @@ class UncaughtExceptionHandler {
 	/**
 	 * @param ExtensionDependencyError $e
 	 */
-	private function reportExtensionDependencyError( ExtensionDependencyError $e ) {
+	private function reportExtensionDependencyError( ExtensionDependencyError $e ): void {
 		$this->setupCheck->setErrorMessage(
 			$e->getMessage()
 		);

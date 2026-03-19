@@ -90,7 +90,7 @@ class PropertiesLookup {
 		return $query->execute( __METHOD__ );
 	}
 
-	private function fetchFromFixedTable( $query, $title ) {
+	private function fetchFromFixedTable( $query, $title ): array {
 		// just check if subject occurs in table
 		$query->options(
 			[ 'LIMIT' => 1 ]

@@ -9,8 +9,10 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\EditInfo;
 use SMW\MediaWiki\Hooks\RevisionFromEditComplete;
 use SMW\MediaWiki\PageInfoProvider;
-use SMW\Property\Annotator;
 use SMW\Property\AnnotatorFactory;
+use SMW\Property\Annotators\NullPropertyAnnotator;
+use SMW\Property\Annotators\PredefinedPropertyAnnotator;
+use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Schema\SchemaFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -55,7 +57,15 @@ class RevisionFromEditCompleteTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$annotator = $this->getMockBuilder( Annotator::class )
+		$nullAnnotator = $this->getMockBuilder( NullPropertyAnnotator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$predefinedAnnotator = $this->getMockBuilder( PredefinedPropertyAnnotator::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$schemaAnnotator = $this->getMockBuilder( SchemaPropertyAnnotator::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -65,15 +75,15 @@ class RevisionFromEditCompleteTest extends TestCase {
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newNullPropertyAnnotator' )
-			->willReturn( $annotator );
+			->willReturn( $nullAnnotator );
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newPredefinedPropertyAnnotator' )
-			->willReturn( $annotator );
+			->willReturn( $predefinedAnnotator );
 
 		$this->propertyAnnotatorFactory->expects( $this->any() )
 			->method( 'newSchemaPropertyAnnotator' )
-			->willReturn( $annotator );
+			->willReturn( $schemaAnnotator );
 
 		$this->schemaFactory = $this->getMockBuilder( SchemaFactory::class )
 			->disableOriginalConstructor()

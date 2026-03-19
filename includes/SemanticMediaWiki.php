@@ -20,7 +20,7 @@ class SemanticMediaWiki {
 	/**
 	 * @since 2.4
 	 */
-	public static function initExtension( $credits = [] ) {
+	public static function initExtension( $credits = [] ): void {
 		if ( !defined( 'SMW_VERSION' ) && isset( $credits['version'] ) ) {
 			define( 'SMW_VERSION', $credits['version'] );
 			self::setupDefines();
@@ -57,7 +57,7 @@ class SemanticMediaWiki {
 	 *
 	 * @since  1.9
 	 */
-	public static function onExtensionFunction() {
+	public static function onExtensionFunction(): void {
 		$namespace = new NamespaceManager();
 		Globals::replace(
 			$namespace->init( $GLOBALS )
@@ -80,7 +80,7 @@ class SemanticMediaWiki {
 	 * @ingroup Constants
 	 * @ingroup SMW
 	 */
-	public static function setupDefines() {
+	public static function setupDefines(): void {
 		if ( defined( 'SMW_SPECIAL_SEARCHTYPE' ) ) {
 			return;
 		}

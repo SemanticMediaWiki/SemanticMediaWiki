@@ -40,7 +40,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ConceptDescription;
 	}
 
@@ -108,7 +108,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		return $description;
 	}
 
-	private function findCircularDescription( $concept, $description ) {
+	private function findCircularDescription( $concept, $description ): void {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

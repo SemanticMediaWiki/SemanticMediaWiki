@@ -137,7 +137,7 @@ class DataTypeRegistry {
 	 *
 	 * @since 1.9
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -186,7 +186,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isRegistered( $typeId ) {
+	public function isRegistered( $typeId ): bool {
 		return isset( $this->typeDataItemIds[$typeId] );
 	}
 
@@ -208,7 +208,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isSubDataType( $typeId ) {
+	public function isSubDataType( $typeId ): bool {
 		return isset( $this->subTypes[$typeId] ) && $this->subTypes[$typeId];
 	}
 
@@ -219,7 +219,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isBrowsableType( $typeId ) {
+	public function isBrowsableType( $typeId ): bool {
 		return isset( $this->browsableTypes[$typeId] ) && $this->browsableTypes[$typeId];
 	}
 
@@ -231,7 +231,7 @@ class DataTypeRegistry {
 	 *
 	 * @return bool
 	 */
-	public function isEqualByType( $srcType, $tagType ) {
+	public function isEqualByType( $srcType, $tagType ): bool {
 		return $this->getDataItemByType( $srcType ) === $this->getDataItemByType( $tagType );
 	}
 
@@ -246,7 +246,7 @@ class DataTypeRegistry {
 	 * @param bool $isSubDataType
 	 * @param bool $isBrowsableType
 	 */
-	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ) {
+	public function registerDataType( $id, $className, $dataItemId, $label = false, $isSubDataType = false, $isBrowsableType = false ): void {
 		$this->typeClasses[$id] = $className;
 		$this->typeDataItemIds[$id] = $dataItemId;
 		$this->subTypes[$id] = $isSubDataType;
@@ -257,12 +257,12 @@ class DataTypeRegistry {
 		}
 	}
 
-	private function registerTypeLabel( $typeId, $typeLabel ) {
+	private function registerTypeLabel( $typeId, $typeLabel ): void {
 		$this->typeLabels[$typeId] = $typeLabel;
 		$this->addTextToIdLookupMap( $typeId, $typeLabel );
 	}
 
-	private function addTextToIdLookupMap( $dataTypeId, $text ) {
+	private function addTextToIdLookupMap( $dataTypeId, $text ): void {
 		$this->typeByLabelOrAliasLookup[mb_strtolower( $text )] = $dataTypeId;
 	}
 
@@ -275,7 +275,7 @@ class DataTypeRegistry {
 	 * @param string $typeId
 	 * @param string $typeAlias
 	 */
-	public function registerDataTypeAlias( $typeId, $typeAlias ) {
+	public function registerDataTypeAlias( $typeId, $typeAlias ): void {
 		$this->typeAliases[$typeAlias] = $typeId;
 		$this->addTextToIdLookupMap( $typeId, $typeAlias );
 	}
@@ -530,7 +530,7 @@ class DataTypeRegistry {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function registerCallable( $typeId, $key, callable $callable ) {
+	public function registerCallable( $typeId, $key, callable $callable ): void {
 		if ( !is_string( $typeId ) || !is_string( $key ) ) {
 			throw new RuntimeException( "`$key`, `$typeId` need to be a string!" );
 		}
@@ -560,11 +560,11 @@ class DataTypeRegistry {
 	/**
 	 * @since 3.1
 	 */
-	public function clearCallables() {
+	public function clearCallables(): void {
 		$this->callables = [];
 	}
 
-	private function registerLabels() {
+	private function registerLabels(): void {
 		foreach ( $this->localLanguage->getDatatypeLabels() as $typeId => $typeLabel ) {
 			$this->registerTypeLabel( $typeId, $typeLabel );
 		}

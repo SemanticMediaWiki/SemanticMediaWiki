@@ -29,7 +29,7 @@ class SubjectLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'SubjectLookup:' . self::VERSION;
 	}
 
@@ -74,7 +74,7 @@ class SubjectLookup extends Lookup {
 		return $res;
 	}
 
-	private function buildHTML( $params ) {
+	private function buildHTML( $params ): string {
 		if ( !isset( $params['options'] ) ) {
 			throw new ParameterNotFoundException( 'options' );
 		}

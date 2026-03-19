@@ -54,7 +54,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @param loadBalancer $loadBalancer
 	 */
-	public function setLoadBalancer( ILoadBalancer $loadBalancer ) {
+	public function setLoadBalancer( ILoadBalancer $loadBalancer ): void {
 		$this->loadBalancer = $loadBalancer;
 	}
 
@@ -94,7 +94,7 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 *
 	 * @since 1.9
 	 */
-	public function releaseConnection() {
+	public function releaseConnection(): void {
 		$this->connection = null;
 		$this->loadBalancer = null;
 	}

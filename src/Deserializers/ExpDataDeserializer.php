@@ -47,7 +47,7 @@ class ExpDataDeserializer implements Deserializer {
 		return new ExpData( ExpElement::newFromSerialization( $subject ) );
 	}
 
-	private function doDeserialize( $serialization, $expData ) {
+	private function doDeserialize( $serialization, $expData ): void {
 		foreach ( $serialization['data'] as $data ) {
 
 			$property = ExpElement::newFromSerialization( $data['property'] );

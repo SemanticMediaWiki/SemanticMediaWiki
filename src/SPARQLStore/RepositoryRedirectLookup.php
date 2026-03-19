@@ -33,7 +33,7 @@ class RepositoryRedirectLookup {
 	/**
 	 * @since 2.1
 	 */
-	public static function reset() {
+	public static function reset(): void {
 		InMemoryPoolCache::getInstance()->resetPoolCacheById( self::POOLCACHE_ID );
 	}
 
@@ -93,7 +93,7 @@ class RepositoryRedirectLookup {
 		return $poolCache->fetch( $expNsResource->getUri() );
 	}
 
-	private function isNonRedirectableResource( ExpNsResource $expNsResource ) {
+	private function isNonRedirectableResource( ExpNsResource $expNsResource ): bool {
 		return $expNsResource->getNamespaceId() === 'swivt' ||
 			$expNsResource->getNamespaceId() === 'rdf' ||
 			$expNsResource->getNamespaceId() === 'rdfs' ||

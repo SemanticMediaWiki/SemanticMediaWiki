@@ -71,7 +71,7 @@ class UniqueValueConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraint, $dataValue ) {
+	public function checkConstraint( array $constraint, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -85,7 +85,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function check( $dataValue ) {
+	private function check( $dataValue ): void {
 		$property = $dataValue->getProperty();
 		$contextPage = $dataValue->getContextPage();
 
@@ -174,14 +174,14 @@ class UniqueValueConstraint implements Constraint {
 		return false;
 	}
 
-	private function hasAnnotation( $dataValue ) {
+	private function hasAnnotation( $dataValue ): bool {
 		$key = $dataValue->getProperty()->getKey();
 		$hash = $dataValue->getContextPage()->getHash();
 
 		return isset( $this->annotations[$hash][$key] );
 	}
 
-	private function reportError( $dataValue, $error ) {
+	private function reportError( $dataValue, $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

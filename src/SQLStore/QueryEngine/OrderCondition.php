@@ -63,7 +63,7 @@ class OrderCondition {
 	 *
 	 * @param array $sortKeys
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): void {
 		$this->sortKeys = $sortKeys;
 	}
 
@@ -81,7 +81,7 @@ class OrderCondition {
 	 *
 	 * @param bool $isSupported
 	 */
-	public function isSupported( $isSupported ) {
+	public function isSupported( $isSupported ): void {
 		$this->isSupported = $isSupported;
 	}
 
@@ -90,7 +90,7 @@ class OrderCondition {
 	 *
 	 * @param bool $asUnconditional
 	 */
-	public function asUnconditional( $asUnconditional ) {
+	public function asUnconditional( $asUnconditional ): void {
 		$this->asUnconditional = $asUnconditional;
 	}
 
@@ -212,7 +212,7 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function extendConditions( $conditionBuilder, $querySegment, array $extraDescriptions ) {
+	private function extendConditions( $conditionBuilder, $querySegment, array $extraDescriptions ): void {
 		if ( $extraDescriptions === [] ) {
 			return;
 		}

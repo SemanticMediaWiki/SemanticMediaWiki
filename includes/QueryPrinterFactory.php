@@ -72,7 +72,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function registerFormat( $formatName, $class ) {
+	public function registerFormat( $formatName, $class ): void {
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
@@ -96,7 +96,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function registerAliases( $formatName, array $aliases ) {
+	public function registerAliases( $formatName, array $aliases ): void {
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}
@@ -130,7 +130,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return bool
 	 */
-	public function hasFormat( $formatName ) {
+	public function hasFormat( $formatName ): bool {
 		$formatName = $this->getCanonicalName( $formatName );
 		return array_key_exists( $formatName, $this->formats );
 	}
@@ -158,7 +158,7 @@ final class QueryPrinterFactory {
 	 * @return string
 	 * @throws ResultFormatNotFoundException
 	 */
-	private function getPrinterClass( $formatName ) {
+	private function getPrinterClass( $formatName ): string {
 		$formatName = $this->getCanonicalName( $formatName );
 
 		if ( !array_key_exists( $formatName, $this->formats ) ) {
@@ -178,7 +178,7 @@ final class QueryPrinterFactory {
 	 * @return string
 	 * @throws InvalidArgumentException
 	 */
-	public function getCanonicalName( $formatName ) {
+	public function getCanonicalName( $formatName ): string {
 		if ( !is_string( $formatName ) ) {
 			throw new InvalidArgumentException( 'Format names can only be of type string' );
 		}

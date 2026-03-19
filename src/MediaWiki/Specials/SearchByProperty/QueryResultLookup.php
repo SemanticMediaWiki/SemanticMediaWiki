@@ -207,7 +207,7 @@ class QueryResultLookup {
 		);
 	}
 
-	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ) {
+	private function destructureDIContainer( DIProperty $DIProperty, DataItem $dataItem, PageRequestOptions $pageRequestOptions ): array {
 		$multiValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$dataItem,
 			$DIProperty

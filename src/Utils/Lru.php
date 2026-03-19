@@ -30,7 +30,7 @@ class Lru {
 	 * @param string|int $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->count++;
 
 		if ( isset( $this->cache[$key] ) ) {

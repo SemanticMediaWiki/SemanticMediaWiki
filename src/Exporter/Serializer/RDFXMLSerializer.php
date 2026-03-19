@@ -39,7 +39,7 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->namespaces_are_global = false;
 		$this->namespace_block_started = false;
@@ -103,14 +103,14 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeDeclaration( $uri, $typename ) {
+	public function serializeDeclaration( $uri, $typename ): void {
 		$this->post_ns_buffer .= "\t<$typename rdf:about=\"$uri\" />\n";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeExpData( ExpData $expData ) {
+	public function serializeExpData( ExpData $expData ): void {
 		$this->serializeNestedExpData( $expData, '' );
 		$this->serializeNamespaces();
 
@@ -318,7 +318,7 @@ class RDFXMLSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	protected function makeValueEntityString( $string ) {
+	protected function makeValueEntityString( $string ): string {
 		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 

@@ -88,7 +88,7 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @param DIWikiPage $subject
 	 */
-	public static function cleanUp( DIWikiPage $subject ) {
+	public static function cleanUp( DIWikiPage $subject ): void {
 		$namespace = $subject->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -203,7 +203,7 @@ class ChangePropagationDispatchJob extends Job {
 		return true;
 	}
 
-	private function findAndDispatch() {
+	private function findAndDispatch(): void {
 		$namespace = $this->getTitle()->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -264,7 +264,7 @@ class ChangePropagationDispatchJob extends Job {
 		}
 	}
 
-	private function pushChangePropagationDispatchJob( $num, $chunk ) {
+	private function pushChangePropagationDispatchJob( $num, $chunk ): void {
 		$data = [];
 
 		// Filter any subobject
@@ -358,7 +358,7 @@ class ChangePropagationDispatchJob extends Job {
 		return true;
 	}
 
-	private function scheduleChangePropagationUpdateJobFromList( $dataItems ) {
+	private function scheduleChangePropagationUpdateJobFromList( $dataItems ): void {
 		foreach ( $dataItems as $dataItem ) {
 
 			if ( $dataItem === '' ) {
@@ -378,7 +378,7 @@ class ChangePropagationDispatchJob extends Job {
 		}
 	}
 
-	private function commitSpecificationChangePropagationAsJob( $subject, $count ) {
+	private function commitSpecificationChangePropagationAsJob( $subject, $count ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );
@@ -417,7 +417,7 @@ class ChangePropagationDispatchJob extends Job {
 		$applicationFactory->getStore()->clear();
 	}
 
-	private function newChangePropagationUpdateJob( $title, $parameters ) {
+	private function newChangePropagationUpdateJob( $title, $parameters ): ChangePropagationClassUpdateJob|ChangePropagationUpdateJob {
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters = $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
 

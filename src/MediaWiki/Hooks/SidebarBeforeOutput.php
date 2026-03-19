@@ -54,7 +54,7 @@ class SidebarBeforeOutput implements HookListener {
 		return true;
 	}
 
-	private function performUpdate( Title $title, Skin $skin, &$sidebar ) {
+	private function performUpdate( Title $title, Skin $skin, &$sidebar ): void {
 		$link = Infolink::encodeParameters(
 			[
 				$title->getPrefixedDBkey()

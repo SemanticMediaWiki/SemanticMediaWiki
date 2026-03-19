@@ -67,7 +67,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @param Property[] $properties
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		// Keep the interface while the properties for this type
 		// are fixed.
 	}
@@ -75,7 +75,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @see AbstractMultiValue::getProperties
 	 */
-	public function getProperties() {
+	public function getProperties(): void {
 		self::$properties;
 	}
 
@@ -87,7 +87,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return string
 	 */
-	public function getTextWithLanguageTag( $text, $languageCode ) {
+	public function getTextWithLanguageTag( $text, $languageCode ): string {
 		$languageCode = Localizer::asBCP47FormattedLanguageCode( $languageCode );
 
 		// @TODO test de-formal with PropertyListByApiRequest
@@ -342,7 +342,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return string
 	 */
-	public function toString() {
+	public function toString(): string {
 		if ( !$this->isValid() || $this->getDataItem() === [] ) {
 			return '';
 		}
@@ -372,7 +372,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $containerSemanticData;
 	}
 
-	private function newLanguageCodeValue( $languageCode ) {
+	private function newLanguageCodeValue( $languageCode ): LanguageCodeValue {
 		$languageCodeValue = new LanguageCodeValue();
 
 		if ( $this->m_property !== null ) {

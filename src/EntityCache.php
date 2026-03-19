@@ -57,7 +57,7 @@ class EntityCache {
 	 *
 	 * @return string
 	 */
-	public static function makeCacheKey( ...$params ) {
+	public static function makeCacheKey( ...$params ): string {
 		$namespace = self::CACHE_NAMESPACE;
 
 		if ( is_string( $params[0] ) && $params[0][0] === ':' ) {
@@ -82,7 +82,7 @@ class EntityCache {
 	 *
 	 * @return string
 	 */
-	public function makeKey( ...$params ) {
+	public function makeKey( ...$params ): string {
 		return self::makeCacheKey( ...$params );
 	}
 
@@ -121,7 +121,7 @@ class EntityCache {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function save( $key, $value = null, $ttl = 0 ) {
+	public function save( $key, $value = null, $ttl = 0 ): void {
 		$this->cache->save( $key, $value, $ttl );
 	}
 
@@ -130,7 +130,7 @@ class EntityCache {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		$this->cache->delete( $key );
 	}
 
@@ -159,7 +159,7 @@ class EntityCache {
 	 * @param mixed $value
 	 * @param int $ttl
 	 */
-	public function saveSub( $key, $sub, $value = null, $ttl = 0 ) {
+	public function saveSub( $key, $sub, $value = null, $ttl = 0 ): void {
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -180,7 +180,7 @@ class EntityCache {
 	 * @param mixed $value
 	 * @param int $ttl
 	 */
-	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ) {
+	public function overrideSub( $key, $sub, $value = null, $ttl = 0 ): void {
 		$res = [
 			md5( $sub ) => $value
 		];
@@ -195,7 +195,7 @@ class EntityCache {
 	 * @param string $sub
 	 * @param int $ttl
 	 */
-	public function deleteSub( $key, $sub, $ttl = 0 ) {
+	public function deleteSub( $key, $sub, $ttl = 0 ): void {
 		$res = $this->cache->fetch( $key );
 		$sub = md5( $sub );
 
@@ -216,7 +216,7 @@ class EntityCache {
 	 *
 	 * @param DIWikiPage|Title $subject
 	 */
-	public function associate( $subject, $key ) {
+	public function associate( $subject, $key ): void {
 		if ( $subject === null ) {
 			return;
 		}
@@ -257,7 +257,7 @@ class EntityCache {
 	 *
 	 * @param DIWikiPage|Title|null $subject
 	 */
-	public function invalidate( $subject = null ) {
+	public function invalidate( $subject = null ): void {
 		if ( $subject === null ) {
 			return;
 		}

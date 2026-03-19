@@ -90,7 +90,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		if ( !$this->hasFeature( SMW_ADM_SETUP ) ) {
 			return;
 		}
@@ -162,7 +162,7 @@ class TableSchemaTaskHandler extends TaskHandler implements ActionableTask {
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		$this->outputFormatter->addHTML( $message );
 	}
 

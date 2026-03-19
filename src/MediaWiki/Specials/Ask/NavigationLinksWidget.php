@@ -29,7 +29,7 @@ class NavigationLinksWidget {
 	 *
 	 * @param string $maxInlineLimit
 	 */
-	public static function setMaxInlineLimit( $maxInlineLimit ) {
+	public static function setMaxInlineLimit( $maxInlineLimit ): void {
 		self::$maxInlineLimit = $maxInlineLimit;
 	}
 
@@ -41,7 +41,7 @@ class NavigationLinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ) {
+	public static function topLinks( Title $title, $visibleLinks = [], $isEditMode = true ): string {
 		if ( $visibleLinks === [] ) {
 			return '';
 		}

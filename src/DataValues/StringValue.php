@@ -121,7 +121,7 @@ class StringValue extends DataValue {
 	 *
 	 * @return int
 	 */
-	public function getLength() {
+	public function getLength(): int {
 		if ( !$this->isValid() ) {
 			return 0;
 		}

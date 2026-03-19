@@ -75,7 +75,7 @@ class ProfileAnnotatorFactory {
 	 *
 	 * @return DescriptionProfileAnnotator
 	 */
-	public function newDescriptionProfileAnnotator( Query $query ) {
+	public function newDescriptionProfileAnnotator( Query $query ): DescriptionProfileAnnotator {
 		$profileAnnotator = new NullProfileAnnotator(
 			$this->newDIContainer( $query )
 		);
@@ -88,7 +88,7 @@ class ProfileAnnotatorFactory {
 		return $profileAnnotator;
 	}
 
-	private function newFormatProfileAnnotator( $profileAnnotator, $format ) {
+	private function newFormatProfileAnnotator( $profileAnnotator, $format ): FormatProfileAnnotator {
 		return new FormatProfileAnnotator( $profileAnnotator, $format );
 	}
 
@@ -136,7 +136,7 @@ class ProfileAnnotatorFactory {
 	 * #1416 create container manually to avoid any issues that may arise from
 	 * a failed Title::makeTitleSafe.
 	 */
-	private function newDIContainer( Query $query ) {
+	private function newDIContainer( Query $query ): Container {
 		$subject = $query->getContextPage();
 
 		if ( $subject === null ) {

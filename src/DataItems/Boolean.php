@@ -36,11 +36,11 @@ class Boolean extends DataItem {
 		return $this->m_boolean;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return $this->m_boolean ? 't' : 'f';
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): int {
 		return $this->m_boolean ? 1 : 0;
 	}
 

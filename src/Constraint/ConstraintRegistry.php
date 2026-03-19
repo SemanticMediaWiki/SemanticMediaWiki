@@ -50,7 +50,7 @@ class ConstraintRegistry {
 	 * @param string $key
 	 * @param Constraint|string $constraint
 	 */
-	public function registerConstraint( $key, $constraint ) {
+	public function registerConstraint( $key, $constraint ): void {
 		if ( $this->constraints === [] ) {
 			$this->initConstraints();
 		}
@@ -90,7 +90,7 @@ class ConstraintRegistry {
 		return $this->loadInstance( $this->constraints['null'] );
 	}
 
-	private function initConstraints() {
+	private function initConstraints(): void {
 		$this->constraints = [
 			'null' => NullConstraint::class,
 			'allowed_namespaces' => NamespaceConstraint::class,

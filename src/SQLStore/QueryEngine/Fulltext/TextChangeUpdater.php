@@ -54,7 +54,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $asDeferredUpdate
 	 */
-	public function asDeferredUpdate( $asDeferredUpdate ) {
+	public function asDeferredUpdate( $asDeferredUpdate ): void {
 		$this->asDeferredUpdate = (bool)$asDeferredUpdate;
 	}
 
@@ -67,7 +67,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -76,7 +76,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $isPrimary
 	 */
-	public function isPrimary( $isPrimary ) {
+	public function isPrimary( $isPrimary ): void {
 		$this->isPrimary = $isPrimary;
 	}
 
@@ -165,7 +165,7 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeDiff|null $changeDiff
 	 */
-	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ) {
+	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ): void {
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
@@ -224,7 +224,7 @@ class TextChangeUpdater {
 		);
 	}
 
-	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
+	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ): void {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -241,13 +241,13 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function doDeleteFromTableChangeOps( array $tableChangeOps ) {
+	private function doDeleteFromTableChangeOps( array $tableChangeOps ): void {
 		foreach ( $tableChangeOps as $tableChangeOp ) {
 			$this->doDeleteFromTableChangeOp( $tableChangeOp );
 		}
 	}
 
-	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ) {
+	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ): void {
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 
 			// Replace s_id for subobjects etc. with the o_id

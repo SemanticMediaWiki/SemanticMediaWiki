@@ -51,7 +51,7 @@ class ConnectionManager {
 	/**
 	 * @since 2.1
 	 */
-	public function releaseConnections() {
+	public function releaseConnections(): void {
 		foreach ( self::$connectionProviders as $connectionProvider ) {
 			$connectionProvider->releaseConnection();
 		}
@@ -63,7 +63,7 @@ class ConnectionManager {
 	 * @param string $id
 	 * @param ConnectionProvider $connectionProvider
 	 */
-	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ) {
+	public function registerConnectionProvider( $id, ConnectionProvider $connectionProvider ): void {
 		self::$connectionProviders[strtolower( $id )] = $connectionProvider;
 	}
 
@@ -73,7 +73,7 @@ class ConnectionManager {
 	 * @param string $id
 	 * @param callable $callback
 	 */
-	public function registerCallbackConnection( $id, callable $callback ) {
+	public function registerCallbackConnection( $id, callable $callback ): void {
 		self::$connectionProviders[strtolower( $id )] = new CallbackConnectionProvider( $callback );
 	}
 

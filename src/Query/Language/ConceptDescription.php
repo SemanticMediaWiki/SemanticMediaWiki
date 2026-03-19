@@ -26,7 +26,7 @@ class ConceptDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		return 'Co:' . md5( $this->concept->getHash() );
 	}
 
@@ -37,7 +37,7 @@ class ConceptDescription extends Description {
 		return $this->concept;
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$pageValue = DataValueFactory::getInstance()->newDataValueByItem( $this->concept, null );
 		$result = '[[' . $pageValue->getPrefixedText() . ']]';
 

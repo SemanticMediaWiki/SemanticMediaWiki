@@ -54,7 +54,7 @@ trait FilterTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addOption( string $key, $value ) {
+	public function addOption( string $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -81,7 +81,7 @@ trait FilterTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setNodeFilter( SchemaFilter $nodeFilter ) {
+	public function setNodeFilter( SchemaFilter $nodeFilter ): void {
 		$this->nodeFilter = $nodeFilter;
 	}
 
@@ -90,7 +90,7 @@ trait FilterTrait {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function filter( iterable $compartments ) {
+	public function filter( iterable $compartments ): void {
 		$this->matches = [];
 
 		if ( $compartments instanceof CompartmentIterator ) {

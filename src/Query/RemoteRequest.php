@@ -56,7 +56,7 @@ class RemoteRequest implements QueryEngine {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$isConnected = null;
 	}
 
@@ -67,7 +67,7 @@ class RemoteRequest implements QueryEngine {
 	 *
 	 * @return bool
 	 */
-	public function hasFeature( $flag ) {
+	public function hasFeature( $flag ): bool {
 		return ( ( (int)$this->features & $flag ) == $flag );
 	}
 
@@ -177,7 +177,7 @@ class RemoteRequest implements QueryEngine {
 		) . $result;
 	}
 
-	private function findExtraInformation( &$result ) {
+	private function findExtraInformation( &$result ): array {
 		$count = 0;
 		$hasFurtherResults = false;
 

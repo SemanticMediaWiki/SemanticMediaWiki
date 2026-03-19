@@ -42,7 +42,7 @@ class PropertyTableUpdater {
 	 *
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
-	public function setPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
+	public function setPropertyChangeListener( PropertyChangeListener $propertyChangeListener ): void {
 		$this->propertyChangeListener = $propertyChangeListener;
 	}
 
@@ -58,7 +58,7 @@ class PropertyTableUpdater {
 	 * @param int $id
 	 * @param Parameters $parameters
 	 */
-	public function update( $id, Parameters $parameters ) {
+	public function update( $id, Parameters $parameters ): void {
 		$this->stats = [];
 
 		$insert_rows = $parameters->get( 'insert_rows' );
@@ -93,7 +93,7 @@ class PropertyTableUpdater {
 	 * @param array $insert_rows
 	 * @param array $delete_rows
 	 */
-	private function doUpdate( array $insert_rows, array $delete_rows ) {
+	private function doUpdate( array $insert_rows, array $delete_rows ): void {
 		$propertyTables = $this->store->getPropertyTables();
 		$ids = [];
 
@@ -136,7 +136,7 @@ class PropertyTableUpdater {
 	 * @param array $rows array of rows to insert/delete
 	 * @param bool $insert
 	 */
-	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, $insert ) {
+	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, $insert ): void {
 		if ( empty( $rows ) ) {
 			return;
 		}
@@ -175,7 +175,7 @@ class PropertyTableUpdater {
 		}
 	}
 
-	private function insert( PropertyTableDefinition $propertyTable, array $rows ) {
+	private function insert( PropertyTableDefinition $propertyTable, array $rows ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$tableName = $propertyTable->getName();
 
@@ -186,7 +186,7 @@ class PropertyTableUpdater {
 		);
 	}
 
-	private function delete( PropertyTableDefinition $propertyTable, array $rows ) {
+	private function delete( PropertyTableDefinition $propertyTable, array $rows ): void {
 		$condition = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -228,7 +228,7 @@ class PropertyTableUpdater {
 		);
 	}
 
-	private function aggregate_ids( &$ids, $propertyTable, $rows ) {
+	private function aggregate_ids( &$ids, $propertyTable, $rows ): void {
 		$isCategory = false;
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
@@ -254,7 +254,7 @@ class PropertyTableUpdater {
 		}
 	}
 
-	private function update_touched( $ids ) {
+	private function update_touched( $ids ): void {
 		if ( $ids === [] ) {
 			return;
 		}

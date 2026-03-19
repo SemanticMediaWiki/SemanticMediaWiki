@@ -83,7 +83,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @since 2.5
 	 */
-	public function copyDataFrom( array $subSemanticData ) {
+	public function copyDataFrom( array $subSemanticData ): void {
 		$this->subSemanticData = $subSemanticData;
 	}
 
@@ -100,7 +100,7 @@ class SubSemanticData implements JsonUnserializable {
 	/**
 	 * @since 2.5
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->subSemanticData = [];
 	}
 
@@ -150,7 +150,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @throws SubSemanticDataException if not adding data about a subobject of this data
 	 */
-	public function addSubSemanticData( SemanticData $semanticData ) {
+	public function addSubSemanticData( SemanticData $semanticData ): void {
 		if ( $semanticData->subContainerDepthCounter > $this->subContainerMaxDepth ) {
 			throw new SubSemanticDataException( "Cannot add further subdata with the depth of {$semanticData->subContainerDepthCounter}. You are trying to add data beyond the max depth of {$this->subContainerMaxDepth} to an SemanticData object." );
 		}
@@ -179,7 +179,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function removeSubSemanticData( SemanticData $semanticData ) {
+	public function removeSubSemanticData( SemanticData $semanticData ): void {
 		if ( $semanticData->getSubject()->getDBkey() !== $this->getSubject()->getDBkey() ) {
 			return;
 		}
@@ -202,7 +202,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @param $property DIProperty
 	 */
-	public function removeProperty( DIProperty $property ) {
+	public function removeProperty( DIProperty $property ): void {
 		// Inverse properties cannot be used for an annotation
 		if ( $property->isInverse() ) {
 			return;
@@ -213,7 +213,7 @@ class SubSemanticData implements JsonUnserializable {
 		}
 	}
 
-	private function appendSubSemanticData( $semanticData, $subobjectName ) {
+	private function appendSubSemanticData( $semanticData, $subobjectName ): void {
 		if ( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 

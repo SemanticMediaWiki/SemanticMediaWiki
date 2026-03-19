@@ -68,7 +68,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 

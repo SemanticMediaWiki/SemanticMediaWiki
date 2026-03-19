@@ -128,7 +128,7 @@ class ExpLiteral extends ExpElement {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['lexical'] ) || !isset( $serialization['datatype'] ) || !isset( $serialization['lang'] ) ) {
 			throw new RuntimeException( "Invalid format caused by a missing lexical/datatype element" );
 		}

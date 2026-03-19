@@ -43,7 +43,7 @@ class AllowsListValueParser implements ValueParser {
 	/**
 	 * @since 3.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		self::$contents = [];
 		$this->errors = [];
 	}

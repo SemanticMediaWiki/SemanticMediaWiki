@@ -95,7 +95,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param bool $isLinksInValues
 	 */
-	public function isLinksInValues( $isLinksInValues ) {
+	public function isLinksInValues( $isLinksInValues ): void {
 		$this->isLinksInValues = $isLinksInValues;
 	}
 
@@ -104,7 +104,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param bool $showErrors
 	 */
-	public function showErrors( $showErrors ) {
+	public function showErrors( $showErrors ): void {
 		$this->showErrors = (bool)$showErrors;
 	}
 
@@ -125,7 +125,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param string &$text
 	 */
-	public function parse( &$text ) {
+	public function parse( &$text ): void {
 		$title = $this->parserData->getTitle();
 		Timer::start( __CLASS__ );
 
@@ -195,7 +195,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return bool
 	 */
-	public static function hasMarker( $text ) {
+	public static function hasMarker( $text ): bool {
 		return strpos( $text, self::OFF ) !== false || strpos( $text, self::ON ) !== false;
 	}
 
@@ -206,7 +206,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return bool
 	 */
-	public static function hasPropertyLink( $text ) {
+	public static function hasPropertyLink( $text ): bool {
 		return strpos( $text, '::@@@' ) !== false;
 	}
 
@@ -217,7 +217,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ) {
+	public static function decodeSquareBracket( $text ): string {
 		return LinksEncoder::decodeSquareBracket( $text );
 	}
 
@@ -248,7 +248,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -257,7 +257,7 @@ class InTextAnnotationParser {
 	 *
 	 * @param Title|null $redirectTarget
 	 */
-	public function setRedirectTarget( ?Title $redirectTarget = null ) {
+	public function setRedirectTarget( ?Title $redirectTarget = null ): void {
 		$this->redirectTargetFinder->setRedirectTarget( $redirectTarget );
 	}
 
@@ -289,7 +289,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return array
 	 */
-	protected function getModules() {
+	protected function getModules(): array {
 		return [
 			'ext.smw.styles'
 		];
@@ -303,7 +303,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	public function getRegexpPattern( $linksInValues = false ) {
+	public function getRegexpPattern( $linksInValues = false ): string {
 		return LinksProcessor::getRegexpPattern( $linksInValues );
 	}
 

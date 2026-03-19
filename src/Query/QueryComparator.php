@@ -57,7 +57,7 @@ class QueryComparator {
 	/**
 	 * @since 2.3
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -100,7 +100,7 @@ class QueryComparator {
 	 *
 	 * @return bool
 	 */
-	public function containsComparator( $value, $comparator = SMW_CMP_EQ ) {
+	public function containsComparator( $value, $comparator = SMW_CMP_EQ ): bool {
 		return $this->extractComparatorFromString( $value ) === $comparator;
 	}
 

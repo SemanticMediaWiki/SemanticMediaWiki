@@ -80,7 +80,7 @@ class PostProcHandler {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -105,7 +105,7 @@ class PostProcHandler {
 	 *
 	 * @return array|string
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [ 'ext.smw.postproc', 'ext.smw.purge' ];
 	}
 
@@ -219,7 +219,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addUpdate( Query $query ) {
+	public function addUpdate( Query $query ): void {
 		// Query:getHash returns a hash based on a fingerprint
 		// (when $smwgQueryResultCacheType is set) that eliminates duplicate
 		// queries, yet for the post processing it is necessary to know each
@@ -246,7 +246,7 @@ class PostProcHandler {
 	 *
 	 * @param Query $query
 	 */
-	public function addCheck( Query $query ) {
+	public function addCheck( Query $query ): void {
 		if ( !isset( $this->options['check-query'] ) || $this->options['check-query'] === false ) {
 			return;
 		}

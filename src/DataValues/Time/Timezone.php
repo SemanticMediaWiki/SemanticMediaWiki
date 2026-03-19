@@ -288,7 +288,7 @@ class Timezone {
 	 *
 	 * @return DateInterval
 	 */
-	public static function newDateIntervalWithOffsetFrom( $abbreviation ) {
+	public static function newDateIntervalWithOffsetFrom( $abbreviation ): DateInterval {
 		$minutes = 0;
 		$hour = 0;
 

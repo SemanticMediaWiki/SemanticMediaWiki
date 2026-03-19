@@ -46,7 +46,7 @@ class SetParserFunction {
 	 *
 	 * @param StripMarkerDecoder $stripMarkerDecoder
 	 */
-	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ) {
+	public function setStripMarkerDecoder( StripMarkerDecoder $stripMarkerDecoder ): void {
 		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
@@ -66,7 +66,7 @@ class SetParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( ParserParameterProcessor $parameters ) {
+	public function parse( ParserParameterProcessor $parameters ): array {
 		$count = 0;
 		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();

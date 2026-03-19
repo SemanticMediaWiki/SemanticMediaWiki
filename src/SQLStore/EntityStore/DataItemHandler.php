@@ -49,7 +49,7 @@ abstract class DataItemHandler {
 	 *
 	 * @param int $fieldTypeFeatures
 	 */
-	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+	public function setFieldTypeFeatures( $fieldTypeFeatures ): void {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
 	}
 

@@ -39,7 +39,7 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( string $origin ) {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -66,7 +66,7 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @param Title $title
 	 */
-	public function doDelete( Title $title ) {
+	public function doDelete( Title $title ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$subject = DIWikiPage::newFromTitle( $title );
 

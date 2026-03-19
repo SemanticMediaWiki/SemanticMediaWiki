@@ -72,14 +72,14 @@ class Stats {
 	/**
 	 * @since 3.1
 	 */
-	public function makeCacheKey( $id ) {
+	public function makeCacheKey( $id ): string {
 		return smwfCacheKey( self::CACHE_NAMESPACE, [ $id, self::VERSION ] );
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function initRecord() {
+	public function initRecord(): void {
 		$this->fingerprint = $this->id . uniqid();
 	}
 
@@ -88,7 +88,7 @@ class Stats {
 	 *
 	 * @param bool $shouldRecord
 	 */
-	public function shouldRecord( $shouldRecord ) {
+	public function shouldRecord( $shouldRecord ): void {
 		$this->shouldRecord = (bool)$shouldRecord;
 	}
 
@@ -110,7 +110,7 @@ class Stats {
 	 *
 	 * @param string|array $key
 	 */
-	public function incr( $key ) {
+	public function incr( $key ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = 0;
 		}
@@ -125,7 +125,7 @@ class Stats {
 	 * @param string|array $key
 	 * @param string|int $default
 	 */
-	public function init( $key, $default ) {
+	public function init( $key, $default ): void {
 		$this->stats[$key] = $default;
 		$this->operations[$key] = self::STATS_INIT;
 	}
@@ -136,7 +136,7 @@ class Stats {
 	 * @param string|array $key
 	 * @param string|int $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->stats[$key] = $value;
 		$this->operations[$key] = self::STATS_SET;
 	}
@@ -147,7 +147,7 @@ class Stats {
 	 * @param string|array $key
 	 * @param int $value
 	 */
-	public function calcMedian( $key, $value ) {
+	public function calcMedian( $key, $value ): void {
 		if ( !isset( $this->stats[$key] ) ) {
 			$this->stats[$key] = $value;
 		} else {
@@ -160,7 +160,7 @@ class Stats {
 	/**
 	 * @since 2.5
 	 */
-	public function saveStats() {
+	public function saveStats(): void {
 		if ( $this->stats === [] ) {
 			return;
 		}

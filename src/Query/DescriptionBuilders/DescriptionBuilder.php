@@ -103,7 +103,7 @@ abstract class DescriptionBuilder {
 	/**
 	 * @since 3.1
 	 */
-	public function clearErrors() {
+	public function clearErrors(): void {
 		$this->errors = [];
 	}
 

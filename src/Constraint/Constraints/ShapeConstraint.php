@@ -58,7 +58,7 @@ class ShapeConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function checkConstraint( array $constraints, $dataValue ) {
+	public function checkConstraint( array $constraints, $dataValue ): void {
 		$this->hasViolation = false;
 
 		if ( !$dataValue instanceof DataValue ) {
@@ -78,7 +78,7 @@ class ShapeConstraint implements Constraint {
 		}
 	}
 
-	private function check( $constraint, $dataValue ) {
+	private function check( $constraint, $dataValue ): void {
 		$errors = [];
 
 		if ( !isset( $constraint['property'] ) ) {
@@ -127,7 +127,7 @@ class ShapeConstraint implements Constraint {
 		$this->reportError( $dataValue, $errors );
 	}
 
-	private function isType( $type, $property ) {
+	private function isType( $type, $property ): bool {
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeId()
 		);
@@ -197,7 +197,7 @@ class ShapeConstraint implements Constraint {
 		return true;
 	}
 
-	private function reportError( $dataValue, array $errors ) {
+	private function reportError( $dataValue, array $errors ): void {
 		if ( $errors === [] ) {
 			return;
 		}

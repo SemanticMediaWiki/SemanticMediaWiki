@@ -31,7 +31,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isBuilderFor( $serialization ) {
+	public function isBuilderFor( $serialization ): bool {
 		return $serialization instanceof MonolingualTextValue;
 	}
 
@@ -111,7 +111,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		return new Conjunction( $subdescriptions );
 	}
 
-	private function newSubdescription( $dataValue, $comparator ) {
+	private function newSubdescription( $dataValue, $comparator ): SomeProperty {
 		$description = new ValueDescription(
 			$dataValue->getDataItem(),
 			$dataValue->getProperty(),

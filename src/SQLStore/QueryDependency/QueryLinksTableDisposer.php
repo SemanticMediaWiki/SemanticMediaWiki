@@ -44,14 +44,14 @@ class QueryLinksTableDisposer {
 	/**
 	 * @since 3.1
 	 */
-	public function waitOnTransactionIdle() {
+	public function waitOnTransactionIdle(): void {
 		$this->onTransactionIdle = true;
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function waitForReplication() {
+	public function waitForReplication(): void {
 		$this->waitForReplication = true;
 	}
 

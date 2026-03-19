@@ -44,7 +44,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return int
 	 */
-	public function getId() {
+	public function getId(): int {
 		return $this->id;
 	}
 
@@ -64,7 +64,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return bool
 	 */
-	public function isType( $type ) {
+	public function isType( $type ): bool {
 		return $this->type === $type;
 	}
 
@@ -73,7 +73,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param array $priorityDeleteList
 	 */
-	public function setPriorityDeleteList( array $priorityDeleteList ) {
+	public function setPriorityDeleteList( array $priorityDeleteList ): void {
 		$this->priorityDeleteList = $priorityDeleteList;
 	}
 
@@ -92,7 +92,7 @@ class Document implements JsonSerializable {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function setField( $key, $value ) {
+	public function setField( $key, $value ): void {
 		$this->data[$key] = $value;
 	}
 
@@ -101,7 +101,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param string $text
 	 */
-	public function setTextBody( string $text ) {
+	public function setTextBody( string $text ): void {
 		if ( $text !== '' ) {
 			$this->data['text_raw'] = TextSanitizer::removeLinks( $text );
 		}
@@ -112,7 +112,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @param Document $document
 	 */
-	public function addSubDocument( Document $document ) {
+	public function addSubDocument( Document $document ): void {
 		$this->subDocuments[$document->getId()] = $document;
 	}
 
@@ -132,7 +132,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return bool
 	 */
-	public function hasSubDocumentById( $id ) {
+	public function hasSubDocumentById( $id ): bool {
 		return isset( $this->subDocuments[$id] );
 	}
 
@@ -161,7 +161,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return [
 			'id'   => $this->id,
 			'type' => $this->type,

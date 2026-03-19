@@ -30,7 +30,7 @@ class UniquenessConstraintPropertyValueResourceBuilder extends PropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		// https://www.w3.org/TR/2004/REC-owl-ref-20040210/#FunctionalProperty-def

@@ -24,7 +24,7 @@ class MediaWikiNsContentReader {
 	/**
 	 * @since 2.3
 	 */
-	public function skipMessageCache() {
+	public function skipMessageCache(): void {
 		$this->skipMessageCache = true;
 	}
 

@@ -34,7 +34,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ClassDescription;
 	}
 
@@ -45,7 +45,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
 		$cqid = QuerySegment::$qnum;

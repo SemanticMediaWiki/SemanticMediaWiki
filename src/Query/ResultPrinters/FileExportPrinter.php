@@ -36,7 +36,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	/**
 	 * @see 3.0
 	 */
-	public function disableHttpHeader() {
+	public function disableHttpHeader(): void {
 		$this->httpHeader = false;
 	}
 
@@ -48,7 +48,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @param QueryResult $queryResult
 	 * @param array $params
 	 */
-	public function outputAsFile( QueryResult $queryResult, array $params ) {
+	public function outputAsFile( QueryResult $queryResult, array $params ): void {
 		$result = $this->getFileResult( $queryResult, $params );
 
 		$this->httpHeader(
@@ -105,7 +105,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 		return $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 
-	private function httpHeader( $string ) {
+	private function httpHeader( $string ): void {
 		$this->httpHeader ? header( $string ) : '';
 	}
 

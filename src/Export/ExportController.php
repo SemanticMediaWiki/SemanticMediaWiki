@@ -91,7 +91,7 @@ class ExportController {
 	 * Enable or disable inclusion of backlinks into the output.
 	 * @param bool $enable
 	 */
-	public function enableBacklinks( $enable ) {
+	public function enableBacklinks( $enable ): void {
 		$this->add_backlinks = $enable;
 	}
 
@@ -393,7 +393,7 @@ class ExportController {
 	 * @todo Consider dropping the $revisiondate filtering and all associated
 	 * functionality. Is anybody using this?
 	 */
-	public function printPages( $pages, $recursion = 1, $revisiondate = false ) {
+	public function printPages( $pages, $recursion = 1, $revisiondate = false ): void {
 		$mwServices = MediaWikiServices::getInstance();
 		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();
@@ -450,7 +450,7 @@ class ExportController {
 	 * export to reduce server load in long-running operations
 	 * @param int $delayeach number of pages to process between two sleeps
 	 */
-	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ) {
+	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ): void {
 		if ( !$this->prepareSerialization( $outfile ) ) {
 			return;
 		}
@@ -469,7 +469,7 @@ class ExportController {
 	 * export to reduce server load in long-running operations
 	 * @param int $delayeach number of pages to process between two sleeps
 	 */
-	public function printAllToOutput( $ns_restriction, $delay, $delayeach ) {
+	public function printAllToOutput( $ns_restriction, $delay, $delayeach ): void {
 		$this->prepareSerialization();
 		$this->printAll( $ns_restriction, $delay, $delayeach );
 	}
@@ -559,7 +559,7 @@ class ExportController {
 	 * serialize a declaration for
 	 * @param int $limit the number of pages to serialize
 	 */
-	public function printPageList( $offset = 0, $limit = 30 ) {
+	public function printPageList( $offset = 0, $limit = 30 ): void {
 		global $smwgNamespacesWithSemanticLinks;
 
 		$dbr = self::getDBHandle();
@@ -623,7 +623,7 @@ class ExportController {
 	/**
 	 * Print basic information about this site.
 	 */
-	public function printWikiInfo() {
+	public function printWikiInfo(): void {
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 

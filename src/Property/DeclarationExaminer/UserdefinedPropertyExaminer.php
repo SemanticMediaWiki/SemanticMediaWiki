@@ -51,7 +51,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		$this->checkSubpropertyParentType( $type, $property );
 	}
 
-	private function checkMessages( $property ) {
+	private function checkMessages( $property ): void {
 		$label = $property->getLabel();
 
 		if ( $this->store->getPropertyTableInfoFetcher()->isFixedTableProperty( $property ) ) {
@@ -63,7 +63,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 	}
 
-	private function checkRecordType( $type, $property ) {
+	private function checkRecordType( $type, $property ): void {
 		if ( !DataTypeRegistry::getInstance()->isRecordType( $type ) ) {
 			return;
 		}
@@ -100,7 +100,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		}
 	}
 
-	private function checkExternalIdentifierType( $type, $property ) {
+	private function checkExternalIdentifierType( $type, $property ): void {
 		if ( $type !== '_eid' ) {
 			return;
 		}
@@ -120,7 +120,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkGeoType( $type, $property ) {
+	private function checkGeoType( $type, $property ): void {
 		if ( $type !== '_geo' ) {
 			return;
 		}
@@ -136,7 +136,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkImportedVocabType( $property ) {
+	private function checkImportedVocabType( $property ): void {
 		$semanticData = $this->getSemanticData();
 
 		if ( !$semanticData->hasProperty( new DIProperty( '_IMPO' ) ) ) {
@@ -168,7 +168,7 @@ class UserdefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkSubpropertyParentType( $type, $property ) {
+	private function checkSubpropertyParentType( $type, $property ): void {
 		$semanticData = $this->getSemanticData();
 
 		if ( !$semanticData->hasProperty( new DIProperty( '_SUBP' ) ) ) {

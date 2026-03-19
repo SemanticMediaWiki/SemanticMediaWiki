@@ -36,7 +36,7 @@ class NullProfileAnnotator implements ProfileAnnotator {
 	 *
 	 * @return array
 	 */
-	public function getProperty() {
+	public function getProperty(): Property {
 		return new Property( '_ASK' );
 	}
 

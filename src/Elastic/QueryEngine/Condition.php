@@ -36,7 +36,7 @@ class Condition {
 	 *
 	 * @param string $type
 	 */
-	public function type( $type ) {
+	public function type( $type ): void {
 		$this->type = $type;
 	}
 
@@ -54,7 +54,7 @@ class Condition {
 	 *
 	 * @param mixed $log
 	 */
-	public function log( $log ) {
+	public function log( $log ): void {
 		$this->logs[] = $log;
 	}
 

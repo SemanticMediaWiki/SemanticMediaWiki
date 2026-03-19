@@ -47,7 +47,7 @@ class AnnotationProcessor {
 	 *
 	 * @param bool $canAnnotate
 	 */
-	public function setCanAnnotate( $canAnnotate ) {
+	public function setCanAnnotate( $canAnnotate ): void {
 		$this->canAnnotate = $canAnnotate;
 	}
 
@@ -63,7 +63,7 @@ class AnnotationProcessor {
 	/**
 	 * @since 3.1
 	 */
-	public function release() {
+	public function release(): void {
 		$this->dataValueFactory->clearCallable( SemanticData::class );
 	}
 

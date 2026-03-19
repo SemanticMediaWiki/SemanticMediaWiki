@@ -31,7 +31,7 @@ class QueryResultFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newEmptyQueryResult( Query $query, $hasFurtherResults = false ) {
+	public function newEmptyQueryResult( Query $query, $hasFurtherResults = false ): QueryResult {
 		return new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
@@ -63,7 +63,7 @@ class QueryResultFactory {
 		return $this->makeQueryResultForInstance( $repositoryResult, $query );
 	}
 
-	private function makeQueryResultForCount( RepositoryResult $repositoryResult, Query $query ) {
+	private function makeQueryResultForCount( RepositoryResult $repositoryResult, Query $query ): QueryResult {
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,
@@ -81,7 +81,7 @@ class QueryResultFactory {
 		return $queryResult;
 	}
 
-	private function makeQueryResultForInstance( RepositoryResult $repositoryResult, Query $query ) {
+	private function makeQueryResultForInstance( RepositoryResult $repositoryResult, Query $query ): QueryResult {
 		$resultDataItems = [];
 
 		foreach ( $repositoryResult as $resultRow ) {

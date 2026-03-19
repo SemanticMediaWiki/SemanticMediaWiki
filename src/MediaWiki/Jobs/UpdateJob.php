@@ -137,7 +137,7 @@ class UpdateJob extends Job {
 		return $this->parse_content();
 	}
 
-	private function change_propagation( $dataItem ) {
+	private function change_propagation( $dataItem ): void {
 		$this->setParameter( 'updateType', 'ChangePropagation' );
 		$subject = DIWikiPage::doUnserialize( $dataItem );
 

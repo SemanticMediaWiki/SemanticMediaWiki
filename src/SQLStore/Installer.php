@@ -86,7 +86,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param Options|array $options
 	 */
-	public function setOptions( $options ) {
+	public function setOptions( $options ): void {
 		if ( !$options instanceof Options ) {
 			$options = new Options( $options );
 		}
@@ -99,7 +99,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -311,7 +311,7 @@ class Installer implements MessageReporter {
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		ob_start();
 		print $message;
 		ob_flush();
@@ -394,7 +394,7 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function outputReport( $timer ) {
+	private function outputReport( $timer ): void {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 
@@ -417,7 +417,7 @@ class Installer implements MessageReporter {
 		}
 	}
 
-	private function printHead() {
+	private function printHead(): void {
 		if (
 			$this->options->has( SMW_EXTENSION_SCHEMA_UPDATER ) &&
 			$this->options->get( SMW_EXTENSION_SCHEMA_UPDATER ) ) {

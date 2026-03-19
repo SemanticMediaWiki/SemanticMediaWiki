@@ -51,7 +51,7 @@ class NodesInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch nodes' );
 
 		$this->outputFormatter->addParentLink(
@@ -62,7 +62,7 @@ class NodesInfoProvider extends InfoProviderHandler {
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$nodes = $connection->stats( 'nodes' );

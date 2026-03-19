@@ -43,7 +43,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
-	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
+	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ): ContainerSemanticData {
 		$containerSemanticData = new ContainerSemanticData(
 			new DIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
 			$noDuplicates
@@ -82,7 +82,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @since 2.4
 	 */
-	public function skipAnonymousCheck() {
+	public function skipAnonymousCheck(): void {
 		$this->skipAnonymousCheck = true;
 	}
 
@@ -133,7 +133,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param SemanticData|null $semanticData
 	 */
-	public function copyDataFrom( ?SemanticData $semanticData = null ) {
+	public function copyDataFrom( ?SemanticData $semanticData = null ): void {
 		if ( $semanticData === null ) {
 			return;
 		}

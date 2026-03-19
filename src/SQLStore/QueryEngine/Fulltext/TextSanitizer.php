@@ -48,7 +48,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	public function getVersions() {
+	public function getVersions(): array {
 		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
@@ -66,7 +66,7 @@ class TextSanitizer {
 	 *
 	 * @param array $languageDetection
 	 */
-	public function setLanguageDetection( array $languageDetection ) {
+	public function setLanguageDetection( array $languageDetection ): void {
 		$this->languageDetection = $languageDetection;
 	}
 
@@ -75,7 +75,7 @@ class TextSanitizer {
 	 *
 	 * @param int $minTokenSize
 	 */
-	public function setMinTokenSize( $minTokenSize ) {
+	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = $minTokenSize;
 	}
 
@@ -259,7 +259,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithCjkRegex( $text, $exemptionList ) {
+	private function tokenizeWithCjkRegex( $text, $exemptionList ): array {
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -390,7 +390,7 @@ class TextSanitizer {
 	 *
 	 * @return bool
 	 */
-	private function isStopWord( $reader, $word ) {
+	private function isStopWord( $reader, $word ): bool {
 		return $reader->get( $word ) !== false;
 	}
 

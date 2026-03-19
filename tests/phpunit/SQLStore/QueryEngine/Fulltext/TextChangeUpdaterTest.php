@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
@@ -132,7 +132,7 @@ class TextChangeUpdaterTest extends TestCase {
 			->method( 'getSubject' )
 			->willReturn( $dataItem );
 
-		$nullJob = $this->getMockBuilder( NullJob::class )
+		$fulltextJob = $this->getMockBuilder( FulltextSearchTableUpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -141,7 +141,7 @@ class TextChangeUpdaterTest extends TestCase {
 			->with(
 				$this->anything(),
 				[ 'slot:id' => 'Foo#0##' ] )
-			->willReturn( $nullJob );
+			->willReturn( $fulltextJob );
 
 		$instance = new TextChangeUpdater(
 			$this->connection,
@@ -208,13 +208,25 @@ class TextChangeUpdaterTest extends TestCase {
 			->method( 'isEnabled' )
 			->willReturn( true );
 
+		$changeDiff = $this->getMockBuilder( ChangeDiff::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTableChangeOps' )
+			->willReturn( [] );
+
+		$changeDiff->expects( $this->once() )
+			->method( 'getTextItems' )
+			->willReturn( [] );
+
 		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$changeOp->expects( $this->once() )
 			->method( 'newChangeDiff' )
-			->willReturn( null );
+			->willReturn( $changeDiff );
 
 		$changeOp->expects( $this->never() )
 			->method( 'getSubject' );

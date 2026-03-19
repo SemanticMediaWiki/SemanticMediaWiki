@@ -69,7 +69,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function addAnnotation() {
+	public function addAnnotation(): void {
 		$this->profileAnnotator->addAnnotation();
 		$this->addPropertyValues();
 	}
@@ -79,7 +79,7 @@ abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function pushAnnotationsTo( SemanticData $semanticData ) {
+	public function pushAnnotationsTo( SemanticData $semanticData ): void {
 		$this->addAnnotation();
 
 		$semanticData->addPropertyObjectValue(

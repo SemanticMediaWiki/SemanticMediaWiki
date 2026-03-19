@@ -51,7 +51,7 @@ class ClassDescription extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubcategoryDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubcategoryDepth'];
 		}
@@ -92,14 +92,14 @@ class ClassDescription extends Description {
 	 *
 	 * @param WikiPage $dataItem
 	 */
-	public function addClass( WikiPage $dataItem ) {
+	public function addClass( WikiPage $dataItem ): void {
 		$this->m_diWikiPages[] = $dataItem;
 	}
 
 	/**
 	 * @param ClassDescription $description
 	 */
-	public function addDescription( ClassDescription $description ) {
+	public function addDescription( ClassDescription $description ): void {
 		$this->m_diWikiPages = array_merge( $this->m_diWikiPages, $description->getCategories() );
 	}
 
@@ -109,7 +109,7 @@ class ClassDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		$hash = [];
 
 		foreach ( $this->m_diWikiPages as $subject ) {
@@ -129,7 +129,7 @@ class ClassDescription extends Description {
 		return $this->m_diWikiPages;
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$first = true;
 		$namespaceText = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
@@ -160,7 +160,7 @@ class ClassDescription extends Description {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		if ( $GLOBALS['smwgQSubcategoryDepth'] > 0 ) {
 			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
 		}

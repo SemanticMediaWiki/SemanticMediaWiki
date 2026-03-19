@@ -112,7 +112,7 @@ class DataValueFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function addCallable( $key, callable $callable ) {
+	public function addCallable( $key, callable $callable ): void {
 		if ( isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` is already in use, please clear the callable first!" );
 		}
@@ -125,14 +125,14 @@ class DataValueFactory {
 	 *
 	 * @param string $key
 	 */
-	public function clearCallable( $key ) {
+	public function clearCallable( $key ): void {
 		unset( $this->callables[$key] );
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->dataTypeRegistry->clear();
 		$this->callables = [];
 		self::$instance = null;
@@ -143,7 +143,7 @@ class DataValueFactory {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -152,7 +152,7 @@ class DataValueFactory {
 	 *
 	 * @param array $defaultOutputFormatters
 	 */
-	public function setDefaultOutputFormatters( array $defaultOutputFormatters ) {
+	public function setDefaultOutputFormatters( array $defaultOutputFormatters ): void {
 		$this->defaultOutputFormatters = [];
 
 		foreach ( $defaultOutputFormatters as $type => $formatter ) {

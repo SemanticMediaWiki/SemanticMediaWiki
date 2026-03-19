@@ -73,14 +73,14 @@ class DescriptionProcessor {
 	 *
 	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?WikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->errors = [];
 		$this->selfReference = false;
 	}
@@ -108,7 +108,7 @@ class DescriptionProcessor {
 	 *
 	 * @param array|string $error
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		if ( !is_array( $error ) ) {
 			$error = (array)$error;
 		}
@@ -123,7 +123,7 @@ class DescriptionProcessor {
 	 *
 	 * @param string $msgKey
 	 */
-	public function addErrorWithMsgKey( $msgKey ) {
+	public function addErrorWithMsgKey( $msgKey ): void {
 		$this->errors[] = Message::encode( func_get_args() );
 	}
 

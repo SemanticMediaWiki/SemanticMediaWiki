@@ -53,7 +53,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle( 'Elasticsearch indices' );
 
 		$this->outputFormatter->addParentLink(
@@ -64,7 +64,7 @@ class IndicesInfoProvider extends InfoProviderHandler {
 		$this->outputInfo();
 	}
 
-	private function outputInfo() {
+	private function outputInfo(): void {
 		$connection = $this->getStore()->getConnection( 'elastic' );
 
 		$html = Html::rawElement(

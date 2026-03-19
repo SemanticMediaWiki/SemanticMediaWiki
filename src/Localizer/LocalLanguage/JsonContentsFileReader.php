@@ -50,14 +50,14 @@ class JsonContentsFileReader {
 	/**
 	 * @since 2.5
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$contents = [];
 	}
 
 	/**
 	 * @since 2.5
 	 */
-	public function skipCache() {
+	public function skipCache(): void {
 		$this->skipCache = true;
 	}
 
@@ -77,7 +77,7 @@ class JsonContentsFileReader {
 	 *
 	 * @return bool
 	 */
-	public function canReadByLanguageCode( $languageCode ) {
+	public function canReadByLanguageCode( $languageCode ): bool {
 		$canReadByLanguageCode = '';
 
 		try {
@@ -95,7 +95,7 @@ class JsonContentsFileReader {
 	 * @param string $languageCode
 	 * @param array $contents
 	 */
-	public function writeByLanguageCode( $languageCode, $contents ) {
+	public function writeByLanguageCode( $languageCode, $contents ): void {
 		$languageCode = strtolower( trim( $languageCode ) );
 
 		file_put_contents(
@@ -154,7 +154,7 @@ class JsonContentsFileReader {
 		throw new RuntimeException( ErrorCodeFormatter::getMessageFromJsonErrorCode( json_last_error() ) );
 	}
 
-	private function getLanguageFile( $languageCode ) {
+	private function getLanguageFile( $languageCode ): string {
 		$file = str_replace( [ '\\', '/' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $languageCode . '.json' );
 
 		if ( is_readable( $file ) ) {

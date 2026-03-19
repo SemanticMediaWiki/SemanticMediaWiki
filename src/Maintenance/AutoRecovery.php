@@ -59,7 +59,7 @@ class AutoRecovery {
 	 *
 	 * @param bool $enabled
 	 */
-	public function enable( $enabled ) {
+	public function enable( $enabled ): void {
 		$this->enabled = (bool)$enabled;
 	}
 
@@ -68,7 +68,7 @@ class AutoRecovery {
 	 *
 	 * @param string $dir
 	 */
-	public function setDir( $dir ) {
+	public function setDir( $dir ): void {
 		$this->dir = $dir;
 	}
 
@@ -77,7 +77,7 @@ class AutoRecovery {
 	 *
 	 * @param int $safeMargin
 	 */
-	public function safeMargin( $safeMargin ) {
+	public function safeMargin( $safeMargin ): void {
 		$this->safeMargin = $safeMargin;
 	}
 
@@ -86,7 +86,7 @@ class AutoRecovery {
 	 *
 	 * @return string
 	 */
-	public function getFile() {
+	public function getFile(): string {
 		return $this->dir . "/" . SetupFile::FILE_NAME;
 	}
 
@@ -161,7 +161,7 @@ class AutoRecovery {
 		return $this->contents[$this->site][self::TOPIC_IDENTIFIER][$this->identifier][$key] !== false;
 	}
 
-	private function initContents( $key ) {
+	private function initContents( $key ): void {
 		$file = $this->getFile();
 
 		$this->contents = [

@@ -33,7 +33,7 @@ class SourceProfileAnnotator extends ProfileAnnotatorDecorator {
 		}
 	}
 
-	private function addQuerySource( $querySource ) {
+	private function addQuerySource( $querySource ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKSC' ),
 			new Blob( $querySource )

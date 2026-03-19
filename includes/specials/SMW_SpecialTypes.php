@@ -40,7 +40,7 @@ class SMWSpecialTypes extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $param ) {
+	public function execute( $param ): void {
 		$this->setHeaders();
 		$out = $this->getOutput();
 
@@ -105,7 +105,7 @@ class SMWSpecialTypes extends SpecialPage {
 		return 'smw_group/properties-concepts-types';
 	}
 
-	private function getTypesList() {
+	private function getTypesList(): string {
 		$this->addHelpLink(
 			Message::get( "smw-specials-types-helplink", Message::ESCAPED, Message::USER_LANGUAGE ),
 			true
@@ -351,7 +351,7 @@ class SMWSpecialTypes extends SpecialPage {
 		}
 	}
 
-	private function find_extras( $dataValue, $typeId, $label ) {
+	private function find_extras( $dataValue, $typeId, $label ): string {
 		$html = '';
 
 		if ( $typeId === '_mlt_rec' ) {

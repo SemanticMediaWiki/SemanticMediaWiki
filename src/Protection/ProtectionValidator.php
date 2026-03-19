@@ -64,7 +64,7 @@ class ProtectionValidator {
 	 *
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
-	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ) {
+	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ): void {
 		$propertyChangeListener->addListenerCallback( new DIProperty( '_CHGPRO' ), [ $this, 'invalidateCache' ] );
 	}
 
@@ -74,7 +74,7 @@ class ProtectionValidator {
 	 * @param DIProperty $property
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ) {
+	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ): void {
 		if ( $property->getKey() !== '_CHGPRO' ) {
 			return;
 		}
@@ -108,7 +108,7 @@ class ProtectionValidator {
 	 *
 	 * @param string|bool $editProtectionRight
 	 */
-	public function setEditProtectionRight( $editProtectionRight ) {
+	public function setEditProtectionRight( $editProtectionRight ): void {
 		$this->editProtectionRight = $editProtectionRight;
 	}
 
@@ -126,7 +126,7 @@ class ProtectionValidator {
 	 *
 	 * @param string|bool $createProtectionRight
 	 */
-	public function setCreateProtectionRight( $createProtectionRight ) {
+	public function setCreateProtectionRight( $createProtectionRight ): void {
 		$this->createProtectionRight = $createProtectionRight;
 	}
 
@@ -144,7 +144,7 @@ class ProtectionValidator {
 	 *
 	 * @param bool $changePropagationProtection
 	 */
-	public function setChangePropagationProtection( $changePropagationProtection ) {
+	public function setChangePropagationProtection( $changePropagationProtection ): void {
 		$this->changePropagationProtection = (bool)$changePropagationProtection;
 	}
 
@@ -153,7 +153,7 @@ class ProtectionValidator {
 	 *
 	 * @param array $importPerformers
 	 */
-	public function setImportPerformers( array $importPerformers ) {
+	public function setImportPerformers( array $importPerformers ): void {
 		$this->importPerformers = $importPerformers;
 	}
 
@@ -164,7 +164,7 @@ class ProtectionValidator {
 	 *
 	 * @return bool
 	 */
-	public function hasEditProtectionOnNamespace( Title $title ) {
+	public function hasEditProtectionOnNamespace( Title $title ): bool {
 		$subject = DIWikiPage::newFromTitle(
 			$title
 		);

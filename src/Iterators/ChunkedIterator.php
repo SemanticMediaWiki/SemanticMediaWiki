@@ -58,7 +58,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * {@inheritDoc}
 	 */
 	#[ReturnTypeWillChange]
-	public function rewind() {
+	public function rewind(): void {
 		parent::rewind();
 		$this->next();
 	}
@@ -69,7 +69,7 @@ class ChunkedIterator extends IteratorIterator {
 	 * {@inheritDoc}
 	 */
 	#[ReturnTypeWillChange]
-	public function next() {
+	public function next(): void {
 		$this->chunk = [];
 
 		for ( $i = 0; $i < $this->chunkSize && parent::valid(); $i++ ) {

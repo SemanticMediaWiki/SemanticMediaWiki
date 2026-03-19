@@ -46,7 +46,7 @@ class EntityExaminerCompositeIndicatorProvider implements CompositeIndicatorProv
 	 *
 	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
 	}
 

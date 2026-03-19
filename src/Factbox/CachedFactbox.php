@@ -84,7 +84,7 @@ class CachedFactbox {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 
@@ -93,7 +93,7 @@ class CachedFactbox {
 	 *
 	 * @param int $showFactboxEdit
 	 */
-	public function setShowFactboxEdit( $showFactboxEdit ) {
+	public function setShowFactboxEdit( $showFactboxEdit ): void {
 		$this->showFactboxEdit = $showFactboxEdit;
 	}
 
@@ -102,7 +102,7 @@ class CachedFactbox {
 	 *
 	 * @param int $showFactbox
 	 */
-	public function setShowFactbox( $showFactbox ) {
+	public function setShowFactbox( $showFactbox ): void {
 		$this->showFactbox = $showFactbox;
 	}
 
@@ -111,7 +111,7 @@ class CachedFactbox {
 	 *
 	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
@@ -120,7 +120,7 @@ class CachedFactbox {
 	 *
 	 * @return bool
 	 */
-	public function isEnabled( $isEnabled ) {
+	public function isEnabled( $isEnabled ): void {
 		$this->isEnabled = $isEnabled;
 	}
 
@@ -138,7 +138,7 @@ class CachedFactbox {
 	 *
 	 * @return int
 	 */
-	public static function makeCacheKey( $id ) {
+	public static function makeCacheKey( $id ): string {
 		if ( $id instanceof Title ) {
 			$id = $id->getArticleID();
 		}
@@ -160,7 +160,7 @@ class CachedFactbox {
 	 * @param OutputPage &$outputPage
 	 * @param ParserOutput $parserOutput
 	 */
-	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ) {
+	public function prepare( OutputPage &$outputPage, ParserOutput $parserOutput ): void {
 		$this->factboxText->clear();
 		$time = -microtime( true );
 
@@ -243,7 +243,7 @@ class CachedFactbox {
 	 * @param string $lang
 	 * @param mixed|null $feature_set
 	 */
-	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ) {
+	public function addContentToCache( $key, $text, $rev_id = null, $lang = 'en', $feature_set = null ): void {
 		$this->saveToCache(
 			$key,
 			$this->makeSubCacheKey( $rev_id, $lang, $this->featureSet ),
@@ -382,7 +382,7 @@ class CachedFactbox {
 	 * Cached content is serialized in an associative array following:
 	 * { 'rev_id' => $revisionId, 'text' => (...) }
 	 */
-	private function saveToCache( $key, $subKey, array $content ) {
+	private function saveToCache( $key, $subKey, array $content ): void {
 		$this->timestamp = wfTimestamp( TS_UNIX );
 		$this->isCached = false;
 
@@ -397,7 +397,7 @@ class CachedFactbox {
 		$this->entityCache->saveSub( $key, $subKey, $data, $this->cacheTTL );
 	}
 
-	private function makeSubCacheKey( ...$args ) {
+	private function makeSubCacheKey( ...$args ): string {
 		return md5( json_encode( $args ) );
 	}
 

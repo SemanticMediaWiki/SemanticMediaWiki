@@ -30,7 +30,7 @@ class UrlArgs {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->args[$key] = $value;
 	}
 
@@ -82,7 +82,7 @@ class UrlArgs {
 	 *
 	 * @param string $key
 	 */
-	public function delete( $key ) {
+	public function delete( $key ): void {
 		unset( $this->args[$key] );
 	}
 
@@ -91,7 +91,7 @@ class UrlArgs {
 	 *
 	 * @param string $fragment
 	 */
-	public function setFragment( $fragment ) {
+	public function setFragment( $fragment ): void {
 		$this->fragment = $fragment;
 	}
 
@@ -119,7 +119,7 @@ class UrlArgs {
 	/**
 	 * @see wfArrayToCgi
 	 */
-	private function cgi( $args, $prefix = '' ) {
+	private function cgi( $args, $prefix = '' ): string {
 		$cgi = '';
 
 		foreach ( $args as $key => $value ) {

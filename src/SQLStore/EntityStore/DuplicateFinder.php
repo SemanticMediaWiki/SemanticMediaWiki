@@ -34,7 +34,7 @@ class DuplicateFinder {
 	 *
 	 * @return bool
 	 */
-	public function hasDuplicate( DataItem $dataItem ) {
+	public function hasDuplicate( DataItem $dataItem ): bool {
 		$type = $dataItem->getDIType();
 
 		if ( $type !== DataItem::TYPE_WIKIPAGE && $type !== DataItem::TYPE_PROPERTY ) {
@@ -140,7 +140,7 @@ class DuplicateFinder {
 		return $mappingIterator;
 	}
 
-	private function id_table( $table, $query ) {
+	private function id_table( $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -157,7 +157,7 @@ class DuplicateFinder {
 		);
 	}
 
-	private function common_table( $table, $query ) {
+	private function common_table( $table, $query ): void {
 		$fields = self::fields( $table );
 
 		$query->table( $table );
@@ -181,7 +181,10 @@ class DuplicateFinder {
 		return $fieldsDef[$tableName];
 	}
 
-	private static function mapRow( $tableName, $row ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function mapRow( $tableName, $row ): array {
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {
@@ -197,7 +200,7 @@ class DuplicateFinder {
 		return $map;
 	}
 
-	private static function fieldsDef() {
+	private static function fieldsDef(): array {
 		return [
 			SQLStore::ID_TABLE => [
 				'smw_title',

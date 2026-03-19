@@ -71,7 +71,7 @@ class InMemoryPoolCache {
 	/**
 	 * @since 2.3
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 	}
 
@@ -80,7 +80,7 @@ class InMemoryPoolCache {
 	 *
 	 * @param string $poolCacheName
 	 */
-	public function resetPoolCacheById( $poolCacheName = '' ) {
+	public function resetPoolCacheById( $poolCacheName = '' ): void {
 		foreach ( $this->poolCacheList as $key => $value ) {
 			if ( $key === $poolCacheName || $poolCacheName === '' ) {
 				unset( $this->poolCacheList[$key] );

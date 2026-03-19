@@ -48,7 +48,7 @@ class RdfResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string {
 		return $this->params['syntax'] === 'turtle' ? 'result.ttl' : 'result.rdf';
 	}
 
@@ -101,7 +101,7 @@ class RdfResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function makeExport( QueryResult $res, $outputMode ) {
+	private function makeExport( QueryResult $res, $outputMode ): string {
 		$exporterFactory = new ExporterFactory();
 		$exporter = $exporterFactory->getExporter();
 

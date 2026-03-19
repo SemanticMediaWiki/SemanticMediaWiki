@@ -40,7 +40,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 	 *
 	 * @param array $predefinedPropertyList
 	 */
-	public function setPredefinedPropertyList( array $predefinedPropertyList ) {
+	public function setPredefinedPropertyList( array $predefinedPropertyList ): void {
 		$this->predefinedPropertyList = $predefinedPropertyList;
 	}
 
@@ -69,7 +69,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 	}
 
-	protected function isRegisteredPropertyId( $propertyId, $cachedProperties ) {
+	protected function isRegisteredPropertyId( $propertyId, $cachedProperties ): bool {
 		return ( PropertyRegistry::getInstance()->getPropertyValueTypeById( $propertyId ) === '' ) ||
 			array_key_exists( $propertyId, $cachedProperties );
 	}

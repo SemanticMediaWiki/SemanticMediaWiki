@@ -35,7 +35,7 @@ class StatusCodeProfileAnnotator extends ProfileAnnotatorDecorator {
 		}
 	}
 
-	private function addStatusCodeAnnotation( $statusCode ) {
+	private function addStatusCodeAnnotation( $statusCode ): void {
 		$this->getSemanticData()->addPropertyObjectValue(
 			new Property( '_ASKCO' ),
 			new Number( $statusCode )

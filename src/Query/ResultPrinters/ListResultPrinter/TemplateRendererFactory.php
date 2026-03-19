@@ -31,7 +31,7 @@ class TemplateRendererFactory {
 	/**
 	 * @param mixed $userparam
 	 */
-	public function setUserparam( $userparam ) {
+	public function setUserparam( $userparam ): void {
 		$this->userparam = $userparam;
 	}
 
@@ -50,7 +50,7 @@ class TemplateRendererFactory {
 	/**
 	 * @param WikitextTemplateRenderer $templateRenderer
 	 */
-	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ) {
+	private function addCommonTemplateFields( WikitextTemplateRenderer $templateRenderer ): void {
 		if ( $this->userparam !== '' ) {
 
 			$templateRenderer->addField(

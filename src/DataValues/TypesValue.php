@@ -60,7 +60,7 @@ class TypesValue extends DataValue {
 	 *
 	 * @return TypesValue
 	 */
-	public static function newFromTypeId( $typeId ) {
+	public static function newFromTypeId( $typeId ): TypesValue {
 		$result = new TypesValue( self::TYPE_ID );
 
 		try {
@@ -81,7 +81,7 @@ class TypesValue extends DataValue {
 	 *
 	 * @return Uri
 	 */
-	public static function getTypeUriFromTypeId( $typeId ) {
+	public static function getTypeUriFromTypeId( $typeId ): Uri {
 		return new Uri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 

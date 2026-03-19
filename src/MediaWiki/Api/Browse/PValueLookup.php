@@ -28,7 +28,7 @@ class PValueLookup extends Lookup {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __METHOD__ . self::VERSION;
 	}
 
@@ -124,7 +124,7 @@ class PValueLookup extends Lookup {
 		return $res;
 	}
 
-	private function is_iterable( $obj ) {
+	private function is_iterable( $obj ): bool {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 

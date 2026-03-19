@@ -93,7 +93,7 @@ class CheckboxRangeGroupValueFilter {
 		);
 	}
 
-	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ) {
+	private function matchFilter( $property, $range, $valueFilters, &$list, $isClear ): void {
 		$key = $range['min'] . '|' . $range['max'];
 
 		if ( $key === '' ) {
@@ -123,7 +123,7 @@ class CheckboxRangeGroupValueFilter {
 		}
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
@@ -177,7 +177,7 @@ class CheckboxRangeGroupValueFilter {
 		return $ranges;
 	}
 
-	private function range( $diType, $property, $key, $value ) {
+	private function range( $diType, $property, $key, $value ): array {
 		[ $min, $max ] = explode( '...', $value );
 
 		$msg = $this->msg( $key );

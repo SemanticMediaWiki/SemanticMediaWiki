@@ -84,7 +84,7 @@ class RequestOptionsProcessor {
 	 *
 	 * @return string
 	 */
-	public static function getSQLConditions( Store $store, ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ) {
+	public static function getSQLConditions( Store $store, ?RequestOptions $requestOptions = null, $valueCol = '', $labelCol = '', $addAnd = true ): string {
 		$sqlConds = '';
 
 		if ( $requestOptions === null ) {
@@ -247,7 +247,7 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private static function getSortKeyForItem( $store, $item ) {
+	private static function getSortKeyForItem( $store, $item ): array {
 		if ( $item instanceof DIWikiPage ) {
 			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;

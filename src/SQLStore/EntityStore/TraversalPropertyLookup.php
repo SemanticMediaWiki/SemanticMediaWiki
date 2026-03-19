@@ -117,7 +117,7 @@ class TraversalPropertyLookup {
 		return $result;
 	}
 
-	private function getWhereConds( $dataItem ) {
+	private function getWhereConds( $dataItem ): string {
 		$where = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 

@@ -54,7 +54,7 @@ class Message {
 	 * @param $type
 	 * @param Closure $handler
 	 */
-	public static function registerCallbackHandler( $type, Closure $handler ) {
+	public static function registerCallbackHandler( $type, Closure $handler ): void {
 		self::$messageHandler[$type] = $handler;
 	}
 
@@ -63,14 +63,14 @@ class Message {
 	 *
 	 * @param $type
 	 */
-	public static function deregisterHandlerFor( $type ) {
+	public static function deregisterHandlerFor( $type ): void {
 		unset( self::$messageHandler[$type] );
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$messageCache = null;
 	}
 

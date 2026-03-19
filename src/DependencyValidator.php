@@ -64,7 +64,7 @@ class DependencyValidator {
 	 *
 	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
@@ -73,7 +73,7 @@ class DependencyValidator {
 	 *
 	 * @param string eTag
 	 */
-	public function setETag( $eTag ) {
+	public function setETag( $eTag ): void {
 		$this->eTag = $eTag;
 	}
 
@@ -82,7 +82,7 @@ class DependencyValidator {
 	 *
 	 * @return int
 	 */
-	public static function makeCacheKey( Title $title ) {
+	public static function makeCacheKey( Title $title ): string {
 		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
 	}
 
@@ -94,7 +94,7 @@ class DependencyValidator {
 	 *
 	 * @param Title $title
 	 */
-	public function markTitle( Title $title ) {
+	public function markTitle( Title $title ): void {
 		self::$titles[$title->getPrefixedText()] = true;
 	}
 

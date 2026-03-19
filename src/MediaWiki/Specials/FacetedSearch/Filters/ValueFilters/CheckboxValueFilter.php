@@ -124,7 +124,7 @@ class CheckboxValueFilter {
 		);
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, &$list, $isClear ) {
+	private function matchFilter( $property, $key, $label, $count, $valueFilters, &$list, $isClear ): void {
 		// Make sure characters like `"` are encoded otherwise those will be removed
 		// from the value representation
 		$key = htmlspecialchars( $key );
@@ -156,7 +156,7 @@ class CheckboxValueFilter {
 		}
 	}
 
-	private function getValueFilters( $property ) {
+	private function getValueFilters( $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 

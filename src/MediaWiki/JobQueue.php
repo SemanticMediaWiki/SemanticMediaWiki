@@ -33,7 +33,7 @@ class JobQueue {
 	 *
 	 * @param bool $disableCache
 	 */
-	public function disableCache( $disableCache = true ) {
+	public function disableCache( $disableCache = true ): void {
 		$this->disableCache = (bool)$disableCache;
 	}
 
@@ -102,7 +102,7 @@ class JobQueue {
 	 *
 	 * @param Job $job
 	 */
-	public function ack( Job $job ) {
+	public function ack( Job $job ): void {
 		$this->jobQueueGroup->get( $job->getType() )->ack( $job );
 	}
 
@@ -111,7 +111,7 @@ class JobQueue {
 	 *
 	 * @param string $type
 	 */
-	public function delete( $type ) {
+	public function delete( $type ): void {
 		$jobQueue = $this->jobQueueGroup->get( $this->mapLegacyType( $type ) );
 		$jobQueue->delete();
 
@@ -126,7 +126,7 @@ class JobQueue {
 	 *
 	 * @param Job|Job[] $jobs
 	 */
-	public function push( $jobs ) {
+	public function push( $jobs ): void {
 		$this->jobQueueGroup->push( $jobs );
 	}
 
@@ -135,7 +135,7 @@ class JobQueue {
 	 *
 	 * @param Job|Job[] $jobs
 	 */
-	public function lazyPush( $jobs ) {
+	public function lazyPush( $jobs ): void {
 		$this->jobQueueGroup->lazyPush( $jobs );
 	}
 
@@ -173,7 +173,7 @@ class JobQueue {
 	 *
 	 * @return bool
 	 */
-	public function hasPendingJob( $type ) {
+	public function hasPendingJob( $type ): bool {
 		return $this->getQueueSize( $type ) > 0;
 	}
 

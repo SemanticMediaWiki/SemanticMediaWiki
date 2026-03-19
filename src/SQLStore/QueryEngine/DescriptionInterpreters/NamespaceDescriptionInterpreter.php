@@ -34,7 +34,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof NamespaceDescription;
 	}
 
@@ -47,7 +47,7 @@ class NamespaceDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );
 
 		$query = new QuerySegment();
