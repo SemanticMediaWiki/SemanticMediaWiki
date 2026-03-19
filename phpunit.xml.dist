@@ -23,7 +23,6 @@
       <directory>tests/phpunit/DataModel</directory>
     </testsuite>
     <testsuite name="semantic-mediawiki-unit">
-      <directory>tests/phpunit/includes</directory>
       <directory>tests/phpunit/Connection</directory>
       <directory>tests/phpunit/Constraint</directory>
       <directory>tests/phpunit/DataValues</directory>
