@@ -237,7 +237,7 @@ class SubobjectParserFunction {
 		return true;
 	}
 
-	private function getParameters( ParserParameterProcessor $parserParameterProcessor ) {
+	private function getParameters( ParserParameterProcessor $parserParameterProcessor ): array {
 		$id = $parserParameterProcessor->getFirst();
 		$isAnonymous = in_array( $id, [ null, '', '-' ] );
 

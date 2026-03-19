@@ -232,7 +232,7 @@ class Query {
 	 *
 	 * @return array
 	 */
-	public function asAnd( $condition ) {
+	public function asAnd( $condition ): array {
 		return [ 'AND' => $condition ];
 	}
 
@@ -245,7 +245,7 @@ class Query {
 	 *
 	 * @return array
 	 */
-	public function asOr( $condition ) {
+	public function asOr( $condition ): array {
 		return [ 'OR' => $condition ];
 	}
 

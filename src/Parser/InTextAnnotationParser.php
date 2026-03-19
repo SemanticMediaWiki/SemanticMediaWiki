@@ -289,7 +289,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return array
 	 */
-	protected function getModules() {
+	protected function getModules(): array {
 		return [
 			'ext.smw.styles'
 		];

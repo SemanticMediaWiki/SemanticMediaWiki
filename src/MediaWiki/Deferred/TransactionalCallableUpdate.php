@@ -202,7 +202,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 		parent::registerUpdate( $update );
 	}
 
-	protected function loggableContext() {
+	protected function loggableContext(): array {
 		return parent::loggableContext() + [
 			'transactionTicket' => $this->transactionTicket
 		];

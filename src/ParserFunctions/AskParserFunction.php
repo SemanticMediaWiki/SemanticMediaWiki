@@ -193,7 +193,7 @@ class AskParserFunction {
 		return $result;
 	}
 
-	private function prepareFunctionParameters( array $functionParams ) {
+	private function prepareFunctionParameters( array $functionParams ): array {
 		// Remove parser object from parameters array
 		if ( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
 			array_shift( $functionParams );

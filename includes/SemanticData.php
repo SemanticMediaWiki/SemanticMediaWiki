@@ -263,7 +263,7 @@ class SemanticData implements JsonUnserializable {
 	 * @param DIProperty $property
 	 * @return SMWDataItem[]
 	 */
-	public function getPropertyValues( DIProperty $property ) {
+	public function getPropertyValues( DIProperty $property ): array {
 		if ( $property->isInverse() ) { // we never have any data for inverses
 			return [];
 		}

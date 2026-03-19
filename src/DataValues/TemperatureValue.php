@@ -145,7 +145,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * NumberValue::getUnitList
 	 */
-	public function getUnitList() {
+	public function getUnitList(): array {
 		return [ 'K', '°C', '°F', '°R' ];
 	}
 

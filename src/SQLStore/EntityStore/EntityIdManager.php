@@ -433,7 +433,7 @@ class EntityIdManager {
 	 *
 	 * @return
 	 */
-	public function findDuplicates() {
+	public function findDuplicates(): array {
 		if ( $this->duplicateFinder === null ) {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}

@@ -177,7 +177,7 @@ class CheckboxRangeGroupValueFilter {
 		return $ranges;
 	}
 
-	private function range( $diType, $property, $key, $value ) {
+	private function range( $diType, $property, $key, $value ): array {
 		[ $min, $max ] = explode( '...', $value );
 
 		$msg = $this->msg( $key );

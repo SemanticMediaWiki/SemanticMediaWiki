@@ -108,7 +108,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 

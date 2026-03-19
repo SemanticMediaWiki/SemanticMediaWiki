@@ -80,7 +80,7 @@ class Rebuilder {
 	 *
 	 * @return array
 	 */
-	public function select( Store $store, array $conditions ) {
+	public function select( Store $store, array $conditions ): array {
 		$connection = $store->getConnection( 'mw.db' );
 
 		$res = $connection->select(

@@ -120,7 +120,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ) {
+	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ): array {
 		$innerOrderByProperty = null;
 
 		// Find out if we should order by the values of this property
@@ -190,7 +190,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 	}
 
-	private function doExchangeForWhenInversePropertyIsUsed( DIProperty $property, $objectName, $joinVariable ) {
+	private function doExchangeForWhenInversePropertyIsUsed( DIProperty $property, $objectName, $joinVariable ): array {
 		$subjectName = '?' . $joinVariable;
 		$nonInverseProperty = $property;
 

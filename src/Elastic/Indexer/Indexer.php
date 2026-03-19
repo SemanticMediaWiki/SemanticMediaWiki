@@ -331,7 +331,7 @@ class Indexer {
 		return false;
 	}
 
-	private function makeSubject( DIWikiPage $subject ) {
+	private function makeSubject( DIWikiPage $subject ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {

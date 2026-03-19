@@ -365,7 +365,7 @@ class TableResultPrinter extends ResultPrinter {
 	/**
 	 * @see ResultPrinter::getResources
 	 */
-	protected function getResources() {
+	protected function getResources(): array {
 		$class = isset( $this->params['class'] ) ? $this->params['class'] : '';
 
 		if ( strpos( $class, 'datatable' ) === false ) {

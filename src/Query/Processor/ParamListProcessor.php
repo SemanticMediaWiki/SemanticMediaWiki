@@ -124,7 +124,7 @@ class ParamListProcessor {
 		return $serialization;
 	}
 
-	private function legacy_format( array $paramList ) {
+	private function legacy_format( array $paramList ): array {
 		$printouts = [];
 
 		foreach ( $paramList['printouts'] as $k => $request ) {

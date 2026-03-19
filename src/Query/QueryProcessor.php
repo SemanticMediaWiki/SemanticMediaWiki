@@ -262,7 +262,7 @@ class QueryProcessor implements QueryContext {
 	 * @param bool $showMode process like #show parser function?
 	 * @return array( Query, ProcessedParam[] )
 	 */
-	public static function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ) {
+	public static function getQueryAndParamsFromFunctionParams( array $rawParams, $outputMode, $context, $showMode, $contextPage = null ): array {
 		[ $queryString, $params, $printouts ] = self::getComponentsFromFunctionParams( $rawParams, $showMode );
 
 		if ( !$showMode ) {

@@ -211,7 +211,7 @@ class ExtendedSearch {
 	 *
 	 * @return array
 	 */
-	public function getValidSorts() {
+	public function getValidSorts(): array {
 		return [
 
 			// SemanticMediaWiki supported

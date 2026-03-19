@@ -176,7 +176,7 @@ class Client {
 	 *
 	 * @return array
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => $this->isOpenSearch() ?
 				"[https://opensearch.org OpenSearch]" :

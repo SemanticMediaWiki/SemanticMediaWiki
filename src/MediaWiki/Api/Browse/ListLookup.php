@@ -168,7 +168,7 @@ class ListLookup extends Lookup {
 		return $requestOptions;
 	}
 
-	private function fetchFromTable( $ns, $requestOptions, $parameters ) {
+	private function fetchFromTable( $ns, $requestOptions, $parameters ): array {
 		$limit = $requestOptions->getLimit() - 1;
 		$list = [];
 		$options = [];

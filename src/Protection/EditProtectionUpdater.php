@@ -118,7 +118,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		$this->doUpdateRestrictions( $isEditProtected );
 	}
 
-	private function fetchEditProtectedInfo( $semanticData ) {
+	private function fetchEditProtectedInfo( $semanticData ): array {
 		// Whether or not the update was invoked by the ArticleProtectComplete hook
 		$this->isRestrictedUpdate = $semanticData->getOption( ArticleProtectComplete::RESTRICTED_UPDATE ) === true;
 		$property = new DIProperty( '_EDIP' );

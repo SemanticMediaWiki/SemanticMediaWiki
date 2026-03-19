@@ -23,7 +23,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => $this->getCharFieldType()
@@ -35,7 +35,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_blob' => FieldType::TYPE_BLOB,
 			'o_serialized' => $this->getCharFieldType()
@@ -47,7 +47,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			'p_id,o_serialized',
 		];
@@ -89,7 +89,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		$serialization = rawurldecode( $dataItem->getSerialization() );
 		return [ 'o_serialized' => substr( $serialization, 0, $this->getMaxLength() ) ];
 	}
@@ -99,7 +99,7 @@ class DIUriHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		$serialization = rawurldecode( $dataItem->getSerialization() );
 		$text = mb_strlen( $serialization ) <= $this->getMaxLength() ? null : $serialization;
 

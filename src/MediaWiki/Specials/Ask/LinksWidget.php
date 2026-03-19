@@ -19,7 +19,7 @@ class LinksWidget {
 	/**
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [ 'onoi.clipboard' ];
 	}
 

@@ -285,7 +285,7 @@ class ProfileForm {
 		return $namespaceForm->makeFields();
 	}
 
-	private function buildSearchForms( $request ) {
+	private function buildSearchForms( $request ): array {
 		$data = $this->getFormDefinitions( $this->store );
 
 		if ( $data === [] ) {

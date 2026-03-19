@@ -23,7 +23,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_sortkey' => FieldType::TYPE_DOUBLE
@@ -35,7 +35,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE
 		];
@@ -46,7 +46,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 
 			// API module pvalue lookup
@@ -81,7 +81,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [ 'o_sortkey' => $dataItem->getSortKey() ];
 	}
 
@@ -90,7 +90,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => $dataItem->getSortKey()

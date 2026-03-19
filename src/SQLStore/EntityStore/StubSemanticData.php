@@ -178,7 +178,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return array of DataItem
 	 */
-	public function getPropertyValues( DIProperty $property ) {
+	public function getPropertyValues( DIProperty $property ): array {
 		// we never have any data for inverses
 		if ( $property->isInverse() ) {
 			return [];

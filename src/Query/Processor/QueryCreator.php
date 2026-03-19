@@ -158,7 +158,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @return array ( keys => array(), errors => array() )
 	 */
-	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
+	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ): array {
 		$sortKeys = [];
 		$sortErros = [];
 

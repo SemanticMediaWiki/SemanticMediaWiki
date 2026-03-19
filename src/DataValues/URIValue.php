@@ -301,7 +301,7 @@ class URIValue extends DataValue {
 		return $this->getUriDataitem()->getURI();
 	}
 
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
@@ -353,7 +353,7 @@ class URIValue extends DataValue {
 		return str_replace( ':', '&#58;', $url );
 	}
 
-	private function decodeUriContext( $context, $linker ) {
+	private function decodeUriContext( $context, $linker ): array {
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {

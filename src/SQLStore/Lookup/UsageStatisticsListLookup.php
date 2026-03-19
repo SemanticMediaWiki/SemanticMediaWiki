@@ -45,7 +45,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		return [
 			'OWNPAGE' => $this->getPropertyPageCount(),
 			'QUERY' => $this->getQueryCount(),

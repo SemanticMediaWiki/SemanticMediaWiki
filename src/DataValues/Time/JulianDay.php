@@ -138,7 +138,7 @@ class JulianDay implements CalendarModel {
 	 * @return array( calendarModel, yearnumber, monthnumber, daynumber )
 	 * @throws RuntimeException
 	 */
-	public static function JD2Date( $jdValue, $calendarModel = null ) {
+	public static function JD2Date( $jdValue, $calendarModel = null ): array {
 		if ( $calendarModel === null ) { // 1582/10/15
 			$calendarModel = $jdValue < self::J1582 ? self::CM_JULIAN : self::CM_GREGORIAN;
 		}
@@ -187,7 +187,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return array( hours, minutes, seconds )
 	 */
-	public static function JD2Time( $jdvalue ) {
+	public static function JD2Time( $jdvalue ): array {
 		$wjd = $jdvalue + 0.5;
 		$fraction = $wjd - floor( $wjd );
 		$time = round( $fraction * 3600 * 24 );

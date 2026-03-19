@@ -291,7 +291,7 @@ class DocumentCreator {
 		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
 	}
 
-	private function makeSubject( DIWikiPage $subject ) {
+	private function makeSubject( DIWikiPage $subject ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || !str_starts_with( $title ?? '', '_' ) ) {

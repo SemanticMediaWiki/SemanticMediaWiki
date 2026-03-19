@@ -653,7 +653,7 @@ class SpecialAsk extends SpecialPage {
 		return $urlArgs;
 	}
 
-	private function fetchQueryResult( $params ) {
+	private function fetchQueryResult( $params ): array {
 		$res = null;
 		$debug = '';
 		$duration = 0;

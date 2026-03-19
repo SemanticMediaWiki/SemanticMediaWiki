@@ -199,7 +199,7 @@ class ExpResourceMapper {
 		return $resource;
 	}
 
-	private function defineElementsForImportDataItem( DataItem $dataItem ) {
+	private function defineElementsForImportDataItem( DataItem $dataItem ): array {
 		$importValue = $this->dataValueFactory->newDataValueByItem(
 			$dataItem,
 			new DIProperty( '_IMPO' )
@@ -212,7 +212,7 @@ class ExpResourceMapper {
 		];
 	}
 
-	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ) {
+	private function defineElementsForDiWikiPage( DIWikiPage $diWikiPage, $modifier ): array {
 		$localName = '';
 		$hasFixedNamespace = false;
 

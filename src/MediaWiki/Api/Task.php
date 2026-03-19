@@ -75,7 +75,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		$taskFactory = new TaskFactory();
 
 		return [
@@ -96,7 +96,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'task' => 'Defines the task type',
 			'params' => 'JSON encoded parameters that matches the selected type requirement'
@@ -109,7 +109,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'Semantic MediaWiki API module to invoke and execute tasks (for internal use only)'
 		];
@@ -145,7 +145,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=smwtask&task=update&params={ "subject": "Foo" }',
 		];
@@ -157,7 +157,7 @@ class Task extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamplesMessages() {
+	protected function getExamplesMessages(): array {
 		return [
 			'action=smwtask&task=update&params={ "subject": "Foo" }'
 				=> 'smw-apihelp-smwtask-example-update'

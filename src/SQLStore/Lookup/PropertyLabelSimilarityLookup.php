@@ -228,7 +228,7 @@ class PropertyLabelSimilarityLookup {
 		return md5( implode( '', $hashing ) );
 	}
 
-	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ) {
+	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ): array {
 		$summary = [];
 
 		if ( $withType ) {

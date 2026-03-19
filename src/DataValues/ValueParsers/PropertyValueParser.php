@@ -158,7 +158,7 @@ class PropertyValueParser implements ValueParser {
 		return true;
 	}
 
-	private function getNormalizedValueFrom( $value ) {
+	private function getNormalizedValueFrom( $value ): array {
 		$inverse = false;
 		$capitalizedName = '';
 		$value = (string)$value;

@@ -272,7 +272,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'browse' => [
 				ParamValidator::PARAM_REQUIRED => true,
@@ -313,7 +313,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'browse' => 'Specifies the type of browse activity',
 			'params' => 'JSON encoded parameters containing required and optional fields and depend on the selected browse type'
@@ -326,7 +326,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to support browse activties for different entity types in Semantic MediaWiki.'
 		];
@@ -338,7 +338,7 @@ class Browse extends ApiBase {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 0, "search": "*" }',
 			'api.php?action=smwbrowse&browse=property&params={ "limit": 10, "offset": 10, "search": "*", "sort": "desc" }',

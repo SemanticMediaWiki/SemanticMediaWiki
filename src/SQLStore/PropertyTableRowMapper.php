@@ -78,7 +78,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return array
 	 */
-	public function mapToRows( $sid, SemanticData $semanticData ) {
+	public function mapToRows( $sid, SemanticData $semanticData ): array {
 		[ $rows, $textItems, $propertyList, $fixedPropertyList ] = $this->mapData(
 			$sid,
 			$semanticData
@@ -125,7 +125,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return array
 	 */
-	private function mapData( $sid, SemanticData $semanticData ) {
+	private function mapData( $sid, SemanticData $semanticData ): array {
 		$subject = $semanticData->getSubject();
 		$propertyTables = $this->store->getPropertyTables();
 

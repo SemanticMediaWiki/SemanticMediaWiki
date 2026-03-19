@@ -66,7 +66,7 @@ class SetParserFunction {
 	 *
 	 * @return string|null
 	 */
-	public function parse( ParserParameterProcessor $parameters ) {
+	public function parse( ParserParameterProcessor $parameters ): array {
 		$count = 0;
 		$template = '';
 		$subject = $this->parserData->getSemanticData()->getSubject();

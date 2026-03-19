@@ -48,7 +48,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	public function getVersions() {
+	public function getVersions(): array {
 		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
@@ -259,7 +259,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithCjkRegex( $text, $exemptionList ) {
+	private function tokenizeWithCjkRegex( $text, $exemptionList ): array {
 		$pattern = str_replace(
 			$exemptionList,
 			'',

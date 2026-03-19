@@ -357,7 +357,7 @@ class TableStatisticsLookup {
 		);
 	}
 
-	private function hash_field_count( $connection, $blobTable ) {
+	private function hash_field_count( $connection, $blobTable ): array {
 		$hash_field_multi_occurrence_total_count = 0;
 		$hash_field_single_occurrence_total_count = 0;
 

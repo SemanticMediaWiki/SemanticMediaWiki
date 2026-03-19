@@ -49,7 +49,7 @@ class AskArgs extends Query {
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'conditions' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -80,7 +80,7 @@ class AskArgs extends Query {
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'conditions' => 'The query conditions, i.e. the requirements for a subject to be included',
 			'printouts'  => 'The query printouts, i.e. the properties to show per subject',
@@ -94,7 +94,7 @@ class AskArgs extends Query {
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to query SMW by providing a query specified as a list of conditions, printouts and parameters.'
 		];
@@ -106,7 +106,7 @@ class AskArgs extends Query {
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=askargs&conditions=Modification%20date::%2B&printouts=Modification%20date&parameters=|sort%3DModification%20date|order%3Ddesc',
 		];

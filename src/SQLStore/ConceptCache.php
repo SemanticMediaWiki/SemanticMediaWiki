@@ -76,7 +76,7 @@ class ConceptCache {
 	 *
 	 * @return string[] array with error messages
 	 */
-	public function refresh( Title $concept ) {
+	public function refresh( Title $concept ): array {
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID( $concept->getDBkey(), SMW_NS_CONCEPT, '', '' );

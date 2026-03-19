@@ -470,7 +470,7 @@ class DataRebuilder {
 		$this->rebuildCount++;
 	}
 
-	private function getHumanReadableTextFrom( $id, array $entities ) {
+	private function getHumanReadableTextFrom( $id, array $entities ): array {
 		if ( !$this->options->has( 'v' ) ) {
 			return [ '', '' ];
 		}

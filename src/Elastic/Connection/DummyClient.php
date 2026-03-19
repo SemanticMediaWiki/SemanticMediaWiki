@@ -67,7 +67,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getSoftwareInfo
 	 */
-	public function getSoftwareInfo() {
+	public function getSoftwareInfo(): array {
 		return [
 			'component' => "[https://www.elastic.co/elasticsearch/ Elasticsearch]",
 			'version' => null
@@ -130,14 +130,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::getMapping
 	 */
-	public function getMapping( array $params ) {
+	public function getMapping( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::getSettings
 	 */
-	public function getSettings( array $params ) {
+	public function getSettings( array $params ): array {
 		return [];
 	}
 
@@ -150,7 +150,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::validate
 	 */
-	public function validate( array $params ) {
+	public function validate( array $params ): array {
 		return [];
 	}
 
@@ -178,14 +178,14 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::get
 	 */
-	public function get( array $params ) {
+	public function get( array $params ): array {
 		return [];
 	}
 
 	/**
 	 * @see Client::delete
 	 */
-	public function delete( array $params ) {
+	public function delete( array $params ): array {
 		return [];
 	}
 
@@ -224,7 +224,7 @@ class DummyClient extends Client {
 	/**
 	 * @see Client::explain
 	 */
-	public function explain( array $params ) {
+	public function explain( array $params ): array {
 		return [];
 	}
 

@@ -161,7 +161,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return [
 			'id'   => $this->id,
 			'type' => $this->type,

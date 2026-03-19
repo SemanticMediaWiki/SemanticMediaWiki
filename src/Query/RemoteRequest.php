@@ -177,7 +177,7 @@ class RemoteRequest implements QueryEngine {
 		) . $result;
 	}
 
-	private function findExtraInformation( &$result ) {
+	private function findExtraInformation( &$result ): array {
 		$count = 0;
 		$hasFurtherResults = false;
 

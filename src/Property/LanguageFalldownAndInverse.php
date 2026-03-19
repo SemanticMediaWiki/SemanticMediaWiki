@@ -341,7 +341,7 @@ class LanguageFalldownAndInverse {
 	/**
 	 * @return array
 	 */
-	public function tryout() {
+	public function tryout(): array {
 		$dataValue = $this->falldownInverse();
 		if ( $dataValue ) {
 			return [ $dataValue, $this->languageCode ];

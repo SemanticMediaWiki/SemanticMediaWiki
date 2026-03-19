@@ -81,7 +81,7 @@ class SortBuilder {
 		return $this->getFields( $query->getSortKeys() );
 	}
 
-	private function getFields( array $sortKeys ) {
+	private function getFields( array $sortKeys ): array {
 		$isRandom = false;
 		$isConstantScore = true;
 		$sort = [];

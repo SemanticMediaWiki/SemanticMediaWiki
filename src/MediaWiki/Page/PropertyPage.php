@@ -327,7 +327,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {
+	private function makeItemList( $key, $propertyKey, $checkProperty = true ): array {
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
 			return [ '', '' ];

@@ -45,7 +45,7 @@ class OptionsBuilder {
 	/**
 	 * @see SQLPlatform::makeSelectOptions
 	 */
-	public static function makeSelectOptions( Database $connection, $options ) {
+	public static function makeSelectOptions( Database $connection, $options ): array {
 		$preLimitTail = $postLimitTail = '';
 		$startOpts = '';
 

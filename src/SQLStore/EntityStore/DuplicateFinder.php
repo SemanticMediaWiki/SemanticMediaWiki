@@ -181,7 +181,10 @@ class DuplicateFinder {
 		return $fieldsDef[$tableName];
 	}
 
-	private static function mapRow( $tableName, $row ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function mapRow( $tableName, $row ): array {
 		$fieldsDef = self::fieldsDef();
 
 		if ( !isset( $fieldsDef[$tableName] ) ) {
@@ -197,7 +200,7 @@ class DuplicateFinder {
 		return $map;
 	}
 
-	private static function fieldsDef() {
+	private static function fieldsDef(): array {
 		return [
 			SQLStore::ID_TABLE => [
 				'smw_title',

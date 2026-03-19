@@ -114,7 +114,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function getInfo() {
+	public function getInfo(): array {
 		return [
 			$this->getType() => $this->connRef->getConnection( 'read' )->getServerInfo()
 		];

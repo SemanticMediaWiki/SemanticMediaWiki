@@ -325,7 +325,7 @@ class PageBuilder {
 		return $this->pageRequestOptions->value instanceof $dataTypeClass && $this->pageRequestOptions->valueString === '';
 	}
 
-	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ) {
+	private function tryToFindAtLeastOnePropertyTableReferenceFor( DIProperty $property ): array {
 		$resultList = '';
 		$resultMessage = '';
 		$resultCount = 0;

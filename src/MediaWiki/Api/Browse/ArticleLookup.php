@@ -81,7 +81,7 @@ class ArticleLookup extends Lookup {
 		return $res;
 	}
 
-	private function search( $limit, $offset, $search, $namespace = null ) {
+	private function search( $limit, $offset, $search, $namespace = null ): array {
 		$search = $this->getSearchTerm( $search, $namespace );
 
 		$escapeChar = '`';

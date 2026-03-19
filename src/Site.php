@@ -142,7 +142,7 @@ class Site {
 	 *
 	 * @return array
 	 */
-	public static function stats() {
+	public static function stats(): array {
 		return [
 			'pageCount' => SiteStats::pages(),
 			'contentPageCount' => SiteStats::articles(),

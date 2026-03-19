@@ -147,7 +147,7 @@ class ListResultBuilder {
 	/**
 	 * @return string[]
 	 */
-	private function getDefaultsFromI18N() {
+	private function getDefaultsFromI18N(): array {
 		return [
 			'field-label-separator' => Message::get( 'smw-format-list-field-label-separator' ),
 			'other-fields-open' => Message::get( 'smw-format-list-other-fields-open' ),

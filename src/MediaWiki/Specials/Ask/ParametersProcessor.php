@@ -50,7 +50,7 @@ class ParametersProcessor {
 	 *
 	 * @return string
 	 */
-	public static function process( WebRequest $request, $params ) {
+	public static function process( WebRequest $request, $params ): array {
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
 		$parameterList = self::getParameterList( $request, $params );

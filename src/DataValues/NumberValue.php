@@ -509,7 +509,7 @@ class NumberValue extends DataValue {
 	 *
 	 * Overwritten by subclasses that support units.
 	 */
-	public function getUnitList() {
+	public function getUnitList(): array {
 		return [ '' ];
 	}
 

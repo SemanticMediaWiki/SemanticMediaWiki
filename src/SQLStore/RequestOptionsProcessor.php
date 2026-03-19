@@ -247,7 +247,7 @@ class RequestOptionsProcessor {
 		return $keepDataValue;
 	}
 
-	private static function getSortKeyForItem( $store, $item ) {
+	private static function getSortKeyForItem( $store, $item ): array {
 		if ( $item instanceof DIWikiPage ) {
 			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;

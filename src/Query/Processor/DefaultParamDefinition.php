@@ -151,7 +151,7 @@ class DefaultParamDefinition {
 		return ParamDefinition::getCleanDefinitions( $params );
 	}
 
-	private static function getSourceParam( $vars ) {
+	private static function getSourceParam( $vars ): array {
 		$sourceValues = is_array( $vars['smwgQuerySources'] ) ? array_keys( $vars['smwgQuerySources'] ) : [];
 
 		return [

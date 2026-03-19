@@ -237,7 +237,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return $this->createMessageFromRows( $id, $rows );
 	}
 
-	private function createMessageFromRows( &$id, $rows ) {
+	private function createMessageFromRows( &$id, $rows ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$references = [];
