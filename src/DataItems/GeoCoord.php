@@ -141,7 +141,7 @@ class GeoCoord extends DataItem {
 	 *
 	 * @return self
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): self {
 		$parts = explode( ',', $serialization );
 		$count = count( $parts );
 

@@ -116,7 +116,7 @@ class SchemaFinder {
 	 *
 	 * @return SchemaList
 	 */
-	public function getSchemaListByType( $type ) {
+	public function getSchemaListByType( $type ): SchemaList {
 		$schemaList = [];
 		$key = smwfCacheKey( self::CACHE_NAMESPACE, [ self::TYPE_LIST, $type ] );
 

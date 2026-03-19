@@ -122,7 +122,7 @@ class PropertyTableDefinitionBuilder {
 	 *
 	 * @return PropertyTableDefinition
 	 */
-	public function newTableDefinition( $diType, $tableName, $fixedProperty = false ) {
+	public function newTableDefinition( $diType, $tableName, $fixedProperty = false ): PropertyTableDefinition {
 		return new PropertyTableDefinition( $diType, $tableName, $fixedProperty );
 	}
 

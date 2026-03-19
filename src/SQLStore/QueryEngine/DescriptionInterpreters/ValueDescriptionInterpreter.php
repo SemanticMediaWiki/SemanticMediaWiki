@@ -62,7 +62,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
 		if ( !$description->getDataItem() instanceof DIWikiPage ) {

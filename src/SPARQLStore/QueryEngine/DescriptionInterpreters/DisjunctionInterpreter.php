@@ -227,14 +227,14 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 		return $this->createWhereCondition( $subConditionElements );
 	}
 
-	private function createFilterCondition( $subConditionElements ) {
+	private function createFilterCondition( $subConditionElements ): FilterCondition {
 		return new FilterCondition(
 			$subConditionElements->filter,
 			$subConditionElements->namespaces
 		);
 	}
 
-	private function createWhereCondition( $subConditionElements ) {
+	private function createWhereCondition( $subConditionElements ): WhereCondition {
 		return new WhereCondition(
 			$subConditionElements->unionCondition,
 			$subConditionElements->hasSafeSubconditions,

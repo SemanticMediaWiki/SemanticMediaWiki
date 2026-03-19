@@ -90,7 +90,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return SearchSuggestionSet
 	 */
-	public function newSearchSuggestionSet() {
+	public function newSearchSuggestionSet(): SearchSuggestionSet {
 		$suggestions = [];
 		$filter = [];
 

@@ -69,7 +69,7 @@ class Blob extends DataItem {
 	 * ID.
 	 * @return Blob
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Blob {
 		return new Blob( $serialization );
 	}
 

@@ -54,7 +54,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return Parameters
 	 */
-	public function newParameters( array $parameters = [] ) {
+	public function newParameters( array $parameters = [] ): Parameters {
 		return new Parameters( $parameters );
 	}
 

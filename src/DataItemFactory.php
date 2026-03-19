@@ -81,7 +81,7 @@ class DataItemFactory {
 	 *
 	 * @return ContainerSemanticData
 	 */
-	public function newContainerSemanticData( DIWikiPage $subject ) {
+	public function newContainerSemanticData( DIWikiPage $subject ): ContainerSemanticData {
 		return new ContainerSemanticData( $subject );
 	}
 

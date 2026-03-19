@@ -112,7 +112,7 @@ class ConnectionProvider implements IConnectionProvider {
 		$this->connection = null;
 	}
 
-	private function newClient( $clientBuilder = null ) {
+	private function newClient( $clientBuilder = null ): DummyClient|TestClient|Client {
 		if ( $clientBuilder === null ) {
 			return new DummyClient();
 		}

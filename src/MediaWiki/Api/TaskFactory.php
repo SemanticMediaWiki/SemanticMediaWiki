@@ -115,7 +115,7 @@ class TaskFactory {
 	 *
 	 * @return DuplicateLookupTask
 	 */
-	public function newDuplicateLookupTask() {
+	public function newDuplicateLookupTask(): DuplicateLookupTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$duplicateLookupTask = new DuplicateLookupTask(
@@ -135,7 +135,7 @@ class TaskFactory {
 	 *
 	 * @return TableStatisticsTask
 	 */
-	public function newTableStatisticsTask() {
+	public function newTableStatisticsTask(): TableStatisticsTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$tableStatisticsTask = new TableStatisticsTask(

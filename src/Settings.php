@@ -241,7 +241,7 @@ class Settings extends Options {
 	 *
 	 * @return Settings
 	 */
-	public static function newFromArray( array $settings ) {
+	public static function newFromArray( array $settings ): self {
 		return new self( $settings );
 	}
 

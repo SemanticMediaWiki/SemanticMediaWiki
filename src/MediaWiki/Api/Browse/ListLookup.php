@@ -96,7 +96,7 @@ class ListLookup extends Lookup {
 		return $res;
 	}
 
-	private function newRequestOptions( $parameters ) {
+	private function newRequestOptions( $parameters ): RequestOptions {
 		$limit = 50;
 		$offset = 0;
 		$search = '';

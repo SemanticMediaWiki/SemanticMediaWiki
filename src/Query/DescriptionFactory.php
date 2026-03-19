@@ -33,7 +33,7 @@ class DescriptionFactory {
 	 *
 	 * @return ValueDescription
 	 */
-	public function newValueDescription( DataItem $dataItem, ?Property $property = null, $comparator = SMW_CMP_EQ ) {
+	public function newValueDescription( DataItem $dataItem, ?Property $property = null, $comparator = SMW_CMP_EQ ): ValueDescription {
 		return new ValueDescription( $dataItem, $property, $comparator );
 	}
 
@@ -45,7 +45,7 @@ class DescriptionFactory {
 	 *
 	 * @return SomeProperty
 	 */
-	public function newSomeProperty( Property $property, Description $description ) {
+	public function newSomeProperty( Property $property, Description $description ): SomeProperty {
 		return new SomeProperty( $property, $description );
 	}
 
@@ -54,7 +54,7 @@ class DescriptionFactory {
 	 *
 	 * @return ThingDescription
 	 */
-	public function newThingDescription() {
+	public function newThingDescription(): ThingDescription {
 		return new ThingDescription();
 	}
 
@@ -65,7 +65,7 @@ class DescriptionFactory {
 	 *
 	 * @return Disjunction
 	 */
-	public function newDisjunction( $descriptions = [] ) {
+	public function newDisjunction( $descriptions = [] ): Disjunction {
 		return new Disjunction( $descriptions );
 	}
 
@@ -76,7 +76,7 @@ class DescriptionFactory {
 	 *
 	 * @return Conjunction
 	 */
-	public function newConjunction( $descriptions = [] ) {
+	public function newConjunction( $descriptions = [] ): Conjunction {
 		return new Conjunction( $descriptions );
 	}
 
@@ -87,7 +87,7 @@ class DescriptionFactory {
 	 *
 	 * @return NamespaceDescription
 	 */
-	public function newNamespaceDescription( $ns ) {
+	public function newNamespaceDescription( $ns ): NamespaceDescription {
 		return new NamespaceDescription( $ns );
 	}
 
@@ -98,7 +98,7 @@ class DescriptionFactory {
 	 *
 	 * @return ClassDescription
 	 */
-	public function newClassDescription( $category ) {
+	public function newClassDescription( $category ): ClassDescription {
 		return new ClassDescription( $category );
 	}
 
@@ -109,7 +109,7 @@ class DescriptionFactory {
 	 *
 	 * @return ConceptDescription
 	 */
-	public function newConceptDescription( WikiPage $concept ) {
+	public function newConceptDescription( WikiPage $concept ): ConceptDescription {
 		return new ConceptDescription( $concept );
 	}
 

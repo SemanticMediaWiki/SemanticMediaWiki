@@ -76,7 +76,7 @@ class DataValueServiceFactory {
 	 *
 	 * @return InfoLinksProvider
 	 */
-	public function newInfoLinksProvider( DataValue $dataValue ) {
+	public function newInfoLinksProvider( DataValue $dataValue ): InfoLinksProvider {
 		return new InfoLinksProvider( $dataValue, $this->getPropertySpecificationLookup() );
 	}
 
@@ -199,7 +199,7 @@ class DataValueServiceFactory {
 		return $this->dispatchingDataValueFormatter->getDataValueFormatterFor( $dataValue );
 	}
 
-	private function newDispatchingDataValueFormatter() {
+	private function newDispatchingDataValueFormatter(): DispatchingDataValueFormatter {
 		$dispatchingDataValueFormatter = new DispatchingDataValueFormatter();
 
 		// To be checked only after DispatchingDataValueFormatter::addDataValueFormatter did

@@ -134,7 +134,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return IndicatorRegistry
 	 */
-	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ) {
+	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ): IndicatorRegistry {
 		$indicatorRegistry = new IndicatorRegistry();
 
 		if ( !$addEntityExaminer ) {

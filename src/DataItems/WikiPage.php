@@ -249,7 +249,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return WikiPage
 	 */
-	public function asBase() {
+	public function asBase(): self {
 		return new self (
 			$this->m_dbkey,
 			$this->m_namespace,
@@ -282,7 +282,7 @@ class WikiPage extends DataItem {
 	 * @return WikiPage
 	 * @throws DataItemDeserializationException
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): self {
 		$parts = explode( '#', $serialization, 4 );
 
 		if ( count( $parts ) == 3 ) {
@@ -300,7 +300,7 @@ class WikiPage extends DataItem {
 	 * @param Title $title
 	 * @return WikiPage
 	 */
-	public static function newFromTitle( Title $title ) {
+	public static function newFromTitle( Title $title ): self {
 		return new self(
 			$title->getDBkey(),
 			$title->getNamespace(),
@@ -317,7 +317,7 @@ class WikiPage extends DataItem {
 	 *
 	 * @return WikiPage
 	 */
-	public static function newFromText( $text, $namespace = NS_MAIN ) {
+	public static function newFromText( $text, $namespace = NS_MAIN ): self {
 		return new self( $text, $namespace );
 	}
 

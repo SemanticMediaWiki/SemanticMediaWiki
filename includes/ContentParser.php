@@ -182,7 +182,7 @@ class ContentParser {
 		return $this;
 	}
 
-	private function makeParserOptions() {
+	private function makeParserOptions(): ParserOptions {
 		$user = null;
 
 		if ( $this->getRevision() !== null ) {

@@ -33,7 +33,7 @@ class PropertyTableRowMapper {
 	 *
 	 * @return ChangeOp
 	 */
-	public function newChangeOp( $id, SemanticData $semanticData ) {
+	public function newChangeOp( $id, SemanticData $semanticData ): ChangeOp {
 		[ $dataArray, $textItems, $propertyList, $fixedPropertyList ] = $this->mapToRows(
 			$id,
 			$semanticData

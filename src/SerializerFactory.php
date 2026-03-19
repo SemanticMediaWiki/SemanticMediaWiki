@@ -82,7 +82,7 @@ class SerializerFactory {
 	 *
 	 * @return SemanticDataSerializer
 	 */
-	public function newSemanticDataSerializer() {
+	public function newSemanticDataSerializer(): SemanticDataSerializer {
 		return new SemanticDataSerializer();
 	}
 
@@ -91,7 +91,7 @@ class SerializerFactory {
 	 *
 	 * @return SemanticDataDeserializer
 	 */
-	public function newSemanticDataDeserializer() {
+	public function newSemanticDataDeserializer(): SemanticDataDeserializer {
 		return new SemanticDataDeserializer();
 	}
 
@@ -100,7 +100,7 @@ class SerializerFactory {
 	 *
 	 * @return QueryResultSerializer
 	 */
-	public function newQueryResultSerializer() {
+	public function newQueryResultSerializer(): QueryResultSerializer {
 		return new QueryResultSerializer();
 	}
 
@@ -109,7 +109,7 @@ class SerializerFactory {
 	 *
 	 * @return ExpDataSerializer
 	 */
-	public function newExpDataSerializer() {
+	public function newExpDataSerializer(): ExpDataSerializer {
 		return new ExpDataSerializer();
 	}
 
@@ -118,7 +118,7 @@ class SerializerFactory {
 	 *
 	 * @return ExpDataDeserializer
 	 */
-	public function newExpDataDeserializer() {
+	public function newExpDataDeserializer(): ExpDataDeserializer {
 		return new ExpDataDeserializer();
 	}
 

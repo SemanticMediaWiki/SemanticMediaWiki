@@ -59,7 +59,7 @@ class Error extends DataItem {
 	 * @todo Be more careful with unserialization. It can create E_NOTICEs.
 	 * @return Error
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Error {
 		return new Error( unserialize( $serialization ) );
 	}
 

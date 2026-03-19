@@ -6,7 +6,7 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Tests\TestEnvironment;
 
 /**
@@ -54,13 +54,13 @@ class ChangeTitleUpdateTest extends TestCase {
 	}
 
 	public function testDoUpdate() {
-		$nullJob = $this->getMockBuilder( NullJob::class )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->jobFactory->expects( $this->atLeastOnce() )
 			->method( 'newUpdateJob' )
-			->willReturn( $nullJob );
+			->willReturn( $updateJob );
 
 		$oldTitle = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()

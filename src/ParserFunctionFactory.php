@@ -53,7 +53,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return ParserFunctionFactory
 	 */
-	public static function newFromParser( Parser $parser ) {
+	public static function newFromParser( Parser $parser ): self {
 		return new self( $parser );
 	}
 
@@ -106,7 +106,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return AskParserFunction
 	 */
-	public function newAskParserFunction( Parser $parser ) {
+	public function newAskParserFunction( Parser $parser ): AskParserFunction {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$circularReferenceGuard = new CircularReferenceGuard( 'ask-parser' );
@@ -169,7 +169,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return ShowParserFunction
 	 */
-	public function newShowParserFunction( Parser $parser ) {
+	public function newShowParserFunction( Parser $parser ): ShowParserFunction {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$askParserFunction = $this->newAskParserFunction(
@@ -194,7 +194,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return SetParserFunction
 	 */
-	public function newSetParserFunction( Parser $parser ) {
+	public function newSetParserFunction( Parser $parser ): SetParserFunction {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -232,7 +232,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return ConceptParserFunction
 	 */
-	public function newConceptParserFunction( Parser $parser ) {
+	public function newConceptParserFunction( Parser $parser ): ConceptParserFunction {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -263,7 +263,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function newSubobjectParserFunction( Parser $parser ) {
+	public function newSubobjectParserFunction( Parser $parser ): SubobjectParserFunc {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -309,7 +309,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return RecurringEventsParserFunction
 	 */
-	public function newRecurringEventsParserFunction( Parser $parser ) {
+	public function newRecurringEventsParserFunction( Parser $parser ): RecurringEventsParserFunc {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -359,7 +359,7 @@ class ParserFunctionFactory {
 	 *
 	 * @return DeclareParserFunction
 	 */
-	public function newDeclareParserFunction( Parser $parser ) {
+	public function newDeclareParserFunction( Parser $parser ): DeclareParserFunction {
 		$parserData = ApplicationFactory::getInstance()->newParserData(
 			$parser->getTitle(),
 			$parser->getOutput()

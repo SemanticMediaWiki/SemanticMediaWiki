@@ -6,7 +6,7 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\EntityStore\IdChanger;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
@@ -28,7 +28,7 @@ class IdChangerTest extends TestCase {
 	private $store;
 	private $connection;
 	private $jobFactory;
-	private $nullJob;
+	private $updateJob;
 
 	protected function setUp(): void {
 		$this->testEnvironment = new TestEnvironment();
@@ -37,7 +37,7 @@ class IdChangerTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->nullJob = $this->getMockBuilder( NullJob::class )
+		$this->updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -128,7 +128,7 @@ class IdChangerTest extends TestCase {
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->willReturn( $this->nullJob );
+			->willReturn( $this->updateJob );
 
 		$instance = new IdChanger(
 			$this->store,
@@ -185,7 +185,7 @@ class IdChangerTest extends TestCase {
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->willReturn( $this->nullJob );
+			->willReturn( $this->updateJob );
 
 		$instance = new IdChanger(
 			$this->store,

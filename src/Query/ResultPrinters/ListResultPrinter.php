@@ -74,7 +74,7 @@ class ListResultPrinter extends ResultPrinter {
 	 *
 	 * @return ListResultBuilder
 	 */
-	private function getBuilder( QueryResult $queryResult ) {
+	private function getBuilder( QueryResult $queryResult ): ListResultBuilder {
 		$builder = new ListResultBuilder( $queryResult, $this->mLinker, $GLOBALS['smwgPlainList'] );
 
 		$builder->set( $this->params );

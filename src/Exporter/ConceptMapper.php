@@ -146,7 +146,7 @@ class ConceptMapper implements DataItemMapper {
 		return $result;
 	}
 
-	private function mapConceptDescription( ConceptDescription $description, &$exact ) {
+	private function mapConceptDescription( ConceptDescription $description, &$exact ): ExpData {
 		$result = new ExpData(
 			$this->exporter->getResourceElementForWikiPage( $description->getConcept() )
 		);
@@ -255,7 +255,7 @@ class ConceptMapper implements DataItemMapper {
 		return $result;
 	}
 
-	private function mapConjunctionDisjunction( Description $description, &$exact ) {
+	private function mapConjunctionDisjunction( Description $description, &$exact ): ExpData {
 		$result = new ExpData(
 			new ExpResource( '' )
 		);

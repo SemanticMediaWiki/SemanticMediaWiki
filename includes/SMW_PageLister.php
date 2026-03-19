@@ -111,7 +111,7 @@ class SMWPageLister {
 	 * @param $until string can be empty if no until condition is desired
 	 * @return RequestOptions
 	 */
-	public static function getRequestOptions( $limit, $from, $until ) {
+	public static function getRequestOptions( $limit, $from, $until ): RequestOptions {
 		$options = new RequestOptions();
 		$options->limit = $limit + 1;
 		$options->sort = true;
@@ -141,7 +141,7 @@ class SMWPageLister {
 	 * @param $until string can be empty if no until condition is desired
 	 * @return SMWQuery
 	 */
-	public static function getQuery( Description $description, $limit, $from, $until ) {
+	public static function getQuery( Description $description, $limit, $from, $until ): SMWQuery {
 		if ( $from !== '' ) {
 			$diWikiPage = new DIWikiPage( $from, NS_MAIN, '' ); // make a dummy wiki page as boundary
 			$fromDescription = new ValueDescription( $diWikiPage, null, SMW_CMP_GEQ );

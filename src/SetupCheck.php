@@ -175,7 +175,7 @@ class SetupCheck {
 	 *
 	 * @return SetupCheck
 	 */
-	public static function newFromDefaults( ?SetupFile $setupFile = null ) {
+	public static function newFromDefaults( ?SetupFile $setupFile = null ): SetupCheck {
 		if ( !defined( 'SMW_VERSION' ) ) {
 			$version = self::readFromFile( $GLOBALS['smwgIP'] . 'extension.json' )['version'];
 		} else {

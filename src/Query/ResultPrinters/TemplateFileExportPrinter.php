@@ -154,7 +154,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function newTemplateSet( $queryResult ) {
+	private function newTemplateSet( $queryResult ): TemplateSet {
 		$templateSet = new TemplateSet();
 
 		$link = $this->getLink(

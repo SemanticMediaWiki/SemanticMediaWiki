@@ -291,7 +291,7 @@ class Exporter {
 	 *
 	 * @return ExpData
 	 */
-	public function makeExportDataForSubject( WikiPage $subject, $addStubData = false ) {
+	public function makeExportDataForSubject( WikiPage $subject, $addStubData = false ): ExpData {
 		$wikiPageExpElement = $this->newExpElement( $subject );
 		$expData = new ExpData( $wikiPageExpElement );
 
@@ -542,7 +542,7 @@ class Exporter {
 	 *
 	 * @return ExpNsResource
 	 */
-	public function newExpNsResourceById( $namespaceId, $localName ) {
+	public function newExpNsResourceById( $namespaceId, $localName ): ExpNsResource {
 		$namespace = self::getNamespaceUri( $namespaceId );
 
 		if ( $namespace !== '' ) {
@@ -563,7 +563,7 @@ class Exporter {
 	 * @param string $localName string (e.g. "type")
 	 * @return ExpNsResource
 	 */
-	public static function getSpecialNsResource( $namespaceId, $localName ) {
+	public static function getSpecialNsResource( $namespaceId, $localName ): ExpNsResource {
 		$namespace = self::getNamespaceUri( $namespaceId );
 		if ( $namespace !== '' ) {
 			return new ExpNsResource( $localName, $namespace, $namespaceId );

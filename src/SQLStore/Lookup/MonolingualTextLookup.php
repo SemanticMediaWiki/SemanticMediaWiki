@@ -334,7 +334,7 @@ class MonolingualTextLookup {
 		return $propTables[$propTableId];
 	}
 
-	private function newContainerSemanticData( $row ) {
+	private function newContainerSemanticData( $row ): ContainerSemanticData {
 		if ( $row instanceof DIWikiPage ) {
 			$subject = $row;
 		} else {

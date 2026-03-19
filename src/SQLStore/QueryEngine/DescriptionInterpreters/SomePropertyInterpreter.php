@@ -73,7 +73,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return QuerySegment
 	 */
-	public function interpretDescription( Description $description ) {
+	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
 		$this->interpretPropertyConditionForDescription(

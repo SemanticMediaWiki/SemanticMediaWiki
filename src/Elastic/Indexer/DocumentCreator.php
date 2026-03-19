@@ -127,7 +127,7 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newFromData( SemanticData $semanticData, $parent_id = null ) {
+	private function newFromData( SemanticData $semanticData, $parent_id = null ): Document {
 		$subject = $semanticData->getSubject();
 		$dataTypeRegistry = DataTypeRegistry::getInstance();
 
@@ -287,7 +287,7 @@ class DocumentCreator {
 		return $document;
 	}
 
-	private function newHead( $id, DIWikiPage $subject, $type ) {
+	private function newHead( $id, DIWikiPage $subject, $type ): Document {
 		return new Document( $id, [ 'subject' => $this->makeSubject( $subject ) ], $type );
 	}
 

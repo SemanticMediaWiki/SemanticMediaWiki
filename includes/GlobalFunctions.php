@@ -221,7 +221,7 @@ function smwfGetLinker() {
  * @codeCoverageIgnore
  */
 // phpcs:ignore MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix
-function enableSemantics( $namespace = null, $complete = false ) {
+function enableSemantics( $namespace = null, $complete = false ): ConfigPreloader {
 	global $smwgNamespace;
 
 	SemanticMediaWiki::setupDefines();

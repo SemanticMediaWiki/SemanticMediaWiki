@@ -272,7 +272,7 @@ class ConditionBuilder {
 	 *
 	 * @return Condition
 	 */
-	public function newCondition( $params ) {
+	public function newCondition( $params ): Condition {
 		return new Condition( $params );
 	}
 

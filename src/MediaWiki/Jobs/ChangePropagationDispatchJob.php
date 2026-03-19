@@ -417,7 +417,7 @@ class ChangePropagationDispatchJob extends Job {
 		$applicationFactory->getStore()->clear();
 	}
 
-	private function newChangePropagationUpdateJob( $title, $parameters ) {
+	private function newChangePropagationUpdateJob( $title, $parameters ): ChangePropagationClassUpdateJob|ChangePropagationUpdateJob {
 		$namespace = $this->getTitle()->getNamespace();
 		$parameters = $parameters + [ 'origin' => 'ChangePropagationDispatchJob' ];
 

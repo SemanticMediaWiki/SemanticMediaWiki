@@ -43,7 +43,7 @@ class ContainerSemanticData extends SemanticData {
 	 *
 	 * @param bool $noDuplicates stating if duplicate data should be avoided
 	 */
-	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ) {
+	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ): ContainerSemanticData {
 		$containerSemanticData = new ContainerSemanticData(
 			new DIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
 			$noDuplicates

@@ -79,7 +79,7 @@ class SQLStoreUpdater {
 	 *
 	 * @param Title $title
 	 */
-	public function deleteSubject( Title $title ) {
+	public function deleteSubject( Title $title ): Status {
 		// @deprecated since 2.1, use 'SMW::SQLStore::BeforeDeleteSubjectComplete'
 		$this->hookContainer->run( 'SMWSQLStore3::deleteSubjectBefore', [ $this->store, $title ] );
 
@@ -175,7 +175,7 @@ class SQLStoreUpdater {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function doDataUpdate( SemanticData $semanticData ) {
+	public function doDataUpdate( SemanticData $semanticData ): Status {
 		// Deprecated since 3.1, use SMW::SQLStore::BeforeDataUpdateComplete
 		$this->hookContainer->run( 'SMWSQLStore3::updateDataBefore', [ $this->store, $semanticData ] );
 
@@ -424,7 +424,7 @@ class SQLStoreUpdater {
 		return $sortkey;
 	}
 
-	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ) {
+	public function changeTitle( Title $oldTitle, Title $newTitle, $pageId, $redirectId = 0 ): Status {
 		$options = [
 			'page_id' => $pageId,
 			'redirect_id' => $redirectId

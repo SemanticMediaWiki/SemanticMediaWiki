@@ -372,7 +372,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $containerSemanticData;
 	}
 
-	private function newLanguageCodeValue( $languageCode ) {
+	private function newLanguageCodeValue( $languageCode ): LanguageCodeValue {
 		$languageCodeValue = new LanguageCodeValue();
 
 		if ( $this->m_property !== null ) {

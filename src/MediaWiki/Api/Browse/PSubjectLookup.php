@@ -146,7 +146,7 @@ class PSubjectLookup extends Lookup {
 		return [ $list, $continueOffset ];
 	}
 
-	private function newRequestOptions( $parameters ) {
+	private function newRequestOptions( $parameters ): RequestOptions {
 		$limit = 20;
 		$offset = 0;
 		$search = '';

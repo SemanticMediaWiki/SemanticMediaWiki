@@ -117,7 +117,7 @@ class ConnectionProvider implements IConnectionProvider {
 		return $connection;
 	}
 
-	private function newConnRef( $conf ) {
+	private function newConnRef( $conf ): ConnRef {
 		$read = $this->newLoadBalancerConnectionProvider( $conf['read'] );
 
 		if ( $conf['read'] !== $conf['write'] ) {
@@ -134,11 +134,11 @@ class ConnectionProvider implements IConnectionProvider {
 		);
 	}
 
-	private function newLoadBalancerConnectionProvider( $id ) {
+	private function newLoadBalancerConnectionProvider( $id ): LoadBalancerConnectionProvider {
 		return new LoadBalancerConnectionProvider( $id );
 	}
 
-	private function newTransactionHandler() {
+	private function newTransactionHandler(): TransactionHandler {
 		$transactionHandler = new TransactionHandler(
 			ServicesFactory::getInstance()->create( 'DBLoadBalancerFactory' )
 		);

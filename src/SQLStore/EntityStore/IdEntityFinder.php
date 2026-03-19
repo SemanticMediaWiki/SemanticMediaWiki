@@ -70,7 +70,7 @@ class IdEntityFinder {
 	 *
 	 * @return DIWikiPage
 	 */
-	public function newFromRow( $row ) {
+	public function newFromRow( $row ): DIWikiPage {
 		$dataItem = new DIWikiPage(
 			$row->smw_title,
 			$row->smw_namespace,

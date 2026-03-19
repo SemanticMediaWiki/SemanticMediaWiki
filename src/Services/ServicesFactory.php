@@ -365,7 +365,7 @@ class ServicesFactory {
 	 *
 	 * @return InTextAnnotationParser
 	 */
-	public function newInTextAnnotationParser( ParserData $parserData ) {
+	public function newInTextAnnotationParser( ParserData $parserData ): InTextAnnotationParser {
 		$mwCollaboratorFactory = $this->newMwCollaboratorFactory();
 
 		$linksProcessor = $this->callbackContainerBuilder->create( 'LinksProcessor' );
@@ -424,7 +424,7 @@ class ServicesFactory {
 	 *
 	 * @return DataUpdater
 	 */
-	public function newDataUpdater( SemanticData $semanticData ) {
+	public function newDataUpdater( SemanticData $semanticData ): DataUpdater {
 		$settings = $this->getSettings();
 
 		$changePropagationNotifier = new ChangePropagationNotifier(
@@ -470,7 +470,7 @@ class ServicesFactory {
 	 *
 	 * @return MwCollaboratorFactory
 	 */
-	public function newMwCollaboratorFactory() {
+	public function newMwCollaboratorFactory(): MwCollaboratorFactory {
 		return new MwCollaboratorFactory( $this );
 	}
 

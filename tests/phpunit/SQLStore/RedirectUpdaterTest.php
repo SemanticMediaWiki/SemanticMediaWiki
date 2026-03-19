@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
-use SMW\MediaWiki\Jobs\NullJob;
+use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\Options;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
@@ -73,13 +73,13 @@ class RedirectUpdaterTest extends TestCase {
 	}
 
 	public function testTriggerChangeTitleUpdate() {
-		$nullJob = $this->getMockBuilder( NullJob::class )
+		$updateJob = $this->getMockBuilder( UpdateJob::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$this->jobFactory->expects( $this->once() )
 			->method( 'newUpdateJob' )
-			->willReturn( $nullJob );
+			->willReturn( $updateJob );
 
 		$instance = new RedirectUpdater(
 			$this->store,

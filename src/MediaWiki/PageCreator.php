@@ -33,7 +33,7 @@ class PageCreator {
 	 *
 	 * @return WikiFilePage
 	 */
-	public function createFilePage( Title $title ) {
+	public function createFilePage( Title $title ): WikiFilePage {
 		return new WikiFilePage( $title );
 	}
 

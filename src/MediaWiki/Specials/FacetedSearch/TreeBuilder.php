@@ -196,7 +196,7 @@ class TreeBuilder {
 		return "<ul>$text</ul>";
 	}
 
-	public function newNode( $id, $content = '' ) {
+	public function newNode( $id, $content = '' ): object {
 		return new class ( $id, $content ) {
 
 			public $children = [];

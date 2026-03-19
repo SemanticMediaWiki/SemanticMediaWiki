@@ -444,7 +444,7 @@ class DataUpdater {
 		return $this->updateRedirectTarget( $semanticData, $target );
 	}
 
-	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ) {
+	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ): SemanticData {
 		$subject = $semanticData->getSubject();
 
 		// The general rule is that a redirect page is not expected to contain

@@ -27,7 +27,7 @@ class QueryDependencyLinksStoreFactory {
 	 *
 	 * @return DependencyLinksValidator
 	 */
-	public function newDependencyLinksValidator() {
+	public function newDependencyLinksValidator(): DependencyLinksValidator {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$dependencyLinksValidator = new DependencyLinksValidator(
@@ -50,7 +50,7 @@ class QueryDependencyLinksStoreFactory {
 	 *
 	 * @return QueryResultDependencyListResolver
 	 */
-	public function newQueryResultDependencyListResolver() {
+	public function newQueryResultDependencyListResolver(): QueryResultDependencyListResolver {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$queryResultDependencyListResolver = new QueryResultDependencyListResolver(
@@ -71,7 +71,7 @@ class QueryDependencyLinksStoreFactory {
 	 *
 	 * @return QueryDependencyLinksStore
 	 */
-	public function newQueryDependencyLinksStore( Store $store ) {
+	public function newQueryDependencyLinksStore( Store $store ): QueryDependencyLinksStore {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$logger = $applicationFactory->getMediaWikiLogger();
 
@@ -110,7 +110,7 @@ class QueryDependencyLinksStoreFactory {
 	 *
 	 * @return QueryReferenceBacklinks
 	 */
-	public function newQueryReferenceBacklinks( Store $store ) {
+	public function newQueryReferenceBacklinks( Store $store ): QueryReferenceBacklinks {
 		return new QueryReferenceBacklinks( $this->newQueryDependencyLinksStore( $store ) );
 	}
 
@@ -121,7 +121,7 @@ class QueryDependencyLinksStoreFactory {
 	 *
 	 * @return QueryLinksTableDisposer
 	 */
-	public function newQueryLinksTableDisposer( Store $store ) {
+	public function newQueryLinksTableDisposer( Store $store ): QueryLinksTableDisposer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$queryLinksTableDisposer = new QueryLinksTableDisposer(

@@ -93,7 +93,7 @@ class Highlighter {
 	 *
 	 * @return Highlighter
 	 */
-	public static function factory( $type, $language = null ) {
+	public static function factory( $type, $language = null ): Highlighter {
 		if ( $type === '' || !is_int( $type ) ) {
 			$type = self::getTypeId( $type );
 		}

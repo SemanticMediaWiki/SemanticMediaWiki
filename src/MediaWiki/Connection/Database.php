@@ -88,7 +88,7 @@ class Database {
 	 *
 	 * @return Query
 	 */
-	public function newQuery() {
+	public function newQuery(): Query {
 		return new Query( $this );
 	}
 

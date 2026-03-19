@@ -183,7 +183,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
 		return new self( $json['options'] );
 	}
 

@@ -121,7 +121,7 @@ class Uri extends DataItem {
 	 * ID.
 	 * @return Uri
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Uri {
 		// try to split "schema:rest"
 		$parts = explode( ':', $serialization, 2 );
 		$strict = true;

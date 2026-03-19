@@ -58,7 +58,7 @@ class Number extends DataItem {
 	 * validation here (because this would require less efficient parsing).
 	 * @return Number
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): Number {
 		return new Number( floatval( $serialization ) );
 	}
 

@@ -306,7 +306,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return ExtendedDateTime
 	 */
-	public function asDateTime() {
+	public function asDateTime(): ExtendedDateTime {
 		$year = str_pad( $this->m_year, 4, '0', STR_PAD_LEFT );
 
 		// Avoid "Failed to parse time string (-900-02-02 00:00:00) at
@@ -466,7 +466,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return self
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): self {
 		$parts = explode( '/', $serialization, 8 );
 		$values = [];
 
@@ -513,7 +513,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return self
 	 */
-	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ) {
+	public static function newFromJD( $jdValue, $calendarModel = null, $precision = null, $timezone = false ): self {
 		$hour = $minute = $second = false;
 		$year = $month = $day = false;
 		$jdValue = JulianDay::format( $jdValue );

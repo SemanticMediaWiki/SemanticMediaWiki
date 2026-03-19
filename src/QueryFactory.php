@@ -28,7 +28,7 @@ class QueryFactory {
 	 *
 	 * @return ProfileAnnotatorFactory
 	 */
-	public function newProfileAnnotatorFactory() {
+	public function newProfileAnnotatorFactory(): ProfileAnnotatorFactory {
 		return new ProfileAnnotatorFactory();
 	}
 
@@ -49,7 +49,7 @@ class QueryFactory {
 	 *
 	 * @return DescriptionFactory
 	 */
-	public function newDescriptionFactory() {
+	public function newDescriptionFactory(): DescriptionFactory {
 		return new DescriptionFactory();
 	}
 
@@ -58,7 +58,7 @@ class QueryFactory {
 	 *
 	 * @return PrintRequestFactory
 	 */
-	public function newPrintRequestFactory() {
+	public function newPrintRequestFactory(): PrintRequestFactory {
 		return new PrintRequestFactory();
 	}
 
@@ -67,7 +67,7 @@ class QueryFactory {
 	 *
 	 * @return RequestOptions
 	 */
-	public function newRequestOptions() {
+	public function newRequestOptions(): RequestOptions {
 		return new RequestOptions();
 	}
 
@@ -80,7 +80,7 @@ class QueryFactory {
 	 *
 	 * @return StringCondition
 	 */
-	public function newStringCondition( $string, $condition, $isDisjunctiveCondition = false ) {
+	public function newStringCondition( $string, $condition, $isDisjunctiveCondition = false ): StringCondition {
 		return new StringCondition( $string, $condition, $isDisjunctiveCondition );
 	}
 
@@ -102,7 +102,7 @@ class QueryFactory {
 	 *
 	 * @return QueryParser
 	 */
-	public function newLegacyQueryParser( $queryFeatures = false ) {
+	public function newLegacyQueryParser( $queryFeatures = false ): LegacyParser {
 		if ( $queryFeatures === false ) {
 			$queryFeatures = Applicationfactory::getInstance()->getSettings()->get( 'smwgQFeatures' );
 		}
@@ -124,7 +124,7 @@ class QueryFactory {
 	 *
 	 * @return QueryResult
 	 */
-	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ) {
+	public function newQueryResult( Store $store, Query $query, $results = [], $continue = false ): QueryResult {
 		$queryResult = new QueryResult(
 			$query->getDescription()->getPrintrequests(),
 			$query,

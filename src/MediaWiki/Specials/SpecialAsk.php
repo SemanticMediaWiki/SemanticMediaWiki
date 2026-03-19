@@ -604,7 +604,7 @@ class SpecialAsk extends SpecialPage {
 		}
 	}
 
-	private function newUrlArgs() {
+	private function newUrlArgs(): UrlArgs {
 		$urlArgs = new UrlArgs();
 
 		// build parameter strings for URLs, based on current settings

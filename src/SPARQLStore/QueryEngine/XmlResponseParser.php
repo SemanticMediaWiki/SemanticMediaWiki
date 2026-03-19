@@ -93,7 +93,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 * @return RepositoryResult
 	 * @throws XmlParserException
 	 */
-	public function parse( $response ) {
+	public function parse( $response ): RepositoryResult {
 		$this->xmlOpenTags = [];
 		$this->header = [];
 		$this->data = [];

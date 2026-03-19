@@ -196,7 +196,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $this->createWhereCondition( $subConditionElements );
 	}
 
-	private function createSingletonCondition( $subConditionElements ) {
+	private function createSingletonCondition( $subConditionElements ): SingletonCondition {
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}
@@ -211,14 +211,14 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function createFilterCondition( $subConditionElements ) {
+	private function createFilterCondition( $subConditionElements ): FilterCondition {
 		return new FilterCondition(
 			$subConditionElements->filter,
 			$subConditionElements->namespaces
 		);
 	}
 
-	private function createWhereCondition( $subConditionElements ) {
+	private function createWhereCondition( $subConditionElements ): WhereCondition {
 		if ( $subConditionElements->filter !== '' ) {
 			$subConditionElements->condition .= "FILTER( $subConditionElements->filter )";
 		}

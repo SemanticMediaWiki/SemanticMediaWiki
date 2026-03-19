@@ -63,7 +63,7 @@ class ElasticFactory {
 	 *
 	 * @return Hooks
 	 */
-	public function newHooks() {
+	public function newHooks(): Hooks {
 		return new Hooks( $this );
 	}
 
@@ -72,7 +72,7 @@ class ElasticFactory {
 	 *
 	 * @return Config
 	 */
-	public function newConfig() {
+	public function newConfig(): Config {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$config = new Config(
@@ -108,7 +108,7 @@ class ElasticFactory {
 	 *
 	 * @return ConnectionProvider
 	 */
-	public function newConnectionProvider() {
+	public function newConnectionProvider(): ConnectionProvider {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$connectionProvider = new ConnectionProvider(
@@ -149,7 +149,7 @@ class ElasticFactory {
 	 *
 	 * @return ProximityPropertyValueLookup
 	 */
-	public function newProximityPropertyValueLookup( Store $store ) {
+	public function newProximityPropertyValueLookup( Store $store ): ProximityPropertyValueLookup {
 		return new ProximityPropertyValueLookup( $store );
 	}
 
@@ -160,7 +160,7 @@ class ElasticFactory {
 	 *
 	 * @return Installer
 	 */
-	public function newInstaller( ElasticClient $connection ) {
+	public function newInstaller( ElasticClient $connection ): Installer {
 		return new Installer( $this->newRollover( $connection ) );
 	}
 
@@ -172,7 +172,7 @@ class ElasticFactory {
 	 *
 	 * @return Indexer
 	 */
-	public function newIndexer( ?Store $store = null, ?MessageReporter $messageReporter = null ) {
+	public function newIndexer( ?Store $store = null, ?MessageReporter $messageReporter = null ): Indexer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -212,7 +212,7 @@ class ElasticFactory {
 	 *
 	 * @return Rollover
 	 */
-	public function newRollover( ElasticClient $connection ) {
+	public function newRollover( ElasticClient $connection ): Rollover {
 		return new Rollover( $connection );
 	}
 
@@ -223,7 +223,7 @@ class ElasticFactory {
 	 *
 	 * @return Bulk
 	 */
-	public function newBulk( ElasticClient $connection ) {
+	public function newBulk( ElasticClient $connection ): Bulk {
 		return new Bulk( $connection );
 	}
 
@@ -235,7 +235,7 @@ class ElasticFactory {
 	 *
 	 * @return FileIndexer
 	 */
-	public function newFileIndexer( Store $store, Indexer $indexer ) {
+	public function newFileIndexer( Store $store, Indexer $indexer ): FileIndexer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$logger = $applicationFactory->getMediaWikiLogger( 'smw-elastic' );
@@ -287,7 +287,7 @@ class ElasticFactory {
 	 *
 	 * @return ReplicationStatus
 	 */
-	public function newReplicationStatus( ElasticClient $connection ) {
+	public function newReplicationStatus( ElasticClient $connection ): ReplicationStatus {
 		return new ReplicationStatus( $connection );
 	}
 
@@ -298,7 +298,7 @@ class ElasticFactory {
 	 *
 	 * @return DocumentReplicationExaminer
 	 */
-	public function newDocumentReplicationExaminer( ?Store $store = null ) {
+	public function newDocumentReplicationExaminer( ?Store $store = null ): DocumentReplicationExaminer {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -320,7 +320,7 @@ class ElasticFactory {
 	 *
 	 * @return ReplicationCheck
 	 */
-	public function newReplicationCheck( ?Store $store = null ) {
+	public function newReplicationCheck( ?Store $store = null ): ReplicationCheck {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $store === null ) {
@@ -350,7 +350,7 @@ class ElasticFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newQueryEngine( Store $store ) {
+	public function newQueryEngine( Store $store ): QueryEngine {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$config = $store->getConnection( 'elastic' )->getConfig();
 
@@ -405,7 +405,7 @@ class ElasticFactory {
 	 *
 	 * @return Rebuilder
 	 */
-	public function newRebuilder( Store $store ) {
+	public function newRebuilder( Store $store ): Rebuilder {
 		$connection = $store->getConnection( 'elastic' );
 		$indexer = $this->newIndexer( $store );
 
@@ -428,7 +428,7 @@ class ElasticFactory {
 	 *
 	 * @return UpdateEntityCollationComplete
 	 */
-	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
+	public function newUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ): UpdateEntityCollationComplete {
 		$updateEntityCollationComplete = new UpdateEntityCollationComplete(
 			$store
 		);
@@ -447,7 +447,7 @@ class ElasticFactory {
 	 *
 	 * @return ElasticClientTaskHandler
 	 */
-	public function newInfoTaskHandler( Store $store, $outputFormatter ) {
+	public function newInfoTaskHandler( Store $store, $outputFormatter ): ElasticClientTaskHandler {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$replicationInfoProvider = new ReplicationInfoProvider(
@@ -474,7 +474,7 @@ class ElasticFactory {
 	 *
 	 * @return ConceptDescriptionInterpreter
 	 */
-	public function newConceptDescriptionInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newConceptDescriptionInterpreter( ConditionBuilder $containerBuilder ): ConceptDescriptionInterpreter {
 		return new ConceptDescriptionInterpreter(
 			$containerBuilder,
 			ApplicationFactory::getInstance()->newQueryParser()
@@ -488,7 +488,7 @@ class ElasticFactory {
 	 *
 	 * @return SomePropertyInterpreter
 	 */
-	public function newSomePropertyInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newSomePropertyInterpreter( ConditionBuilder $containerBuilder ): SomePropertyInterpreter {
 		return new SomePropertyInterpreter( $containerBuilder );
 	}
 
@@ -499,7 +499,7 @@ class ElasticFactory {
 	 *
 	 * @return ClassDescriptionInterpreter
 	 */
-	public function newClassDescriptionInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newClassDescriptionInterpreter( ConditionBuilder $containerBuilder ): ClassDescriptionInterpreter {
 		return new ClassDescriptionInterpreter( $containerBuilder );
 	}
 
@@ -510,7 +510,7 @@ class ElasticFactory {
 	 *
 	 * @return NamespaceDescriptionInterpreter
 	 */
-	public function newNamespaceDescriptionInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newNamespaceDescriptionInterpreter( ConditionBuilder $containerBuilder ): NamespaceDescriptionInterpreter {
 		return new NamespaceDescriptionInterpreter( $containerBuilder );
 	}
 
@@ -521,7 +521,7 @@ class ElasticFactory {
 	 *
 	 * @return ValueDescriptionInterpreter
 	 */
-	public function newValueDescriptionInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newValueDescriptionInterpreter( ConditionBuilder $containerBuilder ): ValueDescriptionInterpreter {
 		return new ValueDescriptionInterpreter( $containerBuilder );
 	}
 
@@ -532,7 +532,7 @@ class ElasticFactory {
 	 *
 	 * @return SomeValueInterpreter
 	 */
-	public function newSomeValueInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newSomeValueInterpreter( ConditionBuilder $containerBuilder ): SomeValueInterpreter {
 		return new SomeValueInterpreter( $containerBuilder );
 	}
 
@@ -543,7 +543,7 @@ class ElasticFactory {
 	 *
 	 * @return ConjunctionInterpreter
 	 */
-	public function newConjunctionInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newConjunctionInterpreter( ConditionBuilder $containerBuilder ): ConjunctionInterpreter {
 		return new ConjunctionInterpreter( $containerBuilder );
 	}
 
@@ -554,7 +554,7 @@ class ElasticFactory {
 	 *
 	 * @return DisjunctionInterpreter
 	 */
-	public function newDisjunctionInterpreter( ConditionBuilder $containerBuilder ) {
+	public function newDisjunctionInterpreter( ConditionBuilder $containerBuilder ): DisjunctionInterpreter {
 		return new DisjunctionInterpreter( $containerBuilder );
 	}
 

@@ -274,7 +274,7 @@ class FileAttachment {
 		return $this->bulk->execute();
 	}
 
-	private function newContainerSemanticData( $dataItem, $doc ) {
+	private function newContainerSemanticData( $dataItem, $doc ): ContainerSemanticData {
 		$subobjectName = '_FILE' . $doc['_source']['file_sha1'];
 
 		$subject = new DIWikiPage(

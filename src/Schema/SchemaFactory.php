@@ -156,7 +156,7 @@ class SchemaFactory {
 	 *
 	 * @return SchemaValidator
 	 */
-	public function newSchemaValidator() {
+	public function newSchemaValidator(): SchemaValidator {
 		return new SchemaValidator(
 			ApplicationFactory::getInstance()->create( 'JsonSchemaValidator' )
 		);
@@ -171,7 +171,7 @@ class SchemaFactory {
 		return new SchemaFilterFactory();
 	}
 
-	private function newSchemaTypes( array $types ) {
+	private function newSchemaTypes( array $types ): SchemaTypes {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

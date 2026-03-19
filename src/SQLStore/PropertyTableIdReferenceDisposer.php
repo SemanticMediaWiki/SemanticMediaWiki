@@ -132,7 +132,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
+	public function newOutdatedEntitiesResultIterator( ?RequestOptions $requestOptions = null ): ResultIterator {
 		$options = [];
 
 		if ( $requestOptions !== null ) {
@@ -160,7 +160,7 @@ class PropertyTableIdReferenceDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ) {
+	public function newByNamespaceInvalidEntitiesResultIterator( ?RequestOptions $requestOptions = null ): ResultIterator {
 		$options = [];
 
 		if ( $requestOptions !== null ) {

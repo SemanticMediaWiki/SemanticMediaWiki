@@ -216,7 +216,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return ChangeDiff
 	 */
-	public function newChangeDiff() {
+	public function newChangeDiff(): ChangeDiff {
 		$changeDiff = new ChangeDiff(
 			$this->subject,
 			$this->getTableChangeOps(),
