@@ -1,0 +1,96 @@
+<?php
+
+namespace SMW\Tests\Unit\Listener\EventListener\EventListeners;
+
+use MediaWiki\Title\Title;
+use Onoi\EventDispatcher\DispatchContext;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\EntityCache;
+use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.1
+ *
+ * @author mwjames
+ */
+class InvalidateEntityCacheEventListenerTest extends TestCase {
+
+	private $entityCache;
+	private $spyLogger;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->spyLogger = TestEnvironment::newSpyLogger();
+
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	protected function tearDown(): void {
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			InvalidateEntityCacheEventListener::class,
+			new InvalidateEntityCacheEventListener( $this->entityCache )
+		);
+	}
+
+	public function testExecute_OnSubject() {
+		$context = DispatchContext::newFromArray(
+			[
+				'subject' => WikiPage::newFromText( __METHOD__ ),
+				'context' => 'Bar'
+			]
+		);
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'invalidate' );
+
+		$instance = new InvalidateEntityCacheEventListener(
+			$this->entityCache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->execute( $context );
+	}
+
+	public function testExecute_OnTitle() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$context = DispatchContext::newFromArray(
+			[
+				'title' => $title,
+				'context' => 'Bar'
+			]
+		);
+
+		$this->entityCache->expects( $this->once() )
+			->method( 'invalidate' );
+
+		$instance = new InvalidateEntityCacheEventListener(
+			$this->entityCache
+		);
+
+		$instance->setLogger(
+			$this->spyLogger
+		);
+
+		$instance->execute( $context );
+	}
+
+}

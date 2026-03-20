@@ -1,0 +1,201 @@
+<?php
+
+namespace SMW\Tests\Unit\SQLStore\EntityStore;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
+use SMW\MediaWiki\Connection\Database;
+use SMW\MediaWiki\Connection\Query;
+use SMW\SQLStore\EntityStore\DuplicateFinder;
+use SMW\SQLStore\RedirectStore;
+use SMW\SQLStore\SQLStore;
+use stdClass;
+use Wikimedia\Rdbms\ResultWrapper;
+
+/**
+ * @covers \SMW\SQLStore\EntityStore\DuplicateFinder
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   3.0
+ *
+ * @author mwjames
+ */
+class DuplicateFinderTest extends TestCase {
+
+	private $store;
+	private $connection;
+	private $iteratorFactory;
+
+	protected function setUp(): void {
+		$this->connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( SQLStore::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getConnection' ] )
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $this->connection );
+
+		$this->iteratorFactory = $this->getMockBuilder( IteratorFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			DuplicateFinder::class,
+			new DuplicateFinder( $this->store, $this->iteratorFactory )
+		);
+	}
+
+	public function testHasDuplicate() {
+		$connection = $this->getMockBuilder( Database::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$connection->expects( $this->any() )
+			->method( 'addQuotes' )
+			->willReturnArgument( 0 );
+
+		$connection->expects( $this->any() )
+			->method( 'tableName' )
+			->willReturnArgument( 0 );
+
+		$query = new Query( $connection );
+
+		$resultWrapper = $this->getMockBuilder( ResultWrapper::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->connection->expects( $this->atLeastOnce() )
+			->method( 'newQuery' )
+			->willReturn( $query );
+
+		$this->connection->expects( $this->atLeastOnce() )
+			->method( 'readQuery' )
+			->willReturn( $resultWrapper );
+
+		$instance = new DuplicateFinder(
+			$this->store,
+			$this->iteratorFactory
+		);
+
+		$instance->hasDuplicate( WikiPage::newFromText( 'Foo' ) );
+
+		$this->assertJsonStringEqualsJsonString(
+			'{' .
+			'"tables": "smw_object_ids",' .
+			'"fields":["smw_id","smw_sortkey"],' .
+			'"conditions":[["smw_title=Foo"],["smw_namespace=0"],["smw_subobject="],["smw_iw!=:smw"],["smw_iw!=:smw-delete"],["smw_iw!=:smw-redi"]],' .
+			'"joins":[],' .
+			'"options":{"LIMIT":2},"alias":"","index":0,"autocommit":false}',
+			(string)$query
+		);
+	}
+
+	public function testFindDuplicates_ID_Table() {
+		$row = new stdClass;
+		$row->count = 42;
+		$row->smw_title = 'Foo';
+		$row->smw_namespace = 0;
+		$row->smw_iw = '';
+		$row->smw_subobject = '';
+
+		$expected = [
+			'count' => 42,
+			'smw_title' => 'Foo',
+			'smw_namespace' => 0,
+			'smw_iw' => '',
+			'smw_subobject' => ''
+		];
+
+		$query = new Query( $this->connection );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newQuery' )
+			->willReturn( $query );
+
+		$this->connection->expects( $this->once() )
+			->method( 'readQuery' )
+			->willReturn( [ $row ] );
+
+		$instance = new DuplicateFinder(
+			$this->store,
+			new IteratorFactory()
+		);
+
+		$res = $instance->findDuplicates();
+
+		$this->assertInstanceOf(
+			MappingIterator::class,
+			$res
+		);
+
+		$this->assertStringContainsString(
+			'HAVING":"count(*) > 1',
+			$query->__toString()
+		);
+
+		$this->assertEquals(
+			[ $expected ],
+			iterator_to_array( $res )
+		);
+	}
+
+	public function testFindDuplicates_REDI_Table() {
+		$row = new stdClass;
+		$row->count = 42;
+		$row->s_title = 'Foo';
+		$row->s_namespace = 0;
+		$row->o_id = 1001;
+
+		$expected = [
+			'count' => 42,
+			's_title' => 'Foo',
+			's_namespace' => 0,
+			'o_id' => 1001
+		];
+
+		$query = new Query( $this->connection );
+
+		$this->connection->expects( $this->once() )
+			->method( 'newQuery' )
+			->willReturn( $query );
+
+		$this->connection->expects( $this->once() )
+			->method( 'readQuery' )
+			->willReturn( [ $row ] );
+
+		$instance = new DuplicateFinder(
+			$this->store,
+			new IteratorFactory()
+		);
+
+		$res = $instance->findDuplicates(
+			RedirectStore::TABLE_NAME
+		);
+
+		$this->assertInstanceOf(
+			MappingIterator::class,
+			$res
+		);
+
+		$this->assertStringContainsString(
+			'HAVING":"count(*) > 1',
+			$query->__toString()
+		);
+
+		$this->assertEquals(
+			[ $expected ],
+			iterator_to_array( $res )
+		);
+	}
+
+}

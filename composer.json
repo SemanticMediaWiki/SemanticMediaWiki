@@ -108,7 +108,7 @@
 			"cd ${MW_INSTALL_PATH:-../..} && MEDIAWIKI_HAS_INTEGRATION_TESTS=1 vendor/bin/phpunit -c extensions/SemanticMediaWiki/phpunit.xml.dist --bootstrap tests/phpunit/bootstrap.php"
 		],
 		"phpunit:unit": "@phpunit --testsuite=semantic-mediawiki-unit",
-		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-data-model,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
+		"phpunit:integration": "@phpunit --testsuite semantic-mediawiki-check,semantic-mediawiki-integration,semantic-mediawiki-import,semantic-mediawiki-structure",
 		"phpunit-coverage": "@phpunit --testdox --coverage-text --coverage-clover extensions/SemanticMediaWiki/coverage/php/coverage.xml",
 		"minus-x": "minus-x check .",
 		"benchmark": "composer phpunit  -- --group semantic-mediawiki-benchmark",
