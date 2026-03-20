@@ -41,7 +41,7 @@ interface ResultPrinter {
 	 * caller parses this (which is likely) then this will again call us in parse-context and all recursion
 	 * checks catch. Only the first level of parsing is done outside and thus not counted. Thus you
 	 * effectively can get down to level 3. The basic maximal depth of 2 can be changed by setting the
-	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after enableSemantics()).
+	 * variable SMWResultPrinter::$maxRecursionDepth (in LocalSettings.php, after wfLoadExtension).
 	 * Do this at your own risk.
 	 *
 	 * @param $results QueryResult

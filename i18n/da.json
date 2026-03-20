@@ -16,8 +16,6 @@
 	"smw-upgrade-error-title": "Fejl » Semantic MediaWiki",
 	"smw-upgrade-error-why-title": "Hvorfor ser jeg denne side?",
 	"smw-upgrade-error-how-title": "Hvordan fikser jeg denne fejl?",
-	"smw-extensionload-error-why-title": "Hvorfor ser jeg denne side?",
-	"smw-extensionload-error-how-title": "Hvordan retter jeg denne fejl?",
 	"smw_viewasrdf": "RDF-nyhedskilde",
 	"smw_finallistconjunct": ", og",
 	"smw-factbox-head": "... mere om \"$1\"",

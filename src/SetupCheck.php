@@ -31,8 +31,9 @@ class SetupCheck {
 
 	/**
 	 * A user tried to use `wfLoadExtension( 'SemanticMediaWiki' )` and
-	 * `enableSemantics` at the same causing the ExtensionRegistry to throw an
-	 * "Uncaught Exception: It was attempted to load SemanticMediaWiki twice ..."
+	 * the deprecated `enableSemantics` at the same time, causing the
+	 * ExtensionRegistry to throw an "Uncaught Exception: It was attempted
+	 * to load SemanticMediaWiki twice ..."
 	 */
 	const ERROR_EXTENSION_REGISTRY = 'ERROR_EXTENSION_REGISTRY';
 

@@ -207,6 +207,7 @@ class NamespaceManagerTest extends TestCase {
 		$instance = new NamespaceManager( $this->localLanguage );
 		$vars = $instance->init( $vars );
 
+		// SMW-internal namespaces
 		$this->assertTrue(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_PROPERTY]
 		);
@@ -217,6 +218,25 @@ class NamespaceManagerTest extends TestCase {
 
 		$this->assertTrue(
 			$vars['smwgNamespacesWithSemanticLinks'][SMW_NS_SCHEMA]
+		);
+
+		// Standard MW namespaces loaded from DefaultSettings.php (#6302)
+		$this->assertArrayHasKey(
+			NS_MAIN,
+			$vars['smwgNamespacesWithSemanticLinks']
+		);
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][NS_MAIN]
+		);
+
+		$this->assertArrayHasKey(
+			NS_HELP,
+			$vars['smwgNamespacesWithSemanticLinks']
+		);
+
+		$this->assertTrue(
+			$vars['smwgNamespacesWithSemanticLinks'][NS_HELP]
 		);
 	}
 
