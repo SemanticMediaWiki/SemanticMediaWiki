@@ -23,8 +23,8 @@ use Onoi\EventDispatcher\Listener\GenericCallbackEventListener;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\ContentParser;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
@@ -852,12 +852,12 @@ class HooksTest extends TestCase {
 		$handler = 'ArticleDelete';
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
@@ -1543,7 +1543,7 @@ class HooksTest extends TestCase {
 		}
 
 		$id = 42;
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 		$isRedirect = false;
 
 		$this->assertThatHookIsExcutable(
@@ -1632,12 +1632,12 @@ class HooksTest extends TestCase {
 			->willReturn( new Options() );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$changeOp = $this->getMockBuilder( ChangeOp::class )
 			->disableOriginalConstructor()
@@ -1763,12 +1763,12 @@ class HooksTest extends TestCase {
 			->willReturn( [] );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
@@ -1795,7 +1795,7 @@ class HooksTest extends TestCase {
 
 		$html = '';
 		$property = new DIProperty( 'Foo' );
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->assertTrue(
 			$instance->isRegistered( $handler )

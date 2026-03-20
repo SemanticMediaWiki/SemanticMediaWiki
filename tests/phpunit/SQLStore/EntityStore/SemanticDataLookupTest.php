@@ -4,8 +4,8 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
@@ -83,25 +83,25 @@ class SemanticDataLookupTest extends TestCase {
 		);
 	}
 
-	public function testNewStubSemanticData_FromDIWikiPage() {
+	public function testNewStubSemanticData_FromWikiPage() {
 		$instance = new SemanticDataLookup(
 			$this->store
 		);
 
 		$this->assertInstanceOf(
 			StubSemanticData::class,
-			$instance->newStubSemanticData( DIWikiPage::newFromText( __METHOD__ ) )
+			$instance->newStubSemanticData( WikiPage::newFromText( __METHOD__ ) )
 		);
 	}
 
 	public function testNewStubSemanticData_FromSemanticData() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -131,7 +131,7 @@ class SemanticDataLookupTest extends TestCase {
 			->willReturn( '__bar__' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -221,7 +221,7 @@ class SemanticDataLookupTest extends TestCase {
 			$this->store
 		);
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $instance->fetchSemanticDataFromTable(
 			42,
@@ -281,7 +281,7 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'newQuery' )
 			->willReturn( $this->query );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -394,7 +394,7 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'newQuery' )
 			->willReturn( $this->query );
 
-		$dataItem = DIWikiPage::newFromText( 'no_id_subject' );
+		$dataItem = WikiPage::newFromText( 'no_id_subject' );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -442,7 +442,7 @@ class SemanticDataLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = DIWikiPage::newFromText( 'Foo' );
+		$dataItem = WikiPage::newFromText( 'Foo' );
 
 		$instance = new SemanticDataLookup(
 			$this->store
@@ -572,7 +572,7 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'newQuery' )
 			->willReturnOnConsecutiveCalls( $query_1, $query_2 );
 
-		$dataItem = DIWikiPage::newFromText( 'Bar' );
+		$dataItem = WikiPage::newFromText( 'Bar' );
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( 4 );

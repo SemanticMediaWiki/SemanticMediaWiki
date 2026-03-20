@@ -3,9 +3,9 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIConcept;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Language\ConceptDescription;
 use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -36,7 +36,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		parent::setUp();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( Store::class )
@@ -123,7 +123,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			->getMock();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -138,13 +138,13 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getSemanticData' )
-			->with( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) )
+			->with( new WikiPage( 'Foo', SMW_NS_CONCEPT ) )
 			->willReturn( $semanticData );
 
 		$this->applicationFactory = ApplicationFactory::getInstance();
 		$this->applicationFactory->registerObject( 'Store', $store );
 
-		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$description = new ConceptDescription( new WikiPage( 'Foo', SMW_NS_CONCEPT ) );
 		$orderByProperty = null;
 		$resultVariable = 'result';
 
@@ -179,7 +179,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		# 0
 		$conditionType = FalseCondition::class;
 
-		$description = new ConceptDescription( new DIWikiPage( 'Foo', SMW_NS_CONCEPT ) );
+		$description = new ConceptDescription( new WikiPage( 'Foo', SMW_NS_CONCEPT ) );
 		$orderByProperty = null;
 
 		$expected = $stringBuilder

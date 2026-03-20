@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -47,7 +47,7 @@ class CachingSemanticDataLookupTest extends TestCase {
 	}
 
 	public function testInitLookupCache() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$stubSemanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
@@ -84,7 +84,7 @@ class CachingSemanticDataLookupTest extends TestCase {
 
 	public function testSetLookupCache() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->semanticDataLookup->expects( $this->once() )
@@ -142,7 +142,7 @@ class CachingSemanticDataLookupTest extends TestCase {
 	}
 
 	public function testNewStubSemanticData() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -186,7 +186,7 @@ class CachingSemanticDataLookupTest extends TestCase {
 	}
 
 	public function testGetSemanticData_FreshFetch() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -216,7 +216,7 @@ class CachingSemanticDataLookupTest extends TestCase {
 	}
 
 	public function testGetSemanticData_FromStaticCache() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$propertyTableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

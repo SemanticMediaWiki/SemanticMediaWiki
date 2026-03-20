@@ -5,10 +5,10 @@ namespace SMW\Tests;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIConcept;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMWDITime as DITime;
 use SMWDIUri as DIUri;
 
@@ -48,16 +48,16 @@ class DataItemFactoryTest extends TestCase {
 		);
 	}
 
-	public function testCanConstructDIWikiPage() {
+	public function testCanConstructWikiPage() {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->newDIWikiPage( 'Foo' )
 		);
 	}
 
-	public function testCanConstructDIWikiPageFromTitle() {
+	public function testCanConstructWikiPageFromTitle() {
 		$title = $this->getMockBuilder( Title::class )
 			->disableOriginalConstructor()
 			->getMock();
@@ -69,7 +69,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->newDIWikiPage( $title )
 		);
 	}
@@ -88,7 +88,7 @@ class DataItemFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructContainerSemanticData() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

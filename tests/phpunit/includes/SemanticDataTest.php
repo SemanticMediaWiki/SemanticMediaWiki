@@ -5,10 +5,10 @@ namespace SMW\Tests;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
 use SMW\Localizer\Localizer;
@@ -58,7 +58,7 @@ class SemanticDataTest extends TestCase {
 	}
 
 	public function testConstructor() {
-		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
 			SemanticData::class,
@@ -72,10 +72,10 @@ class SemanticDataTest extends TestCase {
 	}
 
 	public function testGetPropertyValues() {
-		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->getSubject()
 		);
 
@@ -89,11 +89,11 @@ class SemanticDataTest extends TestCase {
 	}
 
 	public function testAddPropertyValue() {
-		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyValue(
 			'addPropertyValue',
-			DIWikiPage::doUnserialize( 'Foo#0##' )
+			WikiPage::doUnserialize( 'Foo#0##' )
 		);
 
 		$key = Localizer::getInstance()->getNsText( SMW_NS_PROPERTY ) . ':' . 'addPropertyValue';
@@ -111,7 +111,7 @@ class SemanticDataTest extends TestCase {
 	}
 
 	public function testGetHash() {
-		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addDataValue(
 			DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' )
@@ -132,7 +132,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testGetCountMap() {
 		$instance = new SemanticData(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$dv = DataValueFactory::getInstance()->newDataValueByText( 'Foo', 'Bar' );
@@ -173,7 +173,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testPropertyOrderDoesNotInfluenceHash() {
 		$instance = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instance->addDataValue(
@@ -185,7 +185,7 @@ class SemanticDataTest extends TestCase {
 		);
 
 		$instanceToCheck = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instanceToCheck->addDataValue(
@@ -216,7 +216,7 @@ class SemanticDataTest extends TestCase {
 		);
 
 		$instance = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instance->addSubobject(
@@ -235,7 +235,7 @@ class SemanticDataTest extends TestCase {
 		);
 
 		$instanceToCheck = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instanceToCheck->addSubobject(
@@ -251,7 +251,7 @@ class SemanticDataTest extends TestCase {
 	public function testThatChangingDataDoesEnforceDifferentHash() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$instance = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$firstHash = $instance->getHash();
@@ -299,7 +299,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testGetSubSemanticData() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		// Adds only a subobject reference to the container
 		$subobject = $this->newSubobject( $title );
@@ -331,7 +331,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testAddAndRemoveSubSemanticData() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		// Adds only a subobject reference to the container
 		$subobject = $this->newSubobject( $title );
@@ -366,18 +366,18 @@ class SemanticDataTest extends TestCase {
 
 	public function testAddSubSemanticDataWithOutSubobjectNameThrowsException() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
 
 		$this->expectException( SubSemanticDataException::class );
 
 		$instance->addSubSemanticData(
-			new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( 'addSubSemanticData' ) ) )
+			new SemanticData( WikiPage::newFromTitle( $titleFactory->newFromText( 'addSubSemanticData' ) ) )
 		);
 	}
 
 	public function testDifferentSubSemanticDataSubjectThrowsException() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
 
 		$this->expectException( SubSemanticDataException::class );
 		$instance->addSubobject( $this->newSubobject( $titleFactory->newFromText( 'addSubSemanticData' ) ) );
@@ -385,18 +385,18 @@ class SemanticDataTest extends TestCase {
 
 	public function testImportDataFromForDifferentSubjectThrowsException() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) ) );
 
 		$this->expectException( SemanticDataImportException::class );
 
 		$instance->importDataFrom(
-			new SemanticData( DIWikiPage::newFromTitle( $titleFactory->newFromText( 'importDataFrom' ) ) )
+			new SemanticData( WikiPage::newFromTitle( $titleFactory->newFromText( 'importDataFrom' ) ) )
 		);
 	}
 
 	public function testHasAndFindSubSemanticData() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$subobject = $this->newSubobject( $title );
 		$subobjectName = $subobject->getSemanticData()->getSubject()->getSubobjectName();
@@ -426,7 +426,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testSubSemanticDataForNonStringSubobjectName() {
 		$instance = new SemanticData(
-			DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) )
+			WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) )
 		);
 
 		$this->assertFalse(
@@ -440,7 +440,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testSetLastModified() {
 		$instance = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instance->setOption( SemanticData::OPT_LAST_MODIFIED, 1001 );
@@ -453,7 +453,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testGetLastModifiedFromModificationDate() {
 		$instance = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$instance->addPropertyObjectValue(
@@ -469,7 +469,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testVisibility() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$instance->addDataValue(
 			DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' )
@@ -492,7 +492,7 @@ class SemanticDataTest extends TestCase {
 	 * @dataProvider removePropertyObjectProvider
 	 */
 	public function testRemovePropertyObjectValue( $title, $property, $dataItem ) {
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$instance->addPropertyObjectValue( $property, $dataItem );
 		$this->assertFalse( $instance->isEmpty() );
@@ -503,11 +503,11 @@ class SemanticDataTest extends TestCase {
 
 	public function testRemoveProperty() {
 		$property = new DIProperty( 'Foo' );
-		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Bar', NS_MAIN, '', 'Foobar' )
+			new WikiPage( 'Bar', NS_MAIN, '', 'Foobar' )
 		);
 
 		$this->assertTrue(
@@ -523,11 +523,11 @@ class SemanticDataTest extends TestCase {
 
 	public function testGetPropertyValuesToReturnAnUnmappedArray() {
 		$property = new DIProperty( 'Foo' );
-		$instance = new SemanticData( DIWikiPage::newFromText( __METHOD__ ) );
+		$instance = new SemanticData( WikiPage::newFromText( __METHOD__ ) );
 
 		$instance->addPropertyObjectValue(
 			$property,
-			new DIWikiPage( 'Bar', NS_MAIN )
+			new WikiPage( 'Bar', NS_MAIN )
 		);
 
 		$this->assertArrayHasKey(
@@ -538,7 +538,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testClear() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$instance->addPropertyObjectValue(
 			new DIProperty( '_MDAT' ),
@@ -553,7 +553,7 @@ class SemanticDataTest extends TestCase {
 
 	public function testExtensionData() {
 		$instance = new SemanticData(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$instance->setExtensionData( 'Foo', 42 );
@@ -579,7 +579,7 @@ class SemanticDataTest extends TestCase {
 	 */
 	public function testAddDataValues( $dataValues, $expected ) {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$instance = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$instance = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		foreach ( $dataValues as $dataValue ) {
 			$instance->addDataValue( $dataValue );

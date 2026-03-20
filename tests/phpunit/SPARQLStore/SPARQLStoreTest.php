@@ -5,8 +5,8 @@ namespace SMW\Tests\SPARQLStore;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\SemanticData;
@@ -51,10 +51,10 @@ class SPARQLStoreTest extends TestCase {
 	}
 
 	public function testGetSemanticDataOnMockBaseStore() {
-		$subject = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+		$subject = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$baseStore = $this->getMockBuilder( Store::class )
@@ -77,7 +77,7 @@ class SPARQLStoreTest extends TestCase {
 	public function testDeleteSubjectOnMockBaseStore() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'DeleteSubjectOnMockBaseStore' );
 
-		$expResource = Exporter::getInstance()->newExpElement( DIWikiPage::newFromTitle( $title ) );
+		$expResource = Exporter::getInstance()->newExpElement( WikiPage::newFromTitle( $title ) );
 		$resourceUri = TurtleSerializer::getTurtleNameForExpElement( $expResource );
 
 		$extraNamespaces = [
@@ -124,7 +124,7 @@ class SPARQLStoreTest extends TestCase {
 	}
 
 	public function testDoSparqlDataUpdateOnMockBaseStore() {
-		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
+		$semanticData = new SemanticData( new WikiPage( __METHOD__, NS_MAIN ) );
 
 		$semanticData->addPropertyObjectValue(
 			new DIProperty( 'Foo' ),
@@ -192,13 +192,13 @@ class SPARQLStoreTest extends TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'doSparqlDataDelete' )
-			->with(	DIWikiPage::newFromTitle( $oldTitle ) );
+			->with(	WikiPage::newFromTitle( $oldTitle ) );
 
 		$instance->changeTitle( $oldTitle, $newTitle, 42, 0 );
 	}
 
 	public function testNoDeleteTaskForSubobjectsDuringUpdate() {
-		$expectedSubjectForDeleteTask = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+		$expectedSubjectForDeleteTask = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
 
 		$subobject = new Subobject( $expectedSubjectForDeleteTask->getTitle() );
 		$subobject->setEmptyContainerForId( 'Foo' );
@@ -244,7 +244,7 @@ class SPARQLStoreTest extends TestCase {
 
 	public function testDoSparqlDataUpdate_FailedPingThrowsException() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )

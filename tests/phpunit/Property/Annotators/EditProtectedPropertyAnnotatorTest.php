@@ -7,6 +7,7 @@ use MediaWiki\Permissions\RestrictionStore;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\SemanticData;
@@ -43,7 +44,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$title = $this->getMockBuilder( Title::class )
@@ -92,7 +93,7 @@ class EditProtectedPropertyAnnotatorTest extends TestCase {
 			->method( 'setIndicator' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$title = $this->getMockBuilder( Title::class )

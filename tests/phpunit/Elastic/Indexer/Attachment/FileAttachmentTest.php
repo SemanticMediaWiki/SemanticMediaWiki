@@ -4,9 +4,9 @@ namespace SMW\Tests\Elastic\Indexer\Attachment;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
@@ -62,7 +62,7 @@ class FileAttachmentTest extends TestCase {
 	}
 
 	public function testCreateAttachment() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 
 		$document = [
 			'_source' => [
@@ -71,12 +71,12 @@ class FileAttachmentTest extends TestCase {
 		];
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromText( 'Foo' ) ] );
+			->willReturn( [ WikiPage::newFromText( 'Foo' ) ] );
 
 		$semanticData->expects( $this->once() )
 			->method( 'addPropertyObjectValue' );
@@ -117,7 +117,7 @@ class FileAttachmentTest extends TestCase {
 	}
 
 	public function testCreateAttachment_NoFileSha1() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 		$document = [];
 
 		$this->client->expects( $this->once() )
@@ -148,7 +148,7 @@ class FileAttachmentTest extends TestCase {
 	}
 
 	public function testCreateAttachment_NotExists() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 
 		$this->client->expects( $this->once() )
 			->method( 'exists' )
@@ -183,7 +183,7 @@ class FileAttachmentTest extends TestCase {
 
 		$property->expects( $this->atLeastOnce() )
 			->method( 'getCanonicalDiWikiPage' )
-			->willReturn( DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) );
+			->willReturn( WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) );
 
 		$attachmentAnnotator = $this->getMockBuilder( AttachmentAnnotator::class )
 			->disableOriginalConstructor()
@@ -199,7 +199,7 @@ class FileAttachmentTest extends TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
+			->willReturn( WikiPage::newFromText( 'Foo' ) );
 
 		$semanticData->expects( $this->once() )
 			->method( 'getProperties' )
@@ -207,7 +207,7 @@ class FileAttachmentTest extends TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromText( 'Foobar' ) ] );
+			->willReturn( [ WikiPage::newFromText( 'Foobar' ) ] );
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getSemanticData' )
@@ -248,7 +248,7 @@ class FileAttachmentTest extends TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
+			->willReturn( WikiPage::newFromText( 'Foo' ) );
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getSemanticData' )
@@ -279,7 +279,7 @@ class FileAttachmentTest extends TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
+			->willReturn( WikiPage::newFromText( 'Foo' ) );
 
 		$attachmentAnnotator->expects( $this->once() )
 			->method( 'getSemanticData' )
@@ -300,7 +300,7 @@ class FileAttachmentTest extends TestCase {
 	}
 
 	public function testCreateAttachment_MissingId_ThrowsException() {
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

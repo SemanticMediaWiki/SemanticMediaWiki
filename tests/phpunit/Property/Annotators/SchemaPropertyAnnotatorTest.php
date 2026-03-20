@@ -4,6 +4,7 @@ namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Schema\SchemaDefinition;
@@ -36,7 +37,7 @@ class SchemaPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new SchemaPropertyAnnotator(

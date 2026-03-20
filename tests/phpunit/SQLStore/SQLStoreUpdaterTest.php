@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Options;
@@ -177,7 +177,7 @@ class SQLStoreUpdaterTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
+			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
 			->setMethods( null )
 			->getMock();
 
@@ -236,7 +236,7 @@ class SQLStoreUpdaterTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, SMW_NS_CONCEPT );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
+			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
 			->setMethods( null )
 			->getMock();
 
@@ -292,13 +292,13 @@ class SQLStoreUpdaterTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
+			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
 			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
+			->willReturn( [ WikiPage::newFromTitle( $title ) ] );
 
 		$objectIdGenerator = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -344,13 +344,13 @@ class SQLStoreUpdaterTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__, NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->setConstructorArgs( [ DIWikiPage::newFromTitle( $title ) ] )
+			->setConstructorArgs( [ WikiPage::newFromTitle( $title ) ] )
 			->setMethods( [ 'getPropertyValues' ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
+			->willReturn( [ WikiPage::newFromTitle( $title ) ] );
 
 		$objectIdGenerator = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()

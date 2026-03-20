@@ -3,7 +3,7 @@
 namespace SMW\Tests\Elastic\Hooks;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
@@ -41,7 +41,7 @@ class UpdateEntityCollationCompleteTest extends TestCase {
 			->getMock();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
@@ -96,7 +96,7 @@ class UpdateEntityCollationCompleteTest extends TestCase {
 	}
 
 	public function testRunUpdate() {
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

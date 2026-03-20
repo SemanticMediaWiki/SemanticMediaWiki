@@ -3,6 +3,7 @@
 namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\RedirectPropertyAnnotator;
@@ -32,7 +33,7 @@ class RedirectPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$redirectTargetFinder = $this->getMockBuilder( RedirectTargetFinder::class )

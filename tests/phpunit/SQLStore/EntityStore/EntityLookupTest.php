@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
@@ -93,7 +93,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetSemanticData() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
@@ -121,7 +121,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetProperties() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -157,7 +157,7 @@ class EntityLookupTest extends TestCase {
 
 	public function testGetPropertyValues() {
 		$property = new DIProperty( 'Bar' );
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( StubSemanticData::class )
 			->disableOriginalConstructor()
@@ -197,7 +197,7 @@ class EntityLookupTest extends TestCase {
 
 	public function testGetPropertyValues_Property_Inverse() {
 		$property = new DIProperty( 'Bar', true );
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -261,7 +261,7 @@ class EntityLookupTest extends TestCase {
 
 	public function testGetPropertySubjects() {
 		$property = new DIProperty( 'Bar' );
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -323,7 +323,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetInProperties() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

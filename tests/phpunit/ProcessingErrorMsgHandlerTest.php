@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\ProcessingError;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\SemanticData;
@@ -35,7 +35,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -68,7 +68,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	public function testPush() {
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$container = $this->getMockBuilder( '\SMWDIContainer' )
@@ -76,7 +76,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 			->getMock();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -91,7 +91,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	public function testGetErrorContainerFromMsg() {
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
@@ -127,7 +127,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 			->willReturn( 'foobar' );
 
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$property = $this->dataItemFactory->newDIProperty( 'Bar' );
@@ -151,7 +151,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	public function testGetErrorContainerFromMsgWithoutProperty() {
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$container = $instance->newErrorContainerFromMsg( 'foo' );
@@ -169,7 +169,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	public function testGetErrorContainerFromDataValue() {
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -205,7 +205,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	public function testGetErrorContainerFromDataValue_CategoryProperty() {
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )
@@ -241,7 +241,7 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 
 	public function testGetErrorContainerFromDataValue_TypedError() {
 		$instance = new ProcessingErrorMsgHandler(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$dataValue = $this->getMockBuilder( '\SMWDataValue' )

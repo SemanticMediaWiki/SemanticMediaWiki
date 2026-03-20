@@ -4,7 +4,7 @@ namespace SMW\Tests\Property\Annotators;
 
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\PageCreator;
 use SMW\ParserData;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;
@@ -51,7 +51,7 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new CategoryPropertyAnnotator(
@@ -70,7 +70,7 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 	 */
 	public function testAddCategoriesAnnotation( array $parameters, array $expected ) {
 		$semanticData = $this->semanticDataFactory
-			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
+			->setSubject( new WikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
 		$instance = new CategoryPropertyAnnotator(
@@ -107,7 +107,7 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 	 */
 	public function testAddCategoriesWithParserDataUpdate( array $parameters, array $expected ) {
 		$semanticData = $this->semanticDataFactory
-			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
+			->setSubject( new WikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
 		$title        = $semanticData->getSubject()->getTitle();
@@ -169,7 +169,7 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 			->willReturn( $wikiPage );
 
 		$semanticData = $this->semanticDataFactory
-			->setSubject( new DIWikiPage( __METHOD__, $parameters['namespace'], '' ) )
+			->setSubject( new WikiPage( __METHOD__, $parameters['namespace'], '' ) )
 			->newEmptySemanticData();
 
 		$this->testEnvironment->registerObject(
@@ -214,12 +214,12 @@ class CategoryPropertyAnnotatorTest extends TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getRedirectTarget' )
-			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
+			->willReturn( new WikiPage( 'Foo', NS_MAIN ) );
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
 		$semanticData = $this->semanticDataFactory
-			->setSubject( new DIWikiPage( __METHOD__, NS_MAIN ) )
+			->setSubject( new WikiPage( __METHOD__, NS_MAIN ) )
 			->newEmptySemanticData();
 
 		$instance = new CategoryPropertyAnnotator(

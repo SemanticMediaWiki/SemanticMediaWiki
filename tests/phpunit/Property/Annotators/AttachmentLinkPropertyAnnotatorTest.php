@@ -5,6 +5,7 @@ namespace SMW\Tests\Property\Annotators;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Property\Annotators\AttachmentLinkPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
@@ -36,7 +37,7 @@ class AttachmentLinkPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new AttachmentLinkPropertyAnnotator(

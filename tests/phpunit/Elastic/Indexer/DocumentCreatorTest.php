@@ -3,8 +3,8 @@
 namespace SMW\Tests\Elastic\Indexer;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\SemanticData;
@@ -47,7 +47,7 @@ class DocumentCreatorTest extends TestCase {
 	}
 
 	public function testNewFromSemanticData_RedirectDelete() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
 		$property = new DIProperty( 'FooProp' );
@@ -69,7 +69,7 @@ class DocumentCreatorTest extends TestCase {
 			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -111,7 +111,7 @@ class DocumentCreatorTest extends TestCase {
 	 * @dataProvider dataItemsProvider
 	 */
 	public function testNewFromSemanticData( $dataItems ) {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
 		$property = new DIProperty( 'FooProp' );
@@ -133,7 +133,7 @@ class DocumentCreatorTest extends TestCase {
 			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -165,7 +165,7 @@ class DocumentCreatorTest extends TestCase {
 	 * @dataProvider dataItemsProvider
 	 */
 	public function testNewFromSemanticData_SubDataType( $dataItems ) {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
 		$property = new DIProperty( '_SOBJ' );
@@ -187,7 +187,7 @@ class DocumentCreatorTest extends TestCase {
 			->willReturn( $entityIdManager );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -217,7 +217,7 @@ class DocumentCreatorTest extends TestCase {
 
 	public function dataItemsProvider() {
 		yield 'page_type' => [
-			[ DIWikiPage::newFromText( 'Bar' ) ]
+			[ WikiPage::newFromText( 'Bar' ) ]
 		];
 
 		yield 'text_type' => [

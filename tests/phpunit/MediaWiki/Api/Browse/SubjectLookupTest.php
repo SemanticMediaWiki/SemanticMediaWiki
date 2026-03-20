@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
 use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
@@ -35,7 +36,7 @@ class SubjectLookupTest extends TestCase {
 
 	public function testLookup_HTML() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -76,7 +77,7 @@ class SubjectLookupTest extends TestCase {
 
 	public function testLookup_JSON() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )

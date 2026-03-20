@@ -4,6 +4,7 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SemanticData;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
@@ -47,7 +48,7 @@ class QueryReferenceBacklinksTest extends TestCase {
 		$subject = $this->dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN, '', 'foobar' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
