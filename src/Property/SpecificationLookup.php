@@ -4,6 +4,7 @@ namespace SMW\Property;
 
 use RuntimeException;
 use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
