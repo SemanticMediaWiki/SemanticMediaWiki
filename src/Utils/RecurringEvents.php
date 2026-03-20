@@ -121,7 +121,7 @@ class RecurringEvents {
 	 *
 	 * @since  1.9
 	 *
-	 * @param array
+	 * @param array $error
 	 *
 	 * @return void
 	 */
@@ -132,6 +132,8 @@ class RecurringEvents {
 	/**
 	 * Returns the "Julian day" value from an object of type
 	 * TimeValue.
+	 *
+	 * @return void
 	 */
 	public function getJulianDay( $dateDataValue ) {
 		if ( $dateDataValue === null ) {
