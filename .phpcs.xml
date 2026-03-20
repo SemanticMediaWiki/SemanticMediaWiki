@@ -31,7 +31,6 @@
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.is_resource" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.proc_open" />
 		<exclude name="MediaWiki.Usage.ForbiddenFunctions.exec" />
-		<exclude name="MediaWiki.Files.ClassMatchesFilename.WrongCase" />
 		<exclude name="MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals" />
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVarType" />

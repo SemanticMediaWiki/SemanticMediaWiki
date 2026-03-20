@@ -37,7 +37,7 @@ if ( !defined( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH' ) ) {
 	define( 'SMW_PHPUNIT_FIRST_COLUMN_WIDTH', 20 );
 }
 
-require __DIR__ . '/phpUnitEnvironment.php';
+require __DIR__ . '/PHPUnitEnvironment.php';
 $phpUnitEnvironment = new PHPUnitEnvironment();
 
 if ( $phpUnitEnvironment->hasDebugRequest( $GLOBALS['argv'] ) === false ) {
