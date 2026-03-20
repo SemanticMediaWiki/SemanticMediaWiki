@@ -13,8 +13,8 @@ use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\TimeValue;
-use SMW\DataValues\WikiPageValue;
 use SMW\DataValues\URIValue;
+use SMW\DataValues\WikiPageValue;
 
 /**
  * @covers \SMW\DataValueFactory
