@@ -19,10 +19,7 @@ class OutdatedDisposer {
 
 	use MessageReporterAwareTrait;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private CliMsgFormatter $cliMsgFormatter;
 
 	/**
 	 * @since 3.1

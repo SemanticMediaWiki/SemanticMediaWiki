@@ -20,10 +20,7 @@ abstract class DataItemHandler {
 	 */
 	const IHINT_PSUBJECTS = 'ihint.psubjects';
 
-	/**
-	 * @var SQLStore
-	 */
-	protected $store;
+	protected SQLStore $store;
 
 	/**
 	 * @var int

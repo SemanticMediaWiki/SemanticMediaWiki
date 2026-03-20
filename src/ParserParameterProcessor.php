@@ -18,10 +18,7 @@ class ParserParameterProcessor {
 	 */
 	private $defaultSeparator = ',';
 
-	/**
-	 * @var array
-	 */
-	private $rawParameters;
+	private array $rawParameters;
 
 	/**
 	 * @var array
@@ -93,7 +90,7 @@ class ParserParameterProcessor {
 	 *
 	 * @return string
 	 */
-	public function getRaw() {
+	public function getRaw(): array {
 		return $this->rawParameters;
 	}
 

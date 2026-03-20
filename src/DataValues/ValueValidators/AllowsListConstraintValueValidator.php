@@ -21,15 +21,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var AllowsListValueParser
-	 */
-	private $allowsListValueParser;
+	private AllowsListValueParser $allowsListValueParser;
 
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
+	private SpecificationLookup $propertySpecificationLookup;
 
 	/**
 	 * @var bool

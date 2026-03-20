@@ -18,15 +18,9 @@ use SMW\SemanticData;
  */
 abstract class PropertyAnnotatorDecorator implements Annotator {
 
-	/**
-	 * @var Annotator
-	 */
-	protected $propertyAnnotator;
+	protected Annotator $propertyAnnotator;
 
-	/**
-	 * @var DataItemFactory
-	 */
-	protected $dataItemFactory;
+	protected DataItemFactory $dataItemFactory;
 
 	/**
 	 * @since 1.9

@@ -19,15 +19,9 @@ use SMW\DataItems\Property;
  */
 class SomeProperty extends Description {
 
-	/**
-	 * @var Description
-	 */
-	protected $description;
+	protected Description $description;
 
-	/**
-	 * @var Property
-	 */
-	protected $property;
+	protected Property $property;
 
 	/**
 	 * @var int|null
@@ -102,7 +96,7 @@ class SomeProperty extends Description {
 	/**
 	 * @return Property
 	 */
-	public function getProperty() {
+	public function getProperty(): Property {
 		return $this->property;
 	}
 
@@ -111,7 +105,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return Description
 	 */
-	public function getDescription() {
+	public function getDescription(): Description {
 		return $this->description;
 	}
 

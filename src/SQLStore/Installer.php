@@ -52,15 +52,9 @@ class Installer implements MessageReporter {
 	 */
 	const POPULATE_HASH_FIELD_COMPLETE = 'populate.smw_hash_field_complete';
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private Options $options;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private SetupFile $setupFile;
 
 	/**
 	 * @var CliMsgFormatter

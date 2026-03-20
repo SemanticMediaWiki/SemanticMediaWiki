@@ -18,10 +18,7 @@ class QueryComparator {
 	 */
 	private static $instance = null;
 
-	/**
-	 * @var array
-	 */
-	private $comparators = null;
+	private array $comparators;
 
 	/**
 	 * @var array

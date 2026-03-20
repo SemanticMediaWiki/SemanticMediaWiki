@@ -26,19 +26,15 @@ class ParameterInput {
 	 * The parameter to print an input for.
 	 *
 	 * @since 1.9
-	 *
-	 * @var ParamDefinition
 	 */
-	protected $param;
+	protected ParamDefinition $param;
 
 	/**
 	 * Name for the input.
 	 *
 	 * @since 1.9
-	 *
-	 * @var string
 	 */
-	protected $inputName;
+	protected string $inputName;
 
 	/**
 	 * @var array

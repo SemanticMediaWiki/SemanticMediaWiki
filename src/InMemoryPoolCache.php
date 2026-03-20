@@ -36,10 +36,7 @@ class InMemoryPoolCache {
 	 */
 	private static $instance = null;
 
-	/**
-	 * @var CacheFactory
-	 */
-	private $cacheFactory = null;
+	private CacheFactory $cacheFactory;
 
 	/**
 	 * @var array

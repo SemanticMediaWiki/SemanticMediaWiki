@@ -17,10 +17,7 @@ class Logger extends AbstractLogger {
 	const ROLE_USER = 'user';
 	const ROLE_PRODUCTION = 'production';
 
-	/**
-	 * @var LoggerInterface
-	 */
-	protected $logger;
+	protected LoggerInterface $logger;
 
 	/**
 	 * @since 3.0

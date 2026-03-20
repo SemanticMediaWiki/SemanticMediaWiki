@@ -52,10 +52,7 @@ abstract class DataValueFormatter implements ValueFormatter {
 	 */
 	const HTML_LONG = 4;
 
-	/**
-	 * @var DataValue
-	 */
-	protected $dataValue;
+	protected ?DataValue $dataValue;
 
 	/**
 	 * @var Options

@@ -7,6 +7,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\PropertyChainValue;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
+use SMW\Query\Language\SomeProperty;
 
 /**
  * Modifies a given query object at $qid to account for all ordering conditions
@@ -27,10 +28,7 @@ class OrderCondition {
 	 */
 	private $querySegmentListBuilder;
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * Array of sorting requests ("Property_name" => "ASC"/"DESC"). Used during query
@@ -148,7 +146,7 @@ class OrderCondition {
 		return $extraDescriptions;
 	}
 
-	private function findDescription( $querySegment, $label, $order ) {
+	private function findDescription( $querySegment, $label, $order ): ?SomeProperty {
 		$description = null;
 
 		// Is assigned, leave ...

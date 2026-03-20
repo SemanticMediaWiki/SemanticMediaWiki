@@ -35,10 +35,7 @@ use Wikimedia\Rdbms\IReadableDatabase;
  */
 class ExportController {
 
-	/**
-	 * @var Serializer
-	 */
-	protected $serializer;
+	protected Serializer $serializer;
 
 	/**
 	 * Boolean to indicate whether all objects that are exported in full (with

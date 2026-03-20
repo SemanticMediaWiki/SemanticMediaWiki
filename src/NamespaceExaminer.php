@@ -16,10 +16,7 @@ use MediaWiki\Title\Title;
  */
 class NamespaceExaminer {
 
-	/**
-	 * @var array
-	 */
-	private $registeredNamespaces = [];
+	private array $registeredNamespaces;
 
 	/**
 	 * @var array

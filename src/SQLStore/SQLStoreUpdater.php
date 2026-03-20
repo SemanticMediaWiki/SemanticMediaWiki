@@ -53,10 +53,7 @@ class SQLStoreUpdater {
 	 */
 	private $redirectUpdater;
 
-	/**
-	 * @var HookContainer
-	 */
-	private $hookContainer;
+	private HookContainer $hookContainer;
 
 	/**
 	 * @since 1.8

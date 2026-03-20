@@ -26,9 +26,8 @@ class WikiPage extends DataItem {
 
 	/**
 	 * MediaWiki namespace integer.
-	 * @var int
 	 */
-	protected $m_namespace;
+	protected int $m_namespace;
 
 	/**
 	 * Name for subobjects of pages, or empty string if the given object is
@@ -97,7 +96,7 @@ class WikiPage extends DataItem {
 		return $this->m_dbkey;
 	}
 
-	public function getNamespace() {
+	public function getNamespace(): int {
 		return $this->m_namespace;
 	}
 

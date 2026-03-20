@@ -86,10 +86,7 @@ class EntityIdManager {
 	 */
 	private $redirectTargetLookup;
 
-	/**
-	 * @var TableFieldUpdater
-	 */
-	private $tableFieldUpdater;
+	private TableFieldUpdater $tableFieldUpdater;
 
 	/**
 	 * @var array
@@ -106,25 +103,16 @@ class EntityIdManager {
 	 */
 	private $cacheWarmer;
 
-	/**
-	 * @var IdEntityFinder
-	 */
-	private $idEntityFinder;
+	private IdEntityFinder $idEntityFinder;
 
 	/**
 	 * @var EntityIdFinder
 	 */
 	private $entityIdFinder;
 
-	/**
-	 * @var SequenceMapFinder
-	 */
-	private $sequenceMapFinder;
+	private SequenceMapFinder $sequenceMapFinder;
 
-	/**
-	 * @var AuxiliaryFields
-	 */
-	private $auxiliaryFields;
+	private AuxiliaryFields $auxiliaryFields;
 
 	/**
 	 * @var DuplicateFinder

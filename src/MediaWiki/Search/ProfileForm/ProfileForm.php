@@ -27,10 +27,7 @@ class ProfileForm {
 	 */
 	const SCHEMA_TYPE = 'SEARCH_FORM_SCHEMA';
 
-	/**
-	 * @var FormsFactory
-	 */
-	private $formsFactory;
+	private FormsFactory $formsFactory;
 
 	/**
 	 * @var
@@ -232,7 +229,7 @@ class ProfileForm {
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, &$hidden ) {
+	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, &$hidden ): string {
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 		$default = false;
 

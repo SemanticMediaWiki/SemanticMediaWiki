@@ -84,8 +84,8 @@ class Query implements QueryContext {
 	private $offset = 0;
 	private $errors = []; // keep any errors that occurred so far
 	private $queryString = false; // string (inline query) version (if fixed and known)
-	private $isInline; // query used inline? (required for finding right default parameters)
-	private $isUsedInConcept; // query used in concept? (required for finding right default parameters)
+	private bool $isInline; // query used inline? (required for finding right default parameters)
+	private bool $isUsedInConcept; // query used in concept? (required for finding right default parameters)
 
 	/**
 	 * @var PrintRequest[]
@@ -148,7 +148,7 @@ class Query implements QueryContext {
 	 *
 	 * @param boolean
 	 */
-	public function isEmbedded() {
+	public function isEmbedded(): bool {
 		return $this->isInline;
 	}
 

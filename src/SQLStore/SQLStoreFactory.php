@@ -68,10 +68,7 @@ use SMW\SQLStore\TableBuilder\TableSchemaManager;
  */
 class SQLStoreFactory {
 
-	/**
-	 * @var QueryEngineFactory
-	 */
-	private $queryEngineFactory;
+	private QueryEngineFactory $queryEngineFactory;
 
 	/**
 	 * @since 2.2

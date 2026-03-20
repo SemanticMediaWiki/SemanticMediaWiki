@@ -16,10 +16,7 @@ use SMW\Localizer\Message;
  */
 class SortForm {
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var

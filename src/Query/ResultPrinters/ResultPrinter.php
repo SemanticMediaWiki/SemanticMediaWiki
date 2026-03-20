@@ -97,12 +97,12 @@ abstract class ResultPrinter implements IResultPrinter {
 	/** Default return value for empty queries. Unescaped. Normally not used in sub-classes! */
 	protected $mDefault = '';
 	protected $mFormat; // a string identifier describing a valid format
-	protected $mLinkFirst; // should article names of the first column be linked?
-	protected $mLinkOthers; // should article names of other columns (besides the first) be linked?
+	protected bool $mLinkFirst; // should article names of the first column be linked?
+	protected bool $mLinkOthers; // should article names of other columns (besides the first) be linked?
 	protected $mShowHeaders = SMW_HEADERS_SHOW; // should the headers (property names) be printed?
 	protected $mInline; // is this query result "inline" in some page (only then a link to unshown results is created, error handling may also be affected)
 	protected $mShowErrors = true;
-	protected $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
+	protected Linker $mLinker; // Linker object as needed for making result links. Might come from some skin at some time.
 
 	/**
 	 * List of errors that occurred while processing the parameters.

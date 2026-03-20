@@ -24,10 +24,7 @@ class QueryDependencyLinksStore {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
 	/**
 	 * @var NamespaceExaminer

@@ -17,10 +17,7 @@ use SMW\Encoder;
  */
 class PageRequestOptions {
 
-	/**
-	 * @var Encoder
-	 */
-	private $urlEncoder;
+	private Encoder $urlEncoder;
 
 	/**
 	 * @var PropertyValue

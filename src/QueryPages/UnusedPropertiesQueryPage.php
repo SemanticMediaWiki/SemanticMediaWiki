@@ -28,11 +28,9 @@ use SMW\Store;
  */
 class UnusedPropertiesQueryPage extends QueryPage {
 
-	/** @var Store */
-	protected $store;
+	protected Store $store;
 
-	/** @var Settings */
-	protected $settings;
+	protected Settings $settings;
 
 	/**
 	 * @var ListLookup

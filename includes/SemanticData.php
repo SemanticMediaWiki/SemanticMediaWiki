@@ -119,9 +119,8 @@ class SemanticData implements JsonUnserializable {
 	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
 	 *
 	 * @since 1.8
-	 * @var SubSemanticData
 	 */
-	protected $subSemanticData;
+	protected ?SubSemanticData $subSemanticData = null;
 
 	/**
 	 * @var array

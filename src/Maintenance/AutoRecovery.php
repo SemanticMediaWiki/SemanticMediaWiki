@@ -16,10 +16,7 @@ class AutoRecovery {
 
 	const TOPIC_IDENTIFIER = 'maintenance_script.auto_recovery';
 
-	/**
-	 * @var string
-	 */
-	private $site = '';
+	private string $site;
 
 	/**
 	 * @var bool

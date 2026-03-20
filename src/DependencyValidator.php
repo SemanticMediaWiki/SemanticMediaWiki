@@ -16,20 +16,11 @@ class DependencyValidator {
 
 	use EventDispatcherAwareTrait;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private NamespaceExaminer $namespaceExaminer;
 
-	/**
-	 * @var DependencyLinksValidator
-	 */
-	private $dependencyLinksValidator;
+	private DependencyLinksValidator $dependencyLinksValidator;
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private EntityCache $entityCache;
 
 	/**
 	 * @var int

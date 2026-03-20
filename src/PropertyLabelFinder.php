@@ -14,29 +14,26 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PropertyLabelFinder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
 	/**
 	 * Array with entries "property id" => "property label"
 	 *
 	 * @var string[]
 	 */
-	private $languageDependentPropertyLabels = [];
+	private array $languageDependentPropertyLabels;
 
 	/**
 	 * Array with entries "property label" => "property id"
 	 *
 	 * @var string[]
 	 */
-	private $canonicalPropertyLabels = [];
+	private array $canonicalPropertyLabels;
 
 	/**
 	 * @var string[]
 	 */
-	private $canonicalDatatypeLabels = [];
+	private array $canonicalDatatypeLabels;
 
 	/**
 	 * @since 2.2
@@ -57,7 +54,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return array
 	 */
-	public function getKownPredefinedPropertyLabels() {
+	public function getKownPredefinedPropertyLabels(): array {
 		return $this->languageDependentPropertyLabels;
 	}
 

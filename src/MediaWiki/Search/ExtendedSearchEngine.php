@@ -15,10 +15,7 @@ use SearchEngine;
  */
 class ExtendedSearchEngine extends SearchEngine {
 
-	/**
-	 * @var ExtendedSearch
-	 */
-	private $extendedSearch;
+	private ExtendedSearch $extendedSearch;
 
 	/**
 	 * @var SearchEngine

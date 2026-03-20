@@ -23,10 +23,7 @@ class PropertyAliasFinder {
 	 */
 	const CACHE_TTL = 604800;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
+	private Cache $cache;
 
 	/**
 	 * Array with entries "property alias" => "property id"
@@ -43,7 +40,7 @@ class PropertyAliasFinder {
 	/**
 	 * @var string[]
 	 */
-	private $canonicalPropertyAliases = [];
+	private array $canonicalPropertyAliases;
 
 	/**
 	 * @var string

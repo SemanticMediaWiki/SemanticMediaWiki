@@ -34,15 +34,9 @@ class HierarchyLookup {
 	const TYPE_SUPER = 'type/super';
 	const TYPE_SUB = 'type/sub';
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
-	/**
-	 * @var Cache|null
-	 */
-	private $cache;
+	private Cache $cache;
 
 	/**
 	 * @var

@@ -24,10 +24,7 @@ use SMWDataItem as DataItem;
  */
 class StubSemanticData extends SemanticData {
 
-	/**
-	 * @var SQLStore
-	 */
-	protected $store;
+	protected SQLStore $store;
 
 	/**
 	 * Stub property data that is not part of $mPropVals and $mProperties

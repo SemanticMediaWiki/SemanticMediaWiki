@@ -28,10 +28,7 @@ use SMWOutputs;
  */
 class RecursiveTextProcessor {
 
-	/**
-	 * @var Parser
-	 */
-	private $parser;
+	private Parser $parser;
 
 	/**
 	 * Incremented while expanding templates inserted during printout; stop
@@ -75,7 +72,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return Parser
 	 */
-	public function getParser() {
+	public function getParser(): Parser {
 		return $this->parser;
 	}
 

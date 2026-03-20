@@ -30,10 +30,7 @@ use SMW\Utils\CircularReferenceGuard;
  */
 class ParserFunctionFactory {
 
-	/**
-	 * @var Parser
-	 */
-	private $parser;
+	private ?Parser $parser;
 
 	/**
 	 * @since 1.9

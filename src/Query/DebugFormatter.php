@@ -15,10 +15,7 @@ class DebugFormatter {
 
 	const JSON_FORMAT = 'json';
 
-	/**
-	 * @var string
-	 */
-	private $format = '';
+	private string $format = '';
 
 	/**
 	 * @var string

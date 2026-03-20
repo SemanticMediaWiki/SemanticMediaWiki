@@ -32,10 +32,7 @@ class SchemaFinder {
 	 */
 	const TYPE_LIST = 'type/list';
 
-	/**
-	 * @var int
-	 */
-	private $cacheTTL;
+	private int $cacheTTL;
 
 	/**
 	 * @since 3.1

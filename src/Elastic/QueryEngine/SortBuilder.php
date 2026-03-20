@@ -18,10 +18,7 @@ class SortBuilder {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @var string

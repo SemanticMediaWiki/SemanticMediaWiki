@@ -15,10 +15,7 @@ use SMW\SemanticData;
  */
 abstract class ProfileAnnotatorDecorator implements ProfileAnnotator {
 
-	/**
-	 * @var ProfileAnnotator
-	 */
-	protected $profileAnnotator;
+	protected ProfileAnnotator $profileAnnotator;
 
 	/**
 	 * @since 1.9

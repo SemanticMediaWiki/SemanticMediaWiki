@@ -61,8 +61,7 @@ class ListResultBuilder {
 		],
 	];
 
-	/** @var ParameterDictionary */
-	private $configuration;
+	private ParameterDictionary $configuration;
 	private $templateRendererFactory;
 	private $listPlainByDefault;
 
