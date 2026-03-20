@@ -77,12 +77,16 @@ abstract class ResultPrinter implements IResultPrinter {
 	/**
 	 * Text to print *before* the output in case it is *not* empty; assumed to be wikitext.
 	 * Normally this is handled in SMWResultPrinter and can be ignored by subclasses.
+	 *
+	 * @var string
 	 */
 	protected $mIntro = '';
 
 	/**
 	 * Text to print *after* the output in case it is *not* empty; assumed to be wikitext.
 	 * Normally this is handled in SMWResultPrinter and can be ignored by subclasses.
+	 *
+	 * @var string
 	 */
 	protected $mOutro = '';
 
@@ -91,10 +95,16 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * Unescaped! Use @see SMWResultPrinter::getSearchLabel()
 	 * and @see SMWResultPrinter::linkFurtherResults()
 	 * instead of accessing this directly.
+	 *
+	 * @var bool|null
 	 */
 	protected $mSearchlabel = null;
 
-	/** Default return value for empty queries. Unescaped. Normally not used in sub-classes! */
+	/**
+	 * Default return value for empty queries. Unescaped. Normally not used in sub-classes!
+	 *
+	 * @var string
+	 */
 	protected $mDefault = '';
 	protected $mFormat; // a string identifier describing a valid format
 	protected bool $mLinkFirst; // should article names of the first column be linked?
@@ -119,6 +129,8 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @note HTML query results cannot be used as parameters for other templates or in any other way
 	 * in combination with other wiki text. The result will be inserted on the page literally.
+	 *
+	 * @var bool
 	 */
 	protected $isHTML = false;
 
@@ -130,14 +142,24 @@ abstract class ResultPrinter implements IResultPrinter {
 	 *
 	 * @note This requires extra processing and may make the result less useful for being used as a
 	 * parameter for further parser functions. Use only if required.
+	 *
+	 * @var bool
 	 */
 	protected $hasTemplates = false;
 
-	/// Incremented while expanding templates inserted during printout; stop expansion at some point
+	/**
+	 * Incremented while expanding templates inserted during printout; stop expansion at some point
+	 *
+	 * @var int
+	 */
 	private static $mRecursionDepth = 0;
 
-	/// This public variable can be set to higher values to allow more recursion; do this at your own risk!
-	/// This can be set in LocalSettings.php, but only after wfLoadExtension.
+	/**
+	 * This public variable can be set to higher values to allow more recursion; do this at your own risk!
+	 * This can be set in LocalSettings.php, but only after wfLoadExtension.
+	 *
+	 * @var int
+	 */
 	public static $maxRecursionDepth = 2;
 
 	/**

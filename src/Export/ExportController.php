@@ -45,6 +45,8 @@ class ExportController {
 	 * Adding such dependencies counts as "recursive serialisation" and whether
 	 * or not inlinking objects are included in full depends on the setting for
 	 * recursion depth. Setting this to true enables "browsable RDF".
+	 *
+	 * @var bool
 	 */
 	protected $add_backlinks = false;
 
@@ -54,12 +56,16 @@ class ExportController {
 	 * Flushing later has some advantages for export formats like RDF/XML where
 	 * global namespace declarations are only possible by modifying the header,
 	 * so that only local declarations are possible after the first flush.
+	 *
+	 * @var int
 	 */
 	protected $delay_flush;
 
 	/**
 	 * File handle for a potential output file to write to, or null if printing
 	 * to standard output.
+	 *
+	 * @var resource|null|false
 	 */
 	protected $outputfile;
 
@@ -86,7 +92,9 @@ class ExportController {
 
 	/**
 	 * Enable or disable inclusion of backlinks into the output.
+	 *
 	 * @param bool $enable
+	 * @return void
 	 */
 	public function enableBacklinks( $enable ): void {
 		$this->add_backlinks = $enable;
@@ -96,6 +104,7 @@ class ExportController {
 	 * Initialize all internal structures to begin with some serialization.
 	 * Returns true if initialization was successful (this means that the
 	 * optional output file is writable).
+	 *
 	 * @param string $outfilename URL of the file that output should be written
 	 * to, or empty string for writing to the standard output.
 	 *
@@ -130,6 +139,7 @@ class ExportController {
 	 *
 	 * @param WikiPage $diWikiPage specifying the page to be exported
 	 * @param int $recursiondepth specifying the depth of recursion
+	 * @return void|null
 	 */
 	protected function serializePage( WikiPage $diWikiPage, $recursiondepth = 1 ) {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {

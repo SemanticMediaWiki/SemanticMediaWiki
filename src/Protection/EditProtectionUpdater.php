@@ -35,6 +35,8 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 
 	/**
 	 * LoggerInterface
+	 *
+	 * @var LoggerInterface|null
 	 */
 	private $logger;
 

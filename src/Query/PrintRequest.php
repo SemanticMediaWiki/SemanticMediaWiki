@@ -66,11 +66,15 @@ class PrintRequest {
 	 * the original query where it was added.
 	 *
 	 * Mostly used in cases where QueryProcessor::addThisPrintout was executed.
+	 *
+	 * @var bool
 	 */
 	private $isDisconnected = false;
 
 	/**
 	 * Whether the label was marked with an extra `#` identifier.
+	 *
+	 * @var bool
 	 */
 	private $labelMarker = false;
 

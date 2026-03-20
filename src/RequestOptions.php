@@ -41,6 +41,8 @@ class RequestOptions {
 
 	/**
 	 * The maximum number of results that should be returned.
+	 *
+	 * @var int
 	 */
 	public $limit = -1;
 
@@ -49,6 +51,8 @@ class RequestOptions {
 	 * the whole set to be restricted on a bulk instead of only applied to a subset
 	 * therefore allow the exclude the limit and apply an restriction during the
 	 * post-processing.
+	 *
+	 * @var bool
 	 */
 	public $exclude_limit = false;
 
@@ -56,12 +60,16 @@ class RequestOptions {
 	 * A numerical offset. The first $offset results are skipped.
 	 * Note that this does not imply a defined order of results
 	 * (see RequestOptions->$sort below).
+	 *
+	 * @var int
 	 */
 	public $offset = 0;
 
 	/**
 	 * A numerical size to indicate a "look ahead" beyond the defined
 	 * limit.
+	 *
+	 * @var int
 	 */
 	public $lookahead = 0;
 
@@ -70,12 +78,16 @@ class RequestOptions {
 	 * by the type of result that are requested: wiki pages and strings
 	 * are ordered alphabetically, whereas other data is ordered
 	 * numerically. Usually, the order should be fairly "natural".
+	 *
+	 * @var bool
 	 */
 	public $sort = false;
 
 	/**
 	 * If RequestOptions->$sort is true, this parameter defines whether
 	 * the results are ordered in ascending or descending order.
+	 *
+	 * @var bool
 	 */
 	public $ascending = true;
 
@@ -83,12 +95,16 @@ class RequestOptions {
 	 * Specifies a lower or upper bound for the values returned by the query.
 	 * Whether it is lower or upper is specified by the parameter "ascending"
 	 * (true->lower, false->upper).
+	 *
+	 * @var bool|null
 	 */
 	public $boundary = null;
 
 	/**
 	 * Specifies whether or not the requested boundary should be returned
 	 * as a result.
+	 *
+	 * @var bool
 	 */
 	public $include_boundary = true;
 

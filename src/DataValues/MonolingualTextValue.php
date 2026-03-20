@@ -50,7 +50,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	private static $properties = null;
 
 	/**
-	 * nonstandardLanguageCodeMapping
+	 * @var string[]|null
 	 */
 	private $nonstandardLanguageCodeMapping;
 
