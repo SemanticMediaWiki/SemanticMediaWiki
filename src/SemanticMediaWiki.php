@@ -2,8 +2,8 @@
 
 namespace SMW;
 
-use Exception;
 use SMW\Services\ServicesFactory;
+use UnexpectedValueException;
 
 /**
  * @codeCoverageIgnore
@@ -521,13 +521,16 @@ class SemanticMediaWiki {
 	/**
 	 * Get the array that DefaultSettings.php is supposed to return.  We did not put it inline here
 	 * because there are references to that file online for documentation.
+	 *
+	 * @return array
+	 * @throws UnexpectedValueException
 	 */
 	public static function getDefaultSettings(): array {
 		static $settings = null;
 		if ( $settings === null ) {
 			$settings = include __DIR__ . '/DefaultSettings.php';
 			if ( !is_array( $settings ) ) {
-				throw new Exception( "Including DefaultSettings.php did not return an array." );
+				throw new UnexpectedValueException( "Including DefaultSettings.php did not return an array." );
 			}
 		}
 		return $settings;
