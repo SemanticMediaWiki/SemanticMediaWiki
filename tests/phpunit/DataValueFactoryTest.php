@@ -356,7 +356,7 @@ class DataValueFactoryTest extends TestCase {
 
 			[ '_wpg', 'Bar', 'Bar', WikiPageValue::class ], // #8
 			[ '_wpg', 'Bar', 'Bar', WikiPageValue::class ], // #9
-			[ '_wpg', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', ikiPageValue::class ], // #10
+			[ '_wpg', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', WikiPageValue::class ], // #10
 			[ '_wpg', '9001', '9001', WikiPageValue::class ], // #11
 			[ '_wpg', 1001, '1001', WikiPageValue::class ], // #12
 			[ '_wpg', '-%&$*', '-%&$*', WikiPageValue::class ], // #13
