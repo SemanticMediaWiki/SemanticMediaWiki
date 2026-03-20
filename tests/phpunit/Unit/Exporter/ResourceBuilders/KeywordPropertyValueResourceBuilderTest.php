@@ -1,0 +1,80 @@
+<?php
+
+namespace SMW\Tests\Unit\Exporter\ResourceBuilders;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItemFactory;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ResourceBuilders\KeywordPropertyValueResourceBuilder;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Exporter\ResourceBuilders\KeywordPropertyValueResourceBuilder
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class KeywordPropertyValueResourceBuilderTest extends TestCase {
+
+	private $dataItemFactory;
+	private $testEnvironment;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->dataItemFactory = new DataItemFactory();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->testEnvironment->resetPoolCacheById( Exporter::POOLCACHE_ID );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceof(
+			KeywordPropertyValueResourceBuilder::class,
+			new KeywordPropertyValueResourceBuilder()
+		);
+	}
+
+	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$instance = new KeywordPropertyValueResourceBuilder();
+
+		$this->assertFalse(
+			$instance->isResourceBuilderFor( $property )
+		);
+	}
+
+	public function testAddResourceValueForValidProperty() {
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_keyw' );
+
+		$dataItem = $this->dataItemFactory->newDIBlob( 'Bar' );
+
+		$expData = new ExpData(
+			new ExpNsResource( 'Foobar', 'Bar', 'Mo', null )
+		);
+
+		$instance = new KeywordPropertyValueResourceBuilder();
+
+		$instance->addResourceValue(
+			$expData,
+			$property,
+			$dataItem
+		);
+
+		$this->assertTrue(
+			$instance->isResourceBuilderFor( $property )
+		);
+	}
+
+}

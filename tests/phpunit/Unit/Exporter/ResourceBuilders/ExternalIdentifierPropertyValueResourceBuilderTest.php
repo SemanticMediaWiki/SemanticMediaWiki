@@ -1,0 +1,80 @@
+<?php
+
+namespace SMW\Tests\Unit\Exporter\ResourceBuilders;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItemFactory;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
+use SMW\Exporter\Element\ExpNsResource;
+use SMW\Exporter\ResourceBuilders\ExternalIdentifierPropertyValueResourceBuilder;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Exporter\ResourceBuilders\ExternalIdentifierPropertyValueResourceBuilder
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.5
+ *
+ * @author mwjames
+ */
+class ExternalIdentifierPropertyValueResourceBuilderTest extends TestCase {
+
+	private $dataItemFactory;
+	private $testEnvironment;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->dataItemFactory = new DataItemFactory();
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->testEnvironment->resetPoolCacheById( Exporter::POOLCACHE_ID );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceof(
+			ExternalIdentifierPropertyValueResourceBuilder::class,
+			new ExternalIdentifierPropertyValueResourceBuilder()
+		);
+	}
+
+	public function testIsNotResourceBuilderForNonExternalIdentifierTypedProperty() {
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+
+		$instance = new ExternalIdentifierPropertyValueResourceBuilder();
+
+		$this->assertFalse(
+			$instance->isResourceBuilderFor( $property )
+		);
+	}
+
+	public function testAddResourceValueForValidProperty() {
+		$property = $this->dataItemFactory->newDIProperty( 'Foo' );
+		$property->setPropertyTypeId( '_eid' );
+
+		$dataItem = $this->dataItemFactory->newDIBlob( 'Bar' );
+
+		$expData = new ExpData(
+			new ExpNsResource( 'Foobar', 'Bar', 'Mo', null )
+		);
+
+		$instance = new ExternalIdentifierPropertyValueResourceBuilder();
+
+		$instance->addResourceValue(
+			$expData,
+			$property,
+			$dataItem
+		);
+
+		$this->assertTrue(
+			$instance->isResourceBuilderFor( $property )
+		);
+	}
+
+}

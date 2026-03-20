@@ -1,0 +1,553 @@
+<?php
+
+namespace SMW\Tests\Unit\SPARQLStore\QueryEngine\DescriptionInterpreters;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
+use SMW\Exporter\Serializer\TurtleSerializer;
+use SMW\HierarchyLookup;
+use SMW\Query\Language\Disjunction;
+use SMW\Query\Language\SomeProperty;
+use SMW\Query\Language\ThingDescription;
+use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
+use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
+use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
+use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
+use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
+use SMW\SPARQLStore\QueryEngine\EngineOptions;
+use SMW\Tests\Utils\UtilityFactory;
+
+/**
+ * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.1
+ *
+ * @author mwjames
+ */
+class SomePropertyInterpreterTest extends TestCase {
+
+	private $descriptionInterpreterFactory;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->descriptionInterpreterFactory = new DescriptionInterpreterFactory();
+	}
+
+	public function testCanConstruct() {
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			SomePropertyInterpreter::class,
+			new SomePropertyInterpreter( $conditionBuilder )
+		);
+	}
+
+	public function testCanInterpretDescription() {
+		$description = $this->getMockBuilder( SomeProperty::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$conditionBuilder = $this->getMockBuilder( ConditionBuilder::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$this->assertTrue(
+			$instance->canInterpretDescription( $description )
+		);
+	}
+
+	/**
+	 * @dataProvider descriptionProvider
+	 */
+	public function testSomeProperty( $description, $orderByProperty, $sortkeys, $expectedConditionType, $expectedConditionString ) {
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setSortKeys( $sortkeys );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+		$conditionBuilder->setOrderByProperty( $orderByProperty );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$condition = $instance->interpretDescription( $description );
+
+		$this->assertInstanceOf(
+			$expectedConditionType,
+			$condition
+		);
+
+		$this->assertEquals(
+			$expectedConditionString,
+			$conditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function testHierarchyPattern() {
+		$engineOptions = new EngineOptions();
+		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
+
+		$property = new Property( 'Foo' );
+
+		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$hierarchyLookup->expects( $this->once() )
+			->method( 'hasSubproperty' )
+			->with( $property )
+			->willReturn( true );
+
+		$resultVariable = 'result';
+
+		$conditionBuilder = new ConditionBuilder( $this->descriptionInterpreterFactory, $engineOptions );
+		$conditionBuilder->setHierarchyLookup( $hierarchyLookup );
+		$conditionBuilder->setResultVariable( $resultVariable );
+		$conditionBuilder->setJoinVariable( $resultVariable );
+
+		$instance = new SomePropertyInterpreter( $conditionBuilder );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$condition = $instance->interpretDescription( $description );
+
+		$expected = UtilityFactory::getInstance()->newStringBuilder()
+			->addString( '?result ?sp2 ?v1 .' )->addNewLine()
+			->addString( '{ ' )->addNewLine()
+			->addString( '?sp2 rdfs:subPropertyOf* property:Foo .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$this->assertEquals(
+			$expected,
+			$conditionBuilder->convertConditionToString( $condition )
+		);
+	}
+
+	public function descriptionProvider() {
+		$stringBuilder = UtilityFactory::getInstance()->newStringBuilder();
+
+		# 0
+		$conditionType = FalseCondition::class;
+
+		$description = new SomeProperty(
+			new Property( 'Foo' ),
+			new Disjunction()
+		);
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '<http://www.example.org> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2002/07/owl#nothing> .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 1
+		$conditionType = WhereCondition::class;
+
+		$description = new SomeProperty(
+			new Property( 'Foo' ),
+			new ThingDescription()
+		);
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 2 Inverse
+		$conditionType = WhereCondition::class;
+
+		$description = new SomeProperty(
+			new Property( 'Foo', true ),
+			new ThingDescription()
+		);
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?v1 property:Foo ?result .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 3
+		$conditionType = WhereCondition::class;
+
+		$description = new SomeProperty(
+			new Property( 'Foo' ),
+			new ThingDescription()
+		);
+
+		$orderByProperty = new Property( 'Foo' );
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 4
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ) )
+		);
+
+		$orderByProperty = null;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result property:Foo "SomePropertyBlobValue" .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 5
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ) )
+		);
+
+		$orderByProperty = $property;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Foo "SomePropertyBlobValue" .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 6
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$propertyValue = new WikiPage( 'SomePropertyPageValue', NS_HELP );
+
+		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
+			Exporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+		);
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( $propertyValue )
+		);
+
+		$orderByProperty = $property;
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( "?result property:Foo $propertyValueName ." )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 7
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
+		);
+
+		$orderByProperty = new Property( 'SomePropertyPageValue' );
+		$sortkeys = [];
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v1sk <= "SomePropertyPageValue" )' )->addNewLine()
+			->addString( '?v1 swivt:wikiPageSortKey ?v1sk .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 8
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo' );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
+		);
+
+		$description = new SomeProperty(
+			new Property( 'Bar' ),
+			$description
+		);
+
+		$orderByProperty = new Property( 'Bar' );
+		$sortkeys = [ 'Foo' => 'ASC' ];
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Bar ?v1 .' )->addNewLine()
+			->addString( '{ ?v1 property:Foo ?v2 .' )->addNewLine()
+			->addString( 'FILTER( ?v2sk <= "SomePropertyPageValue" )' )->addNewLine()
+			->addString( '?v2 swivt:wikiPageSortKey ?v2sk .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 9 Inverse -> ?v1 property:Foo ?v2 vs. ?v2 property:Foo ?v1
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo', true );
+		$property->setPropertyTypeId( '_wpg' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
+		);
+
+		$description = new SomeProperty(
+			new Property( 'Bar' ),
+			$description
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Bar ?v1 .' )->addNewLine()
+			->addString( '{ ?v2 property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v2sk <= "SomePropertyPageValue" )' )->addNewLine()
+			->addString( '?v2 swivt:wikiPageSortKey ?v2sk .' )->addNewLine()
+			->addString( '}' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 10
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( '_MDAT' );
+
+		$description = new SomeProperty(
+			$property,
+			new ThingDescription()
+		);
+
+		$sortkeys = [ '_MDAT' => 'ASC' ];
+		$propertyLabel = str_replace( ' ', '_', $property->getLabel() );
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( "?result property:{$propertyLabel}-23aux ?v1 ." )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 11, issue 556
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( 'Foo' );
+		$property->setPropertyTypeId( '_txt' );
+
+		$description = new SomeProperty(
+			$property,
+			new Disjunction( [
+				new ValueDescription( new Blob( 'Bar' ) ),
+				new ValueDescription( new Blob( 'Baz' ) )
+			] )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Foo ?v1 .' )->addNewLine()
+			->addString( 'FILTER( ?v1 = "Bar" || ?v1 = "Baz" )' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 12 use the rdf/owl equivalent for a predefined property
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( '_SUBC' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new Blob( 'Bar' ) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result rdfs:subClassOf "Bar" .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 13
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( '_SUBP' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new WikiPage( 'Bar', SMW_NS_PROPERTY ) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result rdfs:subPropertyOf property:Bar .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		# 14 aux-property
+		$conditionType = WhereCondition::class;
+
+		$property = new Property( '_MDAT' );
+
+		$description = new SomeProperty(
+			$property,
+			new ValueDescription( new Time( 1, 1970, 01, 01, 1, 1 ) )
+		);
+
+		$expected = $stringBuilder
+			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()
+			->addString( '?result property:Modification_date-23aux "2440587.5423611"^^xsd:double .' )->addNewLine()
+			->getString();
+
+		$provider[] = [
+			$description,
+			$orderByProperty,
+			$sortkeys,
+			$conditionType,
+			$expected
+		];
+
+		return $provider;
+	}
+
+}

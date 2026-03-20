@@ -1,0 +1,43 @@
+<?php
+
+namespace SMW\Tests\Unit\Query\ResultPrinters;
+
+use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryResult;
+use SMW\Query\ResultPrinters\NullResultPrinter;
+
+/**
+ * @covers \SMW\Query\ResultPrinters\NullResultPrinter
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.0
+ *
+ * @author mwjames
+ */
+class NullResultPrinterTest extends TestCase {
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			NullResultPrinter::class,
+			new NullResultPrinter( '' )
+		);
+	}
+
+	public function testGetResult_Empty() {
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->willReturn( [] );
+
+		$instance = new NullResultPrinter( '' );
+
+		$this->assertEmpty(
+			$instance->getResult( $queryResult, [], SMW_OUTPUT_WIKI )
+		);
+	}
+
+}

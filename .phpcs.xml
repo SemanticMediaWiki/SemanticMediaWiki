@@ -38,7 +38,6 @@
 		<exclude name="MediaWiki.Commenting.FunctionComment.MissingReturnType" />
 		<exclude name="MediaWiki.Usage.ExtendClassUsage.FunctionConfigUsage" />
 		<exclude name="MediaWiki.VariableAnalysis.MisleadingGlobalNames.Misleading$wgCategoryCollation" />
-		<exclude name="MediaWiki.Usage.ForbiddenFunctions.xml_set_object" />
 	</rule>
 	<rule ref="MediaWiki.NamingConventions.ValidGlobalName">
 		<properties>

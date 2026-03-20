@@ -1,0 +1,105 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Specials\Ask;
+
+use ParamProcessor\ParamDefinition;
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\Ask\ParameterInput;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\MediaWiki\Specials\Ask\ParameterInput
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.0
+ *
+ * @author mwjames
+ */
+class ParameterInputTest extends TestCase {
+
+	public function testCanConstruct() {
+		$paramDefinition = $this->getMockBuilder( ParamDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			ParameterInput::class,
+			new ParameterInput( $paramDefinition, '' )
+		);
+	}
+
+	/**
+	 * @dataProvider listValueProvider
+	 */
+	public function testGetHtmlOnCheckboxList( $currentValue, $allowedValues, $expected ) {
+		$stringValidator = TestEnvironment::newValidatorFactory()->newStringValidator();
+
+		$paramDefinition = $this->getMockBuilder( ParamDefinition::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$paramDefinition->expects( $this->atLeastOnce() )
+			->method( 'getAllowedValues' )
+			->willReturn( $allowedValues );
+
+		$paramDefinition->expects( $this->any() )
+			->method( 'isList' )
+			->willReturn( true );
+
+		$instance = new ParameterInput(
+			$paramDefinition,
+			$currentValue
+		);
+
+		$stringValidator->assertThatStringContains(
+			$expected,
+			$instance->getHtml()
+		);
+	}
+
+	public function listValueProvider() {
+		$provider[] = [
+			'Foo',
+			[ 'Foo', 'Bar' ],
+			[
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar".*><tt>Bar</tt></span>'
+			],
+
+		];
+
+		$provider[] = [
+			[ 'Foo' ],
+			[ 'Foo', 'Bar' ],
+			[
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar".*><tt>Bar</tt></span>'
+			],
+
+		];
+
+		$provider[] = [
+			[ 'Foo, Bar' ],
+			[ 'Foo', 'Bar' ],
+			[
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Bar" checked="".*><tt>Bar</tt></span>'
+			],
+
+		];
+
+		$provider[] = [
+			[ 'Foo,foo bar' ],
+			[ 'Foo', 'foo bar' ],
+			[
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="Foo" checked="".*><tt>Foo</tt></span>',
+				'<span class="parameter-checkbox-input" style="white-space: nowrap; padding-right: 5px;"><input type="checkbox" name="[]" value="foo bar" checked="".*><tt>foo bar</tt></span>'
+			],
+
+		];
+
+		return $provider;
+	}
+
+}

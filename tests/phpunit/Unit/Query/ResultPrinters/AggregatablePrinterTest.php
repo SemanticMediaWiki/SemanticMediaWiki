@@ -1,0 +1,334 @@
+<?php
+
+namespace SMW\Tests\Unit\Query\ResultPrinters;
+
+use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
+use SMW\DataValues\NumberValue;
+use SMW\Formatters\Infolink;
+use SMW\Query\PrintRequest;
+use SMW\Query\QueryResult;
+use SMW\Query\Result\ResultArray;
+use SMW\Query\ResultPrinters\AggregatablePrinter;
+use SMW\Query\ResultPrinters\ResultPrinter;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class AggregatablePrinterTest extends TestCase {
+
+	private $queryResult;
+	private $resultPrinterReflector;
+	private $aggregatablePrinter;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->resultPrinterReflector = TestEnvironment::getUtilityFactory()->newResultPrinterReflector();
+
+		$this->queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->aggregatablePrinter = $this->getMockBuilder( AggregatablePrinter::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			AggregatablePrinter::class,
+			$this->aggregatablePrinter
+		);
+
+		$this->assertInstanceOf(
+			ResultPrinter::class,
+			$this->aggregatablePrinter
+		);
+	}
+
+	/**
+	 * @dataProvider errorMessageProvider
+	 */
+	public function testGetResultTextErrorMessage( $setup, $expected ) {
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getErrors', 'getNext', 'addErrors' ] )
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getNext' )
+			->willReturn( [] );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getErrors' )
+			->willReturn( [ $expected['message'] ] );
+
+		$this->resultPrinterReflector->addParameters(
+			$this->aggregatablePrinter,
+			$setup['parameters']
+		);
+
+		$result = $this->resultPrinterReflector->invoke(
+			$this->aggregatablePrinter,
+			$queryResult,
+			SMW_OUTPUT_HTML
+		);
+
+		$this->assertEmpty( $result );
+
+		foreach ( $queryResult->getErrors() as $error ) {
+			$this->assertEquals( $expected['message'], $error );
+		}
+	}
+
+	public function testAddNumbersForDataItem() {
+		$values = [];
+		$expected = [];
+		$keys = [ 'test', 'foo', 'bar' ];
+
+		$reflector = new ReflectionClass( $this->aggregatablePrinter );
+		$method = $reflector->getMethod( 'addNumbersForDataItem' );
+
+		for ( $i = 1; $i <= 10; $i++ ) {
+
+			// Select random array key
+			$name = $keys[rand( 0, 2 )];
+
+			// Get a random number
+			$random = rand( 10, 500 );
+
+			// Set expected result and create dataItem
+			$expected[$name] = isset( $expected[$name] ) ? $expected[$name] + $random : $random;
+			$dataItem = new Number( $random );
+
+			$this->assertEquals( $random, $dataItem->getNumber() );
+			$this->assertEquals( DataItem::TYPE_NUMBER, $dataItem->getDIType() );
+
+			$result = $method->invokeArgs(
+				$this->aggregatablePrinter,
+				[
+					$dataItem,
+					&$values,
+					$name
+				]
+			);
+
+			$this->assertIsInt( $values[$name] );
+			$this->assertEquals( $expected[$name], $values[$name] );
+		}
+	}
+
+	/**
+	 * @dataProvider numberDataProvider
+	 */
+	public function testGetNumericResults( $setup, $expected ) {
+		$this->resultPrinterReflector->addParameters(
+			$this->aggregatablePrinter,
+			$setup['parameters']
+		);
+
+		$reflector = new ReflectionClass( $this->aggregatablePrinter );
+		$method = $reflector->getMethod( 'getNumericResults' );
+
+		$result = $method->invoke(
+			$this->aggregatablePrinter,
+			$setup['queryResult'],
+			SMW_OUTPUT_HTML
+		);
+
+		$this->assertIsArray(
+
+			$result
+		);
+
+		$this->assertEquals(
+			$expected['result'],
+			$result
+		);
+	}
+
+	public function numberDataProvider() {
+		$provider = [];
+
+		$setup = [
+			[ 'printRequest' => 'Foo', 'number' => 10, 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Bar', 'number' => 20, 'dataValue' => 'Quuey' ],
+			[ 'printRequest' => 'Bar', 'number' => 20, 'dataValue' => 'Xuuey' ]
+		];
+
+		// #0 aggregation = subject
+		$parameters = [
+			'headers'     => SMW_HEADERS_PLAIN,
+			'offset'      => 0,
+			'aggregation' => 'subject',
+			'mainlabel'   => ''
+		];
+
+		$provider[] = [
+			[
+				'parameters'  => $parameters,
+				'queryResult' => $this->buildMockQueryResult( $setup )
+				],
+			[
+				'result'      => [ 'Quuey' => 50 ]
+			]
+		];
+
+		// #1 aggregation = property
+		$parameters = [
+			'headers'     => SMW_HEADERS_PLAIN,
+			'offset'      => 0,
+			'aggregation' => 'property',
+			'mainlabel'   => ''
+		];
+
+		$provider[] = [
+			[
+				'parameters'  => $parameters,
+				'queryResult' => $this->buildMockQueryResult( $setup )
+				],
+			[
+				'result'      => [ 'Foo' => 10, 'Bar' => 40 ]
+			]
+		];
+
+		return $provider;
+	}
+
+	public function errorMessageProvider() {
+		$message = wfMessage( 'smw-qp-aggregatable-empty-data' )->inContentLanguage()->text();
+
+		$provider = [];
+
+		$provider[] = [
+			[
+				'parameters'  => [ 'distribution' => true ],
+		// 'queryResult' => $queryResult
+				],
+			[
+				'message'     => $message
+			]
+		];
+
+		// #1
+		$provider[] = [
+			[
+				'parameters'  => [ 'distribution' => false ],
+			// 'queryResult' => $queryResult
+				],
+			[
+				'message'     => $message
+			]
+		];
+		return $provider;
+	}
+
+	/**
+	 * @return QueryResult
+	 */
+	private function buildMockQueryResult( $setup ) {
+		$printRequests = [];
+		$resultArrays   = [];
+
+		foreach ( $setup as $value ) {
+
+			$printRequest = $this->getMockBuilder( PrintRequest::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$printRequest->expects( $this->any() )
+				->method( 'getText' )
+				->willReturn( $value['printRequest'] );
+
+			$printRequest->expects( $this->any() )
+				->method( 'getLabel' )
+				->willReturn( $value['printRequest'] );
+
+			$printRequests[] = $printRequest;
+
+			$dataItem = $this->getMockBuilder( Number::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$dataItem->expects( $this->any() )
+				->method( 'getDIType' )
+				->willReturn( DataItem::TYPE_NUMBER );
+
+			$dataItem->expects( $this->any() )
+				->method( 'getNumber' )
+				->willReturn( $value['number'] );
+
+			$dataValue = $this->getMockBuilder( NumberValue::class )
+				->disableOriginalConstructor()
+				->getMock();
+
+			$dataValue->expects( $this->any() )
+				->method( 'getTypeID' )
+				->willReturn( '_num' );
+
+			$dataValue->expects( $this->any() )
+				->method( 'getShortWikiText' )
+				->willReturn( $value['dataValue'] );
+
+			$dataValue->expects( $this->any() )
+				->method( 'getDataItem' )
+				->willReturn( $dataItem );
+
+			$resultArray = $this->getMockBuilder( ResultArray::class )
+				->disableOriginalConstructor()
+				->setMethods( [ 'getText', 'getPrintRequest', 'getNextDataValue', 'getNextDataItem' ] )
+				->getMock();
+
+			$resultArray->expects( $this->any() )
+				->method( 'getText' )
+				->willReturn( $value['printRequest'] );
+
+			$resultArray->expects( $this->any() )
+				->method( 'getPrintRequest' )
+				->willReturn( $printRequest );
+
+			$resultArray->expects( $this->any() )
+				->method( 'getNextDataValue' )
+				->willReturnOnConsecutiveCalls( $dataValue, false );
+
+			$resultArray->expects( $this->any() )
+				->method( 'getNextDataItem' )
+				->willReturnOnConsecutiveCalls( $dataItem, false );
+
+			$resultArrays[] = $resultArray;
+		}
+
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$queryResult->expects( $this->any() )
+			->method( 'getPrintRequests' )
+			->willReturn( $printRequests );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getNext' )
+			->willReturnOnConsecutiveCalls( $resultArrays, false );
+
+		$queryResult->expects( $this->any() )
+			->method( 'getLink' )
+			->willReturn( new Infolink( true, 'Lala', 'Lula' ) );
+
+		$queryResult->expects( $this->any() )
+			->method( 'hasFurtherResults' )
+			->willReturn( true );
+
+		return $queryResult;
+	}
+
+}
