@@ -26,21 +26,29 @@ class RecurringEvents {
 
 	/**
 	 * Defines the property used
+	 *
+	 * @var string|null
 	 */
 	private $property = null;
 
 	/**
 	 * Defines the dates
+	 *
+	 * @var array
 	 */
 	private $dates = [];
 
 	/**
 	 * Defines remaining / unused parameters
+	 *
+	 * @var array
 	 */
 	private $parameters = [];
 
 	/**
 	 * Defines errors
+	 *
+	 * @var array
 	 */
 	private $errors = [];
 

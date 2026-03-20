@@ -23,6 +23,8 @@ class RDFXMLSerializer extends Serializer {
 	 * True if the $pre_ns_buffer contains the beginning of a namespace
 	 * declaration block to which further declarations for the current
 	 * context can be appended.
+	 *
+	 * @var bool|null
 	 */
 	protected $namespace_block_started;
 
@@ -33,6 +35,8 @@ class RDFXMLSerializer extends Serializer {
 	 * client (reflected herein by calling flushContent()). Later, namespaces
 	 * can only be added locally to individual elements, thus requiring them to
 	 * be re-added multiple times if used in many elements.
+	 *
+	 * @var bool|null
 	 */
 	protected $namespaces_are_global;
 

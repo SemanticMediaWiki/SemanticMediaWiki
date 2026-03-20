@@ -36,6 +36,8 @@ class Outputs {
 	 * Protected member for temporarily storing header items.
 	 * Format $id => $headItem where $id is used only to avoid duplicate
 	 * items in the time before they are forwarded to the output.
+	 *
+	 * @var array
 	 */
 	protected static $headItems = [];
 
@@ -44,6 +46,8 @@ class Outputs {
 	 * snippets. Format $id => $scriptText where $id is used only to
 	 * avoid duplicate scripts in the time before they are forwarded
 	 * to the output.
+	 *
+	 * @var array
 	 */
 	protected static $scripts = [];
 

@@ -18,7 +18,6 @@
 		<exclude name="MediaWiki.PHPUnit.AssertEmpty.AssertEmptyUsed" />
 		<exclude name="MediaWiki.Commenting.PropertyDocumentation.WrongStyle" />
 		<exclude name="Generic.Files.OneObjectStructurePerFile.MultipleFound" />
-		<exclude name="MediaWiki.Commenting.PropertyDocumentation.MissingVar" />
 		<exclude name="MediaWiki.Commenting.MissingCovers.MissingCovers" />
 		<exclude name="PSR12.Properties.ConstantVisibility.NotFound" />
 		<exclude name="MediaWiki.WhiteSpace.SpaceBeforeSingleLineComment.NewLineComment" />
