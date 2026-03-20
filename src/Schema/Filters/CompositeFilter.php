@@ -24,7 +24,7 @@ class CompositeFilter implements SchemaFilter {
 	private $matches = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 

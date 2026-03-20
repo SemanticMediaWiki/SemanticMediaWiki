@@ -103,7 +103,7 @@ class SpecificationLookup {
 	 * @param Property|WikiPage $source
 	 * @param Property $target
 	 *
-	 * @return ]|DataItem[
+	 * @return bool|array|DataItem[]
 	 */
 	public function getSpecification( $source, Property $target ) {
 		if ( $source instanceof Property ) {

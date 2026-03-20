@@ -47,9 +47,9 @@ class SchemaFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getType( $type ) {
+	public function getType( string $type ) {
 		return $this->getSchemaTypes()->getType( $type );
 	}
 
