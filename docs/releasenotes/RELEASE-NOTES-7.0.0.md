@@ -35,6 +35,62 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
 * Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
 
+- The following class aliases are deprecated. They will be removed in a future update. Update any code referencing these to use the new namespaced class names.
+
+ | Deprecated alias | New class name |
+  |---|---|
+  | `SMWDIBlob` | `SMW\DataItems\Blob` |
+  | `SMWDIBoolean` | `SMW\DataItems\Boolean` |
+  | `SMW\DIConcept` | `SMW\DataItems\Concept` |
+  | `SMWDIContainer` | `SMW\DataItems\Container` |
+  | `SMWDataItem` | `SMW\DataItems\DataItem` |
+  | `SMWDIError` | `SMW\DataItems\Error` |
+  | `SMWDIGeoCoord` | `SMW\DataItems\GeoCoord` |
+  | `SMWDINumber` | `SMW\DataItems\Number` |
+  | `SMW\DIProperty` | `SMW\DataItems\Property` |
+  | `SMWDITime` | `SMW\DataItems\Time` |
+  | `SMWDIUri` | `SMW\DataItems\Uri` |
+  | `SMW\DIWikiPage` | `SMW\DataItems\WikiPage` |
+  | `SMWDataValue` | `SMW\DataValues\DataValue` |
+  | `SMWConceptValue` | `SMW\DataValues\ConceptValue` |
+  | `SMWErrorValue` | `SMW\DataValues\ErrorValue` |
+  | `SMWNumberValue` | `SMW\DataValues\NumberValue` |
+  | `SMWPropertyListValue` | `SMW\DataValues\PropertyListValue` |
+  | `SMWQuantityValue` | `SMW\DataValues\QuantityValue` |
+  | `SMWRecordValue` | `SMW\DataValues\RecordValue` |
+  | `SMWTimeValue` | `SMW\DataValues\TimeValue` |
+  | `SMWURIValue` | `SMW\DataValues\URIValue` |
+  | `SMWWikiPageValue` | `SMW\DataValues\WikiPageValue` |
+  | `SMWExpData` | `SMW\Export\ExpData` |
+  | `SMWExportController` | `SMW\Export\ExportController` |
+  | `SMWExporter` | `SMW\Export\Exporter` |
+  | `SMWQuery` | `SMW\Query\Query` |
+  | `SMWQueryProcessor` | `SMW\Query\QueryProcessor` |
+  | `SMW\QueryPrinterFactory` | `SMW\Query\QueryPrinterFactory` |
+  | `SMW\PropertiesQueryPage` | `SMW\QueryPages\PropertiesQueryPage` |
+  | `SMW\QueryPage` | `SMW\QueryPages\QueryPage` |
+  | `SMW\UnusedPropertiesQueryPage` | `SMW\QueryPages\UnusedPropertiesQueryPage` |
+  | `SMW\WantedPropertiesQueryPage` | `SMW\QueryPages\WantedPropertiesQueryPage` |
+  | `SMWSpecialOWLExport` | `SMW\MediaWiki\Specials\SpecialOWLExport` |
+  | `SMWSpecialTypes` | `SMW\MediaWiki\Specials\SpecialTypes` |
+  | `SMW\SpecialConcepts` | `SMW\MediaWiki\Specials\SpecialConcepts` |
+  | `SMW\SpecialPage` | `SMW\MediaWiki\Specials\SpecialPage` |
+  | `SMW\SpecialProperties` | `SMW\MediaWiki\Specials\SpecialProperties` |
+  | `SMW\SpecialUnusedProperties` | `SMW\MediaWiki\Specials\SpecialUnusedProperties` |
+  | `SMW\SpecialWantedProperties` | `SMW\MediaWiki\Specials\SpecialWantedProperties` |
+  | `SMW\MessageFormatter` | `SMW\Formatters\MessageFormatter` |
+  | `SMWInfolink` | `SMW\Formatters\Infolink` |
+  | `SMWPageLister` | `SMW\Formatters\PageLister` |
+  | `SMW\Highlighter` | `SMW\Formatters\Highlighter` |
+  | `SMW\RecurringEvents` | `SMW\Utils\RecurringEvents` |
+  | `SMW\SemanticData` | `SMW\DataModel\SemanticData` |
+  | `SMW\Subobject` | `SMW\DataModel\Subobject` |
+  | `SMWElasticStore` | `SMW\Elastic\ElasticStore` |
+  | `SMWSearch` | `SMW\MediaWiki\Search\ExtendedSearchEngine` |
+  | `SMWOutputs` | `SMW\MediaWiki\Outputs` |
+  | `SMWPageSchemas` | `SMW\MediaWiki\PageSchemas` |
+  | `SMW\ContentParser` | `SMW\Parser\ContentParser` |
+
 ## Upgrading
 
 No need to run "update.php" or any other migration scripts.
