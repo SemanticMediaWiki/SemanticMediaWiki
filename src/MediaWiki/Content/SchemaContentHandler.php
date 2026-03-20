@@ -269,8 +269,9 @@ class SchemaContentHandler extends JsonContentHandler {
 			}
 		}
 
+		$schemaType = $schema->get( 'type' );
 		$contentFormatter->setType(
-			$schemaFactory->getType( $schema->get( 'type' ) )
+			is_string( $schemaType ) ? $schemaFactory->getType( $schemaType ) : []
 		);
 
 		$output->setContentHolderText(
