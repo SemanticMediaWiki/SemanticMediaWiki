@@ -1,0 +1,49 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki\Specials\Admin\Alerts;
+
+use PHPUnit\Framework\TestCase;
+use SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler;
+use SMW\MediaWiki\Specials\Admin\TaskHandler;
+
+/**
+ * @covers \SMW\MediaWiki\Specials\Admin\Alerts\MaintenanceAlertsTaskHandler
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.2
+ *
+ * @author mwjames
+ */
+class MaintenanceAlertsTaskHandlerTest extends TestCase {
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			MaintenanceAlertsTaskHandler::class,
+			new MaintenanceAlertsTaskHandler( [] )
+		);
+	}
+
+	public function testGetHtml() {
+		$taskHandler = $this->getMockBuilder( TaskHandler::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getHtml' ] )
+			->getMockForAbstractClass();
+
+		$taskHandler->expects( $this->once() )
+			->method( 'getHtml' )
+			->willReturn( 'FOO' );
+
+		$instance = new MaintenanceAlertsTaskHandler(
+			[
+				$taskHandler
+			]
+		);
+
+		$this->assertStringContainsString(
+			'FOO',
+			$instance->getHtml()
+		);
+	}
+
+}

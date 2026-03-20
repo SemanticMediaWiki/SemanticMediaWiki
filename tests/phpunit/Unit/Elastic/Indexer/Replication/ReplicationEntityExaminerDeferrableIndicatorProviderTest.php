@@ -1,0 +1,343 @@
+<?php
+
+namespace SMW\Tests\Unit\Elastic\Indexer\Replication;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\Elastic\Connection\Client;
+use SMW\Elastic\ElasticStore;
+use SMW\Elastic\Indexer\Replication\ReplicationCheck;
+use SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider;
+use SMW\EntityCache;
+use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
+use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\Elastic\Indexer\Replication\ReplicationEntityExaminerDeferrableIndicatorProvider
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 3.2
+ *
+ * @author mwjames
+ */
+class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase {
+
+	private TestEnvironment $testEnvironment;
+	private $store;
+	private $connection;
+	private $entityCache;
+	private $replicationCheck;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+
+		$this->connection = $this->getMockBuilder( Client::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store = $this->getMockBuilder( ElasticStore::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->store->expects( $this->any() )
+			->method( 'getConnection' )
+			->willReturn( $this->connection );
+
+		$this->entityCache = $this->getMockBuilder( EntityCache::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->replicationCheck = $this->getMockBuilder( ReplicationCheck::class )
+			->disableOriginalConstructor()
+			->getMock();
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			ReplicationEntityExaminerDeferrableIndicatorProvider::class,
+			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
+		);
+
+		$this->assertInstanceOf(
+			DeferrableIndicatorProvider::class,
+			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
+		);
+
+		$this->assertInstanceOf(
+			TypableSeverityIndicatorProvider::class,
+			new ReplicationEntityExaminerDeferrableIndicatorProvider( $this->store, $this->entityCache, $this->replicationCheck )
+		);
+	}
+
+	public function testGetName() {
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$this->assertIsString(
+
+			$instance->getName()
+		);
+	}
+
+	public function testIsSeverityType() {
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$this->assertIsBool(
+
+			$instance->isSeverityType( 'foo' )
+		);
+	}
+
+	public function testGetIndicators() {
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$this->assertIsArray(
+
+			$instance->getIndicators()
+		);
+	}
+
+	public function testIsDeferredMode() {
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$this->assertIsBool(
+
+			$instance->isDeferredMode()
+		);
+	}
+
+	public function testGetModules() {
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$this->assertIsArray(
+
+			$instance->getModules()
+		);
+	}
+
+	public function testGetInlineStyle() {
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$this->assertIsString(
+
+			$instance->getInlineStyle()
+		);
+	}
+
+	public function testHasIndicators_NoCheck() {
+		$subject = WikiPage::newFromText( __METHOD__ );
+
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$instance->canCheckReplication( false );
+
+		$this->assertFalse(
+			$instance->hasIndicator( $subject, [] )
+		);
+	}
+
+	public function testHasIndicators_CheckOnMaintenanceLock() {
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->willReturn( true );
+
+		$this->connection->expects( $this->any() )
+			->method( 'hasMaintenanceLock' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->never() )
+			->method( 'fetch' );
+
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$instance->canCheckReplication( true );
+
+		$this->assertTrue(
+			$instance->hasIndicator( $subject, [] )
+		);
+	}
+
+	public function testHasIndicators_FromCache_NoCheck() {
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->with(	$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) )
+			->willReturn( ReplicationCheck::TYPE_SUCCESS );
+
+		$subject = WikiPage::newFromText( 'Foo' );
+
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$instance->canCheckReplication( true );
+
+		$this->assertFalse(
+			$instance->hasIndicator( $subject, [] )
+		);
+	}
+
+	public function testHasIndicators_NoCache_Check() {
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( false );
+
+		$subject = WikiPage::newFromText( __METHOD__ );
+
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$instance->canCheckReplication( true );
+
+		$this->assertTrue(
+			$instance->hasIndicator( $subject, [] )
+		);
+
+		$this->assertEquals(
+			[ 'id' => 'smw-entity-examiner-deferred-elastic-replication' ],
+			$instance->getIndicators()
+		);
+	}
+
+	public function testHasIndicators_NoCache_DeferredCheck() {
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( false );
+
+		$subject = WikiPage::newFromText( __METHOD__ );
+
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$instance->canCheckReplication( true );
+		$instance->setDeferredMode( true );
+
+		$this->assertTrue(
+			$instance->hasIndicator( $subject, [] )
+		);
+
+		$indicators = $instance->getIndicators();
+
+		$this->assertArrayHasKey(
+			'id',
+			$indicators
+		);
+
+		$this->assertArrayHasKey(
+			'content',
+			$indicators
+		);
+	}
+
+	public function testHasIndicators_NoCache_DeferredCheck_ErrorSeverity() {
+		$this->connection->expects( $this->any() )
+			->method( 'ping' )
+			->willReturn( true );
+
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->willReturn( false );
+
+		$this->replicationCheck->expects( $this->any() )
+			->method( 'checkReplication' )
+			->with(	WikiPage::newFromText( '_MDAT', SMW_NS_PROPERTY ) )
+			->willReturn( '' );
+
+		$this->replicationCheck->expects( $this->once() )
+			->method( 'getSeverityType' )
+			->willReturn( ReplicationCheck::SEVERITY_TYPE_ERROR );
+
+		$subject = WikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
+
+		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
+			$this->store,
+			$this->entityCache,
+			$this->replicationCheck
+		);
+
+		$instance->canCheckReplication( true );
+		$instance->setDeferredMode( true );
+
+		$this->assertTrue(
+			$instance->hasIndicator( $subject, [] )
+		);
+
+		$indicators = $instance->getIndicators();
+
+		$this->assertTrue(
+			$instance->isSeverityType( TypableSeverityIndicatorProvider::SEVERITY_ERROR )
+		);
+
+		$this->assertArrayHasKey(
+			'id',
+			$indicators
+		);
+
+		$this->assertArrayHasKey(
+			'content',
+			$indicators
+		);
+	}
+
+}

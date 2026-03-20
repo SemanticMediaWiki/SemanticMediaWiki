@@ -1,0 +1,230 @@
+<?php
+
+namespace SMW\Tests\Unit\MediaWiki;
+
+use MediaWiki\Content\Content;
+use MediaWiki\Content\ContentHandler;
+use MediaWiki\Edit\PreparedEdit;
+use MediaWiki\Parser\ParserOutput;
+use MediaWiki\Revision\RevisionRecord;
+use MediaWiki\Revision\SlotRecord;
+use MediaWiki\Title\Title;
+use MediaWiki\User\User;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage as SMWWikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\EditInfo;
+use SMW\ParserData;
+use WikiPage;
+use function Wikimedia\base_convert;
+
+/**
+ * @covers \SMW\MediaWiki\EditInfo
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   2.0
+ *
+ * @author mwjames
+ */
+class EditInfoTest extends TestCase {
+
+	public function testCanConstruct() {
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$revision = $this->getMockBuilder( RevisionRecord::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			EditInfo::class,
+			new EditInfo( $wikiPage, $revision, $user )
+		);
+	}
+
+	/**
+	 * @dataProvider wikiPageDataProvider
+	 */
+	public function testFetchContentInfo( $parameters, $expected ) {
+		$instance = new EditInfo(
+			$parameters['wikiPage'],
+			$parameters['revision'],
+			$parameters['user']
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->fetchEditInfo()->getOutput()
+		);
+	}
+
+	public function testFetchSemanticData() {
+		$semanticData = $this->getMockBuilder( SemanticData::class )
+			->setConstructorArgs( [ SMWWikiPage::newFromText( 'Foo' ) ] )
+			->getMock();
+
+		$output = new ParserOutput();
+		$output->setExtensionData( ParserData::DATA_ID, $semanticData );
+
+		$editInfo = $this->createMock( PreparedEdit::class );
+		$editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->willReturn( $output );
+
+		$wikiPage = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->willReturn( $editInfo );
+
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$instance = new EditInfo(
+			$wikiPage,
+			$this->newRevisionStub(),
+			$user
+		);
+
+		$this->assertInstanceOf(
+			SemanticData::class,
+			$instance->fetchSemanticData()
+		);
+	}
+
+	/**
+	 * @dataProvider wikiPageDataProvider
+	 */
+	public function testFetchContentInfoWithDisabledContentHandler( $parameters, $expected ) {
+		$instance = new EditInfo(
+			$parameters['wikiPage'],
+			$parameters['revision'],
+			$parameters['user']
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->fetchEditInfo()->getOutput()
+		);
+	}
+
+	public function wikiPageDataProvider() {
+		$user = $this->getMockBuilder( User::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			  ->method( 'canExist' )
+			  ->willReturn( true );
+
+		# 0 No parserOutput object
+		$editInfo = $this->createMock( PreparedEdit::class );
+		$editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->willReturn( null );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->setConstructorArgs( [ $title ] )
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->willReturn( $editInfo );
+
+		$provider[] = [
+			[
+				'editInfo' => $editInfo,
+				'wikiPage' => $wikiPage,
+				'revision' => $this->newRevisionStub(),
+				'user' => $user
+			],
+			null
+		];
+
+		$output = new ParserOutput();
+
+		$editInfo = $this->createMock( PreparedEdit::class );
+		$editInfo->expects( $this->any() )
+			->method( 'getOutput' )
+			->willReturn( $output );
+
+		$wikiPage = $this->getMockBuilder( '\WikiPage' )
+			->setConstructorArgs( [ $title ] )
+			->getMock();
+
+		$wikiPage->expects( $this->any() )
+			->method( 'prepareContentForEdit' )
+			->willReturn( $editInfo );
+
+		$provider[] = [
+			[
+				'editInfo' => $editInfo,
+				'wikiPage' => $wikiPage,
+				'revision' => $this->newRevisionStub(),
+				'user' => $user
+			],
+			$editInfo->getOutput()
+		];
+
+		return $provider;
+	}
+
+	private function newRevisionStub() {
+		$revision = $this->getMockBuilder( RevisionRecord::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		// Needed for the abstract class
+		$revision->expects( $this->any() )
+			->method( 'getSize' )
+			->willReturn( strlen( 'Foo' ) );
+
+		// Needed for the abstract class
+		$revision->expects( $this->any() )
+			->method( 'getSha1' )
+			->willReturn( base_convert( sha1( 'Foo' ), 16, 36 ) );
+
+		$revision->expects( $this->any() )
+			->method( 'getContent' )
+			->willReturnMap( [
+				[ SlotRecord::MAIN, RevisionRecord::RAW, null, 'Foo' ],
+				[ SlotRecord::MAIN, RevisionRecord::FOR_PUBLIC, null, $this->newContentStub() ],
+			] );
+
+		return $revision;
+	}
+
+	private function newContentStub() {
+		$contentHandler = $this->getMockBuilder( ContentHandler::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$contentHandler->expects( $this->atLeastOnce() )
+			->method( 'getDefaultFormat' )
+			->willReturn( 'Foo' );
+
+		$content = $this->getMockBuilder( Content::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$content->expects( $this->atLeastOnce() )
+			->method( 'getContentHandler' )
+			->willReturn( $contentHandler );
+
+		return $content;
+	}
+
+}

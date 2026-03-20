@@ -1,0 +1,107 @@
+<?php
+
+namespace SMW\Tests\Unit;
+
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\NamespaceExaminer;
+
+/**
+ * @covers \SMW\NamespaceExaminer
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since   1.9
+ *
+ * @author mwjames
+ */
+class NamespaceExaminerTest extends TestCase {
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			NamespaceExaminer::class,
+			new NamespaceExaminer( [] )
+		);
+	}
+
+	public function testInNamespace_Title() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$title->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+		$instance->setValidNamespaces( [ NS_MAIN ] );
+
+		$this->assertTrue(
+			$instance->inNamespace( $title )
+		);
+
+		$instance->setValidNamespaces( [] );
+
+		$this->assertFalse(
+			$instance->inNamespace( $title )
+		);
+	}
+
+	public function testInNamespace_DIWikiPage() {
+		$subject = $this->getMockBuilder( WikiPage::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$subject->expects( $this->any() )
+			->method( 'getNamespace' )
+			->willReturn( NS_MAIN );
+
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+		$instance->setValidNamespaces( [ NS_MAIN ] );
+
+		$this->assertTrue(
+			$instance->inNamespace( $subject )
+		);
+
+		$instance->setValidNamespaces( [] );
+
+		$this->assertFalse(
+			$instance->inNamespace( $subject )
+		);
+	}
+
+	public function testIsSemanticEnabled() {
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+		$instance->setValidNamespaces( [ NS_MAIN ] );
+
+		$this->assertTrue(
+			$instance->isSemanticEnabled( NS_MAIN )
+		);
+
+		$instance = new NamespaceExaminer( [ NS_MAIN => false ] );
+
+		$this->assertFalse(
+			$instance->isSemanticEnabled( NS_MAIN )
+		);
+	}
+
+	public function testNoNumberNamespaceThrowsException() {
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+
+		$this->expectException( 'InvalidArgumentException' );
+		$instance->isSemanticEnabled( 'ichi' );
+	}
+
+	/**
+	 * Bug 51435; return false instead of an Exception
+	 */
+	public function testNoValidNamespaceException() {
+		$instance = new NamespaceExaminer( [ NS_MAIN => true ] );
+
+		$this->assertFalse(
+			$instance->isSemanticEnabled( 99991001 )
+		);
+	}
+
+}
