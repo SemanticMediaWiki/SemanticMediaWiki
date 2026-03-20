@@ -6,6 +6,7 @@ use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\Outputs;
+use SMW\Site;
 
 /**
  * This class mainly is a container to store URLs for the factbox in a
