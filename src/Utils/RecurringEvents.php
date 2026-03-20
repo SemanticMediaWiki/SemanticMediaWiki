@@ -121,15 +121,19 @@ class RecurringEvents {
 	 *
 	 * @since  1.9
 	 *
-	 * @return mixed
+	 * @param array $error
+	 *
+	 * @return void
 	 */
-	private function setError( $error ): void {
+	private function setError( array $error ): void {
 		$this->errors = array_merge( $error, $this->errors );
 	}
 
 	/**
 	 * Returns the "Julian day" value from an object of type
 	 * TimeValue.
+	 *
+	 * @return void
 	 */
 	public function getJulianDay( $dateDataValue ) {
 		if ( $dateDataValue === null ) {
@@ -306,7 +310,7 @@ class RecurringEvents {
 				$prev_month = $cur_date->getMonth();
 				$prev_year = $cur_date->getYear();
 
-				$new_month = ( $prev_month + $period ) % 12;
+				$new_month = ( (int)$prev_month + (int)$period ) % 12;
 				if ( $new_month == 0 ) {
 					$new_month = 12;
 				}
