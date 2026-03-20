@@ -24,10 +24,7 @@ class ChangeDiff {
 	 */
 	const CACHE_TTL = 604800;
 
-	/**
-	 * @var string
-	 */
-	private $time;
+	private int $time;
 
 	/**
 	 * @var array

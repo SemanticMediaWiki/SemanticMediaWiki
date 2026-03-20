@@ -3,6 +3,7 @@
 namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\SemanticData;
 
@@ -19,7 +20,7 @@ class NullPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->assertInstanceOf(
@@ -30,7 +31,7 @@ class NullPropertyAnnotatorTest extends TestCase {
 
 	public function testMethodAccess() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new NullPropertyAnnotator( $semanticData );

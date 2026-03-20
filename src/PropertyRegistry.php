@@ -21,10 +21,7 @@ class PropertyRegistry {
 	 */
 	private static $instance = null;
 
-	/**
-	 * @var PropertyLabelFinder
-	 */
-	private $propertyLabelFinder = null;
+	private PropertyLabelFinder $propertyLabelFinder;
 
 	/**
 	 * Array for assigning types to predefined properties. Each
@@ -52,15 +49,12 @@ class PropertyRegistry {
 	 */
 	private $propertyDescriptionMsgKeys = [];
 
-	/**
-	 * @var PropertyAliasFinder
-	 */
-	private $propertyAliasFinder;
+	private PropertyAliasFinder $propertyAliasFinder;
 
 	/**
 	 * @var string[]
 	 */
-	private $dataTypePropertyExemptionList = [];
+	private array $dataTypePropertyExemptionList;
 
 	/**
 	 * @since 2.1

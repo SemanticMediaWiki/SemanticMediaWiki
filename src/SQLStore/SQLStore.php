@@ -123,10 +123,7 @@ class SQLStore extends Store {
 	 */
 	const UPDATE_TRANSACTION = 'sql/transaction/update';
 
-	/**
-	 * @var SQLStoreFactory
-	 */
-	private $factory;
+	private SQLStoreFactory $factory;
 
 	/**
 	 * @var PropertyTableInfoFetcher|null

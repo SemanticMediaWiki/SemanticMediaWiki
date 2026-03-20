@@ -19,10 +19,7 @@ use SMWDIContainer;
  */
 class Subobject {
 
-	/**
-	 * @var Title
-	 */
-	 protected $title;
+	protected Title $title;
 
 	/**
 	 * @var ContainerSemanticData
@@ -50,7 +47,7 @@ class Subobject {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->title;
 	}
 

@@ -49,15 +49,9 @@ class PostProcHandler {
 	 */
 	const POST_UPDATE_TTL = 86400;
 
-	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
+	private ParserOutput $parserOutput;
 
-	/**
-	 * @var Cache
-	 */
-	private $cache;
+	private Cache $cache;
 
 	/**
 	 * @var

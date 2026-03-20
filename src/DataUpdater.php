@@ -37,20 +37,11 @@ class DataUpdater {
 	use LoggerAwareTrait;
 	use EventDispatcherAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
-	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
+	private SemanticData $semanticData;
 
-	/**
-	 * @var ChangePropagationNotifier
-	 */
-	private $changePropagationNotifier;
+	private ChangePropagationNotifier $changePropagationNotifier;
 
 	/**
 	 * @var bool|null

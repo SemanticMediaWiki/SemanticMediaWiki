@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\SQLStore;
@@ -43,10 +43,10 @@ class StubSemanticDataTest extends TestCase {
 	}
 
 	public function testCanConstruct() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -62,7 +62,7 @@ class StubSemanticDataTest extends TestCase {
 	public function testNotToResolveSubobjectsForRedirect() {
 		$instance = $this->getMockBuilder( StubSemanticData::class )
 			->setConstructorArgs( [
-				DIWikiPage::newFromText( __METHOD__ ),
+				WikiPage::newFromText( __METHOD__ ),
 				$this->store ] )
 			->setMethods( [
 				'getProperties',
@@ -86,12 +86,12 @@ class StubSemanticDataTest extends TestCase {
 
 	public function testGetPropertyValues() {
 		$instance = StubSemanticData::newFromSemanticData(
-			new SemanticData( DIWikiPage::newFromText( __METHOD__ ) ),
+			new SemanticData( WikiPage::newFromText( __METHOD__ ) ),
 			$this->store
 		);
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->getSubject()
 		);
 
@@ -109,7 +109,7 @@ class StubSemanticDataTest extends TestCase {
 	 */
 	public function testPhpSerialization( $property, $dataItem ) {
 		$instance = StubSemanticData::newFromSemanticData(
-			new SemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			new SemanticData( new WikiPage( 'Foo', NS_MAIN ) ),
 			$this->store
 		);
 
@@ -131,7 +131,7 @@ class StubSemanticDataTest extends TestCase {
 	 */
 	public function testRemovePropertyObjectValue( $property, $dataItem ) {
 		$instance = StubSemanticData::newFromSemanticData(
-			new SemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			new SemanticData( new WikiPage( 'Foo', NS_MAIN ) ),
 			$this->store
 		);
 

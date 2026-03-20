@@ -48,15 +48,9 @@ class SubobjectParserFunction {
 	 */
 	const PARAM_LINKWITH = '@linkWith';
 
-	/**
-	 * @var ParserData
-	 */
-	protected $parserData;
+	protected ParserData $parserData;
 
-	/**
-	 * @var Subobject
-	 */
-	protected $subobject;
+	protected Subobject $subobject;
 
 	/**
 	 * @var MessageFormatter

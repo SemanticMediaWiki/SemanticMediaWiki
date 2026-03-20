@@ -30,9 +30,8 @@ class ExpData implements Element {
 
 	/**
 	 * The subject of the data that we store.
-	 * @var ExpResource
 	 */
-	protected $m_subject;
+	protected ExpResource $m_subject;
 
 	/**
 	 * Array mapping property URIs to arrays their values, given as
@@ -137,7 +136,7 @@ class ExpData implements Element {
 	 *
 	 * @return ExpResource
 	 */
-	public function getSubject() {
+	public function getSubject(): ExpResource {
 		return $this->m_subject;
 	}
 

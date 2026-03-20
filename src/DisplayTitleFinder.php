@@ -13,15 +13,9 @@ use SMWDataItem as DataItem;
  */
 class DisplayTitleFinder {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private EntityCache $entityCache;
 
 	/**
 	 * @var bool
@@ -42,7 +36,7 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 */
-	public function getEntityCache() {
+	public function getEntityCache(): EntityCache {
 		return $this->entityCache;
 	}
 

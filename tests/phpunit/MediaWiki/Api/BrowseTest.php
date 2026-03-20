@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Api;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Api\Browse;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
@@ -163,12 +163,12 @@ class BrowseTest extends TestCase {
 	}
 
 	public function testExecute_Subject() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )

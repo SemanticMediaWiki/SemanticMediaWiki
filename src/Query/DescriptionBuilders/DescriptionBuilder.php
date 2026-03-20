@@ -36,15 +36,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 abstract class DescriptionBuilder {
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	protected $descriptionFactory;
+	protected ?DescriptionFactory $descriptionFactory;
 
-	/**
-	 * @var DataItemFactory
-	 */
-	protected $dataItemFactory;
+	protected ?DataItemFactory $dataItemFactory;
 
 	/**
 	 * @var array
@@ -57,7 +51,7 @@ abstract class DescriptionBuilder {
 	 * @param DescriptionFactory|null $descriptionFactory
 	 * @param DataItemFactory|null $dataItemFactory
 	 */
-	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DescriptionFactory $dataItemFactory = null ) {
+	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DataItemFactory $dataItemFactory = null ) {
 		$this->descriptionFactory = $descriptionFactory;
 		$this->dataItemFactory = $dataItemFactory;
 

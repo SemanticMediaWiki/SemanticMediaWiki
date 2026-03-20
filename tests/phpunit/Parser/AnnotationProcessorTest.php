@@ -3,6 +3,7 @@
 namespace SMW\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
 use SMW\Parser\AnnotationProcessor;
@@ -24,7 +25,7 @@ class AnnotationProcessorTest extends TestCase {
 
 	protected function setUp(): void {
 		$this->semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->dataValueFactory = $this->getMockBuilder( DataValueFactory::class )

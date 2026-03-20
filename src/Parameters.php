@@ -12,10 +12,7 @@ use InvalidArgumentException;
  */
 class Parameters {
 
-	/**
-	 * @var array
-	 */
-	private $parameters = [];
+	private array $parameters;
 
 	/**
 	 * @since 3.0

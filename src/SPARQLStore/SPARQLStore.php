@@ -34,10 +34,7 @@ use SMWQuery as Query;
  */
 class SPARQLStore extends Store {
 
-	/**
-	 * @var SPARQLStoreFactory
-	 */
-	private $factory;
+	private SPARQLStoreFactory $factory;
 
 	/**
 	 * Class to be used as an underlying base store. This can be changed in

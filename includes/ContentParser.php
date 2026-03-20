@@ -29,11 +29,9 @@ class ContentParser {
 
 	use RevisionGuardAwareTrait;
 
-	/** @var Title */
-	protected $title;
+	protected Title $title;
 
-	/** @var Parser */
-	protected $parser = null;
+	protected Parser $parser;
 
 	/** @var ParserOutput */
 	protected $parserOutput = null;
@@ -84,7 +82,7 @@ class ContentParser {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->title;
 	}
 

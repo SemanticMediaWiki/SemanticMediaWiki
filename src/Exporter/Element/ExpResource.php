@@ -22,10 +22,7 @@ use SMWDataItem as DataItem;
  */
 class ExpResource extends ExpElement {
 
-	/**
-	 * @var string
-	 */
-	private $uri;
+	private string $uri;
 
 	/**
 	 * @var bool
@@ -79,7 +76,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getUri() {
+	public function getUri(): string {
 		return $this->uri;
 	}
 

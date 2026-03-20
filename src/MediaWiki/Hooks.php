@@ -73,8 +73,7 @@ class Hooks {
 	 */
 	private $handlers = [];
 
-	/** @var HookContainer */
-	private $hookContainer;
+	private HookContainer $hookContainer;
 
 	/**
 	 * @since 2.1

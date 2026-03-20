@@ -5,8 +5,8 @@ namespace SMW\Tests\Serializers;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\PrintRequestFactory;
 use SMW\SemanticData;
@@ -83,7 +83,7 @@ class QueryResultSerializerTest extends TestCase {
 
 	public function testQueryResultSerializerForRecordType() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
@@ -114,7 +114,7 @@ class QueryResultSerializerTest extends TestCase {
 		$printRequestFactory = new PrintRequestFactory();
 
 		$serialization = QueryResultSerializer::getSerialization(
-			DIWikiPage::newFromText( 'ABC' ),
+			WikiPage::newFromText( 'ABC' ),
 			$printRequestFactory->newFromProperty( $property )
 		);
 
@@ -161,7 +161,7 @@ class QueryResultSerializerTest extends TestCase {
 		);
 	}
 
-	public function testQueryResultSerializerOnMockOnDIWikiPageNonTitle() {
+	public function testQueryResultSerializerOnMockOnWikiPageNonTitle() {
 		$query = $this->getMockBuilder( '\SMWQuery' )
 			->disableOriginalConstructor()
 			->getMock();
@@ -233,7 +233,7 @@ class QueryResultSerializerTest extends TestCase {
 			] );
 
 			$printRequests[] = $printRequest;
-			$getResults[] = DIWikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $value['printRequest'], NS_MAIN ) );
+			$getResults[] = WikiPage::newFromTitle( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $value['printRequest'], NS_MAIN ) );
 
 			$dataItem = $this->newMockBuilder()->newObject( 'DataItem', [
 				'getDIType' => DataItem::TYPE_NUMBER,

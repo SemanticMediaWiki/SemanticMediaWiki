@@ -3,9 +3,9 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\SemanticData;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
@@ -46,7 +46,7 @@ class DisplayTitleFinderTest extends TestCase {
 	}
 
 	public function testFindDisplayTitle_WithoutSubobject() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
@@ -81,7 +81,7 @@ class DisplayTitleFinderTest extends TestCase {
 	}
 
 	public function testFindDisplayTitle_WithSubobject() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN, '', 'abc' );
+		$subject = new WikiPage( 'Foo', NS_MAIN, '', 'abc' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyValues' )
@@ -121,7 +121,7 @@ class DisplayTitleFinderTest extends TestCase {
 	}
 
 	public function testNoDisplayTitle_Empty() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN, '', 'abc' );
+		$subject = new WikiPage( 'Foo', NS_MAIN, '', 'abc' );
 
 		$this->store->expects( $this->any() )
 			->method( 'getPropertyValues' )
@@ -164,12 +164,12 @@ class DisplayTitleFinderTest extends TestCase {
 
 	public function testPrefetchFromSemanticData() {
 		$subSemanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$subSemanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::doUnserialize( 'Foo#0##123' ) );
+			->willReturn( WikiPage::doUnserialize( 'Foo#0##123' ) );
 
 		$subSemanticData->expects( $this->any() )
 			->method( 'getProperties' )
@@ -177,15 +177,15 @@ class DisplayTitleFinderTest extends TestCase {
 
 		$subSemanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromText( 'SubFoo' ) ] );
+			->willReturn( [ WikiPage::newFromText( 'SubFoo' ) ] );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->willReturn( new DIWikiPage( 'Bar', NS_MAIN ) );
+			->willReturn( new WikiPage( 'Bar', NS_MAIN ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
@@ -193,17 +193,17 @@ class DisplayTitleFinderTest extends TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromText( 'Foo' ) ] );
+			->willReturn( [ WikiPage::newFromText( 'Foo' ) ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getSubSemanticData' )
 			->willReturn( [ $subSemanticData ] );
 
 		$prefetchList = [
-			DIWikiPage::newFromText( 'Bar' ),
-			DIWikiPage::newFromText( 'Foo' ),
-			DIWikiPage::doUnserialize( 'Foo#0##123' ),
-			DIWikiPage::newFromText( 'SubFoo' )
+			WikiPage::newFromText( 'Bar' ),
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::doUnserialize( 'Foo#0##123' ),
+			WikiPage::newFromText( 'SubFoo' )
 		];
 
 		$instance = $this->getMockBuilder( DisplayTitleFinder::class )
@@ -225,9 +225,9 @@ class DisplayTitleFinderTest extends TestCase {
 
 	public function testPrefetchFromList() {
 		$subjects = [
-			DIWikiPage::newFromText( 'Foo' ),
-			DIWikiPage::doUnserialize( 'Foo#0##abc' ),
-			DIWikiPage::doUnserialize( 'Foo#0##123' )
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::doUnserialize( 'Foo#0##abc' ),
+			WikiPage::doUnserialize( 'Foo#0##123' )
 		];
 
 		$prefetch = [
@@ -274,7 +274,7 @@ class DisplayTitleFinderTest extends TestCase {
 
 	public function testPrefetchFromList_Subobject_Base() {
 		$subjects = [
-			DIWikiPage::doUnserialize( 'Foo#0##abc' ),
+			WikiPage::doUnserialize( 'Foo#0##abc' ),
 		];
 
 		$prefetch = [

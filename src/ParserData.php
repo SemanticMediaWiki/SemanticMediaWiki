@@ -61,15 +61,9 @@ class ParserData {
 	 */
 	const ANNOTATION_BLOCK = 'smw-blockannotation';
 
-	/**
-	 * @var Title
-	 */
-	private $title;
+	private Title $title;
 
-	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
+	private ParserOutput $parserOutput;
 
 	/**
 	 * @var ParserOptions
@@ -159,7 +153,7 @@ class ParserData {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->title;
 	}
 
@@ -177,7 +171,7 @@ class ParserData {
 	 *
 	 * @return ParserOutput
 	 */
-	public function getOutput() {
+	public function getOutput(): ParserOutput {
 		return $this->parserOutput;
 	}
 

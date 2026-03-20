@@ -4,8 +4,8 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SemanticData;
@@ -41,7 +41,7 @@ class StoreTest extends SMWIntegrationTestCase {
 	public function testGetSemanticData( $titleText, $filter = false ) {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		$title = $titleFactory->newFromText( $titleText );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 
 		$this->assertInstanceOf(
@@ -64,7 +64,7 @@ class StoreTest extends SMWIntegrationTestCase {
 	 */
 	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $titleText );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
@@ -92,9 +92,9 @@ class StoreTest extends SMWIntegrationTestCase {
 
 		foreach ( $result as $page ) {
 			$this->assertInstanceOf(
-				DIWikiPage::class,
+				WikiPage::class,
 				$page,
-				"Result should be instance of DIWikiPage."
+				"Result should be instance of WikiPage."
 			);
 		}
 	}
@@ -110,7 +110,7 @@ class StoreTest extends SMWIntegrationTestCase {
 	 */
 	public function testGetProperties( $titleText, $requestOptions = null ) {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $titleText );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getProperties( $subject, $requestOptions );
 
@@ -200,8 +200,8 @@ class StoreTest extends SMWIntegrationTestCase {
 	}
 
 	public function testGetRedirectTarget() {
-		$wikipage = new DIWikiPage( 'Foo', NS_MAIN );
-		$expected = new DIWikiPage( 'Bar', NS_MAIN );
+		$wikipage = new WikiPage( 'Foo', NS_MAIN );
+		$expected = new WikiPage( 'Bar', NS_MAIN );
 
 		$instance = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()

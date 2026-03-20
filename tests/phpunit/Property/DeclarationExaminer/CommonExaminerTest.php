@@ -4,6 +4,7 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\DeclarationExaminer\CommonExaminer;
 use SMW\SemanticData;
@@ -41,7 +42,7 @@ class CommonExaminerTest extends TestCase {
 			->willReturn( $this->entityManager );
 
 		$this->semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 	}
 

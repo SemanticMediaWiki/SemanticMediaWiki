@@ -11,6 +11,7 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\ContentParser;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\SemanticData;
 
@@ -71,7 +72,7 @@ class ContentParserTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->assertInstanceOf(

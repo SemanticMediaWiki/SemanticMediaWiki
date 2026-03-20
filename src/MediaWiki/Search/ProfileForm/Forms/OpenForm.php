@@ -15,10 +15,7 @@ use MediaWiki\Request\WebRequest;
  */
 class OpenForm {
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var bool

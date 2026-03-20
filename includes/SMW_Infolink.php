@@ -28,10 +28,8 @@ class SMWInfolink {
 
 	/**
 	 * Array of parameters, format $name => $value, if any.
-	 *
-	 * @var array
 	 */
-	protected $mParams;
+	protected array $mParams;
 
 	/**
 	 * @var bool

@@ -18,10 +18,7 @@ use XMLParser;
  */
 class XmlResponseParser implements HttpResponseParser {
 
-	/**
-	 * @var XMLParser
-	 */
-	private $parser;
+	private XMLParser $parser;
 
 	/**
 	 * Associative array mapping SPARQL variable names to column indices.

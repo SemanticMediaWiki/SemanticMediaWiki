@@ -4,8 +4,8 @@ namespace SMW\Tests\Property\Annotators;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\PageInfo;
 use SMW\Property\Annotators\NullPropertyAnnotator;
@@ -37,7 +37,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$pageInfo = $this->getMockBuilder( PageInfo::class )
@@ -97,7 +97,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 0 Unknown
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'UNKNOWN' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'UNKNOWN' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ 'Lala', '_Lula', '-Lila', '' ]
 				],
@@ -111,7 +111,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 1 TYPE_MODIFICATION_DATE
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'withModificationDate' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withModificationDate' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ]
 				],
@@ -127,7 +127,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 2 TYPE_CREATION_DATE
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'withCreationDate' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withCreationDate' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_CREATION_DATE ]
 				],
@@ -143,7 +143,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 3 TYPE_NEW_PAGE
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'NEW_PAGE_isNew' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NEW_PAGE_isNew' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_NEW_PAGE ]
 				],
@@ -159,7 +159,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 4
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'NEW_PAGE_isNotNew' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NEW_PAGE_isNotNew' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_NEW_PAGE ]
 				],
@@ -182,7 +182,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'withLastEditor' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withLastEditor' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_LAST_EDITOR ]
 				],
@@ -205,7 +205,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'withCombinedEntries' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withCombinedEntries' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ '_MDAT', '_LEDT' ]
 				],
@@ -224,7 +224,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 7 TYPE_MEDIA
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
 				],
@@ -243,7 +243,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 8
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'MediaPropertyForNonFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MediaPropertyForNonFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
 				],
@@ -260,7 +260,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 9 TYPE_MIME
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
 				],
@@ -279,7 +279,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 10
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForNonFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForNonFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
 				],
@@ -296,7 +296,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 11 Empty TYPE_MIME
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'EmptyMimePropertyFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'EmptyMimePropertyFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
 				],
@@ -313,7 +313,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 12 Empty TYPE_MEDIA
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'EmptyMediaPropertyFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'EmptyMediaPropertyFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
 				],
@@ -330,7 +330,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 13 Null TYPE_MIME
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'NullMimePropertyFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NullMimePropertyFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
 				],
@@ -347,7 +347,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 		# 14 Null TYPE_MEDIA
 		$provider[] = [
 			[
-				'subject'  => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'NullMediaPropertyFilePage' ) ),
+				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NullMediaPropertyFilePage' ) ),
 				'settings' => [
 					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
 				],

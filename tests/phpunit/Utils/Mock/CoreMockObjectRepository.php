@@ -6,10 +6,10 @@ use DataValues\DataValue;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use SMW\ContentParser;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyContainer;
 use SMW\DependencyObject;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Factbox\Factbox;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\NullDependencyContainer;
@@ -59,7 +59,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	 */
 	public function SemanticData() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
@@ -305,7 +305,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	 * @return DIWikiPage
 	 */
 	public function DIWikiPage() {
-		$diWikiPage = $this->getMockBuilder( DIWikiPage::class )
+		$diWikiPage = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

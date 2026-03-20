@@ -8,8 +8,8 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
@@ -243,12 +243,12 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 			->getMock();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getSubject' )
-			->willReturn( new DIWikiPage( 'Bar', NS_MAIN ) );
+			->willReturn( new WikiPage( 'Bar', NS_MAIN ) );
 
 		$semanticData->expects( $this->any() )
 			->method( 'hasVisibleProperties' )
@@ -466,7 +466,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$parserData = $this->getMockBuilder( ParserData::class )
@@ -479,7 +479,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 
 		$parserData->expects( $this->any() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromTitle( $title ) );
+			->willReturn( WikiPage::newFromTitle( $title ) );
 
 		$parserData->expects( $this->any() )
 			->method( 'getSemanticData' )
@@ -587,7 +587,7 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 		} );
 
 		$store->updateData(
-			new SemanticData( DIWikiPage::newFromText( 'Foo' ) )
+			new SemanticData( WikiPage::newFromText( 'Foo' ) )
 		);
 	}
 

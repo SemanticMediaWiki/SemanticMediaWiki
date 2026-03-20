@@ -4,7 +4,7 @@ namespace SMW\Tests\Elastic;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\ElasticFactory;
@@ -240,11 +240,11 @@ class ElasticStoreTest extends TestCase {
 			]
 		);
 
-		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
+		$subject = WikiPage::newFromText( __METHOD__, NS_FILE );
 
 		// Check that the IngestJob is referencing to the same subject instance
 		$checkJobParameterCallback = static function ( $job ) use( $subject ) {
-			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
+			return WikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
@@ -258,7 +258,7 @@ class ElasticStoreTest extends TestCase {
 		$this->testEnvironment->registerObject( 'JobQueue', $jobQueue );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->setMethods( [ 'getSubject', 'getPropertyValues', 'getProperties', 'getSubSemanticData' ] )
 			->getMock();
 

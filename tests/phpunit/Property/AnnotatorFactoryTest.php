@@ -3,6 +3,7 @@
 namespace SMW\Tests\Property;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\Property\Annotator;
@@ -38,7 +39,7 @@ class AnnotatorFactoryTest extends TestCase {
 
 	public function testNewNullPropertyAnnotator() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new AnnotatorFactory();

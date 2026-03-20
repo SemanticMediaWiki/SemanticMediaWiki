@@ -71,25 +71,13 @@ class SetupCheck {
 	 */
 	const MAINTENANCE_MODE = 'MAINTENANCE_MODE';
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+	private array $options;
 
-	/**
-	 * @var SetupFile
-	 */
-	private $setupFile;
+	private ?SetupFile $setupFile;
 
-	/**
-	 * @var TemplateEngine
-	 */
-	private $templateEngine;
+	private TemplateEngine $templateEngine;
 
-	/**
-	 * @var LocalMessageProvider
-	 */
-	private $localMessageProvider;
+	private LocalMessageProvider $localMessageProvider;
 
 	/**
 	 * @var array

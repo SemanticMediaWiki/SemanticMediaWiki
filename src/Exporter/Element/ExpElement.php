@@ -27,10 +27,8 @@ abstract class ExpElement implements Element {
 	/**
 	 * The DataItem that this export element is associated with, if
 	 * any. Might be unset if not given yet.
-	 *
-	 * @var DataItem|null
 	 */
-	protected $dataItem;
+	protected ?DataItem $dataItem;
 
 	/**
 	 * @since 1.6

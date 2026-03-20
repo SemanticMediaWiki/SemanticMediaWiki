@@ -15,10 +15,7 @@ use SMW\Utils\DotArray;
  */
 class Options implements JsonUnserializable {
 
-	/**
-	 * @var array
-	 */
-	protected $options = [];
+	protected array $options;
 
 	/**
 	 * @since 2.3
@@ -126,7 +123,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		return $this->options;
 	}
 

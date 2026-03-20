@@ -23,10 +23,7 @@ use Traversable;
  */
 class SchemaContentFormatter {
 
-	/**
-	 * @var HtmlBuilder
-	 */
-	private $htmlBuilder;
+	private HtmlBuilder $htmlBuilder;
 
 	/**
 	 * @var bool

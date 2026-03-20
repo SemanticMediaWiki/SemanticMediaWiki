@@ -23,10 +23,7 @@ use SMW\Store;
  */
 class ExtensionSchemaUpdates implements HookListener {
 
-	/**
-	 * @var DatabaseUpdater
-	 */
-	protected $updater = null;
+	protected ?DatabaseUpdater $updater;
 
 	/**
 	 * @since  2.0

@@ -5,6 +5,7 @@ namespace SMW\Tests\Constraint\Constraints;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\SemanticData;
 
 /**
@@ -56,7 +57,7 @@ class SingleValueConstraintTest extends TestCase {
 		$expectedErrMsg = 'smw-constraint-violation-single-value';
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )

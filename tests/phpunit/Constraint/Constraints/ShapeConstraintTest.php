@@ -5,6 +5,7 @@ namespace SMW\Tests\Constraint\Constraints;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\SemanticData;
 use SMWDataValue;
 
@@ -57,7 +58,7 @@ class ShapeConstraintTest extends TestCase {
 		$expectedErrMsg = 'smw-constraint-violation-class-shape-constraint-missing-property';
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
@@ -98,7 +99,7 @@ class ShapeConstraintTest extends TestCase {
 		$expectedErrMsg = 'smw-constraint-violation-class-shape-constraint-wrong-type';
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
@@ -143,7 +144,7 @@ class ShapeConstraintTest extends TestCase {
 			->getMockForAbstractClass();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
@@ -196,7 +197,7 @@ class ShapeConstraintTest extends TestCase {
 			->willReturn( 'Bar' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )

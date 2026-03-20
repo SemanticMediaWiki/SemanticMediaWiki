@@ -3,7 +3,7 @@
 namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Property\Annotators\DisplayTitlePropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\SemanticData;
@@ -34,7 +34,7 @@ class DisplayTitlePropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new DisplayTitlePropertyAnnotator(
@@ -71,7 +71,7 @@ class DisplayTitlePropertyAnnotatorTest extends TestCase {
 
 	public function testAddAnnotationForWhenPropertyNamespaceIsUsed() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY )
+			new WikiPage( 'Foo', SMW_NS_PROPERTY )
 		);
 
 		$instance = new DisplayTitlePropertyAnnotator(
@@ -95,7 +95,7 @@ class DisplayTitlePropertyAnnotatorTest extends TestCase {
 
 	public function testNoAnnotationWhenDisabled() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			DIWikiPage::newFromText( 'Foo' )
+			WikiPage::newFromText( 'Foo' )
 		);
 
 		$instance = new DisplayTitlePropertyAnnotator(

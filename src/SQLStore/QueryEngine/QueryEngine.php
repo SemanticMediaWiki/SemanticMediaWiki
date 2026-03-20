@@ -66,10 +66,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 */
 	private $errors = [];
 
-	/**
-	 * @var QueryFactory
-	 */
-	private $queryFactory;
+	private QueryFactory $queryFactory;
 
 	/**
 	 * @since 2.2

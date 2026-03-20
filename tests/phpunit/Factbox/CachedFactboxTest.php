@@ -8,8 +8,8 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\FauxRequest;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\Factbox\CachedFactbox;
 use SMW\Factbox\FactboxText;
@@ -207,10 +207,10 @@ class CachedFactboxTest extends TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
@@ -227,7 +227,7 @@ class CachedFactboxTest extends TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromTitle( $title ) ] );
+			->willReturn( [ WikiPage::newFromTitle( $title ) ] );
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
@@ -426,7 +426,7 @@ class CachedFactboxTest extends TestCase {
 			->willReturn( 10004 );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )

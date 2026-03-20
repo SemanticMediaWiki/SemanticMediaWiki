@@ -3,9 +3,9 @@
 namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\SemanticData;
@@ -36,7 +36,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new MandatoryTypePropertyAnnotator(
@@ -50,10 +50,10 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 	}
 
 	public function testNoImportForNoProperty() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -71,10 +71,10 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 	}
 
 	public function testNoImportForPredefinedProperty() {
-		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -93,7 +93,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	public function testValidImportTypeReferenceToSetType() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -122,7 +122,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	public function testValidImportTypeReferenceToOverrideUserType() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -170,7 +170,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	public function testInvalidImportTypeReferenceDoesNotSetAnyType() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -199,7 +199,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	public function testBogusImportTypeDoesNotSetAnyType() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
@@ -228,10 +228,10 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 	public function testEnforcedMandatoryTypeForSubproperty() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		);
 
-		$parent = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
+		$parent = new WikiPage( 'Foo', SMW_NS_PROPERTY );
 
 		$subpro = DataValueFactory::getInstance()->newDataValueByItem(
 			$parent,

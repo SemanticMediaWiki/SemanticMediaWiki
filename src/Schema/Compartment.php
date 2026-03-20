@@ -26,10 +26,7 @@ class Compartment implements JsonSerializable, IteratorAggregate {
 	 */
 	const ASSOCIATED_SECTION = '___assoc_section';
 
-	/**
-	 * @var array
-	 */
-	protected $data = [];
+	protected array $data;
 
 	/**
 	 * @since 3.1

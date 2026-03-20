@@ -31,15 +31,9 @@ class QueryEngine implements IQueryEngine {
 	 */
 	private $queryFactory;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
-	/**
-	 * @var SortBuilder
-	 */
-	private $sortBuilder;
+	private SortBuilder $sortBuilder;
 
 	/**
 	 * @var array

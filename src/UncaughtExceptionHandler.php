@@ -16,10 +16,7 @@ use Throwable;
  */
 class UncaughtExceptionHandler {
 
-	/**
-	 * @var SetupCheck
-	 */
-	private $setupCheck;
+	private SetupCheck $setupCheck;
 
 	/**
 	 * @since 3.2

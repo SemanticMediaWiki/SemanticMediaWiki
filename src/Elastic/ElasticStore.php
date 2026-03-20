@@ -41,10 +41,7 @@ class ElasticStore extends SQLStore {
 	const REBUILD_INDEX_RUN_COMPLETE = 'elastic.rebuild_index_run_complete';
 	const REBUILD_INDEX_RUN_INCOMPLETE = 'smw-elastic-rebuildelasticindex-run-incomplete';
 
-	/**
-	 * @var ElasticFactory
-	 */
-	private $elasticFactory;
+	private ElasticFactory $elasticFactory;
 
 	/**
 	 * @var Indexer
@@ -76,7 +73,7 @@ class ElasticStore extends SQLStore {
 	/**
 	 * @return ElasticFactory
 	 */
-	public function getElasticFactory() {
+	public function getElasticFactory(): ElasticFactory {
 		return $this->elasticFactory;
 	}
 

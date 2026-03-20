@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use Deserializers\Deserializer;
 use PHPUnit\Framework\TestCase;
 use Serializers\Serializer;
+use SMW\DataItems\WikiPage;
 use SMW\Deserializers\ExpDataDeserializer;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Query\QueryResult;
@@ -118,7 +119,7 @@ class SerializerFactoryTest extends TestCase {
 	public function objectToSerializerProvider() {
 		# 0
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$provider[] = [

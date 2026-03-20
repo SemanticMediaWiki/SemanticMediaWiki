@@ -22,10 +22,7 @@ class ReplicationStatus {
 	 */
 	private $elasticClient;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @since 3.0

@@ -5,6 +5,7 @@ namespace SMW\Tests\Property\Annotators;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
 use SMW\SemanticData;
@@ -33,7 +34,7 @@ class TranslationPropertyAnnotatorTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$instance = new TranslationPropertyAnnotator(

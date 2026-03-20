@@ -21,10 +21,7 @@ class NamespaceManager {
 	 */
 	const DEFAULT_NAMESPACEINDEX = 100;
 
-	/**
-	 * @var LocalLanguage|null
-	 */
-	private $localLanguage;
+	private ?LocalLanguage $localLanguage;
 
 	/**
 	 * @var string

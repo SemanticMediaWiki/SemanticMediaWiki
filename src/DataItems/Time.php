@@ -63,29 +63,24 @@ class Time extends DataItem implements CalendarModel {
 	protected $m_model;
 	/**
 	 * Number of year, possibly negative.
-	 * @var int
 	 */
-	protected $m_year;
+	protected int $m_year;
 	/**
 	 * Number of month.
-	 * @var int
 	 */
-	protected $m_month;
+	protected int $m_month;
 	/**
 	 * Number of day.
-	 * @var int
 	 */
-	protected $m_day;
+	protected int $m_day;
 	/**
 	 * Hours of the day.
-	 * @var int
 	 */
-	protected $m_hours;
+	protected int $m_hours;
 	/**
 	 * Minutes of the hour.
-	 * @var int
 	 */
-	protected $m_minutes;
+	protected int $m_minutes;
 	/**
 	 * Seconds of the minute.
 	 * @var int
@@ -97,10 +92,7 @@ class Time extends DataItem implements CalendarModel {
 	 */
 	protected $timezone;
 
-	/**
-	 * @var int|null
-	 */
-	protected $era = null;
+	protected int $era;
 
 	/**
 	 * @var int
@@ -205,7 +197,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getEra() {
+	public function getEra(): int {
 		return $this->era;
 	}
 
@@ -214,7 +206,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getYear() {
+	public function getYear(): int {
 		return $this->m_year;
 	}
 
@@ -223,7 +215,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getMonth() {
+	public function getMonth(): int {
 		return $this->m_month;
 	}
 
@@ -232,7 +224,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getDay() {
+	public function getDay(): int {
 		return $this->m_day;
 	}
 
@@ -241,7 +233,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getHour() {
+	public function getHour(): int {
 		return $this->m_hours;
 	}
 
@@ -250,7 +242,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return int
 	 */
-	public function getMinute() {
+	public function getMinute(): int {
 		return $this->m_minutes;
 	}
 

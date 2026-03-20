@@ -4,7 +4,7 @@ namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 
 use Onoi\MessageReporter\NullMessageReporter;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Document;
@@ -217,12 +217,12 @@ class RebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )

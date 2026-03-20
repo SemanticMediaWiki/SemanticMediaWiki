@@ -35,15 +35,9 @@ class DataValueFactory {
 	 */
 	private static $instance;
 
-	/**
-	 * @var DataTypeRegistry
-	 */
-	private $dataTypeRegistry;
+	private DataTypeRegistry $dataTypeRegistry;
 
-	/**
-	 * @var DataValueServiceFactory
-	 */
-	private $dataValueServiceFactory;
+	private DataValueServiceFactory $dataValueServiceFactory;
 
 	/**
 	 * @var int

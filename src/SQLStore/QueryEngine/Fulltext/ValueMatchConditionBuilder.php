@@ -16,15 +16,9 @@ use SMWDIUri as DIUri;
  */
 class ValueMatchConditionBuilder {
 
-	/**
-	 * @var TextSanitizer
-	 */
-	protected $textSanitizer;
+	protected TextSanitizer $textSanitizer;
 
-	/**
-	 * @var SearchTable
-	 */
-	protected $searchTable;
+	protected SearchTable $searchTable;
 
 	/**
 	 * @since 2.5
@@ -51,7 +45,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getTableName() {
+	public function getTableName(): string {
 		return $this->searchTable->getTableName();
 	}
 

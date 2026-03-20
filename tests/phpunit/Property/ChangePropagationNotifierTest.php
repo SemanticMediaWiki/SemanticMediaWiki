@@ -3,8 +3,8 @@
 namespace SMW\Tests\Property;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\SemanticData;
 use SMW\SerializerFactory;
@@ -76,7 +76,7 @@ class ChangePropagationNotifierTest extends TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnProperty( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-		$subject = new DIWikiPage( __METHOD__, SMW_NS_PROPERTY );
+		$subject = new WikiPage( __METHOD__, SMW_NS_PROPERTY );
 
 		$this->detectChanges(
 			$subject,
@@ -91,7 +91,7 @@ class ChangePropagationNotifierTest extends TestCase {
 	 * @dataProvider dataItemDataProvider
 	 */
 	public function testDetectChangesOnCategory( $mockedStoreValues, $dataValues, $propertiesToCompare, $expected ) {
-		$subject = new DIWikiPage( __METHOD__, NS_CATEGORY );
+		$subject = new WikiPage( __METHOD__, NS_CATEGORY );
 
 		$this->detectChanges(
 			$subject,
@@ -117,7 +117,7 @@ class ChangePropagationNotifierTest extends TestCase {
 		$this->testEnvironment->registerObject( 'JobQueueGroup', $jobQueueGroup );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$store = $this->getMockBuilder( Store::class )
@@ -134,7 +134,7 @@ class ChangePropagationNotifierTest extends TestCase {
 			->willReturnCallback( [ $this, 'doComparePropertyValuesOnCallback' ] );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->atLeastOnce() )
@@ -163,14 +163,14 @@ class ChangePropagationNotifierTest extends TestCase {
 	public function dataItemDataProvider() {
 		// Single
 		$subject = [
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		];
 
 		// Multiple
 		$subjects = [
-			DIWikiPage::newFromText( __METHOD__ . 'm-0' ),
-			DIWikiPage::newFromText( __METHOD__ . 'm-1' ),
-			DIWikiPage::newFromText( __METHOD__ . 'm-2' )
+			WikiPage::newFromText( __METHOD__ . 'm-0' ),
+			WikiPage::newFromText( __METHOD__ . 'm-1' ),
+			WikiPage::newFromText( __METHOD__ . 'm-2' )
 		];
 
 		return [

@@ -48,10 +48,7 @@ class ConditionBuilder {
 	 */
 	private $hierarchyLookup;
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * @var array

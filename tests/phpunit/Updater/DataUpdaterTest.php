@@ -6,9 +6,9 @@ use MediaWiki\Content\Content;
 use MediaWiki\Revision\RevisionRecord;
 use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DataUpdater;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\PageCreator;
@@ -116,7 +116,7 @@ class DataUpdaterTest extends TestCase {
 
 	public function testCanConstruct() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->assertInstanceOf(
@@ -326,7 +326,7 @@ class DataUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateForTitleInUnknownNs() {
-		$wikiPage = new DIWikiPage(
+		$wikiPage = new WikiPage(
 			'Foo',
 			-32768, // This namespace does not exist
 			''
@@ -351,7 +351,7 @@ class DataUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateForSpecialPage() {
-		$wikiPage = new DIWikiPage(
+		$wikiPage = new WikiPage(
 			'Foo',
 			NS_SPECIAL,
 			''
@@ -375,7 +375,7 @@ class DataUpdaterTest extends TestCase {
 	}
 
 	public function testDoUpdateForSchema() {
-		$wikiPage = new DIWikiPage(
+		$wikiPage = new WikiPage(
 			'Foo',
 			SMW_NS_SCHEMA,
 			''
@@ -488,16 +488,16 @@ class DataUpdaterTest extends TestCase {
 			->method( 'getRevision' )
 			->willReturn( $revision );
 
-		$source = $this->getMockBuilder( DIWikiPage::class )
+		$source = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			'Foo',
 			NS_MAIN
 		);
 
-		$target = new DIWikiPage(
+		$target = new WikiPage(
 			'Bar',
 			NS_MAIN
 		);

@@ -46,10 +46,7 @@ class URIValue extends DataValue {
 	 */
 	private $showUrlContextInRawFormat = true;
 
-	/**
-	 * @var array
-	 */
-	private $schemeList = [];
+	private array $schemeList;
 
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );

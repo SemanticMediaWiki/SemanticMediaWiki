@@ -4,6 +4,7 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
 use SMW\SemanticData;
@@ -49,7 +50,7 @@ class ChangePropagationExaminerTest extends TestCase {
 			->getMockForAbstractClass();
 
 		$this->semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->testEnvironment->registerObject( 'JobQueue', $this->jobQueue );

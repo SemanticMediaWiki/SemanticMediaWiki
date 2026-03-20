@@ -5,9 +5,9 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
 use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
 use SMW\NamespaceExaminer;
 use SMW\SemanticData;
@@ -73,7 +73,7 @@ class ArticleViewHeaderTest extends TestCase {
 	}
 
 	public function testProcessOnCategory() {
-		$subject = DIWikiPage::newFromText( __METHOD__, NS_CATEGORY );
+		$subject = WikiPage::newFromText( __METHOD__, NS_CATEGORY );
 		$property = new DIProperty( DIProperty::TYPE_CHANGE_PROP );
 
 		$this->namespaceExaminer->expects( $this->any() )
@@ -81,7 +81,7 @@ class ArticleViewHeaderTest extends TestCase {
 			->willReturn( true );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -143,7 +143,7 @@ class ArticleViewHeaderTest extends TestCase {
 	}
 
 	public function testProcessOnNoCategory() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
@@ -183,7 +183,7 @@ class ArticleViewHeaderTest extends TestCase {
 	}
 
 	public function testHasArchaicDependency() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )

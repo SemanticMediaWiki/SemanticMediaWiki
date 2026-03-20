@@ -6,9 +6,9 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\DataItems\WikiPage;
 use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
 use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
@@ -140,7 +140,7 @@ class FactboxTest extends TestCase {
 		);
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -169,7 +169,7 @@ class FactboxTest extends TestCase {
 
 		$parserData->expects( $this->any() )
 			->method( 'getSubject' )
-			->willReturn( DIWikiPage::newFromText( __METHOD__ ) );
+			->willReturn( WikiPage::newFromText( __METHOD__ ) );
 
 		$parserData->expects( $this->any() )
 			->method( 'getSemanticData' )
@@ -290,10 +290,10 @@ class FactboxTest extends TestCase {
 			new ParserOutput()
 		);
 
-		$parserData->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $title ) ) );
+		$parserData->setSemanticData( new SemanticData( WikiPage::newFromTitle( $title ) ) );
 		$parserData->getSemanticData()->addPropertyObjectValue(
 			new DIProperty( 'Foo' ),
-			DIWikiPage::newFromTitle( $title )
+			WikiPage::newFromTitle( $title )
 		);
 
 		$store = $this->getMockBuilder( Store::class )
@@ -367,12 +367,12 @@ class FactboxTest extends TestCase {
 			->willReturn( \SMWDataItem::TYPE_PROPERTY );
 
 		$parserData->setSemanticData(
-			new SemanticData( DIWikiPage::newFromTitle( $title ) )
+			new SemanticData( WikiPage::newFromTitle( $title ) )
 		);
 
 		$parserData->getSemanticData()->addPropertyObjectValue(
 			$property,
-			DIWikiPage::newFromTitle( $title )
+			WikiPage::newFromTitle( $title )
 		);
 
 		$instance = new Factbox(
@@ -440,7 +440,7 @@ class FactboxTest extends TestCase {
 		$provider = [];
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )
@@ -461,7 +461,7 @@ class FactboxTest extends TestCase {
 		$provider[] = [ $parserData ];
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->any() )

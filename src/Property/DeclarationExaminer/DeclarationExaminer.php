@@ -13,10 +13,7 @@ use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
  */
 abstract class DeclarationExaminer implements IDeclarationExaminer {
 
-	/**
-	 * @var DeclarationExaminer
-	 */
-	protected $declarationExaminer;
+	protected IDeclarationExaminer $declarationExaminer;
 
 	/**
 	 * @var array[]
@@ -28,7 +25,7 @@ abstract class DeclarationExaminer implements IDeclarationExaminer {
 	 *
 	 * @param DeclarationExaminer $declarationExaminer
 	 */
-	public function __construct( DeclarationExaminer $declarationExaminer ) {
+	public function __construct( IDeclarationExaminer $declarationExaminer ) {
 		$this->declarationExaminer = $declarationExaminer;
 	}
 

@@ -47,20 +47,11 @@ class DataRebuilder {
 	 */
 	private $autoRecovery;
 
-	/**
-	 * @var DistinctEntityDataRebuilder
-	 */
-	private $distinctEntityDataRebuilder;
+	private DistinctEntityDataRebuilder $distinctEntityDataRebuilder;
 
-	/**
-	 * @var ExceptionFileLogger
-	 */
-	private $exceptionFileLogger;
+	private ExceptionFileLogger $exceptionFileLogger;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private CliMsgFormatter $cliMsgFormatter;
 
 	/**
 	 * @var int

@@ -25,10 +25,7 @@ use SMW\Query\QueryToken;
  */
 class LegacyParser implements Parser {
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * @var DataTypeRegistry

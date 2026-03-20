@@ -11,6 +11,7 @@ use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ContentParser;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\DataUpdater;
 use SMW\DataValueFactory;
 use SMW\Factbox\FactboxFactory;
@@ -183,7 +184,7 @@ class ServicesFactoryTest extends TestCase {
 
 	public function testCanConstructDataUpdater() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->assertInstanceOf(

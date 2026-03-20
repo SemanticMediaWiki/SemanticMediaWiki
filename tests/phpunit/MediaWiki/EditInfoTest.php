@@ -11,6 +11,7 @@ use MediaWiki\Revision\SlotRecord;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage as SMWWikiPage;
 use SMW\MediaWiki\EditInfo;
 use SMW\ParserData;
 use SMW\SemanticData;
@@ -64,7 +65,7 @@ class EditInfoTest extends TestCase {
 
 	public function testFetchSemanticData() {
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ SMWWikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$output = new ParserOutput();

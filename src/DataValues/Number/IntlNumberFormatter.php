@@ -40,10 +40,7 @@ class IntlNumberFormatter {
 	 */
 	private static $instance = null;
 
-	/**
-	 * @var Options
-	 */
-	private $options = null;
+	private Options $options;
 
 	/**
 	 * @var int

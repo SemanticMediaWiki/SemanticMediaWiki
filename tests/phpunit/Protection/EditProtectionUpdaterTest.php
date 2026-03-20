@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Protection\EditProtectionUpdater;
 use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
@@ -61,7 +62,7 @@ class EditProtectionUpdaterTest extends TestCase {
 			->method( 'doUpdateRestrictions' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -92,7 +93,7 @@ class EditProtectionUpdaterTest extends TestCase {
 			->method( 'doUpdateRestrictions' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -141,7 +142,7 @@ class EditProtectionUpdaterTest extends TestCase {
 			->method( 'doUpdateRestrictions' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )
@@ -192,7 +193,7 @@ class EditProtectionUpdaterTest extends TestCase {
 			->method( 'doUpdateRestrictions' );
 
 		$semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$semanticData->expects( $this->once() )

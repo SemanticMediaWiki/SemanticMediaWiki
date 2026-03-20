@@ -15,10 +15,7 @@ use SMWDataItem as DataItem;
  */
 class SortLetter {
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
 	/**
 	 * @var Collator

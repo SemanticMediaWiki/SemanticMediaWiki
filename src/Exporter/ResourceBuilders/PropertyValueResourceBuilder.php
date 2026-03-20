@@ -19,10 +19,7 @@ use SMWExporter as Exporter;
  */
 class PropertyValueResourceBuilder implements ResourceBuilder {
 
-	/**
-	 * @var Exporter
-	 */
-	protected $exporter;
+	protected ?Exporter $exporter;
 
 	/**
 	 * @var InMemoryPoolCache

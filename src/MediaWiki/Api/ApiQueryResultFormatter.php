@@ -33,10 +33,7 @@ class ApiQueryResultFormatter {
 	 */
 	protected $isRawMode = false;
 
-	/**
-	 * @var QueryResult
-	 */
-	protected $queryResult = null;
+	protected QueryResult $queryResult;
 
 	protected array $result;
 

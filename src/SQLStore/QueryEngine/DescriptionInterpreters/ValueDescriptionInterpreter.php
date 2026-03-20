@@ -23,15 +23,9 @@ use SMWDIBlob as DIBlob;
  */
 class ValueDescriptionInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var ComparatorMapper
-	 */
-	private $comparatorMapper;
+	private ComparatorMapper $comparatorMapper;
 
-	/**
-	 * @var FulltextSearchTableFactory
-	 */
-	private $fulltextSearchTableFactory;
+	private FulltextSearchTableFactory $fulltextSearchTableFactory;
 
 	/**
 	 * @since 2.2

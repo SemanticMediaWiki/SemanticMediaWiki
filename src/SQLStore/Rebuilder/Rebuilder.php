@@ -36,10 +36,7 @@ class Rebuilder {
 	 */
 	private $namespaceExaminer;
 
-	/**
-	 * @var HookContainer
-	 */
-	private $hookContainer;
+	private HookContainer $hookContainer;
 
 	/**
 	 * @var array
@@ -71,10 +68,7 @@ class Rebuilder {
 	 */
 	private $updateJobs = [];
 
-	/**
-	 * @var Lru
-	 */
-	private $lru;
+	private Lru $lru;
 
 	/**
 	 * @since 2.3

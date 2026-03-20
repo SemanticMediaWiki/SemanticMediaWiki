@@ -16,10 +16,7 @@ use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
  */
 class CustomForm {
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var bool

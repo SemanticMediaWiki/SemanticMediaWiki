@@ -23,25 +23,16 @@ use SMWDIBlob as DIBlob;
  */
 class EntityLookup implements IEntityLookup {
 
-	/**
-	 * @var TraversalPropertyLookup
-	 */
-	private $traversalPropertyLookup;
+	private TraversalPropertyLookup $traversalPropertyLookup;
 
-	/**
-	 * @var PropertySubjectsLookup
-	 */
-	private $propertySubjectsLookup;
+	private PropertySubjectsLookup $propertySubjectsLookup;
 
-	/**
-	 * @var PropertiesLookup
-	 */
-	private $propertiesLookup;
+	private PropertiesLookup $propertiesLookup;
 
 	/**
 	 * @var SemanticDataLookup
 	 */
-	private $semanticDataLookup;
+	private CachingSemanticDataLookup $semanticDataLookup;
 
 	/**
 	 * @since 2.5

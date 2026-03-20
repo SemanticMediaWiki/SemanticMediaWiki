@@ -32,10 +32,7 @@ class DescriptionProcessor {
 	 */
 	private $dataValueFactory;
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * @var int

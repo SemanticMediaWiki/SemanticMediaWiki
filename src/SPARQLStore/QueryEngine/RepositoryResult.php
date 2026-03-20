@@ -35,7 +35,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @var array of integer
 	 */
-	protected $header;
+	protected array $header;
 
 	/**
 	 * List of result rows. Individual entries can be null if a cell in the
@@ -44,7 +44,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @var array of array of (ExpElement or null)
 	 */
-	protected $data;
+	protected array $data;
 
 	/**
 	 * List of comment strings found in the XML file (without surrounding
@@ -52,7 +52,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @var array of string
 	 */
-	protected $comments;
+	protected array $comments;
 
 	/**
 	 * Initialise a result set from a result string in SPARQL XML format.
@@ -109,7 +109,7 @@ class RepositoryResult implements Iterator {
 	 *
 	 * @return array of string
 	 */
-	public function getComments() {
+	public function getComments(): array {
 		return $this->comments;
 	}
 

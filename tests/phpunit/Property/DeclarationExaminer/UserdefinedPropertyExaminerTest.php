@@ -5,6 +5,7 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 use MediaWiki\Registration\ExtensionRegistry;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\WikiPage;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\UserdefinedPropertyExaminer;
@@ -36,7 +37,7 @@ class UserdefinedPropertyExaminerTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 
 		$this->semanticData = $this->getMockBuilder( SemanticData::class )
-			->disableOriginalConstructor()
+			->setConstructorArgs( [ WikiPage::newFromText( 'Foo' ) ] )
 			->getMock();
 
 		$this->declarationExaminer = $this->getMockBuilder( DeclarationExaminer::class )

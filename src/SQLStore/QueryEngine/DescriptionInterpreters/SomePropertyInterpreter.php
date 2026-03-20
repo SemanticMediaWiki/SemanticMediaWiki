@@ -31,10 +31,7 @@ use SMWDataItem as DataItem;
  */
 class SomePropertyInterpreter implements DescriptionInterpreter {
 
-	/**
-	 * @var ComparatorMapper
-	 */
-	private $comparatorMapper;
+	private ComparatorMapper $comparatorMapper;
 
 	/**
 	 * @var FulltextSearchTableFactory

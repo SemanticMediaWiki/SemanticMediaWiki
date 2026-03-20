@@ -70,10 +70,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 */
 	private static $queueList = [];
 
-	/**
-	 * @var string
-	 */
-	private $stage;
+	private string $stage;
 
 	/**
 	 * @var bool
@@ -118,7 +115,7 @@ class CallableUpdate implements DeferrableUpdate {
 	 *
 	 * @return string
 	 */
-	public function getStage() {
+	public function getStage(): string {
 		return $this->stage;
 	}
 
