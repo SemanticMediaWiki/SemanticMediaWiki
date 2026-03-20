@@ -27,7 +27,7 @@ use WikiPage as MWWikiPage;
  *
  * @since 1.8
  *
- * @license GNU GPL v2 or later
+ * @license GPL-2.0-or-later
  * @author mwjames
  */
 final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {

@@ -6,7 +6,7 @@ use Onoi\Cache\Cache;
 use SMW\Localizer\Message;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 2.4
  *
  * @author mwjames
