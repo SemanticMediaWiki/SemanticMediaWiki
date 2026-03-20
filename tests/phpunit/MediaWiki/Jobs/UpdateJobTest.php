@@ -5,16 +5,17 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use MediaWiki\DAO\WikiAwareEntity;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use ParserOutput;
 use PHPUnit\Framework\TestCase;
-use SMW\ContentParser;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\RevisionGuard;
+use SMW\Parser\ContentParser;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\MediaWiki\Jobs\UpdateJob
@@ -174,7 +175,7 @@ class UpdateJobTest extends TestCase {
 
 		$contentParser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->willReturn( new \ParserOutput );
+			->willReturn( new ParserOutput );
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
@@ -243,7 +244,7 @@ class UpdateJobTest extends TestCase {
 
 		$contentParser->expects( $this->atLeastOnce() )
 			->method( 'getOutput' )
-			->willReturn( new \ParserOutput );
+			->willReturn( new ParserOutput );
 
 		$this->testEnvironment->registerObject( 'ContentParser', $contentParser );
 
@@ -303,7 +304,7 @@ class UpdateJobTest extends TestCase {
 	}
 
 	public function testJobOnChangePropagation() {
-		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$semanticData = $this->semanticDataSerializer->serialize(
 			$this->semanticDataFactory->newEmptySemanticData( __METHOD__ )
@@ -316,7 +317,7 @@ class UpdateJobTest extends TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ new DIBlob( json_encode( $semanticData ) ) ] );
+			->willReturn( [ new Blob( json_encode( $semanticData ) ) ] );
 
 		$store->expects( $this->once() )
 			->method( 'updateData' );

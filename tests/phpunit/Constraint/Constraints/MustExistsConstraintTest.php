@@ -6,7 +6,8 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\MustExistsConstraint;
 use SMW\DataItemFactory;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 
 /**
  * @covers \SMW\Constraint\Constraints\MustExistsConstraint
@@ -64,13 +65,13 @@ class MustExistsConstraintTest extends TestCase {
 			->method( 'exists' )
 			->willReturn( false );
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$dataItem->expects( $this->atLeastOnce() )
 			->method( 'getDIType' )
-			->willReturn( \SMWDataItem::TYPE_WIKIPAGE );
+			->willReturn( DataItem::TYPE_WIKIPAGE );
 
 		$dataItem->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )

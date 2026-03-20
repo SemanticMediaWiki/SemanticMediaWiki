@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\Indexer\Replication;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -103,12 +103,12 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkReplication ) {
 			$this->checkReplication( $subject, $options );
 		}
@@ -146,7 +146,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	}
 
 	/**
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return void
@@ -155,10 +155,10 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$property = Property::newFromUserLabel( $subject->getDBKey() );
 
 			if ( !$property->isUserDefined() ) {
-				$subject = new DIWikiPage( $property->getKey(), SMW_NS_PROPERTY );
+				$subject = new WikiPage( $property->getKey(), SMW_NS_PROPERTY );
 			}
 		}
 

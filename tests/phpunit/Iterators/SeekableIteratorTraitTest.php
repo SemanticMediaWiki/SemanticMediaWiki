@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\Iterators;
 
+use Countable;
+use Iterator;
+use PHPUnit\Framework\TestCase;
+use SeekableIterator;
 use SMW\Iterators\SeekableIteratorTrait;
 
 /**
@@ -13,7 +17,7 @@ use SMW\Iterators\SeekableIteratorTrait;
  *
  * @author mwjames
  */
-class SeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
+class SeekableIteratorTraitTest extends TestCase {
 
 	public function testIterate_Indexed() {
 		$container = [
@@ -161,7 +165,7 @@ class SeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newSeekableIterator( array $container = [] ) {
-		return new class( $container ) implements \Iterator, \Countable, \SeekableIterator {
+		return new class( $container ) implements Iterator, Countable, SeekableIterator {
 
 			use SeekableIteratorTrait;
 

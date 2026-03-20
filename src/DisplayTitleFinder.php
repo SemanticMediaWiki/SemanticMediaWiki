@@ -2,8 +2,11 @@
 
 namespace SMW;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Services\Exception\ServiceNotFoundException;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -114,7 +117,7 @@ class DisplayTitleFinder {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			if ( !$dataItem instanceof DIWikiPage ) {
+			if ( !$dataItem instanceof WikiPage ) {
 				continue;
 			}
 
@@ -184,11 +187,11 @@ class DisplayTitleFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return string
 	 */
-	public function findDisplayTitle( DIWikiPage $subject ): string {
+	public function findDisplayTitle( WikiPage $subject ): string {
 		if ( $this->canUse === false ) {
 			return '';
 		}
@@ -220,7 +223,7 @@ class DisplayTitleFinder {
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_DTITLE' ),
+			new Property( '_DTITLE' ),
 			$requestOptions
 		);
 

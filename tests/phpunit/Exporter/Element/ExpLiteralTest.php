@@ -3,10 +3,10 @@
 namespace SMW\Tests\Exporter\Element;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpLiteral
@@ -144,7 +144,7 @@ class ExpLiteralTest extends TestCase {
 
 		# 3
 		$provider[] = [
-			'Foo', 'bar', '', new DIWikiPage( 'Foo', NS_MAIN ),
+			'Foo', 'bar', '', new WikiPage( 'Foo', NS_MAIN ),
 			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'   => 'Foo',
@@ -159,7 +159,7 @@ class ExpLiteralTest extends TestCase {
 
 		# 4
 		$provider[] = [
-			'Foo', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString', 'en', new DIWikiPage( 'Foo', NS_MAIN ),
+			'Foo', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString', 'en', new WikiPage( 'Foo', NS_MAIN ),
 			[
 				'type' => ExpLiteral::TYPE_LITERAL,
 				'lexical'   => 'Foo',

@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use SMW\MediaWiki\Outputs;
 use SMW\QueryPages\WantedPropertiesQueryPage;
-use SMWOutputs;
 
 /**
  * Special page (Special:WantedProperties) for MediaWiki shows all
@@ -57,7 +57,7 @@ class SpecialWantedProperties extends SpecialPage {
 
 		// Ensure locally collected output data is pushed to the output!
 		// ?? still needed !!
-		SMWOutputs::commitToOutputPage( $out );
+		Outputs::commitToOutputPage( $out );
 	}
 
 	/**

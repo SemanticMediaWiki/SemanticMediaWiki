@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Page;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\SortLetter;
 use SMW\SQLStore\SQLStore;
@@ -58,14 +58,14 @@ class ListBuilderTest extends TestCase {
 
 		$this->assertArrayHasKey(
 			'F',
-			$instance->getList( [ DIWikiPage::newFromText( 'Foo' ) ] )
+			$instance->getList( [ WikiPage::newFromText( 'Foo' ) ] )
 		);
 	}
 
 	public function testGetList_Sorted() {
 		$list = [
-			DIWikiPage::newFromText( 'Foo' ),
-			DIWikiPage::newFromText( 'ABC' )
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'ABC' )
 		];
 
 		$callCount = 0;
@@ -104,7 +104,7 @@ class ListBuilderTest extends TestCase {
 				'<div class="smw-column-header">F</div>',
 				'<ul><li>Foo&#160;<span class="smwbrowse">'
 			],
-			$instance->getColumnList( [ DIWikiPage::newFromText( 'Foo' ) ] )
+			$instance->getColumnList( [ WikiPage::newFromText( 'Foo' ) ] )
 		);
 	}
 
@@ -128,7 +128,7 @@ class ListBuilderTest extends TestCase {
 				'<div class="smw-columnlist-container" dir="ltr"><div class="smw-column-responsive" style="width:100%;columns:1 20em;" dir="ltr">',
 				'<ul><li>Bar</li></ul></div>'
 			],
-			$instance->getColumnList( [ DIWikiPage::newFromText( 'Foo' ) ] )
+			$instance->getColumnList( [ WikiPage::newFromText( 'Foo' ) ] )
 		);
 	}
 

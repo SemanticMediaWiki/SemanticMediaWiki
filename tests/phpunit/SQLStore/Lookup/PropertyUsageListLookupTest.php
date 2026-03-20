@@ -3,12 +3,13 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyUsageListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyUsageListLookup
@@ -107,7 +108,7 @@ class PropertyUsageListLookupTest extends TestCase {
 	 * @dataProvider usageCountProvider
 	 */
 	public function testfetchListForValidProperty( $expectedCount ) {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Foo';
 		$row->smw_id = 42;
 		$row->usage_count = $expectedCount;
@@ -141,7 +142,7 @@ class PropertyUsageListLookupTest extends TestCase {
 			$result
 		);
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->id = 42;
 
 		$expected = [
@@ -156,7 +157,7 @@ class PropertyUsageListLookupTest extends TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = '-Foo';
 		$row->smw_id = 42;
 		$row->usage_count = 42;

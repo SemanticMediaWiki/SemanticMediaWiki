@@ -5,8 +5,8 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\QueryDependency\QueryDependencyLinksStore;
 use SMW\SQLStore\QueryDependency\QueryReferenceBacklinks;
 

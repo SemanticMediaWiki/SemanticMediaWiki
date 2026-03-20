@@ -4,10 +4,10 @@ namespace SMW\Tests\Serializers;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Serializers\SemanticDataSerializer;
-use SMW\Subobject;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -58,16 +58,16 @@ class SemanticDataSerializerTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'Foo' );
 
 		# 0 Empty container
-		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$provider[] = [ $foo ];
 
 		# 1 Single entry
-		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$provider[] = [ $foo ];
 
 		// #2 Single + single subobject entry
-		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
@@ -82,7 +82,7 @@ class SemanticDataSerializerTest extends TestCase {
 		$provider[] = [ $foo ];
 
 		# 3 Multiple entries
-		$foo = $this->semanticDataFactory->setSubject( DIWikiPage::newFromTitle( $title ) )->newEmptySemanticData();
+		$foo = $this->semanticDataFactory->setSubject( WikiPage::newFromTitle( $title ) )->newEmptySemanticData();
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$foo->addDataValue( $this->dataValueFactory->newDataValueByText( 'Has queez', 'Xeey' ) );
 

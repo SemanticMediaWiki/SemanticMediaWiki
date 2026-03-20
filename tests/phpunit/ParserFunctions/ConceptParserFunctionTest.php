@@ -5,7 +5,7 @@ namespace SMW\Tests\ParserFunctions;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
-use SMW\MessageFormatter;
+use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\ConceptParserFunction;
 use SMW\Services\ServicesFactory as ApplicationFactory;

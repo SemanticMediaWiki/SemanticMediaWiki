@@ -4,8 +4,8 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
+use SMW\Query\Query;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
-use SMWQuery as Query;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**

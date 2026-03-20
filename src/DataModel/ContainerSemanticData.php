@@ -2,9 +2,8 @@
 
 namespace SMW\DataModel;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\DataItemException;
-use SMW\SemanticData;
 
 /**
  * Subclass of SemanticData that is used to store the data in SMWDIContainer
@@ -45,7 +44,7 @@ class ContainerSemanticData extends SemanticData {
 	 */
 	public static function makeAnonymousContainer( $noDuplicates = true, $skipAnonymousCheck = false ): ContainerSemanticData {
 		$containerSemanticData = new ContainerSemanticData(
-			new DIWikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
+			new WikiPage( 'SMWInternalObject', NS_SPECIAL, '', 'int' ),
 			$noDuplicates
 		);
 
@@ -108,7 +107,7 @@ class ContainerSemanticData extends SemanticData {
 	 * throw an exception if the subject is anonymous (if the data has not
 	 * been contextualized with setMasterPage() yet).
 	 *
-	 * @return DIWikiPage subject
+	 * @return WikiPage subject
 	 * @throws DataItemException
 	 */
 	public function getSubject() {

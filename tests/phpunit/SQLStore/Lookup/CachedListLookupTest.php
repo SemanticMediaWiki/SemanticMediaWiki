@@ -6,6 +6,7 @@ use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Lookup\ListLookup;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\Lookup\CachedListLookup
@@ -29,7 +30,7 @@ class CachedListLookupTest extends TestCase {
 
 		$this->assertInstanceOf(
 			CachedListLookup::class,
-			new CachedListLookup( $listLookup, $cache, new \stdClass )
+			new CachedListLookup( $listLookup, $cache, new stdClass )
 		);
 	}
 
@@ -60,7 +61,7 @@ class CachedListLookupTest extends TestCase {
 			->method( 'fetch' )
 			->willReturn( serialize( $expectedCachedItem ) );
 
-		$cacheOptions = new \stdClass;
+		$cacheOptions = new stdClass;
 		$cacheOptions->useCache = true;
 
 		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
@@ -123,7 +124,7 @@ class CachedListLookupTest extends TestCase {
 				$this->anything(),
 				1001 );
 
-		$cacheOptions = new \stdClass;
+		$cacheOptions = new stdClass;
 		$cacheOptions->useCache = false;
 		$cacheOptions->ttl = 1001;
 
@@ -166,7 +167,7 @@ class CachedListLookupTest extends TestCase {
 			->with(
 				$this->stringContains( 'smw:store:lookup' ) );
 
-		$cacheOptions = new \stdClass;
+		$cacheOptions = new stdClass;
 
 		$instance = new CachedListLookup( $listLookup, $cache, $cacheOptions );
 		$instance->deleteCache();

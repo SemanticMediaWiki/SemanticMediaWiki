@@ -2,7 +2,9 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -14,8 +16,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -120,7 +120,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function doResolveInnerConditionRecursively( DIProperty $property, Description $description ): array {
+	private function doResolveInnerConditionRecursively( Property $property, Description $description ): array {
 		$innerOrderByProperty = null;
 
 		// Find out if we should order by the values of this property
@@ -161,7 +161,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return $objectName;
 	}
 
-	private function findMostSuitablePropertyRepresentation( DIProperty $property, DIProperty $nonInverseProperty, &$namespaces ) {
+	private function findMostSuitablePropertyRepresentation( Property $property, Property $nonInverseProperty, &$namespaces ) {
 		$redirectByVariable = $this->conditionBuilder->tryToFindRedirectVariableForDataItem(
 			$nonInverseProperty->getDiWikiPage()
 		);
@@ -190,7 +190,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 	}
 
-	private function doExchangeForWhenInversePropertyIsUsed( DIProperty $property, $objectName, $joinVariable ): array {
+	private function doExchangeForWhenInversePropertyIsUsed( Property $property, $objectName, $joinVariable ): array {
 		$subjectName = '?' . $joinVariable;
 		$nonInverseProperty = $property;
 
@@ -199,7 +199,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		if ( $property->isInverse() ) {
 			$subjectName = $objectName;
 			$objectName = '?' . $joinVariable;
-			$nonInverseProperty = new DIProperty( $property->getKey(), false );
+			$nonInverseProperty = new Property( $property->getKey(), false );
 		}
 
 		return [ $subjectName, $objectName, $nonInverseProperty ];
@@ -227,7 +227,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 *
 	 * @see http://www.w3.org/TR/sparql11-query/#propertypath-arbitrary-length
 	 */
-	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, DIProperty $property, &$propertyName, $depth ) {
+	private function tryToAddPropertyPathForSaturatedHierarchy( &$condition, Property $property, &$propertyName, $depth ) {
 		if ( !$this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_SUBP ) || !$property->isUserDefined() || ( $depth !== null && $depth < 1 ) ) {
 			return null;
 		}

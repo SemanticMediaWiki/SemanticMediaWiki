@@ -4,6 +4,7 @@ namespace SMW\Tests\Integration\Elastic;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Exception\JSONParseException;
+use SMW\SemanticMediaWiki;
 
 /**
  * @license GPL-2.0-or-later
@@ -48,7 +49,7 @@ class DefaultConfigTest extends TestCase {
 	}
 
 	public function defaultSettingsProvider() {
-		$defaultSettings = \SemanticMediaWiki::getDefaultSettings();
+		$defaultSettings = SemanticMediaWiki::getDefaultSettings();
 
 		foreach ( $defaultSettings['smwgElasticsearchConfig'] as $key => $configs ) {
 

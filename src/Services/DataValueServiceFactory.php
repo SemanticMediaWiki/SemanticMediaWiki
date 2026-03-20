@@ -5,9 +5,12 @@ namespace SMW\Services;
 use MediaWiki\Context\RequestContext;
 use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\InfoLinksProvider;
 use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\TimeValue;
 use SMW\DataValues\ValueFormatters\DispatchingDataValueFormatter;
 use SMW\DataValues\ValueFormatters\NoValueFormatter;
 use SMW\DataValues\ValueFormatters\ValueFormatter;
@@ -16,9 +19,6 @@ use SMW\DataValues\ValueValidators\ConstraintValueValidator;
 use SMW\Property\RestrictionExaminer;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\DescriptionBuilderRegistry;
-use SMWDataValue as DataValue;
-use SMWNumberValue as NumberValue;
-use SMWTimeValue as TimeValue;
 
 /**
  * @private

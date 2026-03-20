@@ -5,10 +5,10 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -179,10 +179,10 @@ class UpdateDispatcherJobTest extends TestCase {
 
 	public function testJobRunOnRestrictedPool() {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$semanticData = new SemanticData( $subject );
-		$semanticData->addPropertyObjectValue( new DIProperty( '42' ), $subject );
+		$semanticData->addPropertyObjectValue( new Property( '42' ), $subject );
 
 		$parameters = [
 			'semanticData' => $this->semanticDataSerializer->serialize( $semanticData ),
@@ -233,7 +233,7 @@ class UpdateDispatcherJobTest extends TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromTitle( $setup['title'] ) ] );
+			->willReturn( [ WikiPage::newFromTitle( $setup['title'] ) ] );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -264,7 +264,7 @@ class UpdateDispatcherJobTest extends TestCase {
 	 */
 	public function testRunJobOnMockWithParameters( $setup, $expected ) {
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( $setup['title'] )
+			WikiPage::newFromTitle( $setup['title'] )
 		);
 
 		$parameters = [
@@ -290,7 +290,7 @@ class UpdateDispatcherJobTest extends TestCase {
 
 		$store->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ DIWikiPage::newFromTitle( $setup['title'] ) ] );
+			->willReturn( [ WikiPage::newFromTitle( $setup['title'] ) ] );
 
 		$store->expects( $this->any() )
 			->method( 'getProperties' )
@@ -321,21 +321,21 @@ class UpdateDispatcherJobTest extends TestCase {
 
 		$provider = [];
 
-		$duplicate = DIWikiPage::newFromText( 'Foo' );
+		$duplicate = WikiPage::newFromText( 'Foo' );
 
 		$subjects = [
 			$duplicate,
-			DIWikiPage::newFromText( 'Bar' ),
-			DIWikiPage::newFromText( 'Baz' ),
+			WikiPage::newFromText( 'Bar' ),
+			WikiPage::newFromText( 'Baz' ),
 			$duplicate,
-			DIWikiPage::newFromText( 'Yon' ),
-			DIWikiPage::newFromText( 'Yon' ),
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Yon' ),
+			WikiPage::newFromText( 'Yon' ),
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		];
 
 		$count = count( $subjects ) - 1; // eliminate duplicate count
 		$title = $titleFactory->newFromText( __METHOD__, SMW_NS_PROPERTY );
-		$property = DIProperty::newFromUserLabel( $title->getText() );
+		$property = Property::newFromUserLabel( $title->getText() );
 
 		# 0
 		$provider[] = [
@@ -352,13 +352,13 @@ class UpdateDispatcherJobTest extends TestCase {
 		];
 
 		$title = $titleFactory->newFromText( __METHOD__, NS_MAIN );
-		$property = DIProperty::newFromUserLabel( $title->getText() );
+		$property = Property::newFromUserLabel( $title->getText() );
 
 		# 1
 		$provider[] = [
 			[
 				'title'      => $title,
-				'subjects'   => [ DIWikiPage::newFromTitle( $title ) ],
+				'subjects'   => [ WikiPage::newFromTitle( $title ) ],
 				'property'   => $property,
 				'properties' => [ $property ],
 				'parameters' => []
@@ -369,20 +369,20 @@ class UpdateDispatcherJobTest extends TestCase {
 		];
 
 		# 2
-		$duplicate = DIWikiPage::newFromText( 'Foo' );
+		$duplicate = WikiPage::newFromText( 'Foo' );
 
 		$subjects = [
 			$duplicate,
-			DIWikiPage::newFromText( 'Bar' ),
-			DIWikiPage::newFromText( 'Baz' ),
+			WikiPage::newFromText( 'Bar' ),
+			WikiPage::newFromText( 'Baz' ),
 			$duplicate,
-			DIWikiPage::newFromText( 'Yon' ),
-			DIWikiPage::newFromText( 'Yon' ),
-			DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Yon' ),
+			WikiPage::newFromText( 'Yon' ),
+			WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )
 		];
 
 		$title = $titleFactory->newFromText( __METHOD__, SMW_NS_PROPERTY );
-		$property = DIProperty::newFromUserLabel( $title->getText() );
+		$property = Property::newFromUserLabel( $title->getText() );
 
 		$provider[] = [
 			[
@@ -406,9 +406,9 @@ class UpdateDispatcherJobTest extends TestCase {
 	 *
 	 * @see Store::getAllPropertySubjects
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
-	public function mockStoreAllPropertySubjectsCallback( DIProperty $property ) {
+	public function mockStoreAllPropertySubjectsCallback( Property $property ) {
 		return $this->expectedSubjects;
 	}
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Factbox;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Factbox\AttachmentFormatter;
 use SMW\Store;
 
@@ -47,7 +47,7 @@ class AttachmentFormatterTest extends TestCase {
 	}
 
 	public function testBuildHTML_OnAttachments() {
-		$item = DIWikiPage::newFromText( 'Foo', NS_FILE );
+		$item = WikiPage::newFromText( 'Foo', NS_FILE );
 
 		$instance = new AttachmentFormatter(
 			$this->store

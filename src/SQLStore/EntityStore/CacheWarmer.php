@@ -3,9 +3,9 @@
 namespace SMW\SQLStore\EntityStore;
 
 use Iterator;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\MediaWiki\LinkBatch;
@@ -79,12 +79,12 @@ class CacheWarmer {
 
 			$hash = null;
 
-			if ( $item instanceof DIWikiPage ) {
+			if ( $item instanceof WikiPage ) {
 				$linkBatch->add( $item );
 
 				if ( $item->getNamespace() === SMW_NS_PROPERTY ) {
 					try {
-						$property = DIProperty::newFromUserLabel( $item->getDBKey() );
+						$property = Property::newFromUserLabel( $item->getDBKey() );
 					} catch ( PredefinedPropertyLabelMismatchException $e ) {
 						continue;
 					} catch ( PropertyLabelNotResolvedException $e ) {
@@ -94,7 +94,7 @@ class CacheWarmer {
 				} else {
 					$hash = $item->getSha1();
 				}
-			} elseif ( $item instanceof DIProperty ) {
+			} elseif ( $item instanceof Property ) {
 				$linkBatch->add( $item->getDIWikiPage() );
 
 				// Avoid _SKEY as it is not used during an entity lookup to

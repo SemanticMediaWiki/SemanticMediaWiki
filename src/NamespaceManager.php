@@ -2,7 +2,6 @@
 
 namespace SMW;
 
-use SemanticMediaWiki;
 use SMW\Exception\NamespaceIndexChangeException;
 use SMW\Exception\SiteLanguageChangeException;
 use SMW\Localizer\LocalLanguage\LocalLanguage;

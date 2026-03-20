@@ -3,15 +3,15 @@
 namespace SMW\Tests\Property;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\Property\ChangePropagationNotifier;
-use SMW\SemanticData;
 use SMW\SerializerFactory;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Property\ChangePropagationNotifier
@@ -184,7 +184,7 @@ class ChangePropagationNotifierTest extends TestCase {
 			[ $subject, $subject, [ '_PVAL' ], [ 'diff' => false, 'job' => false ] ],
 			[ $subjects, $subjects, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
 			[ $subject, $subject, [ '_PVAL', '_LIST' ], [ 'diff' => true, 'job' => true ] ],
-			[ [ new DIBlob( '>100' ) ], [ new DIBlob( '&gt;100' ) ], [ '_PVAL', '_PVAL' ], [ 'diff' => false, 'job' => false ] ]
+			[ [ new Blob( '>100' ) ], [ new Blob( '&gt;100' ) ], [ '_PVAL', '_PVAL' ], [ 'diff' => false, 'job' => false ] ]
 		];
 	}
 
@@ -197,7 +197,7 @@ class ChangePropagationNotifierTest extends TestCase {
 	 * @return SMWDataItem[]
 	 */
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
-	public function doComparePropertyValuesOnCallback( $subject, DIProperty $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd
+	public function doComparePropertyValuesOnCallback( $subject, Property $property, $requestoptions = null ) { // @codingStandardsIgnoreEnd
 		return $property->getKey() === '_LIST' ? [] : $this->mockedStoreValues;
 	}
 

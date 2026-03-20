@@ -4,9 +4,9 @@ namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Specials\Ask\LinksWidget;
 use SMW\Utils\UrlArgs;
-use SMWInfolink;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\LinksWidget
@@ -114,7 +114,7 @@ class LinksWidgetTest extends TestCase {
 	}
 
 	public function testClipboardLink() {
-		$infolink = $this->getMockBuilder( SMWInfolink::class )
+		$infolink = $this->getMockBuilder( Infolink::class )
 			->disableOriginalConstructor()
 			->getMock();
 

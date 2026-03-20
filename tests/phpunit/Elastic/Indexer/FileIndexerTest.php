@@ -4,7 +4,7 @@ namespace SMW\Tests\Elastic\Indexer;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
@@ -129,7 +129,7 @@ class FileIndexerTest extends TestCase {
 		$instance->setLogger( $this->logger );
 		$instance->setRevisionGuard( $this->revisionGuard );
 
-		$dataItem = DIWikiPage::newFromText( __METHOD__, NS_FILE );
+		$dataItem = WikiPage::newFromText( __METHOD__, NS_FILE );
 		$dataItem->setId( 42 );
 
 		$instance->index( $dataItem, $file );

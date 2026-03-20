@@ -5,8 +5,8 @@ namespace SMW\Protection;
 use MediaWiki\Permissions\PermissionManager as MwPermissionManager;
 use MediaWiki\Title\Title;
 use MediaWiki\User\User;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -65,16 +65,16 @@ class ProtectionValidator {
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
 	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ): void {
-		$propertyChangeListener->addListenerCallback( new DIProperty( '_CHGPRO' ), [ $this, 'invalidateCache' ] );
+		$propertyChangeListener->addListenerCallback( new Property( '_CHGPRO' ), [ $this, 'invalidateCache' ] );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ): void {
+	public function invalidateCache( Property $property, ChangeRecord $changeRecord ): void {
 		if ( $property->getKey() !== '_CHGPRO' ) {
 			return;
 		}
@@ -165,7 +165,7 @@ class ProtectionValidator {
 	 * @return bool
 	 */
 	public function hasEditProtectionOnNamespace( Title $title ): bool {
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -231,7 +231,7 @@ class ProtectionValidator {
 	 * @return bool
 	 */
 	public function hasChangePropagationProtection( Title $title ) {
-		$subject = DIWikiPage::newFromTitle( $title )->asBase();
+		$subject = WikiPage::newFromTitle( $title )->asBase();
 		$namespace = $subject->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -242,7 +242,7 @@ class ProtectionValidator {
 			return false;
 		}
 
-		return $this->checkProtection( $subject, new DIProperty( '_CHGPRO' ) );
+		return $this->checkProtection( $subject, new Property( '_CHGPRO' ) );
 	}
 
 	/**
@@ -253,7 +253,7 @@ class ProtectionValidator {
 	 * @return bool
 	 */
 	public function hasProtection( Title $title ) {
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -294,7 +294,7 @@ class ProtectionValidator {
 			return false;
 		}
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -305,7 +305,7 @@ class ProtectionValidator {
 
 	private function checkProtection( $subject, $property = null ) {
 		if ( $property === null ) {
-			$property = new DIProperty( '_EDIP' );
+			$property = new Property( '_EDIP' );
 		}
 
 		$key = $this->entityCache->makeCacheKey( 'protection', $subject->getHash() );

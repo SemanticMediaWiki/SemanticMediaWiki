@@ -7,6 +7,7 @@ use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Api\Browse\ListLookup;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ListLookup
@@ -38,7 +39,7 @@ class ListLookupTest extends TestCase {
 	 * @dataProvider namespaceProvider
 	 */
 	public function testLookup( $ns, $title, $expected ) {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = $title;
 		$row->smw_id = 42;
 

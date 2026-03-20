@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
@@ -73,7 +73,7 @@ class SchemaFactory {
 			$type['change_propagation'] = (array)$type['change_propagation'];
 		}
 
-		$subject = DIWikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
+		$subject = WikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
 
 		foreach ( $type['change_propagation'] as $property ) {
 			$params = [

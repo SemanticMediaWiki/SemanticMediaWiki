@@ -3,7 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\AssociatedRevisionMismatchEntityExaminerIndicatorProvider;
 use SMW\Indicator\IndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -169,7 +169,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 			->method( 'getLatestRevID' )
 			->willReturn( 42 );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
@@ -201,7 +201,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 			->method( 'getLatestRevID' )
 			->willReturn( 1001 );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store
@@ -241,7 +241,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProviderTest extends Test
 			->method( 'getLatestRevID' )
 			->willReturn( 1001 );
 
-		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
 		$instance = new AssociatedRevisionMismatchEntityExaminerIndicatorProvider(
 			$this->store

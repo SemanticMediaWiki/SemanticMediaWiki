@@ -9,9 +9,12 @@ use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DataValues\ImportValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
+use SMW\DataValues\QuantityValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\TimeValue;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
@@ -33,9 +36,6 @@ use SMW\DataValues\ValueValidators\PropertySpecificationConstraintValueValidator
 use SMW\DataValues\ValueValidators\UniquenessConstraintValueValidator;
 use SMW\Query\DescriptionBuilderRegistry;
 use SMW\Site;
-use SMWNumberValue as NumberValue;
-use SMWQuantityValue as QuantityValue;
-use SMWTimeValue as TimeValue;
 
 /**
  * @codeCoverageIgnore

@@ -7,12 +7,12 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\User\User;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
-use SMW\SemanticData;
 use WikiPage;
 
 /**
@@ -121,7 +121,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 	private function fetchEditProtectedInfo( $semanticData ): array {
 		// Whether or not the update was invoked by the ArticleProtectComplete hook
 		$this->isRestrictedUpdate = $semanticData->getOption( ArticleProtectComplete::RESTRICTED_UPDATE ) === true;
-		$property = new DIProperty( '_EDIP' );
+		$property = new Property( '_EDIP' );
 
 		$isEditProtected = null;
 		$isAnnotationBySystem = false;

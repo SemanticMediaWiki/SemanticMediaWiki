@@ -5,11 +5,11 @@ namespace SMW\Serializers;
 use MediaWiki\Title\Title;
 use OutOfBoundsException;
 use Serializers\DispatchableSerializer;
+use SMW\DataItems\DataItem;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
-use SMWDataItem as DataItem;
 
 /**
  * Class for serializing SMWDataItem and QueryResult objects to a context

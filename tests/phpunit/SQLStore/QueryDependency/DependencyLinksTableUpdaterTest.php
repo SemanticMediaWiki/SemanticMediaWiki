@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\QueryDependency\DependencyLinksTableUpdater;
 use SMW\SQLStore\SQLStore;
@@ -110,7 +110,7 @@ class DependencyLinksTableUpdaterTest extends TestCase {
 
 		$instance->clear();
 
-		$instance->addToUpdateList( 42, [ DIWikiPage::newFromText( 'Bar' ) ] );
+		$instance->addToUpdateList( 42, [ WikiPage::newFromText( 'Bar' ) ] );
 		$instance->doUpdate();
 	}
 
@@ -207,7 +207,7 @@ class DependencyLinksTableUpdaterTest extends TestCase {
 
 		$instance->clear();
 
-		$instance->addToUpdateList( 42, [ DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ] );
+		$instance->addToUpdateList( 42, [ WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY ) ] );
 		$instance->doUpdate();
 	}
 

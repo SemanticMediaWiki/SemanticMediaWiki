@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataModel\SemanticData;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIError as DIError;
 
 /**
  * Builds a table row representation for a SemanticData object.
@@ -200,7 +200,7 @@ class PropertyTableRowMapper {
 
 			foreach ( $propertyValues as $dataItem ) {
 
-				if ( $dataItem instanceof DIError ) { // ignore error values
+				if ( $dataItem instanceof Error ) { // ignore error values
 					continue;
 				}
 

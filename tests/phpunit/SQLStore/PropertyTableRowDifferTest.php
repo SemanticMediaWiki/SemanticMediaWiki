@@ -3,9 +3,9 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableDefinition;
@@ -50,7 +50,7 @@ class PropertyTableRowDifferTest extends TestCase {
 	}
 
 	public function testComputeTableRowDiffForEmptyPropertyTables() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
 		$propertyTables = [];
@@ -80,7 +80,7 @@ class PropertyTableRowDifferTest extends TestCase {
 	}
 
 	public function testChangeOp() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
 		$propertyTables = [];
@@ -128,7 +128,7 @@ class PropertyTableRowDifferTest extends TestCase {
 			->method( 'getFixedProperty' )
 			->willReturn( '_UNKNOWN_FIXED_PROPERTY' );
 
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
 		$propertyTables = [ $propertyTable ];
@@ -200,7 +200,7 @@ class PropertyTableRowDifferTest extends TestCase {
 			->method( 'getFixedProperty' )
 			->willReturn( '_UNKNOWN_FIXED_PROPERTY' );
 
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
 		$propertyTables = [ $propertyTable ];

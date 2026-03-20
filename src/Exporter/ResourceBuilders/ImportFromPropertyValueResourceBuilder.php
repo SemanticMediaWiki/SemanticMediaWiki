@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\ImportValue;
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWExpData as ExpData;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -24,7 +24,7 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ): bool {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return $property->getKey() === '_IMPO';
 	}
 
@@ -33,7 +33,7 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$diSubject = $expData->getSubject()->getDataItem();
 
 		if ( $diSubject === null ) {
@@ -60,7 +60,7 @@ class ImportFromPropertyValueResourceBuilder extends PredefinedPropertyValueReso
 
 		$expData->addPropertyObjectValue(
 			$expNsResource,
-			$this->exporter->newExpElement( new DIBlob( $dataValue->getImportReference() ) )
+			$this->exporter->newExpElement( new Blob( $dataValue->getImportReference() ) )
 		);
 
 		$this->addResourceHelperValue(

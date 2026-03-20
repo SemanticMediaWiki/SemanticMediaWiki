@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Maintenance\Jobs;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use SMW\Maintenance\ExceptionFileLogger;
 use SMW\Options;
@@ -61,7 +62,7 @@ class ExceptionFileLoggerTest extends TestCase {
 
 		$instance->recordException(
 			'Foo',
-			new \Exception( 'Bar' )
+			new Exception( 'Bar' )
 		);
 
 		$this->assertSame(

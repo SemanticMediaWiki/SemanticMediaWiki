@@ -3,8 +3,8 @@
 namespace SMW\Tests\DataModel;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataModel\SequenceMap;
-use SMW\DIProperty;
 use SMW\Schema\SchemaFactory;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
@@ -65,7 +65,7 @@ class SequenceMapTest extends TestCase {
 			->method( 'newSchemaFinder' )
 			->willReturn( $schemaFinder );
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 

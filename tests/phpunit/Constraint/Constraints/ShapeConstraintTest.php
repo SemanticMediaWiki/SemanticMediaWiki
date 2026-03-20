@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\ShapeConstraint;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
-use SMW\SemanticData;
-use SMWDataValue;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 
 /**
  * @covers \SMW\Constraint\Constraints\ShapeConstraint
@@ -66,7 +66,7 @@ class ShapeConstraintTest extends TestCase {
 			->with( 'Foo' )
 			->willReturn( false );
 
-		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue = $this->createMock( DataValue::class );
 		$dataValue->expects( $this->any() )
 			->method( 'getWikiValue' )
 			->willReturn( 'foo' );
@@ -107,7 +107,7 @@ class ShapeConstraintTest extends TestCase {
 			->with( 'Foo' )
 			->willReturn( true );
 
-		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue = $this->createMock( DataValue::class );
 		$dataValue->expects( $this->any() )
 			->method( 'getWikiValue' )
 			->willReturn( 'foo' );
@@ -156,7 +156,7 @@ class ShapeConstraintTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $dataItem, $dataItem ] );
 
-		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue = $this->createMock( DataValue::class );
 		$dataValue->expects( $this->any() )
 			->method( 'getWikiValue' )
 			->willReturn( 'foo' );
@@ -209,7 +209,7 @@ class ShapeConstraintTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->willReturn( [ $dataItem ] );
 
-		$dataValue = $this->createMock( SMWDataValue::class );
+		$dataValue = $this->createMock( DataValue::class );
 		$dataValue->expects( $this->any() )
 			->method( 'getWikiValue' )
 			->willReturn( 'foo' );

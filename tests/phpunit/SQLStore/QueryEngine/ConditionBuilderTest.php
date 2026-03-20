@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\QueryEngine;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
@@ -17,6 +17,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
 use SMW\Utils\CircularReferenceGuard;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\ConditionBuilder
@@ -117,7 +118,7 @@ class ConditionBuilderTest extends TestCase {
 
 		$instance->buildFromDescription( $description );
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 
@@ -144,14 +145,14 @@ class ConditionBuilderTest extends TestCase {
 
 		$instance->buildFromDescription( $description );
 
-		$expectedDisjunction = new \stdClass;
+		$expectedDisjunction = new stdClass;
 		$expectedDisjunction->type = 3;
 
-		$expectedHelpNs = new \stdClass;
+		$expectedHelpNs = new stdClass;
 		$expectedHelpNs->type = 1;
 		$expectedHelpNs->where = "t1.smw_namespace=";
 
-		$expectedMainNs = new \stdClass;
+		$expectedMainNs = new stdClass;
 		$expectedMainNs->type = 1;
 		$expectedMainNs->where = "t2.smw_namespace=";
 
@@ -189,7 +190,7 @@ class ConditionBuilderTest extends TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $objectIds );
 
-		$description = new ClassDescription( new DIWikiPage( 'Foo', NS_CATEGORY ) );
+		$description = new ClassDescription( new WikiPage( 'Foo', NS_CATEGORY ) );
 
 		$instance = new ConditionBuilder(
 			$this->store,
@@ -200,12 +201,12 @@ class ConditionBuilderTest extends TestCase {
 
 		$instance->buildFromDescription( $description );
 
-		$expectedClass = new \stdClass;
+		$expectedClass = new stdClass;
 		$expectedClass->type = 1;
 		$expectedClass->alias = "t0";
 		$expectedClass->queryNumber = 0;
 
-		$expectedHierarchy = new \stdClass;
+		$expectedHierarchy = new stdClass;
 		$expectedHierarchy->type = 5;
 		$expectedHierarchy->joinfield = [ 0 => 42 ];
 		$expectedHierarchy->alias = "t1";

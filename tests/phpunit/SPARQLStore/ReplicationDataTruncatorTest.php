@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\SPARQLStore\ReplicationDataTruncator;
 
 /**
@@ -43,7 +43,7 @@ class ReplicationDataTruncatorTest extends TestCase {
 	}
 
 	public function testOnExemptedList() {
-		$property = new DIProperty( 'Foo_bar' );
+		$property = new Property( 'Foo_bar' );
 
 		$this->semanticData->expects( $this->once() )
 			->method( 'removeProperty' )
@@ -56,7 +56,7 @@ class ReplicationDataTruncatorTest extends TestCase {
 	}
 
 	public function testOnExemptedListWithPredefinedProperty() {
-		$property = new DIProperty( '_ASK' );
+		$property = new Property( '_ASK' );
 
 		$this->semanticData->expects( $this->once() )
 			->method( 'removeProperty' )

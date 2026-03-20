@@ -3,7 +3,8 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
@@ -13,7 +14,6 @@ use SMW\EntityCache;
 use SMW\Localizer\MessageLocalizer;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationCheck
@@ -168,7 +168,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$html = $instance->checkReplication( DIWikiPage::newFromText( 'Foo' ), [] );
+		$html = $instance->checkReplication( WikiPage::newFromText( 'Foo' ), [] );
 
 		$this->assertStringContainsString(
 			'data-error-code="smw-es-replication-error-missing-id"',
@@ -205,7 +205,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject );
 
@@ -245,7 +245,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject );
 
@@ -299,7 +299,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject );
 
@@ -314,8 +314,8 @@ class ReplicationCheckTest extends TestCase {
 			ReplicationError::TYPE_MODIFICATION_DATE_DIFF,
 			[
 				'id' => 42,
-				'time_es' => DITime::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' ),
-				'time_store' => DITime::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
+				'time_es' => Time::newFromTimestamp( 1272508900 )->asDateTime()->format( 'Y-m-d H:i:s' ),
+				'time_store' => Time::newFromTimestamp( 1272508903 )->asDateTime()->format( 'Y-m-d H:i:s' )
 			]
 		);
 
@@ -354,7 +354,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject );
 
@@ -414,7 +414,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject, [] );
 
@@ -472,7 +472,7 @@ class ReplicationCheckTest extends TestCase {
 			$this->messageLocalizer
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$html = $instance->checkReplication( $subject, [] );
 
@@ -483,7 +483,7 @@ class ReplicationCheckTest extends TestCase {
 	}
 
 	public function testMakeCacheKey() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
+		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->assertSame(
 			ReplicationCheck::makeCacheKey( $subject->getHash() ),
@@ -510,7 +510,7 @@ class ReplicationCheckTest extends TestCase {
 	}
 
 	public function testDeleteReplicationTrail_OnTitle() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
+		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'deleteSub' )
@@ -532,7 +532,7 @@ class ReplicationCheckTest extends TestCase {
 	}
 
 	public function testDeleteReplicationTrail_OnSubject() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_MAIN );
+		$subject = WikiPage::newFromText( 'Foo', NS_MAIN );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'deleteSub' )

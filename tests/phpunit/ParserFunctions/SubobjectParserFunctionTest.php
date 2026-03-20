@@ -5,14 +5,14 @@ namespace SMW\Tests\ParserFunctions;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataModel\Subobject;
 use SMW\Exception\SubSemanticDataException;
+use SMW\Formatters\MessageFormatter;
 use SMW\Localizer\Localizer;
-use SMW\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\SubobjectParserFunction;
 use SMW\ParserParameterProcessor;
-use SMW\Subobject;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**
@@ -473,7 +473,7 @@ class SubobjectParserFunctionTest extends TestCase {
 		];
 
 		// Get the right language for an error object
-		$diPropertyError = new DIProperty( DIProperty::TYPE_ERROR );
+		$diPropertyError = new Property( Property::TYPE_ERROR );
 
 		# 9 {{#subobject: Foo bar foo
 		// |Bar=foo Bar
@@ -563,8 +563,8 @@ class SubobjectParserFunctionTest extends TestCase {
 			[
 				'propertyCount'  => 2,
 				'properties'     => [
-					new DIProperty( 'Bar' ),
-					new DIProperty( '_SKEY' )
+					new Property( 'Bar' ),
+					new Property( '_SKEY' )
 				],
 				'propertyValues' => [
 					'Foo Bar',
@@ -586,7 +586,7 @@ class SubobjectParserFunctionTest extends TestCase {
 			[
 				'propertyCount'  => 1,
 				'properties'     => [
-					new DIProperty( 'Bar' )
+					new Property( 'Bar' )
 				],
 				'propertyValues' => [
 					'Foo Bar'
@@ -607,8 +607,8 @@ class SubobjectParserFunctionTest extends TestCase {
 			[
 				'propertyCount'  => 2,
 				'properties'     => [
-					new DIProperty( 'Bar' ),
-					new DIProperty( '_INST' )
+					new Property( 'Bar' ),
+					new Property( '_INST' )
 				],
 				'propertyValues' => [
 					'Foo Bar',
@@ -630,7 +630,7 @@ class SubobjectParserFunctionTest extends TestCase {
 			[
 				'propertyCount'  => 1,
 				'properties'     => [
-					new DIProperty( 'Bar' )
+					new Property( 'Bar' )
 				],
 				'propertyValues' => [
 					'Foo Bar'
@@ -649,8 +649,8 @@ class SubobjectParserFunctionTest extends TestCase {
 			[
 				'propertyCount'  => 2,
 				'properties'     => [
-					new DIProperty( '_DTITLE' ),
-					new DIProperty( '_SKEY' )
+					new Property( '_DTITLE' ),
+					new Property( '_SKEY' )
 				],
 				'propertyValues' => [
 					'Foo'
@@ -671,8 +671,8 @@ class SubobjectParserFunctionTest extends TestCase {
 			[
 				'propertyCount'  => 2,
 				'properties'     => [
-					new DIProperty( '_DTITLE' ),
-					new DIProperty( '_SKEY' )
+					new Property( '_DTITLE' ),
+					new Property( '_SKEY' )
 				],
 				'propertyValues' => [
 					'Foo',
@@ -693,7 +693,7 @@ class SubobjectParserFunctionTest extends TestCase {
 				'embeddedTitle'  => 'LinkedToSubjectXY',
 				'propertyCount'  => 1,
 				'properties'     => [
-					new DIProperty( 'Bar' )
+					new Property( 'Bar' )
 				],
 				'propertyValues' => [
 					'LinkedToSubjectXY'

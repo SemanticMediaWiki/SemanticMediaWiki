@@ -4,8 +4,8 @@ namespace SMW\Tests;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\PropertyAliasFinder;
 use SMW\PropertyLabelFinder;
 use SMW\PropertyRegistry;
@@ -147,7 +147,7 @@ class PropertyRegistryTest extends TestCase {
 		);
 
 		$instance->registerProperty(
-			DIProperty::TYPE_HAS_TYPE,
+			Property::TYPE_HAS_TYPE,
 			'__typ',
 			'Has type',
 			true,
@@ -275,7 +275,7 @@ class PropertyRegistryTest extends TestCase {
 		);
 
 		$instance->registerProperty(
-			DIProperty::TYPE_HAS_TYPE,
+			Property::TYPE_HAS_TYPE,
 			'__typ',
 			'Has type',
 			true
@@ -330,7 +330,7 @@ class PropertyRegistryTest extends TestCase {
 		);
 
 		$instance->registerProperty(
-			DIProperty::TYPE_HAS_TYPE,
+			Property::TYPE_HAS_TYPE,
 			'__typ',
 			'Has type',
 			true

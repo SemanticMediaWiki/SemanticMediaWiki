@@ -3,11 +3,11 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIConcept;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\Query\Language\ConceptDescription;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
@@ -128,9 +128,9 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 
 		$semanticData->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->with( new DIProperty( '_CONC' ) )
+			->with( new Property( '_CONC' ) )
 			->willReturn( [
-				new DIConcept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] );
+				new Concept( '[[Foo::+]]', 'Bar', 1, 0, 0 ) ] );
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()

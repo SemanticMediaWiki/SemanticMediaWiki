@@ -2,11 +2,11 @@
 
 namespace SMW\SPARQLStore\QueryEngine;
 
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Store;
-use SMWExporter as Exporter;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later

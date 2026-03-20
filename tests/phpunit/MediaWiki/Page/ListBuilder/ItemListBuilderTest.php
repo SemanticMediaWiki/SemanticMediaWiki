@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
 use SMW\RequestOptions;
 use SMW\SortLetter;
@@ -49,8 +49,8 @@ class ItemListBuilderTest extends TestCase {
 
 		$instance = new ItemListBuilder( $this->store );
 
-		$property = new DIProperty( 'Foo' );
-		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
+		$property = new Property( 'Foo' );
+		$dataItem = new WikiPage( 'Bar', NS_MAIN );
 
 		$this->assertSame(
 			'',
@@ -75,7 +75,7 @@ class ItemListBuilderTest extends TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
-			->willReturn( [ DIWikiPage::newFromText( __METHOD__ ) ] );
+			->willReturn( [ WikiPage::newFromText( __METHOD__ ) ] );
 
 		$requestOptions = $this->getMockBuilder( RequestOptions::class )
 			->disableOriginalConstructor()
@@ -84,8 +84,8 @@ class ItemListBuilderTest extends TestCase {
 		$instance = new ItemListBuilder( $store );
 		$instance->setListLimit( 10 );
 
-		$property = new DIProperty( 'Foo' );
-		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
+		$property = new Property( 'Foo' );
+		$dataItem = new WikiPage( 'Bar', NS_MAIN );
 
 		$this->stringValidator->assertThatStringContains(
 			[

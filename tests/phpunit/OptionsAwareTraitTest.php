@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use PHPUnit\Framework\TestCase;
 use SMW\OptionsAwareTrait;
 
 /**
@@ -13,7 +14,7 @@ use SMW\OptionsAwareTrait;
  *
  * @author mwjames
  */
-class OptionsAwareTraitTest extends \PHPUnit\Framework\TestCase {
+class OptionsAwareTraitTest extends TestCase {
 
 	public function testSetGetOptions() {
 		$instance = $this->newOptionsAware();

@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 
 /**
@@ -43,7 +43,7 @@ class EntityCacheTest extends TestCase {
 			$instance->makeCacheKey( 'Foo' )
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->assertEquals(
 			$instance->makeCacheKey( $subject ),
@@ -66,7 +66,7 @@ class EntityCacheTest extends TestCase {
 			$this->cache
 		);
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->assertStringContainsString(
 			'smw:entity:44ab375ee7ebac04b8e4471a70180dc5',
@@ -199,7 +199,7 @@ class EntityCacheTest extends TestCase {
 	}
 
 	public function testAssociate() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$expected = [
 			md5( 'bar' ) => 'Foobar',
@@ -236,7 +236,7 @@ class EntityCacheTest extends TestCase {
 	}
 
 	public function testInvalidate() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )

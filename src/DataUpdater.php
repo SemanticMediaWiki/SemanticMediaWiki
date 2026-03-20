@@ -8,6 +8,8 @@ use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
@@ -128,7 +130,7 @@ class DataUpdater {
 	/**
 	 * @since 1.9
 	 *
-	 * @return DIWikiPage
+	 * @return \SMW\DataItems\WikiPage
 	 */
 	public function getSubject() {
 		return $this->semanticData->getSubject();
@@ -423,7 +425,7 @@ class DataUpdater {
 		}
 
 		$redirects = $semanticData->getPropertyValues(
-			new DIProperty( '_REDI' )
+			new Property( '_REDI' )
 		);
 
 		$target = end( $redirects );
@@ -435,7 +437,7 @@ class DataUpdater {
 		return $this->updateRedirectTarget( $semanticData, $target );
 	}
 
-	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ): SemanticData {
+	private function updateRedirectTarget( SemanticData $semanticData, \SMW\DataItems\WikiPage $target ): SemanticData {
 		$subject = $semanticData->getSubject();
 
 		// The general rule is that a redirect page is not expected to contain
@@ -450,7 +452,7 @@ class DataUpdater {
 		// safeguard so that even when text contains annotations there are removed
 		// from the `Store`.
 		$semanticData = new SemanticData( $subject );
-		$semanticData->addPropertyObjectValue( new DIProperty( '_REDI' ), $target );
+		$semanticData->addPropertyObjectValue( new Property( '_REDI' ), $target );
 
 		// #895
 		// Force a manual changeTitle before the general update otherwise

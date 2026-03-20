@@ -5,11 +5,13 @@ namespace SMW\Tests\SPARQLStore;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
+use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
-use SMW\SemanticData;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\RepositoryClient;
@@ -19,9 +21,7 @@ use SMW\SPARQLStore\RespositoryConnection;
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMW\Subobject;
 use SMW\Tests\TestEnvironment;
-use SMWExporter as Exporter;
 
 /**
  * @covers \SMW\SPARQLStore\SPARQLStore
@@ -127,7 +127,7 @@ class SPARQLStoreTest extends TestCase {
 		$semanticData = new SemanticData( new WikiPage( __METHOD__, NS_MAIN ) );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			$semanticData->getSubject()
 		);
 

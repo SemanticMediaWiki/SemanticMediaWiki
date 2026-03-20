@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
@@ -72,7 +72,7 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		$title = $titleFactory->newFromText( 'RecordDataTypeRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
-			'property' => new DIProperty( '_INST' ),
+			'property' => new Property( '_INST' ),
 			'propertyValues' => [
 				'Category:Regression test',
 				'Category:Data type regression test',
@@ -82,20 +82,20 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 
 		$expectedSomeProperties = [
 			'properties' => [
-				DIProperty::newFromUserLabel( 'RecordDataTypePage' ),
-				DIProperty::newFromUserLabel( 'BarText' ),
-				DIProperty::newFromUserLabel( 'BooPage' ),
-				DIProperty::newFromUserLabel( 'FooPage' ),
-				DIProperty::newFromUserLabel( 'QyuPage' ),
-				new DIProperty( '_ASK' ),
-				new DIProperty( '_MDAT' ),
-				new DIProperty( '_SKEY' ),
-				new DIProperty( '_SOBJ' ),
-				new DIProperty( '_INST' )
+				Property::newFromUserLabel( 'RecordDataTypePage' ),
+				Property::newFromUserLabel( 'BarText' ),
+				Property::newFromUserLabel( 'BooPage' ),
+				Property::newFromUserLabel( 'FooPage' ),
+				Property::newFromUserLabel( 'QyuPage' ),
+				new Property( '_ASK' ),
+				new Property( '_MDAT' ),
+				new Property( '_SKEY' ),
+				new Property( '_SOBJ' ),
+				new Property( '_INST' )
 			]
 		];
 
-		$property = DIProperty::newFromUserLabel( 'Has record type for single test' );
+		$property = Property::newFromUserLabel( 'Has record type for single test' );
 		$valueString = 'ForSingleTestAsPage;ForSingleTestAsText;3333';
 
 		if ( $property->findPropertyTypeID() === '_rec' ) {
@@ -103,16 +103,16 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		}
 
 		$expectedRecordTypeValuesAsWikiValue = [
-			'subject'        => DIWikiPage::newFromTitle( $title ),
+			'subject'        => WikiPage::newFromTitle( $title ),
 			'record'         => $property,
 			'property'       => $property,
 			'propertyValues' => [ $valueString, '?; ?; ?' ]
 		];
 
 		$expectedRecordPageFieldValuesAsWikiValue = [
-			'subject'        => DIWikiPage::newFromTitle( $title ),
-			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
-			'property'       => DIProperty::newFromUserLabel( 'Has record page field' ),
+			'subject'        => WikiPage::newFromTitle( $title ),
+			'record'         => Property::newFromUserLabel( 'Has record type' ),
+			'property'       => Property::newFromUserLabel( 'Has record page field' ),
 			'propertyValues' => [
 				'FooPage',
 				'QyuPageOnSubobject',
@@ -124,9 +124,9 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		];
 
 		$expectedRecordTextFieldValuesAsWikiValue = [
-			'subject'        => DIWikiPage::newFromTitle( $title ),
-			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
-			'property'       => DIProperty::newFromUserLabel( 'Has record text field' ),
+			'subject'        => WikiPage::newFromTitle( $title ),
+			'record'         => Property::newFromUserLabel( 'Has record type' ),
+			'property'       => Property::newFromUserLabel( 'Has record text field' ),
 			'propertyValues' => [
 				'BarText',
 				'ForSingleTestAsText',
@@ -136,9 +136,9 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		];
 
 		$expectedRecordNumberFieldValuesAsNumber = [
-			'subject'        => DIWikiPage::newFromTitle( $titleFactory->newFromText( 'RecordDataTypeRegressionTest/WithSubpage' ) ),
-			'record'         => DIProperty::newFromUserLabel( 'Has record type' ),
-			'property'       => DIProperty::newFromUserLabel( 'Has record number field' ),
+			'subject'        => WikiPage::newFromTitle( $titleFactory->newFromText( 'RecordDataTypeRegressionTest/WithSubpage' ) ),
+			'record'         => Property::newFromUserLabel( 'Has record type' ),
+			'property'       => Property::newFromUserLabel( 'Has record number field' ),
 			'propertyValues' => [
 				1111,
 				9001,
@@ -151,7 +151,7 @@ class RecordDataTypeTest extends SMWIntegrationTestCase {
 		$semanticDataFinder->setTitle( $title )->setStore( $this->getStore() );
 
 		$semanticDataBatches = [
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $title ) ),
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $title ) ),
 		];
 
 		foreach ( $semanticDataBatches as $semanticData ) {

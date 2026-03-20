@@ -5,12 +5,12 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDIBlob as DIBlob;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -85,7 +85,7 @@ class ShapeConstraint implements Constraint {
 			return;
 		}
 
-		$property = DIProperty::newFromUserLabel(
+		$property = Property::newFromUserLabel(
 			$constraint['property']
 		);
 
@@ -173,7 +173,7 @@ class ShapeConstraint implements Constraint {
 
 		foreach ( $dataItems as $dataItem ) {
 
-			if ( !$dataItem instanceof DIBlob ) {
+			if ( !$dataItem instanceof Blob ) {
 				continue;
 			}
 

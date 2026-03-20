@@ -3,9 +3,9 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\SequenceMap;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\LinkBatch;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -59,13 +59,13 @@ class PrefetchItemLookupTest extends TestCase {
 
 	public function testGetPropertyValues() {
 		$subjects = [
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 		];
 
 		$expected = [
-			DIWikiPage::newFromText( 'Bar_1' ),
-			DIWikiPage::newFromText( 'Bar_2' ),
-			DIWikiPage::newFromText( 'Bar_3' )
+			WikiPage::newFromText( 'Bar_1' ),
+			WikiPage::newFromText( 'Bar_2' ),
+			WikiPage::newFromText( 'Bar_3' )
 		];
 
 		$linkBatch = $this->getMockBuilder( LinkBatch::class )
@@ -133,7 +133,7 @@ class PrefetchItemLookupTest extends TestCase {
 		$requestOptions->setLimit( 1 );
 		$requestOptions->setLookahead( 1 );
 
-		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo' ), $requestOptions );
+		$res = $instance->getPropertyValues( $subjects, new Property( 'Foo' ), $requestOptions );
 
 		$this->assertCount(
 			2,
@@ -143,7 +143,7 @@ class PrefetchItemLookupTest extends TestCase {
 
 	public function testGetPropertyValues_InvertedProperty() {
 		$subjects = [
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 		];
 
 		$idTable = $this->getMockBuilder( EntityIdManager::class )
@@ -176,7 +176,7 @@ class PrefetchItemLookupTest extends TestCase {
 			$this->propertySubjectsLookup
 		);
 
-		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo', true ), $this->requestOptions );
+		$res = $instance->getPropertyValues( $subjects, new Property( 'Foo', true ), $this->requestOptions );
 
 		$this->assertEquals(
 			[
@@ -188,7 +188,7 @@ class PrefetchItemLookupTest extends TestCase {
 
 	public function testGetPropertyValues_InvertedProperty_HashIndex() {
 		$subjects = [
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 		];
 
 		$idTable = $this->getMockBuilder( EntityIdManager::class )
@@ -198,7 +198,7 @@ class PrefetchItemLookupTest extends TestCase {
 		$idTable->expects( $this->atLeastOnce() )
 			->method( 'getDataItemById' )
 			->with( 42 )
-			->willReturn( DIWikiPage::newFromText( 'ABC' ) );
+			->willReturn( WikiPage::newFromText( 'ABC' ) );
 
 		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )
@@ -229,7 +229,7 @@ class PrefetchItemLookupTest extends TestCase {
 		$requestOptions = new RequestOptions();
 		$requestOptions->setOption( PrefetchItemLookup::HASH_INDEX, true );
 
-		$res = $instance->getPropertyValues( $subjects, new DIProperty( 'Foo', true ), $requestOptions );
+		$res = $instance->getPropertyValues( $subjects, new Property( 'Foo', true ), $requestOptions );
 
 		$this->assertEquals(
 			[

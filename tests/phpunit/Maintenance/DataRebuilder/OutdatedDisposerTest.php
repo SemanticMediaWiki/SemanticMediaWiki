@@ -10,6 +10,7 @@ use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
+use stdClass;
 
 /**
  * @covers \SMW\Maintenance\DataRebuilder\OutdatedDisposer
@@ -55,7 +56,7 @@ class OutdatedDisposerTest extends TestCase {
 	}
 
 	public function testDispose_Entities() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 1001;
 
 		$chunkedIterator = $this->iteratorMockBuilder->setClass( ChunkedIterator::class )
@@ -120,7 +121,7 @@ class OutdatedDisposerTest extends TestCase {
 	}
 
 	public function testDispose_QueryLinks_Invalid() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->id = 1002;
 
 		$resultIterator = $this->iteratorMockBuilder->setClass( ResultIterator::class )
@@ -183,7 +184,7 @@ class OutdatedDisposerTest extends TestCase {
 	}
 
 	public function testDispose_QueryLinks_Unassigned() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->id = 3333;
 
 		$resultIterator = $this->iteratorMockBuilder->setClass( ResultIterator::class )

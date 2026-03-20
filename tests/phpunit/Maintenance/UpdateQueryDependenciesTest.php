@@ -4,7 +4,7 @@ namespace SMW\Tests\Maintenance;
 
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Maintenance\updateQueryDependencies;
 use SMW\MediaWiki\Connection\Database;
@@ -13,6 +13,7 @@ use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -91,14 +92,14 @@ class UpdateQueryDependenciesTest extends TestCase {
 			'smw_iw != '
 		];
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = '0';
 		$row->smw_iw = '';
 		$row->smw_subobject = '';
 
-		$subject = new DIWikiPage( 'Foo', 0 );
+		$subject = new WikiPage( 'Foo', 0 );
 
 		$this->connection->expects( $this->atLeastOnce() )
 			->method( 'select' )

@@ -5,8 +5,8 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIWikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Indexer;
@@ -52,9 +52,9 @@ class FileAttachment {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 */
-	public function createAttachment( DIWikiPage $dataItem ) {
+	public function createAttachment( WikiPage $dataItem ) {
 		$time = -microtime( true );
 
 		if ( $dataItem->getId() == 0 ) {
@@ -277,7 +277,7 @@ class FileAttachment {
 	private function newContainerSemanticData( $dataItem, $doc ): ContainerSemanticData {
 		$subobjectName = '_FILE' . $doc['_source']['file_sha1'];
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
 			$dataItem->getInterwiki(),

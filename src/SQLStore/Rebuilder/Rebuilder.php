@@ -4,10 +4,10 @@ namespace SMW\SQLStore\Rebuilder;
 
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\TitleFactory;
 use SMW\PropertyRegistry;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
@@ -366,7 +366,7 @@ class Rebuilder {
 				return;
 			}
 
-			$subject = new DIWikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
+			$subject = new WikiPage( $titleKey, $row->smw_namespace, $row->smw_iw );
 			$this->store->updateData( new SemanticData( $subject ) );
 			$this->dispatchedEntities[] = [ 's' => $subject ];
 		}
@@ -387,7 +387,7 @@ class Rebuilder {
 	private function setDeleteFlag( $id, $title, $ns ): void {
 		$this->store->getObjectIds()->updateInterwikiField(
 			$id,
-			new DIWikiPage( $title, $ns, SMW_SQL3_SMWDELETEIW )
+			new WikiPage( $title, $ns, SMW_SQL3_SMWDELETEIW )
 		);
 	}
 

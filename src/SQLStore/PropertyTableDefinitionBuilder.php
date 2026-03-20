@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\PropertyRegistry;
 
 /**
@@ -217,7 +217,7 @@ class PropertyTableDefinitionBuilder {
 			// Normalize the key to be independent from a possible MW setting
 			// (has area == Has_area <> Has_Area)
 			$propertyKey = str_replace( ' ', '_', ucfirst( $propertyKey ) );
-			$property = new DIProperty( $propertyKey );
+			$property = new Property( $propertyKey );
 
 			$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 				$this->propertyTypeFinder->findTypeID( $property )

@@ -10,6 +10,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInter
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\DisjunctionConjunctionInterpreter
@@ -93,7 +94,7 @@ class DisjunctionConjunctionInterpreterTest extends TestCase {
 			$descriptionFactory->newNamespaceDescription( NS_MAIN )
 		);
 
-		$expectedDisjunction = new \stdClass;
+		$expectedDisjunction = new stdClass;
 		$expectedDisjunction->type = 3;
 		$expectedDisjunction->components = [ 1 => true, 2 => true ];
 
@@ -113,7 +114,7 @@ class DisjunctionConjunctionInterpreterTest extends TestCase {
 			$descriptionFactory->newNamespaceDescription( NS_MAIN )
 		);
 
-		$expectedConjunction = new \stdClass;
+		$expectedConjunction = new stdClass;
 		$expectedConjunction->type = 4;
 		$expectedConjunction->components = [ 1 => true, 2 => true ];
 
@@ -129,7 +130,7 @@ class DisjunctionConjunctionInterpreterTest extends TestCase {
 			$descriptionFactory->newThingDescription()
 		);
 
-		$expectedConjunction = new \stdClass;
+		$expectedConjunction = new stdClass;
 		$expectedConjunction->type = 0;
 		$expectedConjunction->components = [];
 

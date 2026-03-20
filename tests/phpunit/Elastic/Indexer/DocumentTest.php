@@ -3,7 +3,7 @@
 namespace SMW\Tests\Elastic\Indexer;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\Document;
 
 /**
@@ -37,7 +37,7 @@ class DocumentTest extends TestCase {
 		$instance = new Document( 42, [ 'subject' => [ 'serialization' => 'Foo#0##' ] ] );
 
 		$this->assertEquals(
-			new DIWikiPage( 'Foo', NS_MAIN ),
+			new WikiPage( 'Foo', NS_MAIN ),
 			$instance->getSubject()
 		);
 	}

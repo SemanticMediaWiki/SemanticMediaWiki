@@ -3,6 +3,8 @@
 namespace SMW\Tests\Integration\JSONScript;
 
 use DateTimeZone;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use SMW\MediaWiki\ExtendedDateTime;
 
 /**
@@ -98,9 +100,9 @@ class ReadmeContentsBuilder {
 	private function findFilesFor( $path, $extension ) {
 		$files = [];
 
-		$directoryIterator = new \RecursiveDirectoryIterator( $path );
+		$directoryIterator = new RecursiveDirectoryIterator( $path );
 
-		foreach ( new \RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
+		foreach ( new RecursiveIteratorIterator( $directoryIterator ) as $fileInfo ) {
 			if ( strtolower( substr( $fileInfo->getFilename(), -( strlen( $extension ) + 1 ) ) ) === ( '.' . $extension ) ) {
 				$files[$fileInfo->getFilename()] = $fileInfo->getPathname();
 			}

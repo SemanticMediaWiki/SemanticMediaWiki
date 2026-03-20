@@ -2,9 +2,12 @@
 
 namespace SMW\Exporter;
 
+use SMW\DataItems\Concept;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIConcept;
-use SMW\DIProperty;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
@@ -15,9 +18,6 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -45,13 +45,13 @@ class ConceptMapper implements DataItemMapper {
 	 * @return bool
 	 */
 	public function isMapperFor( DataItem $dataItem ): bool {
-		return $dataItem instanceof DIConcept;
+		return $dataItem instanceof Concept;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIConcept $concept
+	 * @param Concept $concept
 	 *
 	 * @return ExpData|null
 	 */
@@ -167,7 +167,7 @@ class ConceptMapper implements DataItemMapper {
 		$property = $description->getProperty();
 
 		if ( $property->isInverse() ) {
-			$property = new DIProperty( $property->getKey() );
+			$property = new Property( $property->getKey() );
 		}
 
 		$result->addPropertyObjectValue(

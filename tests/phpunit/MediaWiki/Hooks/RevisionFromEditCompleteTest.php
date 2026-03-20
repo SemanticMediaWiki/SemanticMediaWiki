@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Hooks;
 
+use Exception;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcher;
@@ -214,7 +215,7 @@ class RevisionFromEditCompleteTest extends TestCase {
 
 		$this->schemaFactory->expects( $this->once() )
 			->method( 'newSchema' )
-			->willThrowException( new \Exception() );
+			->willThrowException( new Exception() );
 
 		$this->eventDispatcher->expects( $this->atLeastOnce() )
 			->method( 'dispatch' )

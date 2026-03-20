@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use SMW\TypesRegistry;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -130,11 +130,11 @@ class PropertyTableInfoFetcher {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isFixedTableProperty( DIProperty $property ): bool {
+	public function isFixedTableProperty( Property $property ): bool {
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}
@@ -148,11 +148,11 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @since 2.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public function findTableIdForProperty( DIProperty $property ) {
+	public function findTableIdForProperty( Property $property ) {
 		if ( $this->fixedPropertyTableIds === null ) {
 			$this->buildDefinitionsForPropertyTables();
 		}

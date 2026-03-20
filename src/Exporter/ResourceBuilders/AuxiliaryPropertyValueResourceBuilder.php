@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -21,7 +21,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ): bool {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return !$property->isUserDefined() && $this->requiresAuxiliary( $property->getKey() );
 	}
 
@@ -30,7 +30,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
@@ -44,7 +44,7 @@ class AuxiliaryPropertyValueResourceBuilder extends PredefinedPropertyValueResou
 			// representation such as "Booléen" when the content languageis not
 			// English
 			$expNsResource = $this->getResourceElementForProperty(
-				new DIProperty( $property->getCanonicalDiWikiPage()->getDBKey() )
+				new Property( $property->getCanonicalDiWikiPage()->getDBKey() )
 			);
 		} else {
 			$expNsResource = $this->getResourceElementHelperForProperty( $property );

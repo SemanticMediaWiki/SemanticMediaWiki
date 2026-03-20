@@ -6,13 +6,14 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\DisplayTitleFinder;
 use SMW\Factbox\CheckMagicWords;
 use SMW\Factbox\Factbox;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -292,7 +293,7 @@ class FactboxTest extends TestCase {
 
 		$parserData->setSemanticData( new SemanticData( WikiPage::newFromTitle( $title ) ) );
 		$parserData->getSemanticData()->addPropertyObjectValue(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			WikiPage::newFromTitle( $title )
 		);
 
@@ -342,7 +343,7 @@ class FactboxTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -364,7 +365,7 @@ class FactboxTest extends TestCase {
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->willReturn( \SMWDataItem::TYPE_PROPERTY );
+			->willReturn( DataItem::TYPE_PROPERTY );
 
 		$parserData->setSemanticData(
 			new SemanticData( WikiPage::newFromTitle( $title ) )
@@ -466,7 +467,7 @@ class FactboxTest extends TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ new DIProperty( '_SKEY' ) ] );
+			->willReturn( [ new Property( '_SKEY' ) ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'isEmpty' )

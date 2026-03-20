@@ -3,6 +3,7 @@
 namespace SMW\Tests\Exporter\Element;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
@@ -71,18 +72,18 @@ class ExpElementTest extends TestCase {
 
 		$provider[] = [ new ExpResource( 'foo' ) ];
 		$provider[] = [ new ExpResource( 'foo', null ) ];
-		$provider[] = [ new ExpResource( 'foo', new \SMWDIBlob( 'bar' ) ) ];
+		$provider[] = [ new ExpResource( 'foo', new Blob( 'bar' ) ) ];
 
 		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz' ) ];
 		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz', null ) ];
-		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz', new \SMWDIBlob( 'bar' ) ) ];
+		$provider[] = [ new ExpNsResource( 'foo', 'bar', 'baz', new Blob( 'bar' ) ) ];
 
 		$provider[] = [ new ExpLiteral( 'foo' ) ];
 		$provider[] = [ new ExpLiteral( 'foo', '' ) ];
 		$provider[] = [ new ExpLiteral( 'foo', 'bar' ) ];
 		$provider[] = [ new ExpLiteral( 'foo', '', '', null ) ];
-		$provider[] = [ new ExpLiteral( 'foo', '', '', new \SMWDIBlob( 'bar' ) ) ];
-		$provider[] = [ new ExpLiteral( 'foo', 'baz', '', new \SMWDIBlob( 'bar' ) ) ];
+		$provider[] = [ new ExpLiteral( 'foo', '', '', new Blob( 'bar' ) ) ];
+		$provider[] = [ new ExpLiteral( 'foo', 'baz', '', new Blob( 'bar' ) ) ];
 
 		return $provider;
 	}

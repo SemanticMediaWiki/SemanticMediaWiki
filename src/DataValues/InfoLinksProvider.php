@@ -7,10 +7,10 @@ use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Property\SpecificationLookup;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later

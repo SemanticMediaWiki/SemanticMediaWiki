@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Page;
 
 use MediaWiki\Html\Html;
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
+use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
-use SMWPageLister;
 
 /**
  * @license GPL-2.0-or-later
@@ -50,7 +50,7 @@ class ConceptPage extends Page {
 			$descriptionFactory = ApplicationFactory::getInstance()->getQueryFactory()->newDescriptionFactory();
 
 			$description = $descriptionFactory->newConceptDescription( $dataItem );
-			$query = SMWPageLister::getQuery( $description, $this->limit, $this->from, $this->until );
+			$query = PageLister::getQuery( $description, $this->limit, $this->from, $this->until );
 
 			$query->setLimit( $limit );
 			$query->setOffset( $offset );
@@ -173,7 +173,7 @@ class ConceptPage extends Page {
 			$this->getDataItem()
 		);
 
-		if ( !$concept instanceof DIConcept || $concept->getCacheStatus() !== 'full' ) {
+		if ( !$concept instanceof Concept || $concept->getCacheStatus() !== 'full' ) {
 			return '';
 		}
 

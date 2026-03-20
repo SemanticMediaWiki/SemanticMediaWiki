@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\LinkBatch;
 
 /**
@@ -45,7 +45,7 @@ class LinkBatchTest extends TestCase {
 	}
 
 	public function testAdd_PageButRefuseFirstUnderscore() {
-		$subject = DIWikiPage::newFromText( '_ASK' );
+		$subject = WikiPage::newFromText( '_ASK' );
 
 		$instance = new LinkBatch();
 		$instance->add( $subject );
@@ -56,7 +56,7 @@ class LinkBatchTest extends TestCase {
 	}
 
 	public function testExecute() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$linkBatch = $this->getMockBuilder( '\LinkBatch' )
 			->disableOriginalConstructor()
@@ -72,8 +72,8 @@ class LinkBatchTest extends TestCase {
 
 		$instance->addFromList(
 			[
-				DIWikiPage::newFromText( 'Foo/1' ),
-				DIWikiPage::newFromText( 'Foo/2' ),
+				WikiPage::newFromText( 'Foo/1' ),
+				WikiPage::newFromText( 'Foo/2' ),
 				$subject
 			]
 		);

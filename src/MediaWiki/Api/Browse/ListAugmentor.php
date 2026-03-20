@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -97,7 +97,7 @@ class ListAugmentor {
 		$list = $res['query'];
 
 		foreach ( $list as $key => $value ) {
-			$property = new DIProperty( $key );
+			$property = new Property( $key );
 			$prefLabel = [];
 
 			foreach ( $languageCodes as $code ) {
@@ -117,7 +117,7 @@ class ListAugmentor {
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		foreach ( $list as $key => $value ) {
-			$property = new DIProperty( $key );
+			$property = new Property( $key );
 			$description = [];
 
 			foreach ( $languageCodes as $code ) {

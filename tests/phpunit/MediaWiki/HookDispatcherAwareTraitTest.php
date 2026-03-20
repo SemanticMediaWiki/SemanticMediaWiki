@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\HookDispatcherAwareTrait;
  *
  * @author mwjames
  */
-class HookDispatcherAwareTraitTest extends \PHPUnit\Framework\TestCase {
+class HookDispatcherAwareTraitTest extends TestCase {
 
 	public function testSetHookDispatcher() {
 		$user = $this->getMockBuilder( '\MediaWiki\User\User' )

@@ -6,6 +6,7 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleLookup;
+use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\TitleLookup
@@ -30,7 +31,7 @@ class TitleLookupTest extends TestCase {
 	}
 
 	public function testSelectAllOnCategoryNamespace() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->cat_title = 'Foo';
 
 		$database = $this->getMockBuilder( Database::class )
@@ -54,7 +55,7 @@ class TitleLookupTest extends TestCase {
 	}
 
 	public function testSelectAllOnMainNamespace() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 
@@ -79,7 +80,7 @@ class TitleLookupTest extends TestCase {
 	}
 
 	public function testSelectByRangeOnCategoryNamespace() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->cat_title = 'Foo';
 
 		$database = $this->getMockBuilder( Database::class )
@@ -103,7 +104,7 @@ class TitleLookupTest extends TestCase {
 	}
 
 	public function testSelectByRangeOnMainNamespace() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_namespace = NS_MAIN;
 		$row->page_title = 'Bar';
 

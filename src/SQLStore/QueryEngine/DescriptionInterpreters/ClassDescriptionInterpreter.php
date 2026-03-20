@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Description;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
@@ -73,7 +73,7 @@ class ClassDescriptionInterpreter implements DescriptionInterpreter {
 			$query->joinTable = '';
 			$query->joinfield = '';
 		} else { // Instance query with disjunction of classes (categories)
-			$query->joinTable = $this->store->findPropertyTableID( new DIProperty( '_INST' ) );
+			$query->joinTable = $this->store->findPropertyTableID( new Property( '_INST' ) );
 			$query->joinfield = "$query->alias.s_id";
 			$query->components[$cqid] = "$query->alias.o_id";
 

@@ -3,12 +3,12 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\StringValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMWDataItem;
 
 /**
  * @covers \SMW\DataValueFactory
@@ -113,9 +113,9 @@ class DataValueFactoryTest extends TestCase {
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === [] ) {
-			$this->assertInstanceOf( DIProperty::class, $dataValue->getProperty() );
+			$this->assertInstanceOf( Property::class, $dataValue->getProperty() );
 			$this->assertStringContainsString( $propertyName, $dataValue->getProperty()->getLabel() );
-			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
+			if ( $dataValue->getDataItem()->getDIType() === DataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
@@ -127,7 +127,7 @@ class DataValueFactoryTest extends TestCase {
 			$propertyDI,
 			$value,
 			'FooCaption',
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$this->assertInstanceOf(
@@ -146,9 +146,9 @@ class DataValueFactoryTest extends TestCase {
 		$this->assertInstanceOf( $expectedInstance, $dataValue );
 
 		if ( $dataValue->getErrors() === [] ) {
-			$this->assertInstanceOf( DIProperty::class, $dataValue->getProperty() );
+			$this->assertInstanceOf( Property::class, $dataValue->getProperty() );
 			$this->assertStringContainsString( $propertyName, $dataValue->getProperty()->getLabel() );
-			if ( $dataValue->getDataItem()->getDIType() === SMWDataItem::TYPE_WIKIPAGE ) {
+			if ( $dataValue->getDataItem()->getDIType() === DataItem::TYPE_WIKIPAGE ) {
 				$this->assertEquals( $expectedValue, $dataValue->getWikiValue() );
 			}
 		} else {
@@ -160,7 +160,7 @@ class DataValueFactoryTest extends TestCase {
 			$propertyName,
 			$value,
 			'FooCaption',
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$this->assertInstanceOf(
@@ -204,7 +204,7 @@ class DataValueFactoryTest extends TestCase {
 			'has type',
 			'number',
 			null,
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY )
+			new WikiPage( 'Foo', SMW_NS_PROPERTY )
 		);
 
 		$this->assertEquals(
@@ -219,7 +219,7 @@ class DataValueFactoryTest extends TestCase {
 		$dataValue = DataValueFactory::getInstance()->newPropertyValueByLabel(
 			'Foo',
 			'Bar',
-			new DIWikiPage( 'Foobar', SMW_NS_PROPERTY )
+			new WikiPage( 'Foobar', SMW_NS_PROPERTY )
 		);
 
 		$this->assertInstanceOf(
@@ -235,9 +235,9 @@ class DataValueFactoryTest extends TestCase {
 
 	public function testNewPropertyValueByItem() {
 		$dataValue = DataValueFactory::getInstance()->newPropertyValueByItem(
-			DIProperty::newFromUserLabel( __METHOD__ ),
+			Property::newFromUserLabel( __METHOD__ ),
 			'Bar',
-			new DIWikiPage( 'Foobar', SMW_NS_PROPERTY )
+			new WikiPage( 'Foobar', SMW_NS_PROPERTY )
 		);
 
 		$this->assertInstanceOf(
@@ -270,8 +270,8 @@ class DataValueFactoryTest extends TestCase {
 	public function newDataValueByItemDataProvider() {
 		$provider = [];
 
-		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
-		$property = new DIProperty( 'Bar' );
+		$dataItem = new WikiPage( 'Foo', NS_MAIN );
+		$property = new Property( 'Bar' );
 
 		// #0
 		$provider[] = [
@@ -328,12 +328,12 @@ class DataValueFactoryTest extends TestCase {
 
 	public function dataItemIdDataProvider() {
 		return [
-			[ '_txt', SMWDataItem::TYPE_BLOB ], // #0
-			[ '_wpg', SMWDataItem::TYPE_WIKIPAGE ], // #1
-			[ '_num', SMWDataItem::TYPE_NUMBER ], // #2
-			[ '_dat', SMWDataItem::TYPE_TIME ], // #3
-			[ '_uri', SMWDataItem::TYPE_URI ], // #4
-			[ '_foo', SMWDataItem::TYPE_NOTYPE ], // #5
+			[ '_txt', DataItem::TYPE_BLOB ], // #0
+			[ '_wpg', DataItem::TYPE_WIKIPAGE ], // #1
+			[ '_num', DataItem::TYPE_NUMBER ], // #2
+			[ '_dat', DataItem::TYPE_TIME ], // #3
+			[ '_uri', DataItem::TYPE_URI ], // #4
+			[ '_foo', DataItem::TYPE_NOTYPE ], // #5
 		];
 	}
 

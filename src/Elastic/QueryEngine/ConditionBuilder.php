@@ -3,8 +3,9 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\HierarchyLookup;
 use SMW\Options;
 use SMW\Query\Language\ClassDescription;
@@ -17,7 +18,6 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Services\ServicesContainer;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query
@@ -247,13 +247,13 @@ class ConditionBuilder {
 	 * @return int
 	 */
 	public function getID( $dataItem ): int {
-		if ( $dataItem instanceof DIProperty ) {
+		if ( $dataItem instanceof Property ) {
 			return (int)$this->store->getObjectIds()->getSMWPropertyID(
 				$dataItem
 			);
 		}
 
-		if ( $dataItem instanceof DIWikiPage ) {
+		if ( $dataItem instanceof WikiPage ) {
 			return (int)$this->store->getObjectIds()->getSMWPageID(
 				$dataItem->getDBKey(),
 				$dataItem->getNamespace(),

@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use Exception;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * @private

@@ -5,12 +5,12 @@ namespace SMW\Tests\MediaWiki\Hooks;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Output\OutputPage;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DependencyValidator;
-use SMW\DIProperty;
 use SMW\MediaWiki\Hooks\ArticleViewHeader;
 use SMW\NamespaceExaminer;
-use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -74,7 +74,7 @@ class ArticleViewHeaderTest extends TestCase {
 
 	public function testProcessOnCategory() {
 		$subject = WikiPage::newFromText( __METHOD__, NS_CATEGORY );
-		$property = new DIProperty( DIProperty::TYPE_CHANGE_PROP );
+		$property = new Property( Property::TYPE_CHANGE_PROP );
 
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )

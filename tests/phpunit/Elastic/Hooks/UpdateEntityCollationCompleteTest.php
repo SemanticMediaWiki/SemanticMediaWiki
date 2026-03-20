@@ -4,11 +4,11 @@ namespace SMW\Tests\Elastic\Hooks;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Hooks\UpdateEntityCollationComplete;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\MediaWiki\Connection\Database;
-use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;

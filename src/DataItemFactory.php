@@ -3,14 +3,17 @@
 namespace SMW;
 
 use MediaWiki\Title\Title;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Container;
+use SMW\DataItems\Error;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDIContainer as DIContainer;
-use SMWDIError as DIError;
-use SMWDINumber as DINumber;
-use SMWDITime as DITime;
-use SMWDIUri as DIUri;
 
 /**
  * @private
@@ -27,10 +30,10 @@ class DataItemFactory {
 	 *
 	 * @param string $error
 	 *
-	 * @return DIError
+	 * @return Error
 	 */
 	public function newDIError( $error ) {
-		return new DIError( $error );
+		return new Error( $error );
 	}
 
 	/**
@@ -39,10 +42,10 @@ class DataItemFactory {
 	 * @param string $key
 	 * @param bool $inverse
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function newDIProperty( $key, $inverse = false ) {
-		return new DIProperty( str_replace( ' ', '_', $key ), $inverse );
+		return new Property( str_replace( ' ', '_', $key ), $inverse );
 	}
 
 	/**
@@ -53,14 +56,14 @@ class DataItemFactory {
 	 * @param string $interwiki
 	 * @param string $subobjectName
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function newDIWikiPage( $title, $namespace = NS_MAIN, $interwiki = '', $subobjectName = '' ) {
 		if ( $title instanceof Title ) {
-			return DIWikiPage::newFromTitle( $title );
+			return WikiPage::newFromTitle( $title );
 		}
 
-		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
+		return new WikiPage( $title, $namespace, $interwiki, $subobjectName );
 	}
 
 	/**
@@ -68,20 +71,20 @@ class DataItemFactory {
 	 *
 	 * @param ContainerSemanticData $containerSemanticData
 	 *
-	 * @return DIContainer
+	 * @return Container
 	 */
 	public function newDIContainer( ContainerSemanticData $containerSemanticData ) {
-		return new DIContainer( $containerSemanticData );
+		return new Container( $containerSemanticData );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return ContainerSemanticData
 	 */
-	public function newContainerSemanticData( DIWikiPage $subject ): ContainerSemanticData {
+	public function newContainerSemanticData( WikiPage $subject ): ContainerSemanticData {
 		return new ContainerSemanticData( $subject );
 	}
 
@@ -90,10 +93,10 @@ class DataItemFactory {
 	 *
 	 * @param int $number
 	 *
-	 * @return DINumber
+	 * @return Number
 	 */
 	public function newDINumber( $number ) {
-		return new DINumber( $number );
+		return new Number( $number );
 	}
 
 	/**
@@ -101,10 +104,10 @@ class DataItemFactory {
 	 *
 	 * @param string $text
 	 *
-	 * @return DIBlob
+	 * @return Blob
 	 */
 	public function newDIBlob( $text ) {
-		return new DIBlob( $text );
+		return new Blob( $text );
 	}
 
 	/**
@@ -112,10 +115,10 @@ class DataItemFactory {
 	 *
 	 * @param bool $boolean
 	 *
-	 * @return DIBoolean
+	 * @return bool
 	 */
 	public function newDIBoolean( $boolean ) {
-		return new DIBoolean( $boolean );
+		return new Boolean( $boolean );
 	}
 
 	/**
@@ -127,10 +130,10 @@ class DataItemFactory {
 	 * @param int $size
 	 * @param int $depth
 	 *
-	 * @return DIConcept
+	 * @return Concept
 	 */
 	public function newDIConcept( $concept, $docu = '', $queryfeatures = 0, $size = 0, $depth = 0 ) {
-		return new DIConcept( $concept, $docu, $queryfeatures, $size, $depth );
+		return new Concept( $concept, $docu, $queryfeatures, $size, $depth );
 	}
 
 	/**
@@ -141,10 +144,10 @@ class DataItemFactory {
 	 * @param string $query
 	 * @param string $fragment
 	 *
-	 * @return DIUri
+	 * @return Uri
 	 */
 	public function newDIUri( $scheme, $hierpart, $query = '', $fragment = '' ) {
-		return new DIUri( $scheme, $hierpart, $query, $fragment );
+		return new Uri( $scheme, $hierpart, $query, $fragment );
 	}
 
 	/**
@@ -159,10 +162,10 @@ class DataItemFactory {
 	 * @param int|false $second
 	 * @param int|false $timezone
 	 *
-	 * @return DITime
+	 * @return Time
 	 */
 	public function newDITime( $calendarmodel, $year, $month = false, $day = false, $hour = false, $minute = false, $second = false, $timezone = false ) {
-		return new DITime( $calendarmodel, $year, $month, $day, $hour, $minute, $second, $timezone );
+		return new Time( $calendarmodel, $year, $month, $day, $hour, $minute, $second, $timezone );
 	}
 
 }

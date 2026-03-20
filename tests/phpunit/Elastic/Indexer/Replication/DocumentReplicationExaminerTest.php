@@ -3,7 +3,8 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer;
@@ -11,7 +12,6 @@ use SMW\Elastic\Indexer\Replication\ReplicationError;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\Store;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\DocumentReplicationExaminer
@@ -69,7 +69,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 
 	public function testCheck_NoError() {
 		$replicationStatus = [
-			'modification_date' => DITime::newFromTimestamp( 1272508900 ),
+			'modification_date' => Time::newFromTimestamp( 1272508900 ),
 			'associated_revision' => 42
 		];
 
@@ -108,7 +108,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 		);
 
 		$this->assertNull(
-			$instance->check( DIWikiPage::newFromText( 'Foo' ) )
+			$instance->check( WikiPage::newFromText( 'Foo' ) )
 		);
 	}
 
@@ -139,7 +139,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 			$this->replicationStatus
 		);
 
-		$result = $instance->check( DIWikiPage::newFromText( 'Foo' ) );
+		$result = $instance->check( WikiPage::newFromText( 'Foo' ) );
 
 		$this->assertInstanceOf(
 			ReplicationError::class,
@@ -178,7 +178,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 			DocumentReplicationExaminer::CHECK_DOCUMENT_EXISTS => true,
 		];
 
-		$result = $instance->check( DIWikiPage::newFromText( 'Foo' ), $params );
+		$result = $instance->check( WikiPage::newFromText( 'Foo' ), $params );
 
 		$this->assertInstanceOf(
 			ReplicationError::class,
@@ -203,8 +203,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 			->method( 'hasMaintenanceLock' )
 			->willReturn( false );
 
-		$time_es = DITime::newFromTimestamp( 1272508900 );
-		$time_store = DITime::newFromTimestamp( 1272508903 );
+		$time_es = Time::newFromTimestamp( 1272508900 );
+		$time_store = Time::newFromTimestamp( 1272508903 );
 
 		$replicationStatus = [
 			'modification_date' => $time_es
@@ -228,7 +228,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 			$this->replicationStatus
 		);
 
-		$result = $instance->check( DIWikiPage::newFromText( 'Foo' ) );
+		$result = $instance->check( WikiPage::newFromText( 'Foo' ) );
 
 		$this->assertInstanceOf(
 			ReplicationError::class,
@@ -255,8 +255,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 			->method( 'hasMaintenanceLock' )
 			->willReturn( false );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
-		$time = DITime::newFromTimestamp( 1272508903 );
+		$subject = WikiPage::newFromText( 'Foo' );
+		$time = Time::newFromTimestamp( 1272508903 );
 
 		$replicationStatus = [
 			'modification_date' => $time,
@@ -285,7 +285,7 @@ class DocumentReplicationExaminerTest extends TestCase {
 			$this->replicationStatus
 		);
 
-		$result = $instance->check( DIWikiPage::newFromText( 'Foo' ) );
+		$result = $instance->check( WikiPage::newFromText( 'Foo' ) );
 
 		$this->assertInstanceOf(
 			ReplicationError::class,
@@ -308,8 +308,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 	}
 
 	public function testCheck_MissingFileAttachment() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
-		$time = DITime::newFromTimestamp( 1272508903 );
+		$subject = WikiPage::newFromText( 'Foo', NS_FILE );
+		$time = Time::newFromTimestamp( 1272508903 );
 
 		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
@@ -384,8 +384,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 	}
 
 	public function testCheck_NoMissingFileAttachment() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
-		$time = DITime::newFromTimestamp( 1272508903 );
+		$subject = WikiPage::newFromText( 'Foo', NS_FILE );
+		$time = Time::newFromTimestamp( 1272508903 );
 
 		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
@@ -447,8 +447,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 	}
 
 	public function testCheck_FileAttachment_Disabled() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
-		$time = DITime::newFromTimestamp( 1272508903 );
+		$subject = WikiPage::newFromText( 'Foo', NS_FILE );
+		$time = Time::newFromTimestamp( 1272508903 );
 
 		$config = $this->getMockBuilder( Config::class )
 			->disableOriginalConstructor()
@@ -506,8 +506,8 @@ class DocumentReplicationExaminerTest extends TestCase {
 	}
 
 	public function testCheck_FileAttachment_NoCheck() {
-		$subject = DIWikiPage::newFromText( 'Foo', NS_FILE );
-		$time = DITime::newFromTimestamp( 1272508903 );
+		$subject = WikiPage::newFromText( 'Foo', NS_FILE );
+		$time = Time::newFromTimestamp( 1272508903 );
 
 		$this->elasticClient->expects( $this->any() )
 			->method( 'hasMaintenanceLock' )

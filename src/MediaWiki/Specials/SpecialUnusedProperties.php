@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use SMW\MediaWiki\Outputs;
 use SMW\QueryPages\UnusedPropertiesQueryPage;
-use SMWOutputs;
 
 /**
  * Special page (Special:UnusedProperties) for MediaWiki shows all
@@ -51,7 +51,7 @@ class SpecialUnusedProperties extends SpecialPage {
 		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
 
 		// Ensure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
+		Outputs::commitToOutputPage( $out );
 	}
 
 	/**

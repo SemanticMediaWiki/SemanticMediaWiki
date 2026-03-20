@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\PropertyRegistry;
 
 /**
@@ -68,7 +68,7 @@ class PropertyLabelCanonicalMatchTest extends TestCase {
 	}
 
 	private function findPropertyIdByLabel( $label ) {
-		$property = new DIProperty(
+		$property = new Property(
 			PropertyRegistry::getInstance()->findPropertyIdByLabel( $label )
 		);
 
@@ -87,7 +87,7 @@ class PropertyLabelCanonicalMatchTest extends TestCase {
 	}
 
 	private function newFromUserLabel( $label, $languageCode = false ) {
-		$property = DIProperty::newFromUserLabel( $label, false, $languageCode );
+		$property = Property::newFromUserLabel( $label, false, $languageCode );
 
 		$canonicalLabel = $property->getCanonicalLabel();
 

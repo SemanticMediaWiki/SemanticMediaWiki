@@ -42,7 +42,7 @@ class PageReader {
 	 * @return text
 	 */
 	public function getContentAsText( Title $title ) {
-		$this->page = new \WikiPage( $title );
+		$this->page = new WikiPage( $title );
 		$content = $this->page->getContent();
 
 		return $content->getNativeData();
@@ -52,7 +52,7 @@ class PageReader {
 	 * @since 2.2
 	 */
 	public function getEditInfo( Title $title ) {
-		$this->page = new \WikiPage( $title );
+		$this->page = new WikiPage( $title );
 
 		$editInfo = ServicesFactory::getInstance()->newMwCollaboratorFactory()->newEditInfo(
 			$this->getPage()

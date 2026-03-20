@@ -4,11 +4,11 @@ namespace SMW\Tests;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\HashBuilder;
-use SMW\SemanticData;
 
 /**
  * @covers \SMW\HashBuilder
@@ -39,7 +39,7 @@ class HashBuilderTest extends TestCase {
 	 * @dataProvider segmentProvider
 	 */
 	public function testDiWikiPageRoundTrip( $namespace, $title, $interwiki, $subobjectName ) {
-		$dataItem = new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
+		$dataItem = new WikiPage( $title, $namespace, $interwiki, $subobjectName );
 
 		$this->assertEquals(
 			$dataItem,
@@ -52,7 +52,7 @@ class HashBuilderTest extends TestCase {
 	public function testPredefinedProperty() {
 		$instance = new HashBuilder();
 
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 		$dataItem = $property->getDiWikiPage();
 
 		$this->assertEquals(
@@ -91,7 +91,7 @@ class HashBuilderTest extends TestCase {
 
 	public function testCreateFromSemanticData() {
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$this->assertIsString(
@@ -102,15 +102,15 @@ class HashBuilderTest extends TestCase {
 
 	public function testCreateFromSemanticDataWithSubSemanticDataAndPHPSerialization() {
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromText( __METHOD__ )
+			WikiPage::newFromText( __METHOD__ )
 		);
 
 		$containerSemanticData = new ContainerSemanticData(
-			new DIWikiPage( __METHOD__, NS_MAIN, '', 'Foo' )
+			new WikiPage( __METHOD__, NS_MAIN, '', 'Foo' )
 		);
 
 		$containerSemanticData->addSubSemanticData(
-			new ContainerSemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '', 'Foo2' ) )
+			new ContainerSemanticData( new WikiPage( __METHOD__, NS_MAIN, '', 'Foo2' ) )
 		);
 
 		$semanticData->addSubSemanticData(
@@ -118,7 +118,7 @@ class HashBuilderTest extends TestCase {
 		);
 
 		$semanticData->addSubSemanticData(
-			new ContainerSemanticData( new DIWikiPage( __METHOD__, NS_MAIN, '', 'Bar' ) )
+			new ContainerSemanticData( new WikiPage( __METHOD__, NS_MAIN, '', 'Bar' ) )
 		);
 
 		$sem = serialize( $semanticData );

@@ -5,8 +5,8 @@ namespace SMW\Tests\DataModel;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\Exception\DataItemException;
-use SMW\SemanticData;
 
 /**
  * @covers \SMW\DataModel\ContainerSemanticData

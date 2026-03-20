@@ -3,7 +3,7 @@
 namespace SMW\Elastic\Indexer;
 
 use JsonSerializable;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @private
@@ -51,10 +51,10 @@ class Document implements JsonSerializable {
 	/**
 	 * @since 3.2
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function getSubject() {
-		return DIWikiPage::doUnserialize( $this->data['subject']['serialization'] );
+		return WikiPage::doUnserialize( $this->data['subject']['serialization'] );
 	}
 
 	/**

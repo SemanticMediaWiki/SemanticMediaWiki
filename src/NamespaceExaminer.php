@@ -4,6 +4,7 @@ namespace SMW;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the
@@ -44,7 +45,7 @@ class NamespaceExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title|DIWikiPage $object
+	 * @param Title|WikiPage $object
 	 *
 	 * @return bool
 	 */
@@ -55,7 +56,7 @@ class NamespaceExaminer {
 			$namespace = $object->getNamespace();
 		}
 
-		if ( $object instanceof DIWikiPage ) {
+		if ( $object instanceof WikiPage ) {
 			$namespace = $object->getNamespace();
 		}
 

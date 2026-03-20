@@ -10,11 +10,11 @@ use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\MessageBuilder;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later

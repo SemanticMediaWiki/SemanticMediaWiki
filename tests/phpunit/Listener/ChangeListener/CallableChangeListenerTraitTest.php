@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Listener\ChangeListener;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
  *
  * @author mwjames
  */
-class CallableChangeListenerTraitTest extends \PHPUnit\Framework\TestCase {
+class CallableChangeListenerTraitTest extends TestCase {
 
 	private $changeKey;
 	private $changeRecord;

@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
 
 /**
  * This class implements Store access to Concept data items.
@@ -110,7 +110,7 @@ class DIConceptHandler extends DataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
-			return new DIConcept(
+			return new Concept(
 				$dbkeys[0],
 				smwfXMLContentEncode( $dbkeys[1] ),
 				$dbkeys[2],

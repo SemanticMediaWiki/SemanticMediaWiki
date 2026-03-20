@@ -3,12 +3,12 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\Title\Title;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\WikiPageValue;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
-use SMWWikiPageValue;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -153,12 +153,12 @@ class ConceptCache {
 	 */
 	public function getConceptCacheText( Title $concept ) {
 		$values = $this->store->getPropertyValues(
-			DIWikiPage::newFromTitle( $concept ),
-			new DIProperty( '_CONC' )
+			WikiPage::newFromTitle( $concept ),
+			new Property( '_CONC' )
 		);
 
 		/**
-		 * @var bool|DIConcept $di
+		 * @var bool|Concept $di
 		 */
 		$di = end( $values );
 		$conceptQueryText = $di === false ?: $di->getConceptQuery();
@@ -208,11 +208,11 @@ class ConceptCache {
 	}
 
 	/**
-	 * @param Title|SMWWikiPageValue|DIWikiPage $concept
+	 * @param Title|WikiPageValue|WikiPage $concept
 	 *
-	 * @return DIConcept|null
+	 * @return Concept|null
 	 */
-	public function getStatus( $concept ): ?DIConcept {
+	public function getStatus( $concept ): ?Concept {
 		$db = $this->store->getConnection();
 
 		$cid = $this->store->smwIds->getSMWPageID(
@@ -236,7 +236,7 @@ class ConceptCache {
 			return null;
 		}
 
-		$dataItem = new DIConcept(
+		$dataItem = new Concept(
 			$concept,
 			null,
 			$row->concept_features,

@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use MediaWiki\Request\WebRequest;
+use SMW\Formatters\Infolink;
 use SMW\Query\QueryProcessor;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later

@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\EntityIdManager;
@@ -56,7 +56,7 @@ class MonolingualTextLookupTest extends TestCase {
 
 		$query = new Query( $connection );
 
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -108,7 +108,7 @@ class MonolingualTextLookupTest extends TestCase {
 
 	public function subjectProvider() {
 		yield 'Foo' => [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
+			new WikiPage( 'Foo', NS_MAIN, '', '' ),
 			'fr',
 			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,' .
 			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
@@ -122,7 +122,7 @@ class MonolingualTextLookupTest extends TestCase {
 		];
 
 		yield 'Foo#_ML123' => [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '_ML123' ),
+			new WikiPage( 'Foo', NS_MAIN, '', '_ML123' ),
 			'en',
 			'SELECT t0.o_id AS id, o0.smw_title AS v0, o0.smw_namespace AS v1, o0.smw_iw AS v2, o0.smw_subobject AS v3,' .
 			' t2.o_hash AS text_short, t2.o_blob AS text_long, t3.o_hash AS lcode FROM  AS t0' .
@@ -160,8 +160,8 @@ class MonolingualTextLookupTest extends TestCase {
 
 		$query = new Query( $connection );
 
-		$subject = new DIWikiPage( __METHOD__, NS_MAIN, '', '_bar' );
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$subject = new WikiPage( __METHOD__, NS_MAIN, '', '_bar' );
+		$property = Property::newFromUserLabel( 'Foo' );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

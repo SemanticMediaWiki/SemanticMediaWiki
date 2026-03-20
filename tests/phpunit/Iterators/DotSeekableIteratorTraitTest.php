@@ -2,6 +2,10 @@
 
 namespace SMW\Tests\Iterators;
 
+use Countable;
+use Iterator;
+use PHPUnit\Framework\TestCase;
+use SeekableIterator;
 use SMW\Iterators\DotSeekableIteratorTrait;
 
 /**
@@ -13,7 +17,7 @@ use SMW\Iterators\DotSeekableIteratorTrait;
  *
  * @author mwjames
  */
-class DotSeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
+class DotSeekableIteratorTraitTest extends TestCase {
 
 	public function testSeek_MultiAssociative_Dot() {
 		$container = [
@@ -61,7 +65,7 @@ class DotSeekableIteratorTraitTest extends \PHPUnit\Framework\TestCase {
 	}
 
 	private function newDotSeekableIterator( array $container = [] ) {
-		return new class( $container ) implements \Iterator, \Countable, \SeekableIterator {
+		return new class( $container ) implements Iterator, Countable, SeekableIterator {
 
 			use DotSeekableIteratorTrait;
 

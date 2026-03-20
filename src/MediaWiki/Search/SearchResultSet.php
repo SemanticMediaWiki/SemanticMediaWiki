@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Search;
 
 use SearchSuggestion;
 use SearchSuggestionSet;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\QueryResult;
 use SMW\Utils\CharExaminer;
 
@@ -69,7 +69,7 @@ class SearchResultSet extends \SearchResultSet {
 		$page = current( $this->pages );
 		$searchResult = false;
 
-		if ( $page instanceof DIWikiPage ) {
+		if ( $page instanceof WikiPage ) {
 			$searchResult = new SearchResult( $page->getTitle() );
 		}
 
@@ -139,7 +139,7 @@ class SearchResultSet extends \SearchResultSet {
 
 		foreach ( $this->pages as $page ) {
 
-			if ( $page instanceof DIWikiPage ) {
+			if ( $page instanceof WikiPage ) {
 				$searchResult = new SearchResult( $page->getTitle() );
 			}
 

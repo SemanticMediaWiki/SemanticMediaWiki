@@ -2,10 +2,10 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -33,7 +33,7 @@ class CheckQueryTask extends Task {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize(
+		$subject = WikiPage::doUnserialize(
 			$parameters['subject']
 		);
 

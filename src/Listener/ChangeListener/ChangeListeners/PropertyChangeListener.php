@@ -3,7 +3,7 @@
 namespace SMW\Listener\ChangeListener\ChangeListeners;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\CallableChangeListenerTrait;
 use SMW\Listener\ChangeListener\ChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -57,10 +57,10 @@ class PropertyChangeListener implements ChangeListener {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param callable $callback
 	 */
-	public function addListenerCallback( DIProperty $property, callable $callback ): void {
+	public function addListenerCallback( Property $property, callable $callback ): void {
 		$key = $property->getKey();
 
 		$pid = $this->store->getObjectIds()->getSMWPropertyID(
@@ -139,7 +139,7 @@ class PropertyChangeListener implements ChangeListener {
 	 * @see CallableChangeListenerTrait::triggerByKey
 	 */
 	protected function triggerByKey( string $key, ChangeRecord $changeRecord ) {
-		$property = new DIProperty( $key );
+		$property = new Property( $key );
 
 		foreach ( $this->changeListeners[$key] as $changeListener ) {
 			$changeListener( $property, $changeRecord );

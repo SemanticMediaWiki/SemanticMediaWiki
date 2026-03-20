@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
@@ -89,8 +89,8 @@ class RedirectUpdaterTest extends TestCase {
 		);
 
 		$instance->triggerChangeTitleUpdate(
-			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )->getTitle(),
-			DIWikiPage::newFromText( __METHOD__ . '-new', NS_MAIN )->getTitle(),
+			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )->getTitle(),
+			WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN )->getTitle(),
 			[ 'redirect_id' => 0 ]
 		);
 	}
@@ -134,7 +134,7 @@ class RedirectUpdaterTest extends TestCase {
 		$instance->setEqualitySupport( SMW_EQ_NONE );
 
 		$instance->updateRedirects(
-			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )
+			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN )
 		);
 
 		$instance->invalidateLookupCache(
@@ -206,8 +206,8 @@ class RedirectUpdaterTest extends TestCase {
 		);
 
 		$instance->doUpdate(
-			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
-			DIWikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
+			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
+			WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
 			[ 'page_id' => 9999, 'redirect_id' => 0 ]
 		);
 	}
@@ -269,8 +269,8 @@ class RedirectUpdaterTest extends TestCase {
 		);
 
 		$instance->doUpdate(
-			DIWikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
-			DIWikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
+			WikiPage::newFromText( __METHOD__ . '-old', NS_MAIN ),
+			WikiPage::newFromText( __METHOD__ . '-new', NS_MAIN ),
 			[ 'page_id' => 9999, 'redirect_id' => 1111 ]
 		);
 	}

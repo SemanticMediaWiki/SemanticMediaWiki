@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -97,7 +97,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 */
 	public function getImproperValueForCount(): int {
 		return $this->propertyStatisticsStore->getUsageCount(
-			$this->store->getObjectIds()->getSMWPropertyID( new DIProperty( '_ERRP' ) )
+			$this->store->getObjectIds()->getSMWPropertyID( new Property( '_ERRP' ) )
 		);
 	}
 
@@ -134,7 +134,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @return number
 	 */
 	public function getSubobjectCount(): int {
-		return $this->count( DIProperty::TYPE_SUBOBJECT );
+		return $this->count( Property::TYPE_SUBOBJECT );
 	}
 
 	/**
@@ -143,7 +143,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @return number
 	 */
 	public function getDeclaredPropertiesCount(): int {
-		return $this->count( DIProperty::TYPE_HAS_TYPE );
+		return $this->count( Property::TYPE_HAS_TYPE );
 	}
 
 	/**
@@ -343,7 +343,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	private function findPropertyTableByType( $type ) {
 		$propertyTables = $this->store->getPropertyTables();
 
-		$tableIdForType = $this->store->findPropertyTableID( new DIProperty( $type ) );
+		$tableIdForType = $this->store->findPropertyTableID( new Property( $type ) );
 
 		if ( isset( $propertyTables[$tableIdForType] ) ) {
 			return $propertyTables[$tableIdForType];

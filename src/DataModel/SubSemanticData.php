@@ -4,10 +4,9 @@ namespace SMW\DataModel;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
 use SMW\Exception\SubSemanticDataException;
-use SMW\SemanticData;
 
 /**
  * @private
@@ -202,7 +201,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @param $property DIProperty
 	 */
-	public function removeProperty( DIProperty $property ): void {
+	public function removeProperty( Property $property ): void {
 		// Inverse properties cannot be used for an annotation
 		if ( $property->isInverse() ) {
 			return;

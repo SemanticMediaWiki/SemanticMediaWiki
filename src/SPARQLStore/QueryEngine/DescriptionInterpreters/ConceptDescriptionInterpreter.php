@@ -2,8 +2,9 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
@@ -12,7 +13,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -86,11 +86,11 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		return $condition;
 	}
 
-	private function getConceptDescription( DIWikiPage $concept ) {
+	private function getConceptDescription( WikiPage $concept ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$value = $applicationFactory->getStore()->getSemanticData( $concept )->getPropertyValues(
-			new DIProperty( '_CONC' )
+			new Property( '_CONC' )
 		);
 
 		if ( $value === null || $value === [] ) {

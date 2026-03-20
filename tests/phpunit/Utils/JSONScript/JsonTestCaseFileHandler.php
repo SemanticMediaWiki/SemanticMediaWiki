@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use Exception;
 use RuntimeException;
 use SMW\Tests\Utils\File\JsonFileReader;
 
@@ -424,7 +425,7 @@ class JsonTestCaseFileHandler {
 	public function getContentsFor( $key ) {
 		try {
 			$contents = $this->getFileContentsFor( $key );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$contents = [];
 		}
 

@@ -3,7 +3,7 @@
 namespace SMW\Schema\Filters;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Schema\ChainableFilter;
 use SMW\Schema\Compartment;
 use SMW\Schema\Rule;
@@ -187,11 +187,11 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 		foreach ( $this->properties as $key => $property ) {
 
-			if ( $property === '' || $property instanceof DIProperty ) {
+			if ( $property === '' || $property instanceof Property ) {
 				continue;
 			}
 
-			$this->properties[$key] = DIProperty::newFromUserLabel( $property );
+			$this->properties[$key] = Property::newFromUserLabel( $property );
 		}
 
 		$this->isLoaded = true;
@@ -201,7 +201,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		$count = 0;
 
 		foreach ( $properties as $prop ) {
-			$prop = DIProperty::newFromUserLabel( $prop );
+			$prop = Property::newFromUserLabel( $prop );
 
 			foreach ( $this->properties as $property ) {
 				if ( $property->equals( $prop ) ) {
@@ -217,7 +217,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 		$count = count( $properties );
 
 		foreach ( $properties as $prop ) {
-			$prop = DIProperty::newFromUserLabel( $prop );
+			$prop = Property::newFromUserLabel( $prop );
 
 			foreach ( $this->properties as $property ) {
 				if ( $property->equals( $prop ) ) {
@@ -231,7 +231,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 
 	private function matchAnyOf( array $properties ): bool {
 		foreach ( $properties as $prop ) {
-			$prop = DIProperty::newFromUserLabel( $prop );
+			$prop = Property::newFromUserLabel( $prop );
 
 			foreach ( $this->properties as $property ) {
 				if ( $property->equals( $prop ) ) {

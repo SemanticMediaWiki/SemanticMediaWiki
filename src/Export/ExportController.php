@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Exception\DataItemException;
 use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Element\ExpResource;
@@ -17,11 +18,10 @@ use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\NamespaceExaminer;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\StoreFactory;
-use SMWQuery;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IReadableDatabase;
 
@@ -265,7 +265,7 @@ class ExportController {
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
 					$desc = new ConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
-					$query = new SMWQuery( $desc );
+					$query = new Query( $desc );
 					$query->setLimit( 100 );
 
 					$res = StoreFactory::getStore()->getQueryResult( $query );

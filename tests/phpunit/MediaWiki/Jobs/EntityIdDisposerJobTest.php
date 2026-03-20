@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\EntityIdDisposerJob;
@@ -142,7 +142,7 @@ class EntityIdDisposerJobTest extends TestCase {
 			->method( 'selectRow' )
 			->willReturn( (object)$row );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new EntityIdDisposerJob(
 			$subject->getTitle(),

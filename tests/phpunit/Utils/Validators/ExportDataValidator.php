@@ -3,8 +3,8 @@
 namespace SMW\Tests\Utils\Validators;
 
 use PHPUnit\Framework\Assert;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpResource;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later

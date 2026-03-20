@@ -3,13 +3,14 @@
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Api\Browse\PValueLookup;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -44,7 +45,7 @@ class PValueLookupTest extends TestCase {
 	}
 
 	public function testLookup_wpg_property() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
@@ -124,7 +125,7 @@ class PValueLookupTest extends TestCase {
 	}
 
 	public function testLookup_wpg_propertyChain() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
@@ -151,7 +152,7 @@ class PValueLookupTest extends TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getSMWPropertyID' )
-			->with( new DIProperty( 'Foobar' ) )
+			->with( new Property( 'Foobar' ) )
 			->willReturn( 42 );
 
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
@@ -194,7 +195,7 @@ class PValueLookupTest extends TestCase {
 	}
 
 	public function testLookup_txt_property() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;
 

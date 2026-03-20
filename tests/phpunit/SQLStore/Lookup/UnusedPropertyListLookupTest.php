@@ -3,13 +3,14 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UnusedPropertyListLookup
@@ -109,7 +110,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Foo';
 
 		$connection = $this->getMockBuilder( Database::class )
@@ -142,7 +143,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 		);
 
 		$expected = [
-			new DIProperty( 'Foo' )
+			new Property( 'Foo' )
 		];
 
 		$this->assertEquals(
@@ -156,7 +157,7 @@ class UnusedPropertyListLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = '-Foo';
 
 		$connection = $this->getMockBuilder( Database::class )

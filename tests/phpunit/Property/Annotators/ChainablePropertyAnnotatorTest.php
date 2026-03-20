@@ -3,7 +3,7 @@
 namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\PageInfo;
 use SMW\Property\Annotators\CategoryPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
@@ -101,7 +101,7 @@ class ChainablePropertyAnnotatorTest extends TestCase {
 					'categoryHierarchy'  => false,
 					'categoriesAsInstances' => true,
 					'showHiddenCategories'  => true,
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MODIFICATION_DATE ]
 				]
 			],
 			[

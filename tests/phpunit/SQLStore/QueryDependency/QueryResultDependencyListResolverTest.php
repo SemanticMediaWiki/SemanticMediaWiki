@@ -3,9 +3,10 @@
 namespace SMW\Tests\SQLStore\QueryDependency;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
@@ -16,13 +17,12 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ItemJournal;
 use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWDIBlob as DIBlob;
-use SMWQuery as Query;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver
@@ -79,7 +79,7 @@ class QueryResultDependencyListResolverTest extends TestCase {
 	}
 
 	public function testTryTogetDependencyListFromForLimitZeroQuery() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$description = $this->getMockBuilder( Description::class )
 			->disableOriginalConstructor()
@@ -120,11 +120,11 @@ class QueryResultDependencyListResolverTest extends TestCase {
 	}
 
 	public function testExcludePropertyFromDependencyDetection() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$query = new Query( $description );
@@ -156,9 +156,9 @@ class QueryResultDependencyListResolverTest extends TestCase {
 
 		$this->hierarchyLookup->expects( $this->once() )
 			->method( 'getConsecutiveHierarchyList' )
-			->with( new DIProperty( 'Foobar' ) )
+			->with( new Property( 'Foobar' ) )
 			->willReturn(
-				[ new DIProperty( 'Subprop' ) ] );
+				[ new Property( 'Subprop' ) ] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
@@ -167,9 +167,9 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$instance->setPropertyDependencyExemptionlist( [ 'Subprop' ] );
 
 		$expected = [
-			DIWikiPage::newFromText( 'Foo' ),
-			DIWikiPage::newFromText( 'Bar' ),
-			'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Bar' ),
+			'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 		// DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ) removed
 		];
 
@@ -214,14 +214,14 @@ class QueryResultDependencyListResolverTest extends TestCase {
 	}
 
 	public function testgetDependencyListByLateRetrievalFrom() {
-		$subject = DIWikiPage::newFromText( 'Bar' );
+		$subject = WikiPage::newFromText( 'Bar' );
 
 		$description = new ClassDescription(
-			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
+			WikiPage::newFromText( 'Foocat', NS_CATEGORY )
 		);
 
 		$query = new Query( $description );
-		$query->setContextPage( DIWikiPage::newFromText( 'Foo' ) );
+		$query->setContextPage( WikiPage::newFromText( 'Foo' ) );
 
 		$itemJournal = $this->getMockBuilder( ItemJournal::class )
 			->disableOriginalConstructor()
@@ -258,11 +258,11 @@ class QueryResultDependencyListResolverTest extends TestCase {
 	}
 
 	public function testResolvePropertyHierarchy() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$query = new Query( $description );
@@ -294,19 +294,19 @@ class QueryResultDependencyListResolverTest extends TestCase {
 
 		$this->hierarchyLookup->expects( $this->once() )
 			->method( 'getConsecutiveHierarchyList' )
-			->with( new DIProperty( 'Foobar' ) )
+			->with( new Property( 'Foobar' ) )
 			->willReturn(
-				[ new DIProperty( 'Subprop' ) ] );
+				[ new Property( 'Subprop' ) ] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
 		);
 
 		$expected = [
-			DIWikiPage::newFromText( 'Foo' ),
-			DIWikiPage::newFromText( 'Bar' ),
-			'Subprop#102##' => DIWikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ),
-			'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Bar' ),
+			'Subprop#102##' => WikiPage::newFromText( 'Subprop', SMW_NS_PROPERTY ),
+			'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 		];
 
 		$this->assertEquals(
@@ -316,10 +316,10 @@ class QueryResultDependencyListResolverTest extends TestCase {
 	}
 
 	public function testResolveCategoryHierarchy() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$description = new ClassDescription(
-			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
+			WikiPage::newFromText( 'Foocat', NS_CATEGORY )
 		);
 
 		$query = new Query( $description );
@@ -351,21 +351,21 @@ class QueryResultDependencyListResolverTest extends TestCase {
 
 		$this->hierarchyLookup->expects( $this->once() )
 			->method( 'getConsecutiveHierarchyList' )
-			->with( DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) )
+			->with( WikiPage::newFromText( 'Foocat', NS_CATEGORY ) )
 			->willReturn(
 				[
-					DIWikiPage::newFromText( 'Subcat', NS_CATEGORY ),
-					DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ) ] );
+					WikiPage::newFromText( 'Subcat', NS_CATEGORY ),
+					WikiPage::newFromText( 'Foocat', NS_CATEGORY ) ] );
 
 		$instance = new QueryResultDependencyListResolver(
 			$this->hierarchyLookup
 		);
 
 		$expected = [
-			DIWikiPage::newFromText( 'Foo' ),
-			'Subcat#14##' => DIWikiPage::newFromText( 'Subcat', NS_CATEGORY ),
-			'Foocat#14##' => DIWikiPage::newFromText( 'Foocat', NS_CATEGORY ),
-			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
+			WikiPage::newFromText( 'Foo' ),
+			'Subcat#14##' => WikiPage::newFromText( 'Subcat', NS_CATEGORY ),
+			'Foocat#14##' => WikiPage::newFromText( 'Foocat', NS_CATEGORY ),
+			WikiPage::newFromText( 'Foocat', NS_CATEGORY )
 		];
 
 		$this->assertEquals(
@@ -375,12 +375,12 @@ class QueryResultDependencyListResolverTest extends TestCase {
 	}
 
 	public function queryProvider() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		# 0
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$query = new Query( $description );
@@ -389,16 +389,16 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 
 		# 1
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( new DIBlob( 'Bar' ) )
+			new Property( 'Foobar' ),
+			new ValueDescription( new Blob( 'Bar' ) )
 		);
 
 		$query = new Query( $description );
@@ -407,15 +407,15 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 
 		# 2 uses inverse property declaration
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar', true ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar', true ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$query = new Query( $description );
@@ -424,16 +424,16 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 
 		# 3 Conjunction
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$query = new Query( new Conjunction( [
@@ -446,16 +446,16 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 
 		# 4 Disjunction
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$query = new Query( new Disjunction( [
@@ -468,15 +468,15 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 
 		# 5
 		$description = new ClassDescription(
-			DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
+			WikiPage::newFromText( 'Foocat', NS_CATEGORY )
 		);
 
 		$query = new Query( $description );
@@ -485,14 +485,14 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Foocat', NS_CATEGORY )
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Foocat', NS_CATEGORY )
 			]
 		];
 
 		# 6
 		$description = new ConceptDescription(
-			DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
+			WikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
 		);
 
 		$query = new Query( $description );
@@ -501,8 +501,8 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				'FooConcept#108##' => DIWikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
+				WikiPage::newFromText( 'Foo' ),
+				'FooConcept#108##' => WikiPage::newFromText( 'FooConcept', SMW_NS_CONCEPT )
 			]
 		];
 
@@ -510,8 +510,8 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$pv = DataValueFactory::getInstance()->newPropertyValueByLabel( 'Foobaz' );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar', true ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar', true ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$description->addPrintRequest(
@@ -524,10 +524,10 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ),
-				DIWikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ),
+				WikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
 			]
 		];
 
@@ -536,8 +536,8 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$pv->setInverse( true );
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar', true ),
-			new ValueDescription( DIWikiPage::newFromText( 'Bar' ) )
+			new Property( 'Foobar', true ),
+			new ValueDescription( WikiPage::newFromText( 'Bar' ) )
 		);
 
 		$description->addPrintRequest(
@@ -550,17 +550,17 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ),
-				DIWikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ),
+				WikiPage::newFromText( 'Foobaz', SMW_NS_PROPERTY ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY ),
 			]
 		];
 
 		# 9 SMW_CMP_EQ comparator
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'EQ_Comparator' ), null, SMW_CMP_EQ )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'EQ_Comparator' ), null, SMW_CMP_EQ )
 		);
 
 		$query = new Query( $description );
@@ -569,16 +569,16 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'EQ_Comparator' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'EQ_Comparator' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 
 		# 10 Ignore entity with SMW_CMP_EQ comparator
 		$description = new SomeProperty(
-			new DIProperty( 'Foobar' ),
-			new ValueDescription( DIWikiPage::newFromText( 'LIKE_Comparator' ), null, SMW_CMP_LIKE )
+			new Property( 'Foobar' ),
+			new ValueDescription( WikiPage::newFromText( 'LIKE_Comparator' ), null, SMW_CMP_LIKE )
 		);
 
 		$query = new Query( $description );
@@ -587,8 +587,8 @@ class QueryResultDependencyListResolverTest extends TestCase {
 		$provider[] = [
 			$query,
 			[
-				DIWikiPage::newFromText( 'Foo' ),
-				'Foobar#102##' => DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
+				WikiPage::newFromText( 'Foo' ),
+				'Foobar#102##' => WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY )
 			]
 		];
 

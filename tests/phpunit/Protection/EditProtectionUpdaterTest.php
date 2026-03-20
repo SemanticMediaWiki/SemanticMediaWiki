@@ -7,8 +7,8 @@ use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Protection\EditProtectionUpdater;
-use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**

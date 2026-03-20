@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\MappingIterator;
 use SMW\MediaWiki\Connection\Database;
@@ -11,6 +11,7 @@ use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DuplicateFinder;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 use Wikimedia\Rdbms\ResultWrapper;
 
 /**
@@ -86,7 +87,7 @@ class DuplicateFinderTest extends TestCase {
 			$this->iteratorFactory
 		);
 
-		$instance->hasDuplicate( DIWikiPage::newFromText( 'Foo' ) );
+		$instance->hasDuplicate( WikiPage::newFromText( 'Foo' ) );
 
 		$this->assertJsonStringEqualsJsonString(
 			'{' .
@@ -100,7 +101,7 @@ class DuplicateFinderTest extends TestCase {
 	}
 
 	public function testFindDuplicates_ID_Table() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->count = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
@@ -149,7 +150,7 @@ class DuplicateFinderTest extends TestCase {
 	}
 
 	public function testFindDuplicates_REDI_Table() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->count = 42;
 		$row->s_title = 'Foo';
 		$row->s_namespace = 0;

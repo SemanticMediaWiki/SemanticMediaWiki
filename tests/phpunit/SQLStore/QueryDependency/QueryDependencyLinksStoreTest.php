@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\QueryDependency;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\JobFactory;
 use SMW\NamespaceExaminer;
@@ -19,6 +19,7 @@ use SMW\SQLStore\QueryDependency\QueryResultDependencyListResolver;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryDependency\QueryDependencyLinksStore
@@ -72,7 +73,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			->method( 'exists' )
 			->willReturn( true );
 
-		$this->subject = $this->getMockBuilder( DIWikiPage::class )
+		$this->subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -212,7 +213,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListFrom() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->s_id = 1001;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
@@ -278,7 +279,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 	}
 
 	public function testFindEmbeddedQueryTargetLinksHashListBySubject() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->s_id = 1001;
 
 		$idTable = $this->getMockBuilder( '\stdClass' )
@@ -344,11 +345,11 @@ class QueryDependencyLinksStoreTest extends TestCase {
 		$requestOptions->setLimit( 1 );
 		$requestOptions->setOffset( 200 );
 
-		$instance->findDependencyTargetLinksForSubject( DIWikiPage::newFromText( 'Foo' ), $requestOptions );
+		$instance->findDependencyTargetLinksForSubject( WikiPage::newFromText( 'Foo' ), $requestOptions );
 	}
 
 	public function testCountDependencies() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->count = 1001;
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
@@ -636,7 +637,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 			->method( 'getTouched' )
 			->willReturn( 10 );
 
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -681,7 +682,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListFrom' )
-			->willReturn( [ null, DIWikiPage::newFromText( __METHOD__ ) ] );
+			->willReturn( [ null, WikiPage::newFromText( __METHOD__ ) ] );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
@@ -754,7 +755,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 
 		$queryResultDependencyListResolver->expects( $this->any() )
 			->method( 'getDependencyListFrom' )
-			->willReturn( [ DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) ] );
+			->willReturn( [ WikiPage::newFromText( 'Foo', NS_CATEGORY ) ] );
 
 		$dependencyLinksTableUpdater = $this->getMockBuilder( DependencyLinksTableUpdater::class )
 			->disableOriginalConstructor()
@@ -816,7 +817,7 @@ class QueryDependencyLinksStoreTest extends TestCase {
 	 * @dataProvider titleProvider
 	 */
 	public function testTryDoUpdateDependenciesByWithinSkewedTime( $title ) {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

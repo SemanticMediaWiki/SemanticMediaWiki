@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -145,7 +145,7 @@ class DependencyLinksTableUpdater {
 
 		foreach ( $dependencyList as $dependency ) {
 
-			if ( !$dependency instanceof DIWikiPage ) {
+			if ( !$dependency instanceof WikiPage ) {
 				continue;
 			}
 
@@ -191,14 +191,14 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 *
 	 * @return int
 	 */
-	public function getId( DIWikiPage $subject, $subobjectName = '' ) {
+	public function getId( WikiPage $subject, $subobjectName = '' ) {
 		if ( $subobjectName !== '' ) {
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBkey(),
 				$subject->getNamespace(),
 				$subject->getInterwiki(),
@@ -216,10 +216,10 @@ class DependencyLinksTableUpdater {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string $subobjectName
 	 */
-	public function createId( DIWikiPage $subject, $subobjectName = '' ) {
+	public function createId( WikiPage $subject, $subobjectName = '' ) {
 		$id = $this->store->getObjectIds()->makeSMWPageID(
 			$subject->getDBkey(),
 			$subject->getNamespace(),

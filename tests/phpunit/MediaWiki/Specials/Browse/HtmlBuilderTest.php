@@ -4,8 +4,8 @@ namespace SMW\Tests\MediaWiki\Specials\Browse;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
-use SMW\SemanticData;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 

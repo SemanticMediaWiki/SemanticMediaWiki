@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
@@ -38,8 +38,8 @@ class DisplayTitleLookupTest extends TestCase {
 
 	public function testPrefetchFromList() {
 		$subjects = [
-			DIWikiPage::newFromText( 'Foo' ),
-			DIWikiPage::newFromText( 'Bar' )
+			WikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Bar' )
 		];
 
 		$rows = [

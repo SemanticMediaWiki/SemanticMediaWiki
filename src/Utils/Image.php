@@ -2,7 +2,7 @@
 
 namespace SMW\Utils;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -41,11 +41,11 @@ class Image {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return bool
 	 */
-	public static function isImage( DIWikiPage $dataItem ) {
+	public static function isImage( WikiPage $dataItem ) {
 		if ( $dataItem->getNamespace() !== NS_FILE || $dataItem->getSubobjectName() !== '' ) {
 			return false;
 		}

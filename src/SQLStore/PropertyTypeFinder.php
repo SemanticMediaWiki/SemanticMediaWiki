@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use Exception;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 
 /**
@@ -64,12 +64,12 @@ class PropertyTypeFinder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function findTypeID( DIProperty $property ) {
+	public function findTypeID( Property $property ) {
 		try {
 			$row = $this->connection->selectRow(
 				SQLStore::ID_TABLE,

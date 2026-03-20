@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\AppendIterator;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
@@ -52,7 +52,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 	}
 
 	public function testFindByProperty() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$this->iteratorFactory->expects( $this->any() )
 			->method( 'newAppendIterator' )
@@ -70,7 +70,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 	}
 
 	public function testFindByProperty_TypePropagation() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$this->iteratorFactory->expects( $this->any() )
 			->method( 'newAppendIterator' )
@@ -130,7 +130,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 	}
 
 	public function testFindByCategory() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$this->iteratorFactory->expects( $this->any() )
 			->method( 'newAppendIterator' )
@@ -143,7 +143,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 		$store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->with(
-				new DIProperty( '_INST' ),
+				new Property( '_INST' ),
 				$this->anything() )
 			->willReturn( [] );
 
@@ -151,8 +151,8 @@ class ChangePropagationEntityLookupTest extends TestCase {
 			->method( 'getPropertyValues' )
 			->with(
 				$this->anything(),
-				new DIProperty( '_SUBC' ) )
-			->willReturn( [ DIWikiPage::newFromText( 'Bar' ) ] );
+				new Property( '_SUBC' ) )
+			->willReturn( [ WikiPage::newFromText( 'Bar' ) ] );
 
 		$instance = new ChangePropagationEntityLookup(
 			$store,

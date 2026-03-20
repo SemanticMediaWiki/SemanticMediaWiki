@@ -7,7 +7,7 @@ use Onoi\EventDispatcher\DispatchContext;
 use Onoi\EventDispatcher\Listener\GenericCallbackEventListener;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Admin\ElasticClientTaskHandler;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
@@ -349,7 +349,7 @@ class ElasticFactoryTest extends TestCase {
 	public function testOnInvalidateEntityCache_OnSubject() {
 		$instance = new ElasticFactory();
 
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

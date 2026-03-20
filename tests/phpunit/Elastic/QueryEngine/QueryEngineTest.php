@@ -3,16 +3,16 @@
 namespace SMW\Tests\Elastic\QueryEngine;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\DummyClient;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\QueryEngine;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
 
 /**
  * @covers \SMW\Elastic\QueryEngine\QueryEngine
@@ -108,11 +108,11 @@ class QueryEngineTest extends TestCase {
 	}
 
 	public function testgetQueryResult_MODE_INSTANCES() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
 		// Unknown predefined property
-		$subject_predef_prop = DIWikiPage::newFromText( '_FOO', SMW_NS_PROPERTY );
+		$subject_predef_prop = WikiPage::newFromText( '_FOO', SMW_NS_PROPERTY );
 		$subject_predef_prop->setId( 1001 );
 
 		$res = [

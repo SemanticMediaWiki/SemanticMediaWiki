@@ -3,8 +3,9 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\HierarchyLookup;
 use SMW\Query\Language\ClassDescription;
@@ -15,7 +16,6 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter
@@ -93,10 +93,10 @@ class ClassDescriptionInterpreterTest extends TestCase {
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBC );
 
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+			Exporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
@@ -156,10 +156,10 @@ class ClassDescriptionInterpreterTest extends TestCase {
 		# 1
 		$conditionType = WhereCondition::class;
 
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+			Exporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription( $category );
@@ -179,16 +179,16 @@ class ClassDescriptionInterpreterTest extends TestCase {
 		# 2
 		$conditionType = WhereCondition::class;
 
-		$categoryFoo = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$categoryFoo = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$categoryFooName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryFoo )
+			Exporter::getInstance()->getResourceElementForWikiPage( $categoryFoo )
 		);
 
-		$categoryBar = new DIWikiPage( 'Bar', NS_CATEGORY );
+		$categoryBar = new WikiPage( 'Bar', NS_CATEGORY );
 
 		$categoryBarName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
+			Exporter::getInstance()->getResourceElementForWikiPage( $categoryBar )
 		);
 
 		$description = new ClassDescription( [
@@ -219,7 +219,7 @@ class ClassDescriptionInterpreterTest extends TestCase {
 			$categoryBar
 		] );
 
-		$orderByProperty = new DIProperty( 'Foo' );
+		$orderByProperty = new Property( 'Foo' );
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()

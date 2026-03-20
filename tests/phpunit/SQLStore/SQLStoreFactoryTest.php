@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\HierarchyLookup;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Deferred\CallableUpdate;
@@ -459,7 +459,7 @@ class SQLStoreFactoryTest extends TestCase {
 	}
 
 	public function testCanConstructChangeOp() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

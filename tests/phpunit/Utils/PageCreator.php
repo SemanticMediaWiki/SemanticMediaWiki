@@ -14,6 +14,7 @@ use SMW\MediaWiki\EditInfo;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\TestEnvironment;
 use UnexpectedValueException;
+use WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -31,20 +32,20 @@ class PageCreator {
 	/**
 	 * @since 3.1
 	 *
-	 * @return \WikiPage
+	 * @return WikiPage
 	 */
-	public function setPage( \WikiPage $page ) {
+	public function setPage( WikiPage $page ) {
 		$this->page = $page;
 	}
 
 	/**
 	 * @since 1.9.1
 	 *
-	 * @return \WikiPage
+	 * @return WikiPage
 	 * @throws UnexpectedValueException
 	 */
 	public function getPage() {
-		if ( $this->page instanceof \WikiPage ) {
+		if ( $this->page instanceof WikiPage ) {
 			return $this->page;
 		}
 
@@ -75,7 +76,7 @@ class PageCreator {
 			} );
 		}
 
-		$this->page = new \WikiPage( $title );
+		$this->page = new WikiPage( $title );
 
 		if ( $editContent === '' ) {
 			$editContent = 'Content of ' . $title->getFullText();

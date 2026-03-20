@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ArticleAugmentor;
 use SMW\MediaWiki\Api\Browse\ArticleLookup;
 use SMW\MediaWiki\Connection\Database;
+use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ArticleLookup
@@ -75,7 +76,7 @@ class ArticleLookupTest extends TestCase {
 	}
 
 	public function articleSearchProvider() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_title = 'Foo';
 		$row->page_id = 42;
 		$row->page_namespace = 0;
@@ -94,7 +95,7 @@ class ArticleLookupTest extends TestCase {
 			]
 		];
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_title = 'Foo';
 		$row->page_id = 42;
 		$row->page_namespace = 12;

@@ -3,14 +3,14 @@
 namespace SMW\SQLStore;
 
 use InvalidArgumentException;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Exception\DataItemException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -128,7 +128,7 @@ class PropertyTableRowDiffer {
 			}
 
 			try {
-				$fixedProperties[] = new DIProperty( $propertyTable->getFixedProperty() );
+				$fixedProperties[] = new Property( $propertyTable->getFixedProperty() );
 			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				// Do nothing!
 			}
@@ -155,7 +155,7 @@ class PropertyTableRowDiffer {
 
 				// Isn't registered therefore leave it alone (property was removed etc.)
 				try {
-					$property = new DIProperty( $fixedProperty['key'] );
+					$property = new Property( $fixedProperty['key'] );
 					$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
 						$property
 					);

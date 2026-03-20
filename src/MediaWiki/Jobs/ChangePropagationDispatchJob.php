@@ -3,12 +3,12 @@
 namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\MediaWiki\Job;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
-use SMWExporter as Exporter;
 
 /**
  * `ChangePropagationDispatchJob` dispatches update jobs via `ChangePropagationUpdateJob`
@@ -66,12 +66,12 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $params
 	 *
 	 * @return bool
 	 */
-	public static function planAsJob( DIWikiPage $subject, $params = [] ): bool {
+	public static function planAsJob( WikiPage $subject, $params = [] ): bool {
 		Exporter::getInstance()->resetCacheBy( $subject );
 		ApplicationFactory::getInstance()->getPropertySpecificationLookup()->invalidateCache(
 			$subject
@@ -86,9 +86,9 @@ class ChangePropagationDispatchJob extends Job {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public static function cleanUp( DIWikiPage $subject ): void {
+	public static function cleanUp( WikiPage $subject ): void {
 		$namespace = $subject->getNamespace();
 
 		if ( $namespace !== SMW_NS_PROPERTY && $namespace !== NS_CATEGORY ) {
@@ -106,11 +106,11 @@ class ChangePropagationDispatchJob extends Job {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public static function hasPendingJobs( DIWikiPage $subject ) {
+	public static function hasPendingJobs( WikiPage $subject ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -145,11 +145,11 @@ class ChangePropagationDispatchJob extends Job {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return int
 	 */
-	public static function getPendingJobsCount( DIWikiPage $subject ) {
+	public static function getPendingJobsCount( WikiPage $subject ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$jobQueue = $applicationFactory->getJobQueue();
 
@@ -188,7 +188,7 @@ class ChangePropagationDispatchJob extends Job {
 	 * @since 3.0
 	 */
 	public function run() {
-		$subject = DIWikiPage::newFromTitle( $this->getTitle() );
+		$subject = WikiPage::newFromTitle( $this->getTitle() );
 
 		if ( $this->hasParameter( 'data' ) ) {
 			return $this->dispatchFromData( $subject, $this->getParameter( 'data' ) );
@@ -210,7 +210,7 @@ class ChangePropagationDispatchJob extends Job {
 			return;
 		}
 
-		$subject = DIWikiPage::newFromTitle( $this->getTitle() );
+		$subject = WikiPage::newFromTitle( $this->getTitle() );
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$iteratorFactory = $applicationFactory->getIteratorFactory();
@@ -229,7 +229,7 @@ class ChangePropagationDispatchJob extends Job {
 		);
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
-			$entity = DIProperty::newFromUserLabel( $this->getTitle()->getText() );
+			$entity = Property::newFromUserLabel( $this->getTitle()->getText() );
 		} elseif ( $namespace === NS_CATEGORY ) {
 			$entity = $subject;
 		}
@@ -269,7 +269,7 @@ class ChangePropagationDispatchJob extends Job {
 
 		// Filter any subobject
 		foreach ( $chunk as $val ) {
-			$data[] = ( $val instanceof DIWikiPage ? $val->asBase()->getHash() : $val );
+			$data[] = ( $val instanceof WikiPage ? $val->asBase()->getHash() : $val );
 		}
 
 		// Filter duplicates
@@ -293,7 +293,7 @@ class ChangePropagationDispatchJob extends Job {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$cache = $applicationFactory->getCache();
 
-		$property = DIProperty::newFromUserLabel(
+		$property = Property::newFromUserLabel(
 			$this->getTitle()->getText()
 		);
 
@@ -341,7 +341,7 @@ class ChangePropagationDispatchJob extends Job {
 		// an update (!! using the inverse relationship)
 		$dataItems = $store->getPropertyValues(
 			$subject,
-			new DIProperty( $property_key, true )
+			new Property( $property_key, true )
 		);
 
 		// Scheduling the actual dispatch for those properties connected to
@@ -365,7 +365,7 @@ class ChangePropagationDispatchJob extends Job {
 				continue;
 			}
 
-			$title = DIWikiPage::doUnserialize( $dataItem )->getTitle();
+			$title = WikiPage::doUnserialize( $dataItem )->getTitle();
 
 			$changePropagationUpdateJob = $this->newChangePropagationUpdateJob(
 				$title,

@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\DataItems\Property;
 use SMW\Localizer\Localizer;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -139,7 +140,7 @@ class PropertyLabelFinder {
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 
 		$preferredPropertyLabel = $propertySpecificationLookup->getPreferredPropertyLabelByLanguageCode(
-			new DIProperty( str_replace( ' ', '_', $id ) ),
+			new Property( str_replace( ' ', '_', $id ) ),
 			$languageCode
 		);
 
@@ -164,7 +165,7 @@ class PropertyLabelFinder {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
-			new DIProperty( '_PPLB' )
+			new Property( '_PPLB' )
 		);
 
 		$dataValue->setUserValue(
@@ -194,7 +195,7 @@ class PropertyLabelFinder {
 		}
 
 		foreach ( $queryResult->getResults() as $result ) {
-			$propertyList[] = DIProperty::newFromUserLabel( $result->getDBKey() );
+			$propertyList[] = Property::newFromUserLabel( $result->getDBKey() );
 		}
 
 		return $propertyList;

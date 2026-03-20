@@ -3,8 +3,9 @@
 namespace SMW\SQLStore\EntityStore;
 
 use Iterator;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\Listener\ChangeListener\ChangeRecord;
@@ -21,7 +22,6 @@ use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
 use SMW\TypesRegistry;
 use SMW\Utils\Flag;
-use SMWDataItem as DataItem;
 
 /**
  * Class to access the SMW IDs table in SQLStore3.
@@ -183,23 +183,23 @@ class EntityIdManager {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $target
+	 * @param WikiPage $target
 	 * @param string|null $flag
 	 *
 	 * @return string|bool
 	 */
-	public function findRedirectSource( DIWikiPage $target, ?string $flag = null ) {
+	public function findRedirectSource( WikiPage $target, ?string $flag = null ) {
 		return $this->redirectTargetLookup->findRedirectSource( $target, $flag );
 	}
 
 	/**
 	 * @since  2.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( DIWikiPage $subject ) {
+	public function isRedirect( WikiPage $subject ) {
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -478,11 +478,11 @@ class EntityIdManager {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @param boolean
 	 */
-	public function exists( DIWikiPage $subject ): bool {
+	public function exists( WikiPage $subject ): bool {
 		return $this->getId( $subject ) > 0;
 	}
 
@@ -495,15 +495,15 @@ class EntityIdManager {
 	 *
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return int
 	 */
-	public function getId( DIWikiPage $subject ) {
+	public function getId( WikiPage $subject ) {
 		// Try to match a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
-				$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+				$property = Property::newFromUserLabel( $subject->getDBKey() );
 			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				return 0;
 			} catch ( PropertyLabelNotResolvedException $e ) {
@@ -519,7 +519,7 @@ class EntityIdManager {
 
 			// Switch title for fixed properties without a fixed ID (e.g. _MIME is the smw_title)
 			if ( !$property->isUserDefined() ) {
-				$subject = new DIWikiPage(
+				$subject = new WikiPage(
 					$key,
 					SMW_NS_PROPERTY,
 					$subject->getInterWiki(),
@@ -613,7 +613,7 @@ class EntityIdManager {
 
 		// Safeguard to ensure that no duplicate IDs are created
 		if ( $id == 0 ) {
-			$id = $this->getId( new DIWikiPage( $title, $namespace, $iw, $subobjectName ) );
+			$id = $this->getId( new WikiPage( $title, $namespace, $iw, $subobjectName ) );
 		}
 
 		$db->beginAtomicTransaction( __METHOD__ );
@@ -688,11 +688,11 @@ class EntityIdManager {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public function getPropertyInterwiki( DIProperty $property ): string {
+	public function getPropertyInterwiki( Property $property ): string {
 		return ( $property->getLabel() !== '' ) ? '' : SMW_SQL3_SMWINTDEFIW;
 	}
 
@@ -700,10 +700,10 @@ class EntityIdManager {
 	 * @since  2.1
 	 *
 	 * @param int $sid
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param int|string|null $interwiki
 	 */
-	public function updateInterwikiField( $sid, DIWikiPage $subject, $interwiki = null ): void {
+	public function updateInterwikiField( $sid, WikiPage $subject, $interwiki = null ): void {
 		if ( $interwiki === null ) {
 			$interwiki = $subject->getInterWiki();
 		}
@@ -734,14 +734,14 @@ class EntityIdManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|string $title
+	 * @param WikiPage|string $title
 	 * @param int $namespace
 	 * @param string $iw
 	 */
 	public function findAssociatedRev( $title, $namespace = '', $iw = '' ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$cond = [
 				"smw_hash" => $title->getSha1()
 			];
@@ -787,11 +787,11 @@ class EntityIdManager {
 	 * @note There is no distinction between properties and inverse
 	 * properties here. A property and its inverse have the same ID in SMW.
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return int
 	 */
-	public function getSMWPropertyID( DIProperty $property ) {
+	public function getSMWPropertyID( Property $property ) {
 		$key = $property->getKey();
 		$sortkey = '';
 
@@ -818,11 +818,11 @@ class EntityIdManager {
 	 *
 	 * @see getSMWPropertyID
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return int
 	 */
-	public function makeSMWPropertyID( DIProperty $property ): int {
+	public function makeSMWPropertyID( Property $property ): int {
 		$key = $property->getKey();
 
 		if ( isset( self::$special_ids[$key] ) && is_int( self::$special_ids[$key] ) ) {
@@ -969,7 +969,7 @@ class EntityIdManager {
 	 *
 	 * @param int $id
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getDataItemById( $id ) {
 		return $this->idEntityFinder->getDataItemById( $id );
@@ -1082,7 +1082,7 @@ class EntityIdManager {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage[] $subjects
+	 * @param WikiPage[] $subjects
 	 *
 	 * @return FieldList
 	 */

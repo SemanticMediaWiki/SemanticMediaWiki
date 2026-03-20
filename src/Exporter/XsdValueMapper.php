@@ -3,11 +3,11 @@
 namespace SMW\Exporter;
 
 use RuntimeException;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDINumber as DINumber;
-use SMWDITime as DITime;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
+use SMW\DataItems\Time;
 
 /**
  * This class only maps primitive types (string, boolean, integers ) mostly to
@@ -30,13 +30,13 @@ class XsdValueMapper {
 	 * @throws RuntimeException
 	 */
 	public static function map( DataItem $dataItem ) {
-		if ( $dataItem instanceof DIBoolean ) {
+		if ( $dataItem instanceof Boolean ) {
 			$val = self::mapBoolean( $dataItem );
-		} elseif ( $dataItem instanceof DINumber ) {
+		} elseif ( $dataItem instanceof Number ) {
 			$val = self::mapNumber( $dataItem );
-		} elseif ( $dataItem instanceof DIBlob ) {
+		} elseif ( $dataItem instanceof Blob ) {
 			$val = self::mapString( $dataItem );
-		} elseif ( $dataItem instanceof DITime && $dataItem->getCalendarModel() === DITime::CM_GREGORIAN ) {
+		} elseif ( $dataItem instanceof Time && $dataItem->getCalendarModel() === Time::CM_GREGORIAN ) {
 			$val = self::mapGregorianCalendarModelTime( $dataItem );
 		} else {
 			throw new RuntimeException( "Cannot match the dataItem with type " . $dataItem->getDIType() );
@@ -45,28 +45,28 @@ class XsdValueMapper {
 		return $val;
 	}
 
-	private static function mapString( DIBlob $dataItem ): array {
+	private static function mapString( Blob $dataItem ): array {
 		return [
 			'http://www.w3.org/2001/XMLSchema#string',
 			smwfHTMLtoUTF8( $dataItem->getString() )
 		];
 	}
 
-	private static function mapNumber( DINumber $dataItem ): array {
+	private static function mapNumber( Number $dataItem ): array {
 		return [
 			'http://www.w3.org/2001/XMLSchema#double',
 			strval( $dataItem->getNumber() )
 		];
 	}
 
-	private static function mapBoolean( DIBoolean $dataItem ): array {
+	private static function mapBoolean( Boolean $dataItem ): array {
 		return [
 			'http://www.w3.org/2001/XMLSchema#boolean',
 			$dataItem->getBoolean() ? 'true' : 'false'
 		];
 	}
 
-	private static function mapGregorianCalendarModelTime( DITime $dataItem ): array {
+	private static function mapGregorianCalendarModelTime( Time $dataItem ): array {
 		if ( $dataItem->getYear() > 0 ) {
 			$xsdvalue = str_pad( $dataItem->getYear(), 4, "0", STR_PAD_LEFT );
 		} else {
@@ -75,13 +75,13 @@ class XsdValueMapper {
 
 		$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYear';
 
-		if ( $dataItem->getPrecision() >= DITime::PREC_YM ) {
+		if ( $dataItem->getPrecision() >= Time::PREC_YM ) {
 			$xsdtype = 'http://www.w3.org/2001/XMLSchema#gYearMonth';
 			$xsdvalue .= '-' . str_pad( $dataItem->getMonth(), 2, "0", STR_PAD_LEFT );
-			if ( $dataItem->getPrecision() >= DITime::PREC_YMD ) {
+			if ( $dataItem->getPrecision() >= Time::PREC_YMD ) {
 				$xsdtype = 'http://www.w3.org/2001/XMLSchema#date';
 				$xsdvalue .= '-' . str_pad( $dataItem->getDay(), 2, "0", STR_PAD_LEFT );
-				if ( $dataItem->getPrecision() == DITime::PREC_YMDT ) {
+				if ( $dataItem->getPrecision() == Time::PREC_YMDT ) {
 					$xsdtype = 'http://www.w3.org/2001/XMLSchema#dateTime';
 					$xsdvalue .= 'T' .
 						sprintf( "%02d", $dataItem->getHour() ) . ':' .

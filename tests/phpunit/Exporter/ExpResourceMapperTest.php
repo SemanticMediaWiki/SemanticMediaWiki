@@ -3,8 +3,10 @@
 namespace SMW\Tests\Exporter;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
@@ -34,7 +36,7 @@ class ExpResourceMapperTest extends TestCase {
 	}
 
 	public function testInvalidateCache() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$poolCache = $this->inMemoryPoolCache->getPoolCacheById( 'exporter.expresource.mapper' );
 
@@ -76,7 +78,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		$this->assertInstanceOf(
 			ExpNsResource::class,
-			$instance->mapPropertyToResourceElement( new DIProperty( 'Foo' ) )
+			$instance->mapPropertyToResourceElement( new Property( 'Foo' ) )
 		);
 	}
 
@@ -110,7 +112,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		$store->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ new \SMWDIBlob( 'foo:bar:fom:fuz' ) ] );
+			->willReturn( [ new Blob( 'foo:bar:fom:fuz' ) ] );
 
 		$instance = new ExpResourceMapper(
 			$store
@@ -132,12 +134,12 @@ class ExpResourceMapperTest extends TestCase {
 
 	public function diWikiPageProvider() {
 		// Constant
-		$wiki = \SMWExporter::getInstance()->getNamespaceUri( 'wiki' );
-		$property = \SMWExporter::getInstance()->getNamespaceUri( 'property' );
+		$wiki = Exporter::getInstance()->getNamespaceUri( 'wiki' );
+		$property = Exporter::getInstance()->getNamespaceUri( 'property' );
 
 		# 0
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '' ),
+			new WikiPage( 'Foo', NS_MAIN, '', '' ),
 			'',
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -148,7 +150,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 1
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
+			new WikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'',
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -159,7 +161,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 2
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
+			new WikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'',
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -170,7 +172,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 3 Extra modififer doesn't not alter the object when a subobject is used
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
+			new WikiPage( 'Foo', NS_MAIN, 'bar', '1234' ),
 			'abc',
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -181,7 +183,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 4
 		$provider[] = [
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			'',
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -192,7 +194,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 5
 		$provider[] = [
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			true,
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -203,11 +205,11 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 6
 		$name = Escaper::encodePage(
-			new DIWikiPage( '-Foo', SMW_NS_PROPERTY, '', '' )
+			new WikiPage( '-Foo', SMW_NS_PROPERTY, '', '' )
 		);
 
 		$provider[] = [
-			new DIWikiPage( '-Foo', SMW_NS_PROPERTY, '', '' ),
+			new WikiPage( '-Foo', SMW_NS_PROPERTY, '', '' ),
 			true,
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -218,7 +220,7 @@ class ExpResourceMapperTest extends TestCase {
 
 		# 7
 		$provider[] = [
-			new DIWikiPage( 'Foo/Bar', SMW_NS_PROPERTY, '', '' ),
+			new WikiPage( 'Foo/Bar', SMW_NS_PROPERTY, '', '' ),
 			'',
 			[
 				'type' => Element::TYPE_NSRESOURCE,
@@ -241,7 +243,7 @@ class ExpResourceMapperTest extends TestCase {
 		];
 
 		$provider[] = [
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY, '', '' ),
 			$expected
 		];
 
@@ -252,7 +254,7 @@ class ExpResourceMapperTest extends TestCase {
 		];
 
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_CATEGORY, '', '' ),
+			new WikiPage( 'Foo', NS_CATEGORY, '', '' ),
 			$expected
 		];
 

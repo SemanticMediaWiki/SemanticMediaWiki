@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMWDIBlob as DIBlob;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 
 /**
  * Simplified book record
@@ -20,7 +20,7 @@ class BookRecordProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = DIProperty::newFromUserLabel( 'Book record' );
+		$this->property = Property::newFromUserLabel( 'Book record' );
 		$this->property->setPropertyTypeId( '_rec' );
 	}
 
@@ -36,8 +36,8 @@ class BookRecordProperty extends FixtureProperty {
 		$yearProperty = new YearProperty();
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_LIST' ),
-			new DIBlob(
+			new Property( '_LIST' ),
+			new Blob(
 				$titleProperty->getProperty()->getKey() . ';' .
 				$yearProperty->getProperty()->getKey()
 			)

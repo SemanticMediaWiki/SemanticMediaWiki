@@ -5,9 +5,9 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\DeclarationExaminer\CommonExaminer;
-use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 

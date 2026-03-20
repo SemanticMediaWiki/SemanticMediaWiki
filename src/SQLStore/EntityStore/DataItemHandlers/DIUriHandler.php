@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Uri;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIUri as DIUri;
 
 /**
  * This class implements Store access to Uri data items.
@@ -148,7 +148,7 @@ class DIUriHandler extends DataItemHandler {
 			$dbkeys[0] = $connection->unescape_bytea( $dbkeys[0] ?? '' );
 		}
 
-		return DIUri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
+		return Uri::doUnserialize( $dbkeys[0] == '' ? $dbkeys[1] : $dbkeys[0] );
 	}
 
 	private function getMaxLength(): int {

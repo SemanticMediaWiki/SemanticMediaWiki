@@ -5,9 +5,9 @@ namespace SMW\Tests\Property\DeclarationExaminer;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\ChangePropagationExaminer;
-use SMW\SemanticData;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 

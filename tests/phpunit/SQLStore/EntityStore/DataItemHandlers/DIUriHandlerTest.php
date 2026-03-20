@@ -3,12 +3,12 @@
 namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Uri;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIUriHandler
@@ -82,7 +82,7 @@ class DIUriHandlerTest extends TestCase {
 	}
 
 	public function testMutableMethodAccess() {
-		$uri = new DIUri( 'http', 'example.org', '', '' );
+		$uri = new Uri( 'http', 'example.org', '', '' );
 
 		$instance = new DIUriHandler(
 			$this->store

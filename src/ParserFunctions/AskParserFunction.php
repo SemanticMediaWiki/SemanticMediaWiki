@@ -4,17 +4,17 @@ namespace SMW\ParserFunctions;
 
 use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
-use SMW\DIProperty;
-use SMW\MessageFormatter;
+use SMW\DataItems\Property;
+use SMW\Formatters\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Query\Deferred;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Provides the {{#ask}} parser function
@@ -428,7 +428,7 @@ class AskParserFunction {
 		foreach ( $errors as $error ) {
 
 			if ( ( $property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error ) ) === null ) {
-				$property = new DIProperty( '_ASK' );
+				$property = new Property( '_ASK' );
 			}
 
 			$container = $processingErrorMsgHandler->newErrorContainerFromMsg(

@@ -5,12 +5,12 @@ namespace SMW\Tests;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\Uri;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMWDITime as DITime;
-use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\DataItemFactory
@@ -43,7 +43,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			DIProperty::class,
+			Property::class,
 			$instance->newDIProperty( 'Foo bar' )
 		);
 	}
@@ -131,7 +131,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			DIConcept::class,
+			Concept::class,
 			$instance->newDIConcept( 'Foo' )
 		);
 	}
@@ -140,7 +140,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			DIUri::class,
+			Uri::class,
 			$instance->newDIUri( 'http', 'example.org' )
 		);
 	}
@@ -149,7 +149,7 @@ class DataItemFactoryTest extends TestCase {
 		$instance = new DataItemFactory();
 
 		$this->assertInstanceOf(
-			DITime::class,
+			Time::class,
 			$instance->newDITime( 1, '1900' )
 		);
 	}

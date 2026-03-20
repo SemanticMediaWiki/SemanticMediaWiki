@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Localizer;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Localizer\MessageLocalizerTrait;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Localizer\MessageLocalizerTrait;
  *
  * @author mwjames
  */
-class MessageLocalizerTraitTest extends \PHPUnit\Framework\TestCase {
+class MessageLocalizerTraitTest extends TestCase {
 
 	public function testMsg() {
 		$messageLocalizer = $this->getMockBuilder( '\SMW\Localizer\MessageLocalizer' )

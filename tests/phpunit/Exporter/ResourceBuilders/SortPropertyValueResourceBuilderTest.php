@@ -4,11 +4,12 @@ namespace SMW\Tests\Exporter\ResourceBuilders;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder;
 use SMW\Serializers\ExpDataSerializer;
 use SMW\Tests\TestEnvironment;
-use SMWExpData as ExpData;
 
 /**
  * @covers \SMW\Exporter\ResourceBuilders\SortPropertyValueResourceBuilder
@@ -31,7 +32,7 @@ class SortPropertyValueResourceBuilderTest extends TestCase {
 		$this->testEnvironment = new TestEnvironment();
 		$this->expDataSerializer = new ExpDataSerializer();
 
-		$this->testEnvironment->resetPoolCacheById( \SMWExporter::POOLCACHE_ID );
+		$this->testEnvironment->resetPoolCacheById( Exporter::POOLCACHE_ID );
 	}
 
 	protected function tearDown(): void {

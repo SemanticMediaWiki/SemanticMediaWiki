@@ -8,11 +8,11 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -112,7 +112,7 @@ class ParserDataTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->getSubject()
 		);
 	}
@@ -178,7 +178,7 @@ class ParserDataTest extends TestCase {
 		$this->assertTrue( $instance->getSemanticData()->isEmpty() );
 
 		$semanticData = new SemanticData(
-			DIWikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) )
+			WikiPage::newFromTitle( $titleFactory->newFromText( __METHOD__ ) )
 		);
 
 		$semanticData->addDataValue(

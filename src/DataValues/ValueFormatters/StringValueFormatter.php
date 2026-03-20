@@ -5,7 +5,7 @@ namespace SMW\DataValues\ValueFormatters;
 use RuntimeException;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Utils\Normalizer;
 
 /**

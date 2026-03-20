@@ -3,6 +3,8 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Number;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\RequestOptionsProcessor;
@@ -233,11 +235,11 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Foo' )
 			],
 			$requestOptions,
 			[
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Foo' )
 			]
 		];
 
@@ -247,11 +249,11 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Foo' )
 			],
 			$requestOptions,
 			[
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Foo' )
 			]
 		];
 
@@ -261,7 +263,7 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Foo' )
 			],
 			$requestOptions,
 			[]
@@ -273,12 +275,12 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDIBlob( 'Foo' ),
-				new \SMWDIBlob( 'Bar' )
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
 			],
 			$requestOptions,
 			[
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Foo' )
 			]
 		];
 
@@ -289,13 +291,13 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDIBlob( 'Foo' ),
-				new \SMWDIBlob( 'Bar' )
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
 			],
 			$requestOptions,
 			[
-				new \SMWDIBlob( 'Bar' ),
-				new \SMWDIBlob( 'Foo' )
+				new Blob( 'Bar' ),
+				new Blob( 'Foo' )
 			]
 		];
 
@@ -306,13 +308,13 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDIBlob( 'Foo' ),
-				new \SMWDIBlob( 'Bar' )
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
 			],
 			$requestOptions,
 			[
-				new \SMWDIBlob( 'Foo' ),
-				new \SMWDIBlob( 'Bar' )
+				new Blob( 'Foo' ),
+				new Blob( 'Bar' )
 			]
 		];
 
@@ -323,13 +325,13 @@ class RequestOptionsProcessorTest extends TestCase {
 
 		$provider[] = [
 			[
-				new \SMWDINumber( 10 ),
-				new \SMWDINumber( 200 )
+				new Number( 10 ),
+				new Number( 200 )
 			],
 			$requestOptions,
 			[
-				new \SMWDINumber( 200 ),
-				new \SMWDINumber( 10 )
+				new Number( 200 ),
+				new Number( 10 )
 			]
 		];
 

@@ -7,7 +7,7 @@ use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use SMW\ParameterListDocBuilder;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Query\QueryProcessor;
 
 /**
  * Class that provides the {{#smwdoc}} parser function, which displays parameter

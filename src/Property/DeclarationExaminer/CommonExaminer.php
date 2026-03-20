@@ -2,10 +2,10 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**
@@ -65,7 +65,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function check( DIProperty $property ): void {
+	public function check( Property $property ): void {
 		$this->validate( $property );
 	}
 
@@ -74,7 +74,7 @@ class CommonExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ) {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
 			$property
 		);
@@ -116,13 +116,13 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkErrorMessages(): void {
-		$property = new DIProperty( '_ERRC' );
+		$property = new Property( '_ERRC' );
 
 		if ( $this->semanticData === null || !$this->semanticData->hasProperty( $property ) ) {
 			return;
 		}
 
-		$pv = $this->semanticData->getPropertyValues( new DIProperty( '_ERRC' ) );
+		$pv = $this->semanticData->getPropertyValues( new Property( '_ERRC' ) );
 		$messages = [];
 
 		foreach ( $pv as $v ) {
@@ -130,7 +130,7 @@ class CommonExaminer extends DeclarationExaminer {
 				$v->getSubobjectName()
 			);
 
-			foreach ( $subSemanticData->getPropertyValues( new DIProperty( '_ERRT' ) ) as $error ) {
+			foreach ( $subSemanticData->getPropertyValues( new Property( '_ERRT' ) ) as $error ) {
 				$messages[] = Message::decode( $error->getString(), Message::PARSE, Message::USER_LANGUAGE );
 			}
 		}
@@ -139,7 +139,7 @@ class CommonExaminer extends DeclarationExaminer {
 	}
 
 	private function checkTypeDeclaration(): void {
-		$property = new DIProperty( '_TYPE' );
+		$property = new Property( '_TYPE' );
 
 		if ( $this->semanticData === null ) {
 			return;

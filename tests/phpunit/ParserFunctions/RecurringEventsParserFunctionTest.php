@@ -5,12 +5,12 @@ namespace SMW\Tests\ParserFunctions;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
-use SMW\MessageFormatter;
+use SMW\DataModel\Subobject;
+use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\RecurringEventsParserFunction;
 use SMW\ParserParameterProcessor;
-use SMW\RecurringEvents;
-use SMW\Subobject;
+use SMW\Utils\RecurringEvents;
 
 /**
  * @covers \SMW\ParserFunctions\RecurringEventsParserFunction

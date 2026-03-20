@@ -6,7 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Settings;
 use SMW\Store;
@@ -203,7 +203,7 @@ class ConceptCacheRebuilder {
 		return $skip;
 	}
 
-	private function performAction( Title $title, DIConcept $concept ) {
+	private function performAction( Title $title, Concept $concept ) {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $this->action === 'create' ) {

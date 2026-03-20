@@ -5,7 +5,7 @@ namespace SMW\Tests;
 use PHPUnit\Framework\TestCase;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @covers \SMWQuery

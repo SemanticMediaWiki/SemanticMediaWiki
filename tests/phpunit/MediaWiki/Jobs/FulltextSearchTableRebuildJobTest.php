@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob;
 use SMW\Tests\SMWIntegrationTestCase;
 
@@ -34,7 +34,7 @@ class FulltextSearchTableRebuildJobTest extends SMWIntegrationTestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new FulltextSearchTableRebuildJob(
 			$subject->getTitle(),

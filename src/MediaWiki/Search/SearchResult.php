@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Search;
 
 use File;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 
 /**
  * @ingroup SMW
@@ -86,7 +86,7 @@ class SearchResult extends \SearchResult {
 		}
 
 		if ( $this->mTitle->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $this->mTitle->getDBKey() );
+			$property = Property::newFromUserLabel( $this->mTitle->getDBKey() );
 
 			// Predefined properties do not necessarily have a page and hereby a
 			// a revision in MediaWiki, anyway the page exists so allow it
@@ -126,7 +126,7 @@ class SearchResult extends \SearchResult {
 		}
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-			DIWikiPage::newFromTitle( $this->mTitle )
+			WikiPage::newFromTitle( $this->mTitle )
 		);
 
 		// Will return the DISPLAYTITLE, if available

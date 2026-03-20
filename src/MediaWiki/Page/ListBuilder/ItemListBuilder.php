@@ -5,12 +5,12 @@ namespace SMW\MediaWiki\Page\ListBuilder;
 use Iterator;
 use MediaWiki\Html\Html;
 use MediaWiki\Skin\SkinComponentUtils;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder as ColsListBuilder;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -127,13 +127,13 @@ class ItemListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return string
 	 */
-	public function buildHTML( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ): string {
+	public function buildHTML( Property $property, DataItem $dataItem, RequestOptions $requestOptions ): string {
 		$subjectList = $this->store->getPropertySubjects(
 			$property,
 			$dataItem,

@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api;
 
 use Exception;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -194,7 +194,7 @@ class PropertyListByApiRequest {
 		// Try to match something like _MDAT to find a label and
 		// make the request a success
 		try {
-			$property = DIProperty::newFromUserLabel( $property )->getLabel();
+			$property = Property::newFromUserLabel( $property )->getLabel();
 		} catch ( Exception $e ) {
 			$property = '';
 		}
@@ -222,7 +222,7 @@ class PropertyListByApiRequest {
 	}
 
 	private function addPropertyToList( array $value ): void {
-		if ( $value === [] || !$value[0] instanceof DIProperty ) {
+		if ( $value === [] || !$value[0] instanceof Property ) {
 			return;
 		}
 
@@ -247,7 +247,7 @@ class PropertyListByApiRequest {
 		$this->propertyList[$key]['description'] = $this->findPropertyDescriptionBy( $property );
 	}
 
-	private function findPropertyDescriptionBy( DIProperty $property ) {
+	private function findPropertyDescriptionBy( Property $property ) {
 		$description = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$property,
 			$this->languageCode

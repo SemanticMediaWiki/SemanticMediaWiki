@@ -5,8 +5,8 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
+use SMW\DataItems\DataItem;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later

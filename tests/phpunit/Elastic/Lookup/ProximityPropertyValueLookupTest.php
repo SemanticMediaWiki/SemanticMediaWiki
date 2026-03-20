@@ -4,7 +4,7 @@ namespace SMW\Tests\Elastic\Lookup;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Lookup\ProximityPropertyValueLookup;
 use SMW\RequestOptions;
@@ -87,7 +87,7 @@ class ProximityPropertyValueLookupTest extends TestCase {
 			$this->store
 		);
 
-		$instance->lookup( new DIProperty( 'Foo' ), '', new RequestOptions() );
+		$instance->lookup( new Property( 'Foo' ), '', new RequestOptions() );
 	}
 
 }

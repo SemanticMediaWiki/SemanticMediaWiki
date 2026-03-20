@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SMW\Exception\ClassNotFoundException;
 use SMW\MediaWiki\Search\Exception\SearchDatabaseInvalidTypeException;
 use SMW\MediaWiki\Search\Exception\SearchEngineInvalidTypeException;
@@ -11,6 +12,7 @@ use SMW\MediaWiki\Search\SearchEngineFactory;
 use SMW\Tests\Fixtures\MediaWiki\Search\DummySearchDatabase;
 use SMW\Tests\Fixtures\MediaWiki\Search\DummySearchEngine;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 use Wikimedia\Rdbms\IConnectionProvider;
 
 /**
@@ -63,7 +65,7 @@ class SearchEngineFactoryTest extends TestCase {
 	public function testNewDefaultFallbackSearchEngineForNullFallbackSearchType() {
 		$searchEngine = 'SearchDatabase';
 
-		$reflection = new \ReflectionClass( 'SearchEngine' );
+		$reflection = new ReflectionClass( 'SearchEngine' );
 
 		if ( $reflection->isInstantiable() ) {
 			$searchEngine = 'SearchEngine';
@@ -118,7 +120,7 @@ class SearchEngineFactoryTest extends TestCase {
 
 	public function testNewFallbackSearchEngine_ConstructFromInvalidCallableThrowsException() {
 		$callback = static function () {
-			return new \stdClass;
+			return new stdClass;
 		};
 
 		$this->testEnvironment->addConfiguration( 'smwgFallbackSearchType', $callback );

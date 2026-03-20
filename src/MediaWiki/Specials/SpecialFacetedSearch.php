@@ -5,6 +5,7 @@ namespace SMW\MediaWiki\Specials;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\MediaWiki\Hooks\GetPreferences;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\FacetedSearch\ExploreListBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\ExtraFieldBuilder;
 use SMW\MediaWiki\Specials\FacetedSearch\FacetBuilder;
@@ -17,7 +18,6 @@ use SMW\MediaWiki\Specials\FacetedSearch\ResultFetcher;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Services\ServicesFactory;
 use SMW\Utils\UrlArgs;
-use SMWOutputs;
 
 /**
  * @license GPL-2.0-or-later
@@ -169,7 +169,7 @@ class SpecialFacetedSearch extends SpecialPage {
 
 		// Add any resources that were registered by a specific result
 		// printer
-		SMWOutputs::commitToOutputPage( $output );
+		Outputs::commitToOutputPage( $output );
 
 		$output->addHTML( $html );
 	}

@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIBoolean as DIBoolean;
 
 /**
  * This class implements Store access to Boolean data items.
@@ -113,6 +113,6 @@ class DIBooleanHandler extends DataItemHandler {
 			$value = ( $dbkeys == '1' );
 		}
 
-		return new DIBoolean( $value );
+		return new Boolean( $value );
 	}
 }

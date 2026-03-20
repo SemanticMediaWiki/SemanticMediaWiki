@@ -4,7 +4,7 @@ namespace SMW\MediaWiki;
 
 use MediaWiki\Cache\LinkBatch as MwLinkBatch;
 use MediaWiki\MediaWikiServices;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * Isolate access to the LinkBatch class which allows to bulk load a list
@@ -88,7 +88,7 @@ class LinkBatch {
 	 * @param $dataItem
 	 */
 	public function add( $dataItem ): void {
-		if ( !$dataItem instanceof DIWikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
+		if ( !$dataItem instanceof WikiPage || isset( $this->log[$dataItem->getSha1()] ) ) {
 			return;
 		}
 
@@ -115,7 +115,7 @@ class LinkBatch {
 	 * @return bool
 	 */
 	public function has( $dataItem ): bool {
-		if ( $dataItem instanceof DIWikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
+		if ( $dataItem instanceof WikiPage && isset( $this->log[$dataItem->getSha1()] ) ) {
 			return true;
 		}
 

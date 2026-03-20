@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\DataTypeRegistry;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Description;
@@ -19,7 +20,6 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later

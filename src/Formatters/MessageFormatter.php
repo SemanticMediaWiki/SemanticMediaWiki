@@ -5,7 +5,6 @@ namespace SMW\Formatters;
 use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Message\Message;
-use SMW\Highlighter;
 use SMW\ProcessingErrorMsgHandler;
 
 /**

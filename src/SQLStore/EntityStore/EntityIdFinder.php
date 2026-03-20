@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\HashFieldUpdate;
 use SMW\SQLStore\propertyTable\propertyTableHashes;
@@ -45,11 +45,11 @@ class EntityIdFinder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return int
 	 */
-	public function findIdByItem( DIWikiPage $dataItem ) {
+	public function findIdByItem( WikiPage $dataItem ) {
 		if ( ( $id = $this->idCacheManager->getId( $dataItem ) ) !== false ) {
 			return $id;
 		}

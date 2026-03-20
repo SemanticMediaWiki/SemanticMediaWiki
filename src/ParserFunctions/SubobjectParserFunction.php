@@ -2,17 +2,17 @@
 
 namespace SMW\ParserFunctions;
 
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\Formatters\MessageFormatter;
 use SMW\HashBuilder;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\StripMarkerDecoder;
-use SMW\MessageFormatter;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
-use SMW\SemanticData;
-use SMW\Subobject;
 
 /**
  * @private This class should not be instantiated directly, please use
@@ -203,11 +203,11 @@ class SubobjectParserFunction {
 		foreach ( $parameters as $property => $values ) {
 
 			if ( $property === self::PARAM_SORTKEY ) {
-				$property = DIProperty::TYPE_SORTKEY;
+				$property = Property::TYPE_SORTKEY;
 			}
 
 			if ( $property === self::PARAM_CATEGORY ) {
-				$property = DIProperty::TYPE_CATEGORY;
+				$property = Property::TYPE_CATEGORY;
 			}
 
 			foreach ( $values as $value ) {
@@ -322,8 +322,8 @@ class SubobjectParserFunction {
 		// Data block created by a user
 		$semanticData->setOption( SemanticData::PROC_USER, true );
 
-		$sortkey = new DIProperty( DIProperty::TYPE_SORTKEY );
-		$displayTitle = new DIProperty( DIProperty::TYPE_DISPLAYTITLE );
+		$sortkey = new Property( Property::TYPE_SORTKEY );
+		$displayTitle = new Property( Property::TYPE_DISPLAYTITLE );
 
 		if ( $semanticData->hasProperty( $sortkey ) || !$semanticData->hasProperty( $displayTitle ) ) {
 			return null;

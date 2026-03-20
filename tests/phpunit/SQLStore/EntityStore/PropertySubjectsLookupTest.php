@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\SQLStore\EntityStore\DataItemHandler;
@@ -35,7 +35,7 @@ class PropertySubjectsLookupTest extends TestCase {
 	}
 
 	public function testLookupForNonFixedPropertyTable() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
@@ -98,7 +98,7 @@ class PropertySubjectsLookupTest extends TestCase {
 	}
 
 	public function testLookupForFixedPropertyTable() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 
 		$resultWrapper = new FakeResultWrapper( [] );
 

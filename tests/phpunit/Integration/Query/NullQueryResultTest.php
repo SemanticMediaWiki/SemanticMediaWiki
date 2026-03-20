@@ -3,14 +3,14 @@
 namespace SMW\Tests\Integration\Query;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ValueDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -27,7 +27,7 @@ class NullQueryResultTest extends TestCase {
 		$term = '[[Some_string_to_query]]';
 
 		$description = new ValueDescription(
-			new DIWikiPage( $term, NS_MAIN ),
+			new WikiPage( $term, NS_MAIN ),
 			null
 		);
 

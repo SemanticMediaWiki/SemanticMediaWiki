@@ -3,8 +3,9 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -12,7 +13,6 @@ use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\Timer;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -119,7 +119,7 @@ class QueryDependencyLinksStore {
 		$hash = null;
 
 		$tableName = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+			new Property( '_ASK' )
 		);
 
 		$tableChangeOps = $changeOp->getTableChangeOps( $tableName );
@@ -162,17 +162,17 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findEmbeddedQueryIdListBySubject( DIWikiPage $subject, ?RequestOptions $requestOptions = null ): array {
+	public function findEmbeddedQueryIdListBySubject( WikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$embeddedQueryIdList = [];
 
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_ASK' ),
+			new Property( '_ASK' ),
 			$requestOptions
 		);
 
@@ -186,12 +186,12 @@ class QueryDependencyLinksStore {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return array
 	 */
-	public function findDependencyTargetLinksForSubject( DIWikiPage $subject, RequestOptions $requestOptions ) {
+	public function findDependencyTargetLinksForSubject( WikiPage $subject, RequestOptions $requestOptions ) {
 		return $this->findDependencyTargetLinks(
 			[ $this->dependencyLinksTableUpdater->getId( $subject ) ],
 			$requestOptions

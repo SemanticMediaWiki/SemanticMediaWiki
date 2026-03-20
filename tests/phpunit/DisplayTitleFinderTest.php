@@ -3,14 +3,14 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\DisplayTitleFinder;
 use SMW\EntityCache;
-use SMW\SemanticData;
 use SMW\SQLStore\Lookup\DisplayTitleLookup;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\DisplayTitleFinder
@@ -51,7 +51,7 @@ class DisplayTitleFinderTest extends TestCase {
 		$this->store->expects( $this->once() )
 			->method( 'getPropertyValues' )
 			->with( $subject )
-			->willReturn( [ new DIBlob( 'Bar' ) ] );
+			->willReturn( [ new Blob( 'Bar' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'makeKey' )
@@ -88,7 +88,7 @@ class DisplayTitleFinderTest extends TestCase {
 			->withConsecutive(
 				[ $this->equalTo( $subject ) ],
 				[ $this->equalTo( $subject->asBase() ) ] )
-			->willReturnOnConsecutiveCalls( [], [ new DIBlob( 'foobar' ) ] );
+			->willReturnOnConsecutiveCalls( [], [ new Blob( 'foobar' ) ] );
 
 		$this->entityCache->expects( $this->once() )
 			->method( 'makeKey' )
@@ -173,7 +173,7 @@ class DisplayTitleFinderTest extends TestCase {
 
 		$subSemanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->willReturn( [ new DIProperty( 'SubFoo' ) ] );
+			->willReturn( [ new Property( 'SubFoo' ) ] );
 
 		$subSemanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )
@@ -189,7 +189,7 @@ class DisplayTitleFinderTest extends TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'getProperties' )
-			->willReturn( [ new DIProperty( 'Foo' ) ] );
+			->willReturn( [ new Property( 'Foo' ) ] );
 
 		$semanticData->expects( $this->any() )
 			->method( 'getPropertyValues' )

@@ -4,13 +4,14 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\IdEntityFinder
@@ -71,7 +72,7 @@ class IdEntityFinderTest extends TestCase {
 	}
 
 	public function testGetDataItemForNonCachedId() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;
@@ -106,7 +107,7 @@ class IdEntityFinderTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
 	}
@@ -114,7 +115,7 @@ class IdEntityFinderTest extends TestCase {
 	public function testGetDataItemForCachedId() {
 		$this->cache->expects( $this->once() )
 			->method( 'fetch' )
-			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
+			->willReturn( new WikiPage( 'Foo', NS_MAIN ) );
 
 		$this->connection->expects( $this->never() )
 			->method( 'selectRow' );
@@ -126,18 +127,18 @@ class IdEntityFinderTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
 	}
 
 	public function testPredefinedPropertyItem() {
-		$dataItem = new DIWikiPage( '_MDAT', SMW_NS_PROPERTY );
+		$dataItem = new WikiPage( '_MDAT', SMW_NS_PROPERTY );
 		$dataItem->setId( 42 );
 		$dataItem->setSortKey( 'bar' );
 		$dataItem->setOption( 'sort', 'BAR' );
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = '_MDAT';
 		$row->smw_namespace = SMW_NS_PROPERTY;
@@ -192,12 +193,12 @@ class IdEntityFinderTest extends TestCase {
 	}
 
 	public function testGetDataItemsFromList() {
-		$expected = new DIWikiPage( 'Foo', 0, '', '' );
+		$expected = new WikiPage( 'Foo', 0, '', '' );
 		$expected->setId( 42 );
 		$expected->setSortKey( '...' );
 		$expected->setOption( 'sort', '...' );
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 		$row->smw_title = 'Foo';
 		$row->smw_namespace = 0;

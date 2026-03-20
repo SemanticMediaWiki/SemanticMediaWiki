@@ -2,7 +2,7 @@
 
 namespace SMW\Exporter;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 
 /**
@@ -16,11 +16,11 @@ class Escaper {
 	/**
 	 * @since 2.2
 	 *
-	 * @param DIWikiPage $diWikiPage
+	 * @param WikiPage $diWikiPage
 	 *
 	 * @return string
 	 */
-	public static function encodePage( DIWikiPage $diWikiPage ) {
+	public static function encodePage( WikiPage $diWikiPage ) {
 		$localName = '';
 
 		if ( $diWikiPage->getInterwiki() !== '' ) {

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\Schema;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Schema\Compartment;
 use SMW\Schema\CompartmentIterator;
 use SMW\Schema\Filters\CompositeFilter;
@@ -227,7 +227,7 @@ class FilteredSchemaListTest extends TestCase {
 		yield "'property-6-a', NS_MAIN" => [
 			NS_MAIN,
 			[],
-			[ new DIProperty( 'property-6-a' ) ],
+			[ new Property( 'property-6-a' ) ],
 			[]
 		];
 
@@ -237,7 +237,7 @@ class FilteredSchemaListTest extends TestCase {
 				return [ 'category-6-a' ];
 			},
 			static function (){
-				return [ new DIProperty( 'property-6-a' ), new DIProperty( 'property-6-b' ) ];
+				return [ new Property( 'property-6-a' ), new Property( 'property-6-b' ) ];
 			},
 			[ 'rule_6_2' ]
 		];

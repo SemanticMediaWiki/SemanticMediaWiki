@@ -5,12 +5,15 @@ namespace SMW\SQLStore;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Concept;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\WikiPageValue;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesContainer;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
@@ -18,9 +21,6 @@ use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
-use SMWWikiPageValue;
 
 /*
  * Virtual "interwiki prefix" for old-style special SMW objects (no longer used)
@@ -205,7 +205,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( WikiPage $subject, $filter = false ) {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -218,7 +218,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertyValues( $subject, DIProperty $property, $requestOptions = null ) {
+	public function getPropertyValues( $subject, Property $property, $requestOptions = null ) {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -231,7 +231,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getProperties( DIWikiPage $subject, $requestOptions = null ) {
+	public function getProperties( WikiPage $subject, $requestOptions = null ) {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -244,7 +244,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getPropertySubjects( DIProperty $property, $dataItem, $requestOptions = null ) {
+	public function getPropertySubjects( Property $property, $dataItem, $requestOptions = null ) {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -257,7 +257,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
+	public function getAllPropertySubjects( Property $property, $requestoptions = null ) {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -285,7 +285,7 @@ class SQLStore extends Store {
 			$this->updater = $this->factory->newUpdater();
 		}
 
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$status = $this->updater->deleteSubject( $title );
 
@@ -325,13 +325,13 @@ class SQLStore extends Store {
 		$status = $this->updater->changeTitle( $oldTitle, $newTitle, $pageId, $redirectId );
 
 		$this->doDeferredCachedListLookupUpdate(
-			DIWikiPage::newFromTitle( $oldTitle )
+			WikiPage::newFromTitle( $oldTitle )
 		);
 
 		return $status;
 	}
 
-	private function doDeferredCachedListLookupUpdate( DIWikiPage $subject ) {
+	private function doDeferredCachedListLookupUpdate( WikiPage $subject ) {
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY ) {
 			return null;
 		}
@@ -499,9 +499,9 @@ class SQLStore extends Store {
 	 *
 	 * @since 1.8
 	 *
-	 * @param Title|SMWWikiPageValue $concept
+	 * @param Title|WikiPageValue $concept
 	 *
-	 * @return DIConcept|null
+	 * @return Concept|null
 	 */
 	public function getConceptCacheStatus( $concept ) {
 		return $this->factory->newSlaveConceptCache()->getStatus( $concept );
@@ -578,11 +578,11 @@ class SQLStore extends Store {
 	/**
 	 * PropertyTableInfoFetcher::findTableIdForProperty
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public function findPropertyTableID( DIProperty $property ) {
+	public function findPropertyTableID( Property $property ) {
 		return $this->getPropertyTableInfoFetcher()->findTableIdForProperty( $property );
 	}
 

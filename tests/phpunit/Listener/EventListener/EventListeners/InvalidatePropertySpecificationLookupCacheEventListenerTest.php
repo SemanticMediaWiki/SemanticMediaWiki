@@ -4,7 +4,7 @@ namespace SMW\Tests\Listener\EventListener\EventListeners;
 
 use Onoi\EventDispatcher\DispatchContext;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Property\SpecificationLookup;
 use SMW\Tests\TestEnvironment;
@@ -47,7 +47,7 @@ class InvalidatePropertySpecificationLookupCacheEventListenerTest extends TestCa
 	public function testExecute_OnSubject() {
 		$context = DispatchContext::newFromArray(
 			[
-				'subject' => DIWikiPage::newFromText( __METHOD__ ),
+				'subject' => WikiPage::newFromText( __METHOD__ ),
 				'context' => 'Bar'
 			]
 		);

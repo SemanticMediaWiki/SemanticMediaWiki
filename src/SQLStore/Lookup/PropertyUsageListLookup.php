@@ -4,13 +4,13 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
 
 /**
  * @license GPL-2.0-or-later
@@ -33,7 +33,7 @@ class PropertyUsageListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 * @throws RuntimeException
 	 */
 	public function fetchList() {
@@ -110,7 +110,7 @@ class PropertyUsageListLookup implements ListLookup {
 	}
 
 	/**
-	 * @return array{(SMW\DIProperty | SMWDIError), int}[]
+	 * @return array{(Property|Error), int}[]
 	 */
 	private function getPropertyList( $res ): array {
 		$result = [];
@@ -118,9 +118,9 @@ class PropertyUsageListLookup implements ListLookup {
 		foreach ( $res as $row ) {
 
 			try {
-				$property = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
+				$property = new Property( str_replace( ' ', '_', $row->smw_title ) );
 			} catch ( PropertyLabelNotResolvedException $e ) {
-				$property = new DIError( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
+				$property = new Error( new Message( 'smw_noproperty', [ $row->smw_title ] ) );
 			}
 
 			$property->id = isset( $row->smw_id ) ? $row->smw_id : -1;

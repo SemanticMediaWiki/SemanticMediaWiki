@@ -3,7 +3,7 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter;
 use SMW\Query\DescriptionFactory;
@@ -64,8 +64,8 @@ class ClassDescriptionInterpreterTest extends TestCase {
 
 	public function classDescriptionProvider() {
 		$descriptionFactory = new DescriptionFactory();
-		$cat_foo = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
-		$cat_bar = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
+		$cat_foo = WikiPage::newFromText( 'Foo', NS_CATEGORY );
+		$cat_bar = WikiPage::newFromText( 'Bar', NS_CATEGORY );
 
 		yield [
 			$descriptionFactory->newClassDescription( $cat_foo ),

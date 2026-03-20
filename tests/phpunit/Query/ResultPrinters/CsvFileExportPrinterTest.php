@@ -3,9 +3,9 @@
 namespace SMW\Tests\Query\ResultPrinters;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Formatters\Infolink;
 use SMW\Query\QueryResult;
 use SMW\Query\ResultPrinters\CsvFileExportPrinter;
-use SMWInfolink;
 
 /**
  * @covers \SMW\Query\ResultPrinters\CsvFileExportPrinter
@@ -43,7 +43,7 @@ class CsvFileExportPrinterTest extends TestCase {
 	}
 
 	public function testLink() {
-		$link = $this->getMockBuilder( SMWInfolink::class )
+		$link = $this->getMockBuilder( Infolink::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Api\BrowseByProperty;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\CachedListLookup;
@@ -57,17 +57,17 @@ class BrowseByPropertyTest extends TestCase {
 
 	public function testExecute() {
 		$list[] = [
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			42
 		];
 
 		$list[] = [
-			new DIProperty( 'Foaf:Foo' ),
+			new Property( 'Foaf:Foo' ),
 			1001
 		];
 
 		$list[] = [
-			new DIProperty( 'Unknown:Foo' ),
+			new Property( 'Unknown:Foo' ),
 			1001
 		];
 

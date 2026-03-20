@@ -8,11 +8,11 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Skin\SkinComponentUtils;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 

@@ -3,7 +3,7 @@
 namespace SMW\Tests\Exporter\Controller;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\Controller\Queue;
 
 /**
@@ -25,7 +25,7 @@ class QueueTest extends TestCase {
 	}
 
 	public function testGetMembers() {
-		$dataItem = DIWikiPage::newFromText( 'Foo' );
+		$dataItem = WikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
 		$instance->add( $dataItem, 1 );
@@ -37,7 +37,7 @@ class QueueTest extends TestCase {
 	}
 
 	public function testReset() {
-		$dataItem = DIWikiPage::newFromText( 'Foo' );
+		$dataItem = WikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
 		$this->assertFalse(
@@ -53,7 +53,7 @@ class QueueTest extends TestCase {
 	}
 
 	public function testDone() {
-		$dataItem = DIWikiPage::newFromText( 'Foo' );
+		$dataItem = WikiPage::newFromText( 'Foo' );
 		$instance = new Queue();
 
 		$this->assertFalse(
@@ -68,7 +68,7 @@ class QueueTest extends TestCase {
 	}
 
 	public function testAddAndCount() {
-		$dataItem = DIWikiPage::newFromText( 'Foo' );
+		$dataItem = WikiPage::newFromText( 'Foo' );
 
 		$instance = new Queue();
 		$instance->add( $dataItem, 2 );

@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 
 /**
@@ -40,7 +40,7 @@ class BeforeDisplayNoArticleText implements HookListener {
 		// Avoid having "noarticletext" info being generated for predefined
 		// properties as we are going to display an introductory text
 		if ( $this->article->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
-			return DIProperty::newFromUserLabel( $this->article->getTitle()->getText() )->isUserDefined();
+			return Property::newFromUserLabel( $this->article->getTitle()->getText() )->isUserDefined();
 		}
 
 		return true;

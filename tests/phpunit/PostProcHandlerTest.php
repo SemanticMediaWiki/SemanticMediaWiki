@@ -7,16 +7,16 @@ use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\NamespaceExaminer;
 use SMW\PostProcHandler;
+use SMW\Query\Query;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\FieldChangeOp;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
-use SMWQuery;
 
 /**
  * @covers \SMW\PostProcHandler
@@ -293,7 +293,7 @@ class PostProcHandlerTest extends TestCase {
 			->willReturn( [ $fieldChangeOp ] );
 
 		$changeDiff = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
 			[],
 			[ $key => 42 ]
@@ -388,7 +388,7 @@ class PostProcHandlerTest extends TestCase {
 	}
 
 	public function queryProvider() {
-		$query = $this->createMock( SMWQuery::class );
+		$query = $this->createMock( Query::class );
 
 		$query->expects( $this->any() )
 			->method( 'toArray' )

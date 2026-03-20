@@ -2,10 +2,13 @@
 
 namespace SMW\Tests\Integration;
 
+use ErrorPageError;
+use Exception;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\SpecialPage\SpecialPage;
+use PermissionsError;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 
@@ -58,8 +61,8 @@ class SpecialsTest extends SMWIntegrationTestCase {
 	public function testSpecial( callable $specialPageProvider ) {
 		try {
 			$specialPageProvider()->execute( '' );
-		} catch ( \Exception $exception ) {
-			if ( !( $exception instanceof \PermissionsError ) && !( $exception instanceof \ErrorPageError ) ) {
+		} catch ( Exception $exception ) {
+			if ( !( $exception instanceof PermissionsError ) && !( $exception instanceof ErrorPageError ) ) {
 				throw $exception;
 			}
 		}

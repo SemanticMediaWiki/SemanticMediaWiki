@@ -8,8 +8,9 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\JobFactory;
@@ -20,7 +21,6 @@ use SMW\Parser\InTextAnnotationParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\Query\QueryResult;
-use SMW\SemanticData;
 use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryClient;
@@ -550,12 +550,12 @@ class SemanticMediaWikiProvidedHookInterfaceIntegrationTest extends TestCase {
 
 		$this->assertEquals(
 			'smw_fpt_bar',
-			$store->findPropertyTableID( new DIProperty( 'Foo' ) )
+			$store->findPropertyTableID( new Property( 'Foo' ) )
 		);
 
 		$this->assertEquals(
 			'smw_ext_foooo',
-			$store->findPropertyTableID( new DIProperty( 'Foobar' ) )
+			$store->findPropertyTableID( new Property( 'Foobar' ) )
 		);
 	}
 

@@ -3,9 +3,9 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableDefinition;
@@ -37,7 +37,7 @@ class PropertyTableRowMapperTest extends TestCase {
 	}
 
 	public function testMapToRowsOnEmptyTable() {
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 		$semanticData = new SemanticData( $subject );
 
 		$propertyTables = [];
@@ -90,13 +90,13 @@ class PropertyTableRowMapperTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( 'Foo_test_123' ),
-			new DIWikiPage( 'Bar', NS_MAIN )
+			new Property( 'Foo_test_123' ),
+			new WikiPage( 'Bar', NS_MAIN )
 		);
 
 		$propertyTables = [ 'smw_foo' => $propertyTable ];
@@ -162,13 +162,13 @@ class PropertyTableRowMapperTest extends TestCase {
 			->method( 'isFixedPropertyTable' )
 			->willReturn( true );
 
-		$subject = new DIWikiPage( 'Foo', NS_MAIN );
+		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( 'Foo_test_123' ),
-			new DIWikiPage( 'Bar', NS_MAIN )
+			new Property( 'Foo_test_123' ),
+			new WikiPage( 'Bar', NS_MAIN )
 		);
 
 		$propertyTables = [ 'smw_foo' => $propertyTable ];

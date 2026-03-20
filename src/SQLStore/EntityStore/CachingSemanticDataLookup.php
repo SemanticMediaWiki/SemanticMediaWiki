@@ -6,12 +6,12 @@ use Onoi\Cache\Cache;
 use Onoi\Cache\NullCache;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -106,9 +106,9 @@ class CachingSemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param int $id
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function initLookupCache( $id, DIWikiPage $subject ): void {
+	public function initLookupCache( $id, WikiPage $subject ): void {
 		// *** Prepare the cache ***//
 		if ( !isset( self::$data[$id] ) ) {
 			self::$data[$id] = $this->semanticDataLookup->newStubSemanticData( $subject );
@@ -173,12 +173,12 @@ class CachingSemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param PropertyTableDefinition $propertyTableDef
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
 		return $this->semanticDataLookup->newRequestOptions( $propertyTableDef, $property, $requestOptions );
 	}
 
@@ -254,7 +254,7 @@ class CachingSemanticDataLookup {
 	 */
 	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		// Avoid the cache when a request is constrainted
-		if ( $requestOptions !== null || !$dataItem instanceof DIWikiPage ) {
+		if ( $requestOptions !== null || !$dataItem instanceof WikiPage ) {
 			return $this->semanticDataLookup->getSemanticData( $id, $dataItem, $propertyTableDef, $requestOptions );
 		}
 
@@ -264,11 +264,11 @@ class CachingSemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return StubSemanticData
 	 */
-	public function newStubSemanticData( DIWikiPage $subject ) {
+	public function newStubSemanticData( WikiPage $subject ) {
 		return $this->semanticDataLookup->newStubSemanticData( $subject );
 	}
 

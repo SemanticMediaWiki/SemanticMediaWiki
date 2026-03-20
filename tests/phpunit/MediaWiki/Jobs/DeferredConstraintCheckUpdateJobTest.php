@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -57,7 +57,7 @@ class DeferredConstraintCheckUpdateJobTest extends TestCase {
 	}
 
 	public function testPushJob() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
@@ -83,7 +83,7 @@ class DeferredConstraintCheckUpdateJobTest extends TestCase {
 
 	public function jobProvider() {
 		$provider[] = [
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			[]
 		];
 

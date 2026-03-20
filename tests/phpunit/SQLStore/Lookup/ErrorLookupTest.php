@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
@@ -126,7 +126,7 @@ class ErrorLookupTest extends TestCase {
 			$store
 		);
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -199,7 +199,7 @@ class ErrorLookupTest extends TestCase {
 			$store
 		);
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -207,7 +207,7 @@ class ErrorLookupTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$instance->findErrorsByType( 'foo', DIWikiPage::newFromText( 'Foo' ), $requestOptions );
+		$instance->findErrorsByType( 'foo', WikiPage::newFromText( 'Foo' ), $requestOptions );
 
 		$this->assertEquals(
 			'SELECT t2.s_id AS s_id, t3.o_hash AS o_hash, t3.o_blob AS o_blob ' .

@@ -4,6 +4,7 @@ namespace SMW\Tests\Property;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\PageInfo;
 use SMW\Property\Annotator;
@@ -17,7 +18,6 @@ use SMW\Property\Annotators\RedirectPropertyAnnotator;
 use SMW\Property\Annotators\SchemaPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
 use SMW\Property\Annotators\TranslationPropertyAnnotator;
-use SMW\SemanticData;
 
 /**
  * @covers \SMW\Property\AnnotatorFactory

@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\ResourceBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @private
@@ -48,7 +48,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ): bool {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return true;
 	}
 
@@ -57,7 +57,7 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ): void {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		$expElement = $this->exporter->newExpElement(
 			$dataItem
 		);
@@ -76,11 +76,11 @@ class PropertyValueResourceBuilder implements ResourceBuilder {
 		);
 	}
 
-	protected function addResourceHelperValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	protected function addResourceHelperValue( ExpData $expData, Property $property, DataItem $dataItem ) {
 		return $this->addAuxiliaryResourceValue( $expData, $property, $dataItem );
 	}
 
-	protected function addAuxiliaryResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	protected function addAuxiliaryResourceValue( ExpData $expData, Property $property, DataItem $dataItem ) {
 		$auxiliaryExpElement = $this->exporter->newAuxiliaryExpElement(
 			$dataItem
 		);

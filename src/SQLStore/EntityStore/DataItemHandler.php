@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * Classes extending this represent all store layout that is known about a certain dataitem

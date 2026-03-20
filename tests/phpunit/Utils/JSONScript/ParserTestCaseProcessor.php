@@ -8,9 +8,8 @@ use MediaWiki\Parser\ParserOptions;
 use MediaWiki\User\User;
 use MediaWikiIntegrationTestCase;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SerializerFactory;
-use SMW\Services\ServicesFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\Utils\PageReader;
 use SMW\Tests\Utils\UtilityFactory;
@@ -205,7 +204,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 			return;
 		}
 
-		$mediaWikiNsContentReader = ServicesFactory::getInstance()->create( 'MediaWikiNsContentReader' );
+		$mediaWikiNsContentReader = ApplicationFactory::getInstance()->create( 'MediaWikiNsContentReader' );
 		$mediaWikiNsContentReader->skipMessageCache();
 
 		$text = $mediaWikiNsContentReader->read( $case['subject'] );
@@ -229,7 +228,7 @@ class ParserTestCaseProcessor extends MediaWikiIntegrationTestCase {
 	}
 
 	private function getSubjectFrom( $case, $checkExists = true ) {
-		$subject = DIWikiPage::newFromText(
+		$subject = WikiPage::newFromText(
 			$case['subject'],
 			isset( $case['namespace'] ) ? constant( $case['namespace'] ) : NS_MAIN
 		);

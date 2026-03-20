@@ -7,6 +7,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\SQLStore\QueryEngine\Fulltext\TextSanitizer;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater
@@ -45,7 +46,7 @@ class SearchTableUpdaterTest extends TestCase {
 	}
 
 	public function testRead() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_text = 'Foo';
 
 		$this->connection->expects( $this->once() )

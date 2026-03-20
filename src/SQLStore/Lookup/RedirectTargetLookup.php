@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\RedirectStore;
 use SMW\Store;
@@ -93,18 +93,18 @@ class RedirectTargetLookup {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $target
+	 * @param WikiPage $target
 	 * @param string|null $flag
 	 *
-	 * @return DIWikiPage|false
+	 * @return WikiPage|false
 	 */
-	public function findRedirectSource( DIWikiPage $target, ?string $flag = null ) {
+	public function findRedirectSource( WikiPage $target, ?string $flag = null ) {
 		$cache = $this->inMemoryCacheManager->get(
 			IdCacheManager::REDIRECT_SOURCE
 		);
 
 		if ( $flag === self::CACHE_ONLY && $cache->fetch( $target->getSha1() ) !== false ) {
-			return DIWikiPage::doUnserialize( $cache->fetch( $target->getSha1() ) );
+			return WikiPage::doUnserialize( $cache->fetch( $target->getSha1() ) );
 		}
 
 		return false;

@@ -13,6 +13,7 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\ErrorValue;
 use SMW\DataValues\TypesValue;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\RequestOptions;
@@ -21,7 +22,6 @@ use SMW\TypesRegistry;
 use SMW\Utils\HtmlColumns;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\Pager;
-use SMWInfolink as Infolink;
 
 /**
  * This special page for MediaWiki provides information about available types

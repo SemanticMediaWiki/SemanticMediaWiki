@@ -3,9 +3,9 @@
 namespace SMW\Tests\Deserializers;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataModel\SemanticData;
 use SMW\Deserializers\SemanticDataDeserializer;
 use SMW\Exception\DataItemDeserializationException;
-use SMW\SemanticData;
 
 /**
  * @covers \SMW\Deserializers\SemanticDataDeserializer

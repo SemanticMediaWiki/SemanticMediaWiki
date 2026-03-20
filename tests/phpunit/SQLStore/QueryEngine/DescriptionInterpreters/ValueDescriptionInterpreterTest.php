@@ -12,6 +12,7 @@ use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
@@ -104,7 +105,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 2;
 		$expected->alias = "t0";
 		$expected->joinfield = [ 42 ];
@@ -119,7 +120,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LEQ
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->alias = "t0";
 		$expected->joinfield = "t0.smw_id";
@@ -135,7 +136,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_LIKE
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->alias = "t0";
 		$expected->joinfield = "t0.smw_id";
@@ -151,7 +152,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIBLob( 'Foo' )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinfield = "";
 		$expected->where = "";

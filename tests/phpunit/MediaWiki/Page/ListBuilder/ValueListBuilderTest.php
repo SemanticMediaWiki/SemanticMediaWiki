@@ -3,13 +3,13 @@
 namespace SMW\Tests\MediaWiki\Page\ListBuilder;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Page\ListBuilder\ValueListBuilder;
 use SMW\SQLStore\EntityStore\PrefetchItemLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\MediaWiki\Page\ListBuilder\ValueListBuilder
@@ -57,8 +57,8 @@ class ValueListBuilderTest extends TestCase {
 	public function testCreateEmptyList() {
 		$instance = new ValueListBuilder( $this->store );
 
-		$property = new DIProperty( 'Foo' );
-		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
+		$property = new Property( 'Foo' );
+		$dataItem = new WikiPage( 'Bar', NS_MAIN );
 
 		$this->assertSame(
 			'',
@@ -67,11 +67,11 @@ class ValueListBuilderTest extends TestCase {
 	}
 
 	public function testCreateHtml() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ $subject->getHash() => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
+			->willReturn( [ $subject->getHash() => [ WikiPage::newFromText( 'Bar' ) ] ] );
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -93,8 +93,8 @@ class ValueListBuilderTest extends TestCase {
 		$instance = new ValueListBuilder( $store );
 		$instance->setLanguageCode( 'en' );
 
-		$property = new DIProperty( 'Foo' );
-		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
+		$property = new Property( 'Foo' );
+		$dataItem = new WikiPage( 'Bar', NS_MAIN );
 
 		$this->stringValidator->assertThatStringContains(
 			[
@@ -107,11 +107,11 @@ class ValueListBuilderTest extends TestCase {
 	}
 
 	public function testCreateHtml_TimeOffset() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->prefetchItemLookup->expects( $this->once() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ $subject->getHash() => [ new DITime( DITime::CM_GREGORIAN, 1970 ) ] ] );
+			->willReturn( [ $subject->getHash() => [ new Time( Time::CM_GREGORIAN, 1970 ) ] ] );
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -134,10 +134,10 @@ class ValueListBuilderTest extends TestCase {
 		$instance->setLanguageCode( 'en' );
 		$instance->applyLocalTimeOffset( true );
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyValueType( '_dat' );
 
-		$dataItem = new DIWikiPage( 'Bar', NS_MAIN );
+		$dataItem = new WikiPage( 'Bar', NS_MAIN );
 
 		$this->stringValidator->assertThatStringContains(
 			[

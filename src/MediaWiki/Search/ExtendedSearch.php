@@ -3,9 +3,9 @@
 namespace SMW\MediaWiki\Search;
 
 use SearchEngine;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Store;
-use SMWQuery;
 
 /**
  * Search engine that will try to find wiki pages by interpreting the search
@@ -333,7 +333,7 @@ class ExtendedSearch {
 
 		$query->clearErrors();
 		$query->setOption( 'highlight.fragment', $highlight );
-		$query->setOption( SMWQuery::PROC_CONTEXT, 'SpecialSearch' );
+		$query->setOption( Query::PROC_CONTEXT, 'SpecialSearch' );
 
 		$result = $this->store->getQueryResult( $query );
 		$this->errors = $query->getErrors();
@@ -343,7 +343,7 @@ class ExtendedSearch {
 		$this->queryLink->setParameter( $this->limit, 'limit' );
 
 		if ( $count ) {
-			$query->querymode = SMWQuery::MODE_COUNT;
+			$query->querymode = Query::MODE_COUNT;
 			$query->setOffset( 0 );
 
 			$queryResult = $this->store->getQueryResult( $query );
@@ -358,7 +358,7 @@ class ExtendedSearch {
 	/**
 	 * @param string $term
 	 *
-	 * @return SMWQuery | null
+	 * @return Query|null
 	 */
 	private function getSearchQuery( $term ) {
 		if ( $this->queryBuilder === null ) {

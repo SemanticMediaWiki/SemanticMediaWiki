@@ -3,7 +3,7 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Query\Language\ThingDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
@@ -107,7 +107,7 @@ class ThingDescriptionInterpreterTest extends TestCase {
 		$conditionType = TrueCondition::class;
 
 		$description = new ThingDescription();
-		$orderByProperty = new DIProperty( 'Foo' );
+		$orderByProperty = new Property( 'Foo' );
 
 		$expected = $stringBuilder
 			->addString( '?result swivt:wikiPageSortKey ?resultsk .' )->addNewLine()

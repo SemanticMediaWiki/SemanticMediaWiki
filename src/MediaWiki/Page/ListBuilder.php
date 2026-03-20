@@ -3,13 +3,13 @@
 namespace SMW\MediaWiki\Page;
 
 use MediaWiki\Linker\Linker;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
 use SMW\Store;
 use SMW\Utils\HtmlColumns;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -25,7 +25,7 @@ class ListBuilder {
 	private $itemFormatter;
 
 	/**
-	 * @var DIProperty
+	 * @var Property
 	 */
 	private $property;
 
@@ -61,9 +61,9 @@ class ListBuilder {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 */
-	public function setProperty( DIProperty $property ): void {
+	public function setProperty( Property $property ): void {
 		$this->property = $property;
 	}
 

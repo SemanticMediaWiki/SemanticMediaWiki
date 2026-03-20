@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use Exception;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -223,7 +223,7 @@ class ListLookup extends Lookup {
 
 			if ( $ns === SMW_NS_PROPERTY ) {
 				try {
-					$label = DIProperty::newFromUserLabel( $row->smw_title )->getLabel();
+					$label = Property::newFromUserLabel( $row->smw_title )->getLabel();
 				} catch ( Exception $e ) {
 					continue;
 				}

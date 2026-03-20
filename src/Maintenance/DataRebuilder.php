@@ -7,7 +7,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DataRebuilder\OutdatedDisposer;
 use SMW\MediaWiki\TitleFactory;
 use SMW\Options;
@@ -476,7 +476,7 @@ class DataRebuilder {
 			return [ $text, "[$prefix " . $entity->getPrefixedDBKey() . ']' ];
 		}
 
-		if ( $entity instanceof DIWikiPage ) {
+		if ( $entity instanceof WikiPage ) {
 			return [ $text, "[$prefix " . $entity->getHash() . ']' ];
 		}
 

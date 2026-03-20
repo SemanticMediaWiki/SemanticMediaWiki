@@ -5,26 +5,26 @@ namespace SMW\Tests\Utils\Mock;
 use DataValues\DataValue;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
-use SMW\ContentParser;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DependencyContainer;
 use SMW\DependencyObject;
-use SMW\DIProperty;
 use SMW\Factbox\Factbox;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\NullDependencyContainer;
+use SMW\Parser\ContentParser;
 use SMW\ParserData;
 use SMW\Query\Language\Description;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
-use SMW\SemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\Store;
 use SMW\Store\CacheableResultCollector;
-use SMWDataItem;
-use SMWDIError;
-use SMWQuery;
 
 /**
  * @codeCoverageIgnore
@@ -202,7 +202,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWQuery
+	 * @return Query
 	 */
 	public function Query() {
 		$query = $this->getMockBuilder( 'SMWQuery' )
@@ -323,7 +323,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'getDIType' )
-			->willReturn( SMWDataItem::TYPE_WIKIPAGE );
+			->willReturn( DataItem::TYPE_WIKIPAGE );
 
 		$diWikiPage->expects( $this->any() )
 			->method( 'findPropertyTypeID' )
@@ -339,10 +339,10 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	/**
 	 * @since 1.9
 	 *
-	 * @return DIProperty
+	 * @return Property
 	 */
 	public function DIProperty() {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -356,7 +356,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 
 		$property->expects( $this->any() )
 			->method( 'getDIType' )
-			->willReturn( SMWDataItem::TYPE_PROPERTY );
+			->willReturn( DataItem::TYPE_PROPERTY );
 
 		foreach ( $this->builder->getInvokedMethods() as $method ) {
 
@@ -477,7 +477,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWDIError
+	 * @return Error
 	 */
 	public function DIError() {
 		$errors = $this->getMockBuilder( 'SMWDIError' )
@@ -494,7 +494,7 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	/**
 	 * @since 1.9
 	 *
-	 * @return SMWDataItem
+	 * @return DataItem
 	 */
 	public function DataItem() {
 		$requiredMethods = [

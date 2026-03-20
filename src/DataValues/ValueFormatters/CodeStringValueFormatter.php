@@ -4,7 +4,7 @@ namespace SMW\DataValues\ValueFormatters;
 
 use SMW\DataValues\DataValue;
 use SMW\DataValues\StringValue;
-use SMWOutputs as Outputs;
+use SMW\MediaWiki\Outputs;
 
 /**
  * @license GPL-2.0-or-later

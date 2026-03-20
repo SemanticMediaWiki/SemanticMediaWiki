@@ -3,11 +3,11 @@
 namespace SMW\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Parser\AnnotationProcessor;
-use SMW\SemanticData;
 
 /**
  * @covers \SMW\Parser\AnnotationProcessor
@@ -86,7 +86,7 @@ class AnnotationProcessorTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 

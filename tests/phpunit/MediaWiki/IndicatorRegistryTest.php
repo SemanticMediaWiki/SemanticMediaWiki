@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki;
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProvider;
 use SMW\MediaWiki\IndicatorRegistry;
 use SMW\MediaWiki\Permission\PermissionAware;
@@ -131,7 +131,7 @@ class IndicatorRegistryTest extends TestCase {
 				return '';
 			}
 
-			public function hasIndicator( DIWikiPage $subject, array $options ) {
+			public function hasIndicator( WikiPage $subject, array $options ) {
 				return false;
 			}
 
@@ -160,7 +160,7 @@ class IndicatorRegistryTest extends TestCase {
 				return '';
 			}
 
-			public function hasIndicator( DIWikiPage $subject, array $options ) {
+			public function hasIndicator( WikiPage $subject, array $options ) {
 				return false;
 			}
 

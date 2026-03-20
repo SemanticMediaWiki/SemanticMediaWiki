@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
 use SMW\MediaWiki\ExtendedDateTime;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later

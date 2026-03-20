@@ -8,9 +8,10 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\WebRequest;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ParserCachePurgeJob;
+use SMW\Query\Query;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
-use SMWQuery as Query;
 
 /**
  * Some updates need to be handled in via post processing,
@@ -112,7 +113,7 @@ class PostProcHandler {
 	 * @return string
 	 */
 	public function getHtml( Title $title, WebRequest $webRequest ) {
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 

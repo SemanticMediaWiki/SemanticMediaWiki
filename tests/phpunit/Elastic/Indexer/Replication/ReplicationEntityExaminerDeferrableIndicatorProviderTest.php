@@ -3,7 +3,7 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
@@ -157,7 +157,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 	}
 
 	public function testHasIndicators_NoCheck() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
@@ -184,7 +184,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 		$this->entityCache->expects( $this->never() )
 			->method( 'fetch' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
@@ -209,7 +209,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 			->with(	$this->stringContains( 'smw:entity:b94628b92d22cd315ccf7abb5b1df3c0' ) )
 			->willReturn( ReplicationCheck::TYPE_SUCCESS );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
@@ -233,7 +233,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 			->method( 'fetch' )
 			->willReturn( false );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
@@ -262,7 +262,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 			->method( 'fetch' )
 			->willReturn( false );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,
@@ -301,14 +301,14 @@ class ReplicationEntityExaminerDeferrableIndicatorProviderTest extends TestCase 
 
 		$this->replicationCheck->expects( $this->any() )
 			->method( 'checkReplication' )
-			->with(	DIWikiPage::newFromText( '_MDAT', SMW_NS_PROPERTY ) )
+			->with(	WikiPage::newFromText( '_MDAT', SMW_NS_PROPERTY ) )
 			->willReturn( '' );
 
 		$this->replicationCheck->expects( $this->once() )
 			->method( 'getSeverityType' )
 			->willReturn( ReplicationCheck::SEVERITY_TYPE_ERROR );
 
-		$subject = DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY );
 
 		$instance = new ReplicationEntityExaminerDeferrableIndicatorProvider(
 			$this->store,

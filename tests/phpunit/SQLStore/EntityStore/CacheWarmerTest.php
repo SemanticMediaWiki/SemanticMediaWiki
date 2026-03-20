@@ -4,9 +4,9 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\CacheWarmer;
 use SMW\SQLStore\EntityStore\IdCacheManager;
@@ -48,7 +48,7 @@ class CacheWarmerTest extends TestCase {
 
 	public function testPrepareCache_Page() {
 		$list = [
-			new DIWikiPage( 'Bar', NS_MAIN )
+			new WikiPage( 'Bar', NS_MAIN )
 		];
 
 		$row = [
@@ -119,8 +119,8 @@ class CacheWarmerTest extends TestCase {
 	public function testPrepareCache_Property() {
 		$list = [
 			// Both represent the same object hence only cache once
-			new DIProperty( 'Foo' ),
-			new DIWikiPage( 'Foo', SMW_NS_PROPERTY )
+			new Property( 'Foo' ),
+			new WikiPage( 'Foo', SMW_NS_PROPERTY )
 		];
 
 		$row = [
@@ -171,7 +171,7 @@ class CacheWarmerTest extends TestCase {
 
 	public function testPrepareCache_UnknownPredefinedProperty() {
 		$list = [
-			new DIWikiPage( '_Foo', SMW_NS_PROPERTY )
+			new WikiPage( '_Foo', SMW_NS_PROPERTY )
 		];
 
 		$this->idCacheManager->expects( $this->never() )

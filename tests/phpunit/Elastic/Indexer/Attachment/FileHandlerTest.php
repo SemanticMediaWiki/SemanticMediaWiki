@@ -4,6 +4,7 @@ namespace SMW\Tests\Elastic\Indexer\Attachment;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
 use SMW\MediaWiki\FileRepoFinder;
 
@@ -57,7 +58,7 @@ class FileHandlerTest extends TestCase {
 
 		$instance->setReadCallback( static function ( $read_url ) use( $url ) {
 			if ( $read_url !== $url ) {
-				throw new \RuntimeException( "Invalid read URL!" );
+				throw new RuntimeException( "Invalid read URL!" );
 			}
 
 			return 'FooUrl';

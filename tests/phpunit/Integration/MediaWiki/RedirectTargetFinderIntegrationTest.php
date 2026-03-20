@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
@@ -65,12 +65,12 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 			->doEdit( '#REDIRECT [[RedirectParseUsingManualRedirect]]' );
 
 		$expected = [
-			new DIProperty( '_REDI' )
+			new Property( '_REDI' )
 		];
 
 		$this->semanticDataValidator->assertHasProperties(
 			$expected,
-			$this->getStore()->getInProperties( DIWikiPage::newFromTitle( $target ) )
+			$this->getStore()->getInProperties( WikiPage::newFromTitle( $target ) )
 		);
 
 		$this->deletePoolOfPages = [
@@ -91,12 +91,12 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 		$this->testEnvironment->executePendingDeferredUpdates();
 
 		$expected = [
-			new DIProperty( '_REDI' )
+			new Property( '_REDI' )
 		];
 
 		$this->semanticDataValidator->assertHasProperties(
 			$expected,
-			$this->getStore()->getInProperties( DIWikiPage::newFromTitle( $target ) )
+			$this->getStore()->getInProperties( WikiPage::newFromTitle( $target ) )
 		);
 
 		$this->deletePoolOfPages = [
@@ -107,11 +107,11 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 	public function testManualRemovalOfRedirectTarget() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
-		$source = DIWikiPage::newFromTitle(
+		$source = WikiPage::newFromTitle(
 			$titleFactory->newFromText( __METHOD__ )
 		);
 
-		$target = DIWikiPage::newFromTitle(
+		$target = WikiPage::newFromTitle(
 			$titleFactory->newFromText( 'ManualRemovalOfRedirectTarget' )
 		);
 
@@ -123,7 +123,7 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 			->doEdit( '#REDIRECT [[ManualRemovalOfRedirectTarget]]' );
 
 		$expected = [
-			new DIProperty( '_REDI' )
+			new Property( '_REDI' )
 		];
 
 		$this->assertEquals(
@@ -196,7 +196,7 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->assertEquals(
 			$target->getDBKey(),
-			$this->getStore()->getRedirectTarget( DIWikiPage::newFromTitle( $source ) )->getDBKey()
+			$this->getStore()->getRedirectTarget( WikiPage::newFromTitle( $source ) )->getDBKey()
 		);
 
 		$this->deletePoolOfPages = [
@@ -235,13 +235,13 @@ class RedirectTargetFinderIntegrationTest extends SMWIntegrationTestCase {
 			->newDeepRedirectTargetResolver();
 
 		// Store will point towards the correct target
-		$expectedRedirect = DIWikiPage::newFromTitle(
+		$expectedRedirect = WikiPage::newFromTitle(
 			$titleFactory->newFromText( 'DeepRedirectTargetResolverToDetectCircularTarget/1' )
 		);
 
 		$this->assertEquals(
 			$expectedRedirect->getDBKey(),
-			$this->getStore()->getRedirectTarget( DIWikiPage::newFromTitle( $source ) )->getDBKey()
+			$this->getStore()->getRedirectTarget( WikiPage::newFromTitle( $source ) )->getDBKey()
 		);
 
 		// Resolver will raise an exception as actions can not act on

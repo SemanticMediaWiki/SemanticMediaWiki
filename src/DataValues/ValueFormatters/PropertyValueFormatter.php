@@ -6,7 +6,7 @@ use MediaWiki\Html\Html;
 use RuntimeException;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;

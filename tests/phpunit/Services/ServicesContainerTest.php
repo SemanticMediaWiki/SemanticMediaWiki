@@ -5,6 +5,7 @@ namespace SMW\Tests\Services;
 use PHPUnit\Framework\TestCase;
 use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Services\ServicesContainer;
+use stdClass;
 
 /**
  * @covers \SMW\Services\ServicesContainer
@@ -134,7 +135,7 @@ class ServicesContainerTest extends TestCase {
 	}
 
 	public function stdClassService( $arg = '' ) {
-		return new \stdClass();
+		return new stdClass();
 	}
 
 }

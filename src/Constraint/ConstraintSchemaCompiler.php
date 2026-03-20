@@ -2,7 +2,7 @@
 
 namespace SMW\Constraint;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
@@ -42,11 +42,11 @@ class ConstraintSchemaCompiler {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return 'PROPERTY_CONSTRAINT_SCHEMA'[]|non-empty-array[]
 	 */
-	public function compileConstraintSchema( DIProperty $property ): array {
+	public function compileConstraintSchema( Property $property ): array {
 		$constraintSchema = [];
 
 		$this->constraint_schema( $property, $constraintSchema );

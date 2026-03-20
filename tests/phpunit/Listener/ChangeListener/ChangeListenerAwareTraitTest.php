@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Listener\ChangeListener;
 
+use PHPUnit\Framework\TestCase;
 use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
 
 /**
@@ -13,7 +14,7 @@ use SMW\Listener\ChangeListener\ChangeListenerAwareTrait;
  *
  * @author mwjames
  */
-class ChangeListenerAwareTraitTest extends \PHPUnit\Framework\TestCase {
+class ChangeListenerAwareTraitTest extends TestCase {
 
 	public function testRegister_Get_Clear() {
 		$changeListener = $this->getMockBuilder( '\SMW\Listener\ChangeListener\ChangeListener' )

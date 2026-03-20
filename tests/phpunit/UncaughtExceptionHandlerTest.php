@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use Exception;
 use MediaWiki\Registration\ExtensionDependencyError;
 use PHPUnit\Framework\TestCase;
 use SMW\Exception\ConfigPreloadFileNotReadableException;
@@ -63,7 +64,7 @@ class UncaughtExceptionHandlerTest extends TestCase {
 			$this->setupCheck
 		);
 
-		$exception = new \Exception(
+		$exception = new Exception(
 			'SemanticMediaWiki, extension.json'
 		);
 

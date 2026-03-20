@@ -3,8 +3,8 @@
 namespace SMW\Tests\MediaWiki\Specials\Ask;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\Specials\Ask\DownloadLinksWidget;
-use SMWInfolink;
 
 /**
  * @covers \SMW\MediaWiki\Specials\Ask\DownloadLinksWidget
@@ -24,7 +24,7 @@ class DownloadLinksWidgetTest extends TestCase {
 	}
 
 	public function testLinks() {
-		$infolink = $this->getMockBuilder( SMWInfolink::class )
+		$infolink = $this->getMockBuilder( Infolink::class )
 			->disableOriginalConstructor()
 			->getMock();
 

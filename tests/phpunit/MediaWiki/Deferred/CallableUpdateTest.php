@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki\Deferred;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\Tests\TestEnvironment;
@@ -68,7 +69,7 @@ class CallableUpdateTest extends TestCase {
 
 	public function testUpdateThatThrowsExceptionToLogAndRethrow() {
 		$callback = static function () {
-			throw new \Exception( "Error Processing Request", 1 );
+			throw new Exception( "Error Processing Request", 1 );
 		};
 
 		$instance = new CallableUpdate(

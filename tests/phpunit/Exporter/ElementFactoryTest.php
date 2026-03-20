@@ -4,9 +4,12 @@ namespace SMW\Tests\Exporter;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\GeoCoord;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\Exporter\Element;
 use SMW\Exporter\ElementFactory;
+use stdclass;
 
 /**
  * @covers \SMW\Exporter\ElementFactory
@@ -46,8 +49,8 @@ class ElementFactoryTest extends TestCase {
 		$dataItemFactory = new DataItemFactory();
 		$instance = new ElementFactory();
 
-		$instance->registerCallableMapper( \SMWDataItem::TYPE_BLOB, static function ( $datatem ) {
-			return new \stdclass;
+		$instance->registerCallableMapper( DataItem::TYPE_BLOB, static function ( $datatem ) {
+			return new stdclass;
 		} );
 
 		$this->expectException( 'RuntimeException' );
@@ -122,7 +125,7 @@ class ElementFactoryTest extends TestCase {
 
 		# 1
 		$provider[] = [
-			new \SMWDIGeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
+			new GeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
 		];
 
 		return $provider;

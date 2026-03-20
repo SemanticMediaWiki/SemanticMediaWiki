@@ -5,12 +5,12 @@ namespace SMW\MediaWiki\Search\ProfileForm;
 use MediaWiki\Html\Html;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Schema\SchemaFactory;
 use SMW\Store;
 use SMW\Utils\HtmlModal;
-use SMWInfolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -163,7 +163,7 @@ class ProfileForm {
 
 		$searchEngine = $this->specialSearch->getSearchEngine();
 
-		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof SMWInfolink ) {
+		if ( ( $queryLink = $searchEngine->getQueryLink() ) instanceof Infolink ) {
 			$queryLink->setCaption( $this->msg( 'smw-search-profile-link-caption-query', Message::TEXT ) );
 			$queryLink->setLinkAttributes(
 				[

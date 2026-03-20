@@ -3,13 +3,14 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\MappingIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\SubobjectListFinder;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\SubobjectListFinder
@@ -81,7 +82,7 @@ class SubobjectListFinderTest extends TestCase {
 	 * @dataProvider subjectProvider
 	 */
 	public function testIterateOn( $subject ) {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 		$row->smw_sortkey = 'sort';
 		$row->smw_sort = 'SORT';
@@ -124,15 +125,15 @@ class SubobjectListFinderTest extends TestCase {
 
 	public function subjectProvider() {
 		$provider[] = [
-			DIWikiPage::newFromText( 'Foo' )
+			WikiPage::newFromText( 'Foo' )
 		];
 
 		$provider[] = [
-			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
 		];
 
 		$provider[] = [
-			DIWikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Modification date', SMW_NS_PROPERTY )
 		];
 
 		return $provider;

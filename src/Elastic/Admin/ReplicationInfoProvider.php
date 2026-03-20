@@ -4,7 +4,7 @@ namespace SMW\Elastic\Admin;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
 use SMW\EntityCache;
@@ -107,7 +107,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		$files = [];
 
 		foreach ( $failures as $hash ) {
-			$title = DIWikiPage::doUnserialize( $hash )->getTitle();
+			$title = WikiPage::doUnserialize( $hash )->getTitle();
 
 			if ( $title->getNamespace() === NS_FILE ) {
 				$files[] = $this->buildFromFile( $title );

@@ -5,10 +5,10 @@ namespace SMW\Tests\Utils\JSONScript;
 use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use SMW\Query\Parser as QueryParser;
+use SMW\Query\Query;
 use SMW\Store;
 use SMW\Tests\Utils\Validators\QueryResultValidator;
 use SMW\Tests\Utils\Validators\StringValidator;
-use SMWQuery as Query;
 
 /**
  * @group semantic-mediawiki

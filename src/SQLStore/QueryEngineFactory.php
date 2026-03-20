@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\QueryEngine\ConceptQuerySegmentBuilder;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
@@ -82,11 +82,11 @@ class QueryEngineFactory {
 		$hierarchyTempTableBuilder->setTableDefinitions(
 			[
 				'property' => [
-					'table' => $this->store->findPropertyTableID( new DIProperty( '_SUBP' ) ),
+					'table' => $this->store->findPropertyTableID( new Property( '_SUBP' ) ),
 					'depth' => $settings->get( 'smwgQSubpropertyDepth' )
 				],
 				'class' => [
-					'table' => $this->store->findPropertyTableID( new DIProperty( '_SUBC' ) ),
+					'table' => $this->store->findPropertyTableID( new Property( '_SUBC' ) ),
 					'depth' => $settings->get( 'smwgQSubcategoryDepth' )
 				]
 

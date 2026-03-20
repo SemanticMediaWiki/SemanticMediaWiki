@@ -2,11 +2,11 @@
 
 namespace SMW\Parser;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
-use SMWDataItem as DataItem;
 
 /**
  * To allow for an in-memory processing of existing SemanticData references during
@@ -81,7 +81,7 @@ class AnnotationProcessor {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?DIWikiPage $contextPage = null ) {
+	public function newDataValueByText( $propertyName, $valueString, $caption = false, ?WikiPage $contextPage = null ) {
 		return $this->dataValueFactory->newDataValueByText( $propertyName, $valueString, $caption, $contextPage );
 	}
 
@@ -90,7 +90,7 @@ class AnnotationProcessor {
 	 *
 	 * @return DataValue
 	 */
-	public function newDataValueByItem( DataItem $dataItem, ?DIProperty $property = null, $caption = false, $contextPage = null ) {
+	public function newDataValueByItem( DataItem $dataItem, ?Property $property = null, $caption = false, $contextPage = null ) {
 		return $this->dataValueFactory->newDataValueByItem( $dataItem, $property, $caption, $contextPage );
 	}
 

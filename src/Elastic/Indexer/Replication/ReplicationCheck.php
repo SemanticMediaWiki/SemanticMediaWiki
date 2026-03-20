@@ -3,8 +3,8 @@
 namespace SMW\Elastic\Indexer\Replication;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -65,12 +65,12 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return string
 	 */
 	public static function makeCacheKey( $subject ): string {
-		if ( $subject instanceof DIWikiPage ) {
+		if ( $subject instanceof WikiPage ) {
 			$subject = $subject->getHash();
 		}
 
@@ -96,14 +96,14 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $subject
+	 * @param WikiPage|Title $subject
 	 */
 	public function deleteReplicationTrail( $subject ): void {
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 
@@ -152,7 +152,7 @@ class ReplicationCheck {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize(
+		$subject = WikiPage::doUnserialize(
 			$parameters['subject']
 		);
 
@@ -167,12 +167,12 @@ class ReplicationCheck {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return string
 	 */
-	public function checkReplication( DIWikiPage $subject, array $options = [] ) {
+	public function checkReplication( WikiPage $subject, array $options = [] ) {
 		$this->templateEngine = new TemplateEngine();
 		$this->templateEngine->bulkLoad(
 			[
@@ -217,7 +217,7 @@ class ReplicationCheck {
 		// Show a user readable representation especially when referring
 		// to a predefined property
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$property = DIProperty::newFromUserLabel( $subject->getDBKey() );
+			$property = Property::newFromUserLabel( $subject->getDBKey() );
 			$title = $property->getDiWikiPage()->getTitle();
 		}
 

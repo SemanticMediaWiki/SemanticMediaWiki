@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -98,7 +98,7 @@ class DisplayTitleLookup {
 	}
 
 	private function fetchFromTable( $list ) {
-		$property = new DIProperty( '_DTITLE' );
+		$property = new Property( '_DTITLE' );
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$propTableId = $this->store->findPropertyTableID(
