@@ -40,7 +40,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getList() {
 		return $this->list;

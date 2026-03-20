@@ -4,6 +4,7 @@ namespace SMW\Property;
 
 use RuntimeException;
 use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
@@ -103,7 +104,7 @@ class SpecificationLookup {
 	 * @param Property|WikiPage $source
 	 * @param Property $target
 	 *
-	 * @return ]|DataItem[
+	 * @return bool|array|DataItem[]
 	 */
 	public function getSpecification( $source, Property $target ) {
 		if ( $source instanceof Property ) {

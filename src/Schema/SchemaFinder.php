@@ -88,6 +88,10 @@ class SchemaFinder {
 	 * @since 3.1
 	 */
 	public function newSchemaList( DataItem $dataItem, Property $property ): ?SchemaList {
+		if ( !$dataItem instanceof Property && !$dataItem instanceof WikiPage ) {
+			return null;
+		}
+
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
 			$property

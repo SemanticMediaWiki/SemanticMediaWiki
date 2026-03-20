@@ -47,9 +47,9 @@ class SchemaFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getType( $type ) {
+	public function getType( string $type ) {
 		return $this->getSchemaTypes()->getType( $type );
 	}
 
@@ -63,7 +63,12 @@ class SchemaFactory {
 			return;
 		}
 
-		$type = $this->getType( $schema->get( 'type' ) );
+		$typeName = $schema->get( 'type' );
+		if ( !is_string( $typeName ) || $typeName === '' ) {
+			return;
+		}
+
+		$type = $this->getType( $typeName );
 
 		if ( !isset( $type['change_propagation'] ) || $type['change_propagation'] === false ) {
 			return;

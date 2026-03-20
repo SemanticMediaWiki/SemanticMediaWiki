@@ -22,7 +22,7 @@ trait FilterTrait {
 	private $matches = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 

@@ -51,11 +51,11 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 
 		$matchedCondition = $this->matchOneOf( (array)$namespaces );
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+		if ( $matchedCondition && $compartment instanceof Rule ) {
 			$compartment->incrFilterScore();
 		}
 
-		if ( $matchedCondition === true ) {
+		if ( $matchedCondition ) {
 			$this->matches[] = $compartment;
 		}
 	}

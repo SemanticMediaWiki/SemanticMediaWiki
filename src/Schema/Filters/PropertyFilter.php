@@ -20,7 +20,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 	use FilterTrait;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $properties = [];
 
@@ -140,7 +140,7 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			unset( $conditions['not'] );
 		}
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+		if ( $matchedCondition && $compartment instanceof Rule ) {
 			$compartment->incrFilterScore();
 		}
 
@@ -160,12 +160,12 @@ class PropertyFilter implements SchemaFilter, ChainableFilter {
 			$matchedCondition = !$this->matchAnyOf( (array)$conditions['not'] );
 
 			// Increasing the score in case an extra `not` condition was applied
-			if ( $matchedCondition === true && $compartment instanceof Rule ) {
+			if ( $matchedCondition && $compartment instanceof Rule ) {
 				$compartment->incrFilterScore();
 			}
 		}
 
-		if ( $matchedCondition === true ) {
+		if ( $matchedCondition ) {
 			$this->matches[] = $compartment;
 		}
 	}
