@@ -96,7 +96,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * and @see SMWResultPrinter::linkFurtherResults()
 	 * instead of accessing this directly.
 	 *
-	 * @var bool|null
+	 * @var string|null
 	 */
 	protected $mSearchlabel = null;
 
