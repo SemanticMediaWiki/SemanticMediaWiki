@@ -7,8 +7,14 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\DataValues\ErrorValue;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\TimeValue;
+use SMW\DataValues\URIValue;
+use SMW\DataValues\WikiPageValue;
 
 /**
  * @covers \SMW\DataValueFactory
@@ -173,7 +179,7 @@ class DataValueFactoryTest extends TestCase {
 		$dataValue = DataValueFactory::getInstance()->newDataValueByText( 'Has subobject', 'Foo' );
 
 		$this->assertInstanceOf(
-			'\SMWErrorValue',
+			ErrorValue::class,
 			$dataValue
 		);
 
@@ -186,7 +192,7 @@ class DataValueFactoryTest extends TestCase {
 		$dataValue = DataValueFactory::getInstance()->newPropertyValue( 'Bar', 'Foo' );
 
 		$this->assertInstanceOf(
-			'\SMWDataValue',
+			DataValue::class,
 			$dataValue
 		);
 	}
@@ -262,7 +268,7 @@ class DataValueFactoryTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			'SMWDataValue',
+			DataValue::class,
 			$dataValue
 		);
 	}
@@ -346,35 +352,35 @@ class DataValueFactoryTest extends TestCase {
 			[ '_txt', '-%&$*', '-%&$*', StringValue::class ], // #4
 			[ '_txt', '_Bar', '_Bar', StringValue::class ], // #5
 			[ '_txt', 'bar', 'bar', StringValue::class ], // #6
-			[ '-_txt', 'Bar', 'Bar', 'SMWErrorValue' ], // #7
+			[ '-_txt', 'Bar', 'Bar', ErrorValue::class ], // #7
 
-			[ '_wpg', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #8
-			[ '_wpg', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #9
-			[ '_wpg', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWWikiPageValue' ], // #10
-			[ '_wpg', '9001', '9001', 'SMWWikiPageValue' ], // #11
-			[ '_wpg', 1001, '1001', 'SMWWikiPageValue' ], // #12
-			[ '_wpg', '-%&$*', '-%&$*', 'SMWWikiPageValue' ], // #13
-			[ '_wpg', '_Bar', 'Bar', 'SMWWikiPageValue' ], // #14
-			[ '_wpg', 'bar', 'Bar', 'SMWWikiPageValue' ], // #15
-			[ '-_wpg', 'Bar', 'Bar', 'SMWErrorValue' ], // #16
+			[ '_wpg', 'Bar', 'Bar', WikiPageValue::class ], // #8
+			[ '_wpg', 'Bar', 'Bar', WikiPageValue::class ], // #9
+			[ '_wpg', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', WikiPageValue::class ], // #10
+			[ '_wpg', '9001', '9001', WikiPageValue::class ], // #11
+			[ '_wpg', 1001, '1001', WikiPageValue::class ], // #12
+			[ '_wpg', '-%&$*', '-%&$*', WikiPageValue::class ], // #13
+			[ '_wpg', '_Bar', 'Bar', WikiPageValue::class ], // #14
+			[ '_wpg', 'bar', 'Bar', WikiPageValue::class ], // #15
+			[ '-_wpg', 'Bar', 'Bar', ErrorValue::class ], // #16
 
-			[ '_dat', '1 Jan 1970', '1 Jan 1970', 'SMWTimeValue' ], // #0
-			[ '_uri', 'Foo', 'Foo', 'SMWURIValue' ], // #0
-			[ '_num', 9001, '9001', 'SMWNumberValue' ], // #0
-			[ '_num', 9001.5, '9001.5', 'SMWNumberValue' ], // #0
+			[ '_dat', '1 Jan 1970', '1 Jan 1970', TimeValue::class ], // #0
+			[ '_uri', 'Foo', 'Foo', URIValue::class ], // #0
+			[ '_num', 9001, '9001', NumberValue::class ], // #0
+			[ '_num', 9001.5, '9001.5', NumberValue::class ], // #0
 		];
 	}
 
 	public function propertyValueDataProvider() {
 		return [
-			[ 'Foo', 'Bar', 'Bar', 'SMWDataValue' ], // #0
-			[ 'Foo', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWDataValue' ], // #1
-			[ 'Foo', '9001', '9001', 'SMWDataValue' ], // #2
-			[ 'Foo', 1001, '1001', 'SMWDataValue' ], // #3
-			[ 'Foo', '-%&$*', '-%&$*', 'SMWDataValue' ], // #4
-			[ 'Foo', '_Bar', 'Bar', 'SMWDataValue' ], // #5
-			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
-			[ '-Foo', 'Bar', '', 'SMWErrorValue' ], // #7
+			[ 'Foo', 'Bar', 'Bar', DataValue::class ], // #0
+			[ 'Foo', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', DataValue::class ], // #1
+			[ 'Foo', '9001', '9001', DataValue::class ], // #2
+			[ 'Foo', 1001, '1001', DataValue::class ], // #3
+			[ 'Foo', '-%&$*', '-%&$*', DataValue::class ], // #4
+			[ 'Foo', '_Bar', 'Bar', DataValue::class ], // #5
+			[ 'Foo', 'bar', 'Bar', DataValue::class ], // #6
+			[ '-Foo', 'Bar', '', ErrorValue::class ], // #7
 			[ '_Foo', 'Bar', '', PropertyValue::class ], // #8
 		];
 	}
@@ -384,19 +390,19 @@ class DataValueFactoryTest extends TestCase {
 	 */
 	public function propertyObjectValueDataProvider() {
 		return [
-			[ 'Foo', 'Bar', 'Bar', 'SMWDataValue' ], // #0
-			[ 'Foo', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', 'SMWDataValue' ], // #1
-			[ 'Foo', '9001', '9001', 'SMWDataValue' ], // #2
-			[ 'Foo', 1001, '1001', 'SMWDataValue' ], // #3
-			[ 'Foo', '-%&$*', '-%&$*', 'SMWDataValue' ], // #4
-			[ 'Foo', '_Bar', 'Bar', 'SMWDataValue' ], // #5
-			[ 'Foo', 'bar', 'Bar', 'SMWDataValue' ], // #6
-			[ '-Foo', 'Bar', 'Bar', 'SMWWikiPageValue' ], // #7
+			[ 'Foo', 'Bar', 'Bar', DataValue::class ], // #0
+			[ 'Foo', 'Bar[[ Foo ]]', 'Bar[[ Foo ]]', DataValue::class ], // #1
+			[ 'Foo', '9001', '9001', DataValue::class ], // #2
+			[ 'Foo', 1001, '1001', DataValue::class ], // #3
+			[ 'Foo', '-%&$*', '-%&$*', DataValue::class ], // #4
+			[ 'Foo', '_Bar', 'Bar', DataValue::class ], // #5
+			[ 'Foo', 'bar', 'Bar', DataValue::class ], // #6
+			[ '-Foo', 'Bar', 'Bar', WikiPageValue::class ], // #7
 
-			// Will fail with "must be an instance of \SMW\DIProperty, instance of SMWDIError give"
+			// Will fail with "must be an instance of \SMW\DataItems\Property, instance of Error give"
 			// as propertyDI isn't checked therefore addPropertyValue() should be
 			// used as it will return a proper object
-			// array( '_Foo' , 'Bar'          , ''             , '\SMW\DIProperty' ), // #8
+			// array( '_Foo' , 'Bar'          , ''             , '\SMW\DataItems\Property' ), // #8
 		];
 	}
 
