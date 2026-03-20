@@ -3,7 +3,7 @@
 namespace SMW\Elastic\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\ElasticStore;
 use SMW\Elastic\Indexer\Document;
@@ -55,7 +55,7 @@ class IndexerRecoveryJob extends Job {
 	 */
 	public static function makeCacheKey( $subject ): string {
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
 		return smwfCacheKey( self::CACHE_NAMESPACE, $subject->getHash() );
@@ -187,12 +187,12 @@ class IndexerRecoveryJob extends Job {
 	}
 
 	private function create( $hash ): void {
-		$this->indexer->create( DIWikiPage::doUnserialize( $hash ) );
+		$this->indexer->create( WikiPage::doUnserialize( $hash ) );
 	}
 
 	private function index( $cache, $hash ): void {
 		$key = self::makeCacheKey(
-			DIWikiPage::doUnserialize( $hash )
+			WikiPage::doUnserialize( $hash )
 		);
 
 		$document = null;

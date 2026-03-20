@@ -2,10 +2,10 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\SequenceMap;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exception\DataItemException;
 use SMW\MediaWiki\LinkBatch;
 use SMW\RequestOptions;
@@ -61,12 +61,12 @@ class PrefetchItemLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return
 	 */
-	public function getPropertyValues( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
+	public function getPropertyValues( array $subjects, Property $property, RequestOptions $requestOptions ) {
 		$this->linkBatch->setCaller( __METHOD__ );
 		$this->linkBatch->addFromList( $subjects );
 		$this->linkBatch->execute();
@@ -81,7 +81,7 @@ class PrefetchItemLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function prefetchSemanticData( array $subjects, DIProperty $property, RequestOptions $requestOptions ): array {
+	private function prefetchSemanticData( array $subjects, Property $property, RequestOptions $requestOptions ): array {
 		$tableid = $this->store->findPropertyTableID( $property );
 		$entityIdManager = $this->store->getObjectIds();
 
@@ -132,7 +132,7 @@ class PrefetchItemLookup {
 
 				// Avoid reference to something like `__foo_bar#102##` (predefined property)
 				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash[0] === '_' ) {
-					$property = DIProperty::newFromUserLabel(
+					$property = Property::newFromUserLabel(
 						$subject->getDBKey()
 					);
 					$hash = $property->getCanonicalDIWikiPage()->getHash();
@@ -164,8 +164,8 @@ class PrefetchItemLookup {
 		return $result;
 	}
 
-	private function prefetchPropertySubjects( array $subjects, DIProperty $property, RequestOptions $requestOptions ) {
-		$noninverse = new DIProperty(
+	private function prefetchPropertySubjects( array $subjects, Property $property, RequestOptions $requestOptions ) {
+		$noninverse = new Property(
 			$property->getKey(),
 			false
 		);
@@ -231,7 +231,7 @@ class PrefetchItemLookup {
 				// Avoid reference to something like `__foo_bar#102##` (predefined property)
 				if ( $subject->getNamespace() === SMW_NS_PROPERTY && $hash[0] === '_' ) {
 
-					$property = DIProperty::newFromUserLabel(
+					$property = Property::newFromUserLabel(
 						$subject->getDBKey()
 					);
 
@@ -285,7 +285,7 @@ class PrefetchItemLookup {
 
 			$index_hash = md5( $dataItem->getHash() );
 
-			if ( $dataItem instanceof DIWikiPage ) {
+			if ( $dataItem instanceof WikiPage ) {
 
 				// Avoid unnecessary DB lookups by relying on `CACHE_ONLY` which
 				// should match any item in the list given that
@@ -305,7 +305,7 @@ class PrefetchItemLookup {
 				// be matched here, if it exists.
 				$source = $entityIdManager->findRedirectSource( $dataItem, $flag );
 
-				if ( $source instanceof DIWikiPage ) {
+				if ( $source instanceof WikiPage ) {
 					$index_hash = md5( $source->getHash() );
 				}
 			}

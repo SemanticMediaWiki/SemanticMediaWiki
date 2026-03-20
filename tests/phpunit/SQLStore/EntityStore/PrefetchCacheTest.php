@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\PrefetchCache;
@@ -48,11 +48,11 @@ class PrefetchCacheTest extends TestCase {
 	}
 
 	public function testCacheAndFetch() {
-		$property = new DIProperty( 'Foo' );
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$property = new Property( 'Foo' );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$expected = [
-			DIWikiPage::newFromText( 'Bar' )
+			WikiPage::newFromText( 'Bar' )
 		];
 
 		$idTable = $this->getMockBuilder( EntityIdManager::class )
@@ -70,7 +70,7 @@ class PrefetchCacheTest extends TestCase {
 
 		$this->prefetchItemLookup->expects( $this->atLeastOnce() )
 			->method( 'getPropertyValues' )
-			->willReturn( [ 42 => [ DIWikiPage::newFromText( 'Bar' ) ] ] );
+			->willReturn( [ 42 => [ WikiPage::newFromText( 'Bar' ) ] ] );
 
 		$instance = new PrefetchCache(
 			$this->store,

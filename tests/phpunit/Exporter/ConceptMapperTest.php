@@ -3,8 +3,8 @@
 namespace SMW\Tests\Exporter;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIConcept;
-use SMW\DIWikiPage;
+use SMW\DataItems\Concept;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\ConceptMapper;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Query\DescriptionFactory;
@@ -34,7 +34,7 @@ class ConceptMapperTest extends TestCase {
 	}
 
 	public function testIsMapperFor() {
-		$dataItem = $this->getMockBuilder( DIConcept::class )
+		$dataItem = $this->getMockBuilder( Concept::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -51,7 +51,7 @@ class ConceptMapperTest extends TestCase {
 		$exact = false;
 
 		$description = $this->descriptionFactory->newClassDescription(
-			DIWikiPage::newFromText( 'Foo', NS_CATEGORY )
+			WikiPage::newFromText( 'Foo', NS_CATEGORY )
 		);
 
 		$element = new ExpNsResource(
@@ -84,12 +84,12 @@ class ConceptMapperTest extends TestCase {
 		$exact = false;
 
 		$description = $this->descriptionFactory->newClassDescription(
-			DIWikiPage::newFromText( 'Foo', NS_CATEGORY )
+			WikiPage::newFromText( 'Foo', NS_CATEGORY )
 		);
 
 		$description->addDescription(
 			$this->descriptionFactory->newClassDescription(
-				DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
+				WikiPage::newFromText( 'Bar', NS_CATEGORY )
 			)
 		);
 

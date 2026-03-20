@@ -5,10 +5,10 @@ namespace SMW\MediaWiki\Hooks;
 use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\Title\Title;
 use Skin;
+use SMW\Formatters\Infolink;
 use SMW\MediaWiki\HookListener;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
-use SMWInfolink as Infolink;
 
 /**
  * Called at the end of Skin::buildSidebar().

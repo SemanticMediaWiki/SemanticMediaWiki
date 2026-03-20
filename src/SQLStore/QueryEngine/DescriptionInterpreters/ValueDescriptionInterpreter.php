@@ -2,7 +2,8 @@
 
 namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
@@ -11,7 +12,6 @@ use SMW\SQLStore\QueryEngine\FulltextSearchTableFactory;
 use SMW\SQLStore\QueryEngine\QuerySegment;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -59,7 +59,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 	public function interpretDescription( Description $description ): QuerySegment {
 		$query = new QuerySegment();
 
-		if ( !$description->getDataItem() instanceof DIWikiPage ) {
+		if ( !$description->getDataItem() instanceof WikiPage ) {
 			return $query;
 		}
 
@@ -148,7 +148,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		$query->components = [];
 
 		$query->where = $valueMatchConditionBuilder->getWhereCondition(
-			new ValueDescription( new DIBlob( $value ), null, $comparator ),
+			new ValueDescription( new Blob( $value ), null, $comparator ),
 			$query->alias
 		);
 

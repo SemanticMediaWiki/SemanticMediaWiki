@@ -3,10 +3,10 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\StoreFactory;
-use SMWDataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinition
@@ -27,7 +27,7 @@ class PropertyTableDefinitionTest extends TestCase {
 	}
 
 	public function testGetters() {
-		$diType = SMWDataItem::TYPE_NUMBER;
+		$diType = DataItem::TYPE_NUMBER;
 		$name   = 'smw_di_number';
 
 		$instance = new PropertyTableDefinition( $diType, $name );

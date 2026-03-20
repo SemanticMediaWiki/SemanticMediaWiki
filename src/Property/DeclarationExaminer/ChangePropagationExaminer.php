@@ -2,10 +2,10 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**
@@ -69,7 +69,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ) {
 		$subject = $property->getCanonicalDiWikiPage();
 		$semanticData = $this->store->getSemanticData( $subject );
 
@@ -77,7 +77,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 			$this->semanticData = $semanticData;
 		}
 
-		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
 			$this->isChangePropagation( $property );
 		} else {
 			$this->checkForPendingChangePropagationDispatchJob( $property );

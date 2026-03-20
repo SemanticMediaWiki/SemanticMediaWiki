@@ -4,8 +4,8 @@ namespace SMW\Tests;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\HierarchyLookup;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Store;
@@ -55,9 +55,9 @@ class HierarchyLookupTest extends TestCase {
 				static $calls = [];
 				$calls[] = $property;
 				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( new DIProperty( '_SUBP' ), $property );
+					$this->assertEquals( new Property( '_SUBP' ), $property );
 				} elseif ( count( $calls ) === 2 ) {
-					$this->assertEquals( new DIProperty( '_SUBC' ), $property );
+					$this->assertEquals( new Property( '_SUBC' ), $property );
 				}
 			} );
 
@@ -95,7 +95,7 @@ class HierarchyLookupTest extends TestCase {
 			$this->spyLogger
 		);
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$instance->hasSubproperty( $property );
 
 		$this->assertIsBool(
@@ -105,10 +105,10 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testFindSubpropertyList() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$expected = [
-			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
+			WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
 		];
 
 		$store = $this->getMockBuilder( Store::class )
@@ -118,7 +118,7 @@ class HierarchyLookupTest extends TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				new DIProperty( '_SUBP' ),
+				new Property( '_SUBP' ),
 				$property->getDiWikiPage(),
 				$this->anything() )
 			->willReturn( $expected );
@@ -143,15 +143,15 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testGetConsecutiveSubpropertyList() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$expected = [
-			new DIProperty( 'Bar' ),
-			new DIProperty( 'Foobar' )
+			new Property( 'Bar' ),
+			new Property( 'Foobar' )
 		];
 
-		$a = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
-		$b = DIWikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY );
+		$a = WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$b = WikiPage::newFromText( 'Foobar', SMW_NS_PROPERTY );
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
@@ -159,11 +159,11 @@ class HierarchyLookupTest extends TestCase {
 				static $calls = [];
 				$calls[] = $subject;
 				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( new DIProperty( '_SUBP' ), $prop );
+					$this->assertEquals( new Property( '_SUBP' ), $prop );
 					$this->assertEquals( $property->getDiWikiPage(), $subject );
 					return [ $a ];
 				}
-				$this->assertEquals( new DIProperty( '_SUBP' ), $prop );
+				$this->assertEquals( new Property( '_SUBP' ), $prop );
 				$this->assertEquals( $a, $subject );
 				return [ $b ];
 			} );
@@ -196,11 +196,11 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testGetConsecutiveCachedSubpropertyList() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$expected = [
-			new DIProperty( 'Bar' ),
-			new DIProperty( 'Foobar' )
+			new Property( 'Bar' ),
+			new Property( 'Foobar' )
 		];
 
 		$this->cache->expects( $this->once() )
@@ -228,15 +228,15 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testGetConsecutiveSubcategoryList() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$expected = [
-			new DIWikiPage( 'Bar', NS_CATEGORY ),
-			new DIWikiPage( 'Foobar', NS_CATEGORY )
+			new WikiPage( 'Bar', NS_CATEGORY ),
+			new WikiPage( 'Foobar', NS_CATEGORY )
 		];
 
-		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
-		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
+		$a = WikiPage::newFromText( 'Bar', NS_CATEGORY );
+		$b = WikiPage::newFromText( 'Foobar', NS_CATEGORY );
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
@@ -244,11 +244,11 @@ class HierarchyLookupTest extends TestCase {
 				static $calls = [];
 				$calls[] = $subject;
 				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( new DIProperty( '_SUBC' ), $prop );
+					$this->assertEquals( new Property( '_SUBC' ), $prop );
 					$this->assertEquals( $category, $subject );
 					return [ $a ];
 				}
-				$this->assertEquals( new DIProperty( '_SUBC' ), $prop );
+				$this->assertEquals( new Property( '_SUBC' ), $prop );
 				$this->assertEquals( $a, $subject );
 				return [ $b ];
 			} );
@@ -281,15 +281,15 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testGetConsecutiveSuperCategoryList() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$expected = [
-			new DIWikiPage( 'Bar', NS_CATEGORY ),
-			new DIWikiPage( 'Foobar', NS_CATEGORY )
+			new WikiPage( 'Bar', NS_CATEGORY ),
+			new WikiPage( 'Foobar', NS_CATEGORY )
 		];
 
-		$a = DIWikiPage::newFromText( 'Bar', NS_CATEGORY );
-		$b = DIWikiPage::newFromText( 'Foobar', NS_CATEGORY );
+		$a = WikiPage::newFromText( 'Bar', NS_CATEGORY );
+		$b = WikiPage::newFromText( 'Foobar', NS_CATEGORY );
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getPropertySubjects' )
@@ -297,11 +297,11 @@ class HierarchyLookupTest extends TestCase {
 				static $calls = [];
 				$calls[] = $subject;
 				if ( count( $calls ) === 1 ) {
-					$this->assertEquals( new DIProperty( '_SUBC', true ), $prop );
+					$this->assertEquals( new Property( '_SUBC', true ), $prop );
 					$this->assertEquals( $category, $subject );
 					return [ $a ];
 				}
-				$this->assertEquals( new DIProperty( '_SUBC', true ), $prop );
+				$this->assertEquals( new Property( '_SUBC', true ), $prop );
 				$this->assertEquals( $a, $subject );
 				return [ $b ];
 			} );
@@ -334,11 +334,11 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testGetConsecutiveCachedSubcategoryList() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY );
+		$category = new WikiPage( 'Foo', NS_CATEGORY );
 
 		$expected = [
-			new DIWikiPage( 'Bar', NS_CATEGORY ),
-			new DIWikiPage( 'Foobar', NS_CATEGORY )
+			new WikiPage( 'Bar', NS_CATEGORY ),
+			new WikiPage( 'Foobar', NS_CATEGORY )
 		];
 
 		$this->cache->expects( $this->once() )
@@ -373,14 +373,14 @@ class HierarchyLookupTest extends TestCase {
 
 		$this->expectException( 'InvalidArgumentException' );
 
-		$instance->getConsecutiveHierarchyList( new DIWikiPage( __METHOD__, NS_MAIN ) );
+		$instance->getConsecutiveHierarchyList( new WikiPage( __METHOD__, NS_MAIN ) );
 	}
 
 	public function testFindSubcategoryList() {
-		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
+		$category = WikiPage::newFromText( 'Foo', NS_CATEGORY );
 
 		$expected = [
-			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
+			WikiPage::newFromText( 'Bar', NS_CATEGORY )
 		];
 
 		$store = $this->getMockBuilder( Store::class )
@@ -390,7 +390,7 @@ class HierarchyLookupTest extends TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				new DIProperty( '_SUBC' ),
+				new Property( '_SUBC' ),
 				$category,
 				$this->anything() )
 			->willReturn( $expected );
@@ -415,10 +415,10 @@ class HierarchyLookupTest extends TestCase {
 	}
 
 	public function testFindNearbySuperCategories() {
-		$category = DIWikiPage::newFromText( 'Foo', NS_CATEGORY );
+		$category = WikiPage::newFromText( 'Foo', NS_CATEGORY );
 
 		$expected = [
-			DIWikiPage::newFromText( 'Bar', NS_CATEGORY )
+			WikiPage::newFromText( 'Bar', NS_CATEGORY )
 		];
 
 		$store = $this->getMockBuilder( Store::class )
@@ -428,7 +428,7 @@ class HierarchyLookupTest extends TestCase {
 		$store->expects( $this->once() )
 			->method( 'getPropertySubjects' )
 			->with(
-				new DIProperty( '_SUBC', true ),
+				new Property( '_SUBC', true ),
 				$category,
 				$this->anything() )
 			->willReturn( $expected );
@@ -469,7 +469,7 @@ class HierarchyLookupTest extends TestCase {
 		$instance->setSubpropertyDepth( 0 );
 
 		$this->assertFalse(
-			$instance->hasSubproperty( new DIProperty( 'Foo' ) )
+			$instance->hasSubproperty( new Property( 'Foo' ) )
 		);
 	}
 
@@ -490,7 +490,7 @@ class HierarchyLookupTest extends TestCase {
 		$instance->setSubcategoryDepth( 0 );
 
 		$this->assertFalse(
-			$instance->hasSubcategory( DIWikiPage::newFromText( 'Foo', NS_CATEGORY ) )
+			$instance->hasSubcategory( WikiPage::newFromText( 'Foo', NS_CATEGORY ) )
 		);
 	}
 

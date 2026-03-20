@@ -5,7 +5,7 @@ namespace SMW\Tests\Maintenance;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Maintenance\DistinctEntityDataRebuilder;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\TitleFactory;
@@ -14,6 +14,7 @@ use SMW\Query\QueryResult;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\Maintenance\DistinctEntityDataRebuilder
@@ -98,7 +99,7 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 	 * @depends testCanConstruct
 	 */
 	public function testRebuildSelectedPagesWithQueryOption() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -147,7 +148,7 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 	}
 
 	public function testRebuildSelectedPagesWithCategoryNamespaceFilter() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->cat_title = 'Foo';
 
 		$database = $this->getMockBuilder( Database::class )
@@ -190,7 +191,7 @@ class DistinctEntityDataRebuilderTest extends TestCase {
 	}
 
 	public function testRebuildSelectedPagesWithPropertyNamespaceFilter() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_namespace = SMW_NS_PROPERTY;
 		$row->page_title = 'Bar';
 

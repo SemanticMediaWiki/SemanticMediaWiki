@@ -6,13 +6,13 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**

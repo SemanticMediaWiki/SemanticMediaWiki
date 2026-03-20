@@ -4,7 +4,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -99,13 +99,13 @@ class MediaWikiIntegrationForRegisteredHookTest extends SMWIntegrationTestCase {
 			->doEdit( '[[Has function hook test::page delete]]' );
 
 		$this->semanticDataValidator->assertThatSemanticDataIsNotEmpty(
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )
 		);
 
 		$this->pageDeleter->deletePage( $this->title );
 
 		$this->semanticDataValidator->assertThatSemanticDataIsEmpty(
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )
 		);
 	}
 

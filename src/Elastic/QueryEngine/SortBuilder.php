@@ -3,10 +3,10 @@
 namespace SMW\Elastic\QueryEngine;
 
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
+use SMW\Query\Query;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later
@@ -134,7 +134,7 @@ class SortBuilder {
 			if ( $key === '_score' ) {
 				$field = '_score';
 			} else {
-				$property = DIProperty::newFromUserLabel( $key );
+				$property = Property::newFromUserLabel( $key );
 
 				$field = $this->fieldMapper->getField( $property, 'Field' );
 

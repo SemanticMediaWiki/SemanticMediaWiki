@@ -3,8 +3,8 @@
 namespace SMW\Tests\Elastic\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIConcept;
-use SMW\DIWikiPage;
+use SMW\DataItems\Concept;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Elastic\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter;
 use SMW\Elastic\QueryEngine\TermsLookup;
@@ -82,7 +82,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		);
 
 		$conceptDescription = $this->descriptionFactory->newConceptDescription(
-			DIWikiPage::newFromText( 'Foo', SMW_NS_CONCEPT )
+			WikiPage::newFromText( 'Foo', SMW_NS_CONCEPT )
 		);
 
 		$this->assertEquals(
@@ -100,7 +100,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$concept = $this->getMockBuilder( DIConcept::class )
+		$concept = $this->getMockBuilder( Concept::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -118,7 +118,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		);
 
 		$conceptDescription = $this->descriptionFactory->newConceptDescription(
-			DIWikiPage::newFromText( 'Foo', SMW_NS_CONCEPT )
+			WikiPage::newFromText( 'Foo', SMW_NS_CONCEPT )
 		);
 
 		$this->assertEquals(

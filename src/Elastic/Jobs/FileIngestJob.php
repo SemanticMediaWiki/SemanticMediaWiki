@@ -3,7 +3,7 @@
 namespace SMW\Elastic\Jobs;
 
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\ScopeMemoryLimiter;
 use SMW\MediaWiki\Job;
@@ -110,7 +110,7 @@ class FileIngestJob extends Job {
 			return $this->requeueRetry( $connection->getConfig() );
 		}
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$this->getTitle()
 		);
 

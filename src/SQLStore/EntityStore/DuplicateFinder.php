@@ -3,12 +3,12 @@
 namespace SMW\SQLStore\EntityStore;
 
 use InvalidArgumentException;
+use SMW\DataItems\DataItem;
 use SMW\IteratorFactory;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later

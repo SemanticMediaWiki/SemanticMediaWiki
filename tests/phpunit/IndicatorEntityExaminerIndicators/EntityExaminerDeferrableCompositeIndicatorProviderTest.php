@@ -3,7 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerDeferrableCompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
@@ -131,7 +131,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$deferrableIndicatorProvider = $this->getMockBuilder( DeferrableIndicatorProvider::class )
 			->disableOriginalConstructor()
@@ -167,7 +167,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_DeferredMode() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$deferrableIndicatorProvider = $this->getMockBuilder( DeferrableIndicatorProvider::class )
 			->disableOriginalConstructor()
@@ -209,7 +209,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testNoIndicatorOnFailedPermission() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->permissionExaminer->expects( $this->once() )
 			->method( 'hasPermissionOf' )
@@ -253,7 +253,7 @@ class EntityExaminerDeferrableCompositeIndicatorProviderTest extends TestCase {
 				return '';
 			}
 
-			public function hasIndicator( DIWikiPage $subject, array $options ) {
+			public function hasIndicator( WikiPage $subject, array $options ) {
 				return false;
 			}
 

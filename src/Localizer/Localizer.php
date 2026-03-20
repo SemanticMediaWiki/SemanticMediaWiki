@@ -12,7 +12,7 @@ use MediaWiki\Title\NamespaceInfo;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Options\UserOptionsLookup;
 use MediaWiki\User\User;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
 use SMW\MediaWiki\ExtendedDateTime;
 use SMW\MediaWiki\LocalTime;
@@ -148,14 +148,14 @@ class Localizer {
 	 *
 	 * @since 2.4
 	 *
-	 * @param DIWikiPage|Title|null $title
+	 * @param WikiPage|Title|null $title
 	 *
 	 * @return Language
 	 */
 	public function getPreferredContentLanguage( $title = null ): Language {
 		$language = '';
 
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$title = $title->getTitle();
 		}
 

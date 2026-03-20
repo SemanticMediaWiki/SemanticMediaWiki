@@ -3,8 +3,8 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
@@ -156,7 +156,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetPropertyValues() {
-		$property = new DIProperty( 'Bar' );
+		$property = new Property( 'Bar' );
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$semanticData = $this->getMockBuilder( StubSemanticData::class )
@@ -196,7 +196,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetPropertyValues_Property_Inverse() {
-		$property = new DIProperty( 'Bar', true );
+		$property = new Property( 'Bar', true );
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
@@ -228,7 +228,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetPropertyValues_Subject_Null() {
-		$property = new DIProperty( 'Bar' );
+		$property = new Property( 'Bar' );
 		$subject = null;
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
@@ -260,7 +260,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetPropertySubjects() {
-		$property = new DIProperty( 'Bar' );
+		$property = new Property( 'Bar' );
 		$subject = new WikiPage( 'Foo', NS_MAIN );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
@@ -292,7 +292,7 @@ class EntityLookupTest extends TestCase {
 	}
 
 	public function testGetAllPropertySubjects() {
-		$property = new DIProperty( 'Bar' );
+		$property = new Property( 'Bar' );
 
 		$propTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

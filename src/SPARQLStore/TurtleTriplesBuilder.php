@@ -3,15 +3,15 @@
 namespace SMW\SPARQLStore;
 
 use Onoi\Cache\Cache;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
-use SMW\SemanticData;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -249,7 +249,7 @@ class TurtleTriplesBuilder {
 			$elementTarget = $expResource;
 		}
 
-		if ( !$exists && $elementTarget->getDataItem() instanceof DIWikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
+		if ( !$exists && $elementTarget->getDataItem() instanceof WikiPage && $elementTarget->getDataItem()->getDBKey() !== '' ) {
 
 			$diWikiPage = $elementTarget->getDataItem();
 			$hash = $diWikiPage->getHash();

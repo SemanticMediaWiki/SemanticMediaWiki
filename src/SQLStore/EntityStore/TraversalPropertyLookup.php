@@ -3,12 +3,12 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\DIContainer;
 use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use stdClass;
 use Wikimedia\Rdbms\Subquery;
 

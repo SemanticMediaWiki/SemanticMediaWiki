@@ -8,6 +8,7 @@ use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate;
 use SMW\MediaWiki\PageUpdater;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\PageUpdater
@@ -245,7 +246,7 @@ class PageUpdaterTest extends TestCase {
 	}
 
 	public function testPurgeCacheAsPoolPurge() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_id = 42;
 
 		$this->connection->expects( $this->once() )

@@ -5,18 +5,20 @@ namespace SMW\Tests\Serializers;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
+use SMW\Formatters\Infolink;
 use SMW\Property\SpecificationLookup;
 use SMW\Query\PrintRequestFactory;
-use SMW\SemanticData;
 use SMW\Serializers\QueryResultSerializer;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\CoreMockObjectRepository;
 use SMW\Tests\Utils\Mock\MediaWikiMockObjectRepository;
 use SMW\Tests\Utils\Mock\MockObjectBuilder;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Serializers\QueryResultSerializer
@@ -108,7 +110,7 @@ class QueryResultSerializerTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_rec' );
 
 		$printRequestFactory = new PrintRequestFactory();
@@ -140,13 +142,13 @@ class QueryResultSerializerTest extends TestCase {
 	}
 
 	public function testSerializeFormatForTimeValue() {
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 		$property->setPropertyTypeId( '_dat' );
 
 		$printRequestFactory = new PrintRequestFactory();
 
 		$serialization = QueryResultSerializer::getSerialization(
-			\SMWDITime::doUnserialize( '2/1393/1/1' ),
+			Time::doUnserialize( '2/1393/1/1' ),
 			$printRequestFactory->newFromProperty( $property )
 		);
 
@@ -263,7 +265,7 @@ class QueryResultSerializerTest extends TestCase {
 			'getResults'        => $getResults,
 			'getQuery'          => $query,
 			'getStore'          => $this->newMockBuilder()->newObject( 'Store' ),
-			'getLink'           => new \SMWInfolink( true, 'Lala', 'Lula' ),
+			'getLink'           => new Infolink( true, 'Lala', 'Lula' ),
 			'hasFurtherResults' => true
 		] );
 

@@ -4,6 +4,7 @@ namespace SMW\Tests\Property;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\DataItem;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\StringValue;
 use SMW\EntityCache;
@@ -12,7 +13,6 @@ use SMW\Property\SpecificationLookup;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Property\SpecificationLookup

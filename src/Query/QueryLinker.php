@@ -3,8 +3,8 @@
 namespace SMW\Query;
 
 use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
-use SMWInfolink as Infolink;
 
 /**
  * Representing a Special:Ask query link to further query results

@@ -14,6 +14,7 @@ use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -83,7 +84,7 @@ class RedirectStoreTest extends TestCase {
 	}
 
 	public function testFindRedirectIdForNonCachedRedirect() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_id = 42;
 
 		$this->connection->expects( $this->once() )
@@ -191,7 +192,7 @@ class RedirectStoreTest extends TestCase {
 	}
 
 	public function testUpdateRedirect() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->ns = NS_MAIN;
 		$row->t = 'Bar';
 
@@ -259,7 +260,7 @@ class RedirectStoreTest extends TestCase {
 		$this->jobQueue->expects( $this->once() )
 			->method( 'lazyPush' );
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->ns = NS_MAIN;
 		$row->t = 'Bar';
 

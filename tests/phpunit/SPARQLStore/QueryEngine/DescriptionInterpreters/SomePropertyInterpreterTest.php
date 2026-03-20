@@ -3,8 +3,11 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\HierarchyLookup;
 use SMW\Query\Language\Disjunction;
@@ -18,9 +21,6 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWDITime as DITime;
-use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
@@ -104,7 +104,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$engineOptions = new EngineOptions();
 		$engineOptions->set( 'smwgSparqlQFeatures', SMW_SPARQL_QF_SUBP );
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$hierarchyLookup = $this->getMockBuilder( HierarchyLookup::class )
 			->disableOriginalConstructor()
@@ -151,7 +151,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = FalseCondition::class;
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			new Disjunction()
 		);
 
@@ -174,7 +174,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -197,7 +197,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo', true ),
+			new Property( 'Foo', true ),
 			new ThingDescription()
 		);
 
@@ -220,11 +220,11 @@ class SomePropertyInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			new ThingDescription()
 		);
 
-		$orderByProperty = new DIProperty( 'Foo' );
+		$orderByProperty = new Property( 'Foo' );
 		$sortkeys = [];
 
 		$expected = $stringBuilder
@@ -243,12 +243,12 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 4
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ) )
 		);
 
 		$orderByProperty = null;
@@ -269,12 +269,12 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 5
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ) )
 		);
 
 		$orderByProperty = $property;
@@ -296,13 +296,13 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 6
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
+		$propertyValue = new WikiPage( 'SomePropertyPageValue', NS_HELP );
 
 		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+			Exporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(
@@ -329,15 +329,15 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 7
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
 		);
 
-		$orderByProperty = new DIProperty( 'SomePropertyPageValue' );
+		$orderByProperty = new Property( 'SomePropertyPageValue' );
 		$sortkeys = [];
 
 		$expected = $stringBuilder
@@ -358,20 +358,20 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 8
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Bar' ),
+			new Property( 'Bar' ),
 			$description
 		);
 
-		$orderByProperty = new DIProperty( 'Bar' );
+		$orderByProperty = new Property( 'Bar' );
 		$sortkeys = [ 'Foo' => 'ASC' ];
 
 		$expected = $stringBuilder
@@ -394,16 +394,16 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 9 Inverse -> ?v1 property:Foo ?v2 vs. ?v2 property:Foo ?v1
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo', true );
+		$property = new Property( 'Foo', true );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_HELP ), $property, SMW_CMP_LEQ )
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Bar' ),
+			new Property( 'Bar' ),
 			$description
 		);
 
@@ -427,7 +427,7 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 10
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 
 		$description = new SomeProperty(
 			$property,
@@ -453,14 +453,14 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 11, issue 556
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
 			new Disjunction( [
-				new ValueDescription( new DIBlob( 'Bar' ) ),
-				new ValueDescription( new DIBlob( 'Baz' ) )
+				new ValueDescription( new Blob( 'Bar' ) ),
+				new ValueDescription( new Blob( 'Baz' ) )
 			] )
 		);
 
@@ -481,11 +481,11 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 12 use the rdf/owl equivalent for a predefined property
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( '_SUBC' );
+		$property = new Property( '_SUBC' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'Bar' ) )
+			new ValueDescription( new Blob( 'Bar' ) )
 		);
 
 		$expected = $stringBuilder
@@ -504,11 +504,11 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 13
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( '_SUBP' );
+		$property = new Property( '_SUBP' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'Bar', SMW_NS_PROPERTY ) )
+			new ValueDescription( new WikiPage( 'Bar', SMW_NS_PROPERTY ) )
 		);
 
 		$expected = $stringBuilder
@@ -527,11 +527,11 @@ class SomePropertyInterpreterTest extends TestCase {
 		# 14 aux-property
 		$conditionType = WhereCondition::class;
 
-		$property = new DIProperty( '_MDAT' );
+		$property = new Property( '_MDAT' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ) )
+			new ValueDescription( new Time( 1, 1970, 01, 01, 1, 1 ) )
 		);
 
 		$expected = $stringBuilder

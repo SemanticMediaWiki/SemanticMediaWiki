@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\JobFactory;
 
 /**
@@ -31,7 +31,7 @@ class InsertJobTask extends Task {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize( $parameters['subject'] );
+		$subject = WikiPage::doUnserialize( $parameters['subject'] );
 		$title = $subject->getTitle();
 
 		if ( $title === null ) {

@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\JSONScript;
 
+use HttpStatus;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
@@ -128,7 +129,7 @@ class SpecialPageTestCaseProcessor extends MediaWikiIntegrationTestCase {
 		$code = $response->getStatusCode();
 
 		if ( $code > 0 ) {
-			$response->header( "Status: " . $code . ' ' . \HttpStatus::getMessage( $code ) );
+			$response->header( "Status: " . $code . ' ' . HttpStatus::getMessage( $code ) );
 		}
 
 		return $text;

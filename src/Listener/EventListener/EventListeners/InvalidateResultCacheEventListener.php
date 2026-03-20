@@ -5,7 +5,7 @@ namespace SMW\Listener\EventListener\EventListeners;
 use Onoi\EventDispatcher\DispatchContext;
 use Onoi\EventDispatcher\EventListener;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Cache\ResultCache;
 
 /**
@@ -37,7 +37,7 @@ class InvalidateResultCacheEventListener implements EventListener {
 		}
 
 		if ( $dispatchContext->has( 'title' ) ) {
-			$subject = DIWikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
+			$subject = WikiPage::newFromTitle( $dispatchContext->get( 'title' ) );
 		} else {
 			$subject = $dispatchContext->get( 'subject' );
 		}

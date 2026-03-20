@@ -2,7 +2,7 @@
 
 namespace SMW\Property\DeclarationExaminer;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\Protection\ProtectionValidator;
 
@@ -29,7 +29,7 @@ class ProtectionExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ) {
 		if ( $this->declarationExaminer->isLocked() ) {
 			return;
 		}

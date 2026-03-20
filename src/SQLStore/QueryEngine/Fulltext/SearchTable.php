@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -97,12 +97,12 @@ class SearchTable {
 	public function isExemptedPropertyById( $id ) {
 		$dataItem = $this->getDataItemById( $id );
 
-		if ( !$dataItem instanceof DIWikiPage || $dataItem->getDBKey() === '' ) {
+		if ( !$dataItem instanceof WikiPage || $dataItem->getDBKey() === '' ) {
 			return false;
 		}
 
 		try {
-			$property = DIProperty::newFromUserLabel(
+			$property = Property::newFromUserLabel(
 				$dataItem->getDBKey()
 			);
 		} catch ( PredefinedPropertyLabelMismatchException $e ) {
@@ -117,11 +117,11 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isExemptedProperty( DIProperty $property ) {
+	public function isExemptedProperty( Property $property ) {
 		$dataItemTypeId = DataTypeRegistry::getInstance()->getDataItemId(
 			$property->findPropertyTypeID()
 		);
@@ -236,11 +236,11 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return int
 	 */
-	public function getIdByProperty( DIProperty $property ) {
+	public function getIdByProperty( Property $property ) {
 		return $this->store->getObjectIds()->getId( $property->getCanonicalDiWikiPage() );
 	}
 
@@ -249,7 +249,7 @@ class SearchTable {
 	 *
 	 * @param int $id
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getDataItemById( $id ) {
 		return $this->store->getObjectIds()->getDataItemById( $id );

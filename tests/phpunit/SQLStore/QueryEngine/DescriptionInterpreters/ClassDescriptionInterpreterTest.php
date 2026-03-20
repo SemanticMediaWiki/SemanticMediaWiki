@@ -12,6 +12,7 @@ use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ClassDescriptionInterpreter
@@ -105,7 +106,7 @@ class ClassDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->components = [ 1 => "t0.o_id" ];
 		$expected->joinfield = "t0.s_id";
@@ -123,7 +124,7 @@ class ClassDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', NS_CATEGORY )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 2;
 		$expected->components = [];
 		$expected->joinfield = "";

@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 
@@ -37,11 +37,11 @@ class PrefetchCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isCached( DIProperty $property ): bool {
+	public function isCached( Property $property ): bool {
 		return isset( $this->cache[$property->getKey()] );
 	}
 
@@ -56,10 +56,10 @@ class PrefetchCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 */
-	public static function makeCacheKey( DIProperty $property, RequestOptions $requestOptions ) {
+	public static function makeCacheKey( Property $property, RequestOptions $requestOptions ) {
 		$key = $property->getKey();
 
 		// Use the .dot notation to distingish it from other prrintouts that
@@ -84,11 +84,11 @@ class PrefetchCache {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage[] $subjects
-	 * @param DIProperty $property
+	 * @param WikiPage[] $subjects
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 */
-	public function prefetch( array $subjects, DIProperty $property, RequestOptions $requestOptions ): void {
+	public function prefetch( array $subjects, Property $property, RequestOptions $requestOptions ): void {
 		$fingerprint = '';
 		$this->store->getObjectIds()->warmUpCache( $subjects );
 
@@ -120,13 +120,13 @@ class PrefetchCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
-	 * @param DIProperty $property
+	 * @param WikiPage $subject
+	 * @param Property $property
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return
 	 */
-	public function getPropertyValues( DIWikiPage $subject, DIProperty $property, RequestOptions $requestOptions ) {
+	public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ) {
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
 		// 0 is the default ID of the subject, if it already has an ID,

@@ -2,7 +2,7 @@
 
 namespace SMW\Property;
 
-use SMW\SemanticData;
+use SMW\DataModel\SemanticData;
 
 /**
  * Interface specifying available methods to interact with the Decorator

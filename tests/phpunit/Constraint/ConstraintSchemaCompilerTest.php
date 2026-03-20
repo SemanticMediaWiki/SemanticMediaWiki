@@ -4,11 +4,11 @@ namespace SMW\Tests\Constraint;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintSchemaCompiler;
-use SMW\DIProperty;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Constraint\ConstraintSchemaCompiler
@@ -78,13 +78,13 @@ class ConstraintSchemaCompilerTest extends TestCase {
 	public function testCompileConstraintSchema_allowed_values() {
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedValues' )
-			->willReturn( [ new DIBlob( 'foo' ) ] );
+			->willReturn( [ new Blob( 'foo' ) ] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getAllowedListValues' )
-			->willReturn( [ new DIBlob( 'bar' ) ] );
+			->willReturn( [ new Blob( 'bar' ) ] );
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +132,7 @@ class ConstraintSchemaCompilerTest extends TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -174,7 +174,7 @@ class ConstraintSchemaCompilerTest extends TestCase {
 			->method( 'getAllowedListValues' )
 			->willReturn( [] );
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 

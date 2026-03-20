@@ -4,7 +4,7 @@ namespace SMW\MediaWiki;
 
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProvider;
 use SMW\MediaWiki\Permission\PermissionAware;
 use SMW\MediaWiki\Permission\PermissionExaminer;
@@ -61,7 +61,7 @@ class IndicatorRegistry {
 	 * @return bool
 	 */
 	public function hasIndicator( Title $title, PermissionExaminer $permissionExaminer, array $options ): bool {
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 

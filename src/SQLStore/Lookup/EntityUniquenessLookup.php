@@ -3,13 +3,13 @@
 namespace SMW\SQLStore\Lookup;
 
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIContainer as DIContainer;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -38,13 +38,13 @@ class EntityUniquenessLookup {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 * @param RequestOptions $requestOptions
 	 *
 	 * @return Iterator|[]
 	 */
-	public function checkConstraint( DIProperty $property, DataItem $dataItem, RequestOptions $requestOptions ) {
+	public function checkConstraint( Property $property, DataItem $dataItem, RequestOptions $requestOptions ) {
 		$propTableId = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			$property
 		);
@@ -118,7 +118,7 @@ class EntityUniquenessLookup {
 			$propertyTable->getDiType()
 		);
 
-		if ( !$dataItem instanceof DIContainer ) {
+		if ( !$dataItem instanceof Container ) {
 			foreach ( $diHandler->getWhereConds( $dataItem ) as $fieldName => $value ) {
 				$conditions[] = $query->eq( "{$query->alias}{$i}.$fieldName", $value );
 			}

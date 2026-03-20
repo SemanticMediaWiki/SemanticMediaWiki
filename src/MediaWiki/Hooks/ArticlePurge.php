@@ -3,8 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -67,8 +66,8 @@ class ArticlePurge implements HookListener {
 
 	private function invalidateResultCache( $store, $title ): void {
 		$dependency_list = $store->getPropertyValues(
-			DIWikiPage::newFromTitle( $title ),
-			new DIProperty( '_ASK' )
+			\SMW\DataItems\WikiPage::newFromTitle( $title ),
+			new Property( '_ASK' )
 		);
 
 		$context = [

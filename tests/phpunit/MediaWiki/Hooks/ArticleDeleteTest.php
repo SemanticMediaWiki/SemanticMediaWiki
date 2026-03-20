@@ -4,8 +4,8 @@ namespace SMW\Tests\MediaWiki\Hooks;
 
 use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
@@ -86,7 +86,7 @@ class ArticleDeleteTest extends TestCase {
 			->method( 'newUpdateDispatcherJob' )
 			->willReturn( $updateDispatcherJob );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -97,7 +97,7 @@ class ArticleDeleteTest extends TestCase {
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getInProperties' )
-			->willReturn( [ new DIProperty( 'Foo' ) ] );
+			->willReturn( [ new Property( 'Foo' ) ] );
 
 		$store->expects( $this->atLeastOnce() )
 			->method( 'getObjectIds' )

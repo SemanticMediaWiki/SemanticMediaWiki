@@ -6,7 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\MagicWordsFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
@@ -191,7 +191,7 @@ class InTextAnnotationParserTest extends TestCase {
 
 		$expected = [
 			'propertyCount'  => 1,
-			'property'       => new DIProperty( '_REDI' ),
+			'property'       => new Property( '_REDI' ),
 			'propertyValues' => [ 'Lala' ]
 		];
 
@@ -238,7 +238,7 @@ class InTextAnnotationParserTest extends TestCase {
 
 		$expected = [
 			'propertyCount'  => 1,
-			'property'       => new DIProperty( '_REDI' ),
+			'property'       => new Property( '_REDI' ),
 			'propertyValues' => [ 'Foo' ]
 		];
 
@@ -324,7 +324,7 @@ class InTextAnnotationParserTest extends TestCase {
 
 		$expected = [
 			'propertyCount'  => 1,
-			'property'       => new DIProperty( 'Foo' ),
+			'property'       => new Property( 'Foo' ),
 			'propertyValues' => [ 'Bar' ]
 		];
 

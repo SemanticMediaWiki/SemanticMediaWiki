@@ -5,13 +5,13 @@ namespace SMW\Tests\SQLStore\QueryEngine;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\SQLStore\QueryEngine\ConditionBuilder;
 use SMW\SQLStore\QueryEngine\EngineOptions;
 use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\QueryEngine\QuerySegmentListProcessor;
 use SMW\SQLStore\SQLStore;
-use SMWQuery as Query;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\QueryEngine

@@ -2,8 +2,8 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataModel\SemanticData;
 use SMW\Property\Annotator;
-use SMW\SemanticData;
 
 /**
  * Root object representing the initial data transfer object to interact with

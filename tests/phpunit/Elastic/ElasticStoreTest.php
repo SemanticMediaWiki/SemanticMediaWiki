@@ -5,6 +5,7 @@ namespace SMW\Tests\Elastic;
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\ElasticFactory;
@@ -15,10 +16,10 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Installer;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Options;
-use SMW\SemanticData;
 use SMW\SetupFile;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\Elastic\ElasticStore
@@ -69,7 +70,7 @@ class ElasticStoreTest extends TestCase {
 	}
 
 	public function testSetup() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = SQLStore::FIXED_PROPERTY_ID_UPPERBOUND;
 		$row->smw_proptable_hash = 'foo';
 		$row->smw_hash = 42;

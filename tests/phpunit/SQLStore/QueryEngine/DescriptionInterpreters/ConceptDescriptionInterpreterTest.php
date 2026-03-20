@@ -12,6 +12,7 @@ use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Utils\CircularReferenceGuard;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ConceptDescriptionInterpreter
@@ -173,7 +174,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinfield = '';
 
@@ -184,7 +185,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		];
 
 		# 1 Cached concept
-		$concept = new \stdClass;
+		$concept = new stdClass;
 		$concept->concept_size = 1;
 		$concept->concept_features = 1;
 		$concept->concept_depth = 1;
@@ -194,7 +195,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinfield = 't0.s_id';
 		$expected->where = 't0.o_id=42';
@@ -207,7 +208,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 		];
 
 		# 2 Non cached concept
-		$concept = new \stdClass;
+		$concept = new stdClass;
 		$concept->concept_txt = "[[Category:Foo]]";
 		$concept->concept_size = 1;
 		$concept->concept_features = 1;
@@ -218,7 +219,7 @@ class ConceptDescriptionInterpreterTest extends TestCase {
 			$dataItemFactory->newDIWikiPage( 'Foo', SMW_NS_CONCEPT )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinfield = 't1.s_id';
 		$expected->components = [ 2 => 't1.o_id' ];

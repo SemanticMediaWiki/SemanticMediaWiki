@@ -4,10 +4,10 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -68,7 +68,7 @@ class ArticleDelete implements HookListener {
 	 */
 	public function doDelete( Title $title ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 		$jobFactory = $applicationFactory->newJobFactory();

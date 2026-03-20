@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * This class implements Store access to blob (string) data items.
@@ -168,10 +168,10 @@ class DIBlobHandler extends DataItemHandler {
 
 		// empty blob: use "hash" string
 		if ( $dbkeys[0] == '' ) {
-			return new DIBlob( $dbkeys[1] );
+			return new Blob( $dbkeys[1] );
 		}
 
-		return new DIBlob( $dbkeys[0] );
+		return new Blob( $dbkeys[0] );
 	}
 
 	/**

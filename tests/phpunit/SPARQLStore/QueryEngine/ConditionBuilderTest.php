@@ -4,8 +4,13 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
@@ -21,11 +26,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
-use SMWDITime as DITime;
-use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\ConditionBuilder
@@ -56,7 +56,7 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQueryForSingleProperty() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
 			$property,
@@ -85,7 +85,7 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQuerySomeProperty_ForKnownSortPropertyKey() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
 			$property,
@@ -118,7 +118,7 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQuerySomeProperty_ForUnknownSortPropertyKey() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
 			$property,
@@ -152,7 +152,7 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQuerySomeProperty_ForEmptySortPropertyKey() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
 			$property,
@@ -184,7 +184,7 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQuerySomeProperty_OnInvalidSortKeyThrowsException() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
 			$property,
@@ -200,8 +200,8 @@ class ConditionBuilderTest extends TestCase {
 
 	public function testQueryForSinglePropertyWithValue() {
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' )
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' )
 		);
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -226,11 +226,11 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQueryForSomePropertyWithValue() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ) )
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ) )
 		);
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -255,12 +255,12 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQueryForSinglePageTypePropertyWithValueComparator() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LEQ )
 		);
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -287,12 +287,12 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQueryForSingleBlobTypePropertyWithNotLikeComparator() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_txt' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ), null, SMW_CMP_NLKE )
 		);
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -318,10 +318,10 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testQueryForSingleCategory() {
-		$category = new DIWikiPage( 'Foo', NS_CATEGORY, '' );
+		$category = new WikiPage( 'Foo', NS_CATEGORY, '' );
 
 		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+			Exporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new ClassDescription(
@@ -378,9 +378,9 @@ class ConditionBuilderTest extends TestCase {
 	public function testQueryForPropertyConjunction() {
 		$conjunction = new Conjunction( [
 			new SomeProperty(
-				new DIProperty( 'Foo' ), new ValueDescription( new DIBlob( 'SomePropertyValue' ) ) ),
+				new Property( 'Foo' ), new ValueDescription( new Blob( 'SomePropertyValue' ) ) ),
 			new SomeProperty(
-				new DIProperty( 'Bar' ), new ThingDescription() ),
+				new Property( 'Bar' ), new ThingDescription() ),
 		] );
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -408,11 +408,11 @@ class ConditionBuilderTest extends TestCase {
 	public function testQueryForPropertyConjunctionWithGreaterLessEqualFilter() {
 		$conjunction = new Conjunction( [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
-				new ValueDescription( new DINumber( 1 ), null, SMW_CMP_GEQ ) ),
+				new Property( 'Foo' ),
+				new ValueDescription( new Number( 1 ), null, SMW_CMP_GEQ ) ),
 			new SomeProperty(
-				new DIProperty( 'Bar' ),
-				new ValueDescription( new DINumber( 9 ), null, SMW_CMP_LEQ ) ),
+				new Property( 'Bar' ),
+				new ValueDescription( new Number( 9 ), null, SMW_CMP_LEQ ) ),
 		] );
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -441,8 +441,8 @@ class ConditionBuilderTest extends TestCase {
 
 	public function testQueryForPropertyDisjunction() {
 		$conjunction = new Disjunction( [
-			new SomeProperty( new DIProperty( 'Foo' ), new ThingDescription() ),
-			new SomeProperty( new DIProperty( 'Bar' ), new ThingDescription() )
+			new SomeProperty( new Property( 'Foo' ), new ThingDescription() ),
+			new SomeProperty( new Property( 'Bar' ), new ThingDescription() )
 		] );
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -474,11 +474,11 @@ class ConditionBuilderTest extends TestCase {
 	public function testQueryForPropertyDisjunctionWithLikeNotLikeFilter() {
 		$conjunction = new Disjunction( [
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
-				new ValueDescription( new DIBlob( "AA*" ), null, SMW_CMP_LIKE ) ),
+				new Property( 'Foo' ),
+				new ValueDescription( new Blob( "AA*" ), null, SMW_CMP_LIKE ) ),
 			new SomeProperty(
-				new DIProperty( 'Bar' ),
-				new ValueDescription( new DIBlob( "BB?" ), null, SMW_CMP_NLKE ) )
+				new Property( 'Bar' ),
+				new ValueDescription( new Blob( "BB?" ), null, SMW_CMP_NLKE ) )
 		] );
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -509,12 +509,12 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testSingleDatePropertyWithGreaterEqualConstraint() {
-		$property = new DIProperty( 'SomeDateProperty' );
+		$property = new Property( 'SomeDateProperty' );
 		$property->setPropertyTypeId( '_dat' );
 
 		$description = new SomeProperty(
 			$property,
-			new ValueDescription( new DITime( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
+			new ValueDescription( new Time( 1, 1970, 01, 01, 1, 1 ), null, SMW_CMP_GEQ )
 		);
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
@@ -540,7 +540,7 @@ class ConditionBuilderTest extends TestCase {
 	}
 
 	public function testSingleSubobjectBuildAsAuxiliaryProperty() {
-		$property = new DIProperty( '_SOBJ' );
+		$property = new Property( '_SOBJ' );
 
 		$description = new SomeProperty(
 			$property,
@@ -572,12 +572,12 @@ class ConditionBuilderTest extends TestCase {
 	 * '[[HasSomeProperty::Foo||Bar]]'
 	 */
 	public function testSubqueryDisjunction() {
-		$property = new DIProperty( 'HasSomeProperty' );
+		$property = new Property( 'HasSomeProperty' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$disjunction = new Disjunction( [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), $property ),
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ), $property )
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ), $property ),
+			new ValueDescription( new WikiPage( 'Bar', NS_MAIN ), $property )
 		] );
 
 		$description = new SomeProperty(
@@ -611,22 +611,22 @@ class ConditionBuilderTest extends TestCase {
 	 * '[[Born in::<q>[[Category:City]] [[Located in::Outback]]</q>]]'
 	 */
 	public function testNestedPropertyConjunction() {
-		$property = DIProperty::newFromUserLabel( 'Born in' );
+		$property = Property::newFromUserLabel( 'Born in' );
 		$property->setPropertyTypeId( '_wpg' );
 
-		$category = new DIWikiPage( 'City', NS_CATEGORY );
+		$category = new WikiPage( 'City', NS_CATEGORY );
 
 		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+			Exporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$conjunction = new Conjunction( [
 			new ClassDescription( $category ),
 			new SomeProperty(
-				DIProperty::newFromUserLabel( 'Located in' ),
+				Property::newFromUserLabel( 'Located in' ),
 				new ValueDescription(
-					new DIWikiPage( 'Outback', NS_MAIN ),
-					DIProperty::newFromUserLabel( 'Located in' ) )
+					new WikiPage( 'Outback', NS_MAIN ),
+					Property::newFromUserLabel( 'Located in' ) )
 				)
 			]
 		);
@@ -666,12 +666,12 @@ class ConditionBuilderTest extends TestCase {
 	 */
 	public function testPropertyChain() {
 		$description = new SomeProperty(
-			DIProperty::newFromUserLabel( 'LocatedIn' ),
+			Property::newFromUserLabel( 'LocatedIn' ),
 			new SomeProperty(
-				DIProperty::newFromUserLabel( 'MemberOf' ),
+				Property::newFromUserLabel( 'MemberOf' ),
 				new ValueDescription(
-					new DIWikiPage( 'Wonderland', NS_MAIN, '' ),
-					DIProperty::newFromUserLabel( 'MemberOf' ), SMW_CMP_EQ
+					new WikiPage( 'Wonderland', NS_MAIN, '' ),
+					Property::newFromUserLabel( 'MemberOf' ), SMW_CMP_EQ
 				)
 			)
 		);
@@ -749,7 +749,7 @@ class ConditionBuilderTest extends TestCase {
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );
 
 		$this->assertNull(
-			$instance->tryToFindRedirectVariableForDataItem( new DINumber( 1 ) )
+			$instance->tryToFindRedirectVariableForDataItem( new Number( 1 ) )
 		);
 	}
 
@@ -762,7 +762,7 @@ class ConditionBuilderTest extends TestCase {
 			->method( 'isRedirect' )
 			->willReturn( true );
 
-		$diWikiPage = $this->getMockBuilder( DIWikiPage::class )
+		$diWikiPage = $this->getMockBuilder( WikiPage::class )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
 			->setMethods( [ 'getTitle' ] )
 			->getMock();
@@ -771,7 +771,7 @@ class ConditionBuilderTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$property->setPropertyTypeId( '_wpg' );
 
 		$description = new SomeProperty(
@@ -825,7 +825,7 @@ class ConditionBuilderTest extends TestCase {
 			->method( 'isRedirect' )
 			->willReturn( true );
 
-		$diWikiPage = $this->getMockBuilder( DIWikiPage::class )
+		$diWikiPage = $this->getMockBuilder( WikiPage::class )
 			->setConstructorArgs( [ 'Bar', NS_MAIN ] )
 			->setMethods( [ 'getTitle' ] )
 			->getMock();
@@ -876,7 +876,7 @@ class ConditionBuilderTest extends TestCase {
 
 	public function testSingletonLikeConditionForSolitaryWpgValue() {
 		$description = new ValueDescription(
-			new DIWikiPage( "Foo*", NS_MAIN ), null, SMW_CMP_LIKE
+			new WikiPage( "Foo*", NS_MAIN ), null, SMW_CMP_LIKE
 		);
 
 		$instance = new ConditionBuilder( $this->descriptionInterpreterFactory );

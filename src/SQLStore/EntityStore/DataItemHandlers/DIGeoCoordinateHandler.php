@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\GeoCoord;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDIGeoCoord as DIGeoCoord;
 
 /**
  * This class implements store access to DIGeoCoord data items.
@@ -118,7 +118,7 @@ class DIGeoCoordinateHandler extends DataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( is_string( $dbkeys ) ) {
-			return DIGeoCoord::doUnserialize( $dbkeys );
+			return GeoCoord::doUnserialize( $dbkeys );
 		}
 
 		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );

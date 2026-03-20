@@ -8,6 +8,7 @@ use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -130,7 +131,7 @@ class UsageStatisticsListLookupTest extends TestCase {
 	}
 
 	private function fetchListResult(): array {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_hash = 42;
 		$row->count = 1001;
 

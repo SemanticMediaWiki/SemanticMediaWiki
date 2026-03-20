@@ -5,8 +5,8 @@ namespace SMW\SQLStore\Rebuilder;
 use MediaWiki\Title\Title;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
-use SMWQuery;
 
 /**
  * @private
@@ -168,7 +168,7 @@ class EntityValidator {
 
 		// Any query reference without a `proptable` map is considered
 		// detached (doesn't belong to any subject, or is outdated)
-		return substr( $row->smw_subobject, 0, 6 ) === SMWQuery::ID_PREFIX;
+		return substr( $row->smw_subobject, 0, 6 ) === Query::ID_PREFIX;
 	}
 
 	/**

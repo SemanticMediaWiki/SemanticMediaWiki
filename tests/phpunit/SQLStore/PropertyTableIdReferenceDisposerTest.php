@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore;
 use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTableDefinition;
@@ -13,6 +13,7 @@ use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\PropertyTableIdReferenceFinder;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableIdReferenceDisposer
@@ -44,7 +45,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->willReturn( DIWikiPage::newFromText( 'Foo' ) );
+			->willReturn( WikiPage::newFromText( 'Foo' ) );
 
 		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -240,7 +241,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 	}
 
 	public function testCleanUpTableEntriesByRow() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 
 		$connection = $this->getMockBuilder( Database::class )
@@ -311,7 +312,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->willReturn( new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' ) );
+			->willReturn( new WikiPage( 'Foo', NS_MAIN, '', 'Bar' ) );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -369,7 +370,7 @@ class PropertyTableIdReferenceDisposerTest extends TestCase {
 
 		$idTable->expects( $this->any() )
 			->method( 'getDataItemById' )
-			->willReturn( new DIWikiPage( 'Foo', NS_MAIN, SMW_SQL3_SMWREDIIW ) );
+			->willReturn( new WikiPage( 'Foo', NS_MAIN, SMW_SQL3_SMWREDIIW ) );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()

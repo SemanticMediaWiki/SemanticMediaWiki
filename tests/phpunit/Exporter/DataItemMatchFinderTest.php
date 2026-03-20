@@ -3,7 +3,7 @@
 namespace SMW\Tests\Exporter;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\DataItemMatchFinder;
 use SMW\Exporter\Element\ExpResource;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
@@ -34,7 +34,7 @@ class DataItemMatchFinderTest extends TestCase {
 	}
 
 	public function testMatchExpElementOnMatchableWikiNamespaceUri() {
-		$dataItem = new DIWikiPage( 'Foo', NS_MAIN, '', 'Bar' );
+		$dataItem = new WikiPage( 'Foo', NS_MAIN, '', 'Bar' );
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -60,7 +60,7 @@ class DataItemMatchFinderTest extends TestCase {
 	}
 
 	public function testMatchExpElementOnMatchableWikiNamespaceUriWithHelpWikiNs() {
-		$dataItem = new DIWikiPage( 'Foo', NS_HELP, '', 'Bar' );
+		$dataItem = new WikiPage( 'Foo', NS_HELP, '', 'Bar' );
 
 		$store = $this->getMockBuilder( Store::class )
 			->disableOriginalConstructor()
@@ -86,7 +86,7 @@ class DataItemMatchFinderTest extends TestCase {
 	}
 
 	public function testMatchExpElementOnUnmatchableWikiNamespaceUri() {
-		$dataItem = new DIWikiPage( 'UNKNOWN', NS_MAIN, '', '' );
+		$dataItem = new WikiPage( 'UNKNOWN', NS_MAIN, '', '' );
 
 		$repositoryResult = $this->getMockBuilder( RepositoryResult::class )
 			->disableOriginalConstructor()

@@ -2,6 +2,8 @@
 
 namespace SMW\Tests\Schema\Filters;
 
+use PHPUnit\Framework\TestCase;
+use SMW\Schema\Compartment;
 use SMW\Schema\Filters\FilterTrait;
 
 /**
@@ -13,7 +15,7 @@ use SMW\Schema\Filters\FilterTrait;
  *
  * @author mwjames
  */
-class FilterTraitTest extends \PHPUnit\Framework\TestCase {
+class FilterTraitTest extends TestCase {
 
 	public function testHasMatches() {
 		$instance = $this->newFilterTrait();
@@ -72,7 +74,7 @@ class FilterTraitTest extends \PHPUnit\Framework\TestCase {
 				return 'Foo';
 			}
 
-			protected function match( \SMW\Schema\Compartment $compartment ) {
+			protected function match( Compartment $compartment ) {
 			}
 		};
 	}

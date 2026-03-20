@@ -4,8 +4,8 @@ namespace SMW\Elastic\Indexer\Replication;
 
 use Elasticsearch\Common\Exceptions\BadRequest400Exception;
 use Exception;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Store;
 
 /**
@@ -44,12 +44,12 @@ class DocumentReplicationExaminer {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $params
 	 *
 	 * @return ReplicationError|null
 	 */
-	public function check( DIWikiPage $subject, array $params = [] ): ?ReplicationError {
+	public function check( WikiPage $subject, array $params = [] ): ?ReplicationError {
 		$id = $this->store->getObjectIds()->getSMWPageID(
 			$subject->getDBKey(),
 			$subject->getNamespace(),
@@ -77,7 +77,7 @@ class DocumentReplicationExaminer {
 		// What is stored in the DB
 		$dataItems = $this->store->getPropertyValues(
 			$subject,
-			new DIProperty( '_MDAT' )
+			new Property( '_MDAT' )
 		);
 
 		return $this->findError( $subject, $params, $dataItems, $id );
@@ -198,7 +198,7 @@ class DocumentReplicationExaminer {
 			return false;
 		}
 
-		$property = new DIProperty( '_FILE_ATTCH' );
+		$property = new Property( '_FILE_ATTCH' );
 
 		if ( $this->store->getPropertyValues( $subject, $property ) !== [] ) {
 			return false;

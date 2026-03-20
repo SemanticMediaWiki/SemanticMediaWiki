@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Specials;
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\SpecialPage;
 use ParamProcessor\Param;
+use SMW\Formatters\Infolink;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
@@ -25,8 +27,6 @@ use SMW\Query\ResultPrinterDependency;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\UrlArgs;
-use SMWInfolink as Infolink;
-use SMWOutputs;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -177,7 +177,7 @@ class SpecialAsk extends SpecialPage {
 		$this->addHelpLink( $helpLink, true );
 
 		// make sure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
+		Outputs::commitToOutputPage( $out );
 	}
 
 	/**

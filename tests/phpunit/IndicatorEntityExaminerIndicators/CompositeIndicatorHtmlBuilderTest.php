@@ -3,7 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Indicator\IndicatorProviders\CompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
@@ -56,7 +56,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			->method( 'msg' )
 			->willReturn( '__foo__' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),
@@ -101,7 +101,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			->method( 'msg' )
 			->willReturn( '__foo__' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),
@@ -148,7 +148,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			->method( 'msg' )
 			->willReturn( '__foo__' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),
@@ -188,7 +188,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			->method( 'msg' )
 			->willReturn( '__foo__' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),
@@ -236,7 +236,7 @@ class CompositeIndicatorHtmlBuilderTest extends TestCase {
 			->method( 'msg' )
 			->willReturn( '__foo__' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$options = [
 			'subject' => $subject->getHash(),

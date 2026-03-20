@@ -6,16 +6,16 @@ use Exception;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
 use SMW\Options;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use SMWQueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -215,17 +215,17 @@ class DistinctEntityDataRebuilder {
 		$queryString = $this->options->get( 'query' );
 
 		// get number of pages and fix query limit
-		$query = SMWQueryProcessor::createQuery(
+		$query = QueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
+			QueryProcessor::getProcessedParams( [ 'format' => 'count' ] )
 		);
 
 		$result = $this->store->getQueryResult( $query );
 
 		// get pages and add them to the pages explicitly listed in the 'page' parameter
-		$query = SMWQueryProcessor::createQuery(
+		$query = QueryProcessor::createQuery(
 			$queryString,
-			SMWQueryProcessor::getProcessedParams( [] )
+			QueryProcessor::getProcessedParams( [] )
 		);
 
 		$query->setUnboundLimit( $result instanceof QueryResult ? $result->getCountValue() : $result );
@@ -274,7 +274,7 @@ class DistinctEntityDataRebuilder {
 		foreach ( $list as $pages ) {
 			foreach ( $pages as $key => $page ) {
 
-				if ( $page instanceof DIWikiPage ) {
+				if ( $page instanceof WikiPage ) {
 					$page = $page->getTitle();
 				}
 

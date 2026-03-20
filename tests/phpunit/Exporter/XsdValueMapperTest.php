@@ -3,15 +3,18 @@
 namespace SMW\Tests\Exporter;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Container;
+use SMW\DataItems\GeoCoord;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Exporter\XsdValueMapper;
-use SMWDIBlob;
-use SMWDIBoolean;
-use SMWDINumber;
-use SMWDITime;
 
 /**
  * @covers \SMW\Exporter\XsdValueMapper
@@ -52,49 +55,49 @@ class XsdValueMapperTest extends TestCase {
 	public function supportedDataItemProvider() {
 		# 0
 		$provider[] = [
-			new SMWDINumber( 42 ),
+			new Number( 42 ),
 			'42',
 			'double'
 		];
 
 		# 1
 		$provider[] = [
-			new SMWDIBlob( 'Test' ),
+			new Blob( 'Test' ),
 			'Test',
 			'string'
 		];
 
 		# 2
 		$provider[] = [
-			new SMWDIBoolean( true ),
+			new Boolean( true ),
 			'true',
 			'boolean'
 		];
 
 		# 3
 		$provider[] = [
-			new SMWDITime( 1, '1970' ),
+			new Time( 1, '1970' ),
 			'1970',
 			'gYear'
 		];
 
 		# 4
 		$provider[] = [
-			new SMWDITime( 1, '1970', '12' ),
+			new Time( 1, '1970', '12' ),
 			'1970-12',
 			'gYearMonth'
 		];
 
 		# 5
 		$provider[] = [
-			new SMWDITime( 1, '1970', '12', '31' ),
+			new Time( 1, '1970', '12', '31' ),
 			'1970-12-31Z',
 			'date'
 		];
 
 		# 6
 		$provider[] = [
-			new SMWDITime( 1, '1970', '12', '31', '12' ),
+			new Time( 1, '1970', '12', '31', '12' ),
 			'1970-12-31T12:00:00Z',
 			'dateTime'
 		];
@@ -119,37 +122,37 @@ class XsdValueMapperTest extends TestCase {
 
 		# 1
 		$provider[] = [
-			new \SMWDIGeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
+			new GeoCoord( [ 'lat' => 52, 'lon' => 1 ] )
 		];
 
 		# 2
 		$provider[] = [
-			new DIConcept( 'Foo', '', '', '', '' )
+			new Concept( 'Foo', '', '', '', '' )
 		];
 
 		# 3
 		$provider[] = [
-			new \SMWDIUri( 'http', '//example.org', '', '' )
+			new Uri( 'http', '//example.org', '', '' )
 		];
 
 		# 4
 		$provider[] = [
-			new \SMWDIContainer( new ContainerSemanticData( new DIWikiPage( 'Foo', NS_MAIN ) ) )
+			new Container( new ContainerSemanticData( new WikiPage( 'Foo', NS_MAIN ) ) )
 		];
 
 		# 5
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		];
 
 		# 6
 		$provider[] = [
-			new DIProperty( 'Foo' )
+			new Property( 'Foo' )
 		];
 
 		# 7 Not a gregorian calendar model
 		$provider[] = [
-			new SMWDITime( 2, '1970' )
+			new Time( 2, '1970' )
 		];
 
 		return $provider;

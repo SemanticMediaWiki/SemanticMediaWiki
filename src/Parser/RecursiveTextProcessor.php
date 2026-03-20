@@ -11,9 +11,9 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use RuntimeException;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Template\TemplateExpander;
 use SMW\ParserData;
-use SMWOutputs;
 
 /**
  * @private
@@ -255,7 +255,7 @@ class RecursiveTextProcessor {
 			/// NOTE: as of MW 1.14SVN, there is apparently no better way to hide the TOC
 			$parserOutput = $this->parser->parse( $text . '__NOTOC__', $title, $popt );
 
-			SMWOutputs::requireFromParserOutput( $parserOutput );
+			Outputs::requireFromParserOutput( $parserOutput );
 			$text = $parserOutput->getContentHolderText();
 		} else {
 			$this->error = [ 'smw-parser-recursion-level-exceeded', $this->maxRecursionDepth ];

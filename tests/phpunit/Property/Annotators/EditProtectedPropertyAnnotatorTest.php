@@ -8,9 +8,9 @@ use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Property\Annotators\EditProtectedPropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
-use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**

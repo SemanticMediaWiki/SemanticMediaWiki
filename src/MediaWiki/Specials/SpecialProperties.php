@@ -2,8 +2,8 @@
 
 namespace SMW\MediaWiki\Specials;
 
+use SMW\MediaWiki\Outputs;
 use SMW\QueryPages\PropertiesQueryPage;
-use SMWOutputs;
 
 /**
  * Special page (Special:Properties) for MediaWiki shows all
@@ -49,7 +49,7 @@ class SpecialProperties extends SpecialPage {
 		$page->doQuery( $offset, $limit, $this->getRequest()->getVal( 'property' ) );
 
 		// Ensure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
+		Outputs::commitToOutputPage( $out );
 	}
 
 	/**

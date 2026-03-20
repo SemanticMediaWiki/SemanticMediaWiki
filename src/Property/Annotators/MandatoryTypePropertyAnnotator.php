@@ -2,9 +2,9 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 
 /**
  * @license GPL-2.0-or-later
@@ -45,7 +45,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$property = DIProperty::newFromUserLabel(
+		$property = Property::newFromUserLabel(
 			str_replace( '_', ' ', $subject->getDBKey() )
 		);
 
@@ -64,7 +64,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$property = new DIProperty( '_SUBP' );
+		$property = new Property( '_SUBP' );
 		$semanticData = $this->getSemanticData();
 
 		if ( !$semanticData->hasProperty( $property ) ) {
@@ -76,7 +76,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		$dataItem = end( $dataItems );
-		$parentProperty = DIProperty::newFromUserLabel( $dataItem->getDBKey() );
+		$parentProperty = Property::newFromUserLabel( $dataItem->getDBKey() );
 
 		if ( $parentProperty->isUserDefined() ) {
 			$type_id = $parentProperty->findPropertyTypeID();
@@ -84,10 +84,10 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			$type_id = $parentProperty->getKey();
 		}
 
-		$semanticData->removeProperty( new DIProperty( '_TYPE' ) );
+		$semanticData->removeProperty( new Property( '_TYPE' ) );
 
 		$dataValue = DataValueFactory::getInstance()->newDataValueByProperty(
-			new DIProperty( '_TYPE' ),
+			new Property( '_TYPE' ),
 			$type_id
 		);
 
@@ -96,7 +96,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function enforceMandatoryTypeForImportVocabulary(): void {
-		$property = new DIProperty( '_IMPO' );
+		$property = new Property( '_IMPO' );
 
 		$dataItems = $this->getSemanticData()->getPropertyValues(
 			$property
@@ -119,7 +119,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 			return;
 		}
 
-		$property = new DIProperty( '_TYPE' );
+		$property = new Property( '_TYPE' );
 
 		[ $ns, $type ] = explode( ':', $importValue->getTermType(), 2 );
 
@@ -137,7 +137,7 @@ class MandatoryTypePropertyAnnotator extends PropertyAnnotatorDecorator {
 		$this->replaceAnyTypeByImportType( $property, $dataValue );
 	}
 
-	private function replaceAnyTypeByImportType( DIProperty $property, $dataValue ): void {
+	private function replaceAnyTypeByImportType( Property $property, $dataValue ): void {
 		foreach ( $this->getSemanticData()->getPropertyValues( $property ) as $dataItem ) {
 			$this->getSemanticData()->setOption( self::IMPO_REMOVED_TYPE, $dataItem );
 

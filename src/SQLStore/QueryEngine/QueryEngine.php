@@ -5,17 +5,17 @@ namespace SMW\SQLStore\QueryEngine;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Iterators\ResultIterator;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\QueryFactory;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWQuery as Query;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -442,7 +442,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 					$dataItem = '';
 				}
 
-				if ( $dataItem instanceof DIWikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
+				if ( $dataItem instanceof WikiPage && !isset( $dataItemCache[$dataItem->getHash()] ) ) {
 					$count++;
 					$dataItemCache[$dataItem->getHash()] = true;
 					$results[] = $dataItem;

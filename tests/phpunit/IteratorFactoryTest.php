@@ -2,6 +2,7 @@
 
 namespace SMW\Tests;
 
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use SMW\Exception\FileNotFoundException;
 use SMW\IteratorFactory;
@@ -39,7 +40,7 @@ class IteratorFactoryTest extends TestCase {
 	public function testCanConstructMappingIterator() {
 		$instance = new IteratorFactory();
 
-		$iterator = new \ArrayIterator( [] );
+		$iterator = new ArrayIterator( [] );
 
 		$this->assertInstanceOf(
 			MappingIterator::class,

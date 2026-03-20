@@ -6,8 +6,10 @@ use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 
 /**
  * Handling semantic data exchange with a ParserOutput object
@@ -160,7 +162,7 @@ class ParserData {
 	/**
 	 * @since 1.9
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
 	public function getSubject() {
 		return $this->getSemanticData()->getSubject();
@@ -288,7 +290,7 @@ class ParserData {
 	 * @since 2.1
 	 */
 	public function setEmptySemanticData(): void {
-		$this->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $this->title ) ) );
+		$this->setSemanticData( new SemanticData( WikiPage::newFromTitle( $this->title ) ) );
 	}
 
 	/**

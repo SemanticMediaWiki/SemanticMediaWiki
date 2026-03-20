@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Number;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDINumber as DINumber;
 
 /**
  * This class implements Store access to Number data items.
@@ -139,7 +139,7 @@ class DINumberHandler extends DataItemHandler {
 	 */
 	public function dataItemFromDBKeys( $dbkeys ) {
 		if ( is_string( $dbkeys ) ) {
-			return DINumber::doUnserialize( $dbkeys );
+			return Number::doUnserialize( $dbkeys );
 		}
 
 		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );

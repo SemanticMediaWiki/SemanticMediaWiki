@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\FieldList;
@@ -52,7 +52,7 @@ class AuxiliaryFieldsTest extends TestCase {
 			->with( AuxiliaryFields::COUNTMAP_CACHE_ID )
 			->willReturn( $this->cache );
 
-		$subjects = [ DIWikiPage::newFromText( 'Foo' ) ];
+		$subjects = [ WikiPage::newFromText( 'Foo' ) ];
 
 		$row = [
 			'smw_id' => 42,

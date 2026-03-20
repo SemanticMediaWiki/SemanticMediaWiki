@@ -3,13 +3,13 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
 use SMW\Options;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
-use SMWDIContainer;
 
 /**
  * @license GNU GPL v2
@@ -368,7 +368,7 @@ class PropertySubjectsLookup {
 	private function getWhereConds( $query, $dataItem ): void {
 		$conds = '';
 
-		if ( $dataItem instanceof SMWDIContainer ) {
+		if ( $dataItem instanceof Container ) {
 			throw new RuntimeException( 'SMWDIContainer support is missing!' );
 		}
 

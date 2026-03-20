@@ -2,8 +2,9 @@
 
 namespace SMW;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Collator;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -48,7 +49,7 @@ class SortLetter {
 		$sortKey = $dataItem->getSortKey();
 
 		if ( $dataItem->getDIType() === DataItem::TYPE_WIKIPAGE &&
-			$dataItem instanceof DIWikiPage
+			$dataItem instanceof WikiPage
 		) {
 			$sortKey = $this->store->getWikiPageSortKey( $dataItem );
 		}

@@ -3,10 +3,10 @@
 namespace SMW\Tests\Exporter\Serializer;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
-use SMWExpData as ExpData;
 
 /**
  * @covers \SMW\Exporter\Serializer\TurtleSerializer

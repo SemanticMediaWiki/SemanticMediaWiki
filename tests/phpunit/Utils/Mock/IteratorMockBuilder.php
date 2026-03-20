@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use Iterator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -82,7 +83,7 @@ class IteratorMockBuilder extends TestCase {
 			->setMethods( $this->methods )
 			->getMock();
 
-		if ( !$instance instanceof \Iterator ) {
+		if ( !$instance instanceof Iterator ) {
 			throw new RuntimeException( "Instance is not an Iterator" );
 		}
 

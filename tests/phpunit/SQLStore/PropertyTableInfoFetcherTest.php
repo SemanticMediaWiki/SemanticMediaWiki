@@ -3,10 +3,10 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\PropertyTypeFinder;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableInfoFetcher
@@ -54,7 +54,7 @@ class PropertyTableInfoFetcherTest extends TestCase {
 	 * @dataProvider propertyProvider
 	 */
 	public function testFindTableIdForProperty( $property, $expected ) {
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 
 		$instance = new PropertyTableInfoFetcher(
 			$this->propertyTypeFinder

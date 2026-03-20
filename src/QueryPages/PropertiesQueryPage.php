@@ -11,11 +11,11 @@ use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Exception\PropertyNotFoundException;
+use SMW\Formatters\Infolink;
 use SMW\RequestOptions;
 use SMW\Settings;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
-use SMWInfolink;
 
 /**
  * Query class that provides content for the Special:Properties page
@@ -155,7 +155,7 @@ class PropertiesQueryPage extends QueryPage {
 			// Add a link to SearchByProperty to hopefully identify the
 			// "hidden" reference
 			if ( $useCount < 1 ) {
-				$infoLink = '&#160;' . SMWInfolink::newPropertySearchLink( '+', $property->getLabel(), '' )->getHTML( $this->getLinker() );
+				$infoLink = '&#160;' . Infolink::newPropertySearchLink( '+', $property->getLabel(), '' )->getHTML( $this->getLinker() );
 			}
 
 			$proplink .= $infoLink;

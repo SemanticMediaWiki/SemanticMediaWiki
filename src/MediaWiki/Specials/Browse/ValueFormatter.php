@@ -8,9 +8,9 @@ use SMW\DataValueFactory;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
 
 /**
  * @private

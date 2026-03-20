@@ -3,7 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\BlankEntityExaminerDeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
@@ -96,7 +96,7 @@ class BlankEntityExaminerDeferrableIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new BlankEntityExaminerDeferrableIndicatorProvider();
 

@@ -4,6 +4,7 @@ namespace SMW;
 
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
+use SMW\DataItems\WikiPage;
 
 /**
  * Class provides a simple interface the link independent cache entries as
@@ -61,10 +62,10 @@ class EntityCache {
 		}
 
 		if ( $params[0] instanceof Title ) {
-			$params[0] = DIWikiPage::newFromTitle( $params[0] );
+			$params[0] = WikiPage::newFromTitle( $params[0] );
 		}
 
-		if ( $params[0] instanceof DIWikiPage ) {
+		if ( $params[0] instanceof WikiPage ) {
 			$params[0] = $params[0]->getHash();
 		}
 
@@ -210,7 +211,7 @@ class EntityCache {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title $subject
+	 * @param WikiPage|Title $subject
 	 */
 	public function associate( $subject, $key ): void {
 		if ( $subject === null ) {
@@ -218,10 +219,10 @@ class EntityCache {
 		}
 
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 
@@ -251,7 +252,7 @@ class EntityCache {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage|Title|null $subject
+	 * @param WikiPage|Title|null $subject
 	 */
 	public function invalidate( $subject = null ): void {
 		if ( $subject === null ) {
@@ -259,10 +260,10 @@ class EntityCache {
 		}
 
 		if ( $subject instanceof Title ) {
-			$subject = DIWikiPage::newFromTitle( $subject );
+			$subject = WikiPage::newFromTitle( $subject );
 		}
 
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 

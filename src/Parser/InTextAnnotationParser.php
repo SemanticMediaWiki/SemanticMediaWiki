@@ -3,17 +3,17 @@
 namespace SMW\Parser;
 
 use MediaWiki\Title\Title;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\MagicWordsFinder;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\MediaWiki\StripMarkerDecoder;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\Timer;
-use SMWOutputs;
 
 /**
  * Class collects all functions for wiki text parsing / processing that are
@@ -185,7 +185,7 @@ class InTextAnnotationParser {
 			Timer::getElapsedTime( __CLASS__, 3 )
 		);
 
-		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
+		Outputs::commitToParserOutput( $this->parserData->getOutput() );
 	}
 
 	/**

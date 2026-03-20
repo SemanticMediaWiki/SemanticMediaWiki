@@ -3,8 +3,9 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\EntityIdManager;
@@ -39,7 +40,7 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 	}
 
 	public function testFetchGroup_Empty() {
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -119,7 +120,7 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 			'count' => 42
 		];
 
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 
 		$connection = $this->getMockBuilder( Database::class )
 			->disableOriginalConstructor()
@@ -139,7 +140,7 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'dataItemFromDBKeys' )
-			->willReturn( DIWikiPage::newFromtext( 'Foobar' ) );
+			->willReturn( WikiPage::newFromtext( 'Foobar' ) );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -202,7 +203,7 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 			'count' => 42
 		];
 
-		$property = DIProperty::newFromUserLabel( 'Foo' );
+		$property = Property::newFromUserLabel( 'Foo' );
 		$property->setPropertyValueType( '_txt' );
 
 		$connection = $this->getMockBuilder( Database::class )
@@ -223,7 +224,7 @@ class ByGroupPropertyValuesLookupTest extends TestCase {
 
 		$dataItemHandler->expects( $this->any() )
 			->method( 'dataItemFromDBKeys' )
-			->willReturn( new \SMWDIBlob( 'test' ) );
+			->willReturn( new Blob( 'test' ) );
 
 		$tableDefinition = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()

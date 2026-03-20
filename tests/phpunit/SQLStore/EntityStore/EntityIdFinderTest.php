@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdFinder;
 use SMW\SQLStore\EntityStore\IdCacheManager;
@@ -64,7 +64,7 @@ class EntityIdFinderTest extends TestCase {
 			'smw_id' => 42
 		];
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -99,7 +99,7 @@ class EntityIdFinderTest extends TestCase {
 			'smw_sortkey' => 'sort_b'
 		];
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -132,7 +132,7 @@ class EntityIdFinderTest extends TestCase {
 			'smw_sortkey' => 'sort_b'
 		];
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -163,7 +163,7 @@ class EntityIdFinderTest extends TestCase {
 			(object)[ 'smw_id' => 1001 ],
 		];
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

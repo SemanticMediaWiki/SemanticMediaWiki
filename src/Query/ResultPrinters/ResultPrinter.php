@@ -7,14 +7,14 @@ use MediaWiki\Linker\Linker;
 use MediaWiki\Parser\Sanitizer;
 use ParamProcessor\Param;
 use ParamProcessor\ParamDefinition;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
+use SMW\MediaWiki\Outputs;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinter as IResultPrinter;
-use SMWInfolink;
-use SMWOutputs as ResourceManager;
 
 /**
  * Abstract base class for SMW's novel query printing mechanism. It implements
@@ -233,11 +233,11 @@ abstract class ResultPrinter implements IResultPrinter {
 	 */
 	public function registerResources( array $modules = [], array $styleModules = [] ): void {
 		foreach ( $modules as $module ) {
-			ResourceManager::requireResource( $module );
+			Outputs::requireResource( $module );
 		}
 
 		foreach ( $styleModules as $styleModule ) {
-			ResourceManager::requireStyle( $styleModule );
+			Outputs::requireStyle( $styleModule );
 		}
 	}
 
@@ -496,7 +496,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param $outputMode
 	 * @param string $classAffix
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 * @throws Exception
 	 */
 	protected function getLink( QueryResult $res, $outputMode, $classAffix = '' ) {
@@ -527,7 +527,7 @@ abstract class ResultPrinter implements IResultPrinter {
 	 * @param QueryResult $res
 	 * @param $outputMode
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 * @throws Exception
 	 */
 	protected function getFurtherResultsLink( QueryResult $res, $outputMode ) {

@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Utils\Mock;
 
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine;
 use SMW\Store;
 use SMW\StoreAware;
-use SMWQuery;
 
 /**
  * FIXME One would wish to have a FakeStore but instead \SMW\SQLStore\SQLStore is used in
@@ -37,7 +37,7 @@ class FakeQueryStore implements QueryEngine, StoreAware {
 	}
 
 	// @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.CodeAnalysis.UnusedFunctionParameter
-	public function getQueryResult( SMWQuery $query ) { // @codingStandardsIgnoreEnd
+	public function getQueryResult( Query $query ) { // @codingStandardsIgnoreEnd
 		return $this->store->getQueryResult( $query );
 	}
 }

@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Api\Browse\ListAugmentor;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\MediaWiki\Api\Browse\ListAugmentor
@@ -159,7 +160,7 @@ class ListAugmentorTest extends TestCase {
 			]
 		];
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->usage_count = 1111;
 
 		$connection = $this->getMockBuilder( Database::class )

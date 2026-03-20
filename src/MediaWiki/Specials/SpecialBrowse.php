@@ -7,11 +7,11 @@ use MediaWiki\Html\TemplateParser;
 use MediaWiki\SpecialPage\SpecialPage;
 use SMW\DataValueFactory;
 use SMW\Encoder;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Specials\Browse\FieldBuilder;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink as Infolink;
 
 /**
  * A factbox view on one specific article, showing all the Semantic data about it

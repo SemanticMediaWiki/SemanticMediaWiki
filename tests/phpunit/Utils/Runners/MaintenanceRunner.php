@@ -3,6 +3,7 @@
 namespace SMW\Tests\Utils\Runners;
 
 use DomainException;
+use Maintenance;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use RuntimeException;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
@@ -78,7 +79,7 @@ class MaintenanceRunner {
 		ApplicationFactory::getInstance()->clear();
 		$maintenance = new $this->maintenanceClass;
 
-		if ( !( $maintenance instanceof \Maintenance ) ) {
+		if ( !( $maintenance instanceof Maintenance ) ) {
 			throw new DomainException( "Expected a Maintenance instance" );
 		}
 

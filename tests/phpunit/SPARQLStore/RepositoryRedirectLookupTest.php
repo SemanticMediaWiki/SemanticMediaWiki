@@ -3,7 +3,8 @@
 namespace SMW\Tests\SPARQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Escaper;
@@ -11,7 +12,6 @@ use SMW\InMemoryPoolCache;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\RepositoryConnection;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
-use SMWExporter as Exporter;
 
 /**
  * @covers \SMW\SPARQLStore\RepositoryRedirectLookup
@@ -59,7 +59,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 			->getMock();
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
-		$dataItem = new DIWikiPage( 'Foo', 1, '', 'beingASubobject' );
+		$dataItem = new WikiPage( 'Foo', 1, '', 'beingASubobject' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
@@ -76,7 +76,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 		$repositoryConnection = $this->createRepositoryConnectionMockToUse( false );
 
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
-		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
+		$dataItem = new WikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
@@ -97,7 +97,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
 
-		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
+		$dataItem = new WikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
@@ -118,7 +118,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
 
-		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
+		$dataItem = new WikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
@@ -132,7 +132,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 	}
 
 	public function testRedirectTargetForDBLookupWithMultipleEntriesForcesNewResource() {
-		$propertyPage = new DIWikiPage( 'Foo', SMW_NS_PROPERTY );
+		$propertyPage = new WikiPage( 'Foo', SMW_NS_PROPERTY );
 
 		$resource = new ExpNsResource(
 			'Foo',
@@ -146,7 +146,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
 
-		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
+		$dataItem = new WikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
@@ -180,7 +180,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 		$instance = new RepositoryRedirectLookup( $repositoryConnection );
 		$instance->reset();
 
-		$dataItem = new DIWikiPage( 'Foo', 1, '', '' );
+		$dataItem = new WikiPage( 'Foo', 1, '', '' );
 
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 		$exists = null;
@@ -190,7 +190,7 @@ class RepositoryRedirectLookupTest extends TestCase {
 	}
 
 	public function testRedirectTargetForCachedLookup() {
-		$dataItem = new DIWikiPage( 'Foo', NS_MAIN );
+		$dataItem = new WikiPage( 'Foo', NS_MAIN );
 		$expNsResource = new ExpNsResource( 'Foo', 'Bar', '', $dataItem );
 
 		$poolCache = InMemoryPoolCache::getInstance()->getPoolCacheById( RepositoryRedirectLookup::POOLCACHE_ID );

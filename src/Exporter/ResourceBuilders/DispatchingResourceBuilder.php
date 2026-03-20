@@ -2,10 +2,10 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\Export\ExpData;
 use SMW\Exporter\ResourceBuilder;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
 
 /**
  * @private
@@ -30,11 +30,11 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function isResourceBuilderFor( DIProperty $property ): bool {
+	public function isResourceBuilderFor( Property $property ): bool {
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}
@@ -53,18 +53,18 @@ class DispatchingResourceBuilder implements ResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ) {
 		return $this->findResourceBuilder( $property )->addResourceValue( $expData, $property, $dataItem );
 	}
 
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return ResourceBuilder $resourceBuilder
 	 */
-	public function findResourceBuilder( DIProperty $property ) {
+	public function findResourceBuilder( Property $property ) {
 		if ( $this->resourceBuilders === [] ) {
 			$this->initResourceBuilders();
 		}

@@ -3,12 +3,12 @@
 namespace SMW\Tests\Deserializers;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
 use SMW\Deserializers\ExpDataDeserializer;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
-use SMWDIBlob as DIBlob;
-use SMWExpData as ExpData;
 
 /**
  * @covers \SMW\Deserializers\ExpDataDeserializer
@@ -100,13 +100,13 @@ class ExpDataDeserializerTest extends TestCase {
 		);
 
 		$expData->addPropertyObjectValue(
-			new ExpNsResource( 'Li', 'La', 'Lu', new DIBlob( 'SomeText' ) ),
+			new ExpNsResource( 'Li', 'La', 'Lu', new Blob( 'SomeText' ) ),
 			new ExpLiteral( 'Foo', 'Bar' )
 		);
 
 		$expData->addPropertyObjectValue(
 			new ExpNsResource( 'Li', 'La', 'Lu', null ),
-			new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', new DIBlob( 'SomeOtherText' ) ) )
+			new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', new Blob( 'SomeOtherText' ) ) )
 		);
 
 		$provider[] = [
@@ -117,11 +117,11 @@ class ExpDataDeserializerTest extends TestCase {
 		# 2 Nested level 2+3
 
 		$expDataLevel2 = new ExpData(
-			new ExpNsResource( 'Foo', 'Bar', 'Mo', new DIBlob( 'SomeOtherText' ) )
+			new ExpNsResource( 'Foo', 'Bar', 'Mo', new Blob( 'SomeOtherText' ) )
 		);
 
 		$expDataLevel2->addPropertyObjectValue(
-			new ExpNsResource( 'Li', 'La', 'Lu', new DIBlob( 'SomeText' ) ),
+			new ExpNsResource( 'Li', 'La', 'Lu', new Blob( 'SomeText' ) ),
 			new ExpLiteral( 'Foo', 'Bar' )
 		);
 
@@ -135,7 +135,7 @@ class ExpDataDeserializerTest extends TestCase {
 		);
 
 		$expData->addPropertyObjectValue(
-			new ExpNsResource( 'Li', 'La', 'Lu', new DIBlob( 'SomeText' ) ),
+			new ExpNsResource( 'Li', 'La', 'Lu', new Blob( 'SomeText' ) ),
 			new ExpLiteral( 'Foo', 'Bar' )
 		);
 

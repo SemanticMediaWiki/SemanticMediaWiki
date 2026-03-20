@@ -5,8 +5,8 @@ namespace SMW\DataValues;
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMWInfolink as Infolink;
 
 /**
  * @private

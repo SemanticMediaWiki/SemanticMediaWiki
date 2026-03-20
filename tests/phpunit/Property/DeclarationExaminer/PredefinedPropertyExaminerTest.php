@@ -6,9 +6,9 @@ use MediaWiki\Registration\ExtensionRegistry;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Property\DeclarationExaminer;
 use SMW\Property\DeclarationExaminer\PredefinedPropertyExaminer;
-use SMW\SemanticData;
 use SMW\Tests\TestEnvironment;
 
 /**

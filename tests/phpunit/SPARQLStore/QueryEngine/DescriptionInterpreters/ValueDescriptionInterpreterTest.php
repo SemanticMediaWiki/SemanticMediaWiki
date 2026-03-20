@@ -3,9 +3,12 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ValueDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
@@ -16,9 +19,6 @@ use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter;
 use SMW\SPARQLStore\QueryEngine\EngineOptions;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
-use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ValueDescriptionInterpreter
@@ -135,7 +135,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$instance = new ValueDescriptionInterpreter( $conditionBuilder );
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'Foo', NS_MAIN ),
+			new WikiPage( 'Foo', NS_MAIN ),
 			null
 		);
 
@@ -191,8 +191,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_EQ
 		);
 
@@ -210,8 +210,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LESS
 		);
 
@@ -230,8 +230,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
-			new DIProperty( 'Foo' ),
+			new WikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new Property( 'Foo' ),
 			SMW_CMP_LESS
 		);
 
@@ -250,7 +250,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIProperty( 'SomeProperty' ),
+			new Property( 'SomeProperty' ),
 			null,
 			SMW_CMP_LESS
 		);
@@ -270,8 +270,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_GRTR
 		);
 
@@ -290,8 +290,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LEQ
 		);
 
@@ -310,8 +310,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_GEQ
 		);
 
@@ -330,8 +330,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_NEQ
 		);
 
@@ -350,8 +350,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LIKE
 		);
 
@@ -370,8 +370,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_NLKE
 		);
 
@@ -390,8 +390,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = TrueCondition::class;
 
 		$description = new ValueDescription(
-			new DINumber( 42 ),
-			new DIProperty( 'Foo' ),
+			new Number( 42 ),
+			new Property( 'Foo' ),
 			SMW_CMP_NLKE
 		);
 
@@ -409,8 +409,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
-			new DIProperty( 'Foo' ),
+			new WikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new Property( 'Foo' ),
 			SMW_CMP_LIKE
 		);
 
@@ -429,8 +429,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new ValueDescription(
-			new DIUri( 'http', '//example.org', '', '' ),
-			new DIProperty( 'Foo' ),
+			new Uri( 'http', '//example.org', '', '' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LIKE
 		);
 
@@ -470,8 +470,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 
 		# 0
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_NLKE
 		);
 
@@ -486,8 +486,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 
 		# 1
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_PRIM_LIKE
 		);
 
@@ -502,8 +502,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 
 		# 2
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_EQ
 		);
 
@@ -518,8 +518,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 
 		# 3
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_NEQ
 		);
 
@@ -534,8 +534,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 
 		# 4
 		$description = new ValueDescription(
-			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
-			new DIProperty( 'Foo' ),
+			new WikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new Property( 'Foo' ),
 			SMW_CMP_EQ
 		);
 
@@ -550,8 +550,8 @@ class ValueDescriptionInterpreterTest extends TestCase {
 
 		# 5
 		$description = new ValueDescription(
-			new DIWikiPage( 'SomePropertyValuePage', NS_MAIN ),
-			new DIProperty( 'Foo' ),
+			new WikiPage( 'SomePropertyValuePage', NS_MAIN ),
+			new Property( 'Foo' ),
 			SMW_CMP_NEQ
 		);
 
@@ -576,7 +576,7 @@ class ValueDescriptionInterpreterTest extends TestCase {
 			$dataItem
 		];
 
-		$dataItem = $this->getMockBuilder( DIConcept::class )
+		$dataItem = $this->getMockBuilder( Concept::class )
 			->disableOriginalConstructor()
 			->getMock();
 

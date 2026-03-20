@@ -4,13 +4,13 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,7 +34,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 * @throws RuntimeException
 	 */
 	public function fetchList() {
@@ -123,9 +123,9 @@ class UnusedPropertyListLookup implements ListLookup {
 
 	private function addPropertyFor( $title ) {
 		try {
-			$property = new DIProperty( $title );
+			$property = new Property( $title );
 		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new Message( 'smw_noproperty', [ $title ] ) );
+			$property = new Error( new Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

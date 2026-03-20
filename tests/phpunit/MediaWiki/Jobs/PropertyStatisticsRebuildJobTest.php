@@ -4,11 +4,12 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -27,7 +28,7 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
@@ -76,7 +77,7 @@ class PropertyStatisticsRebuildJobTest extends TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testRunJob( $parameters ) {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new PropertyStatisticsRebuildJob(
 			$subject->getTitle(),

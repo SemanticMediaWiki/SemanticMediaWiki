@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use SMW\Constraint\Constraints\SingleValueConstraint;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
-use SMW\SemanticData;
+use SMW\DataModel\SemanticData;
 
 /**
  * @covers \SMW\Constraint\Constraints\SingleValueConstraint

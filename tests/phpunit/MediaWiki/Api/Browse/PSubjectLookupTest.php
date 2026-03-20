@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api\Browse;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Api\Browse\PSubjectLookup;
 use SMW\SQLStore\SQLStore;
 
@@ -55,7 +55,7 @@ class PSubjectLookupTest extends TestCase {
 
 	public function lookupProvider() {
 		yield [
-			new DIWikiPage( 'Foo bar', NS_MAIN ),
+			new WikiPage( 'Foo bar', NS_MAIN ),
 			[
 				'search' => 'Foo',
 				'property' => 'Bar'
@@ -66,7 +66,7 @@ class PSubjectLookupTest extends TestCase {
 		];
 
 		yield [
-			new DIWikiPage( 'Foo bar', NS_HELP ),
+			new WikiPage( 'Foo bar', NS_HELP ),
 			[
 				'search' => 'Foo',
 				'property' => 'Bar',

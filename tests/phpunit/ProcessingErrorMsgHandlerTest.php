@@ -5,9 +5,10 @@ namespace SMW\Tests;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\ProcessingError;
 use SMW\ProcessingErrorMsgHandler;
-use SMW\SemanticData;
+use stdClass;
 
 /**
  * @covers \SMW\ProcessingErrorMsgHandler
@@ -306,13 +307,13 @@ class ProcessingErrorMsgHandlerTest extends TestCase {
 		];
 
 		$provider[] = [
-			[ 'Foo', [ 'Bar', [ 'Bar' ], new \stdClass ] ],
-			[ 'Foo', 'Bar', new \stdClass ]
+			[ 'Foo', [ 'Bar', [ 'Bar' ], new stdClass ] ],
+			[ 'Foo', 'Bar', new stdClass ]
 		];
 
 		$provider[] = [
-			[ 'Foo', [ 'Bar', [ 'Bar', new \stdClass ], new \stdClass ], 'Foobar' ],
-			[ 'Foo', 'Bar', new \stdClass, new \stdClass, 'Foobar' ]
+			[ 'Foo', [ 'Bar', [ 'Bar', new stdClass ], new stdClass ], 'Foobar' ],
+			[ 'Foo', 'Bar', new stdClass, new stdClass, 'Foobar' ]
 		];
 
 		$provider[] = [

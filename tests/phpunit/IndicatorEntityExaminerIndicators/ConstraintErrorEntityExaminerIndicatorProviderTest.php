@@ -3,7 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\EntityExaminerIndicators\ConstraintErrorEntityExaminerIndicatorProvider;
 use SMW\Indicator\IndicatorProvider;
@@ -126,7 +126,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_DisabledCheck() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
@@ -157,7 +157,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 			->method( 'buildArray' )
 			->willReturn( [ 'Foo' ] );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
@@ -189,7 +189,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 			->method( 'buildArray' )
 			->willReturn( [] );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,
@@ -219,7 +219,7 @@ class ConstraintErrorEntityExaminerIndicatorProviderTest extends TestCase {
 		$this->errorLookup->expects( $this->never() )
 			->method( 'buildArray' );
 
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new ConstraintErrorEntityExaminerIndicatorProvider(
 			$this->store,

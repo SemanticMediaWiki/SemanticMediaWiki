@@ -10,6 +10,7 @@ use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -41,10 +42,10 @@ class PropertyStatisticsRebuilderTest extends TestCase {
 	public function testRebuildStatisticsStoreAndInsertCountRows() {
 		$tableName = 'Foobar';
 
-		$uRow = new \stdClass;
+		$uRow = new stdClass;
 		$uRow->count = 1111;
 
-		$nRow = new \stdClass;
+		$nRow = new stdClass;
 		$nRow->count = 1;
 
 		$res = [

@@ -3,13 +3,14 @@
 namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableRebuilder;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTableUpdater;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
-use SMWDataItem as DataItem;
+use stdClass;
 use Wikimedia\Rdbms\ResultWrapper;
 
 /**
@@ -106,7 +107,7 @@ class SearchTableRebuilderTest extends TestCase {
 	}
 
 	public function testRebuildWithUpdateOnBlob() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_serialized = 'Foo';
 		$row->o_blob = null;
 		$row->s_id = 42;

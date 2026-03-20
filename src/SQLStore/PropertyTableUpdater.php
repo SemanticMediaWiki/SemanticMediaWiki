@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Parameters;
 use SMW\SQLStore\Exception\TableMissingIdFieldException;
@@ -149,7 +149,7 @@ class PropertyTableUpdater {
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
 
-			$property = new DIProperty(
+			$property = new Property(
 				$propertyTable->getFixedProperty()
 			);
 
@@ -233,7 +233,7 @@ class PropertyTableUpdater {
 
 		if ( $propertyTable->isFixedPropertyTable() ) {
 
-			$property = new DIProperty(
+			$property = new Property(
 				$propertyTable->getFixedProperty()
 			);
 

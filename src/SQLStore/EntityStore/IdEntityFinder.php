@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
@@ -32,7 +32,7 @@ class IdEntityFinder {
 	 * @param array $idList
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
 	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
 		if ( $idList === [] ) {
@@ -68,10 +68,10 @@ class IdEntityFinder {
 	 *
 	 * @param stdClass $row
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function newFromRow( $row ): DIWikiPage {
-		$dataItem = new DIWikiPage(
+	public function newFromRow( $row ): WikiPage {
+		$dataItem = new WikiPage(
 			$row->smw_title,
 			$row->smw_namespace,
 			$row->smw_iw,
@@ -109,7 +109,7 @@ class IdEntityFinder {
 	 *
 	 * @param int $id
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getDataItemById( $id ) {
 		if ( ( $dataItem = $this->get( (int)$id ) ) !== false ) {

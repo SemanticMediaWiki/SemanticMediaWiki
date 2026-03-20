@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataItems;
 
+use ReflectionClass;
 use SMW\DataItems\Concept;
 
 /**
@@ -51,7 +52,7 @@ class ConceptTest extends AbstractDataItem {
 	 * @param $count
 	 */
 	public function testConceptCacheSetterGetter( $status, $date, $count ) {
-		$reflector = new \ReflectionClass( $this->getClass() );
+		$reflector = new ReflectionClass( $this->getClass() );
 		$instance  = $reflector->newInstanceArgs( [ 'Foo', '', '', '', '' ] );
 
 		$instance->setCacheStatus( $status );

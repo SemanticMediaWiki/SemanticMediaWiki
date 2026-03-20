@@ -5,10 +5,10 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataValues\DataValue;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Store;
-use SMWDataValue as DataValue;
 
 /**
  * The `unique_value_constraint` implicitly requires a `GLOBAL_SCOPE` (instead

@@ -3,7 +3,7 @@
 namespace SMW\ParserFunctions;
 
 use SMW\ParserData;
-use SMWQuery as Query;
+use SMW\Query\Query;
 
 /**
  * @private

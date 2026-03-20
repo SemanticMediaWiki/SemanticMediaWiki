@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Api\BrowseBySubject;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -56,7 +56,7 @@ class BrowseBySubjectTest extends TestCase {
 
 	public function testExecuteForValidSubject() {
 		$semanticData = $this->semanticDataFactory->newEmptySemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$store = $this->getMockBuilder( Store::class )
@@ -97,7 +97,7 @@ class BrowseBySubjectTest extends TestCase {
 	public function testRawJsonPrintOutput() {
 		$parameters = [ 'subject' => 'Foo', 'subobject' => 'Bar' ];
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			'Foo',
 			NS_MAIN,
 			'',
@@ -150,7 +150,7 @@ class BrowseBySubjectTest extends TestCase {
 			'type' => 'html'
 		];
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			'Foo',
 			NS_MAIN,
 			'',

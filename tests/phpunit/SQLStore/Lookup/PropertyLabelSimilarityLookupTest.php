@@ -9,6 +9,7 @@ use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\Lookup\PropertyLabelSimilarityLookup
@@ -66,7 +67,7 @@ class PropertyLabelSimilarityLookupTest extends TestCase {
 	}
 
 	public function testCompareAndFindLabels() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Foo';
 
 		$connection = $this->getMockBuilder( Database::class )
@@ -101,10 +102,10 @@ class PropertyLabelSimilarityLookupTest extends TestCase {
 	}
 
 	public function testCompareAndFindLabelsWithExemption() {
-		$row1 = new \stdClass;
+		$row1 = new stdClass;
 		$row1->smw_title = 'Foo';
 
-		$row2 = new \stdClass;
+		$row2 = new stdClass;
 		$row2->smw_title = 'Foobar';
 
 		$connection = $this->getMockBuilder( Database::class )

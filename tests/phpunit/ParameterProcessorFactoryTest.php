@@ -5,6 +5,7 @@ namespace SMW\Tests;
 use PHPUnit\Framework\TestCase;
 use SMW\ParameterProcessorFactory;
 use SMW\ParserParameterProcessor;
+use stdClass;
 
 /**
  * @covers \SMW\ParameterProcessorFactory
@@ -26,7 +27,7 @@ class ParameterProcessorFactoryTest extends TestCase {
 
 	public function testToEliminateFirstParameterIfObject() {
 		$parameter = [
-			new \stdClass
+			new stdClass
 		];
 
 		$instance = ParameterProcessorFactory::newFromArray( $parameter );

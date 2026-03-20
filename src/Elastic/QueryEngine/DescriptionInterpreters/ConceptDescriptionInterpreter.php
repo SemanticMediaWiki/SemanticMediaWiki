@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -38,7 +38,7 @@ class ConceptDescriptionInterpreter {
 
 		$value = $this->conditionBuilder->getStore()->getPropertyValues(
 			$concept,
-			new DIProperty( '_CONC' )
+			new Property( '_CONC' )
 		);
 
 		if ( $value === null || $value === [] ) {

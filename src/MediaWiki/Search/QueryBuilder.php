@@ -10,9 +10,9 @@ use SMW\Query\Language\Disjunction;
 use SMW\Query\Language\NamespaceDescription;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Parser\TermParser;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Store;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * @private

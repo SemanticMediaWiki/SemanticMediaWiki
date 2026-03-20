@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiFormatXml;
-use SMWQueryProcessor;
+use SMW\Query\QueryProcessor;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -29,7 +29,7 @@ class Ask extends Query {
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
-		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,

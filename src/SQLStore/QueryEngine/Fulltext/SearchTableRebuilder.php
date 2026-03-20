@@ -4,10 +4,10 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Utils\CliMsgFormatter;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -273,7 +273,7 @@ class SearchTableRebuilder {
 		if ( $proptable->isFixedPropertyTable() ) {
 			unset( $fetchFields[1] ); // p_id
 
-			$property = new DIProperty( $proptable->getFixedProperty() );
+			$property = new Property( $proptable->getFixedProperty() );
 
 			if ( $property->getLabel() === '' ) {
 				$this->skippedTables[$table] = '[FIXED]';

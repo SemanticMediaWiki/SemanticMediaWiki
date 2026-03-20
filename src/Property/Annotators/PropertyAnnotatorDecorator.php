@@ -3,8 +3,8 @@
 namespace SMW\Property\Annotators;
 
 use SMW\DataItemFactory;
+use SMW\DataModel\SemanticData;
 use SMW\Property\Annotator;
-use SMW\SemanticData;
 
 /**
  * Decorator that contains the reference to the invoked Annotator

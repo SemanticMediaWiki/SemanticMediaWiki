@@ -3,12 +3,13 @@
 namespace SMW\Tests\Maintenance;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIConcept;
+use SMW\DataItems\Concept;
 use SMW\Maintenance\ConceptCacheRebuilder;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Settings;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 
 /**
  * @covers \SMW\Maintenance\ConceptCacheRebuilder
@@ -56,7 +57,7 @@ class ConceptCacheRebuilderTest extends TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildFullConceptWithoutRangeSelectionOnMockStore( $action ) {
-		$concept = new DIConcept( 'Foo', '', '', '', '' );
+		$concept = new Concept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
 		$concept->setCacheDate( '1358515326' );
@@ -75,7 +76,7 @@ class ConceptCacheRebuilderTest extends TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildEmptyConceptWithoutRangeSelectionOnMockStore( $action ) {
-		$concept = new DIConcept( 'Foo', '', '', '', '' );
+		$concept = new Concept( 'Foo', '', '', '', '' );
 		$concept->setCacheStatus( 'empty' );
 
 		$instance = $this->acquireInstanceFor( $concept );
@@ -91,7 +92,7 @@ class ConceptCacheRebuilderTest extends TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildFullConceptWithRangeSelectionOnMockStore( $action ) {
-		$concept = new DIConcept( 'Foo', '', '', '', '' );
+		$concept = new Concept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
 		$concept->setCacheDate( '1358515326' );
@@ -112,7 +113,7 @@ class ConceptCacheRebuilderTest extends TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildSingleEmptyConceptWithRangeSelectionOnMockStore( $action ) {
-		$concept = new DIConcept( 'Foo', '', '', '', '' );
+		$concept = new Concept( 'Foo', '', '', '', '' );
 		$concept->setCacheStatus( 'empty' );
 
 		$instance = $this->acquireInstanceFor( $concept );
@@ -130,7 +131,7 @@ class ConceptCacheRebuilderTest extends TestCase {
 	 * @dataProvider actionProvider
 	 */
 	public function testRebuildSingleFullConceptOnMockStore( $action ) {
-		$concept = new DIConcept( 'Foo', '', '', '', '' );
+		$concept = new Concept( 'Foo', '', '', '', '' );
 
 		$concept->setCacheStatus( 'full' );
 		$concept->setCacheDate( '1358515326' );
@@ -165,7 +166,7 @@ class ConceptCacheRebuilderTest extends TestCase {
 		$expectedToRun = $concept !== null ? $this->any() : $this->never();
 		$refreshConceptCacheReturn = $concept !== null ? $concept->getConceptQuery() : null;
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->page_namespace = 0;
 		$row->page_title = 1;
 

@@ -4,15 +4,15 @@ namespace SMW\Tests\Elastic\Indexer\Attachment;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Attachment\AttachmentAnnotator;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Bulk;
 use SMW\Elastic\Indexer\Indexer;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**
@@ -177,7 +177,7 @@ class FileAttachmentTest extends TestCase {
 	}
 
 	public function testIndexAttachmentInfo() {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -6,7 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Title\Title;
 use MediaWiki\Xml\Xml;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 

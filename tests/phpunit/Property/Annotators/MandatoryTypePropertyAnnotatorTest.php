@@ -3,15 +3,15 @@
 namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Property\Annotators\MandatoryTypePropertyAnnotator;
 use SMW\Property\Annotators\NullPropertyAnnotator;
-use SMW\SemanticData;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
 
 /**
  * @covers \SMW\Property\Annotators\MandatoryTypePropertyAnnotator
@@ -97,8 +97,8 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
-			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Text' ),
-			new DIProperty( '_IMPO' )
+			new Blob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Text' ),
+			new Property( '_IMPO' )
 		);
 
 		$semanticData->addDataValue( $importValue );
@@ -110,7 +110,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		$instance->addAnnotation();
 
 		$expected = [
-			'properties' => [ new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ],
+			'properties' => [ new Property( '_TYPE' ), new Property( '_IMPO' ) ],
 			'propertyValues' => [ 'Text', 'foo:bar' ]
 		];
 
@@ -126,15 +126,15 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
-			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Page' ),
-			new DIProperty( '_IMPO' )
+			new Blob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Page' ),
+			new Property( '_IMPO' )
 		);
 
 		$semanticData->addDataValue( $importValue );
 
 		$typeValue = DataValueFactory::getInstance()->newDataValueByItem(
-			new DIUri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_txt' ),
-			new DIProperty( '_TYPE' )
+			new Uri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', '_txt' ),
+			new Property( '_TYPE' )
 		);
 
 		$semanticData->addDataValue( $typeValue );
@@ -145,7 +145,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 		// Check before
 		$expected = [
-			'properties' => [ new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ],
+			'properties' => [ new Property( '_TYPE' ), new Property( '_IMPO' ) ],
 			'propertyValues' => [ 'Text', 'foo:bar' ]
 		];
 
@@ -158,7 +158,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 		// Check after
 		$expected = [
-			'properties' => [ new DIProperty( '_TYPE' ), new DIProperty( '_IMPO' ) ],
+			'properties' => [ new Property( '_TYPE' ), new Property( '_IMPO' ) ],
 			'propertyValues' => [ 'Page', 'foo:bar' ]
 		];
 
@@ -174,8 +174,8 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
-			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type-Text' ),
-			new DIProperty( '_IMPO' )
+			new Blob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type-Text' ),
+			new Property( '_IMPO' )
 		);
 
 		$semanticData->addDataValue( $importValue );
@@ -187,7 +187,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		$instance->addAnnotation();
 
 		$expected = [
-			'properties' => [ new DIProperty( '_IMPO' ) ],
+			'properties' => [ new Property( '_IMPO' ) ],
 			'propertyValues' => [ 'foo:bar' ]
 		];
 
@@ -203,8 +203,8 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		);
 
 		$importValue = DataValueFactory::getInstance()->newDataValueByItem(
-			new DIBlob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Bogus' ),
-			new DIProperty( '_IMPO' )
+			new Blob( 'foo' . ' ' . 'bar' . ' ' . 'buz' . ' ' . 'Type:Bogus' ),
+			new Property( '_IMPO' )
 		);
 
 		$semanticData->addDataValue( $importValue );
@@ -216,7 +216,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 		$instance->addAnnotation();
 
 		$expected = [
-			'properties' => [ new DIProperty( '_IMPO' ) ],
+			'properties' => [ new Property( '_IMPO' ) ],
 			'propertyValues' => [ 'foo:bar' ]
 		];
 
@@ -235,7 +235,7 @@ class MandatoryTypePropertyAnnotatorTest extends TestCase {
 
 		$subpro = DataValueFactory::getInstance()->newDataValueByItem(
 			$parent,
-			new DIProperty( '_SUBP' )
+			new Property( '_SUBP' )
 		);
 
 		$semanticData->addDataValue( $subpro );

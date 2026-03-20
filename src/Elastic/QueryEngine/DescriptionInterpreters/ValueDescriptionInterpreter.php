@@ -2,14 +2,14 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ValueDescription;
 use SMW\Utils\CharExaminer;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
 use SMWDInumber as DINumber;
-use SMWDITime as DITime;
 
 /**
  * @license GPL-2.0-or-later
@@ -72,26 +72,26 @@ class ValueDescriptionInterpreter {
 			$hierarchyDepth
 		);
 
-		if ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_EQ && $property === null ) {
+		if ( $dataItem instanceof WikiPage && $comparator === SMW_CMP_EQ && $property === null ) {
 			// We want an exact match!
 			$field = '_id';
 			$value = $this->conditionBuilder->getID( $dataItem );
-		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_NEQ && $property === null ) {
+		} elseif ( $dataItem instanceof WikiPage && $comparator === SMW_CMP_NEQ && $property === null ) {
 			// We want an exact match!
 			$field = '_id';
 			$value = $this->conditionBuilder->getID( $dataItem );
-		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_EQ ) {
+		} elseif ( $dataItem instanceof WikiPage && $comparator === SMW_CMP_EQ ) {
 			$field = "$pid.wpgID";
 			$value = $this->conditionBuilder->getID( $dataItem );
-		} elseif ( $dataItem instanceof DIWikiPage && $comparator === SMW_CMP_NEQ ) {
+		} elseif ( $dataItem instanceof WikiPage && $comparator === SMW_CMP_NEQ ) {
 			$field = "$pid.wpgID";
 			$value = $this->conditionBuilder->getID( $dataItem );
-		} elseif ( $dataItem instanceof DIWikiPage ) {
+		} elseif ( $dataItem instanceof WikiPage ) {
 			$value = $dataItem->getSortKey();
-		} elseif ( $dataItem instanceof DITime ) {
+		} elseif ( $dataItem instanceof Time ) {
 			$field = "$field.keyword";
 			$value = $dataItem->getJD();
-		} elseif ( $dataItem instanceof DIBoolean ) {
+		} elseif ( $dataItem instanceof Boolean ) {
 			$value = $dataItem->getBoolean();
 		} elseif ( $dataItem instanceof DINumber ) {
 			$value = $dataItem->getNumber();
@@ -103,9 +103,9 @@ class ValueDescriptionInterpreter {
 			$value = mb_substr( $value, 0, $this->conditionBuilder->getOption( 'maximum.value.length' ) );
 		}
 
-		if ( $dataItem instanceof DIWikiPage && $this->isRange( $comparator ) ) {
+		if ( $dataItem instanceof WikiPage && $this->isRange( $comparator ) ) {
 			$params = $this->fieldMapper->range( "$field.keyword", $value, $comparator );
-		} elseif ( $dataItem instanceof DIBlob && $comparator === SMW_CMP_EQ ) {
+		} elseif ( $dataItem instanceof Blob && $comparator === SMW_CMP_EQ ) {
 			$params = $this->fieldMapper->match( "$field", "\"$value\"" );
 		} elseif ( $comparator === SMW_CMP_EQ || $comparator === SMW_CMP_NEQ ) {
 			$params = $this->fieldMapper->terms( "$field", $value );

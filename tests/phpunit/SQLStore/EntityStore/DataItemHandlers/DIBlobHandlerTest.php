@@ -3,12 +3,12 @@
 namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\DataItemHandlers\DIBlobHandler
@@ -78,7 +78,7 @@ class DIBlobHandlerTest extends TestCase {
 	}
 
 	public function testMutableMethodAccess() {
-		$blob = new DIBlob( 'Foo' );
+		$blob = new Blob( 'Foo' );
 
 		$instance = new DIBlobHandler(
 			$this->store
@@ -122,7 +122,7 @@ class DIBlobHandlerTest extends TestCase {
 		$instance = new DIBlobHandler( $this->store );
 
 		$s72  = 'zcqaBHr1jV7mINGovktU8bD6zYjgKMqfaCxQlPcT4J6h4197dQpSW5PK5f8HigRk0yEsLC2F';
-		$blob = new DIBlob( $s72 );
+		$blob = new Blob( $s72 );
 
 		$expected = [
 			'o_blob' => '',
@@ -135,7 +135,7 @@ class DIBlobHandlerTest extends TestCase {
 		);
 
 		$s73  = 'zcqaBHr1jV7mINGovktU8bD6zYjgKMqfaCxQlPcT4J6h4197dQpSW5PK5f8HigRk0yEsLC2Fs';
-		$blob = new DIBlob( $s73 );
+		$blob = new Blob( $s73 );
 
 		$expected = [
 			'o_blob' => $blob->getString(),

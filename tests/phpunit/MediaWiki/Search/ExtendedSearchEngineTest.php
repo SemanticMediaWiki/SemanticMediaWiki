@@ -3,6 +3,7 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use SMW\MediaWiki\Search\ExtendedSearch;
 use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\Tests\TestEnvironment;
@@ -47,7 +48,7 @@ class ExtendedSearchEngineTest extends TestCase {
 
 		if ( class_exists( 'SearchEngine' ) ) {
 
-			$reflection = new \ReflectionClass( 'SearchEngine' );
+			$reflection = new ReflectionClass( 'SearchEngine' );
 
 			if ( $reflection->isInstantiable() ) {
 				$searchEngine = 'SearchEngine';

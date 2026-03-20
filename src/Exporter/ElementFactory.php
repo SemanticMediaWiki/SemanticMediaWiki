@@ -3,11 +3,11 @@
 namespace SMW\Exporter;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Time;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -135,7 +135,7 @@ class ElementFactory {
 	 * @return ExpLiteral
 	 */
 	public function newFromTime( DataItem $dataItem ): ExpLiteral {
-		$dataItem = $dataItem->getForCalendarModel( DITime::CM_GREGORIAN );
+		$dataItem = $dataItem->getForCalendarModel( Time::CM_GREGORIAN );
 
 		[ $type, $value ] = XsdValueMapper::map(
 			$dataItem

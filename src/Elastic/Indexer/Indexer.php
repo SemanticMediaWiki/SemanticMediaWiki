@@ -9,7 +9,7 @@ use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Jobs\IndexerRecoveryJob;
 use SMW\MediaWiki\Collator;
@@ -84,11 +84,11 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return string
 	 */
-	public function getId( DIWikiPage $dataItem ) {
+	public function getId( WikiPage $dataItem ) {
 		return $this->store->getObjectIds()->getId( $dataItem );
 	}
 
@@ -201,10 +201,10 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 * @param array $data
 	 */
-	public function create( DIWikiPage $dataItem, array $data = [] ) {
+	public function create( WikiPage $dataItem, array $data = [] ) {
 		$title = $dataItem->getTitle();
 
 		if ( !$this->canReplicate() ) {
@@ -249,12 +249,12 @@ class Indexer {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|Title|int $id
+	 * @param WikiPage|Title|int $id
 	 *
 	 * @return string
 	 */
 	public function fetchNativeData( $id ) {
-		if ( $id instanceof DIWikiPage ) {
+		if ( $id instanceof WikiPage ) {
 			$id = $id->getTitle();
 		}
 
@@ -331,7 +331,7 @@ class Indexer {
 		return false;
 	}
 
-	private function makeSubject( DIWikiPage $subject ): array {
+	private function makeSubject( WikiPage $subject ): array {
 		$title = $subject->getDBKey();
 
 		if ( $subject->getNamespace() !== SMW_NS_PROPERTY || $title[0] !== '_' ) {

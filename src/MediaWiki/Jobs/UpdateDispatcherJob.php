@@ -4,16 +4,16 @@ namespace SMW\MediaWiki\Jobs;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Enum;
 use SMW\Exception\DataItemDeserializationException;
 use SMW\MediaWiki\Job;
 use SMW\RequestOptions;
 use SMW\SerializerFactory;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
 
 /**
  * Dispatcher to find and create individual UpdateJob instances for a specific
@@ -86,13 +86,13 @@ class UpdateDispatcherJob extends Job {
 
 		if ( $this->getTitle()->getNamespace() === SMW_NS_PROPERTY ) {
 			$this->dispatchUpdateForProperty(
-				DIProperty::newFromUserLabel( $this->getTitle()->getText() )
+				Property::newFromUserLabel( $this->getTitle()->getText() )
 			);
 
-			$this->jobs[] = DIWikiPage::newFromTitle( $this->getTitle() )->getHash();
+			$this->jobs[] = WikiPage::newFromTitle( $this->getTitle() )->getHash();
 		} else {
 			$this->dispatchUpdateForSubject(
-				DIWikiPage::newFromTitle( $this->getTitle() )
+				WikiPage::newFromTitle( $this->getTitle() )
 			);
 		}
 
@@ -179,7 +179,7 @@ class UpdateDispatcherJob extends Job {
 		}
 	}
 
-	private function dispatchUpdateForSubject( DIWikiPage $subject ): void {
+	private function dispatchUpdateForSubject( WikiPage $subject ): void {
 		if ( $this->getParameter( self::RESTRICTED_DISPATCH_POOL ) !== true ) {
 			$this->addUpdateJobsForProperties(
 				$this->store->getProperties( $subject )
@@ -193,7 +193,7 @@ class UpdateDispatcherJob extends Job {
 		$this->addUpdateJobsFromDeserializedSemanticData();
 	}
 
-	private function dispatchUpdateForProperty( DIProperty $property ): void {
+	private function dispatchUpdateForProperty( Property $property ): void {
 		$this->addUpdateJobsForProperties( [ $property ] );
 		$this->addUpdateJobsForSubjectsThatContainTypeError();
 		$this->addUpdateJobsFromDeserializedSemanticData();
@@ -255,7 +255,7 @@ class UpdateDispatcherJob extends Job {
 		$list = [];
 
 		// Identify the source as base for a comparison
-		$source = DIWikiPage::newFromTitle( $this->getTitle() );
+		$source = WikiPage::newFromTitle( $this->getTitle() );
 
 		foreach ( $subjects as $subject ) {
 
@@ -267,7 +267,7 @@ class UpdateDispatcherJob extends Job {
 			foreach ( $dataItems as $dataItem ) {
 				// Make a judgment based on a literal comparison for the
 				// values assigned and the now deleted entity
-				if ( $dataItem instanceof DIWikiPage && $dataItem->equals( $source ) ) {
+				if ( $dataItem instanceof WikiPage && $dataItem->equals( $source ) ) {
 					$list[] = $subject;
 				}
 			}
@@ -278,8 +278,8 @@ class UpdateDispatcherJob extends Job {
 
 	private function addUpdateJobsForSubjectsThatContainTypeError(): void {
 		$subjects = $this->store->getPropertySubjects(
-			new DIProperty( DIProperty::TYPE_ERROR ),
-			DIWikiPage::newFromTitle( $this->getTitle() )
+			new Property( Property::TYPE_ERROR ),
+			WikiPage::newFromTitle( $this->getTitle() )
 		);
 
 		$this->add_job(
@@ -308,7 +308,7 @@ class UpdateDispatcherJob extends Job {
 			// as makeTitleSafe is expensive for large lists
 			// $title = $subject->getTitle();
 
-			if ( !$subject instanceof DIWikiPage ) {
+			if ( !$subject instanceof WikiPage ) {
 				continue;
 			}
 
@@ -340,7 +340,7 @@ class UpdateDispatcherJob extends Job {
 			}
 
 			try {
-				$subject = DIWikiPage::doUnserialize( $subject );
+				$subject = WikiPage::doUnserialize( $subject );
 			} catch ( DataItemDeserializationException $e ) {
 				continue;
 			}

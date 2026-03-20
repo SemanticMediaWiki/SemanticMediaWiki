@@ -10,9 +10,11 @@ use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\Number\UnitConverter;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
+use SMW\DataValues\TimeValue;
 use SMW\DataValues\ValueFormatters\CodeStringValueFormatter;
 use SMW\DataValues\ValueFormatters\MonolingualTextValueFormatter;
 use SMW\DataValues\ValueFormatters\NumberValueFormatter;
@@ -32,8 +34,6 @@ use SMW\Schema\SchemaFactory;
 use SMW\Services\DataValueServiceFactory;
 use SMW\Settings;
 use SMW\Store;
-use SMWNumberValue as NumberValue;
-use SMWTimeValue as TimeValue;
 
 /**
  * @group semantic-mediawiki

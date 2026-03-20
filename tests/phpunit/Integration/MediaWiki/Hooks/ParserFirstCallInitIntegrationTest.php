@@ -3,8 +3,8 @@
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
 use MediaWiki\MediaWikiServices;
+use SMW\DataModel\SemanticData;
 use SMW\Query\QueryResult;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\Lookup\MonolingualTextLookup;

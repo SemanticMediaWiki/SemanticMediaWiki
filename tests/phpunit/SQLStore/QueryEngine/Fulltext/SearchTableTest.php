@@ -4,9 +4,9 @@ namespace SMW\Tests\SQLStore\QueryEngine\Fulltext;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\QueryEngine\Fulltext\SearchTable;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\Fulltext\SearchTable

@@ -3,12 +3,12 @@
 namespace SMW\Tests\Integration\Query;
 
 use PHPUnit\Framework\TestCase;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Store;
 use SMW\Tests\NonExistentQueryStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Mock\FakeQueryStore;
-use SMWQueryProcessor;
 
 /**
  * @group semantic-mediawiki
@@ -167,18 +167,18 @@ class QuerySourceIntegrationTest extends TestCase {
 	}
 
 	protected function makeQueryResultFromRawParameters( $rawParams ) {
-		[ $query, $params ] = SMWQueryProcessor::getQueryAndParamsFromFunctionParams(
+		[ $query, $params ] = QueryProcessor::getQueryAndParamsFromFunctionParams(
 			$rawParams,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY,
+			QueryProcessor::INLINE_QUERY,
 			false
 		);
 
-		return SMWQueryProcessor::getResultFromQuery(
+		return QueryProcessor::getResultFromQuery(
 			$query,
 			$params,
 			SMW_OUTPUT_WIKI,
-			SMWQueryProcessor::INLINE_QUERY
+			QueryProcessor::INLINE_QUERY
 		);
 	}
 

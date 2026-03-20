@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -115,11 +115,11 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIWikiPage $source
-	 * @param DIWikiPage $target
+	 * @param WikiPage $source
+	 * @param WikiPage $target
 	 * @param array $options
 	 */
-	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ): void {
+	public function doUpdate( WikiPage $source, WikiPage $target, array $options ): void {
 		$idTable = $this->store->getObjectIds();
 		$this->lookupCache = [];
 
@@ -192,19 +192,19 @@ class RedirectUpdater {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $redirects
 	 */
-	public function cleanUpAnnotationsAndRedirects( DIWikiPage $subject, array $redirects ): void {
+	public function cleanUpAnnotationsAndRedirects( WikiPage $subject, array $redirects ): void {
 		$this->updateRedirects( $subject, end( $redirects ) );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function discardRemnantRedirects( DIWikiPage $subject ): void {
+	public function discardRemnantRedirects( WikiPage $subject ): void {
 		$entityIdManager = $this->store->getObjectIds();
 		$target_id = 0;
 
@@ -247,12 +247,12 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIWikiPage $source
-	 * @param DIWikiPage|null $target
+	 * @param WikiPage $source
+	 * @param WikiPage|null $target
 	 *
 	 * @return int the new canonical ID of the subject
 	 */
-	public function updateRedirects( DIWikiPage $source, ?DIWikiPage $target = null ) {
+	public function updateRedirects( WikiPage $source, ?WikiPage $target = null ) {
 		// Track count changes for redi property
 		$count = 0;
 
@@ -427,7 +427,7 @@ class RedirectUpdater {
 		$this->lookupCache = [ $sid, $new_tid, $old_tid ];
 
 		$this->propertyStatisticsStore->addToUsageCount(
-			$idTable->getSMWPropertyID( new DIProperty( '_REDI' ) ),
+			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			$count
 		);
 
@@ -508,7 +508,7 @@ class RedirectUpdater {
 		);
 
 		$this->propertyStatisticsStore->addToUsageCount(
-			$idTable->getSMWPropertyID( new DIProperty( '_REDI' ) ),
+			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			1
 		);
 

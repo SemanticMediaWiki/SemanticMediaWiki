@@ -5,8 +5,8 @@ namespace SMW\Tests\SQLStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\AuxiliaryFields;
 use SMW\SQLStore\EntityStore\CacheWarmer;
@@ -23,6 +23,7 @@ use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\SQLStoreFactory;
 use SMW\SQLStore\TableFieldUpdater;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\EntityStore\EntityIdManager
@@ -170,7 +171,7 @@ class EntityIdManagerTest extends TestCase {
 	}
 
 	public function testRedirectInfoRoundtrip() {
-		$subject = new DIWikiPage( 'Foo', 9001 );
+		$subject = new WikiPage( 'Foo', 9001 );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -205,7 +206,7 @@ class EntityIdManagerTest extends TestCase {
 	}
 
 	public function testGetPropertyId() {
-		$selectRow = new \stdClass;
+		$selectRow = new stdClass;
 		$selectRow->smw_id = 9999;
 		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
@@ -228,7 +229,7 @@ class EntityIdManagerTest extends TestCase {
 			$this->factory
 		);
 
-		$result = $instance->getSMWPropertyID( new DIProperty( 'Foo' ) );
+		$result = $instance->getSMWPropertyID( new Property( 'Foo' ) );
 
 		$this->assertEquals( 9999, $result );
 	}
@@ -237,7 +238,7 @@ class EntityIdManagerTest extends TestCase {
 	 * @dataProvider pageIdandSortProvider
 	 */
 	public function testGetSMWPageIDandSort( $parameters ) {
-		$selectRow = new \stdClass;
+		$selectRow = new stdClass;
 		$selectRow->smw_id = 9999;
 		$selectRow->smw_sort = '';
 		$selectRow->smw_sortkey = 'Foo';
@@ -280,7 +281,7 @@ class EntityIdManagerTest extends TestCase {
 	 * @dataProvider pageIdandSortProvider
 	 */
 	public function testMakeSMWPageID( $parameters ) {
-		$selectRow = new \stdClass;
+		$selectRow = new stdClass;
 		$selectRow->smw_id = 0;
 		$selectRow->o_id = 0;
 		$selectRow->smw_sort = '';
@@ -338,7 +339,7 @@ class EntityIdManagerTest extends TestCase {
 		$this->idEntityFinder->expects( $this->once() )
 			->method( 'getDataItemById' )
 			->with( 42 )
-			->willReturn( new DIWikiPage( 'Foo', NS_MAIN ) );
+			->willReturn( new WikiPage( 'Foo', NS_MAIN ) );
 
 		$instance = new EntityIdManager(
 			$this->store,
@@ -346,7 +347,7 @@ class EntityIdManagerTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->getDataItemById( 42 )
 		);
 	}
@@ -366,7 +367,7 @@ class EntityIdManagerTest extends TestCase {
 
 		$instance->updateInterwikiField(
 			42,
-			new DIWikiPage( 'Foo', NS_MAIN, 'Bar' )
+			new WikiPage( 'Foo', NS_MAIN, 'Bar' )
 		);
 	}
 
@@ -406,7 +407,7 @@ class EntityIdManagerTest extends TestCase {
 	}
 
 	public function testGetIDOnPredefinedProperty() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 
 		$connection = $this->getMockBuilder( Database::class )
@@ -432,18 +433,18 @@ class EntityIdManagerTest extends TestCase {
 
 		$this->assertEquals(
 			29,
-			$instance->getId( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY ) )
+			$instance->getId( new WikiPage( '_MDAT', SMW_NS_PROPERTY ) )
 		);
 
 		$this->assertEquals(
 			42,
-			$instance->getId( new DIWikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
+			$instance->getId( new WikiPage( '_MDAT', SMW_NS_PROPERTY, '', 'Foo' ) )
 		);
 	}
 
 	public function testWarmUpCache() {
 		$list = [
-			new DIWikiPage( 'Bar', NS_MAIN )
+			new WikiPage( 'Bar', NS_MAIN )
 		];
 
 		$idCacheManager = $this->getMockBuilder( IdCacheManager::class )
@@ -543,7 +544,7 @@ class EntityIdManagerTest extends TestCase {
 
 	public function testPreload() {
 		$subjects = [
-			DIWikiPage::newFromText( 'Foo' )
+			WikiPage::newFromText( 'Foo' )
 		];
 
 		$fieldList = $this->getMockBuilder( FieldList::class )

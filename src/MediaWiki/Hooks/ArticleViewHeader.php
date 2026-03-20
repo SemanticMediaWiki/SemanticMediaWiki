@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Hooks;
 
 use Article;
 use MediaWiki\Html\Html;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -55,7 +55,7 @@ class ArticleViewHeader implements HookListener {
 			return true;
 		}
 
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
@@ -78,7 +78,7 @@ class ArticleViewHeader implements HookListener {
 	private function updateCategoryTop( $title, $output ): bool {
 		$message = '';
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -86,7 +86,7 @@ class ArticleViewHeader implements HookListener {
 			$subject
 		);
 
-		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
 			$severity = $this->getOption( 'smwgChangePropagationProtection', true ) ? 'error' : 'warning';
 
 			$message .= $this->message(

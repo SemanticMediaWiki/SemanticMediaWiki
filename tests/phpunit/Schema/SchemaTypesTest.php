@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Schema;
 
+use JsonSerializable;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\Schema\Exception\SchemaTypeAlreadyExistsException;
@@ -46,7 +47,7 @@ class SchemaTypesTest extends TestCase {
 		);
 
 		$this->assertInstanceof(
-			\JsonSerializable::class,
+			JsonSerializable::class,
 			$instance
 		);
 	}

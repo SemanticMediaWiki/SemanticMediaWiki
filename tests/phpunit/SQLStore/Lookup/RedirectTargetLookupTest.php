@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\Lookup;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
@@ -123,12 +123,12 @@ class RedirectTargetLookupTest extends TestCase {
 			$this->idCacheManager
 		);
 
-		$instance->prepareCache( [ 42 => DIWikiPage::newFromText( 'Foo' ) ] );
+		$instance->prepareCache( [ 42 => WikiPage::newFromText( 'Foo' ) ] );
 	}
 
 	public function testFindRedirectSource() {
 		$flag = RedirectTargetLookup::CACHE_ONLY;
-		$target = DIWikiPage::newFromText( 'Foo' );
+		$target = WikiPage::newFromText( 'Foo' );
 
 		$this->idCacheManager->expects( $this->any() )
 			->method( 'get' )
@@ -146,7 +146,7 @@ class RedirectTargetLookupTest extends TestCase {
 		);
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->findRedirectSource( $target, $flag )
 		);
 	}

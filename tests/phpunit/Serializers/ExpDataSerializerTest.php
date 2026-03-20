@@ -3,11 +3,11 @@
 namespace SMW\Tests\Serializers;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Serializers\ExpDataSerializer;
-use SMWDIBlob as DIBlob;
-use SMWExpData as ExpData;
 
 /**
  * @covers \SMW\Serializers\ExpDataSerializer
@@ -107,13 +107,13 @@ class ExpDataSerializerTest extends TestCase {
 		$expData = new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', null ) );
 
 		$expData->addPropertyObjectValue(
-			new ExpNsResource( 'Li', 'La', 'Lu', new DIBlob( 'SomeText' ) ),
+			new ExpNsResource( 'Li', 'La', 'Lu', new Blob( 'SomeText' ) ),
 			new ExpLiteral( 'Foo', 'Bar' )
 		);
 
 		$expData->addPropertyObjectValue(
 			new ExpNsResource( 'Li', 'La', 'Lu', null ),
-			new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', new DIBlob( 'SomeOtherText' ) ) )
+			new ExpData( new ExpNsResource( 'Foo', 'Bar', 'Mo', new Blob( 'SomeOtherText' ) ) )
 		);
 
 		$provider[] = [

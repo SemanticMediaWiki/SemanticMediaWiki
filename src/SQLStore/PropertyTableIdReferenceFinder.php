@@ -2,9 +2,9 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -53,11 +53,11 @@ class PropertyTableIdReferenceFinder {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return DataItem|false
 	 */
-	public function tryToFindAtLeastOneReferenceForProperty( DIProperty $property ) {
+	public function tryToFindAtLeastOneReferenceForProperty( Property $property ) {
 		$dataItem = $property->getDiWikiPage();
 
 		$sid = $this->store->getObjectIds()->getSMWPageID(

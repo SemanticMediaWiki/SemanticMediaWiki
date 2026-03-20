@@ -6,6 +6,8 @@ namespace SMW;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\PPFrame;
 use ParamProcessor\Processor;
+use SMW\DataModel\Subobject;
+use SMW\Formatters\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ConceptParserFunction;
@@ -19,6 +21,7 @@ use SMW\ParserFunctions\ShowParserFunction;
 use SMW\ParserFunctions\SubobjectParserFunction as SubobjectParserFunc;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
+use SMW\Utils\RecurringEvents;
 
 /**
  * @see http://www.semantic-mediawiki.org/wiki/Help:ParserFunction

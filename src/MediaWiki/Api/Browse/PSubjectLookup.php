@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
@@ -105,7 +105,7 @@ class PSubjectLookup extends Lookup {
 		$list = [];
 		$dataItem = null;
 
-		$property = DIProperty::newFromUserLabel( $property );
+		$property = Property::newFromUserLabel( $property );
 
 		if ( $value !== '' && $value !== null ) {
 			$dataItem = DataValueFactory::getInstance()->newDataValueByProperty( $property, $value )->getDataItem();
@@ -123,7 +123,7 @@ class PSubjectLookup extends Lookup {
 
 		foreach ( $res as $dataItem ) {
 
-			if ( !$dataItem instanceof DIWikiPage ) {
+			if ( !$dataItem instanceof WikiPage ) {
 				continue;
 			}
 

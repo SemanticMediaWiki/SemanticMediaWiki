@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\DataItems;
 
+use ReflectionClass;
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 
@@ -41,7 +42,7 @@ abstract class AbstractDataItem extends SMWIntegrationTestCase {
 	 * @return DataItem
 	 */
 	public function newInstance() {
-		$reflector = new \ReflectionClass( $this->getClass() );
+		$reflector = new ReflectionClass( $this->getClass() );
 		$args = func_get_args();
 		$instance = $reflector->newInstanceArgs( $args );
 		return $instance;

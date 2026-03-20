@@ -2,7 +2,7 @@
 
 namespace SMW\Indicator\EntityExaminerIndicators;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\IndicatorProviders\DeferrableIndicatorProvider;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -79,12 +79,12 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ) {
 		if ( $this->isDeferredMode ) {
 			return $this->runCheck( $subject, $options );
 		}

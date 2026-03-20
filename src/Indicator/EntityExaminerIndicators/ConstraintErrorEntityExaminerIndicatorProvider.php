@@ -3,7 +3,7 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\Constraint\ConstraintError;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
@@ -89,12 +89,12 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ): bool {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}

@@ -3,14 +3,14 @@
 namespace SMW\Schema;
 
 use Onoi\Cache\Cache;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Property\SpecificationLookup;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
 
 /**
  * @private
@@ -51,16 +51,16 @@ class SchemaFinder {
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
 	public function registerPropertyChangeListener( PropertyChangeListener $propertyChangeListener ): void {
-		$propertyChangeListener->addListenerCallback( new DIProperty( '_SCHEMA_TYPE' ), [ $this, 'invalidateCache' ] );
+		$propertyChangeListener->addListenerCallback( new Property( '_SCHEMA_TYPE' ), [ $this, 'invalidateCache' ] );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function invalidateCache( DIProperty $property, ChangeRecord $changeRecord ): void {
+	public function invalidateCache( Property $property, ChangeRecord $changeRecord ): void {
 		if ( $property->getKey() !== '_SCHEMA_TYPE' ) {
 			return;
 		}
@@ -81,13 +81,13 @@ class SchemaFinder {
 	 * @since 3.1
 	 */
 	public function getConstraintSchema( DataItem $dataItem ): ?SchemaList {
-		return $this->newSchemaList( $dataItem, new DIProperty( '_CONSTRAINT_SCHEMA' ) );
+		return $this->newSchemaList( $dataItem, new Property( '_CONSTRAINT_SCHEMA' ) );
 	}
 
 	/**
 	 * @since 3.1
 	 */
-	public function newSchemaList( DataItem $dataItem, DIProperty $property ): ?SchemaList {
+	public function newSchemaList( DataItem $dataItem, Property $property ): ?SchemaList {
 		$dataItems = $this->propertySpecificationLookup->getSpecification(
 			$dataItem,
 			$property
@@ -121,8 +121,8 @@ class SchemaFinder {
 			$subjects = [];
 
 			$dataItems = $this->store->getPropertySubjects(
-				new DIProperty( '_SCHEMA_TYPE' ),
-				new DIBlob( $type )
+				new Property( '_SCHEMA_TYPE' ),
+				new Blob( $type )
 			);
 
 			foreach ( $dataItems as $dataItem ) {
@@ -133,20 +133,20 @@ class SchemaFinder {
 		}
 
 		foreach ( $subjects as $subject ) {
-			$this->findSchemaDefinition( DIWikiPage::doUnserialize( $subject ), $schemaList );
+			$this->findSchemaDefinition( WikiPage::doUnserialize( $subject ), $schemaList );
 		}
 
 		return new SchemaList( $schemaList );
 	}
 
 	private function findSchemaDefinition( $subject, &$schemaList ): void {
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 
 		$definitions = $this->propertySpecificationLookup->getSpecification(
 			$subject,
-			new DIProperty( '_SCHEMA_DEF' )
+			new Property( '_SCHEMA_DEF' )
 		);
 
 		$name = str_replace( '_', ' ', $subject->getDBKey() );

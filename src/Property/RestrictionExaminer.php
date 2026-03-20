@@ -3,8 +3,8 @@
 namespace SMW\Property;
 
 use MediaWiki\User\User;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\PropertyRegistry;
 
@@ -93,7 +93,7 @@ class RestrictionExaminer {
 	 *
 	 * @param string $errorMsg
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public static function grepPropertyFromRestrictionErrorMsg( $errorMsg ) {
 		if ( strpos( $errorMsg, self::CREATE_RESTRICTION ) === false ) {
@@ -102,16 +102,16 @@ class RestrictionExaminer {
 
 		$error = json_decode( $errorMsg, true );
 
-		return isset( $error[2] ) ? DIProperty::newFromUserLabel( $error[2] ) : null;
+		return isset( $error[2] ) ? Property::newFromUserLabel( $error[2] ) : null;
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
-	 * @param DIWikiPage|null $contextPage
+	 * @param Property $property
+	 * @param WikiPage|null $contextPage
 	 */
-	public function checkRestriction( DIProperty $property, ?DIWikiPage $contextPage = null ): void {
+	public function checkRestriction( Property $property, ?WikiPage $contextPage = null ): void {
 		$this->error = [];
 
 		if ( $this->isDeclarative( $property, $contextPage ) ) {

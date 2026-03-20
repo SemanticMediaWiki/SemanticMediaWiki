@@ -5,6 +5,7 @@ namespace SMW\Tests\Elastic\Indexer\Rebuilder;
 use Onoi\MessageReporter\NullMessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Document;
@@ -14,7 +15,6 @@ use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Indexer\Rebuilder\Rebuilder;
 use SMW\Elastic\Installer;
 use SMW\MediaWiki\Connection\Database;
-use SMW\SemanticData;
 use SMW\Store;
 
 /**

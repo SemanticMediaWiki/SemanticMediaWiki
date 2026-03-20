@@ -7,13 +7,13 @@ use ReflectionClass;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Number;
 use SMW\DataValues\NumberValue;
+use SMW\Formatters\Infolink;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
 use SMW\Query\ResultPrinters\AggregatablePrinter;
 use SMW\Query\ResultPrinters\ResultPrinter;
 use SMW\Tests\TestEnvironment;
-use SMWInfolink;
 
 /**
  * @covers \SMW\Query\ResultPrinters\AggregatablePrinter
@@ -322,7 +322,7 @@ class AggregatablePrinterTest extends TestCase {
 
 		$queryResult->expects( $this->any() )
 			->method( 'getLink' )
-			->willReturn( new SMWInfolink( true, 'Lala', 'Lula' ) );
+			->willReturn( new Infolink( true, 'Lala', 'Lula' ) );
 
 		$queryResult->expects( $this->any() )
 			->method( 'hasFurtherResults' )

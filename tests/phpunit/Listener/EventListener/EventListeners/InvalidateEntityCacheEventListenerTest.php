@@ -5,7 +5,7 @@ namespace SMW\Tests\Listener\EventListener\EventListeners;
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\DispatchContext;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Tests\TestEnvironment;
@@ -48,7 +48,7 @@ class InvalidateEntityCacheEventListenerTest extends TestCase {
 	public function testExecute_OnSubject() {
 		$context = DispatchContext::newFromArray(
 			[
-				'subject' => DIWikiPage::newFromText( __METHOD__ ),
+				'subject' => WikiPage::newFromText( __METHOD__ ),
 				'context' => 'Bar'
 			]
 		);

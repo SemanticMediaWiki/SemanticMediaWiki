@@ -4,7 +4,7 @@ namespace SMW\Tests\Listener\ChangeListener\ChangeListeners;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\HookDispatcher;
@@ -52,7 +52,7 @@ class PropertyChangeListenerTest extends TestCase {
 	}
 
 	public function testCanTrigger() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -79,7 +79,7 @@ class PropertyChangeListenerTest extends TestCase {
 	}
 
 	public function testRecordAndMatch() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()

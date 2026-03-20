@@ -10,6 +10,7 @@ use SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter
 use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\ThingDescriptionInterpreter
@@ -61,7 +62,7 @@ class ThingDescriptionInterpreterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 0;
 		$expected->queryNumber = 0;
 

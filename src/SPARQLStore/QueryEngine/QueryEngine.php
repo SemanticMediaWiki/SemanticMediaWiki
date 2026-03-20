@@ -6,13 +6,13 @@ use RuntimeException;
 use SMW\Exporter\Element;
 use SMW\Query\DebugFormatter;
 use SMW\Query\Language\ThingDescription;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\QueryEngine as QueryEngineInterface;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMWQuery as Query;
 
 /**
  * Class mapping SMWQuery objects to SPARQL, and for controlling the execution
@@ -59,12 +59,12 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	/**
-	 * @since  2.0
-	 * @param Query $query
-	 *
-	 * @return QueryResult|string
-	 */
-	public function getQueryResult( Query $query ) {
+     * @since  2.0
+     * @param Query $query
+     *
+     * @return QueryResult|string
+     */
+    public function getQueryResult( Query $query ) {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 			 $query->querymode != Query::MODE_DEBUG &&
 			 count( $query->getErrors() ) > 0 ) {
@@ -207,14 +207,14 @@ class QueryEngine implements QueryEngineInterface {
 	}
 
 	/**
-	 * Get a SPARQL option array for the given query.
-	 *
-	 * @param Query $query
-	 * @param Condition $compoundCondition (storing order by variable names)
-	 *
-	 * @return array
-	 */
-	protected function getOptions( Query $query, Condition $compoundCondition ): array {
+     * Get a SPARQL option array for the given query.
+     *
+     * @param Query $query
+     * @param Condition $compoundCondition (storing order by variable names)
+     *
+     * @return array
+     */
+    protected function getOptions( Query $query, Condition $compoundCondition ): array {
 		$options = [
 			'LIMIT' => $query->getLimit() + 1,
 			'OFFSET' => $query->getOffset()

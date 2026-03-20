@@ -2,15 +2,15 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\PageInfo;
 use SMW\Property\Annotator;
 use SMW\PropertyRegistry;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDIBoolean as DIBoolean;
-use SMWDITime as DITime;
 
 /**
  * @license GPL-2.0-or-later
@@ -53,7 +53,7 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 				continue;
 			}
 
-			$propertyDI = new DIProperty( $propertyId );
+			$propertyDI = new Property( $propertyId );
 
 			if ( $this->getSemanticData()->getPropertyValues( $propertyDI ) !== [] ) {
 				$cachedProperties[$propertyId] = true;
@@ -78,24 +78,24 @@ class PredefinedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$dataItem = null;
 
 		switch ( $propertyId ) {
-			case DIProperty::TYPE_MODIFICATION_DATE:
-				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getModificationDate() );
+			case Property::TYPE_MODIFICATION_DATE:
+				$dataItem = Time::newFromTimestamp( $this->pageInfo->getModificationDate() );
 				break;
-			case DIProperty::TYPE_CREATION_DATE:
-				$dataItem = DITime::newFromTimestamp( $this->pageInfo->getCreationDate() );
+			case Property::TYPE_CREATION_DATE:
+				$dataItem = Time::newFromTimestamp( $this->pageInfo->getCreationDate() );
 				break;
-			case DIProperty::TYPE_NEW_PAGE:
-				$dataItem = new DIBoolean( $this->pageInfo->isNewPage() );
+			case Property::TYPE_NEW_PAGE:
+				$dataItem = new Boolean( $this->pageInfo->isNewPage() );
 				break;
-			case DIProperty::TYPE_LAST_EDITOR:
-				$dataItem = $this->pageInfo->getLastEditor() ? DIWikiPage::newFromTitle( $this->pageInfo->getLastEditor() ) : null;
+			case Property::TYPE_LAST_EDITOR:
+				$dataItem = $this->pageInfo->getLastEditor() ? WikiPage::newFromTitle( $this->pageInfo->getLastEditor() ) : null;
 				break;
-			case DIProperty::TYPE_MEDIA : // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMediaType() !== '' && $this->pageInfo->getMediaType() !== null ? new DIBlob( $this->pageInfo->getMediaType() ) : null;
+			case Property::TYPE_MEDIA : // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
+				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMediaType() !== '' && $this->pageInfo->getMediaType() !== null ? new Blob( $this->pageInfo->getMediaType() ) : null;
 				// @codingStandardsIgnoreEnd
 				break;
-			case DIProperty::TYPE_MIME : // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
-				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMimeType() !== '' && $this->pageInfo->getMimeType() !== null ? new DIBlob( $this->pageInfo->getMimeType() ) : null;
+			case Property::TYPE_MIME : // @codingStandardsIgnoreStart phpcs, ignore --sniffs=Generic.Files.LineLength
+				$dataItem = $this->pageInfo->isFilePage() && $this->pageInfo->getMimeType() !== '' && $this->pageInfo->getMimeType() !== null ? new Blob( $this->pageInfo->getMimeType() ) : null;
 				// @codingStandardsIgnoreEnd
 				break;
 		}

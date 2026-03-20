@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\TraversalPropertyLookup;
@@ -34,7 +34,7 @@ class TraversalPropertyLookupTest extends TestCase {
 	}
 
 	public function testlookupForNonFixedPropertyTable() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 
 		$dataItemHandler = $this->getMockBuilder( DataItemHandler::class )
 			->disableOriginalConstructor()
@@ -89,7 +89,7 @@ class TraversalPropertyLookupTest extends TestCase {
 	}
 
 	public function testlookupForFixedPropertyTable() {
-		$dataItem = DIWikiPage::newFromText( __METHOD__ );
+		$dataItem = WikiPage::newFromText( __METHOD__ );
 
 		$resultWrapper = $this->getMockBuilder( FakeResultWrapper::class )
 			->disableOriginalConstructor()

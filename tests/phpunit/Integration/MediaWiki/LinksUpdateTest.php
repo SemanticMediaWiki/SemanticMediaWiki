@@ -5,7 +5,7 @@ namespace SMW\Tests\Integration\MediaWiki;
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Tests\SMWIntegrationTestCase;
 
@@ -62,7 +62,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 			->createPage( $this->title );
 
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			WikiPage::newFromTitle( $this->title )
 		);
 
 		$this->assertCount(
@@ -119,7 +119,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 		$this->assertCount(
 			4,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )->getProperties()
 		);
 
 		/**
@@ -136,7 +136,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 		 * was invoked empty
 		 */
 		$semanticData = $this->getStore()->getSemanticData(
-			DIWikiPage::newFromTitle( $this->title )
+			WikiPage::newFromTitle( $this->title )
 		);
 
 		$this->assertCount(
@@ -188,7 +188,7 @@ class LinksUpdateTest extends SMWIntegrationTestCase {
 
 		$this->assertCount(
 			2,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) )->getProperties()
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) )->getProperties()
 		);
 
 		return $firstRunRevision;

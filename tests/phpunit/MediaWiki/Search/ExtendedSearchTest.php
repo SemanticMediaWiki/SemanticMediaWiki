@@ -3,13 +3,15 @@
 namespace SMW\Tests\MediaWiki\Search;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
+use ReflectionProperty;
 use SMW\MediaWiki\Search\ExtendedSearch;
 use SMW\MediaWiki\Search\QueryBuilder;
 use SMW\MediaWiki\Search\SearchResultSet;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMWQuery;
 
 /**
  * @covers \SMW\MediaWiki\Search\ExtendedSearch
@@ -52,10 +54,10 @@ class ExtendedSearchTest extends TestCase {
 	}
 
 	public function testFallbackSearchEngineAccessToPublicProperties() {
-		$reflect = new \ReflectionObject( $this->fallbackSearchEngine );
+		$reflect = new ReflectionObject( $this->fallbackSearchEngine );
 		$properties = [ 'prefix', 'namespaces' ];
 
-		foreach ( $reflect->getProperties( \ReflectionProperty::IS_PUBLIC ) as $prop ) {
+		foreach ( $reflect->getProperties( ReflectionProperty::IS_PUBLIC ) as $prop ) {
 			foreach ( $properties as $k => $p ) {
 				if ( $prop->getName() === $p ) {
 					unset( $properties[$k] );
@@ -168,8 +170,8 @@ class ExtendedSearchTest extends TestCase {
 
 		$this->store->expects( $this->exactly( 2 ) )
 			->method( 'getQueryResult' )
-			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
-				return $query->querymode === SMWQuery::MODE_COUNT ? 9001 : $queryResult;
+			->willReturnCallback( static function ( Query $query ) use ( $queryResult ) {
+				return $query->querymode === Query::MODE_COUNT ? 9001 : $queryResult;
 			} );
 
 		$instance = new ExtendedSearch(
@@ -260,8 +262,8 @@ class ExtendedSearchTest extends TestCase {
 
 		$this->store->expects( $this->exactly( 3 ) )
 			->method( 'getQueryResult' )
-			->willReturnCallback( static function ( SMWQuery $query ) use ( $queryResult ) {
-				return $query->querymode === \SMWQuery::MODE_COUNT ? 9001 : $queryResult;
+			->willReturnCallback( static function ( Query $query ) use ( $queryResult ) {
+				return $query->querymode === Query::MODE_COUNT ? 9001 : $queryResult;
 			} );
 
 		$fallbackSearchEngine = $this->getMockBuilder( 'SearchEngine' )

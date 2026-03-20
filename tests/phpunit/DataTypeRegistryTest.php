@@ -3,9 +3,9 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 use SMW\DataTypeRegistry;
 use SMW\Localizer\LocalLanguage\LocalLanguage;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\DataTypeRegistry

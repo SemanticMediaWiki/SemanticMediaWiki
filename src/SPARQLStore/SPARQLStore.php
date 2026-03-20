@@ -4,20 +4,20 @@ namespace SMW\SPARQLStore;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Options;
-use SMW\SemanticData;
+use SMW\Query\Query;
 use SMW\SPARQLStore\Exception\HttpEndpointConnectionException;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
-use SMWQuery as Query;
 
 /**
  * Storage and query access point for a SPARQL supported RepositoryConnector to
@@ -75,7 +75,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getSemanticData()
 	 * @since 1.8
 	 */
-	public function getSemanticData( DIWikiPage $subject, $filter = false ) {
+	public function getSemanticData( WikiPage $subject, $filter = false ) {
 		return $this->baseStore->getSemanticData( $subject, $filter );
 	}
 
@@ -83,7 +83,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getPropertyValues()
 	 * @since 1.8
 	 */
-	public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null ) {
+	public function getPropertyValues( $subject, Property $property, $requestoptions = null ) {
 		return $this->baseStore->getPropertyValues( $subject, $property, $requestoptions );
 	}
 
@@ -91,7 +91,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getPropertySubjects()
 	 * @since 1.8
 	 */
-	public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null ) {
+	public function getPropertySubjects( Property $property, $value, $requestoptions = null ) {
 		return $this->baseStore->getPropertySubjects( $property, $value, $requestoptions );
 	}
 
@@ -99,7 +99,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getAllPropertySubjects()
 	 * @since 1.8
 	 */
-	public function getAllPropertySubjects( DIProperty $property, $requestoptions = null ) {
+	public function getAllPropertySubjects( Property $property, $requestoptions = null ) {
 		return $this->baseStore->getAllPropertySubjects( $property, $requestoptions );
 	}
 
@@ -107,7 +107,7 @@ class SPARQLStore extends Store {
 	 * @see Store::getProperties()
 	 * @since 1.8
 	 */
-	public function getProperties( DIWikiPage $subject, $requestoptions = null ) {
+	public function getProperties( WikiPage $subject, $requestoptions = null ) {
 		return $this->baseStore->getProperties( $subject, $requestoptions );
 	}
 
@@ -124,7 +124,7 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function deleteSubject( Title $subject ): void {
-		$this->doSparqlDataDelete( DIWikiPage::newFromTitle( $subject ) );
+		$this->doSparqlDataDelete( WikiPage::newFromTitle( $subject ) );
 		$this->baseStore->deleteSubject( $subject );
 	}
 
@@ -133,8 +133,8 @@ class SPARQLStore extends Store {
 	 * @since 1.6
 	 */
 	public function changeTitle( Title $oldtitle, Title $newtitle, $pageid, $redirid = 0 ): void {
-		$oldWikiPage = DIWikiPage::newFromTitle( $oldtitle );
-		$newWikiPage = DIWikiPage::newFromTitle( $newtitle );
+		$oldWikiPage = WikiPage::newFromTitle( $oldtitle );
+		$newWikiPage = WikiPage::newFromTitle( $newtitle );
 		$oldExpResource = Exporter::getInstance()->newExpElement( $oldWikiPage );
 		$newExpResource = Exporter::getInstance()->newExpElement( $newWikiPage );
 		$namespaces = [ $oldExpResource->getNamespaceId() => $oldExpResource->getNamespace() ];

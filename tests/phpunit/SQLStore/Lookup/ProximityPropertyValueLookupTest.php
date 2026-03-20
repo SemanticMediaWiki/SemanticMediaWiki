@@ -3,13 +3,14 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\Lookup\ProximityPropertyValueLookup;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -35,7 +36,7 @@ class ProximityPropertyValueLookupTest extends TestCase {
 	}
 
 	public function testLookup_wpg_property() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Test';
 		$row->smw_id = 42;
 
@@ -104,7 +105,7 @@ class ProximityPropertyValueLookupTest extends TestCase {
 		];
 
 		$instance->lookup(
-			new DIProperty( 'Bar' ),
+			new Property( 'Bar' ),
 			'Foo',
 			new RequestOptions()
 		);
@@ -116,7 +117,7 @@ class ProximityPropertyValueLookupTest extends TestCase {
 	}
 
 	public function tesLookup_txt_property() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->o_hash = 'Test';
 		$row->smw_id = 42;
 
@@ -189,7 +190,7 @@ class ProximityPropertyValueLookupTest extends TestCase {
 		];
 
 		$instance->lookup(
-			new DIProperty( '_TEXT' ),
+			new Property( '_TEXT' ),
 			'Foo',
 			new RequestOptions()
 		);

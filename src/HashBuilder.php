@@ -3,6 +3,8 @@
 namespace SMW;
 
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 
 /**
  * Utility class to create unified hash keys for a variety of objects
@@ -113,11 +115,11 @@ class HashBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return string
 	 */
-	public static function getHashIdForDiWikiPage( DIWikiPage $dataItem ): string {
+	public static function getHashIdForDiWikiPage( WikiPage $dataItem ): string {
 		return self::createFromSegments(
 			$dataItem->getDBKey(),
 			$dataItem->getNamespace(),
@@ -146,7 +148,7 @@ class HashBuilder {
 	 *
 	 * @param string
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public static function newDiWikiPageFromHash( $hash ) {
 		[ $title, $namespace, $interwiki, $subobjectName ] = explode( '#', $hash, 4 );
@@ -157,7 +159,7 @@ class HashBuilder {
 			$title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $title ) );
 		}
 
-		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
+		return new WikiPage( $title, $namespace, $interwiki, $subobjectName );
 	}
 
 }

@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ValueDescription;
@@ -17,6 +17,7 @@ use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\SomePropertyInterpreter
@@ -84,7 +85,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$this->descriptionFactory->newThingDescription()
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 0;
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
@@ -127,7 +128,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$this->descriptionFactory->newThingDescription()
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 0;
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
@@ -149,7 +150,7 @@ class SomePropertyInterpreterTest extends TestCase {
 	}
 
 	public function testinterpretDescriptionForNonWikiPageTypeInverseProperty() {
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -181,7 +182,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$property,
 			$this->descriptionFactory->newThingDescription()
 		);
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 0;
 
 		$queryEngineFactory = new QueryEngineFactory( $this->store );
@@ -307,7 +308,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$descriptionFactory->newThingDescription()
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id" ];
@@ -333,7 +334,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$descriptionFactory->newValueDescription( $dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_EQ )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id", 2 => "t0.wikipageIndex" ];
@@ -361,7 +362,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$descriptionFactory->newValueDescription( $dataItemFactory->newDIWikiPage( 'Bar', NS_MAIN ), null, SMW_CMP_EQ )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id", 2 => "t0.wikipageIndex" ];
@@ -390,7 +391,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Bar' ), null, SMW_CMP_EQ )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id" ];
@@ -418,7 +419,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$descriptionFactory->newValueDescription( $dataItemFactory->newDIBlob( 'Bar' ), null, SMW_CMP_EQ )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id" ];
@@ -460,7 +461,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			$valueDescription
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id" ];
@@ -492,7 +493,7 @@ class SomePropertyInterpreterTest extends TestCase {
 			] )
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->joinTable = 'FooPropTable';
 		$expected->components = [ 1 => "t0.p_id" ];

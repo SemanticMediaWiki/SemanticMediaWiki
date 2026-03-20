@@ -3,7 +3,7 @@
 namespace SMW\Tests\IndicatorEntityExaminerIndicators;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicators\CompositeIndicatorHtmlBuilder;
 use SMW\Indicator\EntityExaminerIndicators\EntityExaminerCompositeIndicatorProvider;
 use SMW\Indicator\IndicatorProvider;
@@ -124,7 +124,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_Empty() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
@@ -154,7 +154,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_Option_ActionEdit() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
@@ -175,7 +175,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_Option_Diff() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$indicatorProvider = $this->getMockBuilder( IndicatorProvider::class )
 			->disableOriginalConstructor()
@@ -196,7 +196,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testHasIndicator_SomeContent() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->once() )
 			->method( 'buildHTML' )
@@ -230,7 +230,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 	}
 
 	public function testNoIndicatorOnFailedPermission() {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->compositeIndicatorHtmlBuilder->expects( $this->never() )
 			->method( 'buildHTML' );
@@ -269,7 +269,7 @@ class EntityExaminerCompositeIndicatorProviderTest extends TestCase {
 				return '';
 			}
 
-			public function hasIndicator( DIWikiPage $subject, array $options ) {
+			public function hasIndicator( WikiPage $subject, array $options ) {
 				return false;
 			}
 

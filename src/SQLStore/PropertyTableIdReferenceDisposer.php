@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -218,11 +218,11 @@ class PropertyTableIdReferenceDisposer {
 		$subject = $this->store->getObjectIds()->getDataItemById( $id );
 		$isRedirect = false;
 
-		if ( $subject instanceof DIWikiPage ) {
+		if ( $subject instanceof WikiPage ) {
 			$isRedirect = $subject->getInterwiki() === SMW_SQL3_SMWREDIIW;
 
 			// Use the subject without an internal 'smw-delete' iw marker
-			$subject = new DIWikiPage(
+			$subject = new WikiPage(
 				$subject->getDBKey(),
 				$subject->getNamespace(),
 				'',
@@ -326,7 +326,7 @@ class PropertyTableIdReferenceDisposer {
 	}
 
 	private function triggerCleanUpEvents( $subject ): void {
-		if ( !$subject instanceof DIWikiPage ) {
+		if ( !$subject instanceof WikiPage ) {
 			return;
 		}
 

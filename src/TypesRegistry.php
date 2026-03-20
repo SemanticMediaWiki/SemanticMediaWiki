@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use SMW\DataItems\DataItem;
 use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\AllowsValue;
@@ -14,19 +15,18 @@ use SMW\DataValues\ImportValue;
 use SMW\DataValues\KeywordValue;
 use SMW\DataValues\LanguageCodeValue;
 use SMW\DataValues\MonolingualTextValue;
+use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyChainValue;
 use SMW\DataValues\PropertyValue;
+use SMW\DataValues\QuantityValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\TelephoneUriValue;
 use SMW\DataValues\TemperatureValue;
+use SMW\DataValues\TimeValue;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\UniquenessConstraintValue;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
-use SMWNumberValue as NumberValue;
-use SMWQuantityValue as QuantityValue;
-use SMWTimeValue as TimeValue;
+use SMW\Export\Exporter;
 
 /**
  * @license GPL-2.0-or-later

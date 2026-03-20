@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\PropertyTableDefinition;
@@ -109,7 +109,7 @@ class PropertyTableIdReferenceFinderTest extends TestCase {
 			$this->store
 		);
 
-		$instance->tryToFindAtLeastOneReferenceForProperty( new DIProperty( 'Foo' ) );
+		$instance->tryToFindAtLeastOneReferenceForProperty( new Property( 'Foo' ) );
 	}
 
 	public function testHasResidualPropertyTableReference() {

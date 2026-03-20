@@ -2,9 +2,9 @@
 
 namespace SMW\Property\Annotators;
 
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Property\Annotator;
@@ -108,11 +108,11 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		);
 
 		if ( $this->useCategoryInstance && ( $namespace !== NS_CATEGORY ) ) {
-			$property = new DIProperty( DIProperty::TYPE_CATEGORY );
+			$property = new Property( Property::TYPE_CATEGORY );
 		}
 
 		if ( $this->useCategoryHierarchy && ( $namespace === NS_CATEGORY ) ) {
-			$property = new DIProperty( DIProperty::TYPE_SUBCATEGORY );
+			$property = new Property( Property::TYPE_SUBCATEGORY );
 		}
 
 		$semanticData = $this->getSemanticData();
@@ -135,7 +135,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 	}
 
 	private function modifySemanticData( $semanticData, $annotationProcessor, $subject, $property, $catname ) {
-		$cat = new DIWikiPage( $catname, NS_CATEGORY );
+		$cat = new WikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {
 

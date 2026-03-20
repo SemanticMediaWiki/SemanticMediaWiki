@@ -6,7 +6,7 @@ use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\ParserData;
 use SMW\Services\ServicesFactory;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -134,7 +134,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			4,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) ),
 			'Asserts property Aa, Fuyu, _SKEY, and _MDAT exists'
 		);
 	}
@@ -142,7 +142,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 	protected function assertSemanticDataAfterContentAlteration() {
 		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			2,
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) ),
 			'Asserts property _SKEY and _MDAT exists'
 		);
 	}
@@ -168,7 +168,7 @@ class LinksUpdateSQLStoreDBIntegrationTest extends SMWIntegrationTestCase {
 
 		$this->semanticDataValidator->assertThatSemanticDataHasPropertyCountOf(
 			$storeExpected['count'],
-			$this->getStore()->getSemanticData( DIWikiPage::newFromTitle( $this->title ) ),
+			$this->getStore()->getSemanticData( WikiPage::newFromTitle( $this->title ) ),
 			$storeExpected['msg']
 		);
 	}

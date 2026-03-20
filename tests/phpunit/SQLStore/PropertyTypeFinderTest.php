@@ -5,6 +5,7 @@ namespace SMW\Tests\SQLStore;
 use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTypeFinder;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\PropertyTypeFinder
@@ -35,7 +36,7 @@ class PropertyTypeFinderTest extends TestCase {
 	}
 
 	public function testCountByType() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->count = 42;
 
 		$this->connection->expects( $this->once() )

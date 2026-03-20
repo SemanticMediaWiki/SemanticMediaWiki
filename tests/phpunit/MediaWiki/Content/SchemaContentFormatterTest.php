@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Content;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Content\SchemaContentFormatter;
 use SMW\Schema\Schema;
 use SMW\SortLetter;
@@ -128,7 +128,7 @@ class SchemaContentFormatterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -163,7 +163,7 @@ class SchemaContentFormatterTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

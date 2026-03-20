@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
 use SMW\StringCondition;
-use SMWDIBlob as DIBlob;
 
 /**
  * @license GPL-2.0-or-later
@@ -248,11 +248,11 @@ class RequestOptionsProcessor {
 	}
 
 	private static function getSortKeyForItem( $store, $item ): array {
-		if ( $item instanceof DIWikiPage ) {
+		if ( $item instanceof WikiPage ) {
 			$label = $store->getWikiPageSortKey( $item );
 			$value = $label;
 		} else {
-			$label = ( $item instanceof DIBlob ) ? $item->getString() : '';
+			$label = ( $item instanceof Blob ) ? $item->getString() : '';
 			$value = $item->getSortKey();
 		}
 

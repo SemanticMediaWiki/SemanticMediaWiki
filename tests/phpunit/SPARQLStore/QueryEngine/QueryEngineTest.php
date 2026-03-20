@@ -5,6 +5,7 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -17,7 +18,6 @@ use SMW\SPARQLStore\RepositoryConnection;
 use SMW\SPARQLStore\RepositoryConnectors\GenericRepositoryConnector;
 use SMW\SPARQLStore\SPARQLStore;
 use SMW\Store;
-use SMWQuery as Query;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryEngine

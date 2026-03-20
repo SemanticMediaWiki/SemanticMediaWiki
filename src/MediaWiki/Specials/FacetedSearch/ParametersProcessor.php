@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch;
 
 use MediaWiki\Request\WebRequest;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMWInfolink as Infolink;
 
 /**
  * @private

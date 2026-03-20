@@ -5,7 +5,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 use MediaWiki\Title\Title;
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\SQLStore\PropertyTableInfoFetcher;
@@ -54,7 +54,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testCleanUp() {
-		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY );
 
 		$cache = $this->getMockBuilder( Cache::class )
 			->getMockForAbstractClass();
@@ -68,7 +68,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testHasPendingJobs() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -91,7 +91,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testGetPendingJobsCount() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -115,7 +115,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testFindAndDispatchOnNonPropertyEntity() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -134,7 +134,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testPlanAsJob() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -149,7 +149,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testFindAndDispatchOnPropertyEntity() {
-		$subject = DIWikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( 'Foo', SMW_NS_PROPERTY );
 
 		$jobQueue = $this->getMockBuilder( '\SMW\MediaWiki\JobQueue' )
 			->disableOriginalConstructor()
@@ -217,7 +217,7 @@ class ChangePropagationDispatchJobTest extends TestCase {
 	}
 
 	public function testDispatchSchemaChangePropagation() {
-		$dataItem = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$dataItem = WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
 		$store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
@@ -229,12 +229,12 @@ class ChangePropagationDispatchJobTest extends TestCase {
 
 		$this->testEnvironment->registerObject( 'Store', $store );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		// Check that it is the dataItem from `getPropertyValues`
 		$checkJobParameterCallback = static function ( $jobs ) use( $dataItem ) {
 			foreach ( $jobs as $job ) {
-				return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
+				return WikiPage::newFromTitle( $job->getTitle() )->equals( $dataItem );
 			}
 		};
 

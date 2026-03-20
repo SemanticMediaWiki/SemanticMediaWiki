@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use PHPUnit\Framework\TestCase;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 
 /**
@@ -13,7 +14,7 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
  *
  * @author mwjames
  */
-class RevisionGuardAwareTraitTest extends \PHPUnit\Framework\TestCase {
+class RevisionGuardAwareTraitTest extends TestCase {
 
 	public function testSetRevisionGuard() {
 		$title = $this->getMockBuilder( '\MediaWiki\Title\Title' )

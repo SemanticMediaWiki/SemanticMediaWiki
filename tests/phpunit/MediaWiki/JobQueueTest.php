@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\MediaWiki;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use SMW\FakeJob;
 use SMW\MediaWiki\JobQueue;
@@ -47,7 +48,7 @@ class JobQueueTest extends TestCase {
 		// MediaWiki's JobQueue::pop !!!
 		try {
 			$log = $instance->runFromQueue( [ 'FakeJob' => 2 ] );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing
 		}
 	}
@@ -67,7 +68,7 @@ class JobQueueTest extends TestCase {
 		// MediaWiki's JobQueue::pop !!!
 		try {
 			$instance->pop( 'FakeJob' );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing
 		}
 	}
@@ -96,7 +97,7 @@ class JobQueueTest extends TestCase {
 		// MediaWiki's JobQueue::ack !!!
 		try {
 			$instance->ack( $job );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			// Do nothing
 		}
 	}

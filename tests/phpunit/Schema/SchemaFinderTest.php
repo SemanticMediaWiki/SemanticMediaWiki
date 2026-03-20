@@ -4,15 +4,15 @@ namespace SMW\Tests\Schema;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
 
 /**
  * @covers \SMW\Schema\SchemaFinder
@@ -51,8 +51,8 @@ class SchemaFinderTest extends TestCase {
 	}
 
 	public function testGetSchemaListByType() {
-		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
-		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
+		$data[] = new Blob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
+		$data[] = new Blob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
 
 		$this->cache->expects( $this->any() )
 			->method( 'fetch' )
@@ -61,14 +61,14 @@ class SchemaFinderTest extends TestCase {
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [
-				DIWikiPage::newFromText( 'Foo' ),
-				DIWikiPage::newFromText( 'Bar' ) ] );
+				WikiPage::newFromText( 'Foo' ),
+				WikiPage::newFromText( 'Bar' ) ] );
 
 		$this->propertySpecificationLookup->expects( $this->any() )
 			->method( 'getSpecification' )
 			->with(
 				$this->anyThing(),
-				new DIProperty( '_SCHEMA_DEF' ) )
+				new Property( '_SCHEMA_DEF' ) )
 			->willReturnOnConsecutiveCalls( [ $data[0] ], [ $data[1] ] );
 
 		$instance = new SchemaFinder(
@@ -84,10 +84,10 @@ class SchemaFinderTest extends TestCase {
 	}
 
 	public function testGetConstraintSchema() {
-		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
-		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
-		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
+		$data[] = new Blob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
+		$data[] = new Blob( json_encode( [ 'Foo' => [ 'Foobar' => 'test' ], [ 'Foo' => 'Bar' ] ] ) );
 
 		$callCount = 0;
 		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
@@ -104,14 +104,14 @@ class SchemaFinderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			SchemaList::class,
-			$instance->getConstraintSchema( new DIProperty( 'Foo' ) )
+			$instance->getConstraintSchema( new Property( 'Foo' ) )
 		);
 	}
 
 	public function testNewSchemaList() {
-		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$subject = WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
 
-		$data[] = new DIBlob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
+		$data[] = new Blob( json_encode( [ 'Foo' => [ 'Bar' => 42 ], 1001 ] ) );
 
 		$callCount = 0;
 		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
@@ -128,7 +128,7 @@ class SchemaFinderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			SchemaList::class,
-			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+			$instance->newSchemaList( new Property( 'Foo' ), new Property( 'BAR' ) )
 		);
 	}
 
@@ -144,13 +144,13 @@ class SchemaFinderTest extends TestCase {
 		);
 
 		$this->assertNull(
-						$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+						$instance->newSchemaList( new Property( 'Foo' ), new Property( 'BAR' ) )
 		);
 	}
 
 	public function testNewSchemaList_EmptyDefinition() {
-		$subject = DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
-		$data[] = new DIBlob( '' );
+		$subject = WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY );
+		$data[] = new Blob( '' );
 
 		$callCount = 0;
 		$this->propertySpecificationLookup->expects( $this->exactly( 2 ) )
@@ -167,7 +167,7 @@ class SchemaFinderTest extends TestCase {
 
 		$this->assertInstanceOf(
 			SchemaList::class,
-			$instance->newSchemaList( new DIProperty( 'Foo' ), new DIProperty( 'BAR' ) )
+			$instance->newSchemaList( new Property( 'Foo' ), new Property( 'BAR' ) )
 		);
 	}
 
@@ -206,7 +206,7 @@ class SchemaFinderTest extends TestCase {
 			$this->cache
 		);
 
-		$instance->invalidateCache( new DIProperty( '_SCHEMA_TYPE' ), $changeRecord );
+		$instance->invalidateCache( new Property( '_SCHEMA_TYPE' ), $changeRecord );
 	}
 
 	public function testInvalidateCacheFromChangeRecord_InvalidKey() {
@@ -225,7 +225,7 @@ class SchemaFinderTest extends TestCase {
 			$this->cache
 		);
 
-		$instance->invalidateCache( new DIProperty( 'Foo' ), $changeRecord );
+		$instance->invalidateCache( new Property( 'Foo' ), $changeRecord );
 	}
 
 	public function testInvalidateCacheFromChangeRecord_NoHashField() {
@@ -244,7 +244,7 @@ class SchemaFinderTest extends TestCase {
 			$this->cache
 		);
 
-		$instance->invalidateCache( new DIProperty( '_SCHEMA_TYPE' ), $changeRecord );
+		$instance->invalidateCache( new Property( '_SCHEMA_TYPE' ), $changeRecord );
 	}
 
 }

@@ -3,8 +3,10 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
@@ -21,8 +23,6 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWExporter;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\ConjunctionInterpreter
@@ -124,11 +124,11 @@ class ConjunctionInterpreterTest extends TestCase {
 		$conditionType = FalseCondition::class;
 
 		$description = new Conjunction( [
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) )
+			new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) )
 		] );
 
 		$description = new Conjunction( [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
 			$description
 		] );
 
@@ -171,7 +171,7 @@ class ConjunctionInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			new ThingDescription()
 		);
 
@@ -201,7 +201,7 @@ class ConjunctionInterpreterTest extends TestCase {
 
 		$description = new Conjunction( [
 			new NamespaceDescription( NS_MAIN ),
-			new ValueDescription( new DIWikiPage( 'SomePageValue', NS_MAIN ) )
+			new ValueDescription( new WikiPage( 'SomePageValue', NS_MAIN ) )
 		] );
 
 		$orderByProperty = null;
@@ -223,20 +223,20 @@ class ConjunctionInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyBlobValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyBlobValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LESS
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			$description
 		);
 
 		$description = new Conjunction( [
 			$description,
-			new ValueDescription( new DIBlob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LESS ),
-			new ValueDescription( new DIBlob( 'YetAnotherPropertyBlobValue' ), null, SMW_CMP_GRTR ),
+			new ValueDescription( new Blob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LESS ),
+			new ValueDescription( new Blob( 'YetAnotherPropertyBlobValue' ), null, SMW_CMP_GRTR ),
 			new NamespaceDescription( NS_MAIN )
 		] );
 
@@ -262,20 +262,20 @@ class ConjunctionInterpreterTest extends TestCase {
 		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyBlobValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyBlobValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LESS
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			$description
 		);
 
 		$description = new Conjunction( [
 			$description,
-			new ValueDescription( new DIBlob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
-			new ValueDescription( new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ) ),
+			new ValueDescription( new Blob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
+			new ValueDescription( new WikiPage( 'SomePropertyPageValue', NS_MAIN ) ),
 			new NamespaceDescription( NS_MAIN )
 		] );
 
@@ -301,8 +301,8 @@ class ConjunctionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new Conjunction( [
-			new ValueDescription( new DIBlob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
-			new ValueDescription( new DIBlob( 'YetAnotherPropertyBlobValue' ), new DIProperty( 'Foo' ), SMW_CMP_NLKE ),
+			new ValueDescription( new Blob( 'SomeOtherPropertyBlobValue' ), null, SMW_CMP_LIKE ),
+			new ValueDescription( new Blob( 'YetAnotherPropertyBlobValue' ), new Property( 'Foo' ), SMW_CMP_NLKE ),
 			new ThingDescription()
 		] );
 
@@ -326,21 +326,21 @@ class ConjunctionInterpreterTest extends TestCase {
 		# 8
 		$conditionType = WhereCondition::class;
 
-		$propertyValue = new DIWikiPage( 'SomePropertyPageValue', NS_HELP );
+		$propertyValue = new WikiPage( 'SomePropertyPageValue', NS_HELP );
 
 		$propertyValueName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
+			Exporter::getInstance()->getResourceElementForWikiPage( $propertyValue )
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			new ValueDescription( $propertyValue )
 		);
 
-		$category = new DIWikiPage( 'Bar', NS_CATEGORY );
+		$category = new WikiPage( 'Bar', NS_CATEGORY );
 
 		$categoryName = TurtleSerializer::getTurtleNameForExpElement(
-			SMWExporter::getInstance()->getResourceElementForWikiPage( $category )
+			Exporter::getInstance()->getResourceElementForWikiPage( $category )
 		);
 
 		$description = new Conjunction( [
@@ -348,7 +348,7 @@ class ConjunctionInterpreterTest extends TestCase {
 			new ClassDescription( $category )
 		] );
 
-		$orderByProperty = new DIProperty( 'Foo' );
+		$orderByProperty = new Property( 'Foo' );
 		$sortkeys = [ 'Foo' => 'ASC' ];
 
 		$expected = $stringBuilder

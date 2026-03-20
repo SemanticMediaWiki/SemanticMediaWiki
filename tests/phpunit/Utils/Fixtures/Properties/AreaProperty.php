@@ -2,9 +2,9 @@
 
 namespace SMW\Tests\Utils\Fixtures\Properties;
 
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\SemanticData;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,7 +29,7 @@ class AreaProperty extends FixtureProperty {
 	 * @since 2.1
 	 */
 	public function __construct() {
-		$this->property = new DIProperty( 'Area' );
+		$this->property = new Property( 'Area' );
 		$this->property->setPropertyTypeId( '_qty' );
 	}
 
@@ -46,7 +46,7 @@ class AreaProperty extends FixtureProperty {
 		foreach ( $this->conversionValues as $conversionValue ) {
 			$semanticData->addDataValue(
 				$dataValueFactory->newDataValueByProperty(
-					new DIProperty( '_CONV' ),
+					new Property( '_CONV' ),
 					$conversionValue
 				)
 			);

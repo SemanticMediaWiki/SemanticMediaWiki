@@ -4,13 +4,13 @@ namespace SMW\Tests\Property\Annotators;
 
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\Localizer\Localizer;
 use SMW\PageInfo;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\PredefinedPropertyAnnotator;
-use SMW\SemanticData;
 use SMW\Tests\Utils\Mock\MockTitle;
 use SMW\Tests\Utils\UtilityFactory;
 
@@ -113,7 +113,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withModificationDate' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MODIFICATION_DATE ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MODIFICATION_DATE ]
 				],
 				'pageInfo' => [ 'getModificationDate' => 1272508903 ]
 			],
@@ -129,7 +129,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withCreationDate' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_CREATION_DATE ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_CREATION_DATE ]
 				],
 				'pageInfo' => [ 'getCreationDate' => 1272508903 ]
 			],
@@ -145,7 +145,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NEW_PAGE_isNew' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_NEW_PAGE ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_NEW_PAGE ]
 				],
 				'pageInfo' => [ 'isNewPage' => true ]
 			],
@@ -161,7 +161,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NEW_PAGE_isNotNew' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_NEW_PAGE ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_NEW_PAGE ]
 				],
 				'pageInfo' => [ 'isNewPage' => false ]
 			],
@@ -184,7 +184,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'withLastEditor' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_LAST_EDITOR ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_LAST_EDITOR ]
 				],
 				'pageInfo' => [ 'getLastEditor' => $userPage ]
 			],
@@ -226,7 +226,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MEDIA ]
 				],
 				'pageInfo' => [
 					'isFilePage'   => true,
@@ -245,7 +245,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MediaPropertyForNonFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MEDIA ]
 				],
 				'pageInfo' => [
 					'isFilePage'   => false,
@@ -262,7 +262,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MIME ]
 				],
 				'pageInfo' => [
 					'isFilePage'   => true,
@@ -281,7 +281,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'MimePropertyForNonFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MIME ]
 				],
 				'pageInfo' => [
 					'isFilePage'  => false,
@@ -298,7 +298,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'EmptyMimePropertyFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MIME ]
 				],
 				'pageInfo' => [
 					'isFilePage'  => true,
@@ -315,7 +315,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'EmptyMediaPropertyFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MEDIA ]
 				],
 				'pageInfo' => [
 					'isFilePage'   => true,
@@ -332,7 +332,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NullMimePropertyFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MIME ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MIME ]
 				],
 				'pageInfo' => [
 					'isFilePage'  => true,
@@ -349,7 +349,7 @@ class PredefinedPropertyAnnotatorTest extends TestCase {
 			[
 				'subject'  => WikiPage::newFromTitle( $titleFactory->newFromText( 'NullMediaPropertyFilePage' ) ),
 				'settings' => [
-					'smwgPageSpecialProperties' => [ DIProperty::TYPE_MEDIA ]
+					'smwgPageSpecialProperties' => [ Property::TYPE_MEDIA ]
 				],
 				'pageInfo' => [
 					'isFilePage'  => true,

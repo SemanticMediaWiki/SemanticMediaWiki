@@ -6,10 +6,10 @@ use InvalidArgumentException;
 use OutOfBoundsException;
 use SMW\Localizer\Message;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CircularReferenceGuard;
-use SMWQuery as Query;
 
 /**
  * @license GPL-2.0-or-later

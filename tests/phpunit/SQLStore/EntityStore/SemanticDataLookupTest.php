@@ -4,19 +4,20 @@ namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\SemanticDataLookup;
 use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
-use SMWDIBlob as DIBlob;
+use stdClass;
 use Wikimedia\Rdbms\FakeResultWrapper;
 
 /**
@@ -123,7 +124,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testGetTableUsageInfo() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$this->store->expects( $this->once() )
 			->method( 'findPropertyTableID' )
@@ -149,7 +150,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testNewRequestOptions_NULL() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -165,7 +166,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testNewRequestOptions_AsConditionConstraint_IsFixedPropertyTable() {
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 
 		$propertyTable = $this->getMockBuilder( PropertyTableDefinition::class )
 			->disableOriginalConstructor()
@@ -189,7 +190,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testSemanticDataFromTable() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
 
@@ -231,7 +232,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testSemanticDataFromTable_WithConstraint() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
 
@@ -248,7 +249,7 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'getObjectIds' )
 			->willReturn( $idTable );
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -309,7 +310,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NoDataItem() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
 
@@ -357,7 +358,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NoIdSubject() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
 
@@ -468,7 +469,7 @@ class SemanticDataLookupTest extends TestCase {
 	}
 
 	public function testFetchSemanticDataFromTable_NonWikiPageTable_DISTINCT_SELECT() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';
 
@@ -501,7 +502,7 @@ class SemanticDataLookupTest extends TestCase {
 			->method( 'newQuery' )
 			->willReturn( $this->query );
 
-		$dataItem = new DIBlob( __METHOD__ );
+		$dataItem = new Blob( __METHOD__ );
 
 		$requestOptions = new RequestOptions();
 		$requestOptions->setLimit( 4 );
@@ -530,7 +531,7 @@ class SemanticDataLookupTest extends TestCase {
 		$query_1 = new Query( $this->connection );
 		$query_2 = new Query( $this->connection );
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->p_id = 9000;
 		$row->prop = 'FOO';
 		$row->v0 = '1001';

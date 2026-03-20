@@ -5,14 +5,14 @@ namespace SMW\MediaWiki\Content;
 use MediaWiki\MediaWikiServices;
 use Onoi\CodeHighlighter\Geshi;
 use Onoi\CodeHighlighter\Highlighter as CodeHighlighter;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder;
 use SMW\Schema\Schema;
 use SMW\Store;
 use SMW\Utils\Html\SummaryTable;
-use SMWInfolink as Infolink;
 use Traversable;
 
 /**
@@ -163,13 +163,13 @@ class SchemaContentFormatter {
 
 		$usage_lookup = (array)$this->type['usage_lookup'];
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			str_replace( ' ', '_', $schema->getName() ?? '' ),
 			SMW_NS_SCHEMA
 		);
 
 		foreach ( $usage_lookup as $property ) {
-			$property = new DIProperty(
+			$property = new Property(
 				$property
 			);
 

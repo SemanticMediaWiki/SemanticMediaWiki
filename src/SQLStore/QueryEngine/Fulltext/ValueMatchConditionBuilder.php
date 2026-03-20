@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ValueDescription;
-use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
 
 /**
  * @license GPL-2.0-or-later
@@ -67,7 +67,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function isExemptedProperty( DIProperty $property ) {
+	public function isExemptedProperty( Property $property ) {
 		return $this->searchTable->isExemptedProperty( $property );
 	}
 
@@ -108,11 +108,11 @@ class ValueMatchConditionBuilder {
 	protected function getMatchableTextFromDescription( ValueDescription $description ) {
 		$matchableText = false;
 
-		if ( $description->getDataItem() instanceof DIBlob ) {
+		if ( $description->getDataItem() instanceof Blob ) {
 			$matchableText = $description->getDataItem()->getString();
 		}
 
-		if ( $description->getDataItem() instanceof DIUri || $description->getDataItem() instanceof DIWikiPage ) {
+		if ( $description->getDataItem() instanceof Uri || $description->getDataItem() instanceof WikiPage ) {
 			$matchableText = $description->getDataItem()->getSortKey();
 		}
 

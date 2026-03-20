@@ -8,15 +8,15 @@ use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Request\FauxRequest;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
 use SMW\MediaWiki\Hooks\OutputPageParserOutput;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\NamespaceExaminer;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -196,7 +196,7 @@ class OutputPageParserOutputTest extends TestCase {
 
 		$semanticData->expects( $this->atLeastOnce() )
 			->method( 'getProperties' )
-			->willReturn( [ new DIProperty( __METHOD__ . 'property' ) ] );
+			->willReturn( [ new Property( __METHOD__ . 'property' ) ] );
 
 		# 0 Simple factbox build, returning content
 		$title = MockTitle::buildMock( __METHOD__ . 'title-with-content' );

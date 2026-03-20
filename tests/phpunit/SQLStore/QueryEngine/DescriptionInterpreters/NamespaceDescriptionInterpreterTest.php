@@ -11,6 +11,7 @@ use SMW\SQLStore\QueryEngineFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use SMW\Tests\Utils\Validators\QuerySegmentValidator;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\QueryEngine\DescriptionInterpreters\NamespaceDescriptionInterpreter
@@ -69,7 +70,7 @@ class NamespaceDescriptionInterpreterTest extends TestCase {
 			NS_HELP
 		);
 
-		$expected = new \stdClass;
+		$expected = new stdClass;
 		$expected->type = 1;
 		$expected->where = "t0.smw_namespace=";
 

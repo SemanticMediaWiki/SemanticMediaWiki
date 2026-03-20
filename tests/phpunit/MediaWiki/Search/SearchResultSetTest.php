@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Search;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Search\SearchResultSet;
 use SMW\Query\Excerpts;
 use SMW\Query\QueryResult;
@@ -49,7 +49,7 @@ class SearchResultSetTest extends TestCase {
 			->setMethods( [ 'getQuery', 'getResults' ] )
 			->getMock();
 
-		$pageMock = $this->getMockBuilder( DIWikiPage::class )
+		$pageMock = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -187,7 +187,7 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getFullURL' )
 			->willReturn( 'https://example.com/mock-page-title' );
 
-		$page = $this->getMockBuilder( DIWikiPage::class )
+		$page = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -248,7 +248,7 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getFullURL' )
 			->willReturn( 'https://example.com/mock-page-title' );
 
-		$page_1 = $this->getMockBuilder( DIWikiPage::class )
+		$page_1 = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -256,7 +256,7 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$page_2 = $this->getMockBuilder( DIWikiPage::class )
+		$page_2 = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -264,7 +264,7 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getTitle' )
 			->willReturn( $title );
 
-		$page_3 = $this->getMockBuilder( DIWikiPage::class )
+		$page_3 = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
@@ -139,7 +139,7 @@ class TextChangeUpdater {
 			return;
 		}
 
-		$subject = DIWikiPage::doUnserialize( $parameters['slot:id'] );
+		$subject = WikiPage::doUnserialize( $parameters['slot:id'] );
 		$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
 
 		if ( $changeDiff !== false ) {
@@ -273,7 +273,7 @@ class TextChangeUpdater {
 
 		// Find out whether we should actual initiate an update
 		foreach ( $changeOp->getChangedEntityIdSummaryList() as $id ) {
-			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof DIWikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof WikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
 				if ( !$searchTable->isExemptedPropertyById( $id ) ) {
 					$canPostUpdate = true;
 					break;

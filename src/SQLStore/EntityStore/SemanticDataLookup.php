@@ -4,16 +4,16 @@ namespace SMW\SQLStore\EntityStore;
 
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataModel\SequenceMap;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -40,12 +40,12 @@ class SemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param PropertyTableDefinition $propertyTableDef
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, DIProperty $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
+	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
 		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
 			return $requestOptions;
 		}
@@ -75,13 +75,13 @@ class SemanticDataLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|SemanticData $object
+	 * @param WikiPage|SemanticData $object
 	 *
 	 * @return StubSemanticData
 	 * @throws RuntimeException
 	 */
 	public function newStubSemanticData( $object ) {
-		if ( $object instanceof DIWikiPage ) {
+		if ( $object instanceof WikiPage ) {
 			return new StubSemanticData( $object, $this->store, false );
 		}
 
@@ -120,7 +120,7 @@ class SemanticDataLookup {
 	 * @return SemanticData
 	 */
 	public function getSemanticData( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ) {
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			throw new RuntimeException( 'Expected a DIWikiPage instance' );
 		}
 
@@ -198,20 +198,20 @@ class SemanticDataLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param PropertyTableDefinition $propTable
 	 * @param RequestOptions|null $requestOptions
 	 *
 	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, DIProperty $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
+	public function prefetchDataFromTable( array $subjects, Property $property, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
 		$ids = [];
 		$isSubject = true;
 		$entityIdManager = $this->store->getObjectIds();
 
 		foreach ( $subjects as $k => $subject ) {
 
-			if ( !$subject instanceof DIWikiPage ) {
+			if ( !$subject instanceof WikiPage ) {
 				continue;
 			}
 
@@ -307,7 +307,7 @@ class SemanticDataLookup {
 	 * @return array
 	 */
 	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propTable, ?RequestOptions $requestOptions = null ): array {
-		$isSubject = $dataItem instanceof DIWikiPage || $dataItem === null;
+		$isSubject = $dataItem instanceof WikiPage || $dataItem === null;
 
 		// stop if there is not enough data:
 		// properties always need to be given as dataItem,
@@ -591,7 +591,7 @@ class SemanticDataLookup {
 
 			// Using a short-cut to warmup the cache/linkbatch instance
 			if ( $propTable->getDiType() === DataItem::TYPE_WIKIPAGE ) {
-				$warmupCache[$row->id0] = DIWikiPage::newFromText( $row->v0, $row->v1 );
+				$warmupCache[$row->id0] = WikiPage::newFromText( $row->v0, $row->v1 );
 			}
 		}
 

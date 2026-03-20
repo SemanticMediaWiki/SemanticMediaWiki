@@ -6,16 +6,16 @@ use MediaWiki\Content\Content;
 use MediaWiki\Revision\RevisionRecord;
 use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataUpdater;
-use SMW\DIProperty;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\PageCreator;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
-use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
@@ -516,7 +516,7 @@ class DataUpdaterTest extends TestCase {
 		$semanticData = new SemanticData( $subject );
 
 		$semanticData->addPropertyObjectValue(
-			new DIProperty( '_REDI' ),
+			new Property( '_REDI' ),
 			$target
 		);
 

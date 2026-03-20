@@ -4,7 +4,7 @@ namespace SMW\Tests;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\NamespaceExaminer;
 
 /**
@@ -49,7 +49,7 @@ class NamespaceExaminerTest extends TestCase {
 	}
 
 	public function testInNamespace_DIWikiPage() {
-		$subject = $this->getMockBuilder( DIWikiPage::class )
+		$subject = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

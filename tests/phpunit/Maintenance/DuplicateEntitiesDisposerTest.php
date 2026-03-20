@@ -9,6 +9,7 @@ use SMW\Maintenance\DuplicateEntitiesDisposer;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\Maintenance\DuplicateEntitiesDisposer
@@ -134,7 +135,7 @@ class DuplicateEntitiesDisposerTest extends TestCase {
 			'smw_subobject' => ''
 		];
 
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_id = 42;
 
 		$this->connection->expects( $this->atLeastOnce() )

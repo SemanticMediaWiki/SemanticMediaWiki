@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\TableBuilder\Examiner;
 
 use Onoi\MessageReporter\MessageReporterAwareTrait;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Collator;
 use SMW\SQLStore\SQLStore;
@@ -57,7 +57,7 @@ class PredefinedProperties {
 		foreach ( $this->predefinedPropertyList as $prop => $id ) {
 
 			try {
-				$property = new DIProperty( $prop );
+				$property = new Property( $prop );
 			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				$property = null;
 				$this->messageReporter->reportMessage( "   ... skipping {$prop} due to invalid registration ...\n" );

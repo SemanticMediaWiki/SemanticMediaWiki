@@ -5,9 +5,9 @@ namespace SMW\Tests\Property\Annotators;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItemFactory;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\SortKeyPropertyAnnotator;
-use SMW\SemanticData;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

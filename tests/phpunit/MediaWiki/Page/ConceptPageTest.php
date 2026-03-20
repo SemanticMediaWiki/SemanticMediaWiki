@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Page;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Page\ConceptPage;
 
 /**
@@ -22,7 +22,7 @@ class ConceptPageTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$subject = DIWikiPage::newFromText( __METHOD__, SMW_NS_CONCEPT );
+		$subject = WikiPage::newFromText( __METHOD__, SMW_NS_CONCEPT );
 		$this->title = $subject->getTitle();
 	}
 

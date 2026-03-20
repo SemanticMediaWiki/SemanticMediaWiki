@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -53,7 +53,7 @@ class FulltextSearchTableUpdateJobTest extends TestCase {
 	 * @dataProvider parametersProvider
 	 */
 	public function testJobRun( $parameters ) {
-		$subject = DIWikiPage::newFromText( __METHOD__ );
+		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$instance = new FulltextSearchTableUpdateJob(
 			$subject->getTitle(),

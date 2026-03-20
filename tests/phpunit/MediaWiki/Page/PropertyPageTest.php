@@ -3,7 +3,7 @@
 namespace SMW\Tests\MediaWiki\Page;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Page\PropertyPage;
 use SMW\Property\DeclarationExaminerFactory;
 use SMW\SQLStore\SQLStore;
@@ -34,7 +34,7 @@ class PropertyPageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 
-		$this->title = DIWikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )->getTitle();
+		$this->title = WikiPage::newFromText( __METHOD__, SMW_NS_PROPERTY )->getTitle();
 	}
 
 	public function testCanConstruct() {

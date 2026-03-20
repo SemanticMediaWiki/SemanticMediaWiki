@@ -5,12 +5,12 @@ namespace SMW\Tests\SPARQLStore\QueryEngine;
 use PHPUnit\Framework\TestCase;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Query\Language\Description;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\SPARQLStore\QueryEngine\QueryResultFactory;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\Store;
 use SMW\Tests\Utils\Mock\IteratorMockBuilder;
-use SMWQuery as Query;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\QueryResultFactory

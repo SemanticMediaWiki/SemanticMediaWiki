@@ -4,8 +4,14 @@ namespace SMW\MediaWiki\Page\ListBuilder;
 
 use Iterator;
 use MediaWiki\Html\Html;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\DataValues\DataValue;
+use SMW\Formatters\Infolink;
+use SMW\Formatters\PageLister;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Collator;
 use SMW\Query\Language\SomeProperty;
@@ -14,11 +20,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\Utils\HtmlDivTable;
 use SMW\Utils\Pager;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
-use SMWDITime as DITime;
-use SMWInfolink as Infolink;
-use SMWPageLister as PageLister;
 use Traversable;
 
 /**
@@ -122,12 +123,12 @@ class ValueListBuilder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DataItem $dataItem
 	 *
 	 * @return string
 	 */
-	public function createHtml( DIProperty $property, DataItem $dataItem, array $query = [] ): string {
+	public function createHtml( Property $property, DataItem $dataItem, array $query = [] ): string {
 		$limit = isset( $query['limit'] ) ? (int)$query['limit'] : 0;
 		$offset = isset( $query['offset'] ) ? (int)$query['offset'] : 0;
 		$from = isset( $query['from'] ) ? $query['from'] : 0;
@@ -249,7 +250,7 @@ class ValueListBuilder {
 		);
 	}
 
-	private function createValueList( DIProperty $property, DataItem $dataItem, $diWikiPages, $limit, $until ): string {
+	private function createValueList( Property $property, DataItem $dataItem, $diWikiPages, $limit, $until ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -351,7 +352,7 @@ class ValueListBuilder {
 						$outputFormat = 'LOCL';
 					}
 
-					if ( $di instanceof DITime && $this->localTimeOffset ) {
+					if ( $di instanceof Time && $this->localTimeOffset ) {
 						$outputFormat .= '#TO';
 					}
 
@@ -395,7 +396,7 @@ class ValueListBuilder {
 	}
 
 	/**
-	 * @return \SMW\DIWikiPage[]
+	 * @return WikiPage[]
 	 */
 	private function filterByValue( $property, $value, $options ): array {
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();

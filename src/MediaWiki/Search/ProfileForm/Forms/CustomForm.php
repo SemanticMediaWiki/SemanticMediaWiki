@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Request\WebRequest;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Search\ProfileForm\FormsBuilder;
 
 /**
@@ -142,7 +142,7 @@ class CustomForm {
 		if ( isset( $options['type'] ) ) {
 			$type = $options['type'];
 		} else {
-			$typeID = DIProperty::newFromUserLabel( $property )->findPropertyTypeID();
+			$typeID = Property::newFromUserLabel( $property )->findPropertyTypeID();
 			$type = 'text';
 
 			if ( isset( $this->html5TypeMap[$typeID] ) ) {

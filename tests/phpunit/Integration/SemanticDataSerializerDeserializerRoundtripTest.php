@@ -5,13 +5,13 @@ namespace SMW\Tests\Integration;
 use MediaWiki\MediaWikiServices;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\Deserializers\SemanticDataDeserializer;
-use SMW\DIWikiPage;
-use SMW\SemanticData;
 use SMW\Serializers\SemanticDataSerializer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Subobject;
 
 /**
  * @group semantic-mediawiki
@@ -93,16 +93,16 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		// #0 Empty container
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$provider[] = [ $foo ];
 
 		// #1 Single entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$provider[] = [ $foo ];
 
 		// #2 Single + single subobject entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 
 		$subobject = new Subobject( $title );
@@ -114,7 +114,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$provider[] = [ $foo ];
 
 		// #3 Multiple entries
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has queez', 'Xeey' ) );
 
@@ -144,7 +144,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
 
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getSemanticData()->getSubject() );
 
@@ -161,13 +161,13 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ );
 
 		// #0 Single entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 
 		$provider[] = [ $foo, 'Has_fooQuex' ];
 
 		// #1 Single subobject entry
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 
 		$subobject = new Subobject( $title );
 		$subobject->setSemanticData( 'Foo' );
@@ -178,7 +178,7 @@ class SemanticDataSerializerDeserializerRoundtripTest extends TestCase {
 		$provider[] = [ $foo, 'Has_fomQuex' ];
 
 		// #2 Combined
-		$foo = new SemanticData( DIWikiPage::newFromTitle( $title ) );
+		$foo = new SemanticData( WikiPage::newFromTitle( $title ) );
 		$foo->addDataValue( DataValueFactory::getInstance()->newDataValueByText( 'Has fooQuex', 'Bar' ) );
 		$foo->addPropertyObjectValue( $subobject->getProperty(), $subobject->getContainer() );
 

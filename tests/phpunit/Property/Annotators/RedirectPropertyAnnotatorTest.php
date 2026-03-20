@@ -4,10 +4,10 @@ namespace SMW\Tests\Property\Annotators;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\RedirectTargetFinder;
 use SMW\Property\Annotators\NullPropertyAnnotator;
 use SMW\Property\Annotators\RedirectPropertyAnnotator;
-use SMW\SemanticData;
 use SMW\Tests\Utils\UtilityFactory;
 
 /**

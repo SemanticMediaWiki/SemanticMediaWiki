@@ -3,6 +3,7 @@
 namespace SMW\Tests\Localizer\LocalLanguage;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use SMW\Localizer\LocalLanguage\FallbackFinder;
 use SMW\Localizer\LocalLanguage\JsonContentsFileReader;
 
@@ -73,7 +74,7 @@ class FallbackFinderTest extends TestCase {
 	public function testgetFallbackLanguageByUnknownLanguageCode() {
 		$this->jsonContentsFileReader->expects( $this->atLeastOnce() )
 			->method( 'readByLanguageCode' )
-			->willThrowException( new \RuntimeException );
+			->willThrowException( new RuntimeException );
 
 		$instance = new FallbackFinder(
 			$this->jsonContentsFileReader

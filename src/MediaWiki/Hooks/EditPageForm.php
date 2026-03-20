@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\EditPage\EditPage;
 use MediaWiki\Html\Html;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\GroupPermissions;
 use SMW\Localizer\Message;
 use SMW\Localizer\MessageLocalizerTrait;
@@ -84,7 +84,7 @@ class EditPageForm implements HookListener {
 		$namespace = $title->getNamespace();
 
 		if ( $namespace === SMW_NS_PROPERTY ) {
-			if ( DIProperty::newFromUserLabel( $text )->isUserDefined() ) {
+			if ( Property::newFromUserLabel( $text )->isUserDefined() ) {
 				return 'smw-editpage-property-annotation-enabled';
 			} else {
 				return 'smw-editpage-property-annotation-disabled';

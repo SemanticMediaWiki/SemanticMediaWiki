@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\EntityStore\DataItemHandlers;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\EntityStore\DataItemHandlers\DIWikiPageHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\SQLStore;
@@ -89,12 +89,12 @@ class DIWikiPageHandlerTest extends TestCase {
 
 		$this->assertIsArray(
 
-			$instance->getWhereConds( DIWikiPage::newFromText( 'Foo' ) )
+			$instance->getWhereConds( WikiPage::newFromText( 'Foo' ) )
 		);
 
 		$this->assertIsArray(
 
-			$instance->getInsertValues( DIWikiPage::newFromText( 'Foo' ) )
+			$instance->getInsertValues( WikiPage::newFromText( 'Foo' ) )
 		);
 	}
 
@@ -109,7 +109,7 @@ class DIWikiPageHandlerTest extends TestCase {
 		$instance = new DIWikiPageHandler( $store );
 
 		$this->assertInstanceOf(
-			DIWikiPage::class,
+			WikiPage::class,
 			$instance->dataItemFromDBKeys( $dbKeys )
 		);
 	}

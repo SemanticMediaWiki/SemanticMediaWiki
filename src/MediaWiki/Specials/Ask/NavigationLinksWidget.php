@@ -4,12 +4,12 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\Pager;
 use SMW\Utils\UrlArgs;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later

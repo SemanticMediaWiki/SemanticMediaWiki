@@ -5,8 +5,8 @@ namespace SMW\Tests;
 use Onoi\EventDispatcher\EventDispatcher;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\DIWikiPage;
 use SMW\EntityCache;
 use SMW\NamespaceExaminer;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
@@ -81,7 +81,7 @@ class DependencyValidatorTest extends TestCase {
 			->method( 'dispatch' )
 			->with( 'InvalidateResultCache' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
@@ -121,7 +121,7 @@ class DependencyValidatorTest extends TestCase {
 		$this->entityCache->expects( $this->never() )
 			->method( 'overrideSub' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->dependencyLinksValidator->expects( $this->once() )
 			->method( 'canCheckDependencies' )
@@ -153,7 +153,7 @@ class DependencyValidatorTest extends TestCase {
 		$this->entityCache->expects( $this->never() )
 			->method( 'overrideSub' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,
@@ -169,7 +169,7 @@ class DependencyValidatorTest extends TestCase {
 	}
 
 	public function testMarkTitle() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$title = $subject->getTitle();
 
 		$instance = new DependencyValidator(
@@ -193,7 +193,7 @@ class DependencyValidatorTest extends TestCase {
 		$this->entityCache->expects( $this->never() )
 			->method( 'fetchSub' );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,
@@ -216,7 +216,7 @@ class DependencyValidatorTest extends TestCase {
 			->with( $this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ) )
 			->willReturn( true );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,
@@ -246,7 +246,7 @@ class DependencyValidatorTest extends TestCase {
 				$this->stringContains( 'smw:entity:2623cc3534dff8ce37b7b27e1b009a96' ),
 				$this->stringContains( 'foo-etag' ) );
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$instance = new DependencyValidator(
 			$this->namespaceExaminer,

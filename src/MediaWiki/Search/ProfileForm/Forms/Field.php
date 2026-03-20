@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm\Forms;
 
 use MediaWiki\Html\Html;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 use SMW\Localizer\Message;
 
 /**

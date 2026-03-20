@@ -5,14 +5,14 @@ namespace SMW\Elastic;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Jobs\FileIngestJob;
 use SMW\Options;
-use SMW\SemanticData;
+use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\CliMsgFormatter;
-use SMWQuery as Query;
 
 /**
  * @private
@@ -168,7 +168,7 @@ class ElasticStore extends SQLStore {
 				false
 			);
 
-			$dataItem = DIWikiPage::newFromTitle( $newTitle );
+			$dataItem = WikiPage::newFromTitle( $newTitle );
 			$dataItem->setId( $id );
 
 			$this->indexer->create( $dataItem );

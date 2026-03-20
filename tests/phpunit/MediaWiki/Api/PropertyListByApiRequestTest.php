@@ -3,7 +3,8 @@
 namespace SMW\Tests\MediaWiki\Api;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Api\PropertyListByApiRequest;
 use SMW\Property\SpecificationLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
@@ -52,17 +53,17 @@ class PropertyListByApiRequestTest extends TestCase {
 
 	public function testGetSerializedListForProperty() {
 		$list[] = [
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			42
 		];
 
 		$list[] = [
-			new DIProperty( 'Foaf:Foo' ),
+			new Property( 'Foaf:Foo' ),
 			1001
 		];
 
 		$list[] = [
-			new \SMWDIError( 'error' ),
+			new Error( 'error' ),
 			-1
 		];
 

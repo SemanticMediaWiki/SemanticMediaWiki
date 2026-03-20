@@ -2,14 +2,14 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -29,26 +29,26 @@ class ProximityPropertyValueLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function lookup( DIProperty $property, $search, RequestOptions $opts ) {
+	public function lookup( Property $property, $search, RequestOptions $opts ) {
 		return $this->fetchFromTable( $property, $search, $opts );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ): array {
+	public function fetchFromTable( Property $property, $search, RequestOptions $opts ): array {
 		$options = [];
 		$list = [];
 
@@ -122,7 +122,7 @@ class ProximityPropertyValueLookup {
 			// transformed it!
 			if ( $diType === DataItem::TYPE_TIME ) {
 				$value = DataValueFactory::getInstance()->newDataValueByItem(
-					DITime::doUnserialize( $value ), $property )->getWikiValue();
+					Time::doUnserialize( $value ), $property )->getWikiValue();
 			}
 
 			$list[] = $value;

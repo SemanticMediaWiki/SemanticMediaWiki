@@ -2,7 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
@@ -45,7 +45,7 @@ class PropertiesLookup {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function fetchFromTable( DIWikiPage $subject, TableDefinition $propertyTable, ?RequestOptions $requestOptions = null ) {
+	public function fetchFromTable( WikiPage $subject, TableDefinition $propertyTable, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 

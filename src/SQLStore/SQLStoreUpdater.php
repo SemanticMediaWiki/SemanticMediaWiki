@@ -5,15 +5,15 @@ namespace SMW\SQLStore;
 use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Parameters;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Status;
 use SMW\Store;
-use SMWDIBlob as DIBlob;
 
 /**
  * Class Handling all the write and update methods for SQLStore.
@@ -90,7 +90,7 @@ class SQLStoreUpdater {
 		);
 
 		$deleteList = array_flip( $idList );
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$emptySemanticData = new SemanticData( $subject );
 		$emptySemanticData->setOption( SemanticData::PROC_DELETE, true );
@@ -289,7 +289,7 @@ class SQLStoreUpdater {
 		$subject = $data->getSubject();
 
 		// Take care of redirects
-		$redirects = $data->getPropertyValues( new DIProperty( '_REDI' ) );
+		$redirects = $data->getPropertyValues( new Property( '_REDI' ) );
 
 		// Redirects:
 		// * Generally, there is no support for annotations on redirect pages
@@ -386,13 +386,13 @@ class SQLStoreUpdater {
 			return '';
 		}
 
-		$property = new DIProperty( '_SKEY' );
+		$property = new Property( '_SKEY' );
 
 		// Take care of the sortkey
 		$pv = $data->getPropertyValues( $property );
 		$dataItem = end( $pv );
 
-		if ( $dataItem instanceof DIBlob ) {
+		if ( $dataItem instanceof Blob ) {
 			$sortkey = $dataItem->getString();
 		} elseif ( $data->getExtensionData( 'sort.extension' ) !== null ) {
 			$sortkey = $data->getExtensionData( 'sort.extension' );
@@ -402,7 +402,7 @@ class SQLStoreUpdater {
 
 		// Extend the subobject sortkey in case no @sortkey was given for an
 		// entity
-		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof DIBlob ) {
+		if ( $subject->getSubobjectName() !== '' && !$dataItem instanceof Blob ) {
 
 			// Add sort data from some dedicated containers (of a record or
 			// reference type etc.) otherwise use the sobj name as extension
@@ -428,8 +428,8 @@ class SQLStoreUpdater {
 		];
 
 		$this->redirectUpdater->doUpdate(
-			DIWikiPage::newFromTitle( $oldTitle ),
-			DIWikiPage::newFromTitle( $newTitle ),
+			WikiPage::newFromTitle( $oldTitle ),
+			WikiPage::newFromTitle( $newTitle ),
 			$options
 		);
 

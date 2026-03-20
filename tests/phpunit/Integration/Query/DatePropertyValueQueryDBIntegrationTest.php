@@ -2,17 +2,17 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
+use SMW\Export\Exporter;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWExporter as Exporter;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -64,7 +64,7 @@ class DatePropertyValueQueryDBIntegrationTest extends SMWIntegrationTestCase {
 	}
 
 	public function testUserDefinedDateProperty() {
-		$property = new DIProperty( 'SomeDateProperty' );
+		$property = new Property( 'SomeDateProperty' );
 		$property->setPropertyTypeId( '_dat' );
 
 		$dataValue = $this->dataValueFactory->newDataValueByProperty(

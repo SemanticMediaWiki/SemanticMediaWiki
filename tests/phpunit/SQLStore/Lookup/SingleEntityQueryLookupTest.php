@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Query\QueryResult;
@@ -84,7 +84,7 @@ class SingleEntityQueryLookupTest extends TestCase {
 			->method( 'findAssociatedRev' )
 			->willReturn( 1001 );
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -134,11 +134,11 @@ class SingleEntityQueryLookupTest extends TestCase {
 	}
 
 	public function testGetQueryResult_SubobjectEntity() {
-		$dataItem_base = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem_base = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
@@ -200,7 +200,7 @@ class SingleEntityQueryLookupTest extends TestCase {
 		$this->idTable->expects( $this->never() )
 			->method( 'findAssociatedRev' );
 
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 

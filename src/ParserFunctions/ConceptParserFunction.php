@@ -5,14 +5,14 @@ namespace SMW\ParserFunctions;
 use MediaWiki\Html\Html;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Title\Title;
-use SMW\DIConcept;
-use SMW\DIProperty;
-use SMW\MessageFormatter;
+use SMW\DataItems\Concept;
+use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
+use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\PostProcHandler;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWInfolink;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Class that provides the {{#concept}} parser function
@@ -66,7 +66,7 @@ class ConceptParserFunction {
 		] );
 
 		$title = $this->parserData->getTitle();
-		$property = new DIProperty( '_CONC' );
+		$property = new Property( '_CONC' );
 
 		if ( !( $title->getNamespace() === SMW_NS_CONCEPT ) ) {
 			return $this->messageFormatter->addFromKey( 'smw_no_concept_namespace' )->getHtml();
@@ -91,7 +91,7 @@ class ConceptParserFunction {
 
 		$this->parserData->getSemanticData()->addPropertyObjectValue(
 			$property,
-			new DIConcept(
+			new Concept(
 				$conceptQueryString,
 				$conceptDocu,
 				$query->getDescription()->getQueryFeatures(),
@@ -141,7 +141,7 @@ class ConceptParserFunction {
 	}
 
 	private function getRdfLink( Title $title ) {
-		return SMWInfolink::newInternalLink(
+		return Infolink::newInternalLink(
 			wfMessage( 'smw_viewasrdf' )->text(),
 			$title->getPageLanguage()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $title->getPrefixedText(), 'rdflink'
 		);

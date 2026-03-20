@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\Lookup;
 
 use Exception;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\Property\SpecificationLookup;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
@@ -25,7 +25,7 @@ class PropertyLabelSimilarityLookup {
 	private $threshold = 50;
 
 	/**
-	 * @var DIProperty|null
+	 * @var Property|null
 	 */
 	private $exemptionProperty;
 
@@ -76,7 +76,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getExemptionProperty() {
 		return $this->exemptionProperty;
@@ -183,12 +183,12 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @param DIProperty $first
-	 * @param DIProperty $second
+	 * @param Property $first
+	 * @param Property $second
 	 *
 	 * @return bool
 	 */
-	private function isExempted( DIProperty $first, DIProperty $second ): bool {
+	private function isExempted( Property $first, Property $second ): bool {
 		if ( $this->exemptionProperty === null ) {
 			return false;
 		}
@@ -218,7 +218,7 @@ class PropertyLabelSimilarityLookup {
 		return false;
 	}
 
-	private function getHash( DIProperty $first, DIProperty $second ): string {
+	private function getHash( Property $first, Property $second ): string {
 		$hashing = [];
 		$hashing[] = $first->getKey();
 		$hashing[] = $second->getKey();
@@ -228,7 +228,7 @@ class PropertyLabelSimilarityLookup {
 		return md5( implode( '', $hashing ) );
 	}
 
-	private function getSummary( DIProperty $first, DIProperty $second, $percent, $withType ): array {
+	private function getSummary( Property $first, Property $second, $percent, $withType ): array {
 		$summary = [];
 
 		if ( $withType ) {
@@ -256,7 +256,7 @@ class PropertyLabelSimilarityLookup {
 	}
 
 	/**
-	 * @return \SMW\DIProperty[]
+	 * @return Property[]
 	 */
 	private function getPropertyList( ?RequestOptions $requestOptions = null ): array {
 		$propertyList = [];
@@ -292,7 +292,7 @@ class PropertyLabelSimilarityLookup {
 		foreach ( $res as $row ) {
 
 			try {
-				$propertyList[] = new DIProperty( str_replace( ' ', '_', $row->smw_title ) );
+				$propertyList[] = new Property( str_replace( ' ', '_', $row->smw_title ) );
 			} catch ( Exception $e ) {
 				// Do nothing ...
 			}

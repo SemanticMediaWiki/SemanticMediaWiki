@@ -5,7 +5,7 @@ namespace SMW\Tests\Elastic\Jobs;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\ElasticFactory;
@@ -83,10 +83,10 @@ class FileIngestJobTest extends TestCase {
 	}
 
 	public function testPushIngestJob() {
-		$subject = DIWikiPage::newFromText( __METHOD__, NS_FILE );
+		$subject = WikiPage::newFromText( __METHOD__, NS_FILE );
 
 		$checkJobParameterCallback = static function ( $job ) use( $subject ) {
-			return DIWikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
+			return WikiPage::newFromTitle( $job->getTitle() )->equals( $subject );
 		};
 
 		$this->jobQueue->expects( $this->once() )

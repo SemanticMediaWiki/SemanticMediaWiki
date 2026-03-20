@@ -6,7 +6,7 @@ use File;
 use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\Attachment\FileAttachment;
 use SMW\Elastic\Indexer\Attachment\FileHandler;
@@ -133,10 +133,10 @@ class FileIndexer {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 * @param File|null $file
 	 */
-	public function index( DIWikiPage $dataItem, ?File $file = null ): void {
+	public function index( WikiPage $dataItem, ?File $file = null ): void {
 		$title = $dataItem->getTitle();
 
 		// Allow any third-party extension to modify the file used as base for

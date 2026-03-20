@@ -4,8 +4,8 @@ namespace SMW\Serializers;
 
 use OutOfBoundsException;
 use Serializers\Serializer;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpElement;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later

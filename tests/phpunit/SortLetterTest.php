@@ -3,7 +3,8 @@
 namespace SMW\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Collator;
 use SMW\SortLetter;
 use SMW\Store;
@@ -41,13 +42,13 @@ class SortLetterTest extends TestCase {
 	}
 
 	public function testFindFirstLetter() {
-		$dataItem = $this->getMockBuilder( DIWikiPage::class )
+		$dataItem = $this->getMockBuilder( WikiPage::class )
 			->disableOriginalConstructor()
 			->getMock();
 
 		$dataItem->expects( $this->any() )
 			->method( 'getDIType' )
-			->willReturn( \SMWDataItem::TYPE_WIKIPAGE );
+			->willReturn( DataItem::TYPE_WIKIPAGE );
 
 		$this->store->expects( $this->once() )
 			->method( 'getWikiPageSortKey' )

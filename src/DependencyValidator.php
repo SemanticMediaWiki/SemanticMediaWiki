@@ -4,6 +4,7 @@ namespace SMW;
 
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 
 /**
@@ -103,11 +104,11 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ): bool {
+	public function hasArchaicDependencies( WikiPage $subject ): bool {
 		$title = $subject->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
@@ -145,11 +146,11 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function canKeepParserCache( DIWikiPage $subject ): bool {
+	public function canKeepParserCache( WikiPage $subject ): bool {
 		$key = $this->makeCacheKey( $subject->getTitle() );
 
 		// Test for a recent rejection, being unrelated etc.

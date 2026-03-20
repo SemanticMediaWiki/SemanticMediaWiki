@@ -6,7 +6,7 @@ use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use PHPUnit\Framework\TestCase;
 use SMW\DataModel\ContainerSemanticData;
-use SMW\MessageFormatter;
+use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserFunctions\AskParserFunction;
 use SMW\ParserFunctions\ExpensiveFuncExecutionWatcher;

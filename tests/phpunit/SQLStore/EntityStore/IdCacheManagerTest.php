@@ -5,7 +5,7 @@ namespace SMW\Tests\SQLStore\EntityStore;
 use Onoi\Cache\Cache;
 use Onoi\Cache\FixedInMemoryLruCache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 
 /**
@@ -67,7 +67,7 @@ class IdCacheManagerTest extends TestCase {
 
 		$this->assertEquals(
 			42,
-			$instance->getId( new DIWikiPage( 'foo', NS_MAIN ) )
+			$instance->getId( new WikiPage( 'foo', NS_MAIN ) )
 		);
 
 		$this->assertEquals(

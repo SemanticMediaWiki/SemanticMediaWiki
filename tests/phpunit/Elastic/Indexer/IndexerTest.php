@@ -4,7 +4,7 @@ namespace SMW\Tests\Elastic\Indexer;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\Config;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Bulk;
@@ -94,7 +94,7 @@ class IndexerTest extends TestCase {
 			] ]
 		];
 
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
 		$this->connection->expects( $this->any() )
@@ -121,7 +121,7 @@ class IndexerTest extends TestCase {
 	}
 
 	public function testCreate_FailedConnection_PushJob() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
@@ -166,7 +166,7 @@ class IndexerTest extends TestCase {
 	}
 
 	public function testDelete_FailedConnection_PushJob() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$this->jobQueue->expects( $this->once() )
 			->method( 'push' );
@@ -185,7 +185,7 @@ class IndexerTest extends TestCase {
 	}
 
 	public function testIndexDocument() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setId( 42 );
 
 		$document = $this->getMockBuilder( Document::class )
@@ -218,7 +218,7 @@ class IndexerTest extends TestCase {
 	}
 
 	public function testIndexDocument_FailedConnection_PushJob() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$document = $this->getMockBuilder( Document::class )
 			->disableOriginalConstructor()

@@ -12,10 +12,11 @@ use MediaWiki\Title\Title;
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage as SMWWikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\EditInfo;
 use SMW\ParserData;
-use SMW\SemanticData;
 use WikiPage;
+use function Wikimedia\base_convert;
 
 /**
  * @covers \SMW\MediaWiki\EditInfo
@@ -194,7 +195,7 @@ class EditInfoTest extends TestCase {
 		// Needed for the abstract class
 		$revision->expects( $this->any() )
 			->method( 'getSha1' )
-			->willReturn( \Wikimedia\base_convert( sha1( 'Foo' ), 16, 36 ) );
+			->willReturn( base_convert( sha1( 'Foo' ), 16, 36 ) );
 
 		$revision->expects( $this->any() )
 			->method( 'getContent' )

@@ -4,7 +4,7 @@ namespace SMW\Tests\SQLStore\ChangeOp;
 
 use Onoi\Cache\Cache;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\TableChangeOp;
@@ -23,12 +23,12 @@ class ChangeDiffTest extends TestCase {
 	public function testCanConstruct() {
 		$this->assertInstanceOf(
 			ChangeDiff::class,
-			new ChangeDiff( DIWikiPage::newFromText( 'Foo' ), [], [], [] )
+			new ChangeDiff( WikiPage::newFromText( 'Foo' ), [], [], [] )
 		);
 	}
 
 	public function testGetSubject() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 		$instance = new ChangeDiff(
 			$subject,
 			[],
@@ -44,7 +44,7 @@ class ChangeDiffTest extends TestCase {
 
 	public function testGetPropertyList() {
 		$instance = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[],
 			[],
 			[ 'Foo' => 42 ]
@@ -63,7 +63,7 @@ class ChangeDiffTest extends TestCase {
 
 	public function testGetPropertyList_SortById() {
 		$instance = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[],
 			[],
 			[ 'Foo' => [ '_id' => 42, '_type' => '_foo' ] ]
@@ -85,7 +85,7 @@ class ChangeDiffTest extends TestCase {
 			->getMock();
 
 		$instance = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
 			[],
 			[ 'Foo' => 42 ]
@@ -101,7 +101,7 @@ class ChangeDiffTest extends TestCase {
 	}
 
 	public function testFetch() {
-		$subject = DIWikiPage::newFromText( 'Foo' );
+		$subject = WikiPage::newFromText( 'Foo' );
 
 		$cache = $this->getMockBuilder( Cache::class )
 			->disableOriginalConstructor()
@@ -112,7 +112,7 @@ class ChangeDiffTest extends TestCase {
 			->getMock();
 
 		$instance = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[ $tableChangeOp ],
 			[],
 			[ 'Foo' => 42 ]
@@ -130,7 +130,7 @@ class ChangeDiffTest extends TestCase {
 
 	public function testChangeList() {
 		$instance = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[],
 			[],
 			[]
@@ -146,7 +146,7 @@ class ChangeDiffTest extends TestCase {
 
 	public function testAssociatedRev() {
 		$instance = new ChangeDiff(
-			DIWikiPage::newFromText( 'Foo' ),
+			WikiPage::newFromText( 'Foo' ),
 			[],
 			[],
 			[]
@@ -163,7 +163,7 @@ class ChangeDiffTest extends TestCase {
 	public function FetchFromCache() {
 		$changeDiff = ChangeDiff::fetch(
 			ApplicationFactory::getInstance()->getCache(),
-			DIWikiPage::newFromText( 'DifferentSort' )
+			WikiPage::newFromText( 'DifferentSort' )
 		);
 
 		$this->assertInstanceOf(

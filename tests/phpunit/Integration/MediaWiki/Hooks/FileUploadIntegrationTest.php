@@ -2,7 +2,7 @@
 
 namespace SMW\Tests\Integration\MediaWiki\Hooks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
 
@@ -80,7 +80,7 @@ class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 	public function testFileUploadForDummyTextFile() {
 		Localizer::getInstance()->clear();
 
-		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
+		$subject = new WikiPage( 'Foo.txt', NS_FILE );
 		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );
@@ -107,7 +107,7 @@ class FileUploadIntegrationTest extends SMWIntegrationTestCase {
 	 * @depends testFileUploadForDummyTextFile
 	 */
 	public function testReUploadDummyTextFileToEditFilePage() {
-		$subject = new DIWikiPage( 'Foo.txt', NS_FILE );
+		$subject = new WikiPage( 'Foo.txt', NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile( 'Foo.txt' );
 		$dummyTextFile->doUpload();

@@ -2,7 +2,7 @@
 
 namespace SMW\Exporter\Controller;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -78,10 +78,10 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 * @param int $recdepth
 	 */
-	public function add( DIWikiPage $dataItem, int $recdepth ): void {
+	public function add( WikiPage $dataItem, int $recdepth ): void {
 		if ( $this->isDone( $dataItem, $recdepth ) ) {
 			return;
 		}
@@ -94,11 +94,11 @@ class Queue {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem specifying the object to check
+	 * @param WikiPage $dataItem specifying the object to check
 	 *
 	 * @return bool
 	 */
-	public function isNotDone( DIWikiPage $dataItem ): bool {
+	public function isNotDone( WikiPage $dataItem ): bool {
 		return !isset( $this->done[$dataItem->getSha1()] );
 	}
 
@@ -108,12 +108,12 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem specifying the object to check
+	 * @param WikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 *
 	 * @return bool
 	 */
-	public function isDone( DIWikiPage $dataItem, int $recdepth ): bool {
+	public function isDone( WikiPage $dataItem, int $recdepth ): bool {
 		return $this->isHashDone( $dataItem->getSha1(), $recdepth );
 	}
 
@@ -123,10 +123,10 @@ class Queue {
 	 *
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $dataItem specifying the object to check
+	 * @param WikiPage $dataItem specifying the object to check
 	 * @param int $recdepth
 	 */
-	public function done( DIWikiPage $dataItem, int $recdepth ): void {
+	public function done( WikiPage $dataItem, int $recdepth ): void {
 		$hash = $dataItem->getSha1();
 
 		if ( count( $this->done ) >= self::MAX_CACHE_SIZE ) {

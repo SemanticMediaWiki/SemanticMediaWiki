@@ -3,7 +3,7 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -109,7 +109,7 @@ class IdCacheManager {
 		$this->caches['entity.id']->save( $hash, $id );
 		$this->caches['entity.sort']->save( $hash, $sortkey );
 
-		$dataItem = new DIWikiPage( $title, $namespace, $interwiki, $subobject );
+		$dataItem = new WikiPage( $title, $namespace, $interwiki, $subobject );
 		$dataItem->setId( $id );
 		$dataItem->setSortKey( $sortkey );
 
@@ -150,7 +150,7 @@ class IdCacheManager {
 	public function deleteCacheById( $id ): void {
 		$dataItem = $this->caches['entity.lookup']->fetch( $id );
 
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			return;
 		}
 
@@ -173,12 +173,12 @@ class IdCacheManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|array $args
+	 * @param WikiPage|array $args
 	 *
 	 * @return int|bool
 	 */
 	public function getId( $args ) {
-		if ( $args instanceof DIWikiPage ) {
+		if ( $args instanceof WikiPage ) {
 			$args = [
 				$args->getDBKey(),
 				(int)$args->getNamespace(),

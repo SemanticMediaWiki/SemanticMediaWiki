@@ -2,6 +2,8 @@
 
 namespace SMW\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
+use SMW\DataItems\DataItem;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
@@ -9,8 +11,6 @@ use SMW\Query\Language\NamespaceDescription;
 use SMW\SPARQLStore\QueryEngine\Condition\WhereCondition;
 use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreter;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later

@@ -4,8 +4,8 @@ namespace SMW\Tests\MediaWiki\Api\Browse;
 
 use PHPUnit\Framework\TestCase;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Api\Browse\SubjectLookup;
-use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 
 /**

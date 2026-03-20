@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
 
 /**
  * DataItemHandler for dataitems of type DIWikiPage.
@@ -192,7 +192,7 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dbkeys[0][0] == '_' && $dbkeys[2] == '' ) {
 
 			try {
-				$property = new DIProperty( $dbkeys[0] );
+				$property = new Property( $dbkeys[0] );
 			} catch ( PredefinedPropertyLabelMismatchException $e ) {
 				// Most likely an outdated, no longer existing predefined
 				// property, mark it as outdate
@@ -211,8 +211,8 @@ class DIWikiPageHandler extends DataItemHandler {
 		return $this->newDiWikiPage( $dbkeys );
 	}
 
-	private function newDiWikiPage( $dbkeys ): DIWikiPage {
-		$diWikiPage = new DIWikiPage(
+	private function newDiWikiPage( $dbkeys ): WikiPage {
+		$diWikiPage = new WikiPage(
 			$dbkeys[0],
 			intval( $dbkeys[1] ),
 			$dbkeys[2],

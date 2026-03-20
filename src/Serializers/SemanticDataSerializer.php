@@ -4,7 +4,7 @@ namespace SMW\Serializers;
 
 use OutOfBoundsException;
 use Serializers\Serializer;
-use SMW\SemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**

@@ -4,8 +4,8 @@ namespace SMW\Tests\Property;
 
 use MediaWiki\User\User;
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Property\RestrictionExaminer;
 
 /**
@@ -40,7 +40,7 @@ class RestrictionExaminerTest extends TestCase {
 		$msg = '[2,"smw-datavalue-property-create-restriction","Has unknown","foo"]';
 
 		$this->assertInstanceOf(
-			DIProperty::class,
+			Property::class,
 			RestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $msg )
 		);
 	}
@@ -48,7 +48,7 @@ class RestrictionExaminerTest extends TestCase {
 	public function testRestrictionForPredefinedProperty() {
 		$instance = new RestrictionExaminer();
 
-		$instance->checkRestriction( new DIProperty( '_MDAT' ) );
+		$instance->checkRestriction( new Property( '_MDAT' ) );
 
 		$this->assertTrue(
 			$instance->hasRestriction()
@@ -59,7 +59,7 @@ class RestrictionExaminerTest extends TestCase {
 		$instance = new RestrictionExaminer();
 		$instance->isQueryContext( true );
 
-		$instance->checkRestriction( new DIProperty( '_MDAT' ) );
+		$instance->checkRestriction( new Property( '_MDAT' ) );
 
 		$this->assertFalse(
 			$instance->hasRestriction()
@@ -72,7 +72,7 @@ class RestrictionExaminerTest extends TestCase {
 		$instance->setCreateProtectionRight( false );
 		$instance->setUser( $this->user );
 
-		$instance->checkRestriction( new DIProperty( 'Foo' ) );
+		$instance->checkRestriction( new Property( 'Foo' ) );
 
 		$this->assertFalse(
 			$instance->hasRestriction()
@@ -85,7 +85,7 @@ class RestrictionExaminerTest extends TestCase {
 		$instance->setCreateProtectionRight( 'foo' );
 		$instance->setUser( $this->user );
 
-		$instance->checkRestriction( new DIProperty( 'Foo' ) );
+		$instance->checkRestriction( new Property( 'Foo' ) );
 
 		$this->assertTrue(
 			$instance->hasRestriction()
@@ -105,7 +105,7 @@ class RestrictionExaminerTest extends TestCase {
 		$instance->setCreateProtectionRight( $right );
 		$instance->setUser( $this->user );
 
-		$instance->checkRestriction( new DIProperty( 'Foo' ) );
+		$instance->checkRestriction( new Property( 'Foo' ) );
 
 		$this->assertFalse(
 			$instance->hasRestriction()
@@ -116,8 +116,8 @@ class RestrictionExaminerTest extends TestCase {
 		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction(
-			new DIProperty( '_TYPE' ),
-			DIWikiPage::newFromText( 'Bar', NS_MAIN )
+			new Property( '_TYPE' ),
+			WikiPage::newFromText( 'Bar', NS_MAIN )
 		);
 
 		$this->assertTrue(
@@ -129,8 +129,8 @@ class RestrictionExaminerTest extends TestCase {
 		$instance = new RestrictionExaminer();
 
 		$instance->checkRestriction(
-			new DIProperty( '_TYPE' ),
-			DIWikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
+			new Property( '_TYPE' ),
+			WikiPage::newFromText( 'Bar', SMW_NS_PROPERTY )
 		);
 
 		$this->assertFalse(

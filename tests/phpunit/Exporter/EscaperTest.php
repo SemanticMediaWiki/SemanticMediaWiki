@@ -3,7 +3,7 @@
 namespace SMW\Tests\Exporter;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\Escaper;
 use SMW\Tests\TestEnvironment;
 
@@ -102,48 +102,48 @@ class EscaperTest extends TestCase {
 	public function encodePageProvider() {
 		# 0
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo'
+			new WikiPage( 'Foo', NS_MAIN, '', '' ), 'Foo'
 		];
 
 		# 1
 		$provider[] = [
-			new DIWikiPage( 'Foo_bar', NS_MAIN, '', '' ),
+			new WikiPage( 'Foo_bar', NS_MAIN, '', '' ),
 			'Foo_bar'
 		];
 
 		# 2
 		$provider[] = [
-			new DIWikiPage( 'Foo%bar', NS_MAIN, '', '' ),
+			new WikiPage( 'Foo%bar', NS_MAIN, '', '' ),
 			'Foo-25bar'
 		];
 
 		# 3 / #759
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, 'bar', '' ),
+			new WikiPage( 'Foo', NS_MAIN, 'bar', '' ),
 			'bar-3AFoo'
 		];
 
 		# 4 / #759
 		$provider[] = [
-			new DIWikiPage( 'Foo', NS_MAIN, 'bar', 'yuu' ),
+			new WikiPage( 'Foo', NS_MAIN, 'bar', 'yuu' ),
 			'bar-3AFoo'
 		];
 
 		# 5
 		$provider[] = [
-			new DIWikiPage( 'Fooºr', NS_MAIN, '', '' ),
+			new WikiPage( 'Fooºr', NS_MAIN, '', '' ),
 			'Foo-C2-BAr'
 		];
 
 		# 6
 		$provider[] = [
-			new DIWikiPage( 'Fooºr', SMW_NS_PROPERTY, '', '' ),
+			new WikiPage( 'Fooºr', SMW_NS_PROPERTY, '', '' ),
 			'Property-3AFoo-C2-BAr'
 		];
 
 		# 7
 		$provider[] = [
-			new DIWikiPage( 'Fooºr', NS_CATEGORY, '', '' ),
+			new WikiPage( 'Fooºr', NS_CATEGORY, '', '' ),
 			'Category-3AFoo-C2-BAr'
 		];
 

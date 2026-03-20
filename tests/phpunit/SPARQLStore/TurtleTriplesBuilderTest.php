@@ -3,12 +3,12 @@
 namespace SMW\Tests\SPARQLStore;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
-use SMW\SemanticData;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\TurtleTriplesBuilder;
-use SMWExporter as Exporter;
 
 /**
  * @covers \SMW\SPARQLStore\TurtleTriplesBuilder
@@ -46,7 +46,7 @@ class TurtleTriplesBuilderTest extends TestCase {
 		);
 
 		$semanticData = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN, '' )
+			new WikiPage( 'Foo', NS_MAIN, '' )
 		);
 
 		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )
@@ -82,7 +82,7 @@ class TurtleTriplesBuilderTest extends TestCase {
 		);
 
 		$semanticData = new SemanticData(
-			new DIWikiPage( 'Foo', NS_MAIN )
+			new WikiPage( 'Foo', NS_MAIN )
 		);
 
 		$this->repositoryRedirectLookup->expects( $this->atLeastOnce() )

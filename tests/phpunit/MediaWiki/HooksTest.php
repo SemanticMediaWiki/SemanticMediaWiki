@@ -22,9 +22,9 @@ use MediaWiki\User\UserIdentity;
 use Onoi\EventDispatcher\Listener\GenericCallbackEventListener;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
-use SMW\ContentParser;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Deferred\CallableUpdate;
 use SMW\MediaWiki\Hooks;
@@ -34,12 +34,12 @@ use SMW\MediaWiki\Search\ExtendedSearchEngine;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
 use SMW\MediaWiki\Specials\Admin\TaskHandlerRegistry;
 use SMW\Options;
+use SMW\Parser\ContentParser;
 use SMW\QueryEngine;
 use SMW\RequestOptions;
 use SMW\Schema\SchemaFactory;
 use SMW\Schema\SchemaFinder;
 use SMW\Schema\SchemaList;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\SQLStore\EntityStore\EntityIdManager;
@@ -1794,7 +1794,7 @@ class HooksTest extends TestCase {
 		$handler = 'SMW::Browse::BeforeIncomingPropertyValuesFurtherLinkCreate';
 
 		$html = '';
-		$property = new DIProperty( 'Foo' );
+		$property = new Property( 'Foo' );
 		$subject = WikiPage::newFromText( __METHOD__ );
 
 		$this->assertTrue(

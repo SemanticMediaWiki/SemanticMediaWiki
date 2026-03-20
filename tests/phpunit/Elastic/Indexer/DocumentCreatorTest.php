@@ -3,11 +3,16 @@
 namespace SMW\Tests\Elastic\Indexer;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Boolean;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
+use SMW\DataItems\Uri;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Indexer\Document;
 use SMW\Elastic\Indexer\DocumentCreator;
-use SMW\SemanticData;
 use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\SQLStore;
 
@@ -50,7 +55,7 @@ class DocumentCreatorTest extends TestCase {
 		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
-		$property = new DIProperty( 'FooProp' );
+		$property = new Property( 'FooProp' );
 
 		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -87,7 +92,7 @@ class DocumentCreatorTest extends TestCase {
 
 		$semanticData->expects( $this->any() )
 			->method( 'hasProperty' )
-			->with( new DIProperty( '_REDI' ) )
+			->with( new Property( '_REDI' ) )
 			->willReturn( true );
 
 		$semanticData->expects( $this->any() )
@@ -114,7 +119,7 @@ class DocumentCreatorTest extends TestCase {
 		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
-		$property = new DIProperty( 'FooProp' );
+		$property = new Property( 'FooProp' );
 
 		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -168,7 +173,7 @@ class DocumentCreatorTest extends TestCase {
 		$subject = WikiPage::newFromText( 'Foo' );
 		$subject->setOption( 'sort', 'abc' );
 
-		$property = new DIProperty( '_SOBJ' );
+		$property = new Property( '_SOBJ' );
 
 		$entityIdManager = $this->getMockBuilder( EntityIdManager::class )
 			->disableOriginalConstructor()
@@ -221,23 +226,23 @@ class DocumentCreatorTest extends TestCase {
 		];
 
 		yield 'text_type' => [
-			[ new \SMWDIBlob( 'test' ) ]
+			[ new Blob( 'test' ) ]
 		];
 
 		yield 'num_type' => [
-			[ new \SMWDINumber( 9999 ) ]
+			[ new Number( 9999 ) ]
 		];
 
 		yield 'bool_type' => [
-			[ new \SMWDIBoolean( true ) ]
+			[ new Boolean( true ) ]
 		];
 
 		yield 'uri_type' => [
-			[ \SMWDIUri::doUnserialize( 'http://example.org' ) ]
+			[ Uri::doUnserialize( 'http://example.org' ) ]
 		];
 
 		yield 'dat_type' => [
-			[ \SMWDITime::newFromTimestamp( '1362200400' ) ]
+			[ Time::newFromTimestamp( '1362200400' ) ]
 		];
 	}
 

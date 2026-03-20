@@ -3,13 +3,13 @@
 namespace SMW\Tests\SQLStore\EntityStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
-use SMW\SemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\SQLStore\EntityStore\StubSemanticData;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
-use SMWDITime as DITime;
 
 /**
  * @covers SMW\SQLStore\EntityStore\StubSemanticData
@@ -72,7 +72,7 @@ class StubSemanticDataTest extends TestCase {
 
 		$instance->expects( $this->once() )
 			->method( 'getProperties' )
-			->willReturn( [ new DIProperty( '_SOBJ' ) ] );
+			->willReturn( [ new Property( '_SOBJ' ) ] );
 
 		$instance->expects( $this->once() )
 			->method( 'isRedirect' )
@@ -96,11 +96,11 @@ class StubSemanticDataTest extends TestCase {
 		);
 
 		$this->assertEmpty(
-			$instance->getPropertyValues( new DIProperty( 'unknownInverseProperty', true ) )
+			$instance->getPropertyValues( new Property( 'unknownInverseProperty', true ) )
 		);
 
 		$this->assertEmpty(
-			$instance->getPropertyValues( new DIProperty( 'unknownProperty' ) )
+			$instance->getPropertyValues( new Property( 'unknownProperty' ) )
 		);
 	}
 
@@ -147,8 +147,8 @@ class StubSemanticDataTest extends TestCase {
 
 		// #0
 		$provider[] = [
-			new DIProperty( '_MDAT' ),
-			DITime::newFromTimestamp( 1272508903 )
+			new Property( '_MDAT' ),
+			Time::newFromTimestamp( 1272508903 )
 		];
 
 		return $provider;

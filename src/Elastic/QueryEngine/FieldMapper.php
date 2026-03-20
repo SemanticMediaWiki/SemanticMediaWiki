@@ -2,8 +2,8 @@
 
 namespace SMW\Elastic\QueryEngine;
 
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
-use SMW\DIProperty;
 use stdClass;
 
 /**
@@ -49,23 +49,23 @@ class FieldMapper {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return string
 	 */
-	public static function getFieldType( DIProperty $property ): string {
+	public static function getFieldType( Property $property ): string {
 		return str_replace( [ '_' ], [ '' ], DataTypeRegistry::getInstance()->getFieldType( $property->findPropertyValueType() ) );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param string $affix
 	 *
 	 * @return string
 	 */
-	public static function getField( DIProperty $property, $affix = 'Field' ): string {
+	public static function getField( Property $property, $affix = 'Field' ): string {
 		return self::getFieldType( $property ) . $affix;
 	}
 

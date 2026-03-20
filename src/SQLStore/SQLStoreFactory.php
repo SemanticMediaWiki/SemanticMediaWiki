@@ -4,7 +4,7 @@ namespace SMW\SQLStore;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Collator;
@@ -914,11 +914,11 @@ class SQLStoreFactory {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return ChangeOp
 	 */
-	public function newChangeOp( DIWikiPage $subject ): ChangeOp {
+	public function newChangeOp( WikiPage $subject ): ChangeOp {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 		$changeOp = new ChangeOp( $subject );
 

@@ -3,12 +3,13 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @covers \SMW\SQLStore\Lookup\UndeclaredPropertyListLookup
@@ -122,7 +123,7 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 	}
 
 	public function testfetchListForValidProperty() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = 'Foo';
 		$row->count = 42;
 
@@ -167,7 +168,7 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 		);
 
 		$expected = [
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			42
 		];
 
@@ -178,7 +179,7 @@ class UndeclaredPropertyListLookupTest extends TestCase {
 	}
 
 	public function testfetchListForInvalidProperty() {
-		$row = new \stdClass;
+		$row = new stdClass;
 		$row->smw_title = '-Foo';
 		$row->count = 42;
 

@@ -3,8 +3,10 @@
 namespace SMW\Tests\SPARQLStore\QueryEngine\DescriptionInterpreters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\Disjunction;
@@ -21,8 +23,6 @@ use SMW\SPARQLStore\QueryEngine\ConditionBuilder;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreterFactory;
 use SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
 
 /**
  * @covers \SMW\SPARQLStore\QueryEngine\DescriptionInterpreters\DisjunctionInterpreter
@@ -196,7 +196,7 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = SingletonCondition::class;
 
 		$description = new ValueDescription(
-			new DIWikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LIKE
+			new WikiPage( 'SomePropertyPageValue', NS_MAIN ), null, SMW_CMP_LIKE
 		);
 
 		$description = new Disjunction( [
@@ -224,7 +224,7 @@ class DisjunctionInterpreterTest extends TestCase {
 
 		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN ),
-			new ValueDescription( new DIBlob( 'SomePropertyBlobValue' ), new DIProperty( 'Foo' ), SMW_CMP_LESS )
+			new ValueDescription( new Blob( 'SomePropertyBlobValue' ), new Property( 'Foo' ), SMW_CMP_LESS )
 		] );
 
 		$orderByProperty = null;
@@ -250,13 +250,13 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyBlobValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyBlobValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_LESS
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			$description
 		);
 
@@ -289,20 +289,20 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new ValueDescription(
-			new DIBlob( 'SomePropertyBlobValue' ),
-			new DIProperty( 'Foo' ),
+			new Blob( 'SomePropertyBlobValue' ),
+			new Property( 'Foo' ),
 			SMW_CMP_EQ
 		);
 
 		$description = new SomeProperty(
-			new DIProperty( 'Foo' ),
+			new Property( 'Foo' ),
 			$description
 		);
 
 		$description = new Disjunction( [
 			new NamespaceDescription( NS_MAIN ),
 			$description,
-			new ValueDescription( new DINumber( 42 ), null, SMW_CMP_EQ )
+			new ValueDescription( new Number( 42 ), null, SMW_CMP_EQ )
 		] );
 
 		$orderByProperty = null;
@@ -330,12 +330,12 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = TrueCondition::class;
 
 		$description = new Disjunction( [
-			new ValueDescription( new DINumber( 12 ), null, SMW_CMP_EQ )
+			new ValueDescription( new Number( 12 ), null, SMW_CMP_EQ )
 		] );
 
 		$description = new Disjunction( [
 			$description,
-			new ValueDescription( new DINumber( 42 ), null, SMW_CMP_LIKE )
+			new ValueDescription( new Number( 42 ), null, SMW_CMP_LIKE )
 		] );
 
 		$orderByProperty = null;
@@ -357,15 +357,15 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = WhereCondition::class;
 
 		$description = new Disjunction( [
-			new ValueDescription( new DINumber( 12 ), null, SMW_CMP_EQ ),
-			new ValueDescription( new DIBlob( 'Bar' ), null, SMW_CMP_LIKE )
+			new ValueDescription( new Number( 12 ), null, SMW_CMP_EQ ),
+			new ValueDescription( new Blob( 'Bar' ), null, SMW_CMP_LIKE )
 		] );
 
 		$description = new Disjunction( [
 			$description,
 			new SomeProperty(
-				new DIProperty( 'Foo' ),
-				new ValueDescription( new DINumber( 42 ), null, SMW_CMP_LIKE )
+				new Property( 'Foo' ),
+				new ValueDescription( new Number( 42 ), null, SMW_CMP_LIKE )
 			)
 		] );
 
@@ -393,13 +393,13 @@ class DisjunctionInterpreterTest extends TestCase {
 
 		$description = new Disjunction( [
 			new Conjunction( [
-				new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ ),
+				new ValueDescription( new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ ),
 				new SomeProperty(
-					new DIProperty( 'Bar' ),
+					new Property( 'Bar' ),
 					new ThingDescription()
 				)
 			] ),
-			new ValueDescription( new DIBlob( 'Yui' ), null, SMW_CMP_LIKE )
+			new ValueDescription( new Blob( 'Yui' ), null, SMW_CMP_LIKE )
 		] );
 
 		$orderByProperty = null;
@@ -427,8 +427,8 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = FilterCondition::class;
 
 		$description = new Disjunction( [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ ),
-			new ValueDescription( new DIBlob( 'Yui' ), null, SMW_CMP_LIKE )
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ), null, SMW_CMP_EQ ),
+			new ValueDescription( new Blob( 'Yui' ), null, SMW_CMP_LIKE )
 		] );
 
 		$orderByProperty = null;
@@ -451,11 +451,11 @@ class DisjunctionInterpreterTest extends TestCase {
 		$conditionType = FalseCondition::class;
 
 		$description = new Conjunction( [
-			new ValueDescription( new DIWikiPage( 'Bar', NS_MAIN ) )
+			new ValueDescription( new WikiPage( 'Bar', NS_MAIN ) )
 		] );
 
 		$description = new Conjunction( [
-			new ValueDescription( new DIWikiPage( 'Foo', NS_MAIN ) ),
+			new ValueDescription( new WikiPage( 'Foo', NS_MAIN ) ),
 			$description
 		] );
 

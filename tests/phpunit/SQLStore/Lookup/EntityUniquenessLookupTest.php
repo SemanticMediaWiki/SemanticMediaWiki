@@ -3,7 +3,8 @@
 namespace SMW\Tests\SQLStore\Lookup;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\MediaWiki\Connection\Query;
@@ -108,7 +109,7 @@ class EntityUniquenessLookupTest extends TestCase {
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getDiType' )
-			->willReturn( \SMWDataItem::TYPE_BLOB );
+			->willReturn( DataItem::TYPE_BLOB );
 
 		$propertyTable->expects( $this->once() )
 			->method( 'getName' )
@@ -161,7 +162,7 @@ class EntityUniquenessLookupTest extends TestCase {
 			$this->iteratorFactory
 		);
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 

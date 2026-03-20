@@ -4,7 +4,7 @@ namespace SMW\Tests\MediaWiki\Jobs;
 
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob;
 use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
@@ -66,7 +66,7 @@ class ChangePropagationClassUpdateJobTest extends TestCase {
 
 	public function jobProvider() {
 		$provider[] = [
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			[]
 		];
 

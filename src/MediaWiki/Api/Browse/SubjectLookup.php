@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Api\Browse;
 
 use Exception;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\ParameterNotFoundException;
 use SMW\Exception\RedirectTargetUnresolvableException;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
@@ -79,7 +79,7 @@ class SubjectLookup extends Lookup {
 			throw new ParameterNotFoundException( 'options' );
 		}
 
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$params['subject'],
 			$params['ns'],
 			$params['iw'],
@@ -116,7 +116,7 @@ class SubjectLookup extends Lookup {
 			throw new RedirectTargetUnresolvableException( $e->getMessage() );
 		}
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),

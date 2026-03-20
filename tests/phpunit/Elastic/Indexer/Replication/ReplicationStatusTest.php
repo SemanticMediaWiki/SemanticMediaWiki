@@ -3,9 +3,9 @@
 namespace SMW\Tests\Elastic\Indexer\Replication;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Time;
 use SMW\Elastic\Connection\Client;
 use SMW\Elastic\Indexer\Replication\ReplicationStatus;
-use SMWDITime as DITime;
 
 /**
  * @covers \SMW\Elastic\Indexer\Replication\ReplicationStatus
@@ -263,7 +263,7 @@ class ReplicationStatusTest extends TestCase {
 
 		$this->assertEquals(
 			[
-				'modification_date' => DITime::newFromJD( '2458322.0910764', DITime::CM_GREGORIAN, DITime::PREC_YMDT ),
+				'modification_date' => Time::newFromJD( '2458322.0910764', Time::CM_GREGORIAN, Time::PREC_YMDT ),
 				'associated_revision' => 1001
 			],
 			$instance->get( 'modification_date_associated_revision', 42 )
@@ -345,7 +345,7 @@ class ReplicationStatusTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			DITime::newFromJD( '2458322.0910764', DITime::CM_GREGORIAN, DITime::PREC_YMDT ),
+			Time::newFromJD( '2458322.0910764', Time::CM_GREGORIAN, Time::PREC_YMDT ),
 			$instance->getModificationDate( 42 )
 		);
 	}

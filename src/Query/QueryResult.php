@@ -3,6 +3,7 @@
 namespace SMW\Query;
 
 use SMW\DataItems\WikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Query\Result\FieldItemFinder;
 use SMW\Query\Result\FilterMap;
 use SMW\Query\Result\ItemFetcher;
@@ -10,7 +11,6 @@ use SMW\Query\Result\ItemJournal;
 use SMW\Query\Result\ResultArray;
 use SMW\SerializerFactory;
 use SMW\Store;
-use SMWInfolink;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -393,7 +393,7 @@ class QueryResult {
 	 *
 	 * @param string|false $caption
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
 	public function getQueryLink( $caption = false ) {
 		$link = QueryLinker::get( $this->mQuery );
@@ -411,7 +411,7 @@ class QueryResult {
 	 *
 	 * @since 1.8
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
 	public function getLink() {
 		return $this->getQueryLink();

@@ -7,6 +7,7 @@ use SMW\DataItems\WikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ThingDescription;
+use stdClass;
 
 /**
  * @covers \SMW\Query\Language\ClassDescription
@@ -40,7 +41,7 @@ class ClassDescriptionTest extends TestCase {
 	public function testConstructThrowsException() {
 		$this->expectException( 'Exception' );
 
-		new ClassDescription( new \stdClass );
+		new ClassDescription( new stdClass );
 	}
 
 	public function testCommonMethods() {

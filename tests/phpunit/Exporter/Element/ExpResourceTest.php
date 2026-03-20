@@ -3,10 +3,10 @@
 namespace SMW\Tests\Exporter\Element;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpResource;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\Exporter\Element\ExpResource
@@ -119,7 +119,7 @@ class ExpResourceTest extends TestCase {
 
 		# 4
 		$provider[] = [
-			'Foo', new DIWikiPage( 'Foo', NS_MAIN ),
+			'Foo', new WikiPage( 'Foo', NS_MAIN ),
 			false,
 			[
 				'type' => ExpResource::TYPE_RESOURCE,

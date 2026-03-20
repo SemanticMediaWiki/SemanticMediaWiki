@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use Exception;
 use MediaWiki\Api\ApiBase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Specials\Browse\HtmlBuilder;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use Wikimedia\ParamValidator\ParamValidator;
@@ -54,7 +54,7 @@ class BrowseBySubject extends ApiBase {
 	}
 
 	protected function buildHTML( $params ): string {
-		$subject = new DIWikiPage(
+		$subject = new WikiPage(
 			$params['subject'],
 			$params['ns'],
 			$params['iw'],
@@ -89,7 +89,7 @@ class BrowseBySubject extends ApiBase {
 			$this->dieWithError( [ 'smw-redirect-target-unresolvable', $e->getMessage() ] );
 		}
 
-		$dataItem = new DIWikiPage(
+		$dataItem = new WikiPage(
 			$title->getDBkey(),
 			$title->getNamespace(),
 			$title->getInterwiki(),

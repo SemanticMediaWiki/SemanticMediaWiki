@@ -9,7 +9,7 @@ use MediaWiki\User\User;
 use Onoi\MessageReporter\MessageReporter;
 use PHPUnit\Framework\TestCase;
 use SMW\Constraint\ConstraintRegistry;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\HookDispatcher;
 use SMW\MediaWiki\Specials\Admin\OutputFormatter;
@@ -139,7 +139,7 @@ class HookDispatcherTest extends TestCase {
 	public function testOnRegisterPropertyChangeListeners() {
 		$hookDispatcher = new HookDispatcher();
 
-		$property = $this->getMockBuilder( DIProperty::class )
+		$property = $this->getMockBuilder( Property::class )
 			->disableOriginalConstructor()
 			->getMock();
 

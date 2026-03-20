@@ -3,10 +3,12 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValues\PropertyChainValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -18,8 +20,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\Utils\CircularReferenceGuard;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query
@@ -82,7 +82,7 @@ class ConditionBuilder {
 	private $joinVariable;
 
 	/**
-	 * @var DIProperty|null
+	 * @var Property|null
 	 */
 	private $orderByProperty;
 
@@ -221,7 +221,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @param DIProperty|null $orderByProperty if given then
+	 * @param Property|null $orderByProperty if given then
 	 * this is the property the values of which this condition will refer
 	 * to, and the condition should also enable ordering by this value
 	 */
@@ -232,7 +232,7 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getOrderByProperty() {
 		return $this->orderByProperty;
@@ -351,7 +351,7 @@ class ConditionBuilder {
 	 * @return string|null
 	 */
 	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
-		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
+		if ( !$dataItem instanceof WikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
 
@@ -528,7 +528,7 @@ class ConditionBuilder {
 			$auxDescription = $description;
 		} else {
 			$auxDescription = $this->descriptionFactory->newSomeProperty(
-				new DIProperty( $propertyKey ),
+				new Property( $propertyKey ),
 				$this->descriptionFactory->newThingDescription()
 			);
 		}

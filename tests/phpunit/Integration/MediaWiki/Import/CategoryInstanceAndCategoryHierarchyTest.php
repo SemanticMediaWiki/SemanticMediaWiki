@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\UtilityFactory;
@@ -68,7 +68,7 @@ class CategoryInstanceAndCategoryHierarchyTest extends SMWIntegrationTestCase {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( 'CategoryInstanceAndCategoryHierarchyRegressionTest' );
 
 		$expectedCategoryAsWikiValue = [
-			'property' => new DIProperty( '_INST' ),
+			'property' => new Property( '_INST' ),
 			'propertyValues' => [
 				'Regression test',
 				'Regression test category',

@@ -3,13 +3,13 @@
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
 use MediaWiki\Http\HttpRequestFactory;
+use SMW\Export\Exporter;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\HttpResponseErrorMapper;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMWExporter as Exporter;
 
 /**
  * Basic database connector for exchanging data via SPARQL.

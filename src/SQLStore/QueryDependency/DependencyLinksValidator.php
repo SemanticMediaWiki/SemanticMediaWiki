@@ -3,8 +3,8 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -78,11 +78,11 @@ class DependencyLinksValidator {
 	 *
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( WikiPage $subject ) {
 		$this->checkedDependencies = [];
 
 		if ( $this->checkDependencies === false ) {
@@ -93,7 +93,7 @@ class DependencyLinksValidator {
 		$propertyTableInfoFetcher = $this->store->getPropertyTableInfoFetcher();
 
 		$tableid = $propertyTableInfoFetcher->findTableIdForProperty(
-			new DIProperty( '_ASK' )
+			new Property( '_ASK' )
 		);
 
 		if ( !isset( $proptables[$tableid] ) ) {

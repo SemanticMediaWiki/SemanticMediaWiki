@@ -4,12 +4,12 @@ namespace SMW\Listener\EventListener;
 
 use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventListenerCollection;
+use SMW\Export\Exporter;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Query\QueryComparator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later

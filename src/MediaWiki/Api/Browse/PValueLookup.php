@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\RequestOptions;
 use SMW\Store;
 use Traversable;
@@ -85,7 +85,7 @@ class PValueLookup extends Lookup {
 			$opts->offset = $offset;
 			$opts->sort = $sort;
 
-			$property = DIProperty::newFromUserLabel(
+			$property = Property::newFromUserLabel(
 				$property
 			);
 

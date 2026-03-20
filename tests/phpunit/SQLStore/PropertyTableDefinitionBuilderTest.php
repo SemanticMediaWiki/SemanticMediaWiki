@@ -3,11 +3,11 @@
 namespace SMW\Tests\SQLStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\PropertyTableDefinition;
 use SMW\SQLStore\PropertyTableDefinitionBuilder;
 use SMW\SQLStore\PropertyTypeFinder;
 use SMW\Tests\Utils\MwHooksHandler;
-use SMWDataItem as DataItem;
 
 /**
  * @covers \SMW\SQLStore\PropertyTableDefinitionBuilder

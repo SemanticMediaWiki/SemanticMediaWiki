@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -33,12 +33,12 @@ class ByGroupPropertyValuesLookup {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param DIWikiPage[]|string[] $subjects
 	 *
 	 * @return array
 	 */
-	public function findValueGroups( DIProperty $property, array $subjects ): array {
+	public function findValueGroups( Property $property, array $subjects ): array {
 		$diType = DataTypeRegistry::getInstance()->getDataItemId(
 			$property->findPropertyTypeID()
 		);
@@ -112,7 +112,7 @@ class ByGroupPropertyValuesLookup {
 		];
 	}
 
-	public function fetchValuesByGroup( DIProperty $property, $subjects ) {
+	public function fetchValuesByGroup( Property $property, $subjects ) {
 		$tableid = $this->store->findPropertyTableID( $property );
 		$entityIdManager = $this->store->getObjectIds();
 

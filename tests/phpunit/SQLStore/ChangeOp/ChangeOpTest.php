@@ -3,7 +3,7 @@
 namespace SMW\Tests\SQLStore\ChangeOp;
 
 use PHPUnit\Framework\TestCase;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 
 /**
@@ -26,7 +26,7 @@ class ChangeOpTest extends TestCase {
 
 	public function testSerialize() {
 		$instance = new ChangeOp(
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			[]
 		);
 
@@ -43,7 +43,7 @@ class ChangeOpTest extends TestCase {
 	 */
 	public function testDiff( $diff, $fixedPropertyRecord, $expectedOrdered, $expectedList ) {
 		$instance = new ChangeOp(
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -102,7 +102,7 @@ class ChangeOpTest extends TestCase {
 		];
 
 		$instance = new ChangeOp(
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -157,7 +157,7 @@ class ChangeOpTest extends TestCase {
 		];
 
 		$instance = new ChangeOp(
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -182,7 +182,7 @@ class ChangeOpTest extends TestCase {
 		$diff = [];
 
 		$instance = new ChangeOp(
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 
@@ -195,7 +195,7 @@ class ChangeOpTest extends TestCase {
 		$diff = [];
 
 		$instance = new ChangeOp(
-			DIWikiPage::newFromText( __METHOD__ ),
+			WikiPage::newFromText( __METHOD__ ),
 			$diff
 		);
 

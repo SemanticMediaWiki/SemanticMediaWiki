@@ -3,12 +3,12 @@
 namespace SMW\SPARQLStore;
 
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\InMemoryPoolCache;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -61,7 +61,7 @@ class RepositoryRedirectLookup {
 			return $expNsResource;
 		}
 
-		if ( ( $expNsResource->getDataItem() instanceof DIWikiPage ) &&
+		if ( ( $expNsResource->getDataItem() instanceof WikiPage ) &&
 			   $expNsResource->getDataItem()->getSubobjectName() !== '' ) {
 			return $expNsResource;
 		}
