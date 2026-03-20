@@ -7,8 +7,10 @@ use SMW\DataValues\AllowsListValue;
 use SMW\DataValues\AllowsPatternValue;
 use SMW\DataValues\AllowsValue;
 use SMW\DataValues\BooleanValue;
+use SMW\DataValues\ConceptValue;
 use SMW\DataValues\ConstraintSchemaValue;
 use SMW\DataValues\ErrorMsgTextValue;
+use SMW\DataValues\ErrorValue;
 use SMW\DataValues\ExternalFormatterUriValue;
 use SMW\DataValues\ExternalIdentifierValue;
 use SMW\DataValues\ImportValue;
@@ -17,8 +19,10 @@ use SMW\DataValues\LanguageCodeValue;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\DataValues\NumberValue;
 use SMW\DataValues\PropertyChainValue;
+use SMW\DataValues\PropertyListValue;
 use SMW\DataValues\PropertyValue;
 use SMW\DataValues\QuantityValue;
+use SMW\DataValues\RecordValue;
 use SMW\DataValues\ReferenceValue;
 use SMW\DataValues\StringValue;
 use SMW\DataValues\TelephoneUriValue;
@@ -26,6 +30,8 @@ use SMW\DataValues\TemperatureValue;
 use SMW\DataValues\TimeValue;
 use SMW\DataValues\TypesValue;
 use SMW\DataValues\UniquenessConstraintValue;
+use SMW\DataValues\URIValue;
+use SMW\DataValues\WikiPageValue;
 use SMW\Export\Exporter;
 
 /**
@@ -63,25 +69,25 @@ class TypesRegistry {
 			 // Legacy string ID `_str`
 			StringValue::TYPE_LEGACY_ID => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			 // Email type
-			'_ema' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
+			'_ema' => [ URIValue::class, DataItem::TYPE_URI, false, false ],
 			 // URL/URI type
-			'_uri' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
+			'_uri' => [ URIValue::class, DataItem::TYPE_URI, false, false ],
 			 // Annotation URI type
-			'_anu' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
+			'_anu' => [ URIValue::class, DataItem::TYPE_URI, false, false ],
 			 // Phone number (URI) type
 			'_tel' => [ TelephoneUriValue::class, DataItem::TYPE_URI, false, false ],
 			 // Page type
-			'_wpg' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wpg' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Property page type TODO: make available to user space
-			'_wpp' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wpp' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Category page type TODO: make available to user space
-			'_wpc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wpc' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Form page type for Semantic Forms
-			'_wpf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wpf' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // smw/schema page
-			'_wps'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wps'  => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // User page
-			'_wpu'  => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'_wpu'  => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			// __cschema
 			ConstraintSchemaValue::TYPE_ID => [ ConstraintSchemaValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			 // Number type
@@ -93,7 +99,7 @@ class TypesRegistry {
 			 // Boolean type
 			'_boo' => [ BooleanValue::class, DataItem::TYPE_BOOLEAN, false, false ],
 			 // Value list type (replacing former nary properties)
-			'_rec' => [ 'SMWRecordValue', DataItem::TYPE_WIKIPAGE, true, false ],
+			'_rec' => [ RecordValue::class, DataItem::TYPE_WIKIPAGE, true, false ],
 			MonolingualTextValue::TYPE_ID => [ MonolingualTextValue::class, DataItem::TYPE_WIKIPAGE, true, false ],
 			ReferenceValue::TYPE_ID => [ ReferenceValue::class, DataItem::TYPE_WIKIPAGE, true, false ],
 			 // Geographical coordinates
@@ -110,27 +116,27 @@ class TypesRegistry {
 			// Special type page type
 			TypesValue::TYPE_ID => [ TypesValue::class, DataItem::TYPE_URI, false, false ],
 			// Special type list for decalring _rec properties
-			'__pls' => [ 'SMWPropertyListValue', DataItem::TYPE_BLOB, false, false ],
+			'__pls' => [ PropertyListValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Special concept page type
-			'__con' => [ 'SMWConceptValue', DataItem::TYPE_CONCEPT, false, false ],
+			'__con' => [ ConceptValue::class, DataItem::TYPE_CONCEPT, false, false ],
 			// Special string type
 			'__sps' => [ StringValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Special uri type
-			'__spu' => [ 'SMWURIValue', DataItem::TYPE_URI, false, false ],
+			'__spu' => [ URIValue::class, DataItem::TYPE_URI, false, false ],
 			// Special subobject type
-			'__sob' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, true, true ],
+			'__sob' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, true, true ],
 			// Special subproperty type
-			'__sup' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'__sup' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special subcategory type
-			'__suc' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'__suc' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special Form page type for Semantic Forms
-			'__spf' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'__spf' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special instance of type
-			'__sin' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'__sin' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special redirect type
-			'__red' => [ 'SMWWikiPageValue', DataItem::TYPE_WIKIPAGE, false, true ],
+			'__red' => [ WikiPageValue::class, DataItem::TYPE_WIKIPAGE, false, true ],
 			// Special error type
-			'__err' => [ 'SMWErrorValue', DataItem::TYPE_ERROR, false, false ],
+			'__err' => [ ErrorValue::class, DataItem::TYPE_ERROR, false, false ],
 			// Special error type
 			'__errt' => [ ErrorMsgTextValue::class, DataItem::TYPE_BLOB, false, false ],
 			// Sort key of a page
