@@ -75,7 +75,7 @@ class StripMarkerDecoderTest extends TestCase {
 
 		$this->assertEquals(
 			'&lt;nowiki&gt;&lt;pre&gt;Foo&lt;/pre&gt;&lt;/nowiki&gt;',
-			$instance->unstrip( '<pre>Foo</pre>' )
+			$instance->unstrip( '<nowiki><pre>Foo</pre></nowiki>' )
 		);
 	}
 
