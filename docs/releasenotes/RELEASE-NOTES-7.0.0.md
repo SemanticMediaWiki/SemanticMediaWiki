@@ -7,6 +7,10 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 ## Changes
 
+### Bug fixes
+
+* Fixed incorrect timezone offset calculation for negative half-hour timezones such as Newfoundland (`-3:30`). The 30-minute component was always added positively, producing `-2.5` instead of the correct `-3.5`.
+
 ### Deprecations
 
 * `enableSemantics()` is deprecated and now a no-op. `wfLoadExtension( 'SemanticMediaWiki' )` alone is sufficient to install SMW, aligning with standard MediaWiki extension conventions. The RDF namespace URI is now auto-derived from `Special:URIResolver` when not explicitly set. Users who set a custom `$smwgNamespace` in `LocalSettings.php` are unaffected.

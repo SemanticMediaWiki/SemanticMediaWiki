@@ -379,7 +379,7 @@ class TimeValueParserTest extends TestCase {
 				'minutes' => 45,
 				'seconds' => 30,
 				'microseconds' => false,
-				'timeoffset' => -2.5,
+				'timeoffset' => -3.5,
 				'timezone' => false
 			],
 			[]

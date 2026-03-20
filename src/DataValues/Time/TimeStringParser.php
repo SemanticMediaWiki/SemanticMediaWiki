@@ -41,7 +41,7 @@ class TimeStringParser {
 			if ( ( count( $match ) > 5 ) && ( $match[5] !== '' ) ) {
 				$timeoffset = intval( $match[5] );
 				if ( ( count( $match ) > 7 ) && ( $match[7] == '30' ) ) {
-					$timeoffset += 0.5;
+					$timeoffset += ( $timeoffset >= 0 ) ? 0.5 : -0.5;
 				}
 			}
 

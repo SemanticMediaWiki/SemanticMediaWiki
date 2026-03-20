@@ -42,9 +42,14 @@ class TimeStringParserTest extends TestCase {
 			[ 'hours' => 13, 'minutes' => 45, 'seconds' => 23, 'timeoffset' => 5 ],
 		];
 
-		yield 'time with half-hour offset' => [
+		yield 'time with positive half-hour offset' => [
 			'13:45:23+5:30',
 			[ 'hours' => 13, 'minutes' => 45, 'seconds' => 23, 'timeoffset' => 5.5 ],
+		];
+
+		yield 'time with negative half-hour offset' => [
+			'13:45:23-5:30',
+			[ 'hours' => 13, 'minutes' => 45, 'seconds' => 23, 'timeoffset' => -5.5 ],
 		];
 
 		yield 'time with T prefix' => [
