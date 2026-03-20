@@ -470,4 +470,7 @@ class ElasticStore extends SQLStore {
 
 }
 
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( ElasticStore::class, 'SMWElasticStore' );
