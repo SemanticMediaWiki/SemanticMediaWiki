@@ -75,14 +75,6 @@
 			"dev-master": "7.x-dev"
 		}
 	},
-	"autoload": {
-		"files": [
-			"includes/GlobalFunctions.php"
-		],
-		"classmap" : [
-			"includes/"
-		]
-	},
 	"config": {
 		"process-timeout": 0,
 		"allow-plugins": {

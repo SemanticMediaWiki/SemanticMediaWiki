@@ -248,9 +248,9 @@ class NamespaceManager {
 			SMW_NS_SCHEMA_TALK => false,
 		];
 
-		// When the CanonicalNamespaces hook fires before DefaultSettings.php
+		// When the CanonicalNamespaces hook fires before src/DefaultSettings.php
 		// has been applied, smwgNamespacesWithSemanticLinks may be empty.
-		// Load the defaults from DefaultSettings.php to ensure standard MW
+		// Load the defaults from src/DefaultSettings.php to ensure standard MW
 		// namespaces (NS_MAIN, NS_USER, etc.) are preserved. (#6302)
 		if ( $vars['smwgNamespacesWithSemanticLinks'] === [] ) {
 			$defaults = SemanticMediaWiki::getDefaultSettings();
