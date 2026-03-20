@@ -5,6 +5,7 @@ namespace SMW\Tests\Formatters;
 use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
 use SMW\Formatters\Infolink;
+use SMW\Tests\TestEnvironment;
 
 /**
  * @covers \SMW\Formatters\Infolink
