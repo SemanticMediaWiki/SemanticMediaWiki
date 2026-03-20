@@ -538,14 +538,14 @@ class SemanticMediaWiki {
 
 	/**
 	 * Set up $GLOBALS according to what is found in DefaultSettings.php
+	 *
+	 * @return void
 	 */
 	public static function setupGlobals(): void {
 		$defaultSettings = self::getDefaultSettings();
-		if ( is_array( $defaultSettings ) ) {
-			foreach ( $defaultSettings as $key => $value ) {
-				if ( !isset( $GLOBALS[$key] ) ) {
-					$GLOBALS[$key] = $value;
-				}
+		foreach ( $defaultSettings as $key => $value ) {
+			if ( !isset( $GLOBALS[$key] ) ) {
+				$GLOBALS[$key] = $value;
 			}
 		}
 	}
