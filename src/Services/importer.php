@@ -19,7 +19,7 @@ use SMW\Utils\FileFetcher;
  * Services defined in this file SHOULD only be accessed either via the
  * ApplicationFactory or a different factory instance.
  *
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 2.5
  *
  * @author mwjames
