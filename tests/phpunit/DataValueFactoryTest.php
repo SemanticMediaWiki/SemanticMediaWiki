@@ -201,7 +201,7 @@ class DataValueFactoryTest extends TestCase {
 	 * Issue 673
 	 */
 	public function testEnforceFirstUpperCaseForDisabledCapitalLinks() {
-		$wgCapitalLinks = $GLOBALS['wgCapitalLinks'];
+		$capitalLinks = $GLOBALS['wgCapitalLinks'];
 		$GLOBALS['wgCapitalLinks'] = false;
 
 		$instance = DataValueFactory::getInstance();
@@ -218,7 +218,7 @@ class DataValueFactoryTest extends TestCase {
 			$dataValue->getProperty()->getKey()
 		);
 
-		$GLOBALS['wgCapitalLinks'] = $wgCapitalLinks;
+		$GLOBALS['wgCapitalLinks'] = $capitalLinks;
 	}
 
 	public function testNewPropertyValueByLabel() {
