@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Query;
 
 use InvalidArgumentException;
 use SMW\Query\Exception\ResultFormatNotFoundException;
@@ -191,3 +191,8 @@ final class QueryPrinterFactory {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( QueryPrinterFactory::class, 'SMW\QueryPrinterFactory' );

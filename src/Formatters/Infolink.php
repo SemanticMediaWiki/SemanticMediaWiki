@@ -1,8 +1,11 @@
 <?php
 
+namespace SMW\Formatters;
+
 use MediaWiki\Linker\Linker;
 use MediaWiki\MediaWikiServices;
 use SMW\Localizer\Localizer;
+use SMW\MediaWiki\Outputs;
 use SMW\Site;
 
 /**
@@ -17,7 +20,7 @@ use SMW\Site;
  * @author Jeroen De Dauw
  * @author mwjames
  */
-class SMWInfolink {
+class Infolink {
 
 	const LINK_UPPER_LENGTH_RESTRICTION = 2000;
 
@@ -82,10 +85,10 @@ class SMWInfolink {
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 * @param array $params Array of parameters, format $name => $value, if any.
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
-	public static function newInternalLink( $caption, $target, $style = false, array $params = [] ): \SMWInfolink {
-		return new SMWInfolink( true, $caption, $target, $style, $params );
+	public static function newInternalLink( $caption, $target, $style = false, array $params = [] ): Infolink {
+		return new Infolink( true, $caption, $target, $style, $params );
 	}
 
 	/**
@@ -96,10 +99,10 @@ class SMWInfolink {
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 * @param array $params Array of parameters, format $name => $value, if any.
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
-	public static function newExternalLink( $caption, $url, $style = false, array $params = [] ): \SMWInfolink {
-		return new SMWInfolink( false, $caption, $url, $style, $params );
+	public static function newExternalLink( $caption, $url, $style = false, array $params = [] ): Infolink {
+		return new Infolink( false, $caption, $url, $style, $params );
 	}
 
 	/**
@@ -110,10 +113,10 @@ class SMWInfolink {
 	 * @param string $propertyValue
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
-	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ): \SMWInfolink {
-		$infolink = new SMWInfolink(
+	public static function newPropertySearchLink( $caption, $propertyName, $propertyValue, $style = 'smwsearch' ): Infolink {
+		$infolink = new Infolink(
 			true,
 			$caption,
 			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':SearchByProperty',
@@ -138,10 +141,10 @@ class SMWInfolink {
 	 * @param string $propertyName
 	 * @param mixed $style CSS class of a span to embed the link into, or false if no extra style is required.
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
-	public static function newInversePropertySearchLink( $caption, $subject, $propertyName, $style = false ): \SMWInfolink {
-		return new SMWInfolink(
+	public static function newInversePropertySearchLink( $caption, $subject, $propertyName, $style = false ): Infolink {
+		return new Infolink(
 			true,
 			$caption,
 			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':PageProperty',
@@ -157,10 +160,10 @@ class SMWInfolink {
 	 * @param string $titleText
 	 * @param mixed $style CSS class of a span to embedd the link into, or false if no extra style is required.
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
-	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ): \SMWInfolink {
-		return new SMWInfolink(
+	public static function newBrowsingLink( $caption, $titleText, $style = 'smwbrowse' ): Infolink {
+		return new Infolink(
 			true,
 			$caption,
 			Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':Browse',
@@ -234,7 +237,7 @@ class SMWInfolink {
 		}
 
 		if ( $this->mStyle !== false ) {
-			SMWOutputs::requireResource( 'ext.smw.styles' );
+			Outputs::requireResource( 'ext.smw.styles' );
 			$start = "<span class=\"$this->mStyle\">";
 			$end = '</span>';
 		} else {
@@ -414,7 +417,7 @@ class SMWInfolink {
 	 * that do not have any string keys in GET, and hence "x" should never be used
 	 * as a parameter name.
 	 *
-	 * The function SMWInfolink::decodeParameters() can be used to undo this encoding.
+	 * The function Infolink::decodeParameters() can be used to undo this encoding.
 	 * It is strongly recommended to not create any code that depends on the concrete
 	 * way of how parameters are encoded within this function, and to always use the
 	 * respective encoding/decoding methods instead.
@@ -491,7 +494,7 @@ class SMWInfolink {
 	 * Obtain an array of parameters from the parameters given to some HTTP service.
 	 * In particular, this function performs all necessary decoding as may be needed, e.g.,
 	 * to recover the proper parameter strings after encoding for use in wiki title names
-	 * as done by SMWInfolink::encodeParameters().
+	 * as done by Infolink::encodeParameters().
 	 *
 	 * If $allparams is set to true, it is assumed that further data should be obtained
 	 * from the global $wgRequest, and all given parameters are read.
@@ -502,7 +505,7 @@ class SMWInfolink {
 	 * when getting such parameters from MediaWiki. SMW-escaped parameters largely prevent
 	 * double decoding effects (i.e. there are no new "%" after one pass of urldecoding)
 	 *
-	 * The function SMWInfolink::encodeParameters() can be used to create a suitable
+	 * The function Infolink::encodeParameters() can be used to create a suitable
 	 * encoding. It is strongly recommended to not create any code that depends on the
 	 * concrete way of how parameters are encoded within this function, and to always use
 	 * the respective encoding/decoding methods instead.
@@ -625,3 +628,8 @@ class SMWInfolink {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Infolink::class, 'SMWInfolink' );

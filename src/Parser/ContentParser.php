@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW;
+namespace SMW\Parser;
 
 use MediaWiki\Context\RequestContext;
 use MediaWiki\MediaWikiServices;
@@ -214,3 +214,8 @@ class ContentParser {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( ContentParser::class, 'SMW\ContentParser' );

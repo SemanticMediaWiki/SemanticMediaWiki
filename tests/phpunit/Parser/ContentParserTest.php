@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Parser;
 
 use MediaWiki\Content\Content;
 use MediaWiki\Content\Renderer\ContentRenderer;
@@ -10,13 +10,14 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
 use PHPUnit\Framework\TestCase;
-use SMW\ContentParser;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\RevisionGuard;
-use SMW\SemanticData;
+use SMW\Parser\ContentParser;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMW\ContentParser
+ * @covers \SMW\Parser\ContentParser
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
@@ -101,7 +102,7 @@ class ContentParserTest extends TestCase {
 		$instance->parse( $text );
 
 		$this->assertInstanceOf(
-			'\ParserOutput',
+			ParserOutput::class,
 			$instance->getOutput()
 		);
 	}
@@ -147,7 +148,7 @@ class ContentParserTest extends TestCase {
 		$instance->parse();
 
 		$this->assertInstanceOf(
-			'\ParserOutput',
+			ParserOutput::class,
 			$instance->getOutput()
 		);
 	}

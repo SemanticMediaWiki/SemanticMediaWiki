@@ -1,10 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\Formatters;
 
 use MediaWiki\Html\Html;
 use SMW\Localizer\Message;
-use SMWOutputs;
+use SMW\MediaWiki\Outputs;
 
 /**
  * Highlighter utility function for Semantic MediaWiki
@@ -145,9 +145,9 @@ class Highlighter {
 	 * @return string
 	 */
 	public function getHtml() {
-		SMWOutputs::requireStyle( 'ext.smw.styles' );
-		SMWOutputs::requireStyle( 'ext.smw.tooltip.styles' );
-		SMWOutputs::requireResource( 'ext.smw.tooltip' );
+		Outputs::requireStyle( 'ext.smw.styles' );
+		Outputs::requireStyle( 'ext.smw.tooltip.styles' );
+		Outputs::requireResource( 'ext.smw.tooltip' );
 		return $this->getContainer();
 	}
 
@@ -380,3 +380,8 @@ class Highlighter {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Highlighter::class, 'SMW\Highlighter' );

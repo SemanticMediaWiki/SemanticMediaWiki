@@ -1,9 +1,10 @@
 <?php
 
-namespace SMW;
+namespace SMW\Utils;
 
+use SMW\DataItems\Time;
+use SMW\DataValueFactory;
 use SMW\Localizer\Message;
-use SMWDITime;
 
 /**
  * TODO This class needs some real refactoring!
@@ -128,15 +129,15 @@ class RecurringEvents {
 
 	/**
 	 * Returns the "Julian day" value from an object of type
-	 * SMWTimeValue.
+	 * TimeValue.
 	 */
 	public function getJulianDay( $dateDataValue ) {
 		if ( $dateDataValue === null ) {
 			return null;
 		}
 		$dateDataItem = $dateDataValue->getDataItem();
-		// This might have returned an 'SMWDIError' object.
-		if ( $dateDataItem instanceof SMWDITime ) {
+		// This might have returned an 'Error' object.
+		if ( $dateDataItem instanceof Time ) {
 			return $dateDataItem->getJD();
 		}
 		return null;
@@ -213,7 +214,7 @@ class RecurringEvents {
 		if ( $start_date === null ) {
 			$this->errors[] = Message::get( 'smw-events-start-date-missing' );
 			return;
-		} elseif ( !( $start_date->getDataItem() instanceof SMWDITime ) ) {
+		} elseif ( !( $start_date->getDataItem() instanceof Time ) ) {
 			$this->setError( $start_date->getErrors() );
 			return;
 		}
@@ -364,12 +365,17 @@ class RecurringEvents {
 	}
 
 	/**
-	 * Helper function - creates an object of type SMWTimeValue based
+	 * Helper function - creates an object of type TimeValue based
 	 * on a "Julian day" integer
 	 */
 	private function getJulianDayTimeValue( $jd ) {
-		$timeDataItem = SMWDITime::newFromJD( $jd, SMWDITime::CM_GREGORIAN, SMWDITime::PREC_YMDT );
+		$timeDataItem = Time::newFromJD( $jd, Time::CM_GREGORIAN, Time::PREC_YMDT );
 		return DataValueFactory::getInstance()->newDataValueByItem( $timeDataItem );
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( RecurringEvents::class, 'SMW\RecurringEvents' );

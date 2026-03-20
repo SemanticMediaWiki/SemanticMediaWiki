@@ -7,11 +7,12 @@
 namespace SMW\Tests;
 
 use SMW\Query\Exception\ResultFormatNotFoundException;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\ResultPrinter;
-use SMWQueryProcessor;
 
 /**
- * Tests for the SMWQueryProcessor class.
+ * Tests for the QueryProcessor class.
  *
  * @since 1.8
  *
@@ -24,7 +25,7 @@ use SMWQueryProcessor;
  *
  * @author Nischay Nahata
  */
-class SMWQueryProcessorTest extends SMWIntegrationTestCase {
+class QueryProcessorTest extends SMWIntegrationTestCase {
 
 	public function createQueryDataProvider() {
 		return [
@@ -38,7 +39,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	public function testGetResultPrinter_MatchAlias( $alias ) {
 		$this->assertInstanceOf(
 			ResultPrinter::class,
-			SMWQueryProcessor::getResultPrinter( $alias )
+			QueryProcessor::getResultPrinter( $alias )
 		);
 	}
 
@@ -52,7 +53,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 
 	public function testGetResultPrinter_ThrowsException() {
 		$this->expectException( ResultFormatNotFoundException::class );
-		SMWQueryProcessor::getResultPrinter( 'unknown_format' );
+		QueryProcessor::getResultPrinter( 'unknown_format' );
 	}
 
 	/**
@@ -62,18 +63,18 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 		// TODO: this prevents doing [[Category:Foo||bar||baz]], must document.
 		$rawParams = explode( '|', $query );
 
-		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 
-		SMWQueryProcessor::addThisPrintout( $printouts, $parameters );
+		QueryProcessor::addThisPrintout( $printouts, $parameters );
 
-		$parameters = SMWQueryProcessor::getProcessedParams( $parameters, $printouts );
+		$parameters = QueryProcessor::getProcessedParams( $parameters, $printouts );
 
 		$this->assertInstanceOf(
-			'\SMWQuery',
-			SMWQueryProcessor::createQuery(
+			Query::class,
+			QueryProcessor::createQuery(
 				$queryString,
 				$parameters,
-				SMWQueryProcessor::SPECIAL_PAGE,
+				QueryProcessor::SPECIAL_PAGE,
 				'',
 				$printouts
 			),
@@ -85,7 +86,7 @@ class SMWQueryProcessorTest extends SMWIntegrationTestCase {
 	 * @dataProvider rawParamsProvider
 	 */
 	public function testQuerStringFromRawParameters( $rawParams, $expected ) {
-		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams( $rawParams, false );
 
 		$this->assertEquals(
 			$expected,

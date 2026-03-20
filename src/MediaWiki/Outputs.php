@@ -1,5 +1,7 @@
 <?php
 
+namespace SMW\MediaWiki;
+
 use MediaWiki\Output\OutputPage;
 use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutput;
@@ -28,7 +30,7 @@ use MediaWiki\Parser\ParserOutput;
  *
  * @author Markus Krötzsch
  */
-class SMWOutputs {
+class Outputs {
 
 	/**
 	 * Protected member for temporarily storing header items.
@@ -86,7 +88,7 @@ class SMWOutputs {
 	 * MediaWiki OutputPage, hence we distinguish them.
 	 *
 	 * The id is used to avoid that the requirement for one script is
-	 * recorded multiple times in SMWOutputs.
+	 * recorded multiple times in Outputs.
 	 *
 	 * @param string $id
 	 * @param string $script
@@ -100,7 +102,7 @@ class SMWOutputs {
 	 * be used for custom head items such as RSS fedd links.
 	 *
 	 * The id is used to avoid that the requirement for one script is
-	 * recorded multiple times in SMWOutputs.
+	 * recorded multiple times in Outputs.
 	 *
 	 * Support for calling this with the old constants SMW_HEADER_STYLE
 	 * and SMW_HEADER_TOOLTIP will vanish in SMW 1.7 at the latest.
@@ -129,7 +131,7 @@ class SMWOutputs {
 	 * This function takes output requirements as can be found in a given ParserOutput
 	 * object and puts them back in to the internal temporal requirement list from
 	 * which they can be committed to some other output. It is needed when code that
-	 * would normally call SMWOutputs::requireHeadItem() has need to use a full
+	 * would normally call Outputs::requireHeadItem() has need to use a full
 	 * independent parser call (Parser::parse()) that produces its own parseroutput.
 	 * If omitted, all output items potentially committed to this parseroutput during
 	 * parsing will not be passed on to higher levels.
@@ -175,7 +177,7 @@ class SMWOutputs {
 	}
 
 	/**
-	 * Similar to SMWOutputs::commitToParser() but acting on a ParserOutput object.
+	 * Similar to Outputs::commitToParser() but acting on a ParserOutput object.
 	 *
 	 * @param ParserOutput $parserOutput
 	 */
@@ -223,3 +225,8 @@ class SMWOutputs {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( Outputs::class, 'SMWOutputs' );

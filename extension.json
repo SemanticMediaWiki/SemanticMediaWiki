@@ -33,7 +33,6 @@
 		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
 	},
 	"AutoloadClasses": {
-		"SemanticMediaWiki": "includes/SemanticMediaWiki.php",
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
 		"SMWSearch": "src/MediaWiki/Search/ExtendedSearchEngine.php",
 		"SMWDIBlob": "src/DataItems/Blob.php",
@@ -74,7 +73,18 @@
 		"SMW\\SpecialPage": "src/MediaWiki/Specials/SpecialPage.php",
 		"SMW\\SpecialProperties": "src/MediaWiki/Specials/SpecialProperties.php",
 		"SMW\\SpecialUnusedProperties": "src/MediaWiki/Specials/SpecialUnusedProperties.php",
-		"SMW\\SpecialWantedProperties": "src/MediaWiki/Specials/SpecialWantedProperties.php"
+		"SMW\\SpecialWantedProperties": "src/MediaWiki/Specials/SpecialWantedProperties.php",
+		"SMWOutputs": "src/MediaWiki/Outputs.php",
+		"SemanticMediaWiki": "src/SemanticMediaWiki.php",
+		"SMWInfolink": "src/Formatters/Infolink.php",
+		"SMWPageLister": "src/Formatters/PageLister.php",
+		"SMWPageSchemas": "src/MediaWiki/PageSchemas.php",
+		"SMW\\ContentParser": "src/Parser/ContentParser.php",
+		"SMW\\Highlighter": "src/Formatters/Highlighter.php",
+		"SMW\\QueryPrinterFactory": "src/Query/QueryPrinterFactory.php",
+		"SMW\\RecurringEvents": "src/Utils/RecurringEvents.php",
+		"SMW\\SemanticData": "src/DataModel/SemanticData.php",
+		"SMW\\Subobject": "src/DataModel/Subobject.php"
 	},
 	"callback": "SemanticMediaWiki::initExtension",
 	"ExtensionFunctions": [

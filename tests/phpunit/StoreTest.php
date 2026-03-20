@@ -2,19 +2,21 @@
 
 namespace SMW\Tests;
 
+use Iterator;
 use MediaWiki\MediaWikiServices;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
-use SMW\DIProperty;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 use SMW\StoreFactory;
 
 /**
- * Tests for the SMWStore class.
+ * Tests for the Store class.
  *
  * @since 1.8
  *
@@ -54,39 +56,39 @@ class StoreTest extends SMWIntegrationTestCase {
 	public function getPropertyValuesDataProvider() {
 		$titleFactory = MediaWikiServices::getInstance()->getTitleFactory();
 		return [
-			[ $titleFactory->newMainPage()->getFullText(), new DIProperty( '_MDAT' ) ],
-			[ $titleFactory->newMainPage()->getFullText(), DIProperty::newFromUserLabel( 'Age' ) ],
+			[ $titleFactory->newMainPage()->getFullText(), new Property( '_MDAT' ) ],
+			[ $titleFactory->newMainPage()->getFullText(), Property::newFromUserLabel( 'Age' ) ],
 		];
 	}
 
 	/**
 	 * @dataProvider getPropertyValuesDataProvider
 	 */
-	public function testGetPropertyValues( $titleText, DIProperty $property, $requestOptions = null ) {
+	public function testGetPropertyValues( $titleText, Property $property, $requestOptions = null ) {
 		$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $titleText );
 		$subject = WikiPage::newFromTitle( $title );
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertyValues( $subject, $property, $requestOptions );
 
 		$this->assertIsArray( $result );
-		$this->assertContainsOnlyInstancesOf( '\SMWDataItem', $result );
+		$this->assertContainsOnlyInstancesOf( DataItem::class, $result );
 	}
 
 	public function getPropertySubjectsDataProvider() {
 		return [
-			[ new DIProperty( '_MDAT' ), null ],
+			[ new Property( '_MDAT' ), null ],
 		];
 	}
 
 	/**
 	 * @dataProvider getPropertySubjectsDataProvider
 	 */
-	public function testGetPropertySubjects( DIProperty $property, $value, $requestOptions = null ) {
+	public function testGetPropertySubjects( Property $property, $value, $requestOptions = null ) {
 		$store = StoreFactory::getStore();
 		$result = $store->getPropertySubjects( $property, $value, $requestOptions );
 
 		$this->assertInstanceOf(
-			'\Iterator',
+			Iterator::class,
 			$result
 		);
 
@@ -118,9 +120,9 @@ class StoreTest extends SMWIntegrationTestCase {
 
 		foreach ( $result as $property ) {
 			$this->assertInstanceOf(
-				'\SMWDataItem',
+				DataItem::class,
 				$property,
-				"Result should be instance of DIProperty."
+				"Result should be instance of Property."
 			);
 		}
 	}
@@ -144,7 +146,7 @@ class StoreTest extends SMWIntegrationTestCase {
 			$this->assertCount( 2, $row );
 
 			$this->assertInstanceOf(
-				'\SMWDataItem',
+				DataItem::class,
 				$row[0],
 				"Result should be DataItem instance."
 			);
@@ -158,9 +160,9 @@ class StoreTest extends SMWIntegrationTestCase {
 		$this->assertInstanceOf( ListLookup::class, $result );
 		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
-				'\SMWDataItem',
+				DataItem::class,
 				$row,
-				"Result should be instance of DIProperty."
+				"Result should be instance of Property."
 			);
 		}
 	}
@@ -172,9 +174,9 @@ class StoreTest extends SMWIntegrationTestCase {
 		$this->assertInstanceOf( ListLookup::class, $result );
 		foreach ( $result->fetchList() as $row ) {
 			$this->assertInstanceOf(
-				DIProperty::class,
+				Property::class,
 				$row[0],
-				"Result should be instance of DIProperty."
+				"Result should be instance of Property."
 			);
 		}
 	}

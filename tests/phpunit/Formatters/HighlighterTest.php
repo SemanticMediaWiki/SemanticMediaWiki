@@ -1,12 +1,12 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Formatters;
 
 use PHPUnit\Framework\TestCase;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 
 /**
- * @covers \SMW\Highlighter
+ * @covers \SMW\Formatters\Highlighter
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later

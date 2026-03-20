@@ -23,7 +23,6 @@
       <directory>tests/phpunit/DataModel</directory>
     </testsuite>
     <testsuite name="semantic-mediawiki-unit">
-      <directory>tests/phpunit/includes</directory>
       <directory>tests/phpunit/Connection</directory>
       <directory>tests/phpunit/Constraint</directory>
       <directory>tests/phpunit/DataValues</directory>
@@ -32,6 +31,7 @@
       <directory>tests/phpunit/Exception</directory>
       <directory>tests/phpunit/Exporter</directory>
       <directory>tests/phpunit/Factbox</directory>
+      <directory>tests/phpunit/Formatters</directory>
       <directory>tests/phpunit/Importer</directory>
       <directory>tests/phpunit/Indicator</directory>
       <directory>tests/phpunit/IndicatorEntityExaminerIndicators</directory>
@@ -86,6 +86,7 @@
       <file>tests/phpunit/PropertyLabelFinderTest.php</file>
       <file>tests/phpunit/PropertyRegistryTest.php</file>
       <file>tests/phpunit/QueryFactoryTest.php</file>
+      <file>tests/phpunit/QueryProcessorTest.php</file>
       <file>tests/phpunit/QueryTest.php</file>
       <file>tests/phpunit/RequestOptionsTest.php</file>
       <file>tests/phpunit/SerializerFactoryTest.php</file>
@@ -96,6 +97,7 @@
       <file>tests/phpunit/SiteTest.php</file>
       <file>tests/phpunit/SortLetterTest.php</file>
       <file>tests/phpunit/StatusTest.php</file>
+      <file>tests/phpunit/StoreTest.php</file>
       <file>tests/phpunit/StoreFactoryTest.php</file>
       <file>tests/phpunit/StringConditionTest.php</file>
       <file>tests/phpunit/TypesRegistryTest.php</file>

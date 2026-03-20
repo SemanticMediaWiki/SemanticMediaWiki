@@ -1,27 +1,30 @@
 <?php
 
-namespace SMW;
+namespace SMW\DataModel;
 
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
-use SMW\DataModel\ContainerSemanticData;
-use SMW\DataModel\SequenceMap;
-use SMW\DataModel\SubSemanticData;
+use SMW\DataItems\Container;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\Exception\SemanticDataImportException;
 use SMW\Exception\SubSemanticDataException;
+use SMW\HashBuilder;
 use SMW\Localizer\Localizer;
-use SMWDataItem;
-use SMWDataValue;
-use SMWDIContainer;
+use SMW\Options;
+use SMW\ProcessingErrorMsgHandler;
 
 /**
  * Class for representing chunks of semantic data for one given
  * subject. This consists of property-value pairs, grouped by property,
- * and possibly by SMWSemanticData objects about subobjects.
+ * and possibly by SemanticData objects about subobjects.
  *
  * Data about subobjects can be added in two ways: by directly adding it
  * using addSubSemanticData() or by adding a property value of type
- * SMWDIContainer.
+ * Container.
  *
  * By its very design, the container is unable to hold inverse properties.
  * For one thing, it would not be possible to identify them with mere keys.
@@ -73,17 +76,17 @@ class SemanticData implements JsonUnserializable {
 	public $stubObject;
 
 	/**
-	 * Array mapping property keys (string) to arrays of SMWDataItem
+	 * Array mapping property keys (string) to arrays of DataItem
 	 * objects.
 	 *
-	 * @var SMWDataItem[][]
+	 * @var DataItem[][]
 	 */
 	protected $mPropVals = [];
 
 	/**
-	 * Array mapping property keys (string) to DIProperty objects.
+	 * Array mapping property keys (string) to Property objects.
 	 *
-	 * @var DIProperty[]
+	 * @var Property[]
 	 */
 	protected $mProperties = [];
 
@@ -105,18 +108,18 @@ class SemanticData implements JsonUnserializable {
 	protected $mHasVisibleSpecs = false;
 
 	/**
-	 * DIWikiPage object that is the subject of this container.
+	 * WikiPage object that is the subject of this container.
 	 * Subjects can never be null (and this is ensured in all methods setting
 	 * them in this class).
 	 *
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	protected $mSubject;
 
 	/**
 	 * Semantic data associated to subobjects of the subject of this
-	 * SMWSemanticData.
-	 * These key-value pairs of subObjectName (string) =>SMWSemanticData.
+	 * SemanticData.
+	 * These key-value pairs of subObjectName (string) =>SemanticData.
 	 *
 	 * @since 1.8
 	 */
@@ -168,7 +171,7 @@ class SemanticData implements JsonUnserializable {
 	 * Constructor.
 	 */
 	public function __construct(
-		DIWikiPage $subject,
+		WikiPage $subject,
 		protected $mNoDuplicates = true,
 	) {
 		$this->clear();
@@ -207,7 +210,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * Return subject to which the stored semantic annotations refer to.
 	 *
-	 * @return DIWikiPage subject
+	 * @return WikiPage subject
 	 */
 	public function getSubject() {
 		return $this->mSubject;
@@ -238,7 +241,7 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * Get the array of all properties that have stored values.
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 */
 	public function getProperties() {
 		ksort( $this->mProperties, SORT_STRING );
@@ -248,21 +251,21 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 *
 	 * @return bool
 	 */
-	public function hasProperty( DIProperty $property ): bool {
+	public function hasProperty( Property $property ): bool {
 		return isset( $this->mProperties[$property->getKey()] ) || array_key_exists( $property->getKey(), $this->mProperties );
 	}
 
 	/**
 	 * Get the array of all stored values for some property.
 	 *
-	 * @param DIProperty $property
-	 * @return SMWDataItem[]
+	 * @param Property $property
+	 * @return DataItem[]
 	 */
-	public function getPropertyValues( DIProperty $property ): array {
+	public function getPropertyValues( Property $property ): array {
 		if ( $property->isInverse() ) { // we never have any data for inverses
 			return [];
 		}
@@ -413,7 +416,7 @@ class SemanticData implements JsonUnserializable {
 	 * Return true if there are any visible properties.
 	 *
 	 * @note While called "visible" this check actually refers to the
-	 * function DIProperty::isShown(). The name is kept for
+	 * function Property::isShown(). The name is kept for
 	 * compatibility.
 	 *
 	 * @return bool
@@ -427,7 +430,7 @@ class SemanticData implements JsonUnserializable {
 	 * be displayed.
 	 *
 	 * @note While called "visible" this check actually refers to the
-	 * function DIProperty::isShown(). The name is kept for
+	 * function Property::isShown(). The name is kept for
 	 * compatibility.
 	 *
 	 * @return bool
@@ -437,25 +440,25 @@ class SemanticData implements JsonUnserializable {
 	}
 
 	/**
-	 * Store a value for a property identified by its SMWDataItem object.
+	 * Store a value for a property identified by its DataItem object.
 	 *
 	 * @note There is no check whether the type of the given data item
 	 * agrees with the type of the property. Since property types can
 	 * change, all parts of SMW are prepared to handle mismatched data item
 	 * types anyway.
 	 *
-	 * @param $property DIProperty
-	 * @param $dataItem SMWDataItem
+	 * @param Property $property
+	 * @param DataItem $dataItem
 	 */
-	public function addPropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ): void {
+	public function addPropertyObjectValue( Property $property, DataItem $dataItem ): void {
 		$this->hash = null;
 
-		if ( $dataItem instanceof SMWDIContainer ) {
+		if ( $dataItem instanceof Container ) {
 			$this->addSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
 		}
 
-		if ( $property->getKey() === DIProperty::TYPE_MODIFICATION_DATE ) {
+		if ( $property->getKey() === Property::TYPE_MODIFICATION_DATE ) {
 			$this->setOption( self::OPT_LAST_MODIFIED, $dataItem->getMwTimestamp() );
 		}
 
@@ -516,7 +519,7 @@ class SemanticData implements JsonUnserializable {
 		// Account for things like DISPLAYTITLE or DEFAULTSORT which are only set
 		// after #subobject has been processed therefore keep them in-memory
 		// for a post process
-		if ( $this->mSubject->getSubobjectName() === '' && $property->getKey() === DIProperty::TYPE_SORTKEY ) {
+		if ( $this->mSubject->getSubobjectName() === '' && $property->getKey() === Property::TYPE_SORTKEY ) {
 			foreach ( $this->getSubSemanticData() as $subSemanticData ) {
 				$subSemanticData->setExtensionData( 'sort.extension', $dataItem->getString() );
 			}
@@ -528,9 +531,9 @@ class SemanticData implements JsonUnserializable {
 	 * (without namespace prefix).
 	 *
 	 * @param $propertyName string
-	 * @param $dataItem SMWDataItem
+	 * @param $dataItem DataItem
 	 */
-	public function addPropertyValue( $propertyName, SMWDataItem $dataItem ): void {
+	public function addPropertyValue( $propertyName, DataItem $dataItem ): void {
 		$propertyKey = smwfNormalTitleDBKey( $propertyName );
 
 		if ( array_key_exists( $propertyKey, $this->mProperties ) ) {
@@ -555,10 +558,10 @@ class SemanticData implements JsonUnserializable {
 	/**
 	 * @since 1.9
 	 *
-	 * @param SMWDataValue $dataValue
+	 * @param DataValue $dataValue
 	 */
-	public function addDataValue( SMWDataValue $dataValue ): void {
-		if ( !$dataValue->getProperty() instanceof DIProperty || !$dataValue->isValid() ) {
+	public function addDataValue( DataValue $dataValue ): void {
+		if ( !$dataValue->getProperty() instanceof Property || !$dataValue->isValid() ) {
 
 			$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
 				$this->getSubject()
@@ -592,7 +595,7 @@ class SemanticData implements JsonUnserializable {
 	}
 
 	/**
-	 * Remove a value for a property identified by its SMWDataItem object.
+	 * Remove a value for a property identified by its DataItem object.
 	 * This method removes a property-value specified by the property and
 	 * dataitem. If there are no more property-values for this property it
 	 * also removes the property from the mProperties.
@@ -602,16 +605,16 @@ class SemanticData implements JsonUnserializable {
 	 * change, all parts of SMW are prepared to handle mismatched data item
 	 * types anyway.
 	 *
-	 * @param $property DIProperty
-	 * @param $dataItem SMWDataItem
+	 * @param Property $property
+	 * @param DataItem $dataItem
 	 *
 	 * @since 1.8
 	 */
-	public function removePropertyObjectValue( DIProperty $property, SMWDataItem $dataItem ): void {
+	public function removePropertyObjectValue( Property $property, DataItem $dataItem ): void {
 		$this->hash = null;
 
 		// delete associated subSemanticData
-		if ( $dataItem instanceof SMWDIContainer ) {
+		if ( $dataItem instanceof Container ) {
 			$this->removeSubSemanticData( $dataItem->getSemanticData() );
 			$dataItem = $dataItem->getSemanticData()->getSubject();
 		}
@@ -668,9 +671,9 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @since 2.5
 	 *
-	 * @param $property DIProperty
+	 * @param Property $property
 	 */
-	public function removeProperty( DIProperty $property ): void {
+	public function removeProperty( Property $property ): void {
 		$this->hash = null;
 		$key = $property->getKey();
 
@@ -721,9 +724,9 @@ class SemanticData implements JsonUnserializable {
 	}
 
 	/**
-	 * Add all data from the given SMWSemanticData.
-	 * Only works if the imported SMWSemanticData has the same subject as
-	 * this SMWSemanticData; an exception is thrown otherwise.
+	 * Add all data from the given SemanticData.
+	 * Only works if the imported SemanticData has the same subject as
+	 * this SemanticData; an exception is thrown otherwise.
 	 *
 	 * @since 1.7
 	 *
@@ -791,9 +794,9 @@ class SemanticData implements JsonUnserializable {
 	}
 
 	/**
-	 * Removes data from the given SMWSemanticData.
+	 * Removes data from the given SemanticData.
 	 * If the subject of the data that is to be removed is not equal to the
-	 * subject of this SMWSemanticData, it will just be ignored (nothing to
+	 * subject of this SemanticData, it will just be ignored (nothing to
 	 * remove). Likewise, removing data that is not present does not change
 	 * anything.
 	 *
@@ -951,3 +954,8 @@ class SemanticData implements JsonUnserializable {
 	}
 
 }
+
+/**
+ * @deprecated since 7.0.0
+ */
+class_alias( SemanticData::class, 'SMW\SemanticData' );

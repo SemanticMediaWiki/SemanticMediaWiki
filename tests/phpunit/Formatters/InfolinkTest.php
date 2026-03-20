@@ -1,13 +1,14 @@
 <?php
 
-namespace SMW\Tests;
+namespace SMW\Tests\Formatters;
 
 use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
-use SMWInfolink as Infolink;
+use SMW\Formatters\Infolink;
+use SMW\Tests\TestEnvironment;
 
 /**
- * @covers \SMWInfolink
+ * @covers \SMW\Formatters\Infolink
  * @group semantic-mediawiki
  *
  * @license GPL-2.0-or-later
