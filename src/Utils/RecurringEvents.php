@@ -133,7 +133,7 @@ class RecurringEvents {
 	 * Returns the "Julian day" value from an object of type
 	 * TimeValue.
 	 *
-	 * @return void
+	 * @return double|null
 	 */
 	public function getJulianDay( $dateDataValue ) {
 		if ( $dateDataValue === null ) {
@@ -310,7 +310,7 @@ class RecurringEvents {
 				$prev_month = $cur_date->getMonth();
 				$prev_year = $cur_date->getYear();
 
-				$new_month = ( (int)$prev_month + (int)$period ) % 12;
+				$new_month = ( (int)$prev_month + $period ) % 12;
 				if ( $new_month == 0 ) {
 					$new_month = 12;
 				}
