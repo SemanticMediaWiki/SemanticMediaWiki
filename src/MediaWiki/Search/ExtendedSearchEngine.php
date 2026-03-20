@@ -311,4 +311,7 @@ class ExtendedSearchEngine extends SearchEngine {
 
 }
 
+/**
+ * @deprecated since 7.0.0
+ */
 class_alias( ExtendedSearchEngine::class, 'SMWSearch' );
