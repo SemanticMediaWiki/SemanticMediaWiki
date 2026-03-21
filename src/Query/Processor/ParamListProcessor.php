@@ -169,7 +169,7 @@ class ParamListProcessor {
 		];
 	}
 
-	private function encodeEq( $param ) {
+	private function encodeEq( $param ): string|array|null {
 		// Bug 32955 / #640
 		// Modify (e.g. replace `=`) a condition string only if enclosed by
 		// [[ ... ]]

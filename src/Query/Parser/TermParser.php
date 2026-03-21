@@ -183,7 +183,7 @@ class TermParser {
 		return '(' . implode( '||', $terms ) . ')';
 	}
 
-	private function normalize( $term ) {
+	private function normalize( $term ): string|array {
 		return str_replace(
 			[ ')[[', ']](', '(', ')', '||', '&&', 'AND', 'OR', ']][[', '[[[[', ']]]]', '  ' ],
 			[ ') [[', ']] (', '<q>', '</q>', ' || ', ' && ', ' AND ', ' OR ', ']] [[', '[[', ']]', ' ' ],

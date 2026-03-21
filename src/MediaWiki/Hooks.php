@@ -131,7 +131,7 @@ class Hooks {
 	 *
 	 * @return array
 	 */
-	public function getHandlerList() {
+	public function getHandlerList(): array {
 		return array_keys( $this->handlers );
 	}
 

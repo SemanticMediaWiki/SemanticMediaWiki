@@ -117,7 +117,7 @@ final class QueryPrinterFactory {
 	 *
 	 * @return string[]
 	 */
-	public function getFormats() {
+	public function getFormats(): array {
 		return array_keys( $this->formats );
 	}
 

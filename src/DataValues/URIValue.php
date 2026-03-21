@@ -346,7 +346,7 @@ class URIValue extends DataValue {
 	 *
 	 * @since 1.8
 	 */
-	protected function makeNonlinkedWikiText( $url ) {
+	protected function makeNonlinkedWikiText( $url ): string|array {
 		return str_replace( ':', '&#58;', $url );
 	}
 

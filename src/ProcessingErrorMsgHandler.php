@@ -57,7 +57,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return array
 	 */
-	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ) {
+	public static function normalizeAndDecodeMessages( array $messages, $type = null, $language = null ): array {
 		$normalizedMessages = [];
 
 		if ( $type === null ) {

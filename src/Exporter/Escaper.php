@@ -45,7 +45,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	public static function armorChars( $string ) {
+	public static function armorChars( $string ): string|array {
 		return str_replace( [ '/' ], [ '-2F' ], $string );
 	}
 

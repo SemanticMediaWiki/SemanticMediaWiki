@@ -123,7 +123,7 @@ class PropertyTableInfoFetcher {
 	 *
 	 * @return array
 	 */
-	public function getDefaultDataItemTables() {
+	public function getDefaultDataItemTables(): array {
 		return array_values( self::$defaultDiTypeTableIdMap );
 	}
 

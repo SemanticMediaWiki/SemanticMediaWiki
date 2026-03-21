@@ -172,7 +172,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return string|bool
 	 */
-	public function findCanonicalPropertyAliasById( $id ) {
+	public function findCanonicalPropertyAliasById( $id ): int|string|false {
 		return array_search( $id, $this->canonicalPropertyAliases );
 	}
 
@@ -183,7 +183,7 @@ class PropertyAliasFinder {
 	 *
 	 * @return string|bool
 	 */
-	public function findPropertyAliasById( $id ) {
+	public function findPropertyAliasById( $id ): int|string|false {
 		return array_search( $id, $this->propertyAliases );
 	}
 

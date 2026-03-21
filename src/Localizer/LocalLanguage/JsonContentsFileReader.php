@@ -66,7 +66,7 @@ class JsonContentsFileReader {
 	 *
 	 * @return int
 	 */
-	public function getFileModificationTime( $languageCode ) {
+	public function getFileModificationTime( $languageCode ): int|false {
 		return filemtime( $this->getLanguageFile( $languageCode ) );
 	}
 

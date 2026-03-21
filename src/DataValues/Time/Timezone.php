@@ -135,7 +135,7 @@ class Timezone {
 	 *
 	 * @return array
 	 */
-	public static function listShortAbbreviations() {
+	public static function listShortAbbreviations(): array {
 		return array_keys( self::$shortList );
 	}
 

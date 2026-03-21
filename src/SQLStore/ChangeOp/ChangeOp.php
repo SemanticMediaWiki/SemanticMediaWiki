@@ -320,7 +320,7 @@ class ChangeOp implements IteratorAggregate {
 	 *
 	 * @return array
 	 */
-	public function getChangedEntityIdSummaryList() {
+	public function getChangedEntityIdSummaryList(): array {
 		return array_keys( $this->getChangedEntityIdListByType() );
 	}
 

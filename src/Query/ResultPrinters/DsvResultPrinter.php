@@ -168,7 +168,7 @@ class DsvResultPrinter extends FileExportPrinter {
 		return implode( $this->params['separator'], array_map( [ $this, 'encodeDSV' ], $fields ) );
 	}
 
-	private function encodeDSV( $value ) {
+	private function encodeDSV( $value ): string|array {
 		$sep = $this->params['separator'];
 		// TODO
 		// \nnn or \onnn or \0nnn for the character with octal value nnn
