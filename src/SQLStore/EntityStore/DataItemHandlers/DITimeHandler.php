@@ -69,7 +69,7 @@ class DITimeHandler extends DataItemHandler {
 	 * {@inheritDoc}
 	 */
 	public function getIndexHint( $key ): string {
-		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+		if ( $key === 'property.subjects' && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
 		}
 

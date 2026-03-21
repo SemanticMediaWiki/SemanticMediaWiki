@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Utils\HmacSerializer;
@@ -30,7 +31,7 @@ class AuxiliaryFields {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage[] $subjects
+	 * @param WikiPage[] $subjects
 	 *
 	 * @return FieldList
 	 */

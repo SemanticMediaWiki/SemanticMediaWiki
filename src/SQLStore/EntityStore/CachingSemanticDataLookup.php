@@ -106,9 +106,11 @@ class CachingSemanticDataLookup {
 	 * @since 3.0
 	 *
 	 * @param int $id
-	 * @param WikiPage $subject
+	 * @param mixed $subject
+	 *
+	 * @return void
 	 */
-	public function initLookupCache( $id, WikiPage $subject ): void {
+	public function initLookupCache( $id, mixed $subject ): void {
 		// *** Prepare the cache ***//
 		if ( !isset( self::$data[$id] ) ) {
 			self::$data[$id] = $this->semanticDataLookup->newStubSemanticData( $subject );
@@ -186,13 +188,13 @@ class CachingSemanticDataLookup {
 	 * @since 3.1
 	 *
 	 * @param array $subjects
-	 * @param DataItem|null $dataItem
+	 * @param mixed|null $dataItem
 	 * @param PropertyTableDefinition $propertyTableDef
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function prefetchDataFromTable( array $subjects, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function prefetchDataFromTable( array $subjects, mixed $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
 		$hash = '';
 
 		if ( $dataItem !== null ) {
@@ -236,7 +238,7 @@ class CachingSemanticDataLookup {
 	 * @param PropertyTableDefinition $propertyTableDef
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return RequestOptions|null
+	 * @return mixed[]
 	 */
 	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ): array {
 		return $this->semanticDataLookup->fetchSemanticDataFromTable( $id, $dataItem, $propertyTableDef, $requestOptions );
