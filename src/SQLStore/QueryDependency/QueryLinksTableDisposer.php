@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\QueryDependency;
 
 use SMW\IteratorFactory;
+use SMW\Iterators\ResultIterator;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 
@@ -60,7 +61,7 @@ class QueryLinksTableDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newOutdatedQueryLinksResultIterator() {
+	public function newOutdatedQueryLinksResultIterator(): ResultIterator {
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',
@@ -85,7 +86,7 @@ class QueryLinksTableDisposer {
 	 *
 	 * @return ResultIterator
 	 */
-	public function newUnassignedQueryLinksResultIterator() {
+	public function newUnassignedQueryLinksResultIterator(): ResultIterator {
 		$res = $this->connection->select(
 			[ SQLStore::QUERY_LINKS_TABLE, SQLStore::ID_TABLE ],
 			's_id as id',

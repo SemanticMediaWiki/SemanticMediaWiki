@@ -61,7 +61,7 @@ class File {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function read( $file, $checkSum = null ) {
+	public function read( $file, $checkSum = null ): string|false {
 		$file = self::dir( $file );
 
 		if ( !is_readable( $file ) ) {

@@ -123,7 +123,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Time {
 		if ( is_string( $dbkeys ) ) {
 			return Time::doUnserialize( $dbkeys );
 		}

@@ -227,7 +227,7 @@ class ExternalIdentifierValue extends StringValue {
 		return $parameters;
 	}
 
-	private function makeNonlinkedWikiText( $url ) {
+	private function makeNonlinkedWikiText( $url ): string|array {
 		return str_replace( ':', '&#58;', $url );
 	}
 

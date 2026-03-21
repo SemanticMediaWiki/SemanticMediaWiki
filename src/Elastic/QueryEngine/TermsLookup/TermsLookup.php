@@ -144,7 +144,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function chain_index_lookup( Parameters $parameters ) {
+	public function chain_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 
 		$query = $this->fieldMapper->bool( 'must', $parameters->get( 'params' ) );
@@ -175,7 +175,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function predef_index_lookup( Parameters $parameters ) {
+	public function predef_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 

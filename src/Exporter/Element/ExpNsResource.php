@@ -116,7 +116,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return bool
 	 */
-	public function hasAllowedLocalName() {
+	public function hasAllowedLocalName(): int|false {
 		return preg_match( '/^[A-Za-z_][-A-Za-z_0-9]*$/u', $this->localName );
 	}
 

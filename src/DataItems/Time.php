@@ -277,7 +277,7 @@ class Time extends DataItem implements CalendarModel {
 	 * @return self
 	 * @throws DataItemException
 	 */
-	public static function newFromDateTime( ExtendedDateTime $dateTime ) {
+	public static function newFromDateTime( ExtendedDateTime $dateTime ): Time {
 		$calendarModel = self::CM_JULIAN;
 
 		$year = $dateTime->format( 'Y' );

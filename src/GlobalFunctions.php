@@ -55,7 +55,7 @@ function smwfNormalTitleDBKey( $text ): string {
 /**
  * @deprecated since 3.2, use `Localizer::normalizeTitleText`
  */
-function smwfNormalTitleText( $text ) {
+function smwfNormalTitleText( $text ): string {
 	return Localizer::getInstance()->normalizeTitleText( $text );
 }
 
@@ -209,6 +209,6 @@ function smwfGetLinker() {
  * @param bool $complete
  */
 // phpcs:ignore MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix
-function enableSemantics( $namespace = null, $complete = false ) {
+function enableSemantics( $namespace = null, $complete = false ): void {
 	wfDeprecated( __FUNCTION__, '7.0.0' );
 }

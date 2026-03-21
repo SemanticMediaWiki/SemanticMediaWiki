@@ -132,7 +132,7 @@ class LinksProcessor {
 	 *
 	 * @return string
 	 */
-	public function process( array $semanticLink ) {
+	public function process( array $semanticLink ): string|array {
 		$valueCaption = false;
 		$property = '';
 		$value = '';

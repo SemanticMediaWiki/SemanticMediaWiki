@@ -43,7 +43,7 @@ class ExpDataDeserializer implements Deserializer {
 		return $expData;
 	}
 
-	private function newExpData( $subject ) {
+	private function newExpData( $subject ): ExpData {
 		return new ExpData( ExpElement::newFromSerialization( $subject ) );
 	}
 

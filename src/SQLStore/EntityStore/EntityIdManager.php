@@ -8,6 +8,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
+use SMW\Iterators\MappingIterator;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
@@ -199,7 +200,7 @@ class EntityIdManager {
 	 *
 	 * @return bool
 	 */
-	public function isRedirect( WikiPage $subject ) {
+	public function isRedirect( WikiPage $subject ): bool {
 		if ( $this->redirectStore === null ) {
 			$this->redirectStore = $this->factory->newRedirectStore();
 		}
@@ -471,7 +472,7 @@ class EntityIdManager {
 	 *
 	 * @param array
 	 */
-	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ) {
+	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 		return $this->entityIdFinder->findIdsByTitle( $title, $namespace, $iw, $subobjectName );
 	}
 
@@ -983,14 +984,14 @@ class EntityIdManager {
 	 *
 	 * @return string[]
 	 */
-	public function getDataItemsFromList( array $idlist, ?RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idlist, ?RequestOptions $requestOptions = null ): MappingIterator|array {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 
 	/**
 	 * @deprecated since 3.0, use EntityIdManager::getDataItemsFromList
 	 */
-	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ) {
+	public function getDataItemPoolHashListFor( array $idlist, ?RequestOptions $requestOptions = null ): MappingIterator|array {
 		return $this->idEntityFinder->getDataItemsFromList( $idlist, $requestOptions );
 	}
 

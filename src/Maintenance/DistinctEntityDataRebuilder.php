@@ -252,7 +252,7 @@ class DistinctEntityDataRebuilder {
 		return $pages;
 	}
 
-	private function getRedirectPages() {
+	private function getRedirectPages(): array {
 		if ( !$this->options->has( 'redirects' ) ) {
 			return [];
 		}

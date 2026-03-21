@@ -49,7 +49,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return bool
 	 */
-	public function hasStripMarker( $text ) {
+	public function hasStripMarker( $text ): int|false {
 		return strpos( $text ?? '', Parser::MARKER_SUFFIX );
 	}
 
@@ -79,7 +79,7 @@ class StripMarkerDecoder {
 	 *
 	 * @return text
 	 */
-	public function unstrip( $text ) {
+	public function unstrip( $text ): string|array {
 		// Escape the text case to avoid any HTML elements
 		// cause an issue during parsing
 		return str_replace(

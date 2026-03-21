@@ -83,7 +83,7 @@ class SearchTable {
 	 *
 	 * @return array
 	 */
-	public function getPropertyExemptionList() {
+	public function getPropertyExemptionList(): array {
 		return array_keys( $this->propertyExemptionList );
 	}
 

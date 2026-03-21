@@ -91,7 +91,7 @@ class FourstoreRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ): bool {
 		$affectedObjects = $this->select( '*', "?s $propertyName $objectName", [], $extraNamespaces );
 		$success = ( $affectedObjects->getErrorCode() == RepositoryResult::ERROR_NOERROR );
 

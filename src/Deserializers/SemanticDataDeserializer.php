@@ -152,7 +152,7 @@ class SemanticDataDeserializer implements Deserializer {
 	 *
 	 * @return Container|null
 	 */
-	private function doDeserializeSubSemanticData( $data, $id, $semanticData ) {
+	private function doDeserializeSubSemanticData( $data, $id, $semanticData ): Container {
 		if ( !isset( $data['sobj'] ) ) {
 			return new Container( $semanticData );
 		}

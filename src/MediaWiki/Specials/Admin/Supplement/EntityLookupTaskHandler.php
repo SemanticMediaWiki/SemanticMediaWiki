@@ -203,7 +203,7 @@ class EntityLookupTaskHandler extends TaskHandler implements ActionableTask {
 		return $html . Html::element( 'p', [], '' );
 	}
 
-	private function createInfoMessageById( $webRequest, &$id ) {
+	private function createInfoMessageById( $webRequest, &$id ): array {
 		if ( $webRequest->getText( 'action' ) !== 'lookup' || $id === '' ) {
 			return [ '', '' ];
 		}

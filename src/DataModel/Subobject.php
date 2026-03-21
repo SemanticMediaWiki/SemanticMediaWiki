@@ -151,7 +151,7 @@ class Subobject {
 	 *
 	 * @return Property
 	 */
-	public function getProperty() {
+	public function getProperty(): Property {
 		return new Property( Property::TYPE_SUBOBJECT );
 	}
 
@@ -162,7 +162,7 @@ class Subobject {
 	 *
 	 * @return Container
 	 */
-	public function getContainer() {
+	public function getContainer(): Container {
 		return new Container( $this->getSemanticData() );
 	}
 

@@ -128,7 +128,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->queryResultFactory->newQueryResult( $repositoryResult, $query );
 	}
 
-	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getInstanceQueryResult( Query $query, Condition $compoundCondition ): QueryResult {
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			$matchElement = $compoundCondition->matchElement;
 

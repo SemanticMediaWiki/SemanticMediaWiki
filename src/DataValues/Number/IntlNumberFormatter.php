@@ -282,7 +282,7 @@ class IntlNumberFormatter {
 		return strlen( strrchr( $value, "." ) ) - 1;
 	}
 
-	private function doFormatExponentialNotation( $value ) {
+	private function doFormatExponentialNotation( $value ): string|array {
 		return str_replace(
 			[ '.', 'E' ],
 			[ $this->getSeparatorByLanguage( self::DECIMAL_SEPARATOR, self::CONTENT_LANGUAGE ), 'e' ],

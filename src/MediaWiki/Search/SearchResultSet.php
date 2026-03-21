@@ -21,7 +21,7 @@ class SearchResultSet extends \SearchResultSet {
 	/**
 	 * @var DIWikiPage[]|[]
 	 */
-	private $pages;
+	private array $pages;
 
 	/**
 	 * @var QueryToken
@@ -177,7 +177,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return string[]
 	 */
-	public function termMatches() {
+	public function termMatches(): array {
 		return $this->getTokens();
 	}
 

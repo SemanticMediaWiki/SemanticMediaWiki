@@ -52,10 +52,7 @@ class SubobjectParserFunction {
 
 	protected Subobject $subobject;
 
-	/**
-	 * @var MessageFormatter
-	 */
-	protected $messageFormatter;
+	protected MessageFormatter $messageFormatter;
 
 	/**
 	 * @var StripMarkerDecoder

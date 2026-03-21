@@ -120,7 +120,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		return $this->cacheStats->getStats();
 	}
 

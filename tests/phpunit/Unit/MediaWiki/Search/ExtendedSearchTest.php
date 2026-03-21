@@ -164,6 +164,10 @@ class ExtendedSearchTest extends TestCase {
 			->method( 'getQueryLink' )
 			->willReturn( $infoLink );
 
+		$queryResult->expects( $this->any() )
+			->method( 'getResults' )
+			->willReturn( [] );
+
 		$this->store->expects( $this->any() )
 			->method( 'getPropertySubjects' )
 			->willReturn( [] );

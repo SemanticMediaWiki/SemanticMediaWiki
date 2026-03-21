@@ -66,7 +66,7 @@ class QueryComparator {
 	 *
 	 * @return array
 	 */
-	public function getComparatorStrings() {
+	public function getComparatorStrings(): array {
 		return array_keys( $this->comparators );
 	}
 

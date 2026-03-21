@@ -40,7 +40,7 @@ class QueryFactory {
 	 *
 	 * @return Query
 	 */
-	public function newQuery( Description $description, $context = false ) {
+	public function newQuery( Description $description, $context = false ): Query {
 		return new Query( $description, $context );
 	}
 
@@ -91,7 +91,7 @@ class QueryFactory {
 	 *
 	 * @return QueryParser
 	 */
-	public function newQueryParser( $queryFeatures = false ) {
+	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->newLegacyQueryParser( $queryFeatures );
 	}
 

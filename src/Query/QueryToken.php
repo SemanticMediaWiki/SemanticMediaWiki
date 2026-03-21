@@ -122,7 +122,7 @@ class QueryToken {
 		return $this->doHighlight( $text, $type, array_keys( $this->tokens ) );
 	}
 
-	private function doHighlight( $text, $type, $tokens ) {
+	private function doHighlight( $text, $type, $tokens ): string|array|null {
 		if ( $type === self::HL_BOLD ) {
 			$replacement = "<b>$0</b>";
 		} elseif ( $type === self::HL_UNDERLINE ) {

@@ -208,7 +208,7 @@ class PropertyLabelFinder {
 	 *
 	 * @return string|false
 	 */
-	public function searchPropertyIdByLabel( $label ) {
+	public function searchPropertyIdByLabel( $label ): int|string|false {
 		return array_search( $label, $this->languageDependentPropertyLabels );
 	}
 

@@ -45,6 +45,7 @@ use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
 use SMW\Query\Parser as QueryParser;
+use SMW\Query\Parser\LegacyParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
 use SMW\SerializerFactory;
@@ -584,7 +585,7 @@ class ServicesFactory {
 	 *
 	 * @return QueryParser
 	 */
-	public function newQueryParser( $queryFeatures = false ) {
+	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->getQueryFactory()->newQueryParser( $queryFeatures );
 	}
 

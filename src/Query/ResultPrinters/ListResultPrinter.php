@@ -139,7 +139,7 @@ class ListResultPrinter extends ResultPrinter {
 	 * @return ParamDefinition[]
 	 * @throws Exception
 	 */
-	public function getParamDefinitions( array $definitions ) {
+	public function getParamDefinitions( array $definitions ): array {
 		$listFormatDefinitions = [
 
 			'propsep' => [

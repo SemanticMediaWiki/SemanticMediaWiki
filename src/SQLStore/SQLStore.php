@@ -383,7 +383,7 @@ class SQLStore extends Store {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function getPropertiesSpecial( $requestOptions = null ) {
+	public function getPropertiesSpecial( $requestOptions = null ): CachedListLookup {
 		return $this->factory->newPropertyUsageCachedListLookup( $requestOptions );
 	}
 
@@ -392,7 +392,7 @@ class SQLStore extends Store {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function getUnusedPropertiesSpecial( $requestOptions = null ) {
+	public function getUnusedPropertiesSpecial( $requestOptions = null ): CachedListLookup {
 		return $this->factory->newUnusedPropertyCachedListLookup( $requestOptions );
 	}
 
@@ -401,7 +401,7 @@ class SQLStore extends Store {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function getWantedPropertiesSpecial( $requestOptions = null ) {
+	public function getWantedPropertiesSpecial( $requestOptions = null ): CachedListLookup {
 		return $this->factory->newUndeclaredPropertyCachedListLookup( $requestOptions );
 	}
 
@@ -441,7 +441,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ) {
+	public function drop( $verbose = true ): bool {
 		$installer = $this->factory->newInstaller();
 		$installer->setMessageReporter( $this->messageReporter );
 
@@ -474,7 +474,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array of error strings (empty if no errors occurred)
 	 */
-	public function refreshConceptCache( Title $concept ) {
+	public function refreshConceptCache( Title $concept ): array {
 		return $this->factory->newMasterConceptCache()->refreshConceptCache( $concept );
 	}
 
@@ -503,7 +503,7 @@ class SQLStore extends Store {
 	 *
 	 * @return Concept|null
 	 */
-	public function getConceptCacheStatus( $concept ) {
+	public function getConceptCacheStatus( $concept ): ?Concept {
 		return $this->factory->newSlaveConceptCache()->getStatus( $concept );
 	}
 
@@ -519,7 +519,7 @@ class SQLStore extends Store {
 	 *
 	 * @return array
 	 */
-	public function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ) {
+	public function getSQLOptions( ?RequestOptions $requestOptions = null, $valueCol = '' ): array {
 		return RequestOptionsProcessor::getSQLOptions( $requestOptions, $valueCol );
 	}
 
@@ -682,7 +682,7 @@ class SQLStore extends Store {
 	/**
 	 * @return ServicesContainer
 	 */
-	protected function newServicesContainer() {
+	protected function newServicesContainer(): ServicesContainer {
 		return $this->factory->newServicesContainer();
 	}
 

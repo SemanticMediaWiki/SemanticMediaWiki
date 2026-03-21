@@ -166,7 +166,7 @@ class ChangeDiff {
 	 *
 	 * @return string
 	 */
-	public function serialize() {
+	public function serialize(): string|false {
 		return HmacSerializer::compress( $this );
 	}
 

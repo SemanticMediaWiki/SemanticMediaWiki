@@ -88,7 +88,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getValuesFromString( $value ) {
+	public function getValuesFromString( $value ): array {
 		// #664 / T17732
 		$value = str_replace( "\;", "-3B", $value );
 

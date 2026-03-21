@@ -333,7 +333,7 @@ class RDFXMLSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	protected function makeAttributeValueString( $string ) {
+	protected function makeAttributeValueString( $string ): string|array {
 		return str_replace( [ '&', '>', '<' ], [ '&amp;', '&gt;', '&lt;' ], $string );
 	}
 
