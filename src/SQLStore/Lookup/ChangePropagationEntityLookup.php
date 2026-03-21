@@ -7,6 +7,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\AppendIterator;
+use SMW\Store;
 
 /**
  * Find all entities related to a change propagation (only expected
