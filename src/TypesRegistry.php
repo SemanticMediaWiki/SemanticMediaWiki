@@ -395,7 +395,7 @@ class TypesRegistry {
 	/**
 	 * @since 3.1
 	 */
-	public static function getOWLPropertyByType( $type ) {
+	public static function getOWLPropertyByType( $type ): string {
 		$types = [
 			'_anu' => Exporter::OWL_ANNOTATION_PROPERTY,
 

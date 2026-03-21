@@ -156,7 +156,7 @@ class DIBlobHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Blob {
 		if ( !is_array( $dbkeys ) || count( $dbkeys ) != 2 ) {
 			throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );
 		}

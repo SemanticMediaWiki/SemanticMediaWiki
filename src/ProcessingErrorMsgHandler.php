@@ -23,10 +23,7 @@ use SMW\Property\RestrictionExaminer;
  */
 class ProcessingErrorMsgHandler {
 
-	/**
-	 * @var WikiPage
-	 */
-	private $subject;
+	private WikiPage $subject;
 
 	/**
 	 * @since 2.5
@@ -44,7 +41,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return Property|null
 	 */
-	public static function grepPropertyFromRestrictionErrorMsg( $message ) {
+	public static function grepPropertyFromRestrictionErrorMsg( $message ): ?Property {
 		return RestrictionExaminer::grepPropertyFromRestrictionErrorMsg( $message );
 	}
 
@@ -155,7 +152,7 @@ class ProcessingErrorMsgHandler {
 	 *
 	 * @return Container
 	 */
-	public function newErrorContainerFromMsg( $error, ?Property $property = null ) {
+	public function newErrorContainerFromMsg( $error, ?Property $property = null ): Container {
 		if ( $property !== null && $property->isInverse() ) {
 			$property = new Property( $property->getKey() );
 		}

@@ -40,7 +40,7 @@ class QueryFactory {
 	 *
 	 * @return Query
 	 */
-	public function newQuery( Description $description, $context = false ) {
+	public function newQuery( Description $description, $context = false ): Query {
 		return new Query( $description, $context );
 	}
 

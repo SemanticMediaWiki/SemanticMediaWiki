@@ -95,7 +95,7 @@ class RestrictionExaminer {
 	 *
 	 * @return Property|null
 	 */
-	public static function grepPropertyFromRestrictionErrorMsg( $errorMsg ) {
+	public static function grepPropertyFromRestrictionErrorMsg( $errorMsg ): ?Property {
 		if ( strpos( $errorMsg, self::CREATE_RESTRICTION ) === false ) {
 			return null;
 		}

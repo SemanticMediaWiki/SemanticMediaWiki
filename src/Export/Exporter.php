@@ -474,7 +474,7 @@ class Exporter {
 	 *
 	 * @todo An improved mechanism for selecting property types here is needed.
 	 */
-	public function getOWLPropertyType( Property $property ) {
+	public function getOWLPropertyType( Property $property ): string {
 		return TypesRegistry::getOWLPropertyByType( $property->findPropertyTypeID() );
 	}
 

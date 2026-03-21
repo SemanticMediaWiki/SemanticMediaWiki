@@ -31,7 +31,7 @@ class AttachmentAnnotator implements Annotator {
 	 *
 	 * @return Property
 	 */
-	public function getProperty() {
+	public function getProperty(): Property {
 		return new Property( '_FILE_ATTCH' );
 	}
 
@@ -40,7 +40,7 @@ class AttachmentAnnotator implements Annotator {
 	 *
 	 * @return Container
 	 */
-	public function getContainer() {
+	public function getContainer(): Container {
 		return new Container( $this->containerSemanticData );
 	}
 

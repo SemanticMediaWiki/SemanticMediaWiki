@@ -108,7 +108,7 @@ class DIConceptHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Concept {
 		if ( is_array( $dbkeys ) && count( $dbkeys ) == 5 ) {
 			return new Concept(
 				$dbkeys[0],

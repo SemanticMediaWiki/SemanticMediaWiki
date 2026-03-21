@@ -209,6 +209,6 @@ function smwfGetLinker() {
  * @param bool $complete
  */
 // phpcs:ignore MediaWiki.NamingConventions.PrefixedGlobalFunctions.allowedPrefix
-function enableSemantics( $namespace = null, $complete = false ) {
+function enableSemantics( $namespace = null, $complete = false ): void {
 	wfDeprecated( __FUNCTION__, '7.0.0' );
 }

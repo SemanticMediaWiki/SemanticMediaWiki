@@ -150,7 +150,7 @@ class HashBuilder {
 	 *
 	 * @return WikiPage|null
 	 */
-	public static function newDiWikiPageFromHash( $hash ) {
+	public static function newDiWikiPageFromHash( $hash ): WikiPage {
 		[ $title, $namespace, $interwiki, $subobjectName ] = explode( '#', $hash, 4 );
 
 		// A leading underscore is an internal SMW convention to describe predefined

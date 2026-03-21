@@ -32,7 +32,7 @@ class DataItemFactory {
 	 *
 	 * @return Error
 	 */
-	public function newDIError( $error ) {
+	public function newDIError( $error ): Error {
 		return new Error( $error );
 	}
 
@@ -44,7 +44,7 @@ class DataItemFactory {
 	 *
 	 * @return Property
 	 */
-	public function newDIProperty( $key, $inverse = false ) {
+	public function newDIProperty( $key, $inverse = false ): Property {
 		return new Property( str_replace( ' ', '_', $key ), $inverse );
 	}
 
@@ -73,7 +73,7 @@ class DataItemFactory {
 	 *
 	 * @return Container
 	 */
-	public function newDIContainer( ContainerSemanticData $containerSemanticData ) {
+	public function newDIContainer( ContainerSemanticData $containerSemanticData ): Container {
 		return new Container( $containerSemanticData );
 	}
 
@@ -95,7 +95,7 @@ class DataItemFactory {
 	 *
 	 * @return Number
 	 */
-	public function newDINumber( $number ) {
+	public function newDINumber( $number ): Number {
 		return new Number( $number );
 	}
 
@@ -106,7 +106,7 @@ class DataItemFactory {
 	 *
 	 * @return Blob
 	 */
-	public function newDIBlob( $text ) {
+	public function newDIBlob( $text ): Blob {
 		return new Blob( $text );
 	}
 
@@ -117,7 +117,7 @@ class DataItemFactory {
 	 *
 	 * @return bool
 	 */
-	public function newDIBoolean( $boolean ) {
+	public function newDIBoolean( $boolean ): Boolean {
 		return new Boolean( $boolean );
 	}
 
@@ -132,7 +132,7 @@ class DataItemFactory {
 	 *
 	 * @return Concept
 	 */
-	public function newDIConcept( $concept, $docu = '', $queryfeatures = 0, $size = 0, $depth = 0 ) {
+	public function newDIConcept( $concept, $docu = '', $queryfeatures = 0, $size = 0, $depth = 0 ): Concept {
 		return new Concept( $concept, $docu, $queryfeatures, $size, $depth );
 	}
 
@@ -146,7 +146,7 @@ class DataItemFactory {
 	 *
 	 * @return Uri
 	 */
-	public function newDIUri( $scheme, $hierpart, $query = '', $fragment = '' ) {
+	public function newDIUri( $scheme, $hierpart, $query = '', $fragment = '' ): Uri {
 		return new Uri( $scheme, $hierpart, $query, $fragment );
 	}
 
@@ -164,7 +164,7 @@ class DataItemFactory {
 	 *
 	 * @return Time
 	 */
-	public function newDITime( $calendarmodel, $year, $month = false, $day = false, $hour = false, $minute = false, $second = false, $timezone = false ) {
+	public function newDITime( $calendarmodel, $year, $month = false, $day = false, $hour = false, $minute = false, $second = false, $timezone = false ): Time {
 		return new Time( $calendarmodel, $year, $month, $day, $hour, $minute, $second, $timezone );
 	}
 
