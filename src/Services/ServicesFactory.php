@@ -583,6 +583,8 @@ class ServicesFactory {
 	 * @deprecated since 2.5, use QueryFactory::newQueryParser
 	 * @since 2.1
 	 *
+	 * @param int|bool $queryFeatures
+	 *
 	 * @return LegacyParser
 	 */
 	public function newQueryParser( $queryFeatures = false ): LegacyParser {
