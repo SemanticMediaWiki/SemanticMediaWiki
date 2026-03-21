@@ -268,7 +268,7 @@ class RequestOptionsProcessor {
 		$flag = $isNumeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
 
 		// SORT_NATURAL is selected on n-asc, n-desc
-		if ( $requestOptions->natural ) {
+		if ( isset( $requestOptions->natural ) ) {
 			$flag = SORT_NATURAL;
 		}
 
@@ -290,7 +290,7 @@ class RequestOptionsProcessor {
 	private static function applyLimitRestriction( RequestOptions $requestOptions, array &$result ) {
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
-		if ( $requestOptions->conditionConstraint ) {
+		if ( isset( $requestOptions->conditionConstraint ) ) {
 			return $result;
 		}
 
