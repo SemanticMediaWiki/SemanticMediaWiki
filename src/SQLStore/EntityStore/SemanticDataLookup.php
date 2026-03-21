@@ -46,7 +46,7 @@ class SemanticDataLookup {
 	 * @return RequestOptions|null
 	 */
 	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
-		if ( $requestOptions === null || !$requestOptions->conditionConstraint ) {
+		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
 			return $requestOptions;
 		}
 

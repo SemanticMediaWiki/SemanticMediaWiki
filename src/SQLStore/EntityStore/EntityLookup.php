@@ -30,7 +30,7 @@ class EntityLookup implements IEntityLookup {
 	private PropertiesLookup $propertiesLookup;
 
 	/**
-	 * @var SemanticDataLookup
+	 * @var CachingSemanticDataLookup
 	 */
 	private CachingSemanticDataLookup $semanticDataLookup;
 

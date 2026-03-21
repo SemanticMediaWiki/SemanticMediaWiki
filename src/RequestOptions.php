@@ -134,13 +134,13 @@ class RequestOptions {
 	 */
 	private $caller;
 
-	public bool $conditionConstraint;
+	public ?bool $conditionConstraint;
 
-	public bool $isChain;
+	public ?bool $isChain;
 
-	public bool $isFirstChain;
+	public ?bool $isFirstChain;
 
-	public bool $natural;
+	public ?bool $natural;
 
 	/**
 	 * @since 3.1
