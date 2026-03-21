@@ -62,7 +62,7 @@ class SortBuilder {
 	 *
 	 * @return array
 	 */
-	public function makeSortField( Query $query ) {
+	public function makeSortField( Query $query ): array {
 		// @see https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_memory_considerations
 		// "... the relevant sorted field values are loaded into memory. This means
 		// that per shard, there should be enough memory ... string based types,

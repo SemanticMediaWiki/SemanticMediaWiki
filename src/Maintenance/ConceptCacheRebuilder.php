@@ -246,7 +246,7 @@ class ConceptCacheRebuilder {
 		}
 	}
 
-	private function getConcepts() {
+	private function getConcepts(): array {
 		if ( $this->concept !== null ) {
 			return [ $this->createConcept() ];
 		}
@@ -258,7 +258,7 @@ class ConceptCacheRebuilder {
 		return MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $this->concept, SMW_NS_CONCEPT );
 	}
 
-	private function createMultipleConcepts() {
+	private function createMultipleConcepts(): array {
 		$titleLookup = new TitleLookup( $this->store->getConnection( 'mw.db' ) );
 		$titleLookup->setNamespace( SMW_NS_CONCEPT );
 

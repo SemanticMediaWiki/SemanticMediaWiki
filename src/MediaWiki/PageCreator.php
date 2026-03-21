@@ -22,7 +22,7 @@ class PageCreator {
 	 *
 	 * @return WikiPage
 	 */
-	public function createPage( Title $title ) {
+	public function createPage( Title $title ): WikiPage {
 		return MediaWikiServices::getInstance()->getWikiPageFactory()->newFromTitle( $title );
 	}
 

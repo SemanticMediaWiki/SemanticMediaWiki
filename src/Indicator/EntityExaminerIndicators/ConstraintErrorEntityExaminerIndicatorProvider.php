@@ -236,7 +236,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		];
 	}
 
-	private function findErrors( $subject ) {
+	private function findErrors( $subject ): array {
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
 		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {

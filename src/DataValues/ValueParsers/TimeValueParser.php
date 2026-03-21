@@ -70,7 +70,7 @@ class TimeValueParser implements ValueParser {
 	 *
 	 * @return Components|false
 	 */
-	public function parse( $userValue ) {
+	public function parse( $userValue ): Components|false {
 		$this->errors = [];
 		$this->userValue = $userValue;
 

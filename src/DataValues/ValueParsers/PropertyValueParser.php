@@ -99,7 +99,7 @@ class PropertyValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function parse( $userValue ) {
+	public function parse( $userValue ): array {
 		$this->errors = [];
 
 		// #1727 <Foo> or <Foo-<Bar> are not permitted but

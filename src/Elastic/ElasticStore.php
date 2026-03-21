@@ -386,7 +386,7 @@ class ElasticStore extends SQLStore {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function drop( $verbose = true ): void {
+	public function drop( $verbose = true ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$client = $this->getConnection( 'elastic' );
 
@@ -426,7 +426,7 @@ class ElasticStore extends SQLStore {
 			$this->messageReporter->reportMessage( "   ... done.\n" );
 		}
 
-		parent::drop( $verbose );
+		return parent::drop( $verbose );
 	}
 
 	/**

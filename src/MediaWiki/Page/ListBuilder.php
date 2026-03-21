@@ -119,7 +119,7 @@ class ListBuilder {
 	 *
 	 * @return array
 	 */
-	public function getList( array $dataItems ) {
+	public function getList( array $dataItems ): array {
 		return $this->buildList( $dataItems );
 	}
 

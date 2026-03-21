@@ -238,7 +238,7 @@ class CachingSemanticDataLookup {
 	 *
 	 * @return RequestOptions|null
 	 */
-	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ) {
+	public function fetchSemanticDataFromTable( $id, ?DataItem $dataItem, PropertyTableDefinition $propertyTableDef, ?RequestOptions $requestOptions = null ): array {
 		return $this->semanticDataLookup->fetchSemanticDataFromTable( $id, $dataItem, $propertyTableDef, $requestOptions );
 	}
 

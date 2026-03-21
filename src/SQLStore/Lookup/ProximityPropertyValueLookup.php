@@ -35,7 +35,7 @@ class ProximityPropertyValueLookup {
 	 *
 	 * @return array
 	 */
-	public function lookup( Property $property, $search, RequestOptions $opts ) {
+	public function lookup( Property $property, $search, RequestOptions $opts ): array {
 		return $this->fetchFromTable( $property, $search, $opts );
 	}
 

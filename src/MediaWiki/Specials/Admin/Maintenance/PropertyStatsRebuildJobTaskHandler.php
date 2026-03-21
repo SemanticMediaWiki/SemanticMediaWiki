@@ -144,7 +144,7 @@ class PropertyStatsRebuildJobTaskHandler extends TaskHandler implements Actionab
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function hasPendingJob() {
+	private function hasPendingJob(): bool {
 		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.propertyStatisticsRebuild' );
 	}
 

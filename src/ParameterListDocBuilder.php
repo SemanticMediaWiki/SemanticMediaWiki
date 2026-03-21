@@ -111,7 +111,7 @@ class ParameterListDocBuilder {
 EOT;
 	}
 
-	private function msg() {
+	private function msg(): mixed {
 		return call_user_func_array( $this->msg, func_get_args() );
 	}
 

@@ -13,6 +13,7 @@ use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Exporter\DataItemMatchFinder;
+use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
@@ -464,7 +465,7 @@ class Exporter {
 	 * @param ExpElement $expElement
 	 * @return DataItem or null
 	 */
-	public function findDataItemForExpElement( ExpElement $expElement ) {
+	public function findDataItemForExpElement( ExpElement $expElement ): ?WikiPage {
 		return self::$dataItemMatchFinder->matchExpElement( $expElement );
 	}
 
@@ -667,7 +668,7 @@ class Exporter {
 	 *
 	 * @return ExpElement
 	 */
-	public function newExpElement( DataItem $dataItem ) {
+	public function newExpElement( DataItem $dataItem ): ?Element {
 		return self::$elementFactory->newFromDataItem( $dataItem );
 	}
 

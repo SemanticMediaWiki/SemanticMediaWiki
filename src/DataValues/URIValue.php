@@ -294,7 +294,7 @@ class URIValue extends DataValue {
 		return $this->m_wikitext;
 	}
 
-	public function getURI() {
+	public function getURI(): string {
 		return $this->getUriDataitem()->getURI();
 	}
 
@@ -310,7 +310,7 @@ class URIValue extends DataValue {
 	 * is not hyperlinked in MediaWiki.
 	 * @return string
 	 */
-	public function getURL() {
+	public function getURL(): string {
 		global $wgUrlProtocols;
 
 		foreach ( $wgUrlProtocols as $prot ) {

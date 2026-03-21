@@ -147,7 +147,7 @@ class BooleanValue extends DataValue {
 	/**
 	 * @see DataValue::getWikiValue
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): mixed {
 		return $this->getFirstBooleanCaptionFrom(
 			$this->isValid() && $this->m_dataitem->getBoolean() ? 'smw_true_words' : 'smw_false_words',
 			Message::CONTENT_LANGUAGE
@@ -227,7 +227,7 @@ class BooleanValue extends DataValue {
 		);
 	}
 
-	private function getFirstBooleanCaptionFrom( $msgKey, $languageCode = null ) {
+	private function getFirstBooleanCaptionFrom( $msgKey, $languageCode = null ): mixed {
 		$vals = $this->getBooleanWordsFrom(
 			$msgKey,
 			$languageCode

@@ -134,7 +134,7 @@ class CsvFileExportPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function getCsv( Csv $csv, $res ) {
+	private function getCsv( Csv $csv, $res ): string|false {
 		$sep = str_replace( '_', ' ', $this->params['sep'] );
 		$vsep = str_replace( '_', ' ', $this->params['valuesep'] );
 

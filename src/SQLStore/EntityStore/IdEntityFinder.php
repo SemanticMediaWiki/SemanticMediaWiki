@@ -4,6 +4,7 @@ namespace SMW\SQLStore\EntityStore;
 
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -34,7 +35,7 @@ class IdEntityFinder {
 	 *
 	 * @return WikiPage[]
 	 */
-	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ) {
+	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ): array|MappingIterator {
 		if ( $idList === [] ) {
 			return [];
 		}

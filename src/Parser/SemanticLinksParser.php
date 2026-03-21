@@ -23,7 +23,7 @@ class SemanticLinksParser {
 	 *
 	 * @return array
 	 */
-	public function parse( $text ) {
+	public function parse( $text ): array {
 		$matches = [];
 
 		preg_match(

@@ -184,7 +184,7 @@ class ConjunctionInterpreter implements DescriptionInterpreter {
 		return $subConditionElements;
 	}
 
-	private function createConditionFromSubConditionElements( $subConditionElements ) {
+	private function createConditionFromSubConditionElements( $subConditionElements ): SingletonCondition|FilterCondition|WhereCondition {
 		if ( $subConditionElements->singletonMatchElement instanceof ExpElement ) {
 			return $this->createSingletonCondition( $subConditionElements );
 		}

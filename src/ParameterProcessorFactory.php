@@ -17,7 +17,7 @@ class ParameterProcessorFactory {
 	 *
 	 * @return ParserParameterProcessor
 	 */
-	public static function newFromArray( array $parameters ) {
+	public static function newFromArray( array $parameters ): ParserParameterProcessor {
 		$instance = new self();
 		return $instance->newParserParameterProcessor( $parameters );
 	}

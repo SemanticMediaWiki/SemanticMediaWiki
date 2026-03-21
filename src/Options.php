@@ -133,7 +133,7 @@ class Options implements JsonUnserializable {
 	 *
 	 * @return array
 	 */
-	public function getOptions() {
+	public function getOptions(): array {
 		return $this->toArray();
 	}
 

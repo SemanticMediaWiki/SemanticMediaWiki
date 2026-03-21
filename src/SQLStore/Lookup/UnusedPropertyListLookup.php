@@ -37,7 +37,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	 * @return Property[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}

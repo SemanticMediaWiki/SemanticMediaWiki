@@ -91,7 +91,7 @@ class QueryFactory {
 	 *
 	 * @return QueryParser
 	 */
-	public function newQueryParser( $queryFeatures = false ) {
+	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->newLegacyQueryParser( $queryFeatures );
 	}
 

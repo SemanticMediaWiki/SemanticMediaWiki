@@ -3,6 +3,7 @@
 namespace SMW\Property\Annotators;
 
 use MediaWiki\Title\Title;
+use SMW\DataModel\ContainerSemanticData;
 use SMW\Property\Annotator;
 
 /**
@@ -91,7 +92,7 @@ class TranslationPropertyAnnotator extends PropertyAnnotatorDecorator {
 		}
 	}
 
-	private function newContainerSemanticData( $languageCode ) {
+	private function newContainerSemanticData( $languageCode ): ContainerSemanticData {
 		$dataItem = $this->getSemanticData()->getSubject();
 		$subobjectName = 'trans.' . $languageCode;
 

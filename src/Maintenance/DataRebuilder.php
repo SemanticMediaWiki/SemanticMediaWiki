@@ -153,7 +153,7 @@ class DataRebuilder {
 	 *
 	 * @return bool
 	 */
-	public function rebuild() {
+	public function rebuild(): bool {
 		$this->reportMessage(
 			$this->cliMsgFormatter->section( 'Notice' )
 		);

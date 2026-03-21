@@ -4,7 +4,9 @@ namespace SMW\SQLStore;
 
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\NullMessageReporter;
+use Psr\Log\LoggerInterface;
 use SMW\DataItems\WikiPage;
+use SMW\IteratorFactory;
 use SMW\Listener\ChangeListener\ChangeListeners\CallableChangeListener;
 use SMW\Listener\ChangeListener\ChangeListeners\PropertyChangeListener;
 use SMW\MediaWiki\Collator;
@@ -52,6 +54,7 @@ use SMW\SQLStore\Lookup\UndeclaredPropertyListLookup;
 use SMW\SQLStore\Lookup\UnusedPropertyListLookup;
 use SMW\SQLStore\Lookup\UsageStatisticsListLookup;
 use SMW\SQLStore\PropertyTable\PropertyTableHashes;
+use SMW\SQLStore\QueryEngine\QueryEngine;
 use SMW\SQLStore\Rebuilder\EntityValidator;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\SQLStore\TableBuilder\TableBuilder;
@@ -98,7 +101,7 @@ class SQLStoreFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newMasterQueryEngine() {
+	public function newMasterQueryEngine(): QueryEngine {
 		return $this->queryEngineFactory->newQueryEngine();
 	}
 
@@ -107,7 +110,7 @@ class SQLStoreFactory {
 	 *
 	 * @return QueryEngine
 	 */
-	public function newSlaveQueryEngine() {
+	public function newSlaveQueryEngine(): QueryEngine {
 		return $this->newMasterQueryEngine();
 	}
 
@@ -171,7 +174,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ConceptCache
 	 */
-	public function newSlaveConceptCache() {
+	public function newSlaveConceptCache(): ConceptCache {
 		return $this->newMasterConceptCache();
 	}
 
@@ -180,7 +183,7 @@ class SQLStoreFactory {
 	 *
 	 * @return ListLookup
 	 */
-	public function newUsageStatisticsCachedListLookup() {
+	public function newUsageStatisticsCachedListLookup(): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$usageStatisticsListLookup = new UsageStatisticsListLookup(
@@ -202,7 +205,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newPropertyUsageCachedListLookup( ?RequestOptions $requestOptions = null ) {
+	public function newPropertyUsageCachedListLookup( ?RequestOptions $requestOptions = null ): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$propertyUsageListLookup = new PropertyUsageListLookup(
@@ -225,7 +228,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUnusedPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
+	public function newUnusedPropertyCachedListLookup( ?RequestOptions $requestOptions = null ): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$unusedPropertyListLookup = new UnusedPropertyListLookup(
@@ -248,7 +251,7 @@ class SQLStoreFactory {
 	 *
 	 * @return CachedListLookup
 	 */
-	public function newUndeclaredPropertyCachedListLookup( ?RequestOptions $requestOptions = null ) {
+	public function newUndeclaredPropertyCachedListLookup( ?RequestOptions $requestOptions = null ): CachedListLookup {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$undeclaredPropertyListLookup = new UndeclaredPropertyListLookup(
@@ -517,7 +520,7 @@ class SQLStoreFactory {
 	 *
 	 * @return LoggerInterface
 	 */
-	public function getLogger() {
+	public function getLogger(): LoggerInterface {
 		return ApplicationFactory::getInstance()->getMediaWikiLogger();
 	}
 
@@ -1185,7 +1188,7 @@ class SQLStoreFactory {
 		return $servicesContainer;
 	}
 
-	private function getIteratorFactory() {
+	private function getIteratorFactory(): IteratorFactory {
 		return ApplicationFactory::getInstance()->getIteratorFactory();
 	}
 

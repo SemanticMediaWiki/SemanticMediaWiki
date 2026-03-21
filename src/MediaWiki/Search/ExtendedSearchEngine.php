@@ -77,7 +77,7 @@ class ExtendedSearchEngine extends SearchEngine {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getValidSorts() {
+	public function getValidSorts(): array {
 		return $this->extendedSearch->getValidSorts();
 	}
 

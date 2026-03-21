@@ -338,7 +338,7 @@ class Property extends DataItem {
 	/**
 	 * @deprecated since 3.0, use Property::setPropertyValueType
 	 */
-	public function setPropertyTypeId( $valueType ) {
+	public function setPropertyTypeId( $valueType ): Property {
 		return $this->setPropertyValueType( $valueType );
 	}
 

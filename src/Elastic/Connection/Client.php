@@ -763,7 +763,7 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function hasMaintenanceLock() {
+	public function hasMaintenanceLock(): bool {
 		return $this->lockManager->hasMaintenanceLock();
 	}
 
@@ -791,7 +791,7 @@ class Client {
 	 *
 	 * @return bool
 	 */
-	public function hasLock( $type ) {
+	public function hasLock( $type ): bool {
 		return $this->lockManager->hasLock( $type );
 	}
 

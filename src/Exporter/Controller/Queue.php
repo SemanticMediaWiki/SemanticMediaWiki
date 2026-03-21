@@ -75,7 +75,7 @@ class Queue {
 	/**
 	 * @since 3.2
 	 */
-	public function reset() {
+	public function reset(): mixed {
 		return reset( $this->queue );
 	}
 

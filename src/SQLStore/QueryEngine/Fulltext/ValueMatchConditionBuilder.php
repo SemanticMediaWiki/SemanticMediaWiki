@@ -56,7 +56,7 @@ class ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function hasMinTokenLength( $value ) {
+	public function hasMinTokenLength( $value ): bool {
 		return $this->searchTable->hasMinTokenLength( $value );
 	}
 

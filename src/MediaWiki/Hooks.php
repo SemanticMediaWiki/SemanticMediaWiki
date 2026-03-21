@@ -358,7 +358,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SidebarBeforeOutput
 	 */
-	public function onSidebarBeforeOutput( $skin, &$sidebar ) {
+	public function onSidebarBeforeOutput( $skin, &$sidebar ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$sidebarBeforeOutput = new SidebarBeforeOutput(
@@ -380,7 +380,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
 	 */
-	public function onSkinAfterContent( &$data, $skin = null ) {
+	public function onSkinAfterContent( &$data, $skin = null ): bool {
 		$skinAfterContent = new SkinAfterContent(
 			$skin
 		);
@@ -448,7 +448,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/BeforePageDisplay
 	 */
-	public function onBeforePageDisplay( &$outputPage, &$skin ) {
+	public function onBeforePageDisplay( &$outputPage, &$skin ): bool {
 		$beforePageDisplay = new BeforePageDisplay();
 		$setupFile = new SetupFile();
 
@@ -468,7 +468,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SpecialSearchResultsPrepend
 	 */
-	public function onSpecialSearchResultsPrepend( $specialSearch, $outputPage, $term ) {
+	public function onSpecialSearchResultsPrepend( $specialSearch, $outputPage, $term ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$preferenceExaminer = $applicationFactory->newPreferenceExaminer(
@@ -686,7 +686,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/RejectParserCacheValue
 	 */
-	public function onRejectParserCacheValue( $value, $page, $popts ) {
+	public function onRejectParserCacheValue( $value, $page, $popts ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		// Get the key to distinguish between an anon and logged-in user stored
@@ -752,7 +752,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticlePurge
 	 */
-	public function onArticlePurge( &$wikiPage ) {
+	public function onArticlePurge( &$wikiPage ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -780,7 +780,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleDelete
 	 */
-	public function onArticleDelete( &$wikiPage, &$user, &$reason, &$error ) {
+	public function onArticleDelete( &$wikiPage, &$user, &$reason, &$error ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleDelete = new ArticleDelete(
@@ -875,7 +875,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/FileUpload
 	 */
-	public function onFileUpload( $file, $reupload ) {
+	public function onFileUpload( $file, $reupload ): bool {
 		$fileUpload = new FileUpload(
 			ApplicationFactory::getInstance()->getNamespaceExaminer(),
 			MediaWikiServices::getInstance()->getHookContainer()
@@ -898,7 +898,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ResourceLoaderGetConfigVars
 	 */
-	public function onResourceLoaderGetConfigVars( &$vars ) {
+	public function onResourceLoaderGetConfigVars( &$vars ): bool {
 		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		$resourceLoaderGetConfigVars = new ResourceLoaderGetConfigVars(
@@ -982,7 +982,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinTemplateNavigation::Universal
 	 */
-	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ) {
+	public function onSkinTemplateNavigationUniversal( &$skinTemplate, &$links ): bool {
 		if ( isset( $links['user-interface-preferences'] ) ) {
 			$applicationFactory = ApplicationFactory::getInstance();
 			$user = $skinTemplate->getUser();
@@ -1039,7 +1039,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ExtensionTypes
 	 */
-	public function onExtensionTypes( &$extTypes ) {
+	public function onExtensionTypes( &$extTypes ): bool {
 		$extensionTypes = new ExtensionTypes();
 
 		return $extensionTypes->process( $extTypes );
@@ -1048,7 +1048,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsAlwaysKnown
 	 */
-	public function onTitleIsAlwaysKnown( $title, &$result ) {
+	public function onTitleIsAlwaysKnown( $title, &$result ): bool {
 		$titleIsAlwaysKnown = new TitleIsAlwaysKnown(
 			$title,
 			$result
@@ -1060,7 +1060,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/ArticleFromTitle
 	 */
-	public function onArticleFromTitle( &$title, &$article ) {
+	public function onArticleFromTitle( &$title, &$article ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$articleFromTitle = new ArticleFromTitle(
@@ -1073,7 +1073,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/TitleIsMovable
 	 */
-	public function onTitleIsMovable( $title, &$isMovable ) {
+	public function onTitleIsMovable( $title, &$isMovable ): bool {
 		$titleIsMovable = new TitleIsMovable(
 			$title
 		);
@@ -1095,7 +1095,7 @@ class Hooks {
 	/**
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/EditPage::showEditForm:initial
 	 */
-	public function onEditPageShowEditFormInitial( $editPage, $output ) {
+	public function onEditPageShowEditFormInitial( $editPage, $output ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$user = $output->getUser();
 

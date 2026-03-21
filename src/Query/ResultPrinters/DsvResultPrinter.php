@@ -44,7 +44,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string|array {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.dsv';
 		}

@@ -202,7 +202,7 @@ class DisjunctionInterpreter implements DescriptionInterpreter {
 		return $subConditionElements;
 	}
 
-	private function createConditionFromSubConditionElements( $subConditionElements, $joinVariable ) {
+	private function createConditionFromSubConditionElements( $subConditionElements, $joinVariable ): FilterCondition|WhereCondition {
 		if ( $subConditionElements->unionCondition === '' ) {
 			return $this->createFilterCondition( $subConditionElements );
 		}

@@ -144,7 +144,7 @@ class FulltextSearchTableRebuildJobTaskHandler extends TaskHandler implements Ac
 		$this->outputFormatter->redirectToRootPage( '', [ 'tab' => 'maintenance' ] );
 	}
 
-	private function hasPendingJob() {
+	private function hasPendingJob(): bool {
 		return ApplicationFactory::getInstance()->getJobQueue()->hasPendingJob( 'smw.fulltextSearchTableRebuild' );
 	}
 

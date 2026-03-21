@@ -491,7 +491,7 @@ class ExportController {
 	 *
 	 * @return IDatabase|IReadableDatabase
 	 */
-	public static function getDBHandle() {
+	public static function getDBHandle(): IReadableDatabase {
 		return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	}
 
