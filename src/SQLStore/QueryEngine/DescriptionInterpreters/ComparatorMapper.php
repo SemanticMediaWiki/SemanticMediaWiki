@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine\DescriptionInterpreters;
 
 use RuntimeException;
 use SMW\DataItems\Uri;
-use SMW\Query\Language\ValueDescription;
+use SMW\Query\Language\Description;
 
 /**
  * @license GPL-2.0-or-later
@@ -17,13 +17,13 @@ class ComparatorMapper {
 	/**
 	 * @since 2.2
 	 *
-	 * @param ValueDescription $description
+	 * @param Description $description
 	 * @param string &$value
 	 *
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function mapComparator( ValueDescription $description, &$value ): string {
+	public function mapComparator( Description $description, &$value ): string {
 		$comparatorMap = [
 			SMW_CMP_EQ   => '=',
 			SMW_CMP_LESS => '<',

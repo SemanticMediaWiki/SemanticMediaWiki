@@ -46,7 +46,7 @@ class SemanticDataLookup {
 	 * @return RequestOptions|null
 	 */
 	public function newRequestOptions( PropertyTableDefinition $propertyTableDef, Property $property, ?RequestOptions $requestOptions = null ): ?RequestOptions {
-		if ( $requestOptions === null || !isset( $requestOptions->conditionConstraint ) ) {
+		if ( $requestOptions === null || !$requestOptions->conditionConstraint ) {
 			return $requestOptions;
 		}
 
@@ -714,7 +714,7 @@ class SemanticDataLookup {
 		if ( $params['valueCount'] > 1 ) {
 			$hash = md5( $hash . implode( '#', $db_keys ) );
 		} else {
-			$hash = md5( $hash . $db_keys );
+			$hash = md5( $hash . (string)$db_keys );
 		}
 
 		// Avoid issues with `$row->$sortField` containing other `#` as for
@@ -734,7 +734,7 @@ class SemanticDataLookup {
 		// Filter out any accidentally retrieved internal things (interwiki
 		// starts with ":"):
 		if ( $params['valueCount'] < 3 ||
-			implode( '', $params['fields'] ) !== FieldType::FIELD_ID ||
+			implode( '', (array)$params['fields'] ) !== FieldType::FIELD_ID ||
 			$db_keys[2] === '' ||
 			$db_keys[2][0] != ':' ) {
 

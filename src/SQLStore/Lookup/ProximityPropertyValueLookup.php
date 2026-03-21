@@ -7,6 +7,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\Query\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -30,12 +31,12 @@ class ProximityPropertyValueLookup {
 	 * @since 3.0
 	 *
 	 * @param Property $property
-	 * @param $search
+	 * @param string $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function lookup( Property $property, $search, RequestOptions $opts ): array {
+	public function lookup( Property $property, string $search, RequestOptions $opts ): array {
 		return $this->fetchFromTable( $property, $search, $opts );
 	}
 
@@ -48,7 +49,7 @@ class ProximityPropertyValueLookup {
 	 *
 	 * @return array
 	 */
-	public function fetchFromTable( Property $property, $search, RequestOptions $opts ): array {
+	public function fetchFromTable( Property $property, string $search, RequestOptions $opts ): array {
 		$options = [];
 		$list = [];
 
@@ -78,7 +79,7 @@ class ProximityPropertyValueLookup {
 		];
 
 		if ( $diType === DataItem::TYPE_WIKIPAGE ) {
-			return $this->fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset );
+			return $this->fetchFromIDTable( $query, $pid, $table, $options, $search, $sort );
 		}
 
 		$query->field( $field );
@@ -132,9 +133,16 @@ class ProximityPropertyValueLookup {
 	}
 
 	/**
+	 * @param Query $query
+	 * @param int $pid
+	 * @param string $table
+	 * @param array $options
+	 * @param string $search
+	 * @param string $sort
+	 *
 	 * @return mixed[][]|string[]
 	 */
-	private function fetchFromIDTable( $query, $pid, $table, $field, array $options, $search, $sort, int $limit, int $offset ): array {
+	private function fetchFromIDTable( Query $query, int $pid, ?string $table, array $options, string $search, string|false $sort ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$continueOffset = 0;
 		$res = [];
@@ -143,7 +151,7 @@ class ProximityPropertyValueLookup {
 			$this->build_like( $query, 'smw_sortkey', $search );
 		}
 
-		if ( $sort ) {
+		if ( is_string( $sort ) && $sort !== '' ) {
 			$options['ORDER BY'] = "smw_title $sort";
 		}
 
@@ -243,6 +251,7 @@ class ProximityPropertyValueLookup {
 
 	private function build_like( $query, $field, $search ): void {
 		$conds = [
+			// @phan-suppress-next-line PhanUselessBinaryAddRight
 			'%' . $search . '%',
 			'%' . ucfirst( $search ) . '%',
 			'%' . strtoupper( $search ) . '%'

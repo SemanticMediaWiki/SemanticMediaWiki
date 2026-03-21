@@ -129,7 +129,7 @@ class PropertyTableRowDiffer {
 
 			try {
 				$fixedProperties[] = new Property( $propertyTable->getFixedProperty() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				// Do nothing!
 			}
 		}
@@ -159,7 +159,7 @@ class PropertyTableRowDiffer {
 					$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
 						$property
 					);
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					$fixedProperty = [];
 				}
 			}

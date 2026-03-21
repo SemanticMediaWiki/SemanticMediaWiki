@@ -6,7 +6,6 @@ use RuntimeException;
 use SMW\DataItems\Property;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,7 +19,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 * @since 2.2
 	 */
 	public function __construct(
-		private readonly Store $store,
+		private readonly SQLStore $store,
 		private readonly PropertyStatisticsStore $propertyStatisticsStore,
 	) {
 	}
@@ -75,7 +74,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -93,7 +92,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getImproperValueForCount(): int {
 		return $this->propertyStatisticsStore->getUsageCount(
@@ -104,7 +103,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getQueryCount(): int {
 		return $this->count( '_ASK' );
@@ -113,7 +112,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getQuerySize(): int {
 		return $this->count( '_ASKSI' );
@@ -122,7 +121,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getConceptCount(): int {
 		return $this->count( '_CONC' );
@@ -131,7 +130,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getSubobjectCount(): int {
 		return $this->count( Property::TYPE_SUBOBJECT );
@@ -140,7 +139,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getDeclaredPropertiesCount(): int {
 		return $this->count( Property::TYPE_HAS_TYPE );
@@ -175,7 +174,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getPropertyPageCount() {
 		$options = [];
@@ -214,7 +213,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	 *
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getPropertyUsageCount(): int {
 		$count = 0;
@@ -234,7 +233,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.5
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getTotalPropertiesCount(): int {
 		$count = 0;
@@ -260,7 +259,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getTotalEntitiesCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -278,7 +277,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 1.9
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getUsedPropertiesCount() {
 		$options = [];
@@ -310,7 +309,7 @@ class UsageStatisticsListLookup implements ListLookup {
 	/**
 	 * @since 2.4
 	 *
-	 * @return number
+	 * @return int
 	 */
 	public function getDeleteCount(): int {
 		$count = 0;

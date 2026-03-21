@@ -45,6 +45,7 @@ class PropertyTypeFinder {
 	 * @return int
 	 */
 	public function countByType( $type ): int {
+		// @phan-suppress-next-line PhanParamSuspiciousOrder False positive
 		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}
@@ -84,11 +85,11 @@ class PropertyTypeFinder {
 				],
 				__METHOD__
 			);
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$row = false;
 		}
 
-		if ( !isset( $row->smw_id ) ) {
+		if ( !$row || !isset( $row->smw_id ) ) {
 			return $GLOBALS['smwgPDefaultType'];
 		}
 

@@ -5,7 +5,7 @@ namespace SMW\SQLStore\Lookup;
 use SMW\DataItems\WikiPage;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\RedirectStore;
-use SMW\Store;
+use SMW\SQLStore\SQLStore;
 
 /**
  * @license GPL-2.0-or-later
@@ -26,7 +26,7 @@ class RedirectTargetLookup {
 	const CACHE_ONLY = 'cache/only';
 
 	/**
-	 * @var InMemoryCacheManager
+	 * @var IdCacheManager
 	 */
 	private $inMemoryCacheManager;
 
@@ -34,7 +34,7 @@ class RedirectTargetLookup {
 	 * @since 2.5
 	 */
 	public function __construct(
-		private readonly Store $store,
+		private readonly SQLStore $store,
 		IdCacheManager $inMemoryCacheManager,
 	) {
 		$this->inMemoryCacheManager = $inMemoryCacheManager;

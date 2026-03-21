@@ -66,9 +66,13 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateTable( $tableName, ?array $attributes = null ) {
+	protected function doCreateTable( $tableName, array $attributes ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
+
+		if ( $attributes === null ) {
+			$attributes = [];
+		}
 
 		$fieldSql = [];
 		$fields = $attributes['fields'];
@@ -96,7 +100,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 			// By convention the first index has table specific relevance
 			if ( is_array( $tableOption ) ) {
-				$tableOption = isset( $tableOption[0] ) ? $tableOption[0] : '';
+				$tableOption = $tableOption[0] ?? '';
 			}
 
 			return $tableOption;
@@ -116,7 +120,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doUpdateTable( $tableName, ?array $attributes = null ) {
+	protected function doUpdateTable( $tableName, array $attributes ) {
 		$tableName = $this->connection->tableName( $tableName );
 		$currentFields = $this->getCurrentFields( $tableName );
 
@@ -262,7 +266,7 @@ class MySQLTableBuilder extends TableBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function doCreateIndices( $tableName, ?array $indexOptions = null ) {
+	protected function doCreateIndices( $tableName, array $indexOptions ) {
 		$indices = $indexOptions['indices'];
 
 		// First remove possible obsolete indices
@@ -280,7 +284,7 @@ class MySQLTableBuilder extends TableBuilder {
 				$indexType = 'INDEX';
 			}
 
-			$this->doCreateIndex( $tableName, $indexType, $indexName, $columns, $indexOptions );
+			$this->doCreateIndex( $tableName, $indexType, $columns, $indexOptions );
 		}
 	}
 
@@ -361,7 +365,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns, array $indexOptions ): void {
+	private function doCreateIndex( $tableName, $indexType, $columns, array $indexOptions ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$indexOption = '';
 
@@ -374,7 +378,7 @@ class MySQLTableBuilder extends TableBuilder {
 
 			// By convention the second index has index specific relevance
 			if ( is_array( $indexOption ) ) {
-				$indexOption = isset( $indexOption[1] ) ? $indexOption[1] : '';
+				$indexOption = $indexOption[1] ?? '';
 			}
 		}
 

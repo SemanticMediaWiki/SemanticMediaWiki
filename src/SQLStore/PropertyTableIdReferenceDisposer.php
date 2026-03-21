@@ -6,8 +6,11 @@ use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use SMW\Store;
+use stdClass;
 use Wikimedia\Rdbms\DBError;
 
 /**
@@ -54,7 +57,7 @@ class PropertyTableIdReferenceDisposer {
 	/**
 	 * @since 2.4
 	 */
-	public function __construct( private SQLStore $store ) {
+	public function __construct( private Store $store ) {
 		$this->connection = $this->store->getConnection( 'mw.db' );
 	}
 

@@ -194,7 +194,7 @@ class PropertyTableRowMapper {
 			// available (i.e. an extension that defined that property was disabled)
 			try {
 				$propertyValues = $semanticData->getPropertyValues( $property );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				continue;
 			}
 

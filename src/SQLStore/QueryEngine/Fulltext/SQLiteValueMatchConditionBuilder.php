@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\QueryEngine\Fulltext;
 
+use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 
 /**
@@ -16,11 +17,11 @@ class SQLiteValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 * @see ValueMatchConditionBuilder::canHaveMatchCondition
 	 * @since 2.5
 	 *
-	 * @param ValueDescription $description
+	 * @param Description $description
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( ValueDescription $description ): bool {
+	public function canHaveMatchCondition( Description $description ): bool {
 		if ( !$this->isEnabled() ) {
 			return false;
 		}

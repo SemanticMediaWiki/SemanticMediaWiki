@@ -61,7 +61,7 @@ class Parameters {
 	 *
 	 * @param string $key
 	 *
-	 * @return string
+	 * @return string|array
 	 * @throws InvalidArgumentException
 	 */
 	public function get( $key ) {

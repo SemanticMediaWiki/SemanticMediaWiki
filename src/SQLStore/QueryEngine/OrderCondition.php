@@ -23,11 +23,6 @@ use SMW\Query\Language\SomeProperty;
  */
 class OrderCondition {
 
-	/**
-	 * @var QuerySegmentListBuilder
-	 */
-	private $querySegmentListBuilder;
-
 	private DescriptionFactory $descriptionFactory;
 
 	/**

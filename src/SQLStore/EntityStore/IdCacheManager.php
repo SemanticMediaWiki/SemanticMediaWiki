@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
 use RuntimeException;
 use SMW\DataItems\WikiPage;
 
@@ -58,7 +59,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return bool
+	 * @return Cache
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {

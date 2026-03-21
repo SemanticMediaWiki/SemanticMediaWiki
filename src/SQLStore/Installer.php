@@ -14,6 +14,7 @@ use SMW\Setup;
 use SMW\SetupFile;
 use SMW\SQLStore\Installer\TableOptimizer;
 use SMW\SQLStore\Installer\VersionExaminer;
+use SMW\SQLStore\TableBuilder\TableBuilder;
 use SMW\SQLStore\TableBuilder\TableBuildExaminer;
 use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\Utils\CliMsgFormatter;
@@ -157,7 +158,7 @@ class Installer implements MessageReporter {
 			$this->messageReporter
 		);
 
-		if ( $this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) === false ) {
+		if ( !$this->versionExaminer->meetsVersionMinRequirement( Setup::MINIMUM_DB_VERSION ) ) {
 			return $this->printBottom();
 		}
 

@@ -25,9 +25,9 @@ class DisplayTitleLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @param Iterator|array $dataItems
+	 * @param array $dataItems
 	 *
-	 * @return Iterator|array
+	 * @return array
 	 */
 	public function prefetchFromList( array $dataItems ): array {
 		$list = [];

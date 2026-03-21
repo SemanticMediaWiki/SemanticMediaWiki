@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use SMW\SQLStore\RedirectStore;
 use SMW\Store;
+use Wikimedia\Rdbms\ResultWrapper;
 
 /**
  * @license GPL-2.0-or-later
@@ -48,7 +49,7 @@ class MissingRedirectLookup {
 	/**
 	 * @since 3.1
 	 *
-	 * @return Iterator/array
+	 * @return ResultWrapper
 	 */
 	public function findMissingRedirects() {
 		$namespaces = array_keys( array_filter( $this->namespaces, static function ( $v ) {
@@ -59,6 +60,11 @@ class MissingRedirectLookup {
 		return $this->fetchFromTable( $namespaces );
 	}
 
+	/**
+	 * @param array $namespaces
+	 *
+	 * @return ResultWrapper
+	 */
 	private function fetchFromTable( array $namespaces ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 

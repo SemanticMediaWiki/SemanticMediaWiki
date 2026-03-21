@@ -6,7 +6,9 @@ use MediaWiki\HookContainer\HookContainer;
 use MediaWiki\MediaWikiServices;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\TitleFactory;
+use SMW\NamespaceExaminer;
 use SMW\PropertyRegistry;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\PropertyTableIdReferenceDisposer;
@@ -439,7 +441,7 @@ class Rebuilder {
 			$nextPosition = $nextBySmwId != 0 && $nextBySmwId > $nextByPageId ? $nextBySmwId : $nextByPageId;
 		}
 
-		$id = $nextPosition ? $nextPosition : -1;
+		$id = $nextPosition ?: -1;
 	}
 
 	private function hasSkippableRevision( $title, bool $row = false ) {
@@ -458,7 +460,7 @@ class Rebuilder {
 		$hash = $title->getDBKey() . '#' . $title->getNamespace();
 		$this->lru->set( $hash, true );
 
-		if ( $this->hasSkippableRevision( $title, $row = false ) ) {
+		if ( $this->hasSkippableRevision( $title, $row ) ) {
 			$this->dispatchedEntities[] = [ 'skipped' => $title->getPrefixedDBKey() ];
 			return;
 		}

@@ -22,14 +22,14 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class RedirectUpdater {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $lookupCache = [];
 
 	/**
-	 * @var bool
+	 * @var Flag
 	 */
-	private $equalitySupport = 0;
+	private $equalitySupport;
 
 	/**
 	 * @since 3.1
@@ -40,6 +40,7 @@ class RedirectUpdater {
 		private readonly TableFieldUpdater $tableFieldUpdater,
 		private readonly PropertyStatisticsStore $propertyStatisticsStore,
 	) {
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**

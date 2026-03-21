@@ -79,7 +79,7 @@ class RequestOptions {
 	 * are ordered alphabetically, whereas other data is ordered
 	 * numerically. Usually, the order should be fairly "natural".
 	 *
-	 * @var bool
+	 * @var string|false
 	 */
 	public $sort = false;
 

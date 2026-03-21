@@ -45,7 +45,7 @@ interface EntityLookup {
 	 * @param WikiPage $subject
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return DataItem[]|[]
+	 * @return DataItem[]|array
 	 */
 	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null );
 

@@ -6,7 +6,8 @@ use RuntimeException;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
-use SMW\Store;
+use SMW\Iterators\AppendIterator;
+use SMW\SQLStore\SQLStore;
 
 /**
  * Find all entities related to a change propagation (only expected
@@ -28,7 +29,7 @@ class ChangePropagationEntityLookup {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private readonly Store $store,
+		private readonly SQLStore $store,
 		private readonly IteratorFactory $iteratorFactory,
 	) {
 	}
@@ -37,6 +38,8 @@ class ChangePropagationEntityLookup {
 	 * @since 3.0
 	 *
 	 * @param bool $isTypePropagation
+	 *
+	 * @return void
 	 */
 	public function isTypePropagation( $isTypePropagation ): void {
 		$this->isTypePropagation = (bool)$isTypePropagation;
@@ -47,7 +50,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param Property|WikiPage $entity
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 * @throws RuntimeException
 	 */
 	public function findAll( $entity ) {
@@ -65,7 +68,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param Property $property
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 */
 	public function findByProperty( Property $property ) {
 		$dataItems = [];
@@ -102,7 +105,7 @@ class ChangePropagationEntityLookup {
 	 *
 	 * @param WikiPage $category
 	 *
-	 * @return Iterator
+	 * @return AppendIterator
 	 */
 	public function findByCategory( WikiPage $category ) {
 		$appendIterator = $this->iteratorFactory->newAppendIterator();

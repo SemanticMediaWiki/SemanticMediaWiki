@@ -137,7 +137,7 @@ class PropertyTableUpdater {
 	 * @param bool $insert
 	 */
 	private function update_rows( PropertyTableDefinition $propertyTable, array $rows, bool $insert ): void {
-		if ( empty( $rows ) ) {
+		if ( $rows === [] ) {
 			return;
 		}
 

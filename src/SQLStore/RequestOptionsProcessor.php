@@ -3,6 +3,7 @@
 namespace SMW\SQLStore;
 
 use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\Store;
@@ -158,16 +159,16 @@ class RequestOptionsProcessor {
 	 * Not in all cases can requestoptions be forwarded to the DB using
 	 * getSQLConditions() and getSQLOptions(): some data comes from caches
 	 * that do not respect the options yet. This method takes an array of
-	 * results (SMWDataItem objects) *of the same type* and applies the
+	 * results (DataItem objects) *of the same type* and applies the
 	 * given requestoptions as appropriate.
 	 *
 	 * @since 1.8
 	 *
 	 * @param Store $store
-	 * @param array $data array of SMWDataItem objects
+	 * @param array $data array of DataItem objects
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return SMWDataItem[]
+	 * @return DataItem[]
 	 */
 	public static function applyRequestOptions( Store $store, array $data, ?RequestOptions $requestOptions = null ): array {
 		if ( $data === [] || $requestOptions === null ) {
@@ -267,7 +268,7 @@ class RequestOptionsProcessor {
 		$flag = $isNumeric ? SORT_NUMERIC : SORT_LOCALE_STRING;
 
 		// SORT_NATURAL is selected on n-asc, n-desc
-		if ( isset( $requestOptions->natural ) ) {
+		if ( $requestOptions->natural ) {
 			$flag = SORT_NATURAL;
 		}
 
@@ -289,7 +290,7 @@ class RequestOptionsProcessor {
 	private static function applyLimitRestriction( RequestOptions $requestOptions, array &$result ) {
 		// In case of a `conditionConstraint` the restriction is set forth by the
 		// SELECT statement.
-		if ( isset( $requestOptions->conditionConstraint ) ) {
+		if ( $requestOptions->conditionConstraint ) {
 			return $result;
 		}
 

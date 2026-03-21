@@ -9,6 +9,7 @@ use SMW\DataTypeRegistry;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
+use SMW\Store;
 
 /**
  * @license GPL-2.0-or-later
@@ -51,9 +52,9 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @param SQLStore $store
+	 * @param Store $store
 	 */
-	public function __construct( SQLStore $store ) {
+	public function __construct( Store $store ) {
 		$this->store = $store;
 		$this->connection = $store->getConnection( 'mw.db.queryengine' );
 	}
@@ -105,7 +106,7 @@ class SearchTable {
 			$property = Property::newFromUserLabel(
 				$dataItem->getDBKey()
 			);
-		} catch ( PredefinedPropertyLabelMismatchException $e ) {
+		} catch ( PredefinedPropertyLabelMismatchException ) {
 			// The property no longer exists (or is no longer available) therefore
 			// exempt it.
 			return true;
@@ -216,7 +217,9 @@ class SearchTable {
 	/**
 	 * @since 2.5
 	 *
-	 * @return int $minTokenSize
+	 * @param int $minTokenSize
+	 *
+	 * @return void
 	 */
 	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = (int)$minTokenSize;

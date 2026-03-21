@@ -22,9 +22,9 @@ class RedirectStore {
 	const TABLE_NAME = 'smw_fpt_redi';
 
 	/**
-	 * @var int
+	 * @var Flag
 	 */
-	private $equalitySupport = 0;
+	private $equalitySupport;
 
 	/**
 	 * @var bool
@@ -41,6 +41,7 @@ class RedirectStore {
 		if ( $this->cache === null ) {
 			$this->cache = InMemoryPoolCache::getInstance()->getPoolCacheById( 'sql.store.redirect.infostore' );
 		}
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**
