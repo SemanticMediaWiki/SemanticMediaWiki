@@ -9,7 +9,7 @@ use SMW\IteratorFactory;
 use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\EntityStore\IdCacheManager;
 use SMW\SQLStore\EntityStore\IdEntityFinder;
-use SMW\Store;
+use SMW\SQLStore\SQLStore;
 use SMW\Tests\TestEnvironment;
 use stdClass;
 
@@ -54,7 +54,7 @@ class IdEntityFinderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$this->store = $this->getMockBuilder( Store::class )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->setMethods( [ 'getConnection' ] )
 			->getMockForAbstractClass();

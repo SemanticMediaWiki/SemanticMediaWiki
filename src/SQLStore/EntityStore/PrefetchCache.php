@@ -66,7 +66,7 @@ class PrefetchCache {
 
 		// Use the .dot notation to distingish it from other prrintouts that
 		// use the same property
-		if ( $requestOptions->isChain ) {
+		if ( isset( $requestOptions->isChain ) && $requestOptions->isChain ) {
 			$key .= '#' . (string)$requestOptions->isChain;
 			$key .= '#' . (string)$property->isInverse();
 		}

@@ -10,7 +10,6 @@ use SMW\Iterators\AppendIterator;
 use SMW\SQLStore\Lookup\ChangePropagationEntityLookup;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
 
 /**
  * @covers \SMW\SQLStore\Lookup\ChangePropagationEntityLookup
@@ -31,7 +30,7 @@ class ChangePropagationEntityLookupTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->store = $this->getMockBuilder( Store::class )
+		$this->store = $this->getMockBuilder( SQLStore::class )
 			->disableOriginalConstructor()
 			->getMockForAbstractClass();
 

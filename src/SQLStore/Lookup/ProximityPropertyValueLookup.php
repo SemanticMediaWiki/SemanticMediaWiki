@@ -7,7 +7,7 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\Query\Query;
+use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
