@@ -89,7 +89,7 @@ class QueryFactory {
 	 *
 	 * @param int|bool $queryFeatures
 	 *
-	 * @return QueryParser
+	 * @return LegacyParser
 	 */
 	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->newLegacyQueryParser( $queryFeatures );
@@ -100,7 +100,7 @@ class QueryFactory {
 	 *
 	 * @param int|bool $queryFeatures
 	 *
-	 * @return QueryParser
+	 * @return LegacyParser
 	 */
 	public function newLegacyQueryParser( $queryFeatures = false ): LegacyParser {
 		if ( $queryFeatures === false ) {
