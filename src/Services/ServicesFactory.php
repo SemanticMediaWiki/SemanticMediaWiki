@@ -44,7 +44,6 @@ use SMW\PostProcHandler;
 use SMW\Property\ChangePropagationNotifier;
 use SMW\Property\SpecificationLookup;
 use SMW\PropertyLabelFinder;
-use SMW\Query\Parser as QueryParser;
 use SMW\Query\Parser\LegacyParser;
 use SMW\Query\QuerySourceFactory;
 use SMW\QueryFactory;
