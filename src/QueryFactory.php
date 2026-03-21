@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\Query\Parser as QueryParser;
 use SMW\Query\Parser\DescriptionProcessor;
 use SMW\Query\Parser\LegacyParser;
 use SMW\Query\Parser\Tokenizer;
