@@ -162,6 +162,10 @@ class SearchResultSetTest extends TestCase {
 			->method( 'getQuery' )
 			->willReturn( $query );
 
+		$queryResult->expects( $this->any() )
+			->method( 'getResults' )
+			->willReturn( [] );
+
 		$resultSet = new SearchResultSet( $queryResult, 42 );
 
 		$this->assertEquals(
