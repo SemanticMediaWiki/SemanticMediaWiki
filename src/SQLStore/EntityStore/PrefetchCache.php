@@ -73,7 +73,7 @@ class PrefetchCache {
 
 		// T:P0467, requires an extra identification to ensure the test passes
 		// when the lookup is part of the firstChain request
-		if ( $requestOptions->isFirstChain ) {
+		if ( $requestOptions->isFirstChain ?? false ) {
 			$key .= '#' . 'isFirstChain';
 		}
 
