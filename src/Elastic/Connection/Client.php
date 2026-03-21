@@ -36,10 +36,7 @@ class Client {
 	 */
 	const TYPE_LOOKUP = 'lookup';
 
-	/**
-	 * @var ElasticClient
-	 */
-	protected $client;
+	protected ?ElasticClient $client = null;
 
 	/**
 	 * @var bool
