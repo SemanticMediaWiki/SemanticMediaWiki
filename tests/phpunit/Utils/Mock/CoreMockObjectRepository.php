@@ -273,8 +273,22 @@ class CoreMockObjectRepository extends TestCase implements MockObjectRepository 
 	 * @return QueryResult
 	 */
 	public function QueryResult() {
-		$queryResult = $this->getMockBuilder( QueryResult::class )
+		$query = $this->getMockBuilder( Query::class )
 			->disableOriginalConstructor()
+			->getMock();
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$mockedMethods = array_unique( array_merge(
+			[ 'getErrors', 'getNext' ],
+			$this->builder->getInvokedMethods()
+		) );
+
+		$queryResult = $this->getMockBuilder( QueryResult::class )
+			->setConstructorArgs( [ [], $query, [], $store ] )
+			->onlyMethods( $mockedMethods )
 			->getMock();
 
 		$queryResult->expects( $this->any() )
