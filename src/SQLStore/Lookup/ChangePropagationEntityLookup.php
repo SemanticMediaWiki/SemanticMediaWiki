@@ -7,7 +7,6 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
 use SMW\Iterators\AppendIterator;
-use SMW\SQLStore\SQLStore;
 
 /**
  * Find all entities related to a change propagation (only expected
@@ -29,7 +28,7 @@ class ChangePropagationEntityLookup {
 	 * @since 3.0
 	 */
 	public function __construct(
-		private readonly SQLStore $store,
+		private readonly Store $store,
 		private readonly IteratorFactory $iteratorFactory,
 	) {
 	}
