@@ -7,7 +7,7 @@ use SMW\IteratorFactory;
 use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
-use SMW\Store;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -21,7 +21,7 @@ class IdEntityFinder {
 	 * @since 2.1
 	 */
 	public function __construct(
-		private readonly Store $store,
+		private readonly SQLStore $store,
 		private readonly IteratorFactory $iteratorFactory,
 		private readonly IdCacheManager $idCacheManager,
 	) {
@@ -33,7 +33,7 @@ class IdEntityFinder {
 	 * @param array $idList
 	 * @param RequestOptions|null $requestOptions
 	 *
-	 * @return WikiPage[]
+	 * @return MappingIterator|array
 	 */
 	public function getDataItemsFromList( array $idList, ?RequestOptions $requestOptions = null ): array|MappingIterator {
 		if ( $idList === [] ) {

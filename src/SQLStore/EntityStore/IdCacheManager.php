@@ -158,7 +158,7 @@ class IdCacheManager {
 		$hash = $this->computeSha1(
 			[
 				$dataItem->getDBKey(),
-				(int)$dataItem->getNamespace(),
+				$dataItem->getNamespace(),
 				$dataItem->getInterwiki(),
 				$dataItem->getSubobjectName()
 			]
@@ -182,7 +182,7 @@ class IdCacheManager {
 		if ( $args instanceof WikiPage ) {
 			$args = [
 				$args->getDBKey(),
-				(int)$args->getNamespace(),
+				$args->getNamespace(),
 				$args->getInterwiki(),
 				$args->getSubobjectName()
 			];

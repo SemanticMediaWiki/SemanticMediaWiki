@@ -13,6 +13,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\PropertyTableDefinition as TableDefinition;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -333,7 +334,7 @@ class PropertySubjectsLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param object $row
+	 * @param stdClass $row
 	 *
 	 * @return DataItem
 	 */

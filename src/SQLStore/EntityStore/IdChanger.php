@@ -42,7 +42,7 @@ class IdChanger {
 	 * @param int $curid
 	 * @param int $targetid
 	 *
-	 * @return stdClass
+	 * @return stdClass|void
 	 */
 	public function move( $curid, $targetid = 0 ) {
 		$connection = $this->store->getConnection( 'mw.db' );

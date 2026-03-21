@@ -7,6 +7,7 @@ use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\SQLStore\SQLStore;
+use stdClass;
 use Wikimedia\Rdbms\ResultWrapper;
 
 /**
@@ -247,7 +248,7 @@ class EntityValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param object $row
+	 * @param stdClass $row
 	 *
 	 * @return ResultWrapper
 	 */
