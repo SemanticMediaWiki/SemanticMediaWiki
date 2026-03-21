@@ -45,8 +45,7 @@ class PropertyTypeFinder {
 	 * @return int
 	 */
 	public function countByType( $type ): int {
-		// @phan-suppress-next-line PhanParamSuspiciousOrder False positive
-		if ( strpos( 'http://semantic-mediawiki.org/swivt/1.0#', $type ) === false ) {
+		if ( strpos( $type, 'http://semantic-mediawiki.org/swivt/1.0#' ) === false ) {
 			$type = 'http://semantic-mediawiki.org/swivt/1.0#' . $type;
 		}
 

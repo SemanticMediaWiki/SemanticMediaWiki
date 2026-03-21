@@ -70,10 +70,6 @@ class MySQLTableBuilder extends TableBuilder {
 		$tableName = $this->connection->tableName( $tableName );
 		$sql = '';
 
-		if ( $attributes === null ) {
-			$attributes = [];
-		}
-
 		$fieldSql = [];
 		$fields = $attributes['fields'];
 

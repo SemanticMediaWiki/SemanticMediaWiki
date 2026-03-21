@@ -135,7 +135,7 @@ class ProximityPropertyValueLookup {
 	/**
 	 * @param Query $query
 	 * @param int $pid
-	 * @param string $table
+	 * @param ?string $table
 	 * @param array $options
 	 * @param string $search
 	 * @param string $sort
