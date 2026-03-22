@@ -49,7 +49,6 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
 	 *
 	 * @return array
@@ -69,7 +68,6 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getParamDescription
 	 *
 	 * @return array
@@ -81,7 +79,6 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getDescription
 	 *
 	 * @return array
@@ -93,7 +90,6 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
@@ -106,7 +102,6 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getVersion
 	 *
 	 * @return string

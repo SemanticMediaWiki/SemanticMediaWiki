@@ -24,9 +24,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialSearchByProperty extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'SearchByProperty' );
 	}

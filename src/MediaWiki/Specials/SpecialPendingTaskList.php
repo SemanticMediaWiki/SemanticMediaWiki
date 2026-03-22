@@ -17,9 +17,6 @@ use SMW\Utils\HtmlTabs;
  */
 class SpecialPendingTaskList extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'PendingTaskList', '', false );
 	}
