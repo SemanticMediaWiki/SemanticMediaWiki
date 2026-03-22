@@ -276,11 +276,15 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
-		$listLookup->expects( $this->once() )
+		$listLookup->expects( $this->atLeastOnce() )
 			->method( 'isFromCache' )
 			->willReturn( false );
 
-		$this->store->expects( $this->once() )
+		$listLookup->expects( $this->atLeastOnce() )
+			->method( 'fetchList' )
+			->willReturn( [] );
+
+		$this->store->expects( $this->atLeastOnce() )
 			->method( 'getUnusedPropertiesSpecial' )
 			->willReturn( $listLookup );
 
@@ -289,8 +293,8 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 			$this->settings
 		);
 
-		$requestOptions = new RequestOptions();
-		$instance->getResults( $requestOptions );
+		// Call doQuery to properly initialize selectOptions
+		$instance->doQuery( 0, 50 );
 
 		$pageHeader = $instance->getPageHeader();
 
