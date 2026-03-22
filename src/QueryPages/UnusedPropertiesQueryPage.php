@@ -40,6 +40,8 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	/**
 	 * @since 1.9
 	 *
+	 * Testing message
+	 *
 	 * @param Store $store
 	 * @param Settings $settings
 	 */
