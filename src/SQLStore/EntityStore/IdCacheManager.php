@@ -176,7 +176,7 @@ class IdCacheManager {
 	 *
 	 * @param WikiPage|array $args
 	 *
-	 * @return int|bool
+	 * @return int|false
 	 */
 	public function getId( $args ): int|false {
 		if ( $args instanceof WikiPage ) {
