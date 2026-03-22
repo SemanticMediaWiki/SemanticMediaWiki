@@ -4,7 +4,6 @@ namespace SMW;
 
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\Description;
-use SMW\Query\Parser as QueryParser;
 use SMW\Query\Parser\DescriptionProcessor;
 use SMW\Query\Parser\LegacyParser;
 use SMW\Query\Parser\Tokenizer;
@@ -89,7 +88,7 @@ class QueryFactory {
 	 *
 	 * @param int|bool $queryFeatures
 	 *
-	 * @return QueryParser
+	 * @return LegacyParser
 	 */
 	public function newQueryParser( $queryFeatures = false ): LegacyParser {
 		return $this->newLegacyQueryParser( $queryFeatures );
@@ -100,7 +99,7 @@ class QueryFactory {
 	 *
 	 * @param int|bool $queryFeatures
 	 *
-	 * @return QueryParser
+	 * @return LegacyParser
 	 */
 	public function newLegacyQueryParser( $queryFeatures = false ): LegacyParser {
 		if ( $queryFeatures === false ) {
