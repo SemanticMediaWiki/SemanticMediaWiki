@@ -90,11 +90,9 @@ class StringResult extends QueryResult {
 	}
 
 	/**
-	 * @since 3.0
-	 *
-	 * @return string
+	 * @since 7.0
 	 */
-	public function getResults() {
+	public function getFormattedResult(): string|array {
 		$result = $this->result;
 
 		if ( is_callable( $this->preOutputCallback ) ) {
@@ -108,6 +106,19 @@ class StringResult extends QueryResult {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * @since 3.0
+	 *
+	 * This override previously returned string|array, violating the parent's
+	 * array return type contract. Use getFormattedResult() for the original
+	 * string|array behavior.
+	 */
+	public function getResults(): array {
+		$result = $this->getFormattedResult();
+
+		return is_array( $result ) ? $result : [ $result ];
 	}
 
 }

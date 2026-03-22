@@ -313,7 +313,7 @@ abstract class ResultPrinter implements IResultPrinter {
 
 		if ( $results instanceof StringResult ) {
 			$results->setOption( 'is.exportformat', $this->isExportFormat() );
-			return $results->getResults();
+			return $results->getFormattedResult();
 		}
 
 		return $this->buildResult( $results );

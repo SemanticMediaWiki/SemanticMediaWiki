@@ -273,7 +273,7 @@ class QueryResult {
 	 *
 	 * @return WikiPage[]
 	 */
-	public function getResults() {
+	public function getResults(): array {
 		return $this->mResults;
 	}
 
