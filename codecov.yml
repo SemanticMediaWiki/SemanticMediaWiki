@@ -1,2 +1,3 @@
 fixes:
   - "/var/www/html/extensions/SemanticMediaWiki/::"
+  - "/home/runner/work/SemanticMediaWiki/SemanticMediaWiki/::"
