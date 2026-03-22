@@ -279,7 +279,7 @@ class PropertyTableIdReferenceDisposer {
 
 	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
 		// When marked as redirect, don't remove the reference
-		if ( !$isRedirect || ( $isRedirect && $this->redirectRemoval ) ) {
+		if ( !$isRedirect || $this->redirectRemoval ) {
 			$this->connection->delete(
 				SQLStore::ID_TABLE,
 				[ 'smw_id' => $id ],
