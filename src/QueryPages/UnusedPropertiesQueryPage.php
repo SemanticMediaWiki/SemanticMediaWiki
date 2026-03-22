@@ -49,6 +49,8 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
+	 * Testing message.
+	 *
 	 * @return string
 	 */
 	public function getName(): string {
