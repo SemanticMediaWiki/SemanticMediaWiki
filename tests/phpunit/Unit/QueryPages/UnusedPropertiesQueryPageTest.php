@@ -2,7 +2,6 @@
 
 namespace SMW\Tests\Unit\QueryPages;
 
-use MediaWiki\Linker\Linker;
 use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\DataItemFactory;
