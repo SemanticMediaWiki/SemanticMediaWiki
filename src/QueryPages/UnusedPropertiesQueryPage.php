@@ -128,6 +128,10 @@ class UnusedPropertiesQueryPage extends QueryPage {
 				->getHtml();
 		}
 
+		if ( $result instanceof Error ) {
+			return 'Testing...';
+		}
+
 		throw new PropertyNotFoundException(
 			'UnusedPropertiesQueryPage expects results that are properties or errors.'
 		);
