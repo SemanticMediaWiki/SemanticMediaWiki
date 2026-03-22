@@ -49,7 +49,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getName(): string {
@@ -57,7 +56,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return bool
 	 */
 	public function isExpensive(): bool {
@@ -66,7 +64,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return bool
 	 */
 	public function isSyndicated(): bool {
@@ -75,7 +72,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * Returns available cache information (takes into account user preferences)
 	 *
 	 * @since 1.9
@@ -94,7 +90,6 @@ class UnusedPropertiesQueryPage extends QueryPage {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @return string
 	 */
 	public function getPageHeader(): string {
