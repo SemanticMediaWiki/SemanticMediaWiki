@@ -268,7 +268,9 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 
 		$this->assertIsString( $cacheInfo );
 		$this->assertNotEmpty( $cacheInfo );
-		$this->assertStringContainsString( 'smw-sp-properties-cache-info', $cacheInfo );
+		// Check for the rendered cache message content instead of the message key
+		$this->assertStringContainsString( 'cache', $cacheInfo );
+		$this->assertStringContainsString( 'updated', $cacheInfo );
 	}
 
 	public function testGetPageHeader() {
@@ -293,15 +295,16 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 			$this->settings
 		);
 
-		// Call doQuery to properly initialize selectOptions
+		// Call doQuery to properly initialize selectOptions and call getResults internally
 		$instance->doQuery( 0, 50 );
 
 		$pageHeader = $instance->getPageHeader();
 
 		$this->assertIsString( $pageHeader );
 		$this->assertNotEmpty( $pageHeader );
-		$this->assertStringContainsString( 'smw-unusedproperties-docu', $pageHeader );
-		$this->assertStringContainsString( 'smw-sp-properties-header-label', $pageHeader );
+		// Check for rendered content instead of message keys
+		$this->assertStringContainsString( 'unused properties', $pageHeader );
+		$this->assertStringContainsString( 'List of properties', $pageHeader );
 	}
 
 }
