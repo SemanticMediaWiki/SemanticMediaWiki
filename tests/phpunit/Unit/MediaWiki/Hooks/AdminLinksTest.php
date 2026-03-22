@@ -43,7 +43,7 @@ class AdminLinksTest extends TestCase {
 		$sectionsAdded = [];
 		$adminLinksTree->expects( $this->atLeastOnce() )
 			->method( 'addSection' )
-			->willReturnCallback( function( $section, $name ) use ( &$sectionsAdded ) {
+			->willReturnCallback( static function ( $section, $name ) use ( &$sectionsAdded ) {
 				$sectionsAdded[] = [ 'section' => $section, 'name' => $name ];
 			} );
 
@@ -73,7 +73,7 @@ class AdminLinksTest extends TestCase {
 		$sectionsAdded = [];
 		$adminLinksTree->expects( $this->atLeastOnce() )
 			->method( 'addSection' )
-			->willReturnCallback( function( $section, $name ) use ( &$sectionsAdded ) {
+			->willReturnCallback( static function ( $section, $name ) use ( &$sectionsAdded ) {
 				$sectionsAdded[] = [ 'section' => $section, 'name' => $name ];
 			} );
 
