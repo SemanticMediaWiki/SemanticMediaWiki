@@ -110,7 +110,7 @@ class ChangeDiff {
 	 *
 	 * @return
 	 */
-	public function getPropertyList( $op = false ) {
+	public function getPropertyList( $op = false ): array {
 		if ( $op === true || $op === 'flip' ) {
 			$list = [];
 

@@ -235,7 +235,7 @@ class QueryResult {
 	 *
 	 * @return ResultArray[]|false
 	 */
-	public function getNext() {
+	public function getNext(): false|array {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 

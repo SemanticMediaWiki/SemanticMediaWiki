@@ -228,7 +228,7 @@ class ListResultBuilder {
 	/**
 	 * @return RowBuilder
 	 */
-	private function getRowBuilder() {
+	private function getRowBuilder(): RowBuilder {
 		if ( $this->get( 'template' ) === '' ) {
 			$rowBuilder = new SimpleRowBuilder();
 			$rowBuilder->setLinker( $this->linker );

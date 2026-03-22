@@ -70,7 +70,7 @@ class AllowsListValueParser implements ValueParser {
 		return self::$contents[$userValue];
 	}
 
-	private function parse_contents( $userValue, $contents ) {
+	private function parse_contents( $userValue, $contents ): array {
 		if ( $contents === '' ) {
 			$error = [ 'smw-datavalue-allows-value-list-unknown', $userValue ];
 			$this->errors[] = $error;

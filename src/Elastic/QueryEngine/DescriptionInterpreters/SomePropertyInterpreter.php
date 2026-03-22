@@ -188,7 +188,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretDisjunction( Disjunction $description, Property $property, $pid, $field, string &$opType ) {
+	private function interpretDisjunction( Disjunction $description, Property $property, $pid, $field, string &$opType ): array|Condition {
 		$p = [];
 		$opType = Condition::TYPE_SHOULD;
 
@@ -217,7 +217,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretClassDescription( ClassDescription $description, Property $property, $pid, $field ) {
+	private function interpretClassDescription( ClassDescription $description, Property $property, $pid, $field ): array|Condition {
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -259,7 +259,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretNamespaceDescription( NamespaceDescription $description, Property $property, $pid, $field ) {
+	private function interpretNamespaceDescription( NamespaceDescription $description, Property $property, $pid, $field ): array|Condition {
 		$queryString = $description->getQueryString();
 		$condition = $this->conditionBuilder->interpretDescription( $description );
 
@@ -285,7 +285,7 @@ class SomePropertyInterpreter {
 		return $condition;
 	}
 
-	private function interpretConjunction( Conjunction $description, Property $property, $pid, $field ) {
+	private function interpretConjunction( Conjunction $description, Property $property, $pid, $field ): array|Condition {
 		$p = [];
 		$logs = [];
 		$queryString = $description->getQueryString();

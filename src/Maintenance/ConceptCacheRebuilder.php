@@ -165,7 +165,7 @@ class ConceptCacheRebuilder {
 		return true;
 	}
 
-	private function workOnConcept( Title $title ) {
+	private function workOnConcept( Title $title ): int|float {
 		$concept = $this->store->getConceptCacheStatus( $title );
 
 		if ( $this->skipConcept( $title, $concept ) ) {
@@ -179,7 +179,7 @@ class ConceptCacheRebuilder {
 		return $this->lines;
 	}
 
-	private function skipConcept( Title $title, $concept = null ) {
+	private function skipConcept( Title $title, $concept = null ): false|string {
 		$skip = false;
 
 		if ( $concept === null ) {

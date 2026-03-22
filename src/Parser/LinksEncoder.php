@@ -18,7 +18,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ) {
+	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ): string|array {
 		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
@@ -152,7 +152,7 @@ class LinksEncoder {
 		return $caption !== false ? $caption : $value;
 	}
 
-	private static function matchAndReplace( array|string $text, InTextAnnotationParser $parser ) {
+	private static function matchAndReplace( array|string $text, InTextAnnotationParser $parser ): string|array {
 		/**
 		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
 		 *

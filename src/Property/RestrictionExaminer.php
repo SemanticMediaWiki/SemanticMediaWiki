@@ -153,7 +153,7 @@ class RestrictionExaminer {
 		return $this->error;
 	}
 
-	private function isAnnotationRestricted( Property $property ) {
+	private function isAnnotationRestricted( Property $property ): false|array {
 		if ( $this->isQueryContext || $property->isUserDefined() ) {
 			return false;
 		}

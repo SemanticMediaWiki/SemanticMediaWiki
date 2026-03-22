@@ -3,6 +3,7 @@
 namespace SMW\SQLStore\EntityStore;
 
 use InvalidArgumentException;
+use Iterator;
 use SMW\DataItems\DataItem;
 use SMW\IteratorFactory;
 use SMW\SQLStore\PropertyTableInfoFetcher;
@@ -81,7 +82,7 @@ class DuplicateFinder {
 	 *
 	 * @return Iterator|[]
 	 */
-	public function findDuplicates( $table = null ) {
+	public function findDuplicates( $table = null ): Iterator|array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$query = $connection->newQuery();
 

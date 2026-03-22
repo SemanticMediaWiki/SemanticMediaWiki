@@ -380,7 +380,7 @@ class SQLStoreUpdater {
 		);
 	}
 
-	private function makeSortKey( WikiPage $subject, SemanticData $data ) {
+	private function makeSortKey( WikiPage $subject, SemanticData $data ): string|array {
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
 			return '';

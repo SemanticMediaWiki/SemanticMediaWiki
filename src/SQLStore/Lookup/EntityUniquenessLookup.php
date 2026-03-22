@@ -7,6 +7,7 @@ use SMW\DataItems\Container;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -44,7 +45,7 @@ class EntityUniquenessLookup {
 	 *
 	 * @return Iterator|[]
 	 */
-	public function checkConstraint( Property $property, DataItem $dataItem, RequestOptions $requestOptions ) {
+	public function checkConstraint( Property $property, DataItem $dataItem, RequestOptions $requestOptions ): array|MappingIterator {
 		$propTableId = $this->store->getPropertyTableInfoFetcher()->findTableIdForProperty(
 			$property
 		);

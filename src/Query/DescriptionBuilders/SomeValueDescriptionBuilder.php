@@ -5,6 +5,7 @@ namespace SMW\Query\DescriptionBuilders;
 use InvalidArgumentException;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
+use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
 
 /**
@@ -40,7 +41,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function newDescription( DataValue $dataValue, $value ) {
+	public function newDescription( DataValue $dataValue, $value ): Description {
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'Value needs to be a string' );
 		}
@@ -84,7 +85,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 		return $description;
 	}
 
-	private function makeDescription( int|string $comparator, $property, WikiPage $dataItem, ValueDescription $description ) {
+	private function makeDescription( int|string $comparator, $property, WikiPage $dataItem, ValueDescription $description ): Description {
 		$value = $dataItem->getDBKey();
 
 		// Normalize a possible earlier encoded string part in order for the

@@ -110,7 +110,7 @@ class Conjunction extends Description {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int|float {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {

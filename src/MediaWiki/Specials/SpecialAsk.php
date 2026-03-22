@@ -415,7 +415,7 @@ class SpecialAsk extends SpecialPage {
 		);
 	}
 
-	private function fetchResults( &$printer, &$queryobj, UrlArgs &$urlArgs ) {
+	private function fetchResults( &$printer, &$queryobj, UrlArgs &$urlArgs ): array|int {
 		// Copy the printout to retain the original state while in case of no
 		// specific subject (THIS) request extend the query with a
 		// `PrintRequest::PRINT_THIS` column

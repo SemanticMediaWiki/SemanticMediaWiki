@@ -33,7 +33,7 @@ class StatsFormatter {
 	 *
 	 * @return string|array
 	 */
-	public static function format( array $stats, $format = null ) {
+	public static function format( array $stats, $format = null ): string|array {
 		$output = '';
 
 		if ( $format === self::FORMAT_PLAIN ) {

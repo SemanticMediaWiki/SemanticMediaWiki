@@ -119,7 +119,7 @@ class Config extends Options {
 	 * @return string|false
 	 * @throws RuntimeException
 	 */
-	public function readFile( $file ) {
+	public function readFile( $file ): false|string {
 		if ( $file === false ) {
 			return false;
 		}

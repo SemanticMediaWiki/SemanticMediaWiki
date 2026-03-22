@@ -113,7 +113,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $query;
 	}
 
-	private function addFulltextSearchCondition( Description $description, QuerySegment $query, $comparator, &$value ) {
+	private function addFulltextSearchCondition( Description $description, QuerySegment $query, $comparator, &$value ): false|QuerySegment {
 		// Uses ~~ wide proximity?
 		$usesWidePromixity = false;
 

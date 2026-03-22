@@ -126,7 +126,7 @@ class PrefetchCache {
 	 *
 	 * @return
 	 */
-	public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ) {
+	public function getPropertyValues( WikiPage $subject, Property $property, RequestOptions $requestOptions ): array {
 		$key = $this->makeCacheKey( $property, $requestOptions );
 
 		// 0 is the default ID of the subject, if it already has an ID,

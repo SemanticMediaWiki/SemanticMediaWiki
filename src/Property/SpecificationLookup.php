@@ -312,7 +312,7 @@ class SpecificationLookup {
 	 *
 	 * @return int|false
 	 */
-	public function getDisplayPrecision( Property $property ) {
+	public function getDisplayPrecision( Property $property ): int|false {
 		$displayPrecision = false;
 		$dataItems = $this->getSpecification( $property, new Property( '_PREC' ) );
 

@@ -247,7 +247,7 @@ class PropertyListByApiRequest {
 		$this->propertyList[$key]['description'] = $this->findPropertyDescriptionBy( $property );
 	}
 
-	private function findPropertyDescriptionBy( Property $property ) {
+	private function findPropertyDescriptionBy( Property $property ): string|array|null {
 		$description = $this->propertySpecificationLookup->getPropertyDescriptionByLanguageCode(
 			$property,
 			$this->languageCode

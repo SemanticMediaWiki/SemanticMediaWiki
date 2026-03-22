@@ -98,7 +98,7 @@ class RedirectTargetLookup {
 	 *
 	 * @return WikiPage|false
 	 */
-	public function findRedirectSource( WikiPage $target, ?string $flag = null ) {
+	public function findRedirectSource( WikiPage $target, ?string $flag = null ): WikiPage|false {
 		$cache = $this->inMemoryCacheManager->get(
 			IdCacheManager::REDIRECT_SOURCE
 		);

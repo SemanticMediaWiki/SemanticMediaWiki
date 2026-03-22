@@ -69,7 +69,7 @@ class RefreshJobTest extends TestCase {
 
 		$rebuilder->expects( $this->any() )
 			->method( 'rebuild' )
-			->willReturn( $parameters['spos'] );
+			->willReturn( $parameters['spos'] ?? 0 );
 
 		$store = $this->getMockBuilder( Store::class )
 			->setMethods( [ 'refreshData' ] )

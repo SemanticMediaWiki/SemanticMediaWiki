@@ -31,7 +31,7 @@ class SerializerFactory {
 	 *
 	 * @return Serializer
 	 */
-	public function getSerializerFor( $object ) {
+	public function getSerializerFor( $object ): Serializer {
 		$serializer = null;
 
 		if ( $object instanceof SemanticData ) {
@@ -56,7 +56,7 @@ class SerializerFactory {
 	 *
 	 * @return Deserializer
 	 */
-	public function getDeserializerFor( array $serialization ) {
+	public function getDeserializerFor( array $serialization ): Deserializer {
 		$deserializer = null;
 
 		if ( isset( $serialization['serializer'] ) ) {

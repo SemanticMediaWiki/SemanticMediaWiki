@@ -68,7 +68,7 @@ class ExternalFormatterUriValue extends URIValue {
 	 *
 	 * @return string
 	 */
-	public function substituteAndFormatUri( $value, $parameters = [] ) {
+	public function substituteAndFormatUri( $value, $parameters = [] ): string|array {
 		if ( !$this->isValid() ) {
 			return '';
 		}

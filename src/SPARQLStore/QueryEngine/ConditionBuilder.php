@@ -297,7 +297,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function convertConditionToString( Condition &$condition ) {
+	public function convertConditionToString( Condition &$condition ): string|array {
 		$conditionAsString = $condition->getWeakConditionString();
 
 		if ( ( $conditionAsString === '' ) && !$condition->isSafe() ) {

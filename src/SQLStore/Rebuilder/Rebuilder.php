@@ -181,7 +181,7 @@ class Rebuilder {
 	 *
 	 * @param int &$id
 	 */
-	public function rebuild( &$id ) {
+	public function rebuild( &$id ): int|float {
 		$this->updateJobs = [];
 		$this->dispatchedEntities = [];
 

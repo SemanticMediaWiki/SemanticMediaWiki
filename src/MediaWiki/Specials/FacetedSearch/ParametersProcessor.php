@@ -194,7 +194,7 @@ class ParametersProcessor {
 		}
 	}
 
-	private function fromQueryParameter( $query ) {
+	private function fromQueryParameter( $query ): string|array {
 		$params = '';
 
 		// Allow Category:Foo, Property:Bar, Concept:Foobar
@@ -224,7 +224,7 @@ class ParametersProcessor {
 	/**
 	 * @return mixed[]
 	 */
-	private function makeParameters( $query, WebRequest $request ): array {
+	private function makeParameters( array $query, WebRequest $request ): array {
 		$this->queryString = $query[0] ?? '';
 
 		$parameters = [];

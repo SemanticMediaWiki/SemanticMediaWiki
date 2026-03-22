@@ -4,6 +4,7 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\DataItems\Error;
 use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
@@ -133,7 +134,7 @@ class UndeclaredPropertyListLookup implements ListLookup {
 		return $result;
 	}
 
-	private function addPropertyFor( $title ) {
+	private function addPropertyFor( $title ): DataItem {
 		try {
 			$property = new Property( $title );
 		} catch ( PropertyLabelNotResolvedException $e ) {

@@ -64,7 +64,7 @@ class QueryEngine implements QueryEngineInterface {
      *
      * @return QueryResult|string
      */
-    public function getQueryResult( Query $query ) {
+    public function getQueryResult( Query $query ): QueryResult|string|int {
 		if ( ( !$this->engineOptions->get( 'smwgIgnoreQueryErrors' ) || $query->getDescription() instanceof ThingDescription ) &&
 			 $query->querymode != Query::MODE_DEBUG &&
 			 count( $query->getErrors() ) > 0 ) {
@@ -96,7 +96,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $this->getInstanceQueryResult( $query, $compoundCondition );
 	}
 
-	private function getCountQueryResult( Query $query, Condition $compoundCondition ) {
+	private function getCountQueryResult( Query $query, Condition $compoundCondition ): int|QueryResult {
 		if ( $this->isSingletonConditionWithElementMatch( $compoundCondition ) ) {
 			if ( $compoundCondition->condition === '' ) { // all URIs exist, no querying
 				return 1;

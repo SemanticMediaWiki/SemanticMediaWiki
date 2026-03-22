@@ -549,7 +549,7 @@ class TimeValue extends DataValue {
 	 *
 	 * @return mixed typically a number but possibly false
 	 */
-	public function getYear( $calendarmodel = Time::CM_GREGORIAN ) {
+	public function getYear( $calendarmodel = Time::CM_GREGORIAN ): int|false {
 		$dataItem = $this->getDataItemForCalendarModel(
 			$calendarmodel
 		);

@@ -6,6 +6,7 @@ use DateInterval;
 use InvalidArgumentException;
 use SMW\DataItems\Time;
 use SMW\DataValues\TimeValue;
+use SMW\Query\Language\Description;
 
 /**
  * @private
@@ -40,7 +41,7 @@ class TimeValueDescriptionBuilder extends DescriptionBuilder {
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function newDescription( TimeValue $dataValue, $value ) {
+	public function newDescription( TimeValue $dataValue, $value ): Description {
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'The value needs to be a string' );
 		}

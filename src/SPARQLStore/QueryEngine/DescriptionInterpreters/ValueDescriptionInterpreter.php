@@ -11,6 +11,7 @@ use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
 use SMW\Query\Language\Description;
 use SMW\Query\Language\ValueDescription;
+use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\FalseCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\FilterCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
@@ -111,7 +112,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $this->conditionBuilder->newTrueCondition( $joinVariable, $orderByProperty );
 	}
 
-	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ) {
+	private function createConditionForEqualityComparator( $dataItem, $property, $joinVariable, $orderByProperty ): Condition {
 		$expElement = $this->exporter->newAuxiliaryExpElement( $dataItem );
 
 		if ( $expElement === null ) {
@@ -233,7 +234,7 @@ class ValueDescriptionInterpreter implements DescriptionInterpreter {
 		return $result;
 	}
 
-	private function createFilterConditionToMatchRegexPattern( Uri|WikiPage|Blob $dataItem, &$joinVariable, string $comparator, string $pattern ) {
+	private function createFilterConditionToMatchRegexPattern( Uri|WikiPage|Blob $dataItem, &$joinVariable, string $comparator, string $pattern ): Condition {
 		$flag = $this->conditionBuilder->isSetFlag( SMW_SPARQL_QF_NOCASE ) ? 'i' : 's';
 
 		if ( $dataItem instanceof Blob ) {

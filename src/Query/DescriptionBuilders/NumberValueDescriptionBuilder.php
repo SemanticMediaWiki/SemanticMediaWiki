@@ -4,6 +4,7 @@ namespace SMW\Query\DescriptionBuilders;
 
 use SMW\DataItems\Number;
 use SMW\DataValues\NumberValue;
+use SMW\Query\Language\Description;
 
 /**
  * @private
@@ -37,7 +38,7 @@ class NumberValueDescriptionBuilder extends DescriptionBuilder {
 	 *
 	 * @return Description
 	 */
-	public function newDescription( NumberValue $dataValue, $value ) {
+	public function newDescription( NumberValue $dataValue, $value ): Description {
 		$comparator = SMW_CMP_EQ;
 
 		$this->dataValue = $dataValue;

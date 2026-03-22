@@ -305,7 +305,7 @@ class Localizer {
 	 *
 	 * @return string|false
 	 */
-	public static function getLanguageCodeFrom( &$value ) {
+	public static function getLanguageCodeFrom( &$value ): string|false {
 		return self::getAnnotatedLanguageCodeFrom( $value );
 	}
 
@@ -360,7 +360,7 @@ class Localizer {
 	 *
 	 * @return string|false
 	 */
-	public static function getAnnotatedLanguageCodeFrom( &$value ) {
+	public static function getAnnotatedLanguageCodeFrom( &$value ): false|string {
 		if ( strpos( $value, '@' ) === false ) {
 			return false;
 		}

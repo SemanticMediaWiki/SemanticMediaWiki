@@ -388,7 +388,7 @@ class EntityIdManagerTest extends TestCase {
 				if ( $table === SQLStore::ID_TABLE ) {
 					return [ $row ];
 				}
-				return null;
+				return [];
 			} );
 
 		$instance = new EntityIdManager(
@@ -399,8 +399,8 @@ class EntityIdManagerTest extends TestCase {
 		$this->assertEquals(
 			[
 				'smw_object_ids' => [ $expected ],
-				'smw_fpt_redi' => null,
-				'smw_di_wikipage' => null
+				'smw_fpt_redi' => [],
+				'smw_di_wikipage' => []
 			],
 			$instance->findDuplicates( SQLStore::ID_TABLE )
 		);

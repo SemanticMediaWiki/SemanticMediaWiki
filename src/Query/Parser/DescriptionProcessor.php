@@ -275,7 +275,7 @@ class DescriptionProcessor {
 		}
 	}
 
-	private function newConjunction( Description $currentDescription, Description $newDescription ) {
+	private function newConjunction( Description $currentDescription, Description $newDescription ): Description {
 		if ( $this->queryFeatures & SMW_CONJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newConjunction( [ $currentDescription, $newDescription ] );
 		}
@@ -285,7 +285,7 @@ class DescriptionProcessor {
 		return $currentDescription;
 	}
 
-	private function newDisjunction( Description $currentDescription, Description $newDescription ) {
+	private function newDisjunction( Description $currentDescription, Description $newDescription ): Description {
 		if ( $this->queryFeatures & SMW_DISJUNCTION_QUERY ) {
 			return $this->descriptionFactory->newDisjunction( [ $currentDescription, $newDescription ] );
 		}

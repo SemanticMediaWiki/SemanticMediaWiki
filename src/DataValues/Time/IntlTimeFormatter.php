@@ -51,7 +51,7 @@ class IntlTimeFormatter {
 	 *
 	 * @return string|bool
 	 */
-	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ) {
+	public function getLocalizedFormat( $formatFlag = self::LOCL_DEFAULT ): false|string|array {
 		$dateTime = $this->dataItem->asDateTime();
 		$timezone = '';
 

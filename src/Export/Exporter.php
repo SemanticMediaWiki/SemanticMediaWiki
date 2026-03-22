@@ -584,7 +584,7 @@ class Exporter {
 	 * @param string $uri string of the URI to be expanded
 	 * @return string of the expanded URI
 	 */
-	public function expandURI( $uri ) {
+	public function expandURI( $uri ): string|array {
 		self::initBaseURIs();
 		$uri = str_replace(
 			[
@@ -617,7 +617,7 @@ class Exporter {
 	/**
 	 * @return string
 	 */
-	public function decodeURI( $uri ) {
+	public function decodeURI( $uri ): string|array {
 		return Escaper::decodeUri( $uri );
 	}
 
