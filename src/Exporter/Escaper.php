@@ -20,7 +20,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	public static function encodePage( WikiPage $diWikiPage ) {
+	public static function encodePage( WikiPage $diWikiPage ): string|array {
 		$localName = '';
 
 		if ( $diWikiPage->getInterwiki() !== '' ) {
@@ -57,7 +57,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	public static function encodeUri( $uri ) {
+	public static function encodeUri( $uri ): string|array {
 		$uri = $GLOBALS['smwgExportResourcesAsIri'] ? $uri : wfUrlencode( $uri );
 
 		$uri = str_replace(
@@ -82,7 +82,7 @@ class Escaper {
 	 *
 	 * @return string
 	 */
-	public static function decodeUri( $uri ) {
+	public static function decodeUri( $uri ): string|array {
 		$uri = str_replace(
 			[ '-2A', '-2C', '-3B', '-3C', '-3E', '-28', '-29', '-5B', '-5D', '-7B', '-7D', '-5C', '-24', '-5E', '-3A', '-22', '-23', '-26', '-27', '-2B', '-21', '-25', '-' ],
 			[ '*', ',', ';', '<', '>', '(', ')', '[', ']', '{', '}', '\\', '$', '^', ':', '"', '#', '&', "'", '+', '!', '%', '%' ],

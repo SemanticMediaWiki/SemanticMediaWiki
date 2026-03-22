@@ -65,7 +65,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return SearchResult
 	 */
-	public function next() {
+	public function next(): SearchResult|false {
 		$page = current( $this->pages );
 		$searchResult = false;
 

@@ -171,7 +171,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ): void {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, string $position, array $attributes ): void {
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -192,7 +192,7 @@ class SQLiteTableBuilder extends TableBuilder {
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ) {
+	private function doCreateField( $tableName, $fieldName, string $position, string $fieldType, string $default ) {
 		if ( strpos( $tableName, 'ft_search' ) !== false ) {
 			return $this->reportMessage( "   ... virtual tables can not be altered in SQLite ...\n" );
 		}
@@ -218,12 +218,12 @@ class SQLiteTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ): void {
+	private function doUpdateFieldType( $tableName, int|string $fieldName, string $position, $oldFieldType, string $newFieldType ): void {
 		$this->reportMessage( "   ... changing field type is not supported in SQLite (http://www.sqlite.org/omitted.html) \n" );
 		$this->reportMessage( "       Please delete and reinitialize the tables to remove obsolete data, or just keep it.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName, $attributes ): void {
+	private function doDropField( $tableName, int|string $fieldName, ?array $attributes ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$fields = $attributes['fields'];
@@ -327,13 +327,13 @@ class SQLiteTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ): void {
+	private function doDropIndex( $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns, array $indexOptions ) {
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}

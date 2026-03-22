@@ -107,7 +107,7 @@ class CommonExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'error', 'smw-property-name-reserved', $propertyName ];
 	}
 
-	private function checkUniqueness( $property ): void {
+	private function checkUniqueness( Property $property ): void {
 		if ( $this->store->getObjectIds()->isUnique( $property ) ) {
 			return;
 		}

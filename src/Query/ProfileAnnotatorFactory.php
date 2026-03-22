@@ -30,7 +30,7 @@ class ProfileAnnotatorFactory {
 	 *
 	 * @return ProfileAnnotator
 	 */
-	public function newProfileAnnotator( Query $query, $format ) {
+	public function newProfileAnnotator( Query $query, $format ): ProfileAnnotator {
 		$profileAnnotator = $this->newDescriptionProfileAnnotator(
 			$query
 		);
@@ -88,11 +88,11 @@ class ProfileAnnotatorFactory {
 		return $profileAnnotator;
 	}
 
-	private function newFormatProfileAnnotator( $profileAnnotator, $format ): FormatProfileAnnotator {
+	private function newFormatProfileAnnotator( DescriptionProfileAnnotator $profileAnnotator, $format ): FormatProfileAnnotator {
 		return new FormatProfileAnnotator( $profileAnnotator, $format );
 	}
 
-	private function newParametersProfileAnnotator( $profileAnnotator, $query ) {
+	private function newParametersProfileAnnotator( ProfileAnnotator $profileAnnotator, Query $query ): ProfileAnnotator {
 		if ( $query->getOption( Query::OPT_PARAMETERS ) === false ) {
 			return $profileAnnotator;
 		}
@@ -100,7 +100,7 @@ class ProfileAnnotatorFactory {
 		return new ParametersProfileAnnotator( $profileAnnotator, $query );
 	}
 
-	private function newDurationProfileAnnotator( $profileAnnotator, $duration ) {
+	private function newDurationProfileAnnotator( ProfileAnnotator $profileAnnotator, $duration ): ProfileAnnotator {
 		if ( $duration == 0 ) {
 			return $profileAnnotator;
 		}
@@ -108,7 +108,7 @@ class ProfileAnnotatorFactory {
 		return new DurationProfileAnnotator( $profileAnnotator, $duration );
 	}
 
-	private function newSourceProfileAnnotator( $profileAnnotator, $querySource ) {
+	private function newSourceProfileAnnotator( ProfileAnnotator $profileAnnotator, $querySource ): ProfileAnnotator {
 		if ( $querySource === '' || $querySource === null ) {
 			return $profileAnnotator;
 		}
@@ -116,7 +116,7 @@ class ProfileAnnotatorFactory {
 		return new SourceProfileAnnotator( $profileAnnotator, $querySource );
 	}
 
-	private function newStatusCodeProfileAnnotator( $profileAnnotator, $statusCodes ) {
+	private function newStatusCodeProfileAnnotator( ProfileAnnotator $profileAnnotator, $statusCodes ): ProfileAnnotator {
 		if ( $statusCodes === false || $statusCodes === null || $statusCodes === [] ) {
 			return $profileAnnotator;
 		}
@@ -124,7 +124,7 @@ class ProfileAnnotatorFactory {
 		return new StatusCodeProfileAnnotator( $profileAnnotator, $statusCodes );
 	}
 
-	private function newSchemaLinkProfileAnnotator( $profileAnnotator, $schemaLink ) {
+	private function newSchemaLinkProfileAnnotator( ProfileAnnotator $profileAnnotator, $schemaLink ): ProfileAnnotator {
 		if ( $schemaLink === false || $schemaLink === null ) {
 			return $profileAnnotator;
 		}

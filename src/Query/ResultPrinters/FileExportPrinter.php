@@ -105,7 +105,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 		return $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 
-	private function httpHeader( $string ): void {
+	private function httpHeader( string $string ): void {
 		$this->httpHeader ? header( $string ) : '';
 	}
 

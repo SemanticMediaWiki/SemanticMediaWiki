@@ -442,7 +442,7 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function makeSelectOptions( $options ) {
+	public function makeSelectOptions( $options ): array {
 		return OptionsBuilder::makeSelectOptions( $this, $options );
 	}
 
@@ -680,8 +680,6 @@ class Database {
 	}
 
 	/**
-	 * @TransactionHandler
-	 *
 	 * @since 3.1
 	 *
 	 * @param string $fname
@@ -716,7 +714,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function inSectionTransaction( $fname = __METHOD__ ) {
+	public function inSectionTransaction( $fname = __METHOD__ ): bool {
 		return $this->transactionHandler->inSectionTransaction( $fname );
 	}
 

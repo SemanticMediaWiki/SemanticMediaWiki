@@ -138,7 +138,7 @@ class PropertyLabelSimilarityLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function matchLabels( $propertyList, $withType ): array {
+	private function matchLabels( array $propertyList, $withType ): array {
 		$similarities = [];
 		$lookupComplete = [];
 
@@ -228,7 +228,7 @@ class PropertyLabelSimilarityLookup {
 		return md5( implode( '', $hashing ) );
 	}
 
-	private function getSummary( Property $first, Property $second, $percent, $withType ): array {
+	private function getSummary( Property $first, Property $second, float $percent, $withType ): array {
 		$summary = [];
 
 		if ( $withType ) {

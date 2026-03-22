@@ -364,7 +364,7 @@ class Highlighter {
 		return $settings;
 	}
 
-	private function title( $content, $language ): string {
+	private function title( $content, string|int $language ): string {
 		// Pre-process the content when used as title to avoid breaking elements
 		// (URLs etc.)
 		$content = $content ?? '';

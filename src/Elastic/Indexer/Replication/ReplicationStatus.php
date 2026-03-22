@@ -113,7 +113,7 @@ class ReplicationStatus {
 	 * @return bool|Time
 	 * @throws RuntimeException
 	 */
-	public function getModificationDate( $id ) {
+	public function getModificationDate( $id ): false|Time {
 		$params = [
 			'index' => $this->connection->getIndexName( ElasticClient::TYPE_DATA ),
 			'id'    => $id,

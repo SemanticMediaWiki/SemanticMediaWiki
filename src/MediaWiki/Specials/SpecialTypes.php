@@ -177,7 +177,7 @@ class SpecialTypes extends SpecialPage {
 		) . $html;
 	}
 
-	private function getPropertiesByType( $typeLabel ) {
+	private function getPropertiesByType( string|array $typeLabel ) {
 		$typeValue = DataValueFactory::getInstance()->newTypeIDValue(
 			TypesValue::TYPE_ID,
 			$typeLabel
@@ -334,7 +334,7 @@ class SpecialTypes extends SpecialPage {
 		);
 	}
 
-	private function find_errors( $dataValue, $typeId, $label ) {
+	private function find_errors( $dataValue, $typeId, string $label ) {
 		$errors = [];
 
 		if ( $typeId === '_geo' && $dataValue instanceof ErrorValue ) {
@@ -356,7 +356,7 @@ class SpecialTypes extends SpecialPage {
 		}
 	}
 
-	private function find_extras( $dataValue, $typeId, $label ): string {
+	private function find_extras( $dataValue, $typeId, string $label ): string {
 		$html = '';
 
 		if ( $typeId === '_mlt_rec' ) {
@@ -398,7 +398,7 @@ class SpecialTypes extends SpecialPage {
 	/**
 	 * @return non-empty-array<list>
 	 */
-	private function makeTypeList( $typeLabels ): array {
+	private function makeTypeList( array $typeLabels ): array {
 		$contents = [];
 		$linker = smwfGetLinker();
 

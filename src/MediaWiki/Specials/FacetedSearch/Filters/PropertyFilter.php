@@ -109,7 +109,7 @@ class PropertyFilter {
 		);
 	}
 
-	private function matchFilter( $key, $count, &$list ) {
+	private function matchFilter( int|string $key, $count, &$list ) {
 		$property = WikiPage::newFromText( $key, SMW_NS_PROPERTY );
 		$propertyFilters = $this->urlArgs->getArray( 'pv' );
 

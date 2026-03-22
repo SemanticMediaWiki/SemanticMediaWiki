@@ -33,7 +33,7 @@ class StatsFormatter {
 	 *
 	 * @return string|array
 	 */
-	public static function format( array $stats, $format = null ) {
+	public static function format( array $stats, $format = null ): string|array {
 		$output = '';
 
 		if ( $format === self::FORMAT_PLAIN ) {
@@ -106,7 +106,7 @@ class StatsFormatter {
 	/**
 	 * @return mixed[]
 	 */
-	private static function stringToArray( $separator, $path, $value ): array {
+	private static function stringToArray( $separator, int|string $path, $value ): array {
 		$pos = strpos( $path, $separator );
 
 		if ( $pos === false ) {

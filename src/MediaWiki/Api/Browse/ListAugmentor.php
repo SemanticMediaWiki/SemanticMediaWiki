@@ -69,7 +69,7 @@ class ListAugmentor {
 		return $res;
 	}
 
-	private function addUsageCount( &$res ): void {
+	private function addUsageCount( array &$res ): void {
 		$list = $res['query'];
 
 		$db = $this->store->getConnection( 'mw.db' );
@@ -93,7 +93,7 @@ class ListAugmentor {
 		$res['query'] = $list;
 	}
 
-	private function addPreferredPropertyLabel( &$res, array $languageCodes ): void {
+	private function addPreferredPropertyLabel( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 
 		foreach ( $list as $key => $value ) {
@@ -112,7 +112,7 @@ class ListAugmentor {
 		$res['query'] = $list;
 	}
 
-	private function addPropertyDescription( &$res, array $languageCodes ): void {
+	private function addPropertyDescription( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 

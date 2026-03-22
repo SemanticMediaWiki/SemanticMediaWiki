@@ -78,7 +78,7 @@ class ShapeConstraint implements Constraint {
 		}
 	}
 
-	private function check( $constraint, $dataValue ): void {
+	private function check( $constraint, DataValue $dataValue ): void {
 		$errors = [];
 
 		if ( !isset( $constraint['property'] ) ) {
@@ -127,7 +127,7 @@ class ShapeConstraint implements Constraint {
 		$this->reportError( $dataValue, $errors );
 	}
 
-	private function isType( $type, $property ): bool {
+	private function isType( $type, Property $property ): bool {
 		$diType = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyTypeId()
 		);
@@ -162,7 +162,7 @@ class ShapeConstraint implements Constraint {
 		return $diType === $type;
 	}
 
-	private function hasMinLength( $minLength, $property ): bool {
+	private function hasMinLength( $minLength, Property $property ): bool {
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -185,7 +185,7 @@ class ShapeConstraint implements Constraint {
 		return true;
 	}
 
-	private function hasMaxCardinality( $maxCardinality, $property ): bool {
+	private function hasMaxCardinality( $maxCardinality, Property $property ): bool {
 		$dataItems = $this->semanticData->getPropertyValues(
 			$property
 		);
@@ -197,7 +197,7 @@ class ShapeConstraint implements Constraint {
 		return true;
 	}
 
-	private function reportError( $dataValue, array $errors ): void {
+	private function reportError( DataValue $dataValue, array $errors ): void {
 		if ( $errors === [] ) {
 			return;
 		}

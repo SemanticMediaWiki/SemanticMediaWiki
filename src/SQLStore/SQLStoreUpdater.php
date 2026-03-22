@@ -133,7 +133,7 @@ class SQLStoreUpdater {
 		return $status;
 	}
 
-	private function doDelete( $id, $subject, $subobjectListFinder, &$extensionList ): void {
+	private function doDelete( $id, WikiPage $subject, $subobjectListFinder, &$extensionList ): void {
 		$this->semanticDataLookup->invalidateCache( $id );
 
 		if ( $subject->getNamespace() === SMW_NS_CONCEPT ) { // make sure to clear caches
@@ -380,7 +380,7 @@ class SQLStoreUpdater {
 		);
 	}
 
-	private function makeSortKey( $subject, $data ) {
+	private function makeSortKey( WikiPage $subject, SemanticData $data ): string|array {
 		// Don't mind the delete process
 		if ( $data->getOption( SemanticData::PROC_DELETE ) ) {
 			return '';

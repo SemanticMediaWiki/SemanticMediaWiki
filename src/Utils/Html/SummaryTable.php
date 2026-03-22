@@ -138,7 +138,7 @@ class SummaryTable {
 		);
 	}
 
-	private function tableAndImage( $params ) {
+	private function tableAndImage( array $params ) {
 		$html = Html::rawElement(
 			'div',
 			[
@@ -164,7 +164,7 @@ class SummaryTable {
 		);
 	}
 
-	private function table( $params ) {
+	private function table( array $params ) {
 		$rows = '';
 		$html = '';
 

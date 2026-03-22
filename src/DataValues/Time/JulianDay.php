@@ -120,7 +120,7 @@ class JulianDay implements CalendarModel {
 	 *
 	 * @return float offset for a Julian Day number to get this time
 	 */
-	protected static function time2JDoffset( $hours, $minutes, $seconds ) {
+	protected static function time2JDoffset( $hours, $minutes, $seconds ): int|float {
 		return ( $hours / 24 ) + ( $minutes / ( 60 * 24 ) ) + ( $seconds / ( 3600 * 24 ) );
 	}
 

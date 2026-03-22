@@ -188,7 +188,7 @@ class QueryEngine implements IQueryEngine {
 		return $result;
 	}
 
-	private function newDebugQueryResult( $params ) {
+	private function newDebugQueryResult( array $params ) {
 		$params['explain'] = $this->options->dotGet( 'query.debug.explain', false );
 
 		$connection = $this->store->getConnection( 'elastic' );
@@ -225,7 +225,7 @@ class QueryEngine implements IQueryEngine {
 		return $html;
 	}
 
-	private function newCountQueryResult( $query, $params ) {
+	private function newCountQueryResult( Query $query, array $params ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$result = $connection->count( $params );
 
@@ -244,7 +244,7 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function newInstanceQueryResult( $query, array $params ) {
+	private function newInstanceQueryResult( Query $query, array $params ) {
 		$connection = $this->store->getConnection( 'elastic' );
 		$scoreSet = new ScoreSet();
 		$excerpts = new Excerpts();
@@ -333,7 +333,7 @@ class QueryEngine implements IQueryEngine {
 		return $queryResult;
 	}
 
-	private function addHighlight( &$body ): void {
+	private function addHighlight( array &$body ): void {
 		if ( ( $type = $this->options->dotGet( 'query.highlight.fragment.type', false ) ) === false ) {
 			return;
 		}

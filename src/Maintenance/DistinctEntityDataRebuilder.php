@@ -207,7 +207,7 @@ class DistinctEntityDataRebuilder {
 		return $this->filters !== [];
 	}
 
-	private function getPagesFromQuery() {
+	private function getPagesFromQuery(): array {
 		if ( !$this->options->has( 'query' ) ) {
 			return [];
 		}
@@ -267,7 +267,7 @@ class DistinctEntityDataRebuilder {
 	/**
 	 * @return mixed[]
 	 */
-	private function normalize( $list ): array {
+	private function normalize( array $list ): array {
 		$titleCache = [];
 		$p = [];
 
@@ -293,7 +293,7 @@ class DistinctEntityDataRebuilder {
 		return $p;
 	}
 
-	private function reportMessage( $message, $output = true ): void {
+	private function reportMessage( string $message, $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

@@ -249,7 +249,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function doExecuteDebugQueryResult( $debugFormatter, $qobj, $sqlOptions, &$entries ) {
+	private function doExecuteDebugQueryResult( DebugFormatter $debugFormatter, $qobj, array $sqlOptions, array &$entries ) {
 		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
 			$entries['SQL Query'] = 'Empty result, no SQL query created.';
 			return $entries['SQL Query'];
@@ -554,7 +554,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( $message, $context = [] ): void {
+	private function log( string $message, $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

@@ -4,6 +4,7 @@ namespace SMW\Elastic\Indexer\Rebuilder;
 
 use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\DocumentCreator;
@@ -305,7 +306,7 @@ class Rebuilder {
 		);
 	}
 
-	private function fetchRawText( $dataItem ) {
+	private function fetchRawText( WikiPage $dataItem ) {
 		$config = $this->client->getConfig();
 
 		if (
@@ -321,7 +322,7 @@ class Rebuilder {
 		return '';
 	}
 
-	private function prepareIndexByType( $type ): void {
+	private function prepareIndexByType( string $type ): void {
 		$index = $this->client->getIndexName( $type );
 
 		if ( isset( $this->versions[$type] ) ) {
@@ -342,11 +343,11 @@ class Rebuilder {
 		$this->client->putSettings( $params );
 	}
 
-	private function refreshIndexByType( $type ): void {
+	private function refreshIndexByType( string $type ): void {
 		$this->client->refresh( [ 'index' => $this->client->getIndexName( $type ) ] );
 	}
 
-	private function setDefaultByType( $type ): void {
+	private function setDefaultByType( string $type ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -413,7 +414,7 @@ class Rebuilder {
 		);
 	}
 
-	private function createIndexByType( $type ): void {
+	private function createIndexByType( string $type ): void {
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
 		if ( ( $version = $this->client->getLock( $type ) ) === false ) {
@@ -441,7 +442,7 @@ class Rebuilder {
 		$this->client->setLock( $type, $version );
 	}
 
-	private function rolloverByTypeAndVersion( $type, $version ): void {
+	private function rolloverByTypeAndVersion( string $type, $version ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$old = $this->installer->rollover(

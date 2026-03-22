@@ -50,7 +50,7 @@ class LastOptimizationRunMaintenanceAlertTaskHandler extends TaskHandler {
 		return $this->buildHTML( $lastRun, $daysDiff );
 	}
 
-	private function buildHTML( $lastRun, $daysDiff ) {
+	private function buildHTML( $lastRun, int $daysDiff ) {
 		if ( $daysDiff < self::DAYS_THRESHOLD ) {
 			return '';
 		}

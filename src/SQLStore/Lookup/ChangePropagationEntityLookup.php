@@ -128,7 +128,7 @@ class ChangePropagationEntityLookup {
 		return $appendIterator;
 	}
 
-	private function fetchOtherReferencesOnTypePropagation( $property ) {
+	private function fetchOtherReferencesOnTypePropagation( Property $property ) {
 		// Find other references only on a type propagation (which causes a
 		// change of table/id assignments) for entity references
 		if ( $this->isTypePropagation === false ) {

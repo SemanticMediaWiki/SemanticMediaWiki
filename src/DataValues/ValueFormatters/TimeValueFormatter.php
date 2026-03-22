@@ -114,7 +114,7 @@ class TimeValueFormatter extends DataValueFormatter {
 	 * * 'maximize': complete the value with maximal conceivable value
 	 * @return string
 	 */
-	private function getISO8601DateInternal( $belowPrecisionHandling ): string {
+	private function getISO8601DateInternal( string $belowPrecisionHandling ): string {
 		$cut = $belowPrecisionHandling === 'cut';
 		$minimize = $belowPrecisionHandling === 'minimize';
 

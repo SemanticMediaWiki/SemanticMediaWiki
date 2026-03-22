@@ -515,7 +515,7 @@ class Infolink {
 	 *
 	 * @return array
 	 */
-	public static function decodeParameters( $titleParam = '', $allParams = false ) {
+	public static function decodeParameters( $titleParam = '', $allParams = false ): array {
 		global $wgRequest;
 
 		$result = [];
@@ -555,7 +555,7 @@ class Infolink {
 	 *
 	 * @return string|array
 	 */
-	public static function encodeCompactLink( $value, $compound = false ) {
+	public static function encodeCompactLink( $value, $compound = false ): array|string {
 		// Expect to gain on larger strings and set an identifier to
 		// distinguish between compressed and non compressed
 		if ( mb_strlen( $value ) > 150 ) {

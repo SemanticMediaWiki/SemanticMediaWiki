@@ -134,7 +134,7 @@ class ConceptMapper implements DataItemMapper {
 		return $expData;
 	}
 
-	private function mapValueDescription( ValueDescription $description, &$exact ) {
+	private function mapValueDescription( ValueDescription $description, &$exact ): Element|false|null {
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
 			$result = $this->exporter->newExpElement( $description->getDataItem() );
 		} else {

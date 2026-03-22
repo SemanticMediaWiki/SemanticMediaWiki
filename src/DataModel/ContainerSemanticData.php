@@ -110,7 +110,7 @@ class ContainerSemanticData extends SemanticData {
 	 * @return WikiPage subject
 	 * @throws DataItemException
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		$error = "This container has been classified as anonymous and by trying to access" .
 		" its subject (that has not been given any) an exception is raised to inform about" .
 		" the incorrect usage. An anonymous container can only be used for a search pattern match.";

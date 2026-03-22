@@ -160,7 +160,7 @@ class IntlNumberFormatter {
 	 * @param int|false $precision optional positive integer, controls how many digits after
 	 * the decimal point are shown
 	 */
-	private function doFormatByHeuristicRuleWith( $value, $precision = false ): string {
+	private function doFormatByHeuristicRuleWith( $value, bool $precision = false ): string {
 		// BC configuration to keep default behaviour
 		$precision = $this->defaultPrecision;
 
@@ -356,7 +356,7 @@ class IntlNumberFormatter {
 		return $language;
 	}
 
-	private function getPreferredLocalizedSeparator( $custom, $standard, $language ) {
+	private function getPreferredLocalizedSeparator( string $custom, string $standard, $language ) {
 		if ( $this->options->has( $custom ) && ( $separator = $this->options->get( $custom ) ) !== false ) {
 			return $separator;
 		}

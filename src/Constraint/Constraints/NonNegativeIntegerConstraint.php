@@ -63,7 +63,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 		}
 	}
 
-	private function check( $dataValue ): void {
+	private function check( DataValue $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 
 		if ( $dataItem->getDIType() !== DataItem::TYPE_NUMBER ) {
@@ -78,7 +78,7 @@ class NonNegativeIntegerConstraint implements Constraint {
 		$this->reportError( $dataValue, $number );
 	}
 
-	private function reportError( $dataValue, $number ): void {
+	private function reportError( DataValue $dataValue, $number ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError( new ConstraintError( [

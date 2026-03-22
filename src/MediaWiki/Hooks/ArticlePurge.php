@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
@@ -64,7 +65,7 @@ class ArticlePurge implements HookListener {
 		return true;
 	}
 
-	private function invalidateResultCache( $store, $title ): void {
+	private function invalidateResultCache( $store, Title $title ): void {
 		$dependency_list = $store->getPropertyValues(
 			\SMW\DataItems\WikiPage::newFromTitle( $title ),
 			new Property( '_ASK' )

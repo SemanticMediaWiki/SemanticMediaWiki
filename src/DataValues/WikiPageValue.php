@@ -512,7 +512,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @return array
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array {
 		if ( $this->isValid() ) {
 			return [ rawurlencode( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) ) ];
 		} else {

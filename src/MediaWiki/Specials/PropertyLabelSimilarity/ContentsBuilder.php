@@ -71,7 +71,7 @@ class ContentsBuilder {
 		return $html;
 	}
 
-	private function getForm( $limit, $offset, $resultCount, $threshold, $type ): string {
+	private function getForm( int $limit, int $offset, int $resultCount, $threshold, $type ): string {
 		$exemptionProperty = $this->propertyLabelSimilarityLookup->getExemptionProperty();
 		$lookupCount = $this->propertyLabelSimilarityLookup->getLookupCount();
 
@@ -122,7 +122,7 @@ class ContentsBuilder {
 		return Html::rawElement( 'div', [ 'class' => 'plainlinks' ], $html ) . Html::element( 'p', [], '' );
 	}
 
-	private function msg( $parameters, $type = Message::TEXT ): string {
+	private function msg( string|array $parameters, int $type = Message::TEXT ): string {
 		return Message::get( $parameters, $type, Message::USER_LANGUAGE );
 	}
 

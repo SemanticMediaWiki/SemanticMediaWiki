@@ -186,7 +186,7 @@ class LinksProcessor {
 		return [ $properties, $value, $valueCaption ];
 	}
 
-	private function setAnnotation( $value ): string {
+	private function setAnnotation( string $value ): string {
 		switch ( $value ) {
 			case 'on':
 				$this->isAnnotation = true;

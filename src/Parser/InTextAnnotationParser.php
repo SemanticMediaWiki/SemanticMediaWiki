@@ -3,6 +3,7 @@
 namespace SMW\Parser;
 
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Localizer\Localizer;
@@ -445,7 +446,7 @@ class InTextAnnotationParser {
 		return $this->applicationFactory->getNamespaceExaminer()->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function makePropertyLink( $subject, $properties, $value, $caption ) {
+	private function makePropertyLink( WikiPage $subject, $properties, $value, $caption ) {
 		$property = end( $properties );
 		$linker = smwfGetLinker();
 		$class = 'smw-property';

@@ -191,7 +191,7 @@ class DataValueServiceFactory {
 		return $this->containerBuilder->singleton( 'DescriptionBuilderRegistry' );
 	}
 
-	private function getDispatchableValueFormatter( $dataValue ) {
+	private function getDispatchableValueFormatter( DataValue $dataValue ) {
 		if ( $this->dispatchingDataValueFormatter === null ) {
 			$this->dispatchingDataValueFormatter = $this->newDispatchingDataValueFormatter();
 		}

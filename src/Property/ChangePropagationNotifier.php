@@ -154,7 +154,7 @@ class ChangePropagationNotifier {
 		$this->doNotifyAndPostpone( $semanticData );
 	}
 
-	private function doCompare( $semanticData, $key ): void {
+	private function doCompare( SemanticData $semanticData, $key ): void {
 		$property = new Property( $key );
 
 		$newValues = $semanticData->getPropertyValues( $property );
@@ -167,7 +167,7 @@ class ChangePropagationNotifier {
 		$this->setDiff( !$this->isEqual( $oldValues, $newValues ), $key );
 	}
 
-	private function setDiff( $hasDiff, $key ): void {
+	private function setDiff( bool $hasDiff, $key ): void {
 		if ( !$hasDiff || $this->hasDiff ) {
 			return;
 		}

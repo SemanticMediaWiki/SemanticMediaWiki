@@ -162,7 +162,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	private static function getParameterList( $request, $params ) {
+	private static function getParameterList( WebRequest $request, $params ) {
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
 			return Infolink::decodeParameters( $params ?? '', true );
@@ -202,7 +202,7 @@ class ParametersProcessor {
 	/**
 	 * @return mixed[]
 	 */
-	private static function checkParameterList( $request, $parameterList, $printouts ): array {
+	private static function checkParameterList( WebRequest $request, $parameterList, array $printouts ): array {
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
@@ -269,7 +269,7 @@ class ParametersProcessor {
 		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 
-	private static function replace( $source, $target, $value ): string|array|null {
+	private static function replace( string $source, string $target, $value ): string|array|null {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
 			static function ( array $matches ) use ( $source, $target ) {

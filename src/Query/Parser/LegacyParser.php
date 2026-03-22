@@ -285,7 +285,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return Description|null
 	 */
-	private function getSubqueryDescription( &$setNS ) {
+	private function getSubqueryDescription( bool &$setNS ) {
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
@@ -394,7 +394,7 @@ class LegacyParser implements Parser {
 	 *
 	 * Parameters $setNS has the same use as in getSubqueryDescription().
 	 */
-	private function getLinkDescription( &$setNS ) {
+	private function getLinkDescription( bool &$setNS ) {
 		// This method is called when we encountered an opening '[['. The following
 		// block could be a Category-statement, fixed object, or property statement.
 
@@ -428,7 +428,7 @@ class LegacyParser implements Parser {
 	 * is in between "[[Category:" and the closing "]]" and create a
 	 * suitable description.
 	 */
-	private function getClassDescription( &$setNS, $category = true ) {
+	private function getClassDescription( bool &$setNS, bool $category = true ) {
 		// No subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$description = null;
 		$continue = true;
@@ -498,7 +498,7 @@ class LegacyParser implements Parser {
 	 * suitable description. The "::" is the first chunk on the current
 	 * string.
 	 */
-	private function getPropertyDescription( $propertyName, &$setNS ) {
+	private function getPropertyDescription( $propertyName, bool &$setNS ) {
 		// Consume separator ":=" or "::"
 		$this->readChunk();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -659,7 +659,7 @@ class LegacyParser implements Parser {
 	 * The first chunk behind the "[[" has already been read and is
 	 * passed as a parameter.
 	 */
-	private function getArticleDescription( $firstChunk, &$setNS ) {
+	private function getArticleDescription( string $firstChunk, bool &$setNS ) {
 		$chunk = $firstChunk;
 		$description = null;
 
@@ -718,7 +718,7 @@ class LegacyParser implements Parser {
 		return $this->finishLinkDescription( $chunk, true, $description, $setNS );
 	}
 
-	private function finishLinkDescription( $chunk, $hasNamespaces, $description, &$setNS ) {
+	private function finishLinkDescription( $chunk, bool $hasNamespaces, $description, bool &$setNS ) {
 		if ( $description === null ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
 		} elseif ( !$hasNamespaces && $setNS && $this->defaultNamespace !== null ) {
@@ -781,7 +781,7 @@ class LegacyParser implements Parser {
 	/**
 	 * @see Tokenizer::read
 	 */
-	private function readChunk( $stoppattern = '', $consume = true, $trim = true ) {
+	private function readChunk( string $stoppattern = '', bool $consume = true, bool $trim = true ) {
 		return $this->tokenizer->getToken( $this->currentString, $stoppattern, $consume, $trim );
 	}
 
@@ -789,7 +789,7 @@ class LegacyParser implements Parser {
 	 * Enter a new subblock in the query, which must at some time be terminated by the
 	 * given $endstring delimiter calling popDelimiter();
 	 */
-	private function pushDelimiter( $endstring ): void {
+	private function pushDelimiter( string $endstring ): void {
 		array_push( $this->separatorStack, $endstring );
 	}
 
@@ -798,7 +798,7 @@ class LegacyParser implements Parser {
 	 * If the delimiter does not match the top-most open block, false
 	 * will be returned. Otherwise return true.
 	 */
-	private function popDelimiter( $endstring ): bool {
+	private function popDelimiter( string $endstring ): bool {
 		$topdelim = array_pop( $this->separatorStack );
 		return ( $topdelim == $endstring );
 	}

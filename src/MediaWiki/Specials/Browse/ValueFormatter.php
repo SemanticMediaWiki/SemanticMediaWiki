@@ -157,7 +157,7 @@ class ValueFormatter {
 		return $proptext;
 	}
 
-	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ) {
+	private static function findPropertyLabel( PropertyValue $propertyValue, $incoming = false, $showInverse = false ): string|array|null {
 		$property = $propertyValue->getDataItem();
 		$contextPage = $propertyValue->getContextPage();
 
@@ -195,7 +195,7 @@ class ValueFormatter {
 	 *
 	 * @return string
 	 */
-	public static function addNonBreakingSpace( $text ) {
+	public static function addNonBreakingSpace( $text ): string|null|array {
 		$nonBreakingSpace = html_entity_decode( '&#160;', ENT_NOQUOTES, 'UTF-8' );
 		$text = preg_replace( '/[\s]/u', $nonBreakingSpace, $text ?? '', -1, $count );
 

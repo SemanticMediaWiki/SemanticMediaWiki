@@ -248,7 +248,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function form_fields( $data, $activeForm, $name, $definition ) {
+	private function form_fields( array $data, $activeForm, int|string $name, $definition ) {
 		// Short form, URL query conform
 		$s = self::toLowerCase( $name );
 		$this->formList[$s] = [ 'name' => $name, 'selected' => $activeForm === $s ];
@@ -284,7 +284,7 @@ class FormsBuilder {
 		);
 	}
 
-	private function preselect_namespaces( $preselect ): void {
+	private function preselect_namespaces( array $preselect ): void {
 		foreach ( $preselect as $k => $values ) {
 			$k = self::toLowerCase( $k );
 			$this->preselectNsList[$k] = [];
@@ -301,7 +301,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function hidden_namespaces( $hidden ): void {
+	private function hidden_namespaces( array $hidden ): void {
 		foreach ( $hidden as $ns ) {
 			if ( is_string( $ns ) && defined( $ns ) ) {
 				$this->hiddenNsList[] = constant( $ns );
@@ -313,7 +313,7 @@ class FormsBuilder {
 		}
 	}
 
-	private function findDescription( $descriptions, $name, $isActiveForm ) {
+	private function findDescription( $descriptions, int|string $name, bool $isActiveForm ) {
 		if ( !isset( $descriptions[$name] ) ) {
 			return '';
 		}

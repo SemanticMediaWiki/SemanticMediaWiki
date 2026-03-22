@@ -116,7 +116,7 @@ class ArticleViewHeader implements HookListener {
 		return $message === '';
 	}
 
-	private function message( $type, array $message ) {
+	private function message( string $type, array $message ) {
 		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
 		switch ( $type ) {
 			case 'error':

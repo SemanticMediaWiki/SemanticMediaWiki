@@ -5,6 +5,7 @@ namespace SMW\Elastic\Indexer\Attachment;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
 use SMW\Elastic\Connection\Client as ElasticClient;
@@ -244,7 +245,7 @@ class FileAttachment {
 		$this->logger->info( $msg, $context );
 	}
 
-	private function upsertDoc( $baseDocId, $subject, $property ) {
+	private function upsertDoc( $baseDocId, WikiPage $subject, Property $property ) {
 		$params = [
 			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];
@@ -274,7 +275,7 @@ class FileAttachment {
 		return $this->bulk->execute();
 	}
 
-	private function newContainerSemanticData( $dataItem, $doc ): ContainerSemanticData {
+	private function newContainerSemanticData( WikiPage $dataItem, $doc ): ContainerSemanticData {
 		$subobjectName = '_FILE' . $doc['_source']['file_sha1'];
 
 		$subject = new WikiPage(

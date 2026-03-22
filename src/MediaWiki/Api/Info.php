@@ -147,7 +147,7 @@ class Info extends ApiBase {
 	/**
 	 * @return mixed[]
 	 */
-	private function doMapResultInfoFrom( $map, $requestedInfo, $semanticStats ): array {
+	private function doMapResultInfoFrom( array $map, $requestedInfo, $semanticStats ): array {
 		$resultInfo = [];
 
 		foreach ( $map as $apiName => $smwName ) {

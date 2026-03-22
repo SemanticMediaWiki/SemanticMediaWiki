@@ -297,7 +297,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function convertConditionToString( Condition &$condition ) {
+	public function convertConditionToString( Condition &$condition ): string|array {
 		$conditionAsString = $condition->getWeakConditionString();
 
 		if ( ( $conditionAsString === '' ) && !$condition->isSafe() ) {
@@ -486,7 +486,7 @@ class ConditionBuilder {
 		}
 	}
 
-	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey, $order ) {
+	private function addOrderForUnknownPropertyKey( Condition &$condition, string $propertyKey, $order ) {
 		if ( $propertyKey === '' || $propertyKey === '#' ) { // order by result page sortkey
 
 			$this->addOrderByData(

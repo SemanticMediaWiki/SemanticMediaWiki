@@ -134,7 +134,7 @@ class ProximityPropertyValueLookup {
 	/**
 	 * @return mixed[][]|string[]
 	 */
-	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ): array {
+	private function fetchFromIDTable( $query, $pid, $table, $field, array $options, $search, $sort, int $limit, int $offset ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$continueOffset = 0;
 		$res = [];
@@ -230,7 +230,7 @@ class ProximityPropertyValueLookup {
 		return false;
 	}
 
-	private function getField( $property ): array {
+	private function getField( Property $property ): array {
 		$typeId = $property->findPropertyTypeID();
 		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 

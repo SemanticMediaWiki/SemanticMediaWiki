@@ -64,7 +64,7 @@ class DataItemHandlerFactory {
 		return $this->handlers[$type];
 	}
 
-	private function newHandlerByType( $type ) {
+	private function newHandlerByType( $type ): DataItemHandler {
 		switch ( $type ) {
 			case DataItem::TYPE_NUMBER:
 				$handler = new DINumberHandler( $this->store );

@@ -62,7 +62,7 @@ class SemanticDataSerializer implements Serializer {
 	 * @param SemanticData $semanticData The semantic data of the current subject.
 	 * @return array List of serialized direct properties with their values.
 	 */
-	private function doSerializeProperty( $semanticData ): array {
+	private function doSerializeProperty( SemanticData $semanticData ): array {
 		$properties = [];
 
 		foreach ( $semanticData->getProperties() as $property ) {
@@ -126,7 +126,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	private function doSerializeDataItem( $semanticData, $property ): array {
+	private function doSerializeDataItem( SemanticData $semanticData, $property ): array {
 		$dataItems = [];
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {

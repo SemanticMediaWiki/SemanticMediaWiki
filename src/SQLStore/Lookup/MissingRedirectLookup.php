@@ -59,7 +59,7 @@ class MissingRedirectLookup {
 		return $this->fetchFromTable( $namespaces );
 	}
 
-	private function fetchFromTable( $namespaces ) {
+	private function fetchFromTable( array $namespaces ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$options = [

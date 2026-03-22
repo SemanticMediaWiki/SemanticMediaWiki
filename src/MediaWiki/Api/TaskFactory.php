@@ -78,7 +78,7 @@ class TaskFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, ?User $user = null ) {
+	public function newByType( $type, ?User $user = null ): Task {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 

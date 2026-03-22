@@ -86,7 +86,7 @@ class ValueFilter {
 		return $cards;
 	}
 
-	private function newValueFilter( $property ): CheckboxRangeGroupValueFilter|RangeValueFilter|ListValueFilter|CheckboxValueFilter {
+	private function newValueFilter( int|string $property ): CheckboxRangeGroupValueFilter|RangeValueFilter|ListValueFilter|CheckboxValueFilter {
 		$prop = Property::newFromUserLabel(
 			$property
 		);
@@ -149,7 +149,7 @@ class ValueFilter {
 		throw new DefaultValueFilterNotFoundException( $property );
 	}
 
-	private function getType( $property ): string {
+	private function getType( Property $property ): string {
 		$type = DataTypeRegistry::getInstance()->getDataItemByType(
 			$property->findPropertyValueType()
 		);

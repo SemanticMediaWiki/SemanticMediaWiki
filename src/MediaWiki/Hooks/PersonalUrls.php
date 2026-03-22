@@ -53,7 +53,7 @@ class PersonalUrls implements HookListener {
 		return true;
 	}
 
-	private function getJobQueueWatchlist( $watchlist, $personalUrls ) {
+	private function getJobQueueWatchlist( $watchlist, array $personalUrls ) {
 		$queue = [];
 
 		foreach ( $watchlist as $job ) {
@@ -94,7 +94,7 @@ class PersonalUrls implements HookListener {
 	}
 
 	// https://stackoverflow.com/questions/1783089/array-splice-for-associative-arrays
-	private function splice( $array, $values, $offset ) {
+	private function splice( array $array, array $values, int|bool $offset ) {
 		return array_slice( $array, 0, $offset, true ) + $values + array_slice( $array, $offset, null, true );
 	}
 

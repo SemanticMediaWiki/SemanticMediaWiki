@@ -127,7 +127,7 @@ class HtmlTable {
 		return $this->concatenateRows( $rows, $htmlContext );
 	}
 
-	private function createRow( $content, $attributes, $count ) {
+	private function createRow( string $content, $attributes, int $count ) {
 		$alternate = $count % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {
@@ -139,7 +139,7 @@ class HtmlTable {
 		return Html::rawElement( 'tr', $attributes, $content );
 	}
 
-	private function concatenateHeaders( $headers, $htmlContext ) {
+	private function concatenateHeaders( array $headers, $htmlContext ) {
 		if ( $htmlContext ) {
 			return Html::rawElement( 'thead', [], implode( '', $headers ) );
 		}
@@ -147,7 +147,7 @@ class HtmlTable {
 		return implode( '', $headers );
 	}
 
-	private function concatenateRows( $rows, $htmlContext ) {
+	private function concatenateRows( array $rows, $htmlContext ) {
 		if ( $htmlContext ) {
 			return Html::rawElement( 'tbody', [], implode( '', $rows ) );
 		}

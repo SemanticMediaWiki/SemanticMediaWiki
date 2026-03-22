@@ -174,7 +174,7 @@ class PageBuilder {
 	/**
 	 * @return mixed[]
 	 */
-	private function getNearbyResults( $exactResults, $exactCount ): array {
+	private function getNearbyResults( array $exactResults, int $exactCount ): array {
 		$resultList = '';
 
 		$greaterResults = $this->queryResultLookup->doQueryForNearbyResults(
@@ -247,7 +247,7 @@ class PageBuilder {
 	 *
 	 * @return string HTML with the bullet list, including header
 	 */
-	private function makeResultList( $results, $number, $first, $highlight = false ): string {
+	private function makeResultList( array $results, $number, bool $first, bool $highlight = false ): string {
 		if ( $number > 0 ) {
 			$results = $first ?
 				array_slice( $results, 0, $number ) :
@@ -313,7 +313,7 @@ class PageBuilder {
 		return "<ul>$html</ul>";
 	}
 
-	private function canQueryNearbyResults( $exactCount ): bool {
+	private function canQueryNearbyResults( int $exactCount ): bool {
 		return $exactCount < ( $this->pageRequestOptions->limit / 3 ) && $this->pageRequestOptions->nearbySearch && $this->pageRequestOptions->valueString !== '';
 	}
 

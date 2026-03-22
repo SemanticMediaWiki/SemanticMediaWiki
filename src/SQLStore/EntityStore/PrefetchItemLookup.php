@@ -249,7 +249,7 @@ class PrefetchItemLookup {
 	/**
 	 * @return mixed[]
 	 */
-	private function buildList( $diHandler, $itemList, $requestOptions, $sequenceMap ): array {
+	private function buildList( $diHandler, $itemList, RequestOptions $requestOptions, $sequenceMap ): array {
 		$values = [];
 		$i = 0;
 

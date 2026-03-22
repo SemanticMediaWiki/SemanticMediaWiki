@@ -58,7 +58,7 @@ class OutdatedEntitiesMaxCountThresholdMaintenanceAlertTaskHandler extends TaskH
 		return $row !== false ? (int)$row->count : 0;
 	}
 
-	private function buildHTML( $count ) {
+	private function buildHTML( int $count ) {
 		$html = Html::rawElement(
 			'fieldset',
 			[

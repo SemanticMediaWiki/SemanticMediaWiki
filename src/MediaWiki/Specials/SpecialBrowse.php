@@ -92,7 +92,7 @@ class SpecialBrowse extends SpecialPage {
 		$this->addExternalHelpLinks( $dataValue );
 	}
 
-	private function getTemplateData( $webRequest, $dataValue, $isEmptyRequest ): array {
+	private function getTemplateData( $webRequest, $dataValue, bool $isEmptyRequest ): array {
 		$data = [];
 		if ( $isEmptyRequest && !$this->including() ) {
 			$data['html-output'] = Message::get( 'smw-browse-intro', Message::TEXT, Message::USER_LANGUAGE );

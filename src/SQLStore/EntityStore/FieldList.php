@@ -94,7 +94,7 @@ class FieldList {
 		}
 	}
 
-	private function matchKeyByCounts( $type, $key, $counts, &$list ): void {
+	private function matchKeyByCounts( string $type, $key, $counts, &$list ): void {
 		if ( $key === '_SKEY' ) {
 			return;
 		}

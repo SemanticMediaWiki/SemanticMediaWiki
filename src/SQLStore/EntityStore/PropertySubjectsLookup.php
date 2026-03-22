@@ -153,7 +153,7 @@ class PropertySubjectsLookup {
 		return $this->prefetch[$hash];
 	}
 
-	private function doFetch( $pid, TableDefinition $proptable, $dataItem = null, ?RequestOptions $requestOptions = null ) {
+	private function doFetch( $pid, TableDefinition $proptable, DataItem|array|null $dataItem, ?RequestOptions $requestOptions = null ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$group = false;
 
@@ -365,7 +365,7 @@ class PropertySubjectsLookup {
 		return $this->dataItemHandler->dataItemFromDBKeys( [ 'Blankpage/' . $title, NS_SPECIAL, '', '', '' ] );
 	}
 
-	private function getWhereConds( $query, $dataItem ): void {
+	private function getWhereConds( $query, DataItem|array|null $dataItem ): void {
 		$conds = '';
 
 		if ( $dataItem instanceof Container ) {
@@ -383,7 +383,7 @@ class PropertySubjectsLookup {
 		}
 	}
 
-	private function getIndexHint( $dataItemHandler, $pid, $dataItem = null ): string {
+	private function getIndexHint( $dataItemHandler, $pid, DataItem|array|null $dataItem ): string {
 		$index = '';
 
 		if ( $dataItem !== null || $dataItemHandler->getIndexHint( $dataItemHandler::IHINT_PSUBJECTS ) === '' ) {

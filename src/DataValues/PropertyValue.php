@@ -467,7 +467,7 @@ class PropertyValue extends DataValue {
 		return $this->m_dataitem->findPropertyTypeId();
 	}
 
-	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ): Property {
+	private function createDataItemFrom( bool $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ): Property {
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		// Probe on capitalizedFirstChar because we only want predefined

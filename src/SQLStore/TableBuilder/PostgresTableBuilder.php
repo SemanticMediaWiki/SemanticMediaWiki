@@ -185,7 +185,7 @@ EOT;
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ): void {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, string $position, array $attributes ): void {
 		$fieldType = $this->getStandardFieldType( $fieldType );
 		$keypos = strpos( $fieldType, ' PRIMARY KEY' );
 
@@ -262,7 +262,7 @@ EOT;
 		}
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ): void {
+	private function doCreateField( $tableName, $fieldName, string $position, $fieldType, string $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		// https://www.postgresql.org/docs/9.1/datatype-enum.html
@@ -280,7 +280,7 @@ EOT;
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ): void {
+	private function doDropField( $tableName, int|string $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -346,7 +346,7 @@ EOT;
 		}
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ) {
+	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns, array $indexOptions ) {
 		if ( $indexType === 'FULLTEXT' ) {
 			return $this->reportMessage( "   ... skipping the fulltext index creation ..." );
 		}
@@ -405,7 +405,7 @@ EOT;
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ): void {
+	private function doDropIndex( $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX IF EXISTS ' . $indexName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );

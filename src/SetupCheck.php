@@ -272,7 +272,7 @@ class SetupCheck {
 	 *
 	 * @return string
 	 */
-	public function getError( $isCli = false ) {
+	public function getError( $isCli = false ): string|array|null {
 		$error = [
 			'title' => '',
 			'content' => ''
@@ -358,7 +358,7 @@ class SetupCheck {
 		die();
 	}
 
-	private function header( $text ): void {
+	private function header( string $text ): void {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}
@@ -507,7 +507,7 @@ class SetupCheck {
 		return $default;
 	}
 
-	private function buildHTML( array $error ) {
+	private function buildHTML( array $error ): string|array|null {
 		$args = [
 			'logo' => Logo::get( 'small' ),
 			'title' => $error['title'] ?? '',

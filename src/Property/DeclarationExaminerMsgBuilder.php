@@ -60,7 +60,7 @@ class DeclarationExaminerMsgBuilder {
 		return $html;
 	}
 
-	private function makeHTML( $type, $message ) {
+	private function makeHTML( string $type, array $message ) {
 		$class = '';
 
 		if ( isset( $message['_merge'] ) ) {

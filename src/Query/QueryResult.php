@@ -235,7 +235,7 @@ class QueryResult {
 	 *
 	 * @return ResultArray[]|false
 	 */
-	public function getNext() {
+	public function getNext(): false|array {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
@@ -273,14 +273,14 @@ class QueryResult {
 	 *
 	 * @return WikiPage[]
 	 */
-	public function getResults() {
+	public function getResults(): array {
 		return $this->mResults;
 	}
 
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): WikiPage|false {
 		return reset( $this->mResults );
 	}
 
@@ -442,7 +442,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()

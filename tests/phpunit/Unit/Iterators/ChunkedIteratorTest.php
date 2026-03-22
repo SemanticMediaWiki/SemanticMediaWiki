@@ -4,6 +4,7 @@ namespace SMW\Tests\Unit\Iterators;
 
 use PHPUnit\Framework\TestCase;
 use SMW\Iterators\ChunkedIterator;
+use TypeError;
 
 /**
  * @covers \SMW\Iterators\ChunkedIterator
@@ -51,7 +52,7 @@ class ChunkedIteratorTest extends TestCase {
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-		$this->expectException( 'RuntimeException' );
+		$this->expectException( TypeError::class );
 		$instance = new ChunkedIterator( 2 );
 	}
 

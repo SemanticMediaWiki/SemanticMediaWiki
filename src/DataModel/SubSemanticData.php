@@ -212,7 +212,7 @@ class SubSemanticData implements JsonUnserializable {
 		}
 	}
 
-	private function appendSubSemanticData( $semanticData, $subobjectName ): void {
+	private function appendSubSemanticData( SemanticData $semanticData, $subobjectName ): void {
 		if ( $this->hasSubSemanticData( $subobjectName ) ) {
 			$this->subSemanticData[$subobjectName]->importDataFrom( $semanticData );
 

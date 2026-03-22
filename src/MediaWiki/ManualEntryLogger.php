@@ -64,7 +64,7 @@ class ManualEntryLogger {
 		return $logEntry->insert();
 	}
 
-	protected function newManualLogEntryForType( $type ) {
+	protected function newManualLogEntryForType( $type ): LogEntry {
 		if ( $this->logEntry !== null ) {
 			return $this->logEntry;
 		}

@@ -418,7 +418,7 @@ class CliMsgFormatter {
 		return sprintf( "%'{$placeHolder}{$len}s%s", ' ', $value ) . "\n";
 	}
 
-	private function trimContent( $content, $maxLen = self::MAX_LEN ) {
+	private function trimContent( string $content, int $maxLen = self::MAX_LEN ): string {
 		$length = mb_strlen( $content ) - 1;
 		$startOff = (int)floor( ( $maxLen / 2 ) - 3 );
 		$endOff = (int)floor( ( $maxLen / 2 ) - 3 );

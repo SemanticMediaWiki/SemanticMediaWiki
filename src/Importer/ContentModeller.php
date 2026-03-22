@@ -63,7 +63,7 @@ class ContentModeller {
 		return $contents;
 	}
 
-	private function newImportContents( $importContents, $fileDir, $value ) {
+	private function newImportContents( ImportContents $importContents, $fileDir, $value ) {
 		$importContents->setContentType( ImportContents::CONTENT_TEXT );
 
 		if ( !isset( $value['contents'] ) || $value['contents'] === '' ) {
@@ -79,7 +79,7 @@ class ContentModeller {
 		return $importContents;
 	}
 
-	private function setContents( $importContents, $fileDir, $contents ) {
+	private function setContents( ImportContents $importContents, $fileDir, $contents ) {
 		if ( !is_array( $contents ) || !isset( $contents['importFrom'] ) ) {
 			return $importContents->setContents( $contents );
 		}

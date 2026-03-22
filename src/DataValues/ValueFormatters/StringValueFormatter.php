@@ -104,7 +104,7 @@ class StringValueFormatter extends DataValueFormatter {
 		return $text;
 	}
 
-	private function getAbbreviatedText( $text, $length, $linker ): string {
+	private function getAbbreviatedText( string $text, int $length, $linker ): string {
 		if ( $linker === false || $linker === null ) {
 			$ellipsis = ' <span class="smwwarning">…</span> ';
 		} else {

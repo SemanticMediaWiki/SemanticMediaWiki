@@ -97,7 +97,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		return $this->newConjunction( $subdescriptions );
 	}
 
-	private function newConjunction( $subdescriptions ) {
+	private function newConjunction( array $subdescriptions ) {
 		$count = count( $subdescriptions );
 
 		if ( $count == 0 ) {
@@ -111,7 +111,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		return new Conjunction( $subdescriptions );
 	}
 
-	private function newSubdescription( $dataValue, $comparator ): SomeProperty {
+	private function newSubdescription( $dataValue, int|string $comparator ): SomeProperty {
 		$description = new ValueDescription(
 			$dataValue->getDataItem(),
 			$dataValue->getProperty(),

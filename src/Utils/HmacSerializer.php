@@ -80,7 +80,7 @@ class HmacSerializer {
 	 *
 	 * @return string|bool
 	 */
-	public static function serialize( $data, $key = null, $algo = 'md5' ) {
+	public static function serialize( $data, $key = null, $algo = 'md5' ): string|false {
 		if ( $key === null ) {
 			$key = $GLOBALS['wgSecretKey'];
 		}

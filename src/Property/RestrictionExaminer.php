@@ -127,7 +127,7 @@ class RestrictionExaminer {
 		}
 	}
 
-	private function isDeclarative( $property, $contextPage = null ) {
+	private function isDeclarative( Property $property, ?WikiPage $contextPage = null ) {
 		if ( $this->isQueryContext || $contextPage === null ) {
 			return false;
 		}
@@ -153,7 +153,7 @@ class RestrictionExaminer {
 		return $this->error;
 	}
 
-	private function isAnnotationRestricted( $property ) {
+	private function isAnnotationRestricted( Property $property ): false|array {
 		if ( $this->isQueryContext || $property->isUserDefined() ) {
 			return false;
 		}
@@ -169,7 +169,7 @@ class RestrictionExaminer {
 		return $this->error;
 	}
 
-	private function isCreateProtected( $property ) {
+	private function isCreateProtected( Property $property ) {
 		if ( $this->user === null || $this->createProtectionRight === false ) {
 			return false;
 		}

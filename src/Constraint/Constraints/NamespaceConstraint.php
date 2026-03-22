@@ -63,7 +63,7 @@ class NamespaceConstraint implements Constraint {
 		}
 	}
 
-	private function check( $namespaces, $dataValue ) {
+	private function check( $namespaces, DataValue $dataValue ) {
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
 
@@ -92,7 +92,7 @@ class NamespaceConstraint implements Constraint {
 		$this->reportError( $dataValue, $error );
 	}
 
-	private function reportError( $dataValue, $error ): void {
+	private function reportError( DataValue $dataValue, array $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

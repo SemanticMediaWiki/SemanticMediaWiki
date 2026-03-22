@@ -273,7 +273,7 @@ class RemoteRequestTest extends TestCase {
 		$result = $instance->getQueryResult( $this->query );
 
 		$this->assertInstanceOf( StringResult::class, $result );
-		$this->assertStringContainsString( 'smw-remote-source-unmatched-id', $result->getResults() );
+		$this->assertStringContainsString( 'smw-remote-source-unmatched-id', $result->getFormattedResult() );
 	}
 
 	public function testGetQueryResultWithMissingRequestId() {
@@ -316,7 +316,7 @@ class RemoteRequestTest extends TestCase {
 		$result = $instance->getQueryResult( $this->query );
 
 		$this->assertInstanceOf( StringResult::class, $result );
-		$this->assertStringContainsString( 'smw-remote-source-unmatched-id', $result->getResults() );
+		$this->assertStringContainsString( 'smw-remote-source-unmatched-id', $result->getFormattedResult() );
 	}
 
 }

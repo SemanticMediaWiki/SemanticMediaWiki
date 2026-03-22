@@ -122,7 +122,7 @@ class LinksUpdateComplete implements HookListener {
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateSemanticData( &$parserData, $title, $reason = '' ): void {
+	private function updateSemanticData( &$parserData, $title, string $reason = '' ): void {
 		$this->logger->info(
 			[
 				'LinksUpdateConstructed',

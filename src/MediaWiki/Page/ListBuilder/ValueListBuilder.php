@@ -250,7 +250,7 @@ class ValueListBuilder {
 		);
 	}
 
-	private function createValueList( Property $property, DataItem $dataItem, $diWikiPages, $limit, $until ): string {
+	private function createValueList( Property $property, DataItem $dataItem, $diWikiPages, int $limit, $until ): string {
 		if ( $diWikiPages instanceof Iterator ) {
 			$diWikiPages = iterator_to_array( $diWikiPages );
 		}
@@ -398,7 +398,7 @@ class ValueListBuilder {
 	/**
 	 * @return WikiPage[]
 	 */
-	private function filterByValue( $property, $value, $options ): array {
+	private function filterByValue( Property $property, $value, RequestOptions $options ): array {
 		$queryFactory = ApplicationFactory::getInstance()->getQueryFactory();
 		$queryParser = $queryFactory->newQueryParser();
 

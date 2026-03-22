@@ -211,7 +211,7 @@ class DIWikiPageHandler extends DataItemHandler {
 		return $this->newDiWikiPage( $dbkeys );
 	}
 
-	private function newDiWikiPage( $dbkeys ): WikiPage {
+	private function newDiWikiPage( array $dbkeys ): WikiPage {
 		$diWikiPage = new WikiPage(
 			$dbkeys[0],
 			intval( $dbkeys[1] ),

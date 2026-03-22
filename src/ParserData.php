@@ -164,7 +164,7 @@ class ParserData {
 	 *
 	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->getSemanticData()->getSubject();
 	}
 

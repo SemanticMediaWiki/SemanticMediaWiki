@@ -87,7 +87,7 @@ class TextSanitizer {
 	 *
 	 * @return string
 	 */
-	public function sanitize( $text, $isSearchTerm = false ) {
+	public function sanitize( $text, $isSearchTerm = false ): string {
 		$text = rawurldecode( trim( $text ) );
 
 		// Language detection must run on the original text before
@@ -157,7 +157,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenize( $text, $language, $exemptionList ) {
+	private function tokenize( string|array $text, int|string|null $language, array|string $exemptionList ) {
 		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
 		$hasIcu = class_exists( IntlRuleBasedBreakIterator::class );
 
@@ -198,7 +198,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithIcu( $text, $language, $useWordBoundary ): array {
+	private function tokenizeWithIcu( string|array $text, int|string|null $language, bool $useWordBoundary ): array {
 		$tokens = [];
 
 		$tokenizer = IntlRuleBasedBreakIterator::createWordInstance( $language ?? 'en' );
@@ -235,7 +235,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithGenericRegex( $text, $exemptionList ) {
+	private function tokenizeWithGenericRegex( string|array $text, string|array $exemptionList ) {
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -259,7 +259,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithCjkRegex( $text, $exemptionList ): array {
+	private function tokenizeWithCjkRegex( string $text, string|array $exemptionList ): array {
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -283,7 +283,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithNgram( $text, $ngramSize = 2 ): array {
+	private function tokenizeWithNgram( string|array $text, $ngramSize = 2 ): array {
 		$ngramList = [];
 
 		// Text is already lowercased by sanitize() before reaching here
@@ -307,7 +307,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function filterTokens( $tokens, $language, $exemptionList ): array {
+	private function filterTokens( $tokens, int|string|null $language, array|string $exemptionList ): array {
 		if ( !$tokens || !is_array( $tokens ) ) {
 			return [];
 		}
@@ -362,7 +362,7 @@ class TextSanitizer {
 	 *
 	 * @return Reader|null
 	 */
-	private function openStopwordReader( $language ): ?Reader {
+	private function openStopwordReader( string|int|null $language ): ?Reader {
 		if ( $language === null ) {
 			return null;
 		}
@@ -390,7 +390,7 @@ class TextSanitizer {
 	 *
 	 * @return bool
 	 */
-	private function isStopWord( $reader, $word ): bool {
+	private function isStopWord( Reader $reader, $word ): bool {
 		return $reader->get( $word ) !== false;
 	}
 
@@ -399,7 +399,7 @@ class TextSanitizer {
 	 *
 	 * @return string|null
 	 */
-	private function predictLanguage( $text ) {
+	private function predictLanguage( string $text ): null|int|string {
 		if ( $this->languageDetection === [] ) {
 			return null;
 		}

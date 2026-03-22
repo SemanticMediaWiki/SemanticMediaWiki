@@ -29,7 +29,7 @@ class ResultArray {
 	/**
 	 * @var DataItem[]|false
 	 */
-	private $content;
+	private array|false $content;
 
 	/**
 	 * @var ItemJournal
@@ -141,7 +141,7 @@ class ResultArray {
 	 *
 	 * @return DataItem[]|false
 	 */
-	public function getContent() {
+	public function getContent(): array|false {
 		$this->loadContent();
 		return $this->content;
 	}
@@ -185,7 +185,7 @@ class ResultArray {
 	 *
 	 * @return DataItem|false
 	 */
-	public function reset() {
+	public function reset(): mixed {
 		$this->loadContent();
 		return reset( $this->content );
 	}

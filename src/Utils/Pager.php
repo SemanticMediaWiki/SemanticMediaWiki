@@ -195,7 +195,7 @@ class Pager {
 	 *
 	 * @return string HTML fragment
 	 */
-	private static function numLink( Title $title, $offset, $limit, array $query, $link, $tooltipMsg, $language, $active = false ) {
+	private static function numLink( Title $title, int $offset, int $limit, array $query, $link, string $tooltipMsg, $language, bool $active = false ) {
 		$query = [ 'limit' => $limit, 'offset' => $offset ] + $query;
 
 		$tooltip = wfMessage( $tooltipMsg )->inLanguage( $language )->title( $title )->numParams( $limit )->text();

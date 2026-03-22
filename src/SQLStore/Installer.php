@@ -388,7 +388,7 @@ class Installer implements MessageReporter {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function outputReport( $timer ): void {
+	private function outputReport( Timer $timer ): void {
 		$this->cliMsgFormatter = new CliMsgFormatter();
 		$keys = $timer->keys;
 

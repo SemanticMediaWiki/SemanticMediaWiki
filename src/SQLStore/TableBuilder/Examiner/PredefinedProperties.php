@@ -73,7 +73,7 @@ class PredefinedProperties {
 		$this->messageReporter->reportMessage( "   ... done.\n" );
 	}
 
-	private function doUpdate( $property, $id ): void {
+	private function doUpdate( Property $property, $id ): void {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// Try to find the ID for a non-fixed predefined property

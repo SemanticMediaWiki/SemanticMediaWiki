@@ -132,7 +132,7 @@ class HtmlDivTable {
 	/**
 	 * @return mixed[]
 	 */
-	private static function mergeAttributes( $class, $attr ): array {
+	private static function mergeAttributes( string $class, array $attr ): array {
 		$attributes = [];
 
 		// A bit of attribute order

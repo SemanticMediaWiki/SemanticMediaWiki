@@ -330,7 +330,7 @@ class Time extends DataItem implements CalendarModel {
 	 *
 	 * @return self|false
 	 */
-	public static function newFromTimestamp( $timestamp ) {
+	public static function newFromTimestamp( $timestamp ): false|Time {
 		$timestamp = wfTimestamp( TS_MW, (string)$timestamp );
 
 		if ( $timestamp === false ) {

@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Parser\Parser;
+use MediaWiki\Title\Title;
 use SMW\MediaWiki\HookListener;
 use SMW\OptionsAwareTrait;
 use SMW\Parser\InTextAnnotationParser;
@@ -62,7 +63,7 @@ class InternalParseBeforeLinks implements HookListener {
 		return $this->performUpdate( $text );
 	}
 
-	private function canPerformUpdate( $text, $title ): bool {
+	private function canPerformUpdate( $text, Title $title ): bool {
 		if ( $this->getRedirectTarget() !== null ) {
 			return true;
 		}

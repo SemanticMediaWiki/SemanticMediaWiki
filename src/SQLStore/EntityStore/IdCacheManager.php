@@ -177,7 +177,7 @@ class IdCacheManager {
 	 *
 	 * @return int|bool
 	 */
-	public function getId( $args ) {
+	public function getId( $args ): int|false {
 		if ( $args instanceof WikiPage ) {
 			$args = [
 				$args->getDBKey(),
