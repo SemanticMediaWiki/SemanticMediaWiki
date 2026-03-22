@@ -97,7 +97,7 @@ interface EntityLookup {
 
 	/**
 	 * Get an array of all properties for which there is some subject that
-	 * relates to the given value. The result is an array of DIWikiPage
+	 * relates to the given value. The result is an array of WikiPage
 	 * objects.
 	 *
 	 * @note In some stores, this function might be implemented partially
