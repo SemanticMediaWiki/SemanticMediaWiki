@@ -2,6 +2,7 @@
 
 namespace SMW\Tests\Unit\QueryPages;
 
+use MediaWiki\Linker\Linker;
 use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\DataItemFactory;
@@ -222,6 +223,124 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 		);
 
 		$instance->formatResult( $this->skin, [] );
+	}
+
+	public function testGetCacheInfoWhenNotFromCache() {
+		$listLookup = $this->getMockBuilder( ListLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'isFromCache' )
+			->willReturn( false );
+
+		$this->store->expects( $this->once() )
+			->method( 'getUnusedPropertiesSpecial' )
+			->willReturn( $listLookup );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$requestOptions = new RequestOptions();
+		$instance->getResults( $requestOptions );
+
+		$cacheInfo = $instance->getCacheInfo();
+
+		$this->assertIsString( $cacheInfo );
+		$this->assertEmpty( $cacheInfo );
+	}
+
+	public function testGetCacheInfoWhenFromCache() {
+		$timestamp = time();
+
+		$listLookup = $this->getMockBuilder( ListLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'isFromCache' )
+			->willReturn( true );
+
+		$listLookup->expects( $this->once() )
+			->method( 'getTimestamp' )
+			->willReturn( $timestamp );
+
+		$this->store->expects( $this->once() )
+			->method( 'getUnusedPropertiesSpecial' )
+			->willReturn( $listLookup );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$requestOptions = new RequestOptions();
+		$instance->getResults( $requestOptions );
+
+		$cacheInfo = $instance->getCacheInfo();
+
+		$this->assertIsString( $cacheInfo );
+		$this->assertNotEmpty( $cacheInfo );
+		$this->assertStringContainsString( 'smw-sp-properties-cache-info', $cacheInfo );
+	}
+
+	public function testGetPageHeader() {
+		$listLookup = $this->getMockBuilder( ListLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'isFromCache' )
+			->willReturn( false );
+
+		$this->store->expects( $this->once() )
+			->method( 'getUnusedPropertiesSpecial' )
+			->willReturn( $listLookup );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$requestOptions = new RequestOptions();
+		$instance->getResults( $requestOptions );
+
+		$pageHeader = $instance->getPageHeader();
+
+		$this->assertIsString( $pageHeader );
+		$this->assertNotEmpty( $pageHeader );
+		$this->assertStringContainsString( 'smw-unusedproperties-docu', $pageHeader );
+		$this->assertStringContainsString( 'smw-sp-properties-header-label', $pageHeader );
+	}
+
+	public function testGetPageHeaderContainsSearchForm() {
+		$listLookup = $this->getMockBuilder( ListLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'isFromCache' )
+			->willReturn( false );
+
+		$this->store->expects( $this->once() )
+			->method( 'getUnusedPropertiesSpecial' )
+			->willReturn( $listLookup );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$requestOptions = new RequestOptions();
+		$instance->getResults( $requestOptions );
+
+		$pageHeader = $instance->getPageHeader();
+
+		$this->assertIsString( $pageHeader );
+		$this->assertStringContainsString( 'form', $pageHeader );
+		$this->assertStringContainsString( 'property', $pageHeader );
 	}
 
 }
