@@ -21,10 +21,7 @@ class CachingLookup {
 	 */
 	private $store;
 
-	/**
-	 * @var int|bool
-	 */
-	private $cacheTTL;
+	private int|false $cacheTTL;
 
 	/**
 	 * @since 3.0

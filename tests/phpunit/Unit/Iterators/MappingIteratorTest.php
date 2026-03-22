@@ -5,6 +5,7 @@ namespace SMW\Tests\Unit\Iterators;
 use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use SMW\Iterators\MappingIterator;
+use TypeError;
 
 /**
  * @covers \SMW\Iterators\MappingIterator
@@ -26,7 +27,7 @@ class MappingIteratorTest extends TestCase {
 	}
 
 	public function testInvalidConstructorArgumentThrowsException() {
-		$this->expectException( 'RuntimeException' );
+		$this->expectException( TypeError::class );
 		$instance = new MappingIterator( 2, static function () {
 		} );
 	}
