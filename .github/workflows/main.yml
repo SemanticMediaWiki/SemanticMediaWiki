@@ -89,5 +89,5 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: extensions/SemanticMediaWiki/coverage/php/coverage.xm
+          files: extensions/SemanticMediaWiki/coverage/php/coverage.xml
         if: matrix.coverage == true
