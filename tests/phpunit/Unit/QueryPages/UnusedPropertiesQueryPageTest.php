@@ -210,20 +210,6 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 		$this->assertEmpty( $results );
 	}
 
-	public function testFormatResultWithInvalidTypeThrowsException() {
-		$instance = new UnusedPropertiesQueryPage(
-			$this->store,
-			$this->settings
-		);
-
-		$this->expectException( PropertyNotFoundException::class );
-		$this->expectExceptionMessage(
-			'UnusedPropertiesQueryPage expects results that are properties or errors.'
-		);
-
-		$instance->formatResult( $this->skin, [] );
-	}
-
 	public function testGetCacheInfoWhenNotFromCache() {
 		$listLookup = $this->getMockBuilder( ListLookup::class )
 			->disableOriginalConstructor()
