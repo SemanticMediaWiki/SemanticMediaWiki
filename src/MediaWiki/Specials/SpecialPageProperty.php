@@ -26,9 +26,6 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class SpecialPageProperty extends SpecialPage {
 
-	/**
-	 * @codeCoverageIgnore
-	 */
 	public function __construct() {
 		parent::__construct( 'PageProperty', '', false );
 	}
