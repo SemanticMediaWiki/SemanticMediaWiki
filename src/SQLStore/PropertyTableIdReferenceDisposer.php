@@ -274,7 +274,7 @@ class PropertyTableIdReferenceDisposer {
 			);
 	}
 
-	private function cleanUpSecondaryReferencesById( $id, $isRedirect ): void {
+	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
 		// When marked as redirect, don't remove the reference
 		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
 			$this->connection->delete(

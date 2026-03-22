@@ -153,7 +153,7 @@ class ListBuilder {
 	/**
 	 * @return \non-empty-list<mixed>[]
 	 */
-	private function buildList( $dataItems ): array {
+	private function buildList( array $dataItems ): array {
 		$dataValueFactory = DataValueFactory::getInstance();
 
 		if ( $this->linker === false ) {

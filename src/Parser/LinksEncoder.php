@@ -152,7 +152,7 @@ class LinksEncoder {
 		return $caption !== false ? $caption : $value;
 	}
 
-	private static function matchAndReplace( $text, $parser ) {
+	private static function matchAndReplace( array|string $text, InTextAnnotationParser $parser ) {
 		/**
 		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
 		 *
@@ -200,7 +200,7 @@ class LinksEncoder {
 		return $text;
 	}
 
-	private static function replace( $match, $parser, $isOffAnnotation = false ): string {
+	private static function replace( string $match, InTextAnnotationParser $parser, bool $isOffAnnotation = false ): string {
 		// Remove the Leading and last square bracket to avoid distortion
 		// during the annotation parsing
 		$match = substr( substr( $match, 2 ), 0, -2 );

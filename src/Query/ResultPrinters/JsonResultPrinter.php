@@ -146,7 +146,7 @@ class JsonResultPrinter extends FileExportPrinter {
 	/**
 	 * @return list[][]
 	 */
-	private function buildSimpleList( $res ): array {
+	private function buildSimpleList( QueryResult $res ): array {
 		$result = [];
 
 		$row = $res->getNext();

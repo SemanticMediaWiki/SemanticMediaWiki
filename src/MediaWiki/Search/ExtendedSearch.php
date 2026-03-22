@@ -296,7 +296,7 @@ class ExtendedSearch {
 		return $this->fallbackSearchEngine->completionSearch( $search );
 	}
 
-	private function hasPrefixAndMinLenForCompletionSearch( $search, $minLen ): bool {
+	private function hasPrefixAndMinLenForCompletionSearch( $search, int $minLen ): bool {
 		// Only act on when `in:foo`, `has:SomeProperty`, or `phrase:some text`
 		// is actively used as prefix
 		$defaultPrefixMap = [ 'in', 'has', 'phrase', 'not' ];
@@ -320,7 +320,7 @@ class ExtendedSearch {
 		return false;
 	}
 
-	private function newSearchResultSet( $term, $count = true, $highlight = true ): ?SearchResultSet {
+	private function newSearchResultSet( $term, bool $count = true, bool $highlight = true ): ?SearchResultSet {
 		$query = $this->getSearchQuery( $term );
 
 		if ( $query === null ) {
@@ -384,7 +384,7 @@ class ExtendedSearch {
 		return $query;
 	}
 
-	private function searchFallbackSearchEngine( $term, $fulltext ) {
+	private function searchFallbackSearchEngine( $term, bool $fulltext ) {
 		$this->fallbackSearchEngine->prefix = $this->prefix;
 		$this->fallbackSearchEngine->namespaces = $this->namespaces;
 

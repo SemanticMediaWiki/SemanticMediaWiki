@@ -128,7 +128,7 @@ class ListValueFilter {
 		);
 	}
 
-	private function getValueFilters( $property ): array {
+	private function getValueFilters( string $property ): array {
 		$valueFilters = $this->urlArgs->getArray( 'pv' );
 		$valueFilters = $valueFilters[$property] ?? [];
 
@@ -161,7 +161,7 @@ class ListValueFilter {
 		];
 	}
 
-	private function matchFilter( $property, $key, $label, $count, $valueFilters, $clear, &$list ): void {
+	private function matchFilter( string $property, $key, $label, $count, array $valueFilters, array $clear, &$list ): void {
 		if ( !isset( $list[$count] ) ) {
 			$list[$count] = [ 'linked' => [], 'unlinked' => [] ];
 		}
@@ -206,7 +206,7 @@ class ListValueFilter {
 		asort( $list[$count]['linked'] );
 	}
 
-	private function createConditionField( $property ) {
+	private function createConditionField( string $property ) {
 		if ( $this->params['condition_field'] === false ) {
 			return '';
 		}
@@ -224,7 +224,7 @@ class ListValueFilter {
 		);
 	}
 
-	private function createInputField( $property, array $values ) {
+	private function createInputField( string $property, array $values ) {
 		if ( count( $values ) <= $this->params['min_item'] ) {
 			return '';
 		}

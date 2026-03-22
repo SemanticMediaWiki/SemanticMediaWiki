@@ -306,7 +306,7 @@ class CachedFactbox {
 	/**
 	 * Processing and re-parsing of the Factbox content
 	 */
-	private function rebuild( Title $title, ParserOutput $parserOutput, $checkMagicWords ) {
+	private function rebuild( Title $title, ParserOutput $parserOutput, CheckMagicWords $checkMagicWords ) {
 		$text = null;
 		$applicationFactory = ApplicationFactory::getInstance();
 
@@ -342,7 +342,7 @@ class CachedFactbox {
 		return $factbox->tabs( $content, $attachmentContent );
 	}
 
-	private function hasCachedContent( $subKey, $rev_id, $lang, $content, $request ): bool {
+	private function hasCachedContent( string $subKey, $rev_id, $lang, $content, $request ): bool {
 		if ( $request->getVal( 'action' ) === 'edit' ) {
 			$this->isCached = false;
 			return false;
@@ -382,7 +382,7 @@ class CachedFactbox {
 	 * Cached content is serialized in an associative array following:
 	 * { 'rev_id' => $revisionId, 'text' => (...) }
 	 */
-	private function saveToCache( $key, $subKey, array $content ): void {
+	private function saveToCache( $key, string $subKey, array $content ): void {
 		$this->timestamp = wfTimestamp( TS_UNIX );
 		$this->isCached = false;
 

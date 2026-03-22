@@ -224,7 +224,7 @@ class ParametersProcessor {
 	/**
 	 * @return mixed[]
 	 */
-	private function makeParameters( $query, $request ): array {
+	private function makeParameters( $query, WebRequest $request ): array {
 		$this->queryString = $query[0] ?? '';
 
 		$parameters = [];

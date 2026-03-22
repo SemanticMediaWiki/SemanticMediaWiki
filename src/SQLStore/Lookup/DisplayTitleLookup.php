@@ -97,7 +97,7 @@ class DisplayTitleLookup {
 		return $prefetch;
 	}
 
-	private function fetchFromTable( $list ) {
+	private function fetchFromTable( array $list ) {
 		$property = new Property( '_DTITLE' );
 		$connection = $this->store->getConnection( 'mw.db' );
 

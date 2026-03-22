@@ -206,7 +206,7 @@ class ParametersWidget {
 	/**
 	 * @return non-falsy-string[]
 	 */
-	private static function optionList( $definitions, $values ): array {
+	private static function optionList( array $definitions, array $values ): array {
 		$html = [];
 
 		/**
@@ -259,7 +259,7 @@ class ParametersWidget {
 		return $html;
 	}
 
-	private static function field( ParamDefinition $definition, $name ) {
+	private static function field( ParamDefinition $definition, int|string $name ) {
 		$info = '';
 		$class = '';
 

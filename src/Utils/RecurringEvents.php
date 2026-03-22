@@ -380,7 +380,7 @@ class RecurringEvents {
 	 * Helper function - creates an object of type TimeValue based
 	 * on a "Julian day" integer
 	 */
-	private function getJulianDayTimeValue( $jd ) {
+	private function getJulianDayTimeValue( float|int $jd ) {
 		$timeDataItem = Time::newFromJD( $jd, Time::CM_GREGORIAN, Time::PREC_YMDT );
 		return DataValueFactory::getInstance()->newDataValueByItem( $timeDataItem );
 	}

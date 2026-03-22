@@ -198,7 +198,7 @@ class ItemFetcher {
 	/**
 	 * @return mixed[]
 	 */
-	private function legacyFetch( $dataItems, $property, $requestOptions ): array {
+	private function legacyFetch( array $dataItems, Property $property, RequestOptions $requestOptions ): array {
 		$propertyValues = [];
 		$requestOptions->setOption( RequestOptions::CONDITION_CONSTRAINT_RESULT, false );
 		$requestOptions->setCaller( __METHOD__ );

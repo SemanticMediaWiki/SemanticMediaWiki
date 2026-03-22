@@ -132,7 +132,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		return '';
 	}
 
-	private function checkIndicators( $subject, $options ) {
+	private function checkIndicators( WikiPage $subject, array $options ) {
 		$indicatorProviders = [];
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 		$options['error_count'] = 0;
@@ -173,7 +173,7 @@ class EntityExaminerDeferrableCompositeIndicatorProvider implements DeferrableIn
 		return $this->indicators;
 	}
 
-	private function buildHTML( $subject, array $indicatorProviders, array $options ): void {
+	private function buildHTML( WikiPage $subject, array $indicatorProviders, array $options ): void {
 		$this->templateEngine = new TemplateEngine();
 
 		$this->templateEngine->bulkLoad(

@@ -83,7 +83,7 @@ class PatternConstraintValueValidator implements ConstraintValueValidator {
 		);
 	}
 
-	private function doPregMatch( $pattern, $dataValue, $reference ): void {
+	private function doPregMatch( string|array $pattern, DataValue $dataValue, $reference ): void {
 		// Convert escaping as in /\d{4}
 		$pattern = str_replace( "/\\", "\\", (string)$pattern );
 

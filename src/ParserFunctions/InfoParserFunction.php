@@ -90,7 +90,7 @@ class InfoParserFunction {
 	 *
 	 * @return string
 	 */
-	private function getOutputForErrors( $errors ): string {
+	private function getOutputForErrors( array $errors ): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #info parser function';
 	}

@@ -93,7 +93,7 @@ class EmbeddedResultPrinter extends ResultPrinter {
 		return $this->buildText( $queryResult, $outputMode );
 	}
 
-	private function buildText( $queryResult, $outputMode ): string {
+	private function buildText( QueryResult $queryResult, $outputMode ): string {
 		// REMOVE the parser reference
 		// Use $queryResult->getQuery()->getContextPage()
 		// No page should embed itself, find out who we are:

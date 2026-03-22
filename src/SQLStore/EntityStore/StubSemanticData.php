@@ -44,10 +44,8 @@ class StubSemanticData extends SemanticData {
 	 * only.
 	 *
 	 * @since 1.8
-	 *
-	 * @var WikiPage
 	 */
-	protected $mSubject;
+	protected WikiPage $mSubject;
 
 	/**
 	 * Whether SubSemanticData have been requested and added

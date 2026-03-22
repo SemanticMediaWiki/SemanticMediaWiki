@@ -85,7 +85,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function check( $dataValue ): void {
+	private function check( DataValue $dataValue ): void {
 		$property = $dataValue->getProperty();
 		$contextPage = $dataValue->getContextPage();
 
@@ -156,7 +156,7 @@ class UniqueValueConstraint implements Constraint {
 		}
 	}
 
-	private function isKnown( $dataValue ): bool {
+	private function isKnown( DataValue $dataValue ): bool {
 		$contextPage = $dataValue->getContextPage();
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
@@ -174,14 +174,14 @@ class UniqueValueConstraint implements Constraint {
 		return false;
 	}
 
-	private function hasAnnotation( $dataValue ): bool {
+	private function hasAnnotation( DataValue $dataValue ): bool {
 		$key = $dataValue->getProperty()->getKey();
 		$hash = $dataValue->getContextPage()->getHash();
 
 		return isset( $this->annotations[$hash][$key] );
 	}
 
-	private function reportError( $dataValue, $error ): void {
+	private function reportError( DataValue $dataValue, array $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

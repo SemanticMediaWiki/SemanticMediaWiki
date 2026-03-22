@@ -750,7 +750,7 @@ class HtmlBuilder {
 	 * Returns the Mustache data to build the HTML for message classes
 	 * in connection with categories linked to a property group.
 	 */
-	private function getGroupMessageClassLinksData( $groupFormatter, $semanticData ): array {
+	private function getGroupMessageClassLinksData( GroupFormatter $groupFormatter, SemanticData $semanticData ): array {
 		$data = [];
 		$contextPage = $semanticData->getSubject();
 

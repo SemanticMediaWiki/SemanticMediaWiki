@@ -62,7 +62,7 @@ class DataItemMatchFinder {
 		return $dataItem;
 	}
 
-	private function matchToWikiNamespaceUri( $uri ): ?WikiPage {
+	private function matchToWikiNamespaceUri( string $uri ): ?WikiPage {
 		$dataItem = null;
 		$localName = substr( $uri, strlen( $this->wikiNamespace ) );
 
@@ -98,7 +98,7 @@ class DataItemMatchFinder {
 		return $dataItem;
 	}
 
-	private function matchToNamespaceName( $name ) {
+	private function matchToNamespaceName( string $name ) {
 		// try the by far most common cases directly before using Title
 		$namespaceName = str_replace( '_', ' ', $name );
 
@@ -116,7 +116,7 @@ class DataItemMatchFinder {
 		return $namespaceId;
 	}
 
-	private function matchToUnknownWikiNamespaceUri( $uri ): ?WikiPage {
+	private function matchToUnknownWikiNamespaceUri( string $uri ): ?WikiPage {
 		$dataItem = null;
 
 		// Sesame: Not a valid (absolute) URI: _node1abjt1k9bx17
@@ -165,7 +165,7 @@ class DataItemMatchFinder {
 		return $dataItem;
 	}
 
-	private function getFittingDBKey( $dbKey, $namespace ) {
+	private function getFittingDBKey( $dbKey, int|string $namespace ) {
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinks
 		// https://www.mediawiki.org/wiki/Manual:$wgCapitalLinkOverrides
 		if ( $GLOBALS['wgCapitalLinks'] || ( isset( $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) && $GLOBALS['wgCapitalLinkOverrides'][$namespace] ) ) {

@@ -182,7 +182,7 @@ class MySQLTableBuilder extends TableBuilder {
 		return $currentFields;
 	}
 
-	private function doUpdateField( $tableName, $fieldName, $fieldType, $currentFields, $position, array $attributes ): void {
+	private function doUpdateField( $tableName, $fieldName, $fieldType, array $currentFields, string $position, array $attributes ): void {
 		if ( !isset( $this->activityLog[$tableName] ) ) {
 			$this->activityLog[$tableName] = [];
 		}
@@ -211,7 +211,7 @@ class MySQLTableBuilder extends TableBuilder {
 		return $expectedType === $actualType;
 	}
 
-	private function doCreateField( $tableName, $fieldName, $position, $fieldType, $default ): void {
+	private function doCreateField( $tableName, $fieldName, string $position, string $fieldType, string $default ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_NEW;
 
 		$this->reportMessage( "   ... creating field $fieldName ... " );
@@ -219,7 +219,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doUpdateFieldType( $tableName, $fieldName, $position, $oldFieldType, $newFieldType ): void {
+	private function doUpdateFieldType( $tableName, int|string $fieldName, string $position, $oldFieldType, string $newFieldType ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_UPD;
 
 		// Continue to alter the type but silence the output since we cannot get
@@ -247,7 +247,7 @@ class MySQLTableBuilder extends TableBuilder {
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doDropField( $tableName, $fieldName ): void {
+	private function doDropField( $tableName, int|string $fieldName ): void {
 		$this->activityLog[$tableName][$fieldName] = self::PROC_FIELD_DROP;
 
 		$this->reportMessage( "   ... deleting obsolete field $fieldName ... " );
@@ -355,13 +355,13 @@ class MySQLTableBuilder extends TableBuilder {
 		return $indices;
 	}
 
-	private function doDropIndex( $tableName, $indexName, $columns ): void {
+	private function doDropIndex( $tableName, int|string $indexName, $columns ): void {
 		$this->reportMessage( "   ... removing index $columns ..." );
 		$this->connection->query( 'DROP INDEX ' . $indexName . ' ON ' . $tableName, __METHOD__, ISQLPlatform::QUERY_CHANGE_SCHEMA );
 		$this->reportMessage( "done.\n" );
 	}
 
-	private function doCreateIndex( $tableName, $indexType, $indexName, $columns, array $indexOptions ): void {
+	private function doCreateIndex( $tableName, $indexType, int|string $indexName, $columns, array $indexOptions ): void {
 		$tableName = $this->connection->tableName( $tableName );
 		$indexOption = '';
 

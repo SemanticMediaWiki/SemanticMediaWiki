@@ -173,7 +173,7 @@ class ExpResourceMapper {
 		return $resource;
 	}
 
-	private function newExpNsResource( $diWikiPage, $modifier ): ExpNsResource {
+	private function newExpNsResource( WikiPage $diWikiPage, $modifier ): ExpNsResource {
 		$importDataItem = $this->findImportDataItem( $diWikiPage, $modifier );
 
 		if ( $this->seekImportVocabulary && $importDataItem instanceof DataItem ) {

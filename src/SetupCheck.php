@@ -358,7 +358,7 @@ class SetupCheck {
 		die();
 	}
 
-	private function header( $text ): void {
+	private function header( string $text ): void {
 		if ( $this->sentHeader ) {
 			header( $text );
 		}

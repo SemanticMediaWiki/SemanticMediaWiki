@@ -245,7 +245,7 @@ class Rebuilder {
 		}
 	}
 
-	private function matchAsSubject( $id, &$emptyRange ): void {
+	private function matchAsSubject( $id, bool &$emptyRange ): void {
 		// update by internal SMW id --> make sure we get all objects in SMW
 		$connection = $this->store->getConnection( 'mw.db' );
 
@@ -408,7 +408,7 @@ class Rebuilder {
 		}
 	}
 
-	private function next_position( &$id, $emptyRange ): void {
+	private function next_position( &$id, bool $emptyRange ): void {
 		$nextPosition = $id + $this->iterationLimit;
 		$db = $this->store->getConnection( 'mw.db' );
 
@@ -442,7 +442,7 @@ class Rebuilder {
 		$id = $nextPosition ? $nextPosition : -1;
 	}
 
-	private function hasSkippableRevision( $title, $row = false ) {
+	private function hasSkippableRevision( $title, bool $row = false ) {
 		if ( $this->getOption( 'force-update' ) ) {
 			return false;
 		}
@@ -450,7 +450,7 @@ class Rebuilder {
 		return $this->getOption( 'revision-mode' ) && $this->entityValidator->hasLatestRevID( $title, $row );
 	}
 
-	private function addDispatchRecord( $key, $row ): void {
+	private function addDispatchRecord( string $key, $row ): void {
 		$this->dispatchedEntities[] = [ $key => $row->smw_title . '#' . $row->smw_namespace . '#' . $row->smw_subobject ];
 	}
 

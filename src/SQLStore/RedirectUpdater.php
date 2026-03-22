@@ -434,7 +434,7 @@ class RedirectUpdater {
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
 	}
 
-	private function updateTarget( $source, $target, &$sid ): void {
+	private function updateTarget( WikiPage $source, WikiPage $target, &$sid ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 
@@ -520,7 +520,7 @@ class RedirectUpdater {
 		// which will hopefully be done to fix the double redirect.
 	}
 
-	private function moveAsRedirect( $source, $target, $sid, $tid, $options ): void {
+	private function moveAsRedirect( WikiPage $source, WikiPage $target, $sid, $tid, array $options ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 

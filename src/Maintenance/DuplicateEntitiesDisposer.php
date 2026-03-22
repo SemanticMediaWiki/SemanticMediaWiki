@@ -133,7 +133,7 @@ class DuplicateEntitiesDisposer {
 		return is_array( $obj ) || ( is_object( $obj ) && ( $obj instanceof Traversable ) );
 	}
 
-	private function wikipage_table( $table, $duplicates, &$log ): void {
+	private function wikipage_table( string $table, $duplicates, &$log ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -173,7 +173,7 @@ class DuplicateEntitiesDisposer {
 		}
 	}
 
-	private function redi_table( $table, $duplicates, &$log ): void {
+	private function redi_table( string $table, $duplicates, &$log ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$log[] = "   ... $table ...";
 		$i = 0;
@@ -217,7 +217,7 @@ class DuplicateEntitiesDisposer {
 		}
 	}
 
-	private function id_table( $table, $duplicates, &$log ): void {
+	private function id_table( string $table, $duplicates, &$log ): void {
 		$propertyTableIdReferenceDisposer = $this->store->service( 'PropertyTableIdReferenceDisposer' );
 		$propertyTableIdReferenceDisposer->setRedirectRemoval( true );
 

@@ -339,7 +339,7 @@ class ResultFetcher {
 		$this->findValueFilters( $results, $valueFilterResult, $parametersProcessor->getPropertyFilters() );
 	}
 
-	private function findValueFilters( $results, $valueFilterResult, array $propertyFilters ): void {
+	private function findValueFilters( $results, array $valueFilterResult, array $propertyFilters ): void {
 		if ( $propertyFilters === [] ) {
 			return;
 		}

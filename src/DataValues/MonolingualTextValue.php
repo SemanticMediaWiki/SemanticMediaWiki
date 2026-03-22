@@ -352,7 +352,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 		return $list['_TEXT'] . '@' . $list['_LCODE'];
 	}
 
-	private function newContainerSemanticData( $value ) {
+	private function newContainerSemanticData( string $value ) {
 		if ( $this->m_contextPage === null ) {
 			$containerSemanticData = ContainerSemanticData::makeAnonymousContainer();
 			$containerSemanticData->skipAnonymousCheck();

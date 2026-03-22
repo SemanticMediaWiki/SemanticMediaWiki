@@ -88,11 +88,11 @@ class ProfileAnnotatorFactory {
 		return $profileAnnotator;
 	}
 
-	private function newFormatProfileAnnotator( $profileAnnotator, $format ): FormatProfileAnnotator {
+	private function newFormatProfileAnnotator( DescriptionProfileAnnotator $profileAnnotator, $format ): FormatProfileAnnotator {
 		return new FormatProfileAnnotator( $profileAnnotator, $format );
 	}
 
-	private function newParametersProfileAnnotator( $profileAnnotator, $query ) {
+	private function newParametersProfileAnnotator( FormatProfileAnnotator $profileAnnotator, Query $query ) {
 		if ( $query->getOption( Query::OPT_PARAMETERS ) === false ) {
 			return $profileAnnotator;
 		}

@@ -55,7 +55,7 @@ class FulltextSearchTableRebuildJob extends Job {
 		return true;
 	}
 
-	private function createJobsFromTableList( $tableList ): void {
+	private function createJobsFromTableList( array $tableList ): void {
 		if ( $tableList === [] ) {
 			return;
 		}

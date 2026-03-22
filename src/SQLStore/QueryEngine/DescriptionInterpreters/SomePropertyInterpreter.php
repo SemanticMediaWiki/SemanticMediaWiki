@@ -213,7 +213,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 */
 	private function compilePropertyValueDescription(
 			$query, Description $description, PropertyTableDefinition $proptable,
-			DataItemHandler $diHandler, $operator
+			DataItemHandler $diHandler, string $operator
 	): void {
 		if ( $description instanceof ValueDescription ) {
 			$this->mapValueDescription( $query, $description, $diHandler, $operator );
@@ -252,7 +252,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 	 * @param DataItemHandler $diHandler for that table
 	 * @param string $operator SQL operator "AND" or "OR"
 	 */
-	private function mapValueDescription( $query, ValueDescription $description, DataItemHandler $diHandler, $operator ): void {
+	private function mapValueDescription( $query, ValueDescription $description, DataItemHandler $diHandler, string $operator ): void {
 		$where = '';
 		$dataItem = $description->getDataItem();
 		$connection = $this->store->getConnection( 'mw.db.queryengine' );

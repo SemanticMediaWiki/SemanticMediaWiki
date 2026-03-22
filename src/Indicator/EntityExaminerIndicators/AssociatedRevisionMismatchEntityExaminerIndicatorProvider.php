@@ -149,7 +149,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return '';
 	}
 
-	private function runCheck( $subject, $options ): bool {
+	private function runCheck( WikiPage $subject, array $options ): bool {
 		$this->indicators = [];
 
 		$latestRevID = $this->revisionGuard->getLatestRevID(
@@ -178,7 +178,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 		return $this->indicators !== [];
 	}
 
-	private function buildHTML( $latestRevID, $associatedRev, $options ): void {
+	private function buildHTML( $latestRevID, int $associatedRev, array $options ): void {
 		$content = '';
 		$this->severityType = TypableSeverityIndicatorProvider::SEVERITY_ERROR;
 

@@ -6,6 +6,7 @@ use MediaWiki\Html\Html;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\Property\Annotator;
@@ -121,7 +122,7 @@ class EditProtectedPropertyAnnotator extends PropertyAnnotatorDecorator {
 		return isset( $restrictions[$this->editProtectionRight] );
 	}
 
-	private function isEnabledProtection( $property ) {
+	private function isEnabledProtection( Property $property ) {
 		if ( !$this->getSemanticData()->hasProperty( $property ) ) {
 			return false;
 		}

@@ -168,7 +168,7 @@ class ListResultBuilder {
 	 *
 	 * @return string
 	 */
-	private function getTemplateCall( $param ) {
+	private function getTemplateCall( string $param ) {
 		$templatename = $this->get( $param );
 
 		if ( $templatename === '' ) {

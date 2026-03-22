@@ -327,7 +327,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		return (int)$count;
 	}
 
-	private function count( $type ): int {
+	private function count( string $type ): int {
 		$res = $this->store->getConnection()->select(
 			$this->findPropertyTableByType( $type )->getName(),
 			'COUNT(s_id) AS count',
@@ -340,7 +340,7 @@ class UsageStatisticsListLookup implements ListLookup {
 		return isset( $row->count ) ? (int)$row->count : 0;
 	}
 
-	private function findPropertyTableByType( $type ) {
+	private function findPropertyTableByType( string $type ) {
 		$propertyTables = $this->store->getPropertyTables();
 
 		$tableIdForType = $this->store->findPropertyTableID( new Property( $type ) );

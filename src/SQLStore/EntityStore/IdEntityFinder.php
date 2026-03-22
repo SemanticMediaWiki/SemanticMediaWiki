@@ -120,7 +120,7 @@ class IdEntityFinder {
 		return null;
 	}
 
-	private function get( $id ) {
+	private function get( int $id ) {
 		$cache = $this->idCacheManager->get( 'entity.lookup' );
 
 		if ( ( $dataItem = $cache->fetch( $id ) ) !== false ) {
@@ -142,7 +142,7 @@ class IdEntityFinder {
 		return $dataItem;
 	}
 
-	private function fetchFromTable( $conditions, $selectRow = false ) {
+	private function fetchFromTable( array $conditions, bool $selectRow = false ) {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$fields = [

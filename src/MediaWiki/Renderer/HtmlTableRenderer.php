@@ -197,7 +197,7 @@ class HtmlTableRenderer {
 		return '';
 	}
 
-	private function createRow( $content = '', $attributes = [] ) {
+	private function createRow( string $content = '', $attributes = [] ) {
 		$alternate = count( $this->tableRows ) % 2 == 0 ? 'row-odd' : 'row-even';
 
 		if ( isset( $attributes['class'] ) ) {

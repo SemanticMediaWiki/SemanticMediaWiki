@@ -3,6 +3,7 @@
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
 use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -70,7 +71,7 @@ class ConceptDescriptionInterpreter {
 		return $condition;
 	}
 
-	private function terms_lookup( $description, $concept, $params ) {
+	private function terms_lookup( $description, WikiPage $concept, $params ) {
 		$concept->setId(
 			$this->conditionBuilder->getID( $concept )
 		);

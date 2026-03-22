@@ -6,6 +6,7 @@ use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
@@ -297,7 +298,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
+	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $revision !== null ) {
@@ -364,7 +365,7 @@ class DataUpdater {
 			);
 	}
 
-	private function checkUpdateEditProtection( $wikiPage, $user ) {
+	private function checkUpdateEditProtection( $wikiPage, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$editProtectionUpdater = $applicationFactory->create( 'EditProtectionUpdater',

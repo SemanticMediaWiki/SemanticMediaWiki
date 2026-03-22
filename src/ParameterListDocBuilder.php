@@ -81,7 +81,7 @@ class ParameterListDocBuilder {
 	 *
 	 * @return string
 	 */
-	private function getDescriptionRow( ParamDefinition $parameter, $hasAliases ): string {
+	private function getDescriptionRow( ParamDefinition $parameter, bool $hasAliases ): string {
 		if ( $hasAliases ) {
 			$aliases = $parameter->getAliases();
 			$aliases = count( $aliases ) > 0 ? implode( ', ', $aliases ) : ' -';

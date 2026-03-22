@@ -190,7 +190,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 		return TurtleSerializer::getTurtleNameForExpElement( $propertyExpElement );
 	}
 
-	private function doExchangeForWhenInversePropertyIsUsed( Property $property, $objectName, $joinVariable ): array {
+	private function doExchangeForWhenInversePropertyIsUsed( Property $property, string $objectName, $joinVariable ): array {
 		$subjectName = '?' . $joinVariable;
 		$nonInverseProperty = $property;
 

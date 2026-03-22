@@ -187,7 +187,7 @@ class UnitConverter {
 		$this->unitIds[''] = '';
 	}
 
-	private function initConversionData( $subject, $key, $numberValue ): void {
+	private function initConversionData( $subject, string $key, NumberValue $numberValue ): void {
 		$this->fetchConversionData( $numberValue );
 
 		foreach ( $this->errors as $error ) {
@@ -212,7 +212,7 @@ class UnitConverter {
 		$this->entityCache->associate( $subject, $key );
 	}
 
-	private function matchUnitAliases( $numberValue, $number, $asPrefix, array $unitAliases ): void {
+	private function matchUnitAliases( NumberValue $numberValue, $number, $asPrefix, array $unitAliases ): void {
 		$first = true;
 
 		foreach ( $unitAliases as $unit ) {

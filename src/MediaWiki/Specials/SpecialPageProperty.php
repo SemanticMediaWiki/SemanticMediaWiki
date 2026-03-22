@@ -88,7 +88,7 @@ class SpecialPageProperty extends SpecialPage {
 		return 'smw_group/search';
 	}
 
-	private function load( $options ): void {
+	private function load( Options $options ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$dataValueFactory = DataValueFactory::getInstance();
 

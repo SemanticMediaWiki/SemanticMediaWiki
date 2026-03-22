@@ -202,7 +202,7 @@ class QueryEngine implements QueryEngineInterface {
 		return $debugFormatter->buildHTML( $entries, $query );
 	}
 
-	private function isSingletonConditionWithElementMatch( $condition ): bool {
+	private function isSingletonConditionWithElementMatch( Condition $condition ): bool {
 		return $condition instanceof SingletonCondition && $condition->matchElement instanceof Element;
 	}
 

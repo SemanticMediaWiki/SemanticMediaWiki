@@ -123,7 +123,7 @@ class CustomForm {
 		return implode( '', $fields );
 	}
 
-	private function makeField( $name, $property, $value, $options ) {
+	private function makeField( string $name, $property, $value, $options ) {
 		$display = $this->isActiveForm ? 'inline-block' : 'none';
 		$options = !is_array( $options ) ? [] : $options;
 

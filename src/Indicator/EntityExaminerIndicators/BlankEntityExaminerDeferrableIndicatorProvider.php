@@ -121,7 +121,7 @@ class BlankEntityExaminerDeferrableIndicatorProvider implements TypableSeverityI
 		return '';
 	}
 
-	private function runCheck( $subject, $options ): void {
+	private function runCheck( WikiPage $subject, array $options ): void {
 		$options['dir'] = isset( $options['isRTL'] ) && $options['isRTL'] ? 'rtl' : 'ltr';
 
 		// Doing some checks here ...

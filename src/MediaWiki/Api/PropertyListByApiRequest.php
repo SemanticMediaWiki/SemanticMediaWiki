@@ -182,7 +182,7 @@ class PropertyListByApiRequest {
 		return true;
 	}
 
-	private function doModifyRequestOptionsWith( $property, $requestOptions ) {
+	private function doModifyRequestOptionsWith( $property, RequestOptions $requestOptions ) {
 		if ( $property === '' ) {
 			return $requestOptions;
 		}

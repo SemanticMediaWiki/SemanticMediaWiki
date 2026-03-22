@@ -105,7 +105,7 @@ class SortBuilder {
 		return [ $sort, $sortFields, $isRandom, $isConstantScore ];
 	}
 
-	private function addDefaultField( &$sort, $order, $sortKeysCount ): void {
+	private function addDefaultField( &$sort, $order, int $sortKeysCount ): void {
 		$sort['subject.sortkey.sort'] = [ 'order' => $order ];
 
 		// Add title as extra criteria in case an entity uses the same sortkey
@@ -164,7 +164,7 @@ class SortBuilder {
 		}
 	}
 
-	private function sort_field( $field ): bool {
+	private function sort_field( string $field ): bool {
 		return strpos( $field, 'txt' ) !== false || strpos( $field, 'wpgField' ) !== false || strpos( $field, 'uriField' ) !== false;
 	}
 

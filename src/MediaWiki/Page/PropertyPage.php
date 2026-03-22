@@ -327,7 +327,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function makeItemList( $key, $propertyKey, $checkProperty = true ): array {
+	private function makeItemList( string $key, string $propertyKey, bool $checkProperty = true ): array {
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
 			return [ '', '' ];
@@ -421,7 +421,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
+	private function msg( string $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

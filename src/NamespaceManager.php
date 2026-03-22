@@ -201,7 +201,7 @@ class NamespaceManager {
 		];
 	}
 
-	private function getNamespaceIndex( $vars ) {
+	private function getNamespaceIndex( array $vars ) {
 		if ( !isset( $vars['smwgNamespaceIndex'] ) ) {
 			self::$initNamespaceIndex = self::DEFAULT_NAMESPACEINDEX;
 			return self::$initNamespaceIndex;
@@ -215,7 +215,7 @@ class NamespaceManager {
 		throw new NamespaceIndexChangeException( self::$initNamespaceIndex, $vars['smwgNamespaceIndex'] );
 	}
 
-	private function getLanguageCode( $vars ) {
+	private function getLanguageCode( array $vars ) {
 		if ( self::$initLanguageCode === '' ) {
 			self::$initLanguageCode = $vars['wgLanguageCode'];
 			return self::$initLanguageCode;

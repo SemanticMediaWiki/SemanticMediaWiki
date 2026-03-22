@@ -280,7 +280,7 @@ class QueryResult {
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): WikiPage|false {
 		return reset( $this->mResults );
 	}
 
@@ -442,7 +442,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()

@@ -103,7 +103,7 @@ class QueryStringifier {
 	/**
 	 * @return mixed[]
 	 */
-	private static function printouts( $query, $showParams = false ): array {
+	private static function printouts( Query $query, $showParams = false ): array {
 		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
@@ -122,7 +122,7 @@ class QueryStringifier {
 	/**
 	 * @return mixed[][][]|string[][]
 	 */
-	private static function sortKeys( $query ): array {
+	private static function sortKeys( Query $query ): array {
 		$sort = [];
 		$order = [];
 

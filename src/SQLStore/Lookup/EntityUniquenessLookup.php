@@ -147,7 +147,7 @@ class EntityUniquenessLookup {
 		$query->condition( $query->asAnd( $conditions ) );
 	}
 
-	private function resolve_container_conditions( $propertyTable, $dataItem, $query ): void {
+	private function resolve_container_conditions( $propertyTable, Container $dataItem, $query ): void {
 		$proptables = $this->store->getPropertyTables();
 		$semanticData = $dataItem->getSemanticData();
 

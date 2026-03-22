@@ -303,7 +303,7 @@ class ProtectionValidator {
 			&& $this->checkProtection( $subject->asBase() );
 	}
 
-	private function checkProtection( $subject, $property = null ) {
+	private function checkProtection( WikiPage $subject, $property = null ) {
 		if ( $property === null ) {
 			$property = new Property( '_EDIP' );
 		}

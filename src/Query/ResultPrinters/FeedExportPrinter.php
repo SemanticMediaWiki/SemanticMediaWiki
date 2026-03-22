@@ -384,7 +384,7 @@ final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 		return '';
 	}
 
-	private function newFeedItem( $title, $rowItems ) {
+	private function newFeedItem( Title $title, array $rowItems ) {
 		$mwServices = MediaWikiServices::getInstance();
 		$wikiPage = $mwServices->getWikiPageFactory()->newFromID( $title->getArticleID() );
 

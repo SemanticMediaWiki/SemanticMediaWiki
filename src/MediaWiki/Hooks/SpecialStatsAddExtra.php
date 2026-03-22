@@ -96,7 +96,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return true;
 	}
 
-	private function copyStatistics( &$extraStats ): void {
+	private function copyStatistics( array &$extraStats ): void {
 		$statistics = $this->store->getStatistics();
 		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
 
@@ -148,7 +148,7 @@ class SpecialStatsAddExtra implements HookListener {
 	/**
 	 * @return array{name: non-falsy-string, number: mixed}[]
 	 */
-	private function addFormats( $key, $statistics ): array {
+	private function addFormats( int $key, $statistics ): array {
 		$i = 0;
 		$formats = [];
 

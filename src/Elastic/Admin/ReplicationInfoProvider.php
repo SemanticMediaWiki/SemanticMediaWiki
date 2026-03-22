@@ -4,6 +4,7 @@ namespace SMW\Elastic\Admin;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Request\WebRequest;
+use MediaWiki\Title\Title;
 use SMW\DataItems\WikiPage;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Replication\ReplicationCheck;
@@ -151,7 +152,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function buildFromFile( $title ): string {
+	private function buildFromFile( ?Title $title ): string {
 		$response = '';
 
 		$key = $this->entityCache->makeCacheKey(
@@ -209,7 +210,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function purge( $title ) {
+	private function purge( ?Title $title ) {
 		return Html::rawElement(
 			'a',
 			[
@@ -221,7 +222,7 @@ class ReplicationInfoProvider extends InfoProviderHandler {
 		);
 	}
 
-	private function buildFromTitle( $title ) {
+	private function buildFromTitle( ?Title $title ) {
 		$response = $this->purge( $title );
 
 		return Html::rawElement(

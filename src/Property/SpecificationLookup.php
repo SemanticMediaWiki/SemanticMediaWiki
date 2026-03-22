@@ -383,7 +383,7 @@ class SpecificationLookup {
 		return $text;
 	}
 
-	private function getPredefinedPropertyDescription( $property, $languageCode, $linker ): string {
+	private function getPredefinedPropertyDescription( Property $property, $languageCode, $linker ): string {
 		$description = '';
 		$key = $property->getKey();
 
@@ -417,7 +417,7 @@ class SpecificationLookup {
 	 *
 	 * @return string
 	 */
-	private function getTextByLanguageCode( $subject, $property, $languageCode ) {
+	private function getTextByLanguageCode( ?WikiPage $subject, Property $property, $languageCode ) {
 		// @TODO move in the constructor ?
 		try {
 			$monolingualTextLookup = $this->store->service( 'MonolingualTextLookup' );

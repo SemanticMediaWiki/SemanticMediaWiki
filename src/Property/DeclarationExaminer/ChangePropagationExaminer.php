@@ -84,7 +84,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 		}
 	}
 
-	private function isChangePropagation( $property ): void {
+	private function isChangePropagation( Property $property ): void {
 		$severity = 'warning';
 		$this->isLocked = true;
 
@@ -99,7 +99,7 @@ class ChangePropagationExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkForPendingChangePropagationDispatchJob( $property ): void {
+	private function checkForPendingChangePropagationDispatchJob( Property $property ): void {
 		$subject = $property->getCanonicalDiWikiPage();
 
 		if ( !ChangePropagationDispatchJob::hasPendingJobs( $subject ) ) {

@@ -49,7 +49,7 @@ class FileUpload implements HookListener {
 		return $title !== null && $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() );
 	}
 
-	private function doProcess( $file, $reUploadStatus = false ): bool {
+	private function doProcess( File $file, $reUploadStatus = false ): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$filePage = $this->makeFilePage( $file );
 
@@ -96,7 +96,7 @@ class FileUpload implements HookListener {
 		return true;
 	}
 
-	private function makeFilePage( $file ) {
+	private function makeFilePage( File $file ) {
 		$filePage = ApplicationFactory::getInstance()->newPageCreator()->createFilePage(
 			$file->getTitle()
 		);

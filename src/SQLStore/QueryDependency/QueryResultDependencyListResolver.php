@@ -210,7 +210,7 @@ class QueryResultDependencyListResolver {
 		}
 	}
 
-	private function doMatchSubproperty( &$subjects, $subject, Property $property ): void {
+	private function doMatchSubproperty( &$subjects, ?WikiPage $subject, Property $property ): void {
 		$subproperties = [];
 
 		// Using the DBKey as short-cut, as we don't expect to match sub-properties for

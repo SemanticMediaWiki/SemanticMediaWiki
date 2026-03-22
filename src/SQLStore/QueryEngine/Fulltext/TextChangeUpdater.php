@@ -224,7 +224,7 @@ class TextChangeUpdater {
 		);
 	}
 
-	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ): void {
+	private function collectUpdates( int|string $sid, array $textItem, $changeList, &$updates ): void {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -267,7 +267,7 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function canPostUpdate( $changeOp ) {
+	private function canPostUpdate( ChangeOp $changeOp ) {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 

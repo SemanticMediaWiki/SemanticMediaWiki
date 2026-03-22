@@ -65,7 +65,7 @@ class ErrorLookup {
 		return $this->fetchFromTable( $errorType, $subject, $requestOptions );
 	}
 
-	private function fetchFromTable( $errorType, $subject, $requestOptions ) {
+	private function fetchFromTable( $errorType, ?WikiPage $subject, RequestOptions $requestOptions ) {
 		$checkConstraintErrors = $requestOptions->getOption( 'checkConstraintErrors' );
 
 		/**

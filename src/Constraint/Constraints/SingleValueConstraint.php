@@ -64,7 +64,7 @@ class SingleValueConstraint implements Constraint {
 		}
 	}
 
-	private function check( $single_value, $dataValue ): void {
+	private function check( $single_value, DataValue $dataValue ): void {
 		if ( $single_value === false ) {
 			return;
 		}
@@ -82,7 +82,7 @@ class SingleValueConstraint implements Constraint {
 		}
 	}
 
-	private function reportError( $dataValue, $property ): void {
+	private function reportError( DataValue $dataValue, $property ): void {
 		$this->hasViolation = true;
 
 		$error = [

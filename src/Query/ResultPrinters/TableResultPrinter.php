@@ -388,7 +388,7 @@ class TableResultPrinter extends ResultPrinter {
 		];
 	}
 
-	private function addDataTableAttrs( $res, $headerList, &$tableAttrs ): void {
+	private function addDataTableAttrs( QueryResult $res, array $headerList, array &$tableAttrs ): void {
 		$tableAttrs['width'] = '100%';
 		$tableAttrs['style'] = 'opacity:.0; display:none;';
 

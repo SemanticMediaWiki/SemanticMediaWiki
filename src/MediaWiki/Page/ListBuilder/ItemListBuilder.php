@@ -183,7 +183,7 @@ class ItemListBuilder {
 		return "\n<p>" . $message . $colsListBuilder->getColumnList( $subjectList, 5 );
 	}
 
-	private function getLastItemFormatter( $property, $dataItem ) {
+	private function getLastItemFormatter( Property $property, DataItem $dataItem ) {
 		return function () use ( $property, $dataItem ) {
 			return Html::element(
 				'a',
@@ -198,7 +198,7 @@ class ItemListBuilder {
 		};
 	}
 
-	private function msg( $key, $type = Message::TEXT ): string {
+	private function msg( array|string $key, $type = Message::TEXT ): string {
 		return Message::get( $key, $type, $this->languageCode );
 	}
 }

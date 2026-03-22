@@ -301,7 +301,7 @@ class RedirectStore {
 		return $this->store->getOption( Store::OPT_CREATE_UPDATE_JOB, true ) && $this->store->getOption( 'smwgEnableUpdateJobs' );
 	}
 
-	private function findUpdateJobs( $connection, $query, &$jobs ): void {
+	private function findUpdateJobs( $connection, array $query, &$jobs ): void {
 		$res = $connection->select(
 			$query['from'],
 			$query['fields'],

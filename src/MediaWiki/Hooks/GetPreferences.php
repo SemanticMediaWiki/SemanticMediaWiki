@@ -161,7 +161,7 @@ class GetPreferences implements HookListener {
 		return true;
 	}
 
-	private function makeImage( $logo ): string {
+	private function makeImage( ?string $logo ): string {
 		return "<img style='float:right;margin-top:10px;margin-left:20px;height:auto;width:70px;' src='{$logo}'>";
 	}
 

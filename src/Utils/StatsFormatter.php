@@ -106,7 +106,7 @@ class StatsFormatter {
 	/**
 	 * @return mixed[]
 	 */
-	private static function stringToArray( $separator, $path, $value ): array {
+	private static function stringToArray( $separator, int|string $path, $value ): array {
 		$pos = strpos( $path, $separator );
 
 		if ( $pos === false ) {

@@ -253,7 +253,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $this->collator->getFirstLetter( $sortKey );
 	}
 
-	private function row_to_contents( $row, &$first_col ): string {
+	private function row_to_contents( array $row, bool &$first_col ): string {
 		// has anything but the first column been printed?
 		$found_values = false;
 		$result = '';
@@ -302,7 +302,7 @@ class CategoryResultPrinter extends ResultPrinter {
 		return $result;
 	}
 
-	private function row_to_template( $row, $res, &$first_col ): void {
+	private function row_to_template( array $row, QueryResult $res, bool &$first_col ): void {
 		// explicitly number parameters for more robust parsing (values may contain "=")
 		$i = 0;
 

@@ -280,7 +280,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return ExpData
 	 */
-	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, $expandSubject ) {
+	private function expandUpdateExpData( ExpData $expData, array &$auxiliaryExpData, bool $expandSubject ) {
 		$subjectExpResource = $expData->getSubject();
 
 		if ( $expandSubject ) {

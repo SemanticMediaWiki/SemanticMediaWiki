@@ -145,7 +145,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $results;
 	}
 
-	private function findValueOutputFor( $isValue, $type, $dataValue, $linker ) {
+	private function findValueOutputFor( bool $isValue, $type, $dataValue, $linker ) {
 		$dataItem = $dataValue->getDataItem();
 
 		// Turn URI, External identifier, or Page links into a href representation
