@@ -69,6 +69,11 @@
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Provides additional result formats for queries of structured data"
 	},
+	"autoload": {
+		"files": [
+			"src/enableSemantics.php"
+		]
+	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "7.x-dev"
