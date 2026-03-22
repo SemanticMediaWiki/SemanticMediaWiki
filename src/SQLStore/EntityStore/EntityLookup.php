@@ -163,8 +163,9 @@ class EntityLookup implements IEntityLookup {
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
+	 * @return mixed[]
 	 */
-	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null ) {
+	public function getProperties( WikiPage $subject, ?RequestOptions $requestOptions = null ): array {
 		$idTable = $this->store->getObjectIds();
 
 		$sid = $idTable->getSMWPageID(
@@ -394,8 +395,9 @@ class EntityLookup implements IEntityLookup {
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
+	 * @return mixed[]
 	 */
-	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ) {
+	public function getInProperties( DataItem $object, ?RequestOptions $requestOptions = null ): array {
 		$result = [];
 		$diType = $object->getDIType();
 

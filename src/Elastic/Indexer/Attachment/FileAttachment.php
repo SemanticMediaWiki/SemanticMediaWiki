@@ -245,7 +245,7 @@ class FileAttachment {
 		$this->logger->info( $msg, $context );
 	}
 
-	private function upsertDoc( $baseDocId, $subject, Property $property ) {
+	private function upsertDoc( $baseDocId, WikiPage $subject, Property $property ) {
 		$params = [
 			'_index' => $this->indexer->getIndexName( ElasticClient::TYPE_DATA )
 		];

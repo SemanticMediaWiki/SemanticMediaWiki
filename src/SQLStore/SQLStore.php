@@ -231,7 +231,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getProperties( WikiPage $subject, $requestOptions = null ) {
+	public function getProperties( WikiPage $subject, $requestOptions = null ): array {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -270,7 +270,7 @@ class SQLStore extends Store {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInProperties( DataItem $value, $requestoptions = null ) {
+	public function getInProperties( DataItem $value, $requestoptions = null ): array {
 		if ( $this->entityLookup === null ) {
 			$this->entityLookup = $this->factory->newEntityLookup();
 		}
@@ -549,7 +549,7 @@ class SQLStore extends Store {
 	 *
 	 * @return DataItem[]
 	 */
-	public function applyRequestOptions( array $data, ?RequestOptions $requestOptions = null ) {
+	public function applyRequestOptions( array $data, ?RequestOptions $requestOptions = null ): array {
 		return RequestOptionsProcessor::applyRequestOptions( $this, $data, $requestOptions );
 	}
 
