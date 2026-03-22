@@ -89,5 +89,5 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./coverage/php/coverage.xml
+          files: coverage/php/coverage.xml
         if: matrix.coverage == true
