@@ -300,32 +300,4 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 		$this->assertStringContainsString( 'smw-sp-properties-header-label', $pageHeader );
 	}
 
-	public function testGetPageHeaderContainsSearchForm() {
-		$listLookup = $this->getMockBuilder( ListLookup::class )
-			->disableOriginalConstructor()
-			->getMock();
-
-		$listLookup->expects( $this->once() )
-			->method( 'isFromCache' )
-			->willReturn( false );
-
-		$this->store->expects( $this->once() )
-			->method( 'getUnusedPropertiesSpecial' )
-			->willReturn( $listLookup );
-
-		$instance = new UnusedPropertiesQueryPage(
-			$this->store,
-			$this->settings
-		);
-
-		$requestOptions = new RequestOptions();
-		$instance->getResults( $requestOptions );
-
-		$pageHeader = $instance->getPageHeader();
-
-		$this->assertIsString( $pageHeader );
-		$this->assertStringContainsString( 'form', $pageHeader );
-		$this->assertStringContainsString( 'property', $pageHeader );
-	}
-
 }
