@@ -680,8 +680,6 @@ class Database {
 	}
 
 	/**
-	 * @TransactionHandler
-	 *
 	 * @since 3.1
 	 *
 	 * @param string $fname
