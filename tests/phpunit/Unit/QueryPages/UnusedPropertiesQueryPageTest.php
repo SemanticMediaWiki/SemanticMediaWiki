@@ -2,12 +2,15 @@
 
 namespace SMW\Tests\Unit\QueryPages;
 
+use MediaWiki\Linker\Linker;
 use PHPUnit\Framework\TestCase;
 use Skin;
 use SMW\DataItemFactory;
 use SMW\Exception\PropertyNotFoundException;
 use SMW\QueryPages\UnusedPropertiesQueryPage;
+use SMW\RequestOptions;
 use SMW\Settings;
+use SMW\SQLStore\Lookup\ListLookup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
 
@@ -57,6 +60,33 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 		);
 	}
 
+	public function testGetName() {
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$this->assertSame( 'UnusedProperties', $instance->getName() );
+	}
+
+	public function testIsExpensive() {
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$this->assertFalse( $instance->isExpensive() );
+	}
+
+	public function testIsSyndicated() {
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$this->assertFalse( $instance->isSyndicated() );
+	}
+
 	public function testFormatResultDIError() {
 		$error = $this->dataItemFactory->newDIError( 'Foo' );
 
@@ -71,7 +101,6 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 		);
 
 		$this->assertIsString(
-
 			$result
 		);
 
@@ -127,6 +156,73 @@ class UnusedPropertiesQueryPageTest extends TestCase {
 			'Help:Special_properties',
 			$result
 		);
+	}
+
+	public function testGetResults() {
+		$property = $this->dataItemFactory->newDIProperty( 'TestProperty' );
+
+		$listLookup = $this->getMockBuilder( ListLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'fetchList' )
+			->willReturn( [ $property ] );
+
+		$this->store->expects( $this->once() )
+			->method( 'getUnusedPropertiesSpecial' )
+			->willReturn( $listLookup );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$requestOptions = new RequestOptions();
+		$results = $instance->getResults( $requestOptions );
+
+		$this->assertIsArray( $results );
+		$this->assertCount( 1, $results );
+		$this->assertSame( $property, $results[0] );
+	}
+
+	public function testGetResultsReturnsEmpty() {
+		$listLookup = $this->getMockBuilder( ListLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$listLookup->expects( $this->once() )
+			->method( 'fetchList' )
+			->willReturn( [] );
+
+		$this->store->expects( $this->once() )
+			->method( 'getUnusedPropertiesSpecial' )
+			->willReturn( $listLookup );
+
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$requestOptions = new RequestOptions();
+		$results = $instance->getResults( $requestOptions );
+
+		$this->assertIsArray( $results );
+		$this->assertEmpty( $results );
+	}
+
+	public function testFormatResultWithInvalidTypeThrowsException() {
+		$instance = new UnusedPropertiesQueryPage(
+			$this->store,
+			$this->settings
+		);
+
+		$this->expectException( PropertyNotFoundException::class );
+		$this->expectExceptionMessage(
+			'UnusedPropertiesQueryPage expects results that are properties or errors.'
+		);
+
+		$instance->formatResult( $this->skin, [] );
 	}
 
 }
