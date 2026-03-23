@@ -31,7 +31,7 @@ class PropertyListByApiRequest {
 
 	private int $limit = 50;
 
-	private int|float $continueOffset = 1;
+	private int $continueOffset = 1;
 
 	private string $languageCode = '';
 
@@ -105,7 +105,7 @@ class PropertyListByApiRequest {
 	 *
 	 * @param array
 	 */
-	public function getContinueOffset(): int|float {
+	public function getContinueOffset(): int {
 		return $this->continueOffset;
 	}
 

@@ -63,7 +63,7 @@ class ExtendedSearch {
 	 */
 	private array $searchableNamespaces = [];
 
-	private int|float $limit = 10;
+	private int $limit = 10;
 
 	private int $offset = 0;
 
@@ -157,7 +157,7 @@ class ExtendedSearch {
 	 *
 	 * @return int
 	 */
-	public function getLimit(): int|float {
+	public function getLimit(): int {
 		return $this->limit;
 	}
 

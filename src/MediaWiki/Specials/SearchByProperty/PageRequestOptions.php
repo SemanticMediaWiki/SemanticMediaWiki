@@ -113,7 +113,7 @@ class PageRequestOptions {
 		return $this->value->isValid() ? $this->value->getWikiValue() : $value;
 	}
 
-	private function unescape( string $value, bool $escaped ): string|array {
+	private function unescape( string $value, bool $escaped ): string {
 		if ( $this->value instanceof NumberValue ) {
 			$value = $escaped ? str_replace( [ '-20', '-2D' ], [ ' ', '-' ], $value ) : $value;
 			// Do not try to decode things like 1.2e-13

@@ -155,7 +155,7 @@ class WikiPage extends DataItem {
 	 * page. To obtain the latter, query for the values of the property
 	 * "new SMW\DataItems\Property( '_SKEY' )".
 	 */
-	public function getSortKey(): string|array {
+	public function getSortKey(): string {
 		if ( $this->sortkey === null || $this->sortkey === '' ) {
 			$this->sortkey = str_replace( '_', ' ', $this->m_dbkey );
 		}

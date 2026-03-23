@@ -10,7 +10,7 @@ namespace SMW\Utils;
  */
 class Url {
 
-	private array|bool $info = [];
+	private array|false $info = [];
 
 	private array $flag = [];
 

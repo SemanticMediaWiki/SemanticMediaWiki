@@ -30,7 +30,7 @@ class Profile {
 
 	private ?Compartment $defaultProfile = null;
 
-	private string|array $profileName = '';
+	private string $profileName = '';
 
 	/**
 	 * @since 3.2

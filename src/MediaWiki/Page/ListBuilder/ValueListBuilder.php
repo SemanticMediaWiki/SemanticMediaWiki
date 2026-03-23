@@ -38,7 +38,7 @@ class ValueListBuilder {
 	/**
 	 * @var int|null
 	 */
-	private null|float|int|array|string $filterCount = null;
+	private null|int|string $filterCount = null;
 
 	/**
 	 * @var int
@@ -68,7 +68,7 @@ class ValueListBuilder {
 	 *
 	 * @param integer
 	 */
-	public function getFilterCount(): float|int|string|array|null {
+	public function getFilterCount(): null|int|string {
 		return $this->filterCount;
 	}
 

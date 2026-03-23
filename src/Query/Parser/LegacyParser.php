@@ -768,7 +768,7 @@ class LegacyParser implements Parser {
 	/**
 	 * @see Tokenizer::read
 	 */
-	private function readChunk( string $stoppattern = '', bool $consume = true, bool $trim = true ): string|array|false {
+	private function readChunk( string $stoppattern = '', bool $consume = true, bool $trim = true ): string|false {
 		return $this->tokenizer->getToken( $this->currentString, $stoppattern, $consume, $trim );
 	}
 
