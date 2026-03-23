@@ -170,7 +170,7 @@
 		"SMW\\ChangePropagationDispatchJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationDispatchJob",
 		"SMW\\ChangePropagationUpdateJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationUpdateJob",
 		"SMW\\ChangePropagationClassUpdateJob": "SMW\\MediaWiki\\Jobs\\ChangePropagationClassUpdateJob",
-		"SMWUpdateJob'": "SMW\\MediaWiki\\Jobs\\UpdateJob",
+		"SMWUpdateJob": "SMW\\MediaWiki\\Jobs\\UpdateJob",
 		"SMWRefreshJob": "SMW\\MediaWiki\\Jobs\\RefreshJob"
 	},
 	"DefaultUserOptions": {

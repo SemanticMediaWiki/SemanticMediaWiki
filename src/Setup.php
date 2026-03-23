@@ -145,7 +145,6 @@ final class Setup {
 		$this->initMessageCallbackHandler();
 		$this->addDefaultConfigurations( $vars, $rootDir );
 
-		$this->registerJobClasses( $vars );
 		$this->registerPermissions( $vars );
 
 		$this->registerParamDefinitions( $vars );
@@ -302,53 +301,6 @@ final class Setup {
 
 			return $message->setInterfaceMessageFlag( true )->title( $title )->parse();
 		} );
-	}
-
-	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgJobClasses
-	 *
-	 * @param array &$vars
-	 *
-	 * @return void
-	 */
-	private function registerJobClasses( array &$vars ): void {
-		$jobClasses = [
-
-			'smw.update' => 'SMW\MediaWiki\Jobs\UpdateJob',
-			'smw.refresh' => 'SMW\MediaWiki\Jobs\RefreshJob',
-			'smw.updateDispatcher' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			'smw.fulltextSearchTableUpdate' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
-			'smw.entityIdDisposer' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			'smw.propertyStatisticsRebuild' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
-			'smw.fulltextSearchTableRebuild' => 'SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob',
-			'smw.changePropagationDispatch' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
-			'smw.changePropagationUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
-			'smw.changePropagationClassUpdate' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
-			'smw.deferredConstraintCheckUpdateJob' => 'SMW\MediaWiki\Jobs\DeferredConstraintCheckUpdateJob',
-			'smw.elasticIndexerRecovery' => 'SMW\Elastic\Jobs\IndexerRecoveryJob',
-			'smw.elasticFileIngest' => 'SMW\Elastic\Jobs\FileIngestJob',
-			'smw.parserCachePurgeJob' => 'SMW\MediaWiki\Jobs\ParserCachePurgeJob',
-
-			// Legacy 3.0-
-			'SMW\UpdateJob' => 'SMW\MediaWiki\Jobs\UpdateJob',
-			'SMW\RefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob',
-			'SMW\UpdateDispatcherJob' => 'SMW\MediaWiki\Jobs\UpdateDispatcherJob',
-			'SMW\FulltextSearchTableUpdateJob' => 'SMW\MediaWiki\Jobs\FulltextSearchTableUpdateJob',
-			'SMW\EntityIdDisposerJob' => 'SMW\MediaWiki\Jobs\EntityIdDisposerJob',
-			'SMW\PropertyStatisticsRebuildJob' => 'SMW\MediaWiki\Jobs\PropertyStatisticsRebuildJob',
-			'SMW\FulltextSearchTableRebuildJob' => 'SMW\MediaWiki\Jobs\FulltextSearchTableRebuildJob',
-			'SMW\ChangePropagationDispatchJob' => 'SMW\MediaWiki\Jobs\ChangePropagationDispatchJob',
-			'SMW\ChangePropagationUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationUpdateJob',
-			'SMW\ChangePropagationClassUpdateJob' => 'SMW\MediaWiki\Jobs\ChangePropagationClassUpdateJob',
-
-			// Legacy 2.0-
-			'SMWUpdateJob'  => 'SMW\MediaWiki\Jobs\UpdateJob',
-			'SMWRefreshJob' => 'SMW\MediaWiki\Jobs\RefreshJob'
-		];
-
-		foreach ( $jobClasses as $job => $class ) {
-			$vars['wgJobClasses'][$job] = $class;
-		}
 	}
 
 	/**
