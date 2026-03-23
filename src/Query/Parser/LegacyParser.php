@@ -178,7 +178,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return string
 	 */
-	public function getErrorString() {
+	public function getErrorString(): never {
 		throw new RuntimeException( "Shouldnot be used, remove getErrorString usage!" );
 	}
 

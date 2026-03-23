@@ -196,7 +196,7 @@ class Localizer {
 	 *
 	 * @return LocalLanguage
 	 */
-	public function getLang( $language = '' ) {
+	public function getLang( $language = '' ): LocalLanguage {
 		$languageCode = $language;
 
 		if ( $language instanceof Language ) {
