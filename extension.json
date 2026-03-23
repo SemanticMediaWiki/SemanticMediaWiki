@@ -29,8 +29,16 @@
 		"SMW\\Tests\\": "tests/phpunit/"
 	},
 	"Hooks": {
-		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
-		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
+		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces"
+	},
+	"APIModules": {
+		"smwinfo": "SMW\\MediaWiki\\Api\\Info",
+		"smwtask": "SMW\\MediaWiki\\Api\\Task",
+		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
+		"ask": "SMW\\MediaWiki\\Api\\Ask",
+		"askargs": "SMW\\MediaWiki\\Api\\AskArgs",
+		"browsebysubject": "SMW\\MediaWiki\\Api\\BrowseBySubject",
+		"browsebyproperty": "SMW\\MediaWiki\\Api\\BrowseByProperty"
 	},
 	"AutoloadClasses": {
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
