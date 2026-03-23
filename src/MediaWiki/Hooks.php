@@ -201,6 +201,7 @@ class Hooks {
 		return true;
 	}
 
+	/**
 	 * @since 3.0
 	 *
 	 * @param array &$vars
