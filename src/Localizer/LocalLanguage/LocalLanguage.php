@@ -14,10 +14,7 @@ namespace SMW\Localizer\LocalLanguage;
  */
 class LocalLanguage {
 
-	/**
-	 * @var LocalLanguage
-	 */
-	private static $instance = null;
+	private static ?LocalLanguage $instance = null;
 
 	/**
 	 * @var string
@@ -29,25 +26,13 @@ class LocalLanguage {
 	 */
 	private $canonicalFallbackLanguageCode = 'en';
 
-	/**
-	 * @var array
-	 */
-	private $propertyIdByLabelMap = [];
+	private array $propertyIdByLabelMap = [];
 
-	/**
-	 * @var array
-	 */
-	private $dateFormatsMap = [];
+	private array $dateFormatsMap = [];
 
-	/**
-	 * @var array
-	 */
-	private $monthMap = [];
+	private array $monthMap = [];
 
-	/**
-	 * @var array
-	 */
-	private $months = [];
+	private array $months = [];
 
 	/**
 	 * @since 2.4

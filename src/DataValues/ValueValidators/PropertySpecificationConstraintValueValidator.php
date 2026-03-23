@@ -14,22 +14,16 @@ use SMW\DataValues\DataValue;
  */
 class PropertySpecificationConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var bool
-	 */
-	private $hasConstraintViolation = false;
+	private bool $hasConstraintViolation = false;
 
-	/**
-	 * @var array
-	 */
-	private static $inMemoryLabelToLanguageTracer = [];
+	private static array $inMemoryLabelToLanguageTracer = [];
 
 	/**
 	 * @since 2.5
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasConstraintViolation() {
+	public function hasConstraintViolation(): bool {
 		return $this->hasConstraintViolation;
 	}
 

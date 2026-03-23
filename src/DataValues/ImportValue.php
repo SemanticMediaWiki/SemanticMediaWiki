@@ -35,45 +35,33 @@ class ImportValue extends DataValue {
 
 	/**
 	 * Type string assigned by the import declaration
-	 *
-	 * @var string
 	 */
-	private $termType = '';
+	private string $termType = '';
 
 	/**
 	 * String provided by user which is used to look up data on Mediawiki:*-Page
-	 *
-	 * @var string
 	 */
-	private $qname = '';
+	private string $qname = '';
 
 	/**
 	 * URI of namespace (without local name)
-	 *
-	 * @var string
 	 */
-	private $uri = '';
+	private string $uri = '';
 
 	/**
 	 * Namespace id (e.g. "foaf")
-	 *
-	 * @var string
 	 */
-	private $namespace = '';
+	private string $namespace = '';
 
 	/**
 	 * Local name (e.g. "knows")
-	 *
-	 * @var string
 	 */
-	private $term = '';
+	private string $term = '';
 
 	/**
 	 * Wiki name of the vocab (e.g. "Friend of a Friend"), might contain wiki markup
-	 *
-	 * @var string
 	 */
-	private $declarativeName = '';
+	private string $declarativeName = '';
 
 	private array $declarativeNames = [];
 
@@ -99,12 +87,9 @@ class ImportValue extends DataValue {
 			$this
 		);
 
-		[ $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ] = $importValueParser->parse(
-			$value
-		);
+		$result = $importValueParser->parse( $value );
 
-		if ( $importValueParser->getErrors() !== [] ) {
-
+		if ( $result === null || $importValueParser->getErrors() !== [] ) {
 			foreach ( $importValueParser->getErrors() as $message ) {
 				$this->addErrorMsg( $message );
 			}
@@ -112,6 +97,8 @@ class ImportValue extends DataValue {
 			$this->m_dataitem = new Blob( 'ERROR' );
 			return;
 		}
+
+		[ $this->namespace, $this->term, $this->uri, $this->declarativeName, $this->termType ] = $result;
 
 		// Encoded string for DB storage
 		$this->m_dataitem = new Blob(

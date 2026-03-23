@@ -26,10 +26,7 @@ class RedirectStore {
 	 */
 	private $equalitySupport;
 
-	/**
-	 * @var bool
-	 */
-	private $isCommandLineMode = false;
+	private bool $isCommandLineMode = false;
 
 	/**
 	 * @since 2.1

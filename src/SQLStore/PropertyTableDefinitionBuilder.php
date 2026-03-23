@@ -45,7 +45,7 @@ class PropertyTableDefinitionBuilder {
 	 * @param array $specialProperties
 	 * @param array $userDefinedFixedProperties
 	 */
-	public function doBuild( $diTypes, $specialProperties, $userDefinedFixedProperties ): void {
+	public function doBuild( array $diTypes, array $specialProperties, array $userDefinedFixedProperties ): void {
 		$this->addTableDefinitionForDiTypes( $diTypes );
 
 		$this->addTableDefinitionForFixedProperties(
@@ -158,7 +158,7 @@ class PropertyTableDefinitionBuilder {
 	 * @param $tableName
 	 * @param $fixedProperty
 	 */
-	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false, $tableType = '' ) {
+	protected function addPropertyTable( $diType, $tableName, $fixedProperty = false, string $tableType = '' ) {
 		$this->propertyTables[$tableName] = $this->newTableDefinition( $diType, $tableName, $fixedProperty );
 		$this->propertyTables[$tableName]->setTableType( $tableType );
 	}

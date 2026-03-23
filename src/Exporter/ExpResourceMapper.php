@@ -39,10 +39,8 @@ class ExpResourceMapper {
 
 	/**
 	 * @note Legacy setting expected to vanish with 3.0
-	 *
-	 * @var bool
 	 */
-	private $bcAuxiliaryUse = true;
+	private bool $bcAuxiliaryUse = true;
 
 	/**
 	 * @var bool

@@ -23,7 +23,7 @@ class PrefetchCache {
 	/**
 	 * @var array
 	 */
-	private $lookupCache = [];
+	private array $lookupCache = [];
 
 	/**
 	 * @since 3.1

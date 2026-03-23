@@ -22,10 +22,7 @@ use SMW\DataValues\ErrorValue;
  */
 class SemanticDataDeserializer implements Deserializer {
 
-	/**
-	 * @var array
-	 */
-	private $dataItemTypeIdCache = [];
+	private array $dataItemTypeIdCache = [];
 
 	/**
 	 * @see Deserializers::deserialize

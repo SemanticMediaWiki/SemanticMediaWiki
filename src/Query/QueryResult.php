@@ -64,17 +64,13 @@ class QueryResult {
 
 	/**
 	 * Holds a value that belongs to a count query result
-	 *
-	 * @var int|null
 	 */
-	private $countValue;
+	private ?int $countValue = null;
 
 	/**
 	 * Indicates whether results have been retrieved from cache or not
-	 *
-	 * @var bool
 	 */
-	private $isFromCache = false;
+	private bool $isFromCache = false;
 
 	private ItemJournal $itemJournal;
 
@@ -85,15 +81,9 @@ class QueryResult {
 	 */
 	private $serializer_version = 2;
 
-	/**
-	 * @var ScoreSet
-	 */
-	private $scoreSet;
+	private ?ScoreSet $scoreSet = null;
 
-	/**
-	 * @var Excerpts
-	 */
-	private $excerpts;
+	private ?Excerpts $excerpts = null;
 
 	private FilterMap $filterMap;
 
@@ -187,7 +177,7 @@ class QueryResult {
 	 *
 	 * @return ScoreSet|null
 	 */
-	public function getScoreSet() {
+	public function getScoreSet(): ?ScoreSet {
 		return $this->scoreSet;
 	}
 
@@ -207,7 +197,7 @@ class QueryResult {
 	 *
 	 * @return Excerpts|null
 	 */
-	public function getExcerpts() {
+	public function getExcerpts(): ?Excerpts {
 		return $this->excerpts;
 	}
 
@@ -216,7 +206,7 @@ class QueryResult {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return $this->isFromCache;
 	}
 
@@ -348,7 +338,7 @@ class QueryResult {
 	 *
 	 * @return int|null
 	 */
-	public function getCountValue() {
+	public function getCountValue(): ?int {
 		return $this->countValue;
 	}
 
@@ -357,7 +347,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		// Just use query errors, as no errors generated in this class at the moment.
 		return $this->mQuery->getErrors();
 	}

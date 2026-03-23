@@ -29,10 +29,7 @@ class PropertyLabelSimilarityLookup {
 	 */
 	private $exemptionProperty;
 
-	/**
-	 * @var int
-	 */
-	private $lookupCount = 0;
+	private int $lookupCount = 0;
 
 	/**
 	 * @since 2.5
@@ -87,7 +84,7 @@ class PropertyLabelSimilarityLookup {
 	 *
 	 * @return int
 	 */
-	public function getLookupCount() {
+	public function getLookupCount(): int {
 		return $this->lookupCount;
 	}
 
@@ -128,7 +125,7 @@ class PropertyLabelSimilarityLookup {
 		$this->lookupCount = count( $propertyList );
 		$similarities = $this->matchLabels( $propertyList, $withType );
 
-		usort( $similarities, static function ( $a, $b ) {
+		usort( $similarities, static function ( array $a, array $b ): int {
 			return $b['similarity'] <=> $a['similarity'];
 		} );
 

@@ -21,10 +21,8 @@ class ConnectionManager {
 	/**
 	 * By design this variable is static to ensure that ConnectionProvider
 	 * instances are only initialized once per request.
-	 *
-	 * @var array
 	 */
-	private static $connectionProviders = [];
+	private static array $connectionProviders = [];
 
 	/**
 	 * @since 2.1

@@ -22,15 +22,9 @@ use SMW\Store;
  */
 class PropertyTableRowDiffer {
 
-	/**
-	 * @var ChangeOp
-	 */
-	private $changeOp;
+	private ?ChangeOp $changeOp = null;
 
-	/**
-	 * @var bool
-	 */
-	private $checkRemnantEntities = false;
+	private bool $checkRemnantEntities = false;
 
 	/**
 	 * @since 2.3
@@ -64,7 +58,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return ChangeOp
 	 */
-	public function getChangeOp() {
+	public function getChangeOp(): ?ChangeOp {
 		return $this->changeOp;
 	}
 

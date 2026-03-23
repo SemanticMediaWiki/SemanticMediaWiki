@@ -15,15 +15,9 @@ use SMW\MediaWiki\MediaWikiNsContentReader;
  */
 class AllowsListValueParser implements ValueParser {
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private static $contents = [];
+	private static array $contents = [];
 
 	/**
 	 * @since 2.5
@@ -36,7 +30,7 @@ class AllowsListValueParser implements ValueParser {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

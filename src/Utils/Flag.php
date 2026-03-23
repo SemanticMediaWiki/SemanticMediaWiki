@@ -34,7 +34,7 @@ class Flag {
 	 *
 	 * @return bool
 	 */
-	public function not( $flag ): bool {
+	public function not( int $flag ): bool {
 		return !$this->is( $flag );
 	}
 

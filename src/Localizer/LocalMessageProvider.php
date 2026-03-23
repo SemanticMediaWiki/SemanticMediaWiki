@@ -14,7 +14,7 @@ use SMW\Exception\JSONFileParseException;
 class LocalMessageProvider implements MessageLocalizer {
 
 	private /* string */ $languageFileDir = '';
-	private /* string */ $fallbackLanguageCode = 'en';
+	private /* string */ string $fallbackLanguageCode = 'en';
 	private /* array */ $contents = [];
 
 	/**

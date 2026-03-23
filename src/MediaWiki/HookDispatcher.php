@@ -40,7 +40,7 @@ use SMW\Store;
  */
 class HookDispatcher {
 
-	private $hookContainer;
+	private ?HookContainer $hookContainer = null;
 
 	private function getHookContiner(): HookContainer {
 		if ( $this->hookContainer ) {
@@ -122,17 +122,6 @@ class HookDispatcher {
 	public function onSetupAfterInitializationComplete( array &$vars ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
-	}
-
-	/**
-	 * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/docs/technical/hooks/hook.grouppermissions.beforeinitializationcomplete.md
-	 * @since 3.2
-	 *
-	 * @param array &$grouppermissions
-	 */
-	public function onGroupPermissionsBeforeInitializationComplete( array &$grouppermissions ): void {
-		$this->getHookContiner()
-			->run( 'SMW::GroupPermissions::BeforeInitializationComplete', [ &$grouppermissions ] );
 	}
 
 	/**

@@ -18,12 +18,12 @@ class DispatchingDataValueFormatter {
 	/**
 	 * @var DataValueFormatter[]
 	 */
-	private $dataValueFormatters = [];
+	private array $dataValueFormatters = [];
 
 	/**
 	 * @var DataValueFormatter[]
 	 */
-	private $defaultDataValueFormatters = [];
+	private array $defaultDataValueFormatters = [];
 
 	/**
 	 * @since  2.4

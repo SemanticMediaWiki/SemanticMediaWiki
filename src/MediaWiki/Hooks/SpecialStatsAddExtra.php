@@ -40,7 +40,7 @@ class SpecialStatsAddExtra implements HookListener {
 	/**
 	 * @var string[]
 	 */
-	private $messageMapper = [
+	private array $messageMapper = [
 		'PROPUSES'      => 'smw-statistics-property-instance',
 		'ERRORUSES'     => 'smw-statistics-error-count',
 		'TOTALPROPS'    => 'smw-statistics-property-total',

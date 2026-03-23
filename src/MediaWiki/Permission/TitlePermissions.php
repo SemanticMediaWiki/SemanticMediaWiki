@@ -19,7 +19,7 @@ class TitlePermissions {
 	/**
 	 * @var
 	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.5
@@ -35,7 +35,7 @@ class TitlePermissions {
 	 *
 	 * @return
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

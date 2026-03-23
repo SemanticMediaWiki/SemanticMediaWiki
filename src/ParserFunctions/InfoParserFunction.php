@@ -51,7 +51,7 @@ class InfoParserFunction {
 		if ( strpos( $message ?? '', 'smw-highlighter' ) !== '' ) {
 			$message = preg_replace_callback(
 					"/" . "<span class=\"smw-highlighter\"(.*)?>(.*)?<\/span>" . "/m",
-					static function ( $matches ) {
+					static function ( $matches ): string {
 						return strip_tags( $matches[0] );
 					},
 					$message ?? ''

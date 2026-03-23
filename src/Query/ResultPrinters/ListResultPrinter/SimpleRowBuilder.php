@@ -15,7 +15,7 @@ use SMW\Query\Result\ResultArray;
  */
 class SimpleRowBuilder extends RowBuilder {
 
-	private $linker;
+	private ?Linker $linker = null;
 
 	/**
 	 * @param ResultArray[] $fields
@@ -98,7 +98,7 @@ class SimpleRowBuilder extends RowBuilder {
 	/**
 	 * @return Linker
 	 */
-	protected function getLinker() {
+	protected function getLinker(): ?Linker {
 		return $this->linker;
 	}
 

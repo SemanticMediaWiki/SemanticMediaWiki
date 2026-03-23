@@ -32,10 +32,7 @@ use WikiPage as MWWikiPage;
  */
 final class FeedExportPrinter extends ResultPrinter implements ExportPrinter {
 
-	/**
-	 * @var bool
-	 */
-	private $httpHeader = true;
+	private bool $httpHeader = true;
 
 	/**
 	 * @see ResultPrinter::getName

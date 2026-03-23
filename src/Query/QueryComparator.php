@@ -13,17 +13,11 @@ use Exception;
  */
 class QueryComparator {
 
-	/**
-	 * @var QueryComparator
-	 */
-	private static $instance = null;
+	private static ?QueryComparator $instance = null;
 
 	private array $comparators;
 
-	/**
-	 * @var array
-	 */
-	private $reverseCache = [];
+	private array $reverseCache = [];
 
 	/**
 	 * @since 2.3
@@ -40,7 +34,7 @@ class QueryComparator {
 	 *
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): QueryComparator {
 		if ( self::$instance === null ) {
 			self::$instance = new self(
 				$GLOBALS['smwgQComparators'],

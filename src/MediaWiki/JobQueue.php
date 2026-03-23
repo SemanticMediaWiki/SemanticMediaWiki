@@ -17,10 +17,7 @@ use JobQueueGroup;
  */
 class JobQueue {
 
-	/**
-	 * @var bool
-	 */
-	private $disableCache = false;
+	private bool $disableCache = false;
 
 	/**
 	 * @since 3.0

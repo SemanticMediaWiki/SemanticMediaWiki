@@ -86,23 +86,6 @@ class HookDispatcherTest extends TestCase {
 		);
 	}
 
-	public function testOnGroupPermissionsBeforeInitializationComplete() {
-		$permissions = [];
-
-		$hookDispatcher = new HookDispatcher();
-
-		$this->mwHooksHandler->register( 'SMW::GroupPermissions::BeforeInitializationComplete', static function ( &$permissions ) {
-			$permissions = [ 'Foo' ];
-		} );
-
-		$hookDispatcher->onGroupPermissionsBeforeInitializationComplete( $permissions );
-
-		$this->assertEquals(
-			[ 'Foo' ],
-			$permissions
-		);
-	}
-
 	public function testOnRegisterTaskHandlers() {
 		$hookDispatcher = new HookDispatcher();
 

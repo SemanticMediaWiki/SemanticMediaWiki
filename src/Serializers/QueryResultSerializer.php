@@ -28,10 +28,7 @@ use SMW\Query\Result\ResultArray;
  */
 class QueryResultSerializer implements DispatchableSerializer {
 
-	/**
-	 * @var int
-	 */
-	private static $version = 2;
+	private static int $version = 2;
 
 	/**
 	 * @since 3.0

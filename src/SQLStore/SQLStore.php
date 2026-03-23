@@ -126,25 +126,13 @@ class SQLStore extends Store {
 
 	private SQLStoreFactory $factory;
 
-	/**
-	 * @var PropertyTableInfoFetcher|null
-	 */
-	private $propertyTableInfoFetcher = null;
+	private ?PropertyTableInfoFetcher $propertyTableInfoFetcher = null;
 
-	/**
-	 * @var PropertyTableIdReferenceFinder
-	 */
-	private $propertyTableIdReferenceFinder;
+	private ?PropertyTableIdReferenceFinder $propertyTableIdReferenceFinder = null;
 
-	/**
-	 * @var DataItemHandlerFactory
-	 */
-	private $dataItemHandlerFactory;
+	private ?DataItemHandlerFactory $dataItemHandlerFactory = null;
 
-	/**
-	 * @var EntityLookup
-	 */
-	private $entityLookup;
+	private ?EntityLookup $entityLookup = null;
 
 	/**
 	 * @var ?ServicesContainer
@@ -159,10 +147,7 @@ class SQLStore extends Store {
 	 */
 	public $smwIds;
 
-	/**
-	 * @var SQLStoreUpdater
-	 */
-	private $updater;
+	private ?SQLStoreUpdater $updater = null;
 
 	/**
 	 * @since 1.8
@@ -486,7 +471,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Title $concept
 	 */
-	public function deleteConceptCache( $concept ): void {
+	public function deleteConceptCache( Title $concept ): void {
 		$this->factory->newMasterConceptCache()->deleteConceptCache( $concept );
 	}
 
@@ -659,7 +644,7 @@ class SQLStore extends Store {
 	 *
 	 * @return PropertyTableInfoFetcher
 	 */
-	public function getPropertyTableInfoFetcher() {
+	public function getPropertyTableInfoFetcher(): PropertyTableInfoFetcher {
 		if ( $this->propertyTableInfoFetcher === null ) {
 			$this->propertyTableInfoFetcher = $this->factory->newPropertyTableInfoFetcher();
 		}
@@ -672,7 +657,7 @@ class SQLStore extends Store {
 	 *
 	 * @return PropertyTableIdReferenceFinder
 	 */
-	public function getPropertyTableIdReferenceFinder() {
+	public function getPropertyTableIdReferenceFinder(): PropertyTableIdReferenceFinder {
 		if ( $this->propertyTableIdReferenceFinder === null ) {
 			$this->propertyTableIdReferenceFinder = $this->factory->newPropertyTableIdReferenceFinder();
 		}

@@ -25,10 +25,7 @@ class PropertyStatisticsStore {
 	 */
 	private $isCommandLineMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
 	/**
 	 * @since 1.9
@@ -306,7 +303,7 @@ class PropertyStatisticsStore {
 		);
 	}
 
-	private function log( string $message, $context = [] ): void {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

@@ -50,10 +50,7 @@ abstract class Page extends Article {
 	 */
 	protected $skin;
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * Overwrite Article::view to add additional HTML to the output.

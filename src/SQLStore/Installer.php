@@ -57,10 +57,7 @@ class Installer implements MessageReporter {
 
 	private SetupFile $setupFile;
 
-	/**
-	 * @var CliMsgFormatter
-	 */
-	private $cliMsgFormatter;
+	private ?CliMsgFormatter $cliMsgFormatter = null;
 
 	/**
 	 * @since 2.5

@@ -11,6 +11,7 @@ use SMW\Formatters\Infolink;
 use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\PostProcHandler;
+use SMW\Query\Query;
 use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -26,10 +27,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class ConceptParserFunction {
 
-	/**
-	 * @var PostProcHandler
-	 */
-	private $postProcHandler;
+	private ?PostProcHandler $postProcHandler = null;
 
 	/**
 	 * @since 1.9
@@ -160,7 +158,7 @@ class ConceptParserFunction {
 		return $query;
 	}
 
-	private function addQueryProfile( $query ): void {
+	private function addQueryProfile( Query $query ): void {
 		// If the smwgQueryProfiler is marked with FALSE then just don't create a profile.
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgQueryProfiler' ) === false ) {
 			return;

@@ -217,7 +217,7 @@ class ErrorLookupTest extends TestCase {
 			'INNER JOIN smw_di_blob AS t2 ON t1.o_id=t2.s_id ' .
 			'INNER JOIN smw_di_blob AS t3 ON t3.s_id=t2.s_id ' .
 			'WHERE (t0.smw_iw!=:smw) AND (t0.smw_iw!=:smw-delete) AND ' .
-			'((s1.s_id= OR t1.s_id=)) AND (t1.p_id=) AND (t2.p_id=) AND (t2.o_hash=foo) AND (t3.p_id=)',
+			'((s1.s_id=0 OR t1.s_id=0)) AND (t1.p_id=) AND (t2.p_id=) AND (t2.o_hash=foo) AND (t3.p_id=)',
 			$query->build()
 		);
 	}

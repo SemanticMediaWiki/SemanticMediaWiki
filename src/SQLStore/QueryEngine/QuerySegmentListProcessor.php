@@ -21,10 +21,8 @@ class QuerySegmentListProcessor {
 	/**
 	 * Array of arrays of executed queries, indexed by the temporary table names
 	 * results were fed into.
-	 *
-	 * @var array
 	 */
-	private $executedQueries = [];
+	private array $executedQueries = [];
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -34,10 +32,7 @@ class QuerySegmentListProcessor {
 	 */
 	private $queryMode = 0;
 
-	/**
-	 * @var array
-	 */
-	private $querySegmentList = [];
+	private array $querySegmentList = [];
 
 	public function __construct(
 		private readonly Database $connection,
@@ -51,7 +46,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @return array
 	 */
-	public function getExecutedQueries() {
+	public function getExecutedQueries(): array {
 		return $this->executedQueries;
 	}
 

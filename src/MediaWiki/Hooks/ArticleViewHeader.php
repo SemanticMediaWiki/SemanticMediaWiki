@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use Article;
 use MediaWiki\Html\Html;
+use MediaWiki\Title\Title;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
@@ -75,7 +76,7 @@ class ArticleViewHeader implements HookListener {
 		return true;
 	}
 
-	private function updateCategoryTop( $title, $output ): bool {
+	private function updateCategoryTop( Title $title, $output ): bool {
 		$message = '';
 
 		$subject = WikiPage::newFromTitle(

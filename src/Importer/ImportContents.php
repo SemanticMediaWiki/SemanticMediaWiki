@@ -31,7 +31,7 @@ class ImportContents {
 	/**
 	 * @var string
 	 */
-	private $importPerformer = '';
+	private string $importPerformer = '';
 
 	/**
 	 * @var int
@@ -58,10 +58,7 @@ class ImportContents {
 	 */
 	private $errors = [];
 
-	/**
-	 * @var array
-	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @since 2.5
@@ -254,7 +251,7 @@ class ImportContents {
 	 *
 	 * @return array
 	 */
-	public function getOptions() {
+	public function getOptions(): array {
 		return $this->options;
 	}
 

@@ -47,7 +47,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	/**
 	 * @var Property[]|null
 	 */
-	private static $properties = null;
+	private static ?array $properties = null;
 
 	/**
 	 * @var string[]|null
@@ -252,7 +252,7 @@ class MonolingualTextValue extends AbstractMultiValue {
 	 *
 	 * @return Property[]
 	 */
-	public function getPropertyDataItems() {
+	public function getPropertyDataItems(): array {
 		if ( self::$properties !== null && self::$properties !== [] ) {
 			return self::$properties;
 		}

@@ -61,33 +61,17 @@ class Exporter {
 	 */
 	const POOLCACHE_ID = 'exporter.shared';
 
-	/**
-	 * @var Exporter
-	 */
-	private static $instance = null;
+	private static ?Exporter $instance = null;
 
-	/**
-	 * @var ExpResourceMapper
-	 */
-	private static $expResourceMapper = null;
+	private static ?ExpResourceMapper $expResourceMapper = null;
 
-	/**
-	 * @var ElementFactory
-	 */
-	private static $elementFactory = null;
+	private static ?ElementFactory $elementFactory = null;
 
-	/**
-	 * @var DataItemMatchFinder
-	 */
-	private static $dataItemMatchFinder = null;
+	private static ?DataItemMatchFinder $dataItemMatchFinder = null;
 
-	/** @var RepoGroup */
-	private static $mwRepoGroup = null;
+	private static ?RepoGroup $mwRepoGroup = null;
 
-	/**
-	 * @var DispatchingResourceBuilder
-	 */
-	private static $dispatchingResourceBuilder = null;
+	private static ?DispatchingResourceBuilder $dispatchingResourceBuilder = null;
 
 	protected static $m_exporturl = false;
 	protected static $m_ent_wiki = false;
@@ -100,7 +84,7 @@ class Exporter {
 	 *
 	 * @return Exporter
 	 */
-	public static function getInstance() {
+	public static function getInstance(): Exporter {
 		if ( self::$instance === null ) {
 
 			self::$instance = new self();

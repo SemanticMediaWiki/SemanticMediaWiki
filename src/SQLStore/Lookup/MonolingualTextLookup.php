@@ -31,7 +31,7 @@ class MonolingualTextLookup {
 	/**
 	 * @var array
 	 */
-	private static $lookupCache = [];
+	private static array $lookupCache = [];
 
 	/**
 	 * @since 3.1

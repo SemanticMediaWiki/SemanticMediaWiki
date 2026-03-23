@@ -11,10 +11,7 @@ use MediaWiki\MediaWikiServices;
 
 class LanguageFalldownAndInverse {
 
-	/**
-	 * @var array
-	 */
-	private $languagesFallbackInverse = [
+	private array $languagesFallbackInverse = [
 		'ru' => [
 			'ab',
 			'av',

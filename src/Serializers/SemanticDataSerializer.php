@@ -4,6 +4,7 @@ namespace SMW\Serializers;
 
 use OutOfBoundsException;
 use Serializers\Serializer;
+use SMW\DataItems\Property;
 use SMW\DataModel\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
@@ -126,7 +127,7 @@ class SemanticDataSerializer implements Serializer {
 	 *
 	 * @return array
 	 */
-	private function doSerializeDataItem( SemanticData $semanticData, $property ): array {
+	private function doSerializeDataItem( SemanticData $semanticData, Property $property ): array {
 		$dataItems = [];
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {

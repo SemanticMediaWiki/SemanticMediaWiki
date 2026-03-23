@@ -20,24 +20,18 @@ class ExpNsResource extends ExpResource {
 
 	/**
 	 * Local part of the abbreviated URI
-	 *
-	 * @var string
 	 */
-	private $localName;
+	private string $localName;
 
 	/**
 	 * Namespace URI prefix of the abbreviated URI
-	 *
-	 * @var string
 	 */
-	private $namespace;
+	private string $namespace;
 
 	/**
 	 * Namespace abbreviation of the abbreviated URI
-	 *
-	 * @var string
 	 */
-	private $namespaceId;
+	private string $namespaceId;
 
 	public bool $isUserDefined;
 
@@ -86,7 +80,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getNamespaceId() {
+	public function getNamespaceId(): string {
 		return $this->namespaceId;
 	}
 
@@ -95,7 +89,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getNamespace() {
+	public function getNamespace(): string {
 		return $this->namespace;
 	}
 
@@ -104,7 +98,7 @@ class ExpNsResource extends ExpResource {
 	 *
 	 * @return string
 	 */
-	public function getLocalName() {
+	public function getLocalName(): string {
 		return $this->localName;
 	}
 

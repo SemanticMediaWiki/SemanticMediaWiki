@@ -19,17 +19,14 @@ class TaskHandlerRegistry {
 	/**
 	 * @var
 	 */
-	private $taskHandlers = [];
+	private array $taskHandlers = [];
 
 	/**
 	 * @var int
 	 */
 	private $featureSet = 0;
 
-	/**
-	 * @var bool
-	 */
-	private $onRegisterTaskHandlers = false;
+	private bool $onRegisterTaskHandlers = false;
 
 	/**
 	 * @since 3.2

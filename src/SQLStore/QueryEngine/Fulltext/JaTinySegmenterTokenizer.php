@@ -24,7 +24,7 @@ use RuntimeException;
  */
 class JaTinySegmenterTokenizer {
 
-	private $patterns_ = [
+	private array $patterns_ = [
 		"[一二三四五六七八九十百千万億兆]" => "M", // numbers (japanese)
 		"[一-龠々〆ヵヶ]" => "H", // kanji & misc characters
 		"[ぁ-ん]" => "I", // hiragana

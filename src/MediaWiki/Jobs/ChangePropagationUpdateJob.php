@@ -13,7 +13,7 @@ use SMW\MediaWiki\Job;
  * Use `ChangePropagationUpdateJob` to easily count the jobs and distinguish them
  * from other `UpdateJob`.
  *
- * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'SMW\ChangePropagationUpdateJob' )->getSize()`
+ * `MediaWikiServices::getInstance()->getJobQueueGroup()->get( 'smw.changePropagationUpdate' )->getSize()`
  *
  * @license GPL-2.0-or-later
  * @since 3.0

@@ -41,10 +41,8 @@ class LegacyParser implements Parser {
 
 	/**
 	 * List of open blocks ("parentheses") that need closing at current step
-	 *
-	 * @var array
 	 */
-	private $separatorStack = [];
+	private array $separatorStack = [];
 
 	/**
 	 * Remaining string to be parsed (parsing eats query string from the front)
@@ -55,36 +53,25 @@ class LegacyParser implements Parser {
 
 	/**
 	 * Cache label of category namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $categoryPrefix;
+	private string $categoryPrefix;
 
 	/**
 	 * Cache label of concept namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $conceptPrefix;
+	private string $conceptPrefix;
 
 	/**
 	 * Cache canonnical label of category namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $categoryPrefixCannonical;
+	private string $categoryPrefixCannonical;
 
 	/**
 	 * Cache canonnical label of concept namespace . ':'
-	 *
-	 * @var string
 	 */
-	private $conceptPrefixCannonical;
+	private string $conceptPrefixCannonical;
 
-	/**
-	 * @var WikiPage|null
-	 */
-	private $contextPage;
+	private ?WikiPage $contextPage = null;
 
 	/**
 	 * @var bool
@@ -498,7 +485,7 @@ class LegacyParser implements Parser {
 	 * suitable description. The "::" is the first chunk on the current
 	 * string.
 	 */
-	private function getPropertyDescription( $propertyName, bool &$setNS ) {
+	private function getPropertyDescription( string $propertyName, bool &$setNS ) {
 		// Consume separator ":=" or "::"
 		$this->readChunk();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -718,7 +705,7 @@ class LegacyParser implements Parser {
 		return $this->finishLinkDescription( $chunk, true, $description, $setNS );
 	}
 
-	private function finishLinkDescription( $chunk, bool $hasNamespaces, $description, bool &$setNS ) {
+	private function finishLinkDescription( string $chunk, bool $hasNamespaces, $description, bool &$setNS ) {
 		if ( $description === null ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
 		} elseif ( !$hasNamespaces && $setNS && $this->defaultNamespace !== null ) {
@@ -781,7 +768,7 @@ class LegacyParser implements Parser {
 	/**
 	 * @see Tokenizer::read
 	 */
-	private function readChunk( string $stoppattern = '', bool $consume = true, bool $trim = true ) {
+	private function readChunk( string $stoppattern = '', bool $consume = true, bool $trim = true ): string|false {
 		return $this->tokenizer->getToken( $this->currentString, $stoppattern, $consume, $trim );
 	}
 
@@ -807,7 +794,7 @@ class LegacyParser implements Parser {
 		return $typeid == '_wpg' || $this->dataTypeRegistry->isSubDataType( $typeid );
 	}
 
-	private function hasClassPrefix( $chunk ): bool {
+	private function hasClassPrefix( string $chunk ): bool {
 		$prefix = [
 			$this->categoryPrefix,
 			$this->conceptPrefix,
@@ -818,7 +805,7 @@ class LegacyParser implements Parser {
 		return in_array( $this->normalizeTitleText( $chunk ), $prefix );
 	}
 
-	private function isClass( $chunk ): bool {
+	private function isClass( string $chunk ): bool {
 		$chunk = $this->normalizeTitleText( $chunk );
 
 		if (

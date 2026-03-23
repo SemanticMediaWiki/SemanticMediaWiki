@@ -24,15 +24,9 @@ class ListBuilder {
 	 */
 	private $itemFormatter;
 
-	/**
-	 * @var Property
-	 */
-	private $property;
+	private ?Property $property = null;
 
-	/**
-	 * @var bool
-	 */
-	private $isRTL = false;
+	private bool $isRTL = false;
 
 	/**
 	 * @var callable

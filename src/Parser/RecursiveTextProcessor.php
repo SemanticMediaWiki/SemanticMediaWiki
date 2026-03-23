@@ -33,30 +33,22 @@ class RecursiveTextProcessor {
 	/**
 	 * Incremented while expanding templates inserted during printout; stop
 	 * expansion at some point
-	 *
-	 * @var int
 	 */
-	private $recursionDepth = 0;
+	private int $recursionDepth = 0;
 
 	/**
 	 * @var int
 	 */
 	private $maxRecursionDepth = 2;
 
-	/**
-	 * @var bool
-	 */
-	private $recursiveAnnotation = false;
+	private bool $recursiveAnnotation = false;
 
 	/**
 	 * @var int
 	 */
 	private $uniqid;
 
-	/**
-	 * @var array
-	 */
-	private $error = [];
+	private array $error = [];
 
 	/**
 	 * @since 3.0
@@ -81,7 +73,7 @@ class RecursiveTextProcessor {
 	 *
 	 * @return
 	 */
-	public function getError() {
+	public function getError(): array {
 		return $this->error;
 	}
 

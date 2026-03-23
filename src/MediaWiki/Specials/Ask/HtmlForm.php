@@ -18,40 +18,22 @@ use SMW\Utils\UrlArgs;
  */
 class HtmlForm {
 
-	/**
-	 * @var array
-	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @var string
 	 */
 	private $queryString = '';
 
-	/**
-	 * @var Query
-	 */
-	private $query;
+	private ?Query $query = null;
 
-	/**
-	 * @var array
-	 */
-	private $callbacks = [];
+	private array $callbacks = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isEditMode = true;
+	private bool $isEditMode = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isBorrowedMode = false;
+	private bool $isBorrowedMode = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isPostSubmit = false;
+	private bool $isPostSubmit = false;
 
 	/**
 	 * @since 3.0

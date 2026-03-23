@@ -31,10 +31,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class OutputPageParserOutput implements HookListener {
 
-	/**
-	 * @var IndicatorRegistry
-	 */
-	private $indicatorRegistry;
+	private ?IndicatorRegistry $indicatorRegistry = null;
 
 	/**
 	 * @since 1.9

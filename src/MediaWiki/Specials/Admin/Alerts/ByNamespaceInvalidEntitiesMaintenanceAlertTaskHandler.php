@@ -16,10 +16,7 @@ use SMW\Store;
  */
 class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler {
 
-	/**
-	 * @var array
-	 */
-	private $namespacesWithSemanticLinks = [];
+	private array $namespacesWithSemanticLinks = [];
 
 	/**
 	 * @since 3.2

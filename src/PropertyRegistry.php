@@ -16,10 +16,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class PropertyRegistry {
 
-	/**
-	 * @var PropertyRegistry
-	 */
-	private static $instance = null;
+	private static ?PropertyRegistry $instance = null;
 
 	private PropertyLabelFinder $propertyLabelFinder;
 
@@ -34,10 +31,8 @@ class PropertyRegistry {
 	 *   similar interfaces; (note that this is only relevant if the
 	 *   property can be displayed at all, i.e. has a translated label in
 	 *   the wiki language; invisible properties are never shown).
-	 *
-	 * @var array
 	 */
-	private $propertyList = [];
+	private array $propertyList = [];
 
 	/**
 	 * @var string[]
@@ -61,7 +56,7 @@ class PropertyRegistry {
 	 *
 	 * @return PropertyRegistry
 	 */
-	public static function getInstance() {
+	public static function getInstance(): PropertyRegistry {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -145,7 +140,7 @@ class PropertyRegistry {
 	 *
 	 * @return array
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->propertyList;
 	}
 

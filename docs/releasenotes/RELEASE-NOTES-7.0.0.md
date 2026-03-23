@@ -32,8 +32,26 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 
 * Replaced the vendored `Onoi\Tesa` text sanitizer library with PHP `intl` built-ins for fulltext search text processing. Users with `smwgEnabledFulltextSearch` enabled must run `rebuildFulltextSearchTable.php` after upgrading. Transliteration now uses ICU instead of a static mapping table, which produces minor differences for some characters (e.g., German ü→u instead of ü→ue). This does not affect search match quality.
 * Removed unused internal classes: `HtmlVTabs`, `SchemaParameterTypeMismatchException`, `CleanUpTables`, and `FlatSemanticDataSerializer`.
+* Moved permission rights and group assignments to declarative `AvailableRights` and `GroupPermissions` keys in `extension.json`. The `SMW::GroupPermissions::BeforeInitializationComplete` hook has been removed. Extensions that modified SMW permissions via this hook should use MediaWiki's standard `$wgGroupPermissions` override in `LocalSettings.php` instead.
 * Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
 * Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
+
+- Removed legacy job name aliases. All job types must now be referenced by their `smw.*` names. The following aliases no longer work:
+
+  | Removed alias | Use instead |
+  |---|---|
+  | `SMW\UpdateJob` | `smw.update` |
+  | `SMW\RefreshJob` | `smw.refresh` |
+  | `SMW\UpdateDispatcherJob` | `smw.updateDispatcher` |
+  | `SMW\FulltextSearchTableUpdateJob` | `smw.fulltextSearchTableUpdate` |
+  | `SMW\EntityIdDisposerJob` | `smw.entityIdDisposer` |
+  | `SMW\PropertyStatisticsRebuildJob` | `smw.propertyStatisticsRebuild` |
+  | `SMW\FulltextSearchTableRebuildJob` | `smw.fulltextSearchTableRebuild` |
+  | `SMW\ChangePropagationDispatchJob` | `smw.changePropagationDispatch` |
+  | `SMW\ChangePropagationUpdateJob` | `smw.changePropagationUpdate` |
+  | `SMW\ChangePropagationClassUpdateJob` | `smw.changePropagationClassUpdate` |
+  | `SMWUpdateJob` | `smw.update` |
+  | `SMWRefreshJob` | `smw.refresh` |
 
 - The following class aliases are deprecated. They will be removed in a future update. Update any code referencing these to use the new namespaced class names.
 

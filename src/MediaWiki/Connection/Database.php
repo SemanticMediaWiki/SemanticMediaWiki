@@ -48,10 +48,7 @@ class Database {
 	 */
 	private $flags = 0;
 
-	/**
-	 * @var int
-	 */
-	private $insertId = null;
+	private ?int $insertId = null;
 
 	/**
 	 * @var string
@@ -480,7 +477,7 @@ class Database {
 	 *
 	 * @return int
 	 */
-	public function insertId() {
+	public function insertId(): int {
 		if ( $this->insertId !== null ) {
 			return $this->insertId;
 		}

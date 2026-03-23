@@ -17,10 +17,7 @@ use Wikimedia\Rdbms\IDatabase;
  */
 abstract class TableBuilder implements TableBuilderInterface, MessageReporterAware, MessageReporter {
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
 	/**
 	 * @var array

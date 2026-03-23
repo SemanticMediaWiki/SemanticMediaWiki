@@ -4,20 +4,10 @@ namespace SMW\Tests\Unit;
 
 use MediaWiki\Language\Language;
 use PHPUnit\Framework\TestCase;
-use SMW\ChangePropagationClassUpdateJob;
-use SMW\ChangePropagationDispatchJob;
-use SMW\ChangePropagationUpdateJob;
-use SMW\EntityIdDisposerJob;
-use SMW\FulltextSearchTableRebuildJob;
-use SMW\FulltextSearchTableUpdateJob;
 use SMW\MediaWiki\HookDispatcher;
-use SMW\PropertyStatisticsRebuildJob;
-use SMW\RefreshJob;
 use SMW\Setup;
 use SMW\Store;
 use SMW\Tests\TestEnvironment;
-use SMW\UpdateDispatcherJob;
-use SMW\UpdateJob;
 
 /**
  * @covers \SMW\Setup
@@ -63,7 +53,6 @@ class SetupTest extends TestCase {
 			'smwgEnableUpdateJobs' => false,
 			'wgNamespacesWithSubpages' => [],
 			'wgExtensionAssetsPath'    => false,
-			'smwgResourceLoaderDefFiles' => $GLOBALS['smwgResourceLoaderDefFiles'],
 			'wgResourceModules' => [],
 			'wgScriptPath'      => '/Foo',
 			'wgServer'          => 'http://example.org',
@@ -115,22 +104,6 @@ class SetupTest extends TestCase {
 		);
 	}
 
-	public function testResourceModules() {
-		$config = $this->defaultConfig;
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$config = $instance->init( $config, '' );
-
-		$this->assertNotEmpty(
-			$config['wgResourceModules']
-		);
-	}
-
 	public function testHookRunOnSetupAfterInitializationComplete() {
 		$this->hookDispatcher->expects( $this->once() )
 			->method( 'onSetupAfterInitializationComplete' );
@@ -144,68 +117,6 @@ class SetupTest extends TestCase {
 		);
 
 		$instance->init( $config, '' );
-	}
-
-	/**
-	 * @dataProvider jobClassesDataProvider
-	 */
-	public function testRegisterJobClasses( $jobEntry, $setup ) {
-		$this->assertArrayEntryExists( 'wgJobClasses', $jobEntry, $setup );
-	}
-
-	public function testRegisterDefaultRightsUserGroupPermissions() {
-		$config = $this->defaultConfig;
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$config = $instance->init( $config, 'Foo' );
-
-		$this->assertNotEmpty(
-			$config['wgAvailableRights']
-		);
-
-		$this->assertTrue(
-			$config['wgGroupPermissions']['smwcurator']['smw-patternedit']
-		);
-
-		$this->assertTrue(
-			$config['wgGroupPermissions']['smwcurator']['smw-pageedit']
-		);
-
-		$this->assertTrue(
-			$config['wgGroupPermissions']['smwadministrator']['smw-admin']
-		);
-	}
-
-	public function testNoResetOfAlreadyRegisteredGroupPermissions() {
-		// Avoid re-setting permissions, refs #1137
-		$localConfig['wgGroupPermissions']['sysop']['smw-admin'] = false;
-		$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin'] = false;
-
-		$localConfig = array_merge(
-			$this->defaultConfig,
-			$localConfig
-		);
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$localConfig = $instance->init( $localConfig, 'Foo' );
-
-		$this->assertFalse(
-			$localConfig['wgGroupPermissions']['sysop']['smw-admin']
-		);
-
-		$this->assertFalse(
-			$localConfig['wgGroupPermissions']['smwadministrator']['smw-admin']
-		);
 	}
 
 	public function testRegisterParamDefinitions() {
@@ -246,87 +157,6 @@ class SetupTest extends TestCase {
 		$this->assertNotEmpty(
 			$config['wgFooterIcons']['poweredbysmw']['semanticmediawiki']
 		);
-	}
-
-	/**
-	 * @return array
-	 */
-	public function jobClassesDataProvider() {
-		$jobs = [
-
-			'smw.update',
-			'smw.refresh',
-			'smw.updateDispatcher',
-			'smw.fulltextSearchTableUpdate',
-			'smw.entityIdDisposer',
-			'smw.propertyStatisticsRebuild',
-			'smw.fulltextSearchTableRebuild',
-			'smw.changePropagationDispatch',
-			'smw.changePropagationUpdate',
-			'smw.changePropagationClassUpdate',
-			'smw.elasticIndexerRecovery',
-			'smw.elasticFileIngest',
-
-			// Legacy
-			UpdateJob::class,
-			RefreshJob::class,
-			UpdateDispatcherJob::class,
-			FulltextSearchTableUpdateJob::class,
-			EntityIdDisposerJob::class,
-			PropertyStatisticsRebuildJob::class,
-			FulltextSearchTableRebuildJob::class,
-			ChangePropagationDispatchJob::class,
-			ChangePropagationUpdateJob::class,
-			ChangePropagationClassUpdateJob::class,
-			'SMWUpdateJob',
-			'SMWRefreshJob',
-		];
-
-		return $this->buildDataProvider( 'wgJobClasses', $jobs, '' );
-	}
-
-	private function assertArrayEntryExists( $target, $entry, $config, $type = 'class' ) {
-		$config = $config + $this->defaultConfig;
-
-		$this->assertEmpty(
-			$config[$target][$entry],
-			"Asserts that {$entry} is empty"
-		);
-
-		$instance = new Setup();
-
-		$instance->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$config = $instance->init( $config, 'Foo' );
-
-		$this->assertNotEmpty( $config[$target][$entry] );
-
-		switch ( $type ) {
-			case 'class':
-				$this->assertTrue( class_exists( $config[$target][$entry] ) );
-				break;
-			case 'file':
-				$this->assertTrue( file_exists( $config[$target][$entry] ) );
-				break;
-		}
-	}
-
-	/**
-	 * @return array
-	 */
-	private function buildDataProvider( $id, $definitions, $default ) {
-		$provider = [];
-
-		foreach ( $definitions as $definition ) {
-			$provider[] = [
-				$definition,
-				[ $id => [ $definition => $default ] ],
-			];
-		}
-
-		return $provider;
 	}
 
 }

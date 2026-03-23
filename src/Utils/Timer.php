@@ -10,15 +10,9 @@ namespace SMW\Utils;
  */
 class Timer {
 
-	/**
-	 * @var array
-	 */
-	private static $start = [];
+	private static array $start = [];
 
-	/**
-	 * @var array
-	 */
-	private $times = [];
+	private array $times = [];
 
 	/**
 	 * @var string[]
@@ -65,7 +59,7 @@ class Timer {
 	/**
 	 * @since 3.2
 	 */
-	public function getTimes() {
+	public function getTimes(): array {
 		return $this->times;
 	}
 

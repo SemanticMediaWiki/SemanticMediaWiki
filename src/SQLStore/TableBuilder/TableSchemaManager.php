@@ -27,12 +27,12 @@ class TableSchemaManager {
 	/**
 	 * @var Table[]
 	 */
-	private $tables = [];
+	private array $tables = [];
 
 	/**
 	 * @var array
 	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @var int|false
@@ -130,7 +130,7 @@ class TableSchemaManager {
 	 *
 	 * @return Table[]
 	 */
-	public function getTables() {
+	public function getTables(): array {
 		if ( $this->tables !== [] ) {
 			return $this->tables;
 		}

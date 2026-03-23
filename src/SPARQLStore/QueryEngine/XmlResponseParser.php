@@ -25,7 +25,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 *
 	 * @var array of integer
 	 */
-	private $header;
+	private ?array $header = null;
 
 	/**
 	 * List of result rows. Individual entries can be null if a cell in the
@@ -34,7 +34,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 *
 	 * @var array of array of (ExpElement or null)
 	 */
-	private $data;
+	private ?array $data = null;
 
 	/**
 	 * List of comment strings found in the XML file (without surrounding
@@ -42,7 +42,7 @@ class XmlResponseParser implements HttpResponseParser {
 	 *
 	 * @var array of string
 	 */
-	private $comments;
+	private ?array $comments = null;
 
 	/**
 	 * Stack of open XML tags during parsing.

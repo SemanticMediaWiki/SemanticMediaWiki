@@ -54,25 +54,16 @@ class SubobjectParserFunction {
 
 	protected MessageFormatter $messageFormatter;
 
-	/**
-	 * @var StripMarkerDecoder
-	 */
-	private $stripMarkerDecoder;
+	private ?StripMarkerDecoder $stripMarkerDecoder = null;
 
-	/**
-	 * @var bool
-	 */
-	private $useFirstElementAsPropertyLabel = false;
+	private bool $useFirstElementAsPropertyLabel = false;
 
 	/**
 	 * @var bool
 	 */
 	private $isCapitalLinks = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isComparableContent = false;
+	private bool $isComparableContent = false;
 
 	/**
 	 * @since 1.9

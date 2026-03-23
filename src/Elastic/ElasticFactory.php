@@ -53,10 +53,7 @@ use SMW\Store;
  */
 class ElasticFactory {
 
-	/**
-	 * @var Indexer
-	 */
-	private $indexer;
+	private ?Indexer $indexer = null;
 
 	/**
 	 * @since 3.2
@@ -620,7 +617,7 @@ class ElasticFactory {
 	 * @see https://www.semantic-mediawiki.org/wiki/Hooks#SMW::Maintenance::AfterUpdateEntityCollationComplete
 	 * @since 3.1
 	 */
-	public function onAfterUpdateEntityCollationComplete( $store, $messageReporter ): bool {
+	public function onAfterUpdateEntityCollationComplete( $store, MessageReporter $messageReporter ): bool {
 		if (
 			( $connection = $store->getConnection( 'elastic' ) ) === null ||
 			$connection instanceof DummyClient ) {
