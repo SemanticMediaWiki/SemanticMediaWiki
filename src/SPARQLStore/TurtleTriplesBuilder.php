@@ -32,25 +32,16 @@ class TurtleTriplesBuilder {
 	 */
 	private $semanticData = null;
 
-	/**
-	 * @var null|string
-	 */
-	private $triples = null;
+	private ?string $triples = null;
 
 	/**
 	 * @var array
 	 */
 	private $prefixes = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasTriplesForUpdate = false;
+	private bool $hasTriplesForUpdate = false;
 
-	/**
-	 * @var int
-	 */
-	private $triplesChunkSize = 80;
+	private int $triplesChunkSize = 80;
 
 	/**
 	 * @since 2.0
@@ -88,7 +79,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return bool
 	 */
-	public function hasTriples() {
+	public function hasTriples(): bool {
 		return $this->hasTriplesForUpdate;
 	}
 
@@ -97,7 +88,7 @@ class TurtleTriplesBuilder {
 	 *
 	 * @return string
 	 */
-	public function getTriples() {
+	public function getTriples(): string {
 		return $this->triples === null ? '' : $this->triples;
 	}
 

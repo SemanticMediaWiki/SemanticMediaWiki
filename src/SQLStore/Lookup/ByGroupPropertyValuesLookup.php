@@ -23,7 +23,7 @@ class ByGroupPropertyValuesLookup {
 	/**
 	 * @var array
 	 */
-	private $cache = [];
+	private array $cache = [];
 
 	/**
 	 * @since 3.2

@@ -38,9 +38,7 @@ class PageDeleter {
 
 		try {
 			$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-			if ( $user !== null ) {
-				$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
-			}
+			$page->doDeleteArticleReal( 'SMW system test: delete page', $user );
 		} catch ( Throwable $e ) {
 			error_log( 'PageDeleter::deletePage failed for "' . $title->getPrefixedText() . '": ' . $e );
 		}

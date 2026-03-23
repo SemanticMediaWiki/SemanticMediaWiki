@@ -79,13 +79,7 @@ class XmlImportRunner {
 
 		$services = MediaWikiServices::getInstance();
 
-		// Use a system user when temporary accounts are enabled (MW 1.44+)
-		// to avoid CannotCreateActorException for anonymous users
-		if ( $services->getTempUserCreator()->isEnabled() ) {
-			$authority = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-		} else {
-			$authority = RequestContext::getMain()->getAuthority();
-		}
+		$authority = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 
 		$importer = $services->getWikiImporterFactory()->getWikiImporter(
 			$source->value,
@@ -144,11 +138,7 @@ class XmlImportRunner {
 	protected function acquireRequestContext() {
 		if ( $this->requestContext === null ) {
 			$this->requestContext = new RequestContext();
-
-			if ( MediaWikiServices::getInstance()->getTempUserCreator()->isEnabled() ) {
-				$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
-				$this->requestContext->setUser( $user );
-			}
+			$this->requestContext->setUser( User::newSystemUser( 'Maintenance script', [ 'steal' => true ] ) );
 		}
 
 		return $this->requestContext;

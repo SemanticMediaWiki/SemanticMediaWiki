@@ -23,25 +23,16 @@ class RestrictionExaminer {
 	 */
 	private $error = [];
 
-	/**
-	 * @var User|null
-	 */
-	private $user;
+	private ?User $user = null;
 
 	/**
 	 * @var bool|string
 	 */
 	private $createProtectionRight = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isQueryContext = false;
+	private bool $isQueryContext = false;
 
-	/**
-	 * @var array
-	 */
-	private $exists = [];
+	private array $exists = [];
 
 	/**
 	 * @since 2.5

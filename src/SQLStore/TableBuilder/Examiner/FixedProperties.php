@@ -19,12 +19,12 @@ class FixedProperties {
 	/**
 	 * @var array
 	 */
-	private $fixedProperties = [];
+	private array $fixedProperties = [];
 
 	/**
 	 * @var array
 	 */
-	private $properties = [];
+	private array $properties = [];
 
 	/**
 	 * @since 3.1

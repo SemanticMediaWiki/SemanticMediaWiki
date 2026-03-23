@@ -22,7 +22,7 @@ class Collator {
 	/**
 	 * @var Collator
 	 */
-	private static $instance = [];
+	private static array $instance = [];
 
 	/**
 	 * @private

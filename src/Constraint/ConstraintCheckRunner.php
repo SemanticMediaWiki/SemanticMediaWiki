@@ -17,7 +17,7 @@ class ConstraintCheckRunner {
 	/**
 	 * @var
 	 */
-	private $constraintChecks = [];
+	private array $constraintChecks = [];
 
 	/**
 	 * @var
@@ -27,17 +27,14 @@ class ConstraintCheckRunner {
 	/**
 	 * @var
 	 */
-	private $constraintSchemas = [];
+	private array $constraintSchemas = [];
 
 	/**
 	 * @var bool
 	 */
 	private $hasViolation = false;
 
-	/**
-	 * @var bool
-	 */
-	private $hasDeferrableConstraint = false;
+	private bool $hasDeferrableConstraint = false;
 
 	/**
 	 * @since 3.1
@@ -59,7 +56,7 @@ class ConstraintCheckRunner {
 	 *
 	 * @return bool
 	 */
-	public function hasDeferrableConstraint() {
+	public function hasDeferrableConstraint(): bool {
 		return $this->hasDeferrableConstraint;
 	}
 

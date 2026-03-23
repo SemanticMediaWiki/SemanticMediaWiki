@@ -17,7 +17,7 @@ class DuplicateLookupTask extends Task {
 	/**
 	 * @var
 	 */
-	private $cacheUsage;
+	private ?array $cacheUsage = null;
 
 	/**
 	 * @since 3.1

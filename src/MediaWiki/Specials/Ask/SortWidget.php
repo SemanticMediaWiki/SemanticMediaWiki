@@ -15,15 +15,9 @@ use SMW\Localizer\Message;
  */
 class SortWidget {
 
-	/**
-	 * @var bool
-	 */
-	private static $sortingSupport = false;
+	private static bool $sortingSupport = false;
 
-	/**
-	 * @var bool
-	 */
-	private static $randSortingSupport = false;
+	private static bool $randSortingSupport = false;
 
 	/**
 	 * @since 3.0

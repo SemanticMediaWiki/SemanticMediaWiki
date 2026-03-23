@@ -18,10 +18,7 @@ use SMW\Exporter\Element\ExpResource;
  */
 class ElementFactory {
 
-	/**
-	 * @var array
-	 */
-	private $dataItemMappers = [];
+	private array $dataItemMappers = [];
 
 	/**
 	 * @since 2.2

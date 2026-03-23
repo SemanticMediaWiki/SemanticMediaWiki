@@ -17,10 +17,7 @@ use SplFileObject;
  */
 class CsvFileIterator implements Iterator, Countable {
 
-	/**
-	 * @var SplFileObject
-	 */
-	private $file;
+	private ?SplFileObject $file = null;
 
 	/**
 	 * @var Resource
@@ -32,10 +29,7 @@ class CsvFileIterator implements Iterator, Countable {
 	 */
 	private $header = [];
 
-	/**
-	 * @var int
-	 */
-	private $key = 0;
+	private int $key = 0;
 
 	/**
 	 * @var bool

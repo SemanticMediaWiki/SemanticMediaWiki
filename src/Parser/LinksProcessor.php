@@ -13,15 +13,10 @@ class LinksProcessor {
 	/**
 	 * Internal state for switching SMW link annotations off/on during parsing
 	 * ([[SMW::on]] and [[SMW:off]])
-	 *
-	 * @var bool
 	 */
-	private $isAnnotation = true;
+	private bool $isAnnotation = true;
 
-	/**
-	 * @var bool
-	 */
-	private $isStrictMode = true;
+	private bool $isStrictMode = true;
 
 	/**
 	 * Whether a strict interpretation (e.g [[property::value:partOfTheValue::alsoPartOfTheValue]])
@@ -41,7 +36,7 @@ class LinksProcessor {
 	 *
 	 * @return bool
 	 */
-	public function isAnnotation() {
+	public function isAnnotation(): bool {
 		return $this->isAnnotation;
 	}
 

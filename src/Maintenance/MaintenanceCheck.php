@@ -15,10 +15,7 @@ use SMW\Utils\CliMsgFormatter;
  */
 class MaintenanceCheck {
 
-	/**
-	 * @var string
-	 */
-	private $message = '';
+	private string $message = '';
 
 	/**
 	 * @since 3.2

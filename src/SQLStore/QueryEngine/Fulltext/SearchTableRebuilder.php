@@ -22,20 +22,11 @@ class SearchTableRebuilder {
 	 */
 	private $messageReporter;
 
-	/**
-	 * @var bool
-	 */
-	private $reportVerbose = false;
+	private bool $reportVerbose = false;
 
-	/**
-	 * @var bool
-	 */
-	private $optimization = false;
+	private bool $optimization = false;
 
-	/**
-	 * @var array
-	 */
-	private $skippedTables = [];
+	private array $skippedTables = [];
 
 	/**
 	 * @since 2.5
@@ -351,7 +342,7 @@ class SearchTableRebuilder {
 		$this->reportMessage( "\n" );
 	}
 
-	private function reportMessage( string $message, $verbose = true ): void {
+	private function reportMessage( string $message, bool $verbose = true ): void {
 		if ( $verbose ) {
 			$this->messageReporter->reportMessage( $message );
 		}

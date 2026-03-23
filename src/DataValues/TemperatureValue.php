@@ -115,7 +115,7 @@ class TemperatureValue extends NumberValue {
 	/**
 	 * Helper method to find the main representation of a certain unit.
 	 */
-	protected function getUnitID( $unit ) {
+	protected function getUnitID( $unit ): string|false {
 		/// TODO possibly localise some of those strings
 		switch ( $unit ) {
 			case '':
@@ -156,7 +156,7 @@ class TemperatureValue extends NumberValue {
 		return 'K';
 	}
 
-	private function getPreferredDisplayUnit() {
+	private function getPreferredDisplayUnit(): string|false {
 		$unit = $this->getUnit();
 
 		if ( $this->getProperty() === null ) {
@@ -174,7 +174,7 @@ class TemperatureValue extends NumberValue {
 		return $this->getUnitID( $unit );
 	}
 
-	private function convertToKelvin( $number, $unit ) {
+	private function convertToKelvin( $number, string|bool $unit ) {
 		switch ( $unit ) {
 			case 'K':
 				return $number;
@@ -189,7 +189,7 @@ class TemperatureValue extends NumberValue {
 		return false; // unsupported unit
 	}
 
-	private function convertToUnit( $number, $unit ) {
+	private function convertToUnit( $number, string|bool $unit ) {
 		switch ( $unit ) {
 			case 'K':
 				return $number;

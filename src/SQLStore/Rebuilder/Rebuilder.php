@@ -40,30 +40,18 @@ class Rebuilder {
 
 	private HookContainer $hookContainer;
 
-	/**
-	 * @var array
-	 */
-	private $options;
+	private ?array $options = null;
 
 	/**
 	 * @var array|false
 	 */
 	private $namespaces = false;
 
-	/**
-	 * @var int
-	 */
-	private $iterationLimit = 1;
+	private int $iterationLimit = 1;
 
-	/**
-	 * @var int
-	 */
-	private $progress = 1;
+	private int|float $progress = 1;
 
-	/**
-	 * @var array
-	 */
-	private $dispatchedEntities = [];
+	private array $dispatchedEntities = [];
 
 	/**
 	 * @var array
@@ -162,7 +150,7 @@ class Rebuilder {
 	 *
 	 * @return int
 	 */
-	public function getEstimatedProgress() {
+	public function getEstimatedProgress(): int|float {
 		return $this->progress;
 	}
 
@@ -171,7 +159,7 @@ class Rebuilder {
 	 *
 	 * @return array
 	 */
-	public function getDispatchedEntities() {
+	public function getDispatchedEntities(): array {
 		return $this->dispatchedEntities;
 	}
 

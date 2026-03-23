@@ -24,15 +24,9 @@ class QueryLinksTableDisposer {
 	 */
 	private $connection;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $waitForReplication = false;
+	private bool $waitForReplication = false;
 
 	/**
 	 * @since 3.1

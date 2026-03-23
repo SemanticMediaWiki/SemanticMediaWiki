@@ -57,7 +57,7 @@ class PostProcHandler {
 	/**
 	 * @var
 	 */
-	private $options = [];
+	private array $options = [];
 
 	/**
 	 * @since 3.0

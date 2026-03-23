@@ -14,15 +14,9 @@ use Wikimedia\Rdbms\ResultWrapper;
  */
 class MissingRedirectLookup {
 
-	/**
-	 * @var array
-	 */
-	private $namespaces;
+	private ?array $namespaces = null;
 
-	/**
-	 * @var bool
-	 */
-	private $nosort = false;
+	private bool $nosort = false;
 
 	/**
 	 * @since 3.1

@@ -14,10 +14,7 @@ use SMW\Utils\CliMsgFormatter;
  */
 class Importer implements MessageReporterAware {
 
-	/**
-	 * @var MessageReporter
-	 */
-	private $messageReporter;
+	private ?MessageReporter $messageReporter = null;
 
 	/**
 	 * @var bool
@@ -29,10 +26,7 @@ class Importer implements MessageReporterAware {
 	 */
 	private $reqVersion = false;
 
-	/**
-	 * @var ?string
-	 */
-	private $importer;
+	private ?string $importer = null;
 
 	/**
 	 * @since 2.5

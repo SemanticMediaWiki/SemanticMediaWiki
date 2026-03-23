@@ -20,10 +20,7 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 
-	/**
-	 * @var null|Job
-	 */
-	private $refreshjob = null;
+	private ?Job $refreshjob = null;
 
 	/**
 	 * @since 2.5
@@ -151,7 +148,7 @@ class DataRefreshJobTaskHandler extends TaskHandler implements ActionableTask {
 		) . '&#160;' . round( $prog * 100, 4 ) . '%';
 	}
 
-	private function getRefreshJob() {
+	private function getRefreshJob(): ?Job {
 		if ( !$this->hasFeature( SMW_ADM_REFRESH ) ) {
 			return null;
 		}

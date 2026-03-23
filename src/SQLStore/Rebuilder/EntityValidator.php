@@ -22,15 +22,9 @@ class EntityValidator {
 
 	use RevisionGuardAwareTrait;
 
-	/**
-	 * @var array
-	 */
-	private $propertyInvalidCharacterList = [];
+	private array $propertyInvalidCharacterList = [];
 
-	/**
-	 * @var array
-	 */
-	private $propertyRetiredList = [];
+	private array $propertyRetiredList = [];
 
 	/**
 	 * @var array|false

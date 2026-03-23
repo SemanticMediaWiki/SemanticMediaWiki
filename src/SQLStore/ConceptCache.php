@@ -19,10 +19,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class ConceptCache {
 
-	/**
-	 * @var int
-	 */
-	private $upperLimit = 50;
+	private int $upperLimit = 50;
 
 	/**
 	 * @since 2.2
@@ -67,7 +64,7 @@ class ConceptCache {
 	 *
 	 * @param $concept Title
 	 */
-	public function deleteConceptCache( $concept ): void {
+	public function deleteConceptCache( Title $concept ): void {
 		$this->delete( $concept );
 	}
 

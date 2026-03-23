@@ -27,30 +27,27 @@ class FormsBuilder {
 	 */
 	private $customForm;
 
-	/**
-	 * @var string
-	 */
-	private $defaultForm = '';
+	private string $defaultForm = '';
 
 	/**
 	 * @var
 	 */
-	private $formList = [];
+	private array $formList = [];
 
 	/**
 	 * @var
 	 */
-	private $preselectNsList = [];
+	private array $preselectNsList = [];
 
 	/**
 	 * @var
 	 */
-	private $hiddenNsList = [];
+	private array $hiddenNsList = [];
 
 	/**
 	 * @var
 	 */
-	private $parameters = [];
+	private array $parameters = [];
 
 	/**
 	 * @var
@@ -71,7 +68,7 @@ class FormsBuilder {
 	 *
 	 * @return
 	 */
-	public function getParameters() {
+	public function getParameters(): array {
 		return $this->parameters;
 	}
 
@@ -100,7 +97,7 @@ class FormsBuilder {
 	 *
 	 * @return
 	 */
-	public function getHiddenNsList() {
+	public function getHiddenNsList(): array {
 		return $this->hiddenNsList;
 	}
 

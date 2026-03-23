@@ -108,7 +108,7 @@ class DuplicateFinder {
 			return [];
 		}
 
-		$callback = function ( $row ) use ( $connection, $table, $fname ) {
+		$callback = function ( $row ) use ( $connection, $table, $fname ): array {
 			$map = self::mapRow( $table, $row );
 			$map = [ 'count' => $row->count ] + $map;
 

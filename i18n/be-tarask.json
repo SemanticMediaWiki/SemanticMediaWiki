@@ -433,6 +433,7 @@
 	"smw-no-data-available": "Няма даступных зьвестак.",
 	"smw-format-datatable-loadingrecords": "Ладаваньне…",
 	"smw-loading": "Ладаваньне…",
+	"smw-copy": "Капіяваць",
 	"smw-es-replication-error-no-connection": "Сачэньне за паўтарэньнем ня можа выканаць праверкі, бо ня можа ўсталяваць сувязь з клястэрам Elasticsearch.",
 	"smw-listingcontinuesabbrev": " (працяг)",
 	"smw-showingresults": "Ніжэй {{PLURAL:$1|пададзены|пададзеныя}} да <strong>$1</strong> {{PLURAL:$1|выніку|вынікаў}}, пачынаючы з #<strong>$2</strong>."

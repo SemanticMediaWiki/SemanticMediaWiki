@@ -20,15 +20,15 @@ use SMW\DataItems\WikiPage;
  */
 class ItemJournal {
 
-	private $dataItems = [];
-	private $properties = [];
+	private array $dataItems = [];
+	private array $properties = [];
 
 	/**
 	 * @since 2.4
 	 *
 	 * @return DataItem[]
 	 */
-	public function getEntityList() {
+	public function getEntityList(): array {
 		return $this->dataItems;
 	}
 
@@ -37,7 +37,7 @@ class ItemJournal {
 	 *
 	 * @return Property[]
 	 */
-	public function getPropertyList() {
+	public function getPropertyList(): array {
 		return $this->properties;
 	}
 

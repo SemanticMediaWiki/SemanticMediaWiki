@@ -12,10 +12,7 @@ use RuntimeException;
  */
 class LanguageContents {
 
-	/**
-	 * @var array
-	 */
-	private $contents = [];
+	private array $contents = [];
 
 	/**
 	 * @since 2.5

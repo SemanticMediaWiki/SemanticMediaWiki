@@ -3,6 +3,7 @@
 namespace SMW\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
+use Onoi\BlobStore\Container;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -60,25 +61,16 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 	 */
 	const POOLCACHE_ID = 'queryresult.prefetcher';
 
-	/**
-	 * @var QueryEngine
-	 */
-	private $queryEngine;
+	private ?QueryEngine $queryEngine = null;
 
 	/**
 	 * @var int|bool
 	 */
 	private $nonEmbeddedCacheLifetime = false;
 
-	/**
-	 * @var bool
-	 */
-	private $enabledCache = true;
+	private bool $enabledCache = true;
 
-	/**
-	 * @var loggerInterface
-	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * Keep a temp cache to hold on query results that aren't stored yet.
@@ -389,7 +381,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$deferredTransactionalUpdate->pushUpdate();
 	}
 
-	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, $container, Query $query ) {
+	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, Container $container, Query $query ): QueryResult {
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft
@@ -456,7 +448,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return md5( $subject . self::VERSION . $this->cacheKeyExtension );
 	}
 
-	private function log( string $message, $context = [] ): void {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

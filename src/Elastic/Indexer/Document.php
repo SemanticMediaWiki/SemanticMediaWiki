@@ -19,15 +19,9 @@ class Document implements JsonSerializable {
 	const TYPE_UPSERT = 'type/upsert';
 	const TYPE_DELETE = 'type/delete';
 
-	/**
-	 * @var array
-	 */
-	private $subDocuments = [];
+	private array $subDocuments = [];
 
-	/**
-	 * @var array
-	 */
-	private $priorityDeleteList = [];
+	private array $priorityDeleteList = [];
 
 	/**
 	 * @since 3.2
@@ -82,7 +76,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return
 	 */
-	public function getPriorityDeleteList() {
+	public function getPriorityDeleteList(): array {
 		return $this->priorityDeleteList;
 	}
 
@@ -152,7 +146,7 @@ class Document implements JsonSerializable {
 	 *
 	 * @return Document[]|[]
 	 */
-	public function getSubDocuments() {
+	public function getSubDocuments(): array {
 		return $this->subDocuments;
 	}
 

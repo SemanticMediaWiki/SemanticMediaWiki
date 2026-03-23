@@ -30,10 +30,7 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
  */
 class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 
-	/**
-	 * @var LoggerInterface
-	 */
-	private $logger;
+	private ?LoggerInterface $logger = null;
 
 	/**
 	 * Query mode copied from given query. Some submethods act differently when
@@ -554,7 +551,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( string $message, $context = [] ): void {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

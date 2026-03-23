@@ -24,22 +24,13 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var bool
-	 */
-	private $checkReplication = false;
+	private bool $checkReplication = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private string $severityType = '';
 
 	private TemplateEngine $templateEngine;
 
@@ -121,7 +112,7 @@ class ReplicationEntityExaminerDeferrableIndicatorProvider implements TypableSev
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 

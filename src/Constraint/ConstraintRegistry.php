@@ -31,12 +31,9 @@ class ConstraintRegistry {
 	/**
 	 * @var
 	 */
-	private $instances = [];
+	private array $instances = [];
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1

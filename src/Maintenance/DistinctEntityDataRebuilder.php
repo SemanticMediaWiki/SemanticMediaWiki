@@ -7,6 +7,7 @@ use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\DataItems\WikiPage;
+use SMW\MediaWiki\JobFactory;
 use SMW\MediaWiki\Jobs\UpdateJob;
 use SMW\MediaWiki\TitleFactory;
 use SMW\MediaWiki\TitleLookup;
@@ -25,30 +26,18 @@ use SMW\Utils\CliMsgFormatter;
  */
 class DistinctEntityDataRebuilder {
 
-	/**
-	 * @var Options
-	 */
-	private $options;
+	private ?Options $options = null;
 
 	/**
 	 * @var MessageReporter
 	 */
 	private $reporter;
 
-	/**
-	 * @var ExceptionFileLogger
-	 */
-	private $exceptionFileLogger;
+	private ?ExceptionFileLogger $exceptionFileLogger = null;
 
-	/**
-	 * @var array
-	 */
-	private $filters = [];
+	private array $filters = [];
 
-	/**
-	 * @var int
-	 */
-	private $rebuildCount = 0;
+	private int $rebuildCount = 0;
 
 	/**
 	 * @since 2.4
@@ -92,7 +81,7 @@ class DistinctEntityDataRebuilder {
 	 *
 	 * @return int
 	 */
-	public function getRebuildCount() {
+	public function getRebuildCount(): int {
 		return $this->rebuildCount;
 	}
 
@@ -167,7 +156,7 @@ class DistinctEntityDataRebuilder {
 		return true;
 	}
 
-	private function doUpdate( $jobFactory, $page ) {
+	private function doUpdate( JobFactory $jobFactory, Title $page ) {
 		$updatejob = $jobFactory->newUpdateJob(
 			$page,
 			[
@@ -293,7 +282,7 @@ class DistinctEntityDataRebuilder {
 		return $p;
 	}
 
-	private function reportMessage( string $message, $output = true ): void {
+	private function reportMessage( string $message, bool $output = true ): void {
 		if ( $output ) {
 			$this->reporter->reportMessage( $message );
 		}

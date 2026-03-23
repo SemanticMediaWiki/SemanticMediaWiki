@@ -15,15 +15,9 @@ use SMW\Utils\FileFetcher;
  */
 class JsonImportContentsFileDirReader {
 
-	/**
-	 * @var array
-	 */
-	private static $contents = [];
+	private static array $contents = [];
 
-	/**
-	 * @var array
-	 */
-	private $errors = [];
+	private array $errors = [];
 
 	/**
 	 * @since 2.5
@@ -48,7 +42,7 @@ class JsonImportContentsFileDirReader {
 	 *
 	 * @return array
 	 */
-	public function getErrors() {
+	public function getErrors(): array {
 		return $this->errors;
 	}
 

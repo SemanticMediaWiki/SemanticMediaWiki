@@ -272,7 +272,7 @@ class ParametersProcessor {
 	private static function replace( string $source, string $target, $value ): string|array|null {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
-			static function ( array $matches ) use ( $source, $target ) {
+			static function ( array $matches ) use ( $source, $target ): string {
 				return str_replace( [ $source ], [ $target ], $matches[0] );
 			},
 			$value

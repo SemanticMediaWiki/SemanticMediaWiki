@@ -52,7 +52,7 @@ class Indexer {
 	/**
 	 * @var
 	 */
-	private $versions = [];
+	private array $versions = [];
 
 	/**
 	 * @since 3.0

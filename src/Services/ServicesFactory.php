@@ -63,10 +63,7 @@ use Wikimedia\Rdbms\ILoadBalancer;
  */
 class ServicesFactory {
 
-	/**
-	 * @var ServicesFactory|null
-	 */
-	private static $instance = null;
+	private static ?ServicesFactory $instance = null;
 
 	/**
 	 * @since 2.0
@@ -91,7 +88,7 @@ class ServicesFactory {
 	 *
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): ServicesFactory {
 		if ( self::$instance !== null ) {
 			return self::$instance;
 		}
@@ -340,7 +337,7 @@ class ServicesFactory {
 	 *
 	 * @return DataValueFactory
 	 */
-	public function getDataValueFactory() {
+	public function getDataValueFactory(): DataValueFactory {
 		return DataValueFactory::getInstance();
 	}
 

@@ -23,10 +23,7 @@ class CategoryFilter implements SchemaFilter, ChainableFilter {
 	 */
 	private $categories = [];
 
-	/**
-	 * @var bool
-	 */
-	private $isLoaded = false;
+	private bool $isLoaded = false;
 
 	/**
 	 * @since 3.2

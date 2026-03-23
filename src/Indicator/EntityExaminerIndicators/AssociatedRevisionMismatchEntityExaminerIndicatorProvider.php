@@ -29,22 +29,16 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	/**
 	 * @var
 	 */
-	private $indicators = [];
+	private array $indicators = [];
 
-	/**
-	 * @var string
-	 */
-	private $severityType = '';
+	private string $severityType = '';
 
 	/**
 	 * @var string
 	 */
 	private $languageCode = '';
 
-	/**
-	 * @var bool
-	 */
-	private $isDeferredMode = false;
+	private bool $isDeferredMode = false;
 
 	private TemplateEngine $templateEngine;
 
@@ -127,7 +121,7 @@ class AssociatedRevisionMismatchEntityExaminerIndicatorProvider implements Typab
 	 *
 	 * @return
 	 */
-	public function getIndicators() {
+	public function getIndicators(): array {
 		return $this->indicators;
 	}
 

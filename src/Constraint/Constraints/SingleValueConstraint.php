@@ -22,17 +22,14 @@ class SingleValueConstraint implements Constraint {
 	 */
 	const CONSTRAINT_KEY = 'single_value_constraint';
 
-	/**
-	 * @var bool
-	 */
-	private $hasViolation = false;
+	private bool $hasViolation = false;
 
 	/**
 	 * @since 3.1
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return $this->hasViolation;
 	}
 

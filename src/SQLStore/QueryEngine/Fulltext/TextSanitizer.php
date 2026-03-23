@@ -17,10 +17,7 @@ use Transliterator;
  */
 class TextSanitizer {
 
-	/**
-	 * @var array
-	 */
-	private $languageDetection = [];
+	private array $languageDetection = [];
 
 	/**
 	 * @var int
@@ -35,7 +32,7 @@ class TextSanitizer {
 	/**
 	 * @var array<string, Reader|null>
 	 */
-	private $stopwordReaders = [];
+	private array $stopwordReaders = [];
 
 	/**
 	 * @since 7.0.0

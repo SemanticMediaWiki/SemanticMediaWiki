@@ -33,25 +33,16 @@ class PropertyTableIdReferenceDisposer {
 	 */
 	private $connection = null;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
 	/**
 	 * @var bool
 	 */
 	private $redirectRemoval = false;
 
-	/**
-	 * @var bool
-	 */
-	private $fulltextTableUsage = false;
+	private bool $fulltextTableUsage = false;
 
-	/**
-	 * @var array
-	 */
-	private $namespacesWithSemanticLinks = [];
+	private array $namespacesWithSemanticLinks = [];
 
 	/**
 	 * @since 2.4

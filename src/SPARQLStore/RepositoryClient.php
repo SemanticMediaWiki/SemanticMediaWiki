@@ -20,10 +20,7 @@ class RepositoryClient {
 	 */
 	private $name = '';
 
-	/**
-	 * @var Flag|null
-	 */
-	private $featureSet;
+	private ?Flag $featureSet = null;
 
 	/**
 	 * @since 2.2

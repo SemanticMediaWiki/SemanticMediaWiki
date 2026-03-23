@@ -23,7 +23,7 @@ class PageUpdater implements DeferrableUpdate {
 	/**
 	 * @var Title[]
 	 */
-	private $titles = [];
+	private array $titles = [];
 
 	/**
 	 * @var string
@@ -40,25 +40,13 @@ class PageUpdater implements DeferrableUpdate {
 	 */
 	private $isHtmlCacheUpdate = true;
 
-	/**
-	 * @var bool
-	 */
-	private $onTransactionIdle = false;
+	private bool $onTransactionIdle = false;
 
-	/**
-	 * @var bool
-	 */
-	private $asPoolPurge = false;
+	private bool $asPoolPurge = false;
 
-	/**
-	 * @var bool
-	 */
-	private $isPending = false;
+	private bool $isPending = false;
 
-	/**
-	 * @var array
-	 */
-	private $pendingUpdates = [];
+	private array $pendingUpdates = [];
 
 	/**
 	 * @since 2.5

@@ -55,7 +55,7 @@ function smwfNormalTitleDBKey( $text ): string {
 /**
  * @deprecated since 3.2, use `Localizer::normalizeTitleText`
  */
-function smwfNormalTitleText( $text ): string {
+function smwfNormalTitleText( string $text ): string {
 	return Localizer::getInstance()->normalizeTitleText( $text );
 }
 

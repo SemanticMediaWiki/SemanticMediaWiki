@@ -12,20 +12,11 @@ use MediaWiki\Html\Html;
  */
 class HtmlTable {
 
-	/**
-	 * @var array
-	 */
-	private $headers = [];
+	private array $headers = [];
 
-	/**
-	 * @var array
-	 */
-	private $cells = [];
+	private array $cells = [];
 
-	/**
-	 * @var array
-	 */
-	private $rows = [];
+	private array $rows = [];
 
 	/**
 	 * @since 3.0
@@ -155,7 +146,7 @@ class HtmlTable {
 		return implode( '', $rows );
 	}
 
-	private function getTransposedCell( $index, $row ) {
+	private function getTransposedCell( int|string $index, $row ) {
 		if ( isset( $row['cells'][$index] ) ) {
 			return $row['cells'][$index];
 		}

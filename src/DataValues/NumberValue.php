@@ -421,7 +421,7 @@ class NumberValue extends DataValue {
 	 *
 	 * @return array
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array {
 		if ( $this->isValid() ) {
 			return [ strval( $this->m_dataitem->getNumber() ), strval( round( $this->m_dataitem->getNumber() ) ) ];
 		} else {

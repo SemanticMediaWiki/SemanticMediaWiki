@@ -43,10 +43,7 @@ class ElasticStore extends SQLStore {
 
 	private ElasticFactory $elasticFactory;
 
-	/**
-	 * @var Indexer
-	 */
-	private $indexer;
+	private ?Indexer $indexer = null;
 
 	/**
 	 * @var QueryEngine

@@ -38,15 +38,9 @@ class PropertySubjectsLookup {
 	 */
 	private $dataItemHandler;
 
-	/**
-	 * @var array
-	 */
-	private $prefetch = [];
+	private array $prefetch = [];
 
-	/**
-	 * @var string
-	 */
-	private $caller = '';
+	private string $caller = '';
 
 	/**
 	 * @since 3.0

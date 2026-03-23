@@ -35,10 +35,7 @@ class GroupFormatter {
 	 */
 	private $showGroup = true;
 
-	/**
-	 * @var string
-	 */
-	private $lastGroup = '';
+	private string|false $lastGroup = '';
 
 	/**
 	 * @var array

@@ -43,7 +43,7 @@ class LocalTime {
 	 *
 	 * @return ExtendedDateTime
 	 */
-	public static function getLocalizedTime( ExtendedDateTime $dateTime, ?string $timeCorrection = null ) {
+	public static function getLocalizedTime( ExtendedDateTime $dateTime, ?string $timeCorrection = null ): ExtendedDateTime {
 		$tz = $timeCorrection ?? false;
 		$data = explode( '|', $tz, 3 );
 

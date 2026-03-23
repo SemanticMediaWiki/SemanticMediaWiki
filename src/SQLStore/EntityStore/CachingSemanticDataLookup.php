@@ -25,31 +25,22 @@ class CachingSemanticDataLookup {
 
 	/**
 	 * Cache for SemanticData dataItems, indexed by SMW ID.
-	 *
-	 * @var array
 	 */
-	private static $data = [];
+	private static array $data = [];
 
 	/**
 	 * Like SQLStore::data, but containing flags indicating
 	 * completeness of the SemanticData objs.
-	 *
-	 * @var array
 	 */
-	private static $state = [];
+	private static array $state = [];
 
 	/**
 	 * >0 while getSemanticData runs, used to prevent nested calls from clearing
 	 * the cache while another call runs and is about to fill it with data
-	 *
-	 * @var int
 	 */
-	private static $lookupCount = 0;
+	private static int $lookupCount = 0;
 
-	/**
-	 * @var array
-	 */
-	private static $prefetch = [];
+	private static array $prefetch = [];
 
 	/**
 	 * @since 3.0

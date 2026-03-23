@@ -25,10 +25,7 @@ class SemanticDataLookup {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var string
-	 */
-	private $caller = '';
+	private string $caller = '';
 
 	/**
 	 * @since 3.0

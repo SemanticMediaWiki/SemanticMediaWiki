@@ -49,10 +49,8 @@ class StubSemanticData extends SemanticData {
 
 	/**
 	 * Whether SubSemanticData have been requested and added
-	 *
-	 * @var bool
 	 */
-	private $subSemanticDataInit = false;
+	private bool $subSemanticDataInit = false;
 
 	/**
 	 * @since 1.8
