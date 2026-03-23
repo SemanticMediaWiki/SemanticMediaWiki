@@ -6,8 +6,10 @@ use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 
 /**
  * Handling semantic data exchange with a ParserOutput object
@@ -61,15 +63,9 @@ class ParserData {
 	 */
 	const ANNOTATION_BLOCK = 'smw-blockannotation';
 
-	/**
-	 * @var Title
-	 */
-	private $title;
+	private Title $title;
 
-	/**
-	 * @var ParserOutput
-	 */
-	private $parserOutput;
+	private ParserOutput $parserOutput;
 
 	/**
 	 * @var ParserOptions
@@ -137,7 +133,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}
@@ -150,7 +146,7 @@ class ParserData {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -159,16 +155,16 @@ class ParserData {
 	 *
 	 * @return Title
 	 */
-	public function getTitle() {
+	public function getTitle(): Title {
 		return $this->title;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return DIWikiPage
+	 * @return WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): WikiPage {
 		return $this->getSemanticData()->getSubject();
 	}
 
@@ -177,7 +173,7 @@ class ParserData {
 	 *
 	 * @return ParserOutput
 	 */
-	public function getOutput() {
+	public function getOutput(): ParserOutput {
 		return $this->parserOutput;
 	}
 
@@ -186,7 +182,7 @@ class ParserData {
 	 *
 	 * @param ParserOptions $parserOptions
 	 */
-	public function setParserOptions( ParserOptions $parserOptions ) {
+	public function setParserOptions( ParserOptions $parserOptions ): void {
 		$this->parserOptions = $parserOptions;
 	}
 
@@ -195,7 +191,7 @@ class ParserData {
 	 *
 	 * @return ParserOptions|null
 	 */
-	public function addExtraParserKey( $key ) {
+	public function addExtraParserKey( $key ): void {
 		$keysToCache = ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheKeys' ) ?? [];
 
 		if ( in_array( $key, $keysToCache ) ) {
@@ -212,7 +208,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function isBlocked() {
+	public function isBlocked(): bool {
 		return $this->hasAnnotationBlock();
 	}
 
@@ -221,7 +217,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function hasAnnotationBlock() {
+	public function hasAnnotationBlock(): bool {
 		// ParserOutput::getExtensionData returns null if no value was set for this key
 		if ( $this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) !== null &&
 			$this->parserOutput->getExtensionData( self::ANNOTATION_BLOCK ) ) {
@@ -236,7 +232,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function canUse() {
+	public function canUse(): bool {
 		return !$this->hasAnnotationBlock();
 	}
 
@@ -254,7 +250,7 @@ class ParserData {
 	/**
 	 * @since  1.9
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		$this->errors = array_merge( $this->errors, (array)$error );
 	}
 
@@ -263,14 +259,14 @@ class ParserData {
 	 *
 	 * @param SemanticData $semanticData
 	 */
-	public function setSemanticData( SemanticData $semanticData ) {
+	public function setSemanticData( SemanticData $semanticData ): void {
 		$this->semanticData = $semanticData;
 	}
 
 	/**
 	 * @deprecated since 2.0, use setSemanticData
 	 */
-	public function setData( SemanticData $semanticData ) {
+	public function setData( SemanticData $semanticData ): void {
 		$this->setSemanticData( $semanticData );
 	}
 
@@ -293,8 +289,8 @@ class ParserData {
 	/**
 	 * @since 2.1
 	 */
-	public function setEmptySemanticData() {
-		$this->setSemanticData( new SemanticData( DIWikiPage::newFromTitle( $this->title ) ) );
+	public function setEmptySemanticData(): void {
+		$this->setSemanticData( new SemanticData( WikiPage::newFromTitle( $this->title ) ) );
 	}
 
 	/**
@@ -302,7 +298,7 @@ class ParserData {
 	 *
 	 * @param ParserOutput|null
 	 */
-	public function importFromParserOutput( ?ParserOutput $parserOutput = null ) {
+	public function importFromParserOutput( ?ParserOutput $parserOutput = null ): void {
 		if ( $parserOutput === null ) {
 			return;
 		}
@@ -321,7 +317,7 @@ class ParserData {
 	/**
 	 * @since 3.0
 	 */
-	public function copyToParserOutput() {
+	public function copyToParserOutput(): void {
 		// Ensure that errors are reported and recorded
 		$processingErrorMsgHandler = new ProcessingErrorMsgHandler(
 			$this->getSubject()
@@ -341,14 +337,14 @@ class ParserData {
 	/**
 	 * @deprecated since 3.0, use copyToParserOutput
 	 */
-	public function pushSemanticDataToParserOutput() {
+	public function pushSemanticDataToParserOutput(): void {
 		$this->copyToParserOutput();
 	}
 
 	/**
 	 * @since 3.0
 	 */
-	public function markParserOutput() {
+	public function markParserOutput(): void {
 		if ( ApplicationFactory::getInstance()->getSettings()->get( 'smwgSetParserCacheTimestamp' ) ) {
 			$this->parserOutput->setRevisionTimestamp( wfTimestampNow() );
 		}
@@ -362,7 +358,7 @@ class ParserData {
 	/**
 	 * @deprecated since 3.0, use pushSemanticDataToParserOutput
 	 */
-	public function setSemanticDataStateToParserOutputProperty() {
+	public function setSemanticDataStateToParserOutputProperty(): void {
 		$this->markParserOutput();
 	}
 
@@ -384,7 +380,7 @@ class ParserData {
 	 *
 	 * @param DataValue $dataValue
 	 */
-	public function addDataValue( DataValue $dataValue ) {
+	public function addDataValue( DataValue $dataValue ): void {
 		$this->semanticData->addDataValue( $dataValue );
 	}
 
@@ -395,7 +391,7 @@ class ParserData {
 	 *
 	 * @return bool
 	 */
-	public function updateStore( $opts = [] ) {
+	public function updateStore( $opts = [] ): bool {
 		$isDeferrableUpdate = false;
 
 		// @legacy
@@ -461,7 +457,7 @@ class ParserData {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addLimitReport( $key, $value ) {
+	public function addLimitReport( $key, $value ): void {
 		$this->parserOutput->setLimitReportData( 'smw-limitreport-' . $key, $value );
 	}
 
@@ -469,7 +465,7 @@ class ParserData {
 	 * Setup the semantic data container either from the ParserOutput or
 	 * if not available create an empty container
 	 */
-	private function initSemanticData() {
+	private function initSemanticData(): void {
 		$this->semanticData = $this->parserOutput->getExtensionData( self::DATA_ID );
 
 		if ( !( $this->semanticData instanceof SemanticData ) ) {

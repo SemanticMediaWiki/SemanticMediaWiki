@@ -7,7 +7,7 @@ use ParamProcessor\ProcessedParam;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
 use SMW\ParameterListDocBuilder;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Query\QueryProcessor;
 
 /**
  * Class that provides the {{#smwdoc}} parser function, which displays parameter
@@ -82,7 +82,7 @@ class DocumentationParserFunction {
 	 *
 	 * @return string
 	 */
-	private function buildParameterListDocumentation( array $parameters, $formatParameters ) {
+	private function buildParameterListDocumentation( array $parameters, array $formatParameters ) {
 		if ( $parameters['parameters']->getValue() === 'specific' ) {
 			foreach ( array_keys( QueryProcessor::getParameters() ) as $name ) {
 				unset( $formatParameters[$name] );
@@ -120,7 +120,7 @@ class DocumentationParserFunction {
 	 *
 	 * @return string
 	 */
-	private function getOutputForErrors( $errors ) {
+	private function getOutputForErrors( array $errors ): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #smwdoc parser function';
 	}

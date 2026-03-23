@@ -217,7 +217,7 @@ abstract class DataValue {
 	 * @param string $value
 	 * @param mixed $caption
 	 */
-	public function setUserValue( $value, $caption = false ) {
+	public function setUserValue( $value, $caption = false ): void {
 		$this->m_dataitem = null;
 		$this->mErrors = []; // clear errors
 		$this->mHasErrors = false;
@@ -274,7 +274,7 @@ abstract class DataValue {
 	 *
 	 * @param DataValueServiceFactory $dataValueServiceFactory
 	 */
-	public function setDataValueServiceFactory( DataValueServiceFactory $dataValueServiceFactory ) {
+	public function setDataValueServiceFactory( DataValueServiceFactory $dataValueServiceFactory ): void {
 		$this->dataValueServiceFactory = $dataValueServiceFactory;
 	}
 
@@ -287,7 +287,7 @@ abstract class DataValue {
 	 *
 	 * @param Property $property
 	 */
-	public function setProperty( Property $property ) {
+	public function setProperty( Property $property ): void {
 		$this->m_property = $property;
 	}
 
@@ -311,7 +311,7 @@ abstract class DataValue {
 	 *
 	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?WikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->m_contextPage = $contextPage;
 
 		$this->setOption(
@@ -335,7 +335,7 @@ abstract class DataValue {
 	 *
 	 * @param string $caption
 	 */
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		$this->m_caption = $caption;
 	}
 
@@ -377,7 +377,7 @@ abstract class DataValue {
 	 *
 	 * @param string $formatString
 	 */
-	public function setOutputFormat( $formatString ) {
+	public function setOutputFormat( $formatString ): void {
 		$this->m_outformat = $formatString; // just store it, subclasses may or may not use this
 	}
 
@@ -398,7 +398,7 @@ abstract class DataValue {
 	 *
 	 * @param array|string|ProcessingError $error
 	 */
-	public function addError( $error ) {
+	public function addError( $error ): void {
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();
 			$type = $error->getType();
@@ -430,7 +430,7 @@ abstract class DataValue {
 	 * @param array|string|ProcessingError $error
 	 * @param int|null $type
 	 */
-	public function addErrorMsg( $error, $type = Message::TEXT ) {
+	public function addErrorMsg( $error, $type = Message::TEXT ): void {
 		if ( $error instanceof ProcessingError ) {
 			$hash = $error->getHash();
 			$type = $error->getType();
@@ -499,7 +499,7 @@ abstract class DataValue {
 	/**
 	 * @since 2.4
 	 */
-	public function clearErrors() {
+	public function clearErrors(): void {
 		$this->mErrors = [];
 		$this->mHasErrors = false;
 	}
@@ -543,7 +543,7 @@ abstract class DataValue {
 	 * DataValue is expected to register a DescriptionBuilder with
 	 * DVDescriptionDeserializerRegistry.
 	 */
-	public static function prepareValue( &$value, &$comparator ) {
+	public static function prepareValue( &$value, &$comparator ): void {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 	}
 
@@ -800,7 +800,7 @@ abstract class DataValue {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function addCallable( $key, callable $callable ) {
+	public function addCallable( $key, callable $callable ): void {
 		if ( isset( $this->callables[$key] ) ) {
 			throw new RuntimeException( "`$key` is alread in use, please clear the callable first!" );
 		}
@@ -840,7 +840,7 @@ abstract class DataValue {
 	 *
 	 * @param string $key
 	 */
-	public function clearCallable( $key ) {
+	public function clearCallable( $key ): void {
 		unset( $this->callables[$key] );
 	}
 
@@ -849,7 +849,7 @@ abstract class DataValue {
 	 *
 	 * @return Options|null $options
 	 */
-	public function copyOptions( ?Options $options = null ) {
+	public function copyOptions( ?Options $options = null ): void {
 		if ( $options === null ) {
 			return;
 		}
@@ -867,7 +867,7 @@ abstract class DataValue {
 	 *
 	 * @return void
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( $this->options === null ) {
 			$this->options = new Options();
 		}
@@ -969,7 +969,7 @@ abstract class DataValue {
 	/**
 	 * @since 3.1
 	 */
-	public function checkConstraints() {
+	public function checkConstraints(): void {
 		if ( $this->dataValueServiceFactory === null ) {
 			return;
 		}

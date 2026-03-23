@@ -60,7 +60,7 @@ class TypesValue extends DataValue {
 	 *
 	 * @return TypesValue
 	 */
-	public static function newFromTypeId( $typeId ) {
+	public static function newFromTypeId( $typeId ): TypesValue {
 		$result = new TypesValue( self::TYPE_ID );
 
 		try {
@@ -81,7 +81,7 @@ class TypesValue extends DataValue {
 	 *
 	 * @return Uri
 	 */
-	public static function getTypeUriFromTypeId( $typeId ) {
+	public static function getTypeUriFromTypeId( $typeId ): Uri {
 		return new Uri( 'http', 'semantic-mediawiki.org/swivt/1.0', '', $typeId );
 	}
 
@@ -218,7 +218,7 @@ class TypesValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( ( $dataItem instanceof Uri ) && ( $dataItem->getScheme() == 'http' ) &&
 			( $dataItem->getHierpart() == 'semantic-mediawiki.org/swivt/1.0' ) &&
 			( $dataItem->getQuery() === '' ) ) {
@@ -234,7 +234,7 @@ class TypesValue extends DataValue {
 		return false;
 	}
 
-	private function getSpecialPageTitleText() {
+	private function getSpecialPageTitleText(): string {
 		return "Types/$this->typeLabel";
 	}
 

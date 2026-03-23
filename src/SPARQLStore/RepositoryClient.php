@@ -41,7 +41,7 @@ class RepositoryClient {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( int $featureSet ) {
+	public function setFeatureSet( int $featureSet ): void {
 		$this->featureSet = new Flag( $featureSet );
 	}
 
@@ -59,7 +59,7 @@ class RepositoryClient {
 	 *
 	 * @param string $name
 	 */
-	public function setName( $name ) {
+	public function setName( $name ): void {
 		$this->name = $name;
 	}
 

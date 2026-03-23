@@ -27,7 +27,7 @@ class FieldChangeOp {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->changeOp[$key] = $value;
 	}
 
@@ -38,7 +38,7 @@ class FieldChangeOp {
 	 *
 	 * @return bool
 	 */
-	public function has( $key ) {
+	public function has( $key ): bool {
 		return isset( $this->changeOp[$key] ) || array_key_exists( $key, $this->changeOp );
 	}
 
@@ -63,7 +63,7 @@ class FieldChangeOp {
 	 *
 	 * @return array
 	 */
-	public function getChangeOp() {
+	public function getChangeOp(): array {
 		return $this->changeOp;
 	}
 

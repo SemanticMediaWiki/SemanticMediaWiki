@@ -3,7 +3,7 @@
 namespace SMW\Indicator\EntityExaminerIndicators;
 
 use SMW\Constraint\ConstraintError;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\EntityCache;
 use SMW\Indicator\IndicatorProviders\TypableSeverityIndicatorProvider;
 use SMW\Localizer\Message;
@@ -82,19 +82,19 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @param bool $checkConstraintErrors
 	 */
-	public function setConstraintErrorCheck( $checkConstraintErrors ) {
+	public function setConstraintErrorCheck( $checkConstraintErrors ): void {
 		$this->checkConstraintErrors = $checkConstraintErrors;
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $options
 	 *
 	 * @return bool
 	 */
-	public function hasIndicator( DIWikiPage $subject, array $options ) {
+	public function hasIndicator( WikiPage $subject, array $options ): bool {
 		if ( $this->checkConstraintErrors ) {
 			$this->checkConstraintErrors( $subject, $options );
 		}
@@ -116,7 +116,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return
 	 */
-	public function getModules() {
+	public function getModules(): array {
 		return [];
 	}
 
@@ -125,7 +125,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 	 *
 	 * @return string
 	 */
-	public function getInlineStyle() {
+	public function getInlineStyle(): string {
 		// The standard helplink interferes with the alignment (due to a text
 		// component) therefore disabled it when indicators are present
 		return '#mw-indicator-mw-helplink {display:none;}';
@@ -236,7 +236,7 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		];
 	}
 
-	private function findErrors( $subject ) {
+	private function findErrors( $subject ): array {
 		$key = $this->entityCache->makeKey( $subject, 'constraint-error' );
 
 		if ( ( $errors = $this->entityCache->fetch( $key ) ) !== false ) {
@@ -273,7 +273,10 @@ class ConstraintErrorEntityExaminerIndicatorProvider implements TypableSeverityI
 		return $this->decodeErrors( $errors );
 	}
 
-	private function decodeErrors( $errors ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function decodeErrors( $errors ): array {
 		if ( $errors === 'null' ) {
 			return [];
 		}

@@ -4,7 +4,7 @@ namespace SMW\Exporter\Element;
 
 use InvalidArgumentException;
 use RuntimeException;
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
 
 /**
  * A single resource (individual) for export, as defined by a URI.
@@ -22,10 +22,7 @@ use SMWDataItem as DataItem;
  */
 class ExpResource extends ExpElement {
 
-	/**
-	 * @var string
-	 */
-	private $uri;
+	private string $uri;
 
 	/**
 	 * @var bool
@@ -60,7 +57,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return bool
 	 */
-	public function isBlankNode() {
+	public function isBlankNode(): bool {
 		return $this->uri === '' || $this->uri[0] == '_';
 	}
 
@@ -79,7 +76,7 @@ class ExpResource extends ExpElement {
 	 *
 	 * @return string
 	 */
-	public function getUri() {
+	public function getUri(): string {
 		return $this->uri;
 	}
 
@@ -100,7 +97,7 @@ class ExpResource extends ExpElement {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['uri'] ) ) {
 			throw new RuntimeException( "Invalid serialization format" );
 		}

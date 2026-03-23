@@ -7,6 +7,7 @@ use SMW\MediaWiki\Connection\Sequence;
 use SMW\MediaWiki\JobFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\SQLStore\TableBuilder\FieldType;
+use stdClass;
 
 /**
  * @license GPL-2.0-or-later
@@ -41,7 +42,7 @@ class IdChanger {
 	 * @param int $curid
 	 * @param int $targetid
 	 *
-	 * @return \stdClass
+	 * @return stdClass|void
 	 */
 	public function move( $curid, $targetid = 0 ) {
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -149,7 +150,7 @@ class IdChanger {
 	 * @param bool $s_data stating whether to update subject references
 	 * @param bool $po_data stating if to update property/object references
 	 */
-	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ) {
+	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		// Change all id entries in property tables:
@@ -224,7 +225,7 @@ class IdChanger {
 		$this->update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data );
 	}
 
-	private function update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data ) {
+	private function update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		if ( $s_data && ( ( $old_ns == -1 ) || ( $old_ns == SMW_NS_CONCEPT ) ) ) {

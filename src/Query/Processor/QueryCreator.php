@@ -50,7 +50,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @param int $queryFeatures
 	 */
-	public function setQFeatures( $queryFeatures ) {
+	public function setQFeatures( $queryFeatures ): void {
 		$this->queryFeatures = $queryFeatures;
 	}
 
@@ -59,7 +59,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @param int $conceptFeatures
 	 */
-	public function setQConceptFeatures( $conceptFeatures ) {
+	public function setQConceptFeatures( $conceptFeatures ): void {
 		$this->conceptFeatures = $conceptFeatures;
 	}
 
@@ -158,7 +158,7 @@ class QueryCreator implements QueryContext {
 	 *
 	 * @return array ( keys => array(), errors => array() )
 	 */
-	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ) {
+	private function getSortKeys( array $sortParameters, array $orderParameters, $defaultSort ): array {
 		$sortKeys = [];
 		$sortErros = [];
 
@@ -202,7 +202,10 @@ class QueryCreator implements QueryContext {
 		return [ 'keys' => $sortKeys, 'errors' => $sortErros ];
 	}
 
-	private function normalize_order( $orderParameters ) {
+	/**
+	 * @return 'ASC'[]|'DESC'[]|'RANDOM'[]
+	 */
+	private function normalize_order( array $orderParameters ): array {
 		$orders = [];
 
 		foreach ( $orderParameters as $key => $order ) {
@@ -219,11 +222,11 @@ class QueryCreator implements QueryContext {
 		return $orders;
 	}
 
-	private function normalize_sort( $sort ) {
+	private function normalize_sort( string $sort ): string {
 		return Localizer::getInstance()->getNsText( NS_CATEGORY ) == mb_convert_case( $sort, MB_CASE_TITLE ) ? '_INST' : $sort;
 	}
 
-	private function getParam( $key, $default ) {
+	private function getParam( string $key, $default ) {
 		return isset( $this->params[$key] ) ? $this->params[$key] : $default;
 	}
 

@@ -27,7 +27,7 @@ class Template {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function field( $key, $value ) {
+	public function field( $key, $value ): void {
 		$this->fields[$key] = $value;
 	}
 
@@ -36,7 +36,7 @@ class Template {
 	 *
 	 * @return string
 	 */
-	public function text() {
+	public function text(): string {
 		$text = '{{' . $this->name;
 
 		foreach ( $this->fields as $key => $value ) {

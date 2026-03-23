@@ -3,8 +3,10 @@
 namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
-use SMW\DIWikiPage;
-use SMWDataValue as DataValue;
+use SMW\DataItems\WikiPage;
+use SMW\DataValues\DataValue;
+use SMW\Query\Language\Description;
+use SMW\Query\Language\ValueDescription;
 
 /**
  * @private
@@ -26,7 +28,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isBuilderFor( $serialization ) {
+	public function isBuilderFor( $serialization ): bool {
 		return $serialization instanceof DataValue;
 	}
 
@@ -39,7 +41,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 	 * @return Description
 	 * @throws InvalidArgumentException
 	 */
-	public function newDescription( DataValue $dataValue, $value ) {
+	public function newDescription( DataValue $dataValue, $value ): Description {
 		if ( !is_string( $value ) ) {
 			throw new InvalidArgumentException( 'Value needs to be a string' );
 		}
@@ -76,14 +78,14 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 		);
 
 		// Ensure [[>Help:Foo]] === [[Help:>Foo]] / [[Help:~Foo*]] === [[~Help:Foo*]]
-		if ( $dataItem instanceof DIWikiPage && $dataItem->getNamespace() !== NS_MAIN ) {
+		if ( $dataItem instanceof WikiPage && $dataItem->getNamespace() !== NS_MAIN ) {
 			$description = $this->makeDescription( $comparator, $property, $dataItem, $description );
 		}
 
 		return $description;
 	}
 
-	private function makeDescription( $comparator, $property, $dataItem, $description ) {
+	private function makeDescription( int|string $comparator, $property, WikiPage $dataItem, ValueDescription $description ): Description {
 		$value = $dataItem->getDBKey();
 
 		// Normalize a possible earlier encoded string part in order for the

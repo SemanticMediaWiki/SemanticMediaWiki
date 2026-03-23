@@ -67,7 +67,7 @@ class FusekiRepositoryConnector extends GenericRepositoryConnector {
 	 *
 	 * @see GenericRepositoryConnector::getVersion
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		$url = new Url(
 			$this->repositoryClient->getQueryEndpoint()
 		);

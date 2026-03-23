@@ -96,7 +96,7 @@ class Site {
 	 *
 	 * @return bool
 	 */
-	public static function isCommandLineMode() {
+	public static function isCommandLineMode(): bool {
 		return MW_ENTRY_POINT === 'cli' || defined( 'MEDIAWIKI_JOB_RUNNER' );
 	}
 
@@ -142,7 +142,7 @@ class Site {
 	 *
 	 * @return array
 	 */
-	public static function stats() {
+	public static function stats(): array {
 		return [
 			'pageCount' => SiteStats::pages(),
 			'contentPageCount' => SiteStats::articles(),

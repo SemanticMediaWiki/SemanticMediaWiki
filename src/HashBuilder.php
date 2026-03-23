@@ -3,6 +3,8 @@
 namespace SMW;
 
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 
 /**
  * Utility class to create unified hash keys for a variety of objects
@@ -21,7 +23,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromSemanticData( SemanticData $semanticData ) {
+	public static function createFromSemanticData( SemanticData $semanticData ): string {
 		$hash = [];
 		$hash[] = $semanticData->getSubject()->getSerialization();
 
@@ -50,7 +52,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromContent( $hashableContent, $prefix = '' ) {
+	public static function createFromContent( $hashableContent, $prefix = '' ): string {
 		if ( is_string( $hashableContent ) ) {
 			$hashableContent = [ $hashableContent ];
 		}
@@ -66,7 +68,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromArray( array $hashableContent, $prefix = '' ) {
+	public static function createFromArray( array $hashableContent, $prefix = '' ): string {
 		return $prefix . md5( json_encode( $hashableContent ) );
 	}
 
@@ -75,7 +77,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createFromSegments( /* args */ ) {
+	public static function createFromSegments( /* args */ ): string {
 		return implode( '#', func_get_args() );
 	}
 
@@ -90,7 +92,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function createHashIdFromSegments( $title, $namespace, $interwiki = '', $fragment = '' ) {
+	public static function createHashIdFromSegments( $title, $namespace, $interwiki = '', $fragment = '' ): string {
 		return self::createFromSegments( $title, $namespace, $interwiki, $fragment );
 	}
 
@@ -101,7 +103,7 @@ class HashBuilder {
 	 *
 	 * @return string
 	 */
-	public static function getHashIdForTitle( Title $title ) {
+	public static function getHashIdForTitle( Title $title ): string {
 		return self::createFromSegments(
 			$title->getDBKey(),
 			$title->getNamespace(),
@@ -113,11 +115,11 @@ class HashBuilder {
 	/**
 	 * @since 2.1
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return string
 	 */
-	public static function getHashIdForDiWikiPage( DIWikiPage $dataItem ) {
+	public static function getHashIdForDiWikiPage( WikiPage $dataItem ): string {
 		return self::createFromSegments(
 			$dataItem->getDBKey(),
 			$dataItem->getNamespace(),
@@ -146,9 +148,9 @@ class HashBuilder {
 	 *
 	 * @param string
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
-	public static function newDiWikiPageFromHash( $hash ) {
+	public static function newDiWikiPageFromHash( $hash ): WikiPage {
 		[ $title, $namespace, $interwiki, $subobjectName ] = explode( '#', $hash, 4 );
 
 		// A leading underscore is an internal SMW convention to describe predefined
@@ -157,7 +159,7 @@ class HashBuilder {
 			$title = str_replace( ' ', '_', PropertyRegistry::getInstance()->findPropertyLabelById( $title ) );
 		}
 
-		return new DIWikiPage( $title, $namespace, $interwiki, $subobjectName );
+		return new WikiPage( $title, $namespace, $interwiki, $subobjectName );
 	}
 
 }

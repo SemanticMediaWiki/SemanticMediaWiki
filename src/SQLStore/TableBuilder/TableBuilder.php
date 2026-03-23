@@ -32,7 +32,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 */
 	protected $activityLog = [];
 
-	protected array $droppedTables;
+	protected ?array $droppedTables;
 
 	/**
 	 * @since 2.5
@@ -85,9 +85,9 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 * @since 2.5
 	 *
 	 * @param string|int $key
-	 * @param mixed
+	 * @param mixed $value
 	 */
-	public function setConfig( $key, $value ) {
+	public function setConfig( $key, $value ): void {
 		$this->config[$key] = $value;
 	}
 
@@ -98,7 +98,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -109,7 +109,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * @param string $message
 	 */
-	public function reportMessage( $message ) {
+	public function reportMessage( $message ): void {
 		if ( $this->messageReporter === null ) {
 			return;
 		}
@@ -199,7 +199,7 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function optimize( Table $table ) {
+	public function optimize( Table $table ): void {
 		$this->doOptimize( $table->getName() );
 	}
 
@@ -223,21 +223,21 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 
 	/**
 	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param array $tableOptions
 	 */
-	abstract protected function doCreateTable( $tableName, ?array $tableOptions = null );
+	abstract protected function doCreateTable( $tableName, array $tableOptions );
 
 	/**
 	 * @param string $tableName
-	 * @param array|null $tableOptions
+	 * @param array $tableOptions
 	 */
-	abstract protected function doUpdateTable( $tableName, ?array $tableOptions = null );
+	abstract protected function doUpdateTable( $tableName, array $tableOptions );
 
 	/**
 	 * @param string $tableName
-	 * @param array|null $indexOptions
+	 * @param array $indexOptions
 	 */
-	abstract protected function doCreateIndices( $tableName, ?array $indexOptions = null );
+	abstract protected function doCreateIndices( $tableName, array $indexOptions );
 
 	/**
 	 * @param string $tableName

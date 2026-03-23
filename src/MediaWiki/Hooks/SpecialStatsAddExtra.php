@@ -66,7 +66,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @param Language|string $language
 	 */
-	public function setLanguage( $language ) {
+	public function setLanguage( $language ): void {
 		$this->language = $language;
 	}
 
@@ -75,7 +75,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @param array
 	 */
-	public function setDataTypeLabels( $dataTypeLabels ) {
+	public function setDataTypeLabels( $dataTypeLabels ): void {
 		$this->dataTypeLabels = $dataTypeLabels;
 	}
 
@@ -86,7 +86,7 @@ class SpecialStatsAddExtra implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( array &$extraStats ) {
+	public function process( array &$extraStats ): bool {
 		if ( !$this->getOption( 'SMW_EXTENSION_LOADED', false ) ) {
 			return true;
 		}
@@ -96,7 +96,7 @@ class SpecialStatsAddExtra implements HookListener {
 		return true;
 	}
 
-	private function copyStatistics( &$extraStats ) {
+	private function copyStatistics( array &$extraStats ): void {
 		$statistics = $this->store->getStatistics();
 		$statistics['DATATYPECOUNT'] = count( $this->dataTypeLabels );
 
@@ -145,7 +145,10 @@ class SpecialStatsAddExtra implements HookListener {
 		}
 	}
 
-	private function addFormats( $key, $statistics ) {
+	/**
+	 * @return array{name: non-falsy-string, number: mixed}[]
+	 */
+	private function addFormats( int $key, $statistics ): array {
 		$i = 0;
 		$formats = [];
 

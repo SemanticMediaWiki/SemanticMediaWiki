@@ -3,7 +3,7 @@
 namespace SMW\Tests\Integration\MediaWiki\Import\Maintenance;
 
 use MediaWiki\MediaWikiServices;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\ByPageSemanticDataFinder;
 use SMW\Tests\Utils\Runners\MaintenanceRunner;
@@ -79,16 +79,16 @@ class RebuildDataMaintenanceTest extends SMWIntegrationTestCase {
 
 		 $expectedSomeProperties = [
 			'properties' => [
-				new DIProperty( 'Has boolean' ),
-				new DIProperty( 'Has date' ),
-				new DIProperty( 'Has email' ),
-				new DIProperty( 'Has number' ),
-				new DIProperty( 'Has page' ),
-				new DIProperty( 'Has quantity' ),
-				new DIProperty( 'Has temperature' ),
-				new DIProperty( 'Has text' ),
-				new DIProperty( 'Has Url' ),
-				new DIProperty( 'Has annotation uri' )
+				new Property( 'Has boolean' ),
+				new Property( 'Has date' ),
+				new Property( 'Has email' ),
+				new Property( 'Has number' ),
+				new Property( 'Has page' ),
+				new Property( 'Has quantity' ),
+				new Property( 'Has temperature' ),
+				new Property( 'Has text' ),
+				new Property( 'Has Url' ),
+				new Property( 'Has annotation uri' )
 			]
 		 ];
 

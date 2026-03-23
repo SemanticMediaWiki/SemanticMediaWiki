@@ -27,7 +27,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof ReferenceValue;
 	}
 
@@ -57,7 +57,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $this->createOutput( $type, $linker );
 	}
 
-	private function createOutput( $type, $linker ) {
+	private function createOutput( $type, $linker ): string {
 		$results = $this->getListOfFormattedPropertyDataItems(
 			$type,
 			$linker,
@@ -92,7 +92,10 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $result;
 	}
 
-	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function getListOfFormattedPropertyDataItems( $type, $linker, $propertyDataItems ): array {
 		$results = [];
 
 		foreach ( $propertyDataItems as $propertyDataItem ) {
@@ -142,7 +145,7 @@ class ReferenceValueFormatter extends DataValueFormatter {
 		return $results;
 	}
 
-	private function findValueOutputFor( $isValue, $type, $dataValue, $linker ) {
+	private function findValueOutputFor( bool $isValue, $type, $dataValue, $linker ) {
 		$dataItem = $dataValue->getDataItem();
 
 		// Turn URI, External identifier, or Page links into a href representation

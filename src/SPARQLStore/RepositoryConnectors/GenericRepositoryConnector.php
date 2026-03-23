@@ -3,13 +3,13 @@
 namespace SMW\SPARQLStore\RepositoryConnectors;
 
 use MediaWiki\Http\HttpRequestFactory;
+use SMW\Export\Exporter;
 use SMW\SPARQLStore\Exception\BadHttpEndpointResponseException;
 use SMW\SPARQLStore\HttpResponseErrorMapper;
 use SMW\SPARQLStore\QueryEngine\RepositoryResult;
 use SMW\SPARQLStore\QueryEngine\XmlResponseParser;
 use SMW\SPARQLStore\RepositoryClient;
 use SMW\SPARQLStore\RepositoryConnection;
-use SMWExporter as Exporter;
 
 /**
  * Basic database connector for exchanging data via SPARQL.
@@ -60,7 +60,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return RepositoryClient
 	 */
-	public function getRepositoryClient() {
+	public function getRepositoryClient(): RepositoryClient {
 		return $this->repositoryClient;
 	}
 
@@ -195,7 +195,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ) {
+	public function getSparqlForSelect( $vars, $where, $options = [], $extraNamespaces = [] ): string {
 		$sparql = self::getPrefixString( $extraNamespaces ) . 'SELECT ';
 
 		if ( array_key_exists( 'DISTINCT', $options ) ) {
@@ -251,7 +251,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string SPARQL query
 	 */
-	public function getSparqlForAsk( $where, $extraNamespaces = [] ) {
+	public function getSparqlForAsk( $where, $extraNamespaces = [] ): string {
 		return self::getPrefixString( $extraNamespaces ) . "ASK {\n" . $where . "\n}";
 	}
 
@@ -300,7 +300,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function delete( $deletePattern, $where, $extraNamespaces = [] ) {
+	public function delete( $deletePattern, $where, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -327,7 +327,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ) {
+	public function deleteContentByValue( $propertyName, $objectName, $extraNamespaces = [] ): bool {
 		return $this->delete( "?s ?p ?o", "?s $propertyName $objectName . ?s ?p ?o", $extraNamespaces );
 	}
 
@@ -336,7 +336,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function deleteAll() {
+	public function deleteAll(): bool {
 		return $this->delete( "?s ?p ?o", "?s ?p ?o" );
 	}
 
@@ -353,7 +353,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ) {
+	public function insertDelete( $insertPattern, $deletePattern, $where, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -374,7 +374,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function insertData( $triples, $extraNamespaces = [] ) {
+	public function insertData( $triples, $extraNamespaces = [] ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() !== '' ) {
 			$turtle = self::getPrefixString( $extraNamespaces, false ) . $triples;
 			return $this->doHttpPost( $turtle );
@@ -402,7 +402,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool stating whether the operations succeeded
 	 */
-	public function deleteData( $triples, $extraNamespaces = [] ) {
+	public function deleteData( $triples, $extraNamespaces = [] ): bool {
 		$defaultGraph = $this->repositoryClient->getDefaultGraph();
 
 		$sparql = self::getPrefixString( $extraNamespaces ) .
@@ -484,7 +484,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function doUpdate( $sparql ) {
+	public function doUpdate( $sparql ): bool {
 		if ( $this->repositoryClient->getUpdateEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, $sparql, 'not specified' );
 		}
@@ -538,7 +538,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return bool
 	 */
-	public function doHttpPost( $payload ) {
+	public function doHttpPost( $payload ): bool {
 		if ( $this->repositoryClient->getDataEndpoint() === '' ) {
 			throw new BadHttpEndpointResponseException( BadHttpEndpointResponseException::ERROR_NOSERVICE, "SPARQL POST with data: $payload", 'not specified' );
 		}
@@ -583,7 +583,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string
 	 */
-	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ) {
+	public static function getPrefixString( $extraNamespaces = [], $forSparql = true ): string {
 		$prefixString = '';
 		$prefixIntro = $forSparql ? 'PREFIX ' : '@prefix ';
 		$prefixOutro = $forSparql ? "\n" : " .\n";
@@ -605,7 +605,7 @@ class GenericRepositoryConnector implements RepositoryConnection {
 	 *
 	 * @return string|int
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return 'n/a';
 	}
 

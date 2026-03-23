@@ -2,8 +2,6 @@
 
 namespace SMW\Query;
 
-use SMWQuery as Query;
-
 /**
  * @license GPL-2.0-or-later
  * @since 2.5
@@ -19,7 +17,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function rawUrlEncode( Query $query ) {
+	public static function rawUrlEncode( Query $query ): string {
 		return rawurlencode( self::toString( $query ) );
 	}
 
@@ -31,7 +29,7 @@ class QueryStringifier {
 	 *
 	 * @return string
 	 */
-	public static function toArray( Query $query, $printParameters = false ) {
+	public static function toArray( Query $query, $printParameters = false ): array {
 		$serialized = [];
 		$serialized['conditions'] = $query->getQueryString();
 
@@ -102,7 +100,10 @@ class QueryStringifier {
 		return $string;
 	}
 
-	private static function printouts( $query, $showParams = false ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function printouts( Query $query, $showParams = false ): array {
 		$printouts = [];
 
 		if ( $query->getExtraPrintouts() === null ) {
@@ -118,7 +119,10 @@ class QueryStringifier {
 		return $printouts;
 	}
 
-	private static function sortKeys( $query ) {
+	/**
+	 * @return mixed[][][]|string[][]
+	 */
+	private static function sortKeys( Query $query ): array {
 		$sort = [];
 		$order = [];
 

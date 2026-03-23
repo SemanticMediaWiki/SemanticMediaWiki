@@ -3,8 +3,8 @@
 namespace SMW\Exporter\Element;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\Exporter\Element;
-use SMWDataItem as DataItem;
 
 /**
  * ExpElement is a class for representing single elements that appear in
@@ -27,10 +27,8 @@ abstract class ExpElement implements Element {
 	/**
 	 * The DataItem that this export element is associated with, if
 	 * any. Might be unset if not given yet.
-	 *
-	 * @var DataItem|null
 	 */
-	protected $dataItem;
+	protected ?DataItem $dataItem;
 
 	/**
 	 * @since 1.6

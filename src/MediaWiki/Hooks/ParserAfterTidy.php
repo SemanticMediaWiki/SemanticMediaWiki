@@ -6,13 +6,13 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookDispatcherAwareTrait;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\PageInfoProvider;
 use SMW\NamespaceExaminer;
 use SMW\OptionsAwareTrait;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -61,7 +61,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -70,7 +70,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ) {
+	public function isReady( $isReady ): void {
 		$this->isReady = (bool)$isReady;
 	}
 
@@ -81,7 +81,7 @@ class ParserAfterTidy implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( &$text ) {
+	public function process( &$text ): bool {
 		if ( $this->canPerformUpdate() ) {
 			$this->performUpdate( $text );
 		}
@@ -158,7 +158,7 @@ class ParserAfterTidy implements HookListener {
 		return false;
 	}
 
-	private function performUpdate( &$text ) {
+	private function performUpdate( &$text ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$parserData = $applicationFactory->newParserData(
@@ -184,7 +184,7 @@ class ParserAfterTidy implements HookListener {
 		}
 	}
 
-	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ) {
+	private function addPropertyAnnotations( $propertyAnnotatorFactory, $semanticData ): void {
 		$parserOutput = $this->parser->getOutput();
 
 		$propertyAnnotator = $propertyAnnotatorFactory->newNullPropertyAnnotator(
@@ -299,7 +299,7 @@ class ParserAfterTidy implements HookListener {
 		}
 	}
 
-	private function doAbort() {
+	private function doAbort(): bool {
 		$this->logger->info(
 			"ParserAfterTidy was invoked but the site isn't ready yet, aborting the processing."
 		);

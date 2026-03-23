@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Search;
 
 use SearchSuggestion;
 use SearchSuggestionSet;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\QueryResult;
 use SMW\Utils\CharExaminer;
 
@@ -21,7 +21,7 @@ class SearchResultSet extends \SearchResultSet {
 	/**
 	 * @var DIWikiPage[]|[]
 	 */
-	private $pages;
+	private array $pages;
 
 	/**
 	 * @var QueryToken
@@ -47,7 +47,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return int|void
 	 */
-	public function numRows() {
+	public function numRows(): int {
 		return count( $this->pages );
 	}
 
@@ -56,7 +56,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return bool
 	 */
-	public function hasResults() {
+	public function hasResults(): bool {
 		return $this->numRows() > 0;
 	}
 
@@ -65,11 +65,11 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return SearchResult
 	 */
-	public function next() {
+	public function next(): SearchResult|false {
 		$page = current( $this->pages );
 		$searchResult = false;
 
-		if ( $page instanceof DIWikiPage ) {
+		if ( $page instanceof WikiPage ) {
 			$searchResult = new SearchResult( $page->getTitle() );
 		}
 
@@ -90,7 +90,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return SearchSuggestionSet
 	 */
-	public function newSearchSuggestionSet() {
+	public function newSearchSuggestionSet(): SearchSuggestionSet {
 		$suggestions = [];
 		$filter = [];
 
@@ -139,7 +139,7 @@ class SearchResultSet extends \SearchResultSet {
 
 		foreach ( $this->pages as $page ) {
 
-			if ( $page instanceof DIWikiPage ) {
+			if ( $page instanceof WikiPage ) {
 				$searchResult = new SearchResult( $page->getTitle() );
 			}
 
@@ -163,7 +163,7 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return bool
 	 */
-	public function searchContainedSyntax() {
+	public function searchContainedSyntax(): bool {
 		return true;
 	}
 
@@ -177,11 +177,14 @@ class SearchResultSet extends \SearchResultSet {
 	 *
 	 * @return string[]
 	 */
-	public function termMatches() {
+	public function termMatches(): array {
 		return $this->getTokens();
 	}
 
-	private function getTokens() {
+	/**
+	 * @return string[]
+	 */
+	private function getTokens(): array {
 		$tokens = [];
 
 		if ( $this->queryToken === null ) {

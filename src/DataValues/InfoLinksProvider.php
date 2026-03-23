@@ -7,10 +7,10 @@ use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\Parser\InTextAnnotationParser;
 use SMW\Property\SpecificationLookup;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -71,7 +71,7 @@ class InfoLinksProvider {
 	/**
 	 * @since 2.4
 	 */
-	public function init() {
+	public function init(): void {
 		$this->infoLinks = [];
 		$this->hasSearchLink = false;
 		$this->hasServiceLinks = false;
@@ -83,7 +83,7 @@ class InfoLinksProvider {
 	/**
 	 * @since 2.4
 	 */
-	public function disableServiceLinks() {
+	public function disableServiceLinks(): void {
 		$this->enabledServiceLinks = false;
 	}
 
@@ -92,7 +92,7 @@ class InfoLinksProvider {
 	 *
 	 * @param bool $compactLink
 	 */
-	public function setCompactLink( $compactLink ) {
+	public function setCompactLink( $compactLink ): void {
 		$this->compactLink = (bool)$compactLink;
 	}
 
@@ -103,7 +103,7 @@ class InfoLinksProvider {
 	 *
 	 * @param Infolink $infoLink
 	 */
-	public function addInfolink( Infolink $infoLink ) {
+	public function addInfolink( Infolink $infoLink ): void {
 		$this->infoLinks[] = $infoLink;
 	}
 
@@ -112,7 +112,7 @@ class InfoLinksProvider {
 	 *
 	 * @param array|false $serviceLinkParameters
 	 */
-	public function setServiceLinkParameters( $serviceLinkParameters ) {
+	public function setServiceLinkParameters( $serviceLinkParameters ): void {
 		$this->serviceLinkParameters = $serviceLinkParameters;
 	}
 
@@ -187,7 +187,7 @@ class InfoLinksProvider {
 	 *
 	 * @return string
 	 */
-	public function getInfolinkText( $outputformat, $linker = null ) {
+	public function getInfolinkText( $outputformat, $linker = null ): string {
 		$result = '';
 		$first = true;
 		$extralinks = [];
@@ -226,7 +226,7 @@ class InfoLinksProvider {
 	 * the datatype, and the service link message is usually crafted with a
 	 * particular datatype in mind.
 	 */
-	public function addServiceLinks() {
+	public function addServiceLinks(): void {
 		if ( $this->hasServiceLinks ) {
 			return;
 		}
@@ -263,7 +263,7 @@ class InfoLinksProvider {
 		$this->hasServiceLinks = true;
 	}
 
-	private function makeLink( $dataItem, $args ) {
+	private function makeLink( $dataItem, $args ): void {
 		if ( !( $dataItem instanceof Blob ) ) {
 			return;
 		}

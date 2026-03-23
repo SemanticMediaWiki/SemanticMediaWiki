@@ -26,7 +26,7 @@ class GroupPermissions {
 	 *
 	 * @param array &$vars
 	 */
-	public function initPermissions( &$vars ) {
+	public function initPermissions( &$vars ): void {
 		$groups = [
 			'smwadministrator' => $this->forAdminRole(),
 			'smwcurator' => $this->forCuratorRole(),
@@ -54,13 +54,13 @@ class GroupPermissions {
 		}
 	}
 
-	private function forAdminRole() {
+	private function forAdminRole(): array {
 		return [
 			'smw-admin' => true
 		];
 	}
 
-	private function forCuratorRole() {
+	private function forCuratorRole(): array {
 		return [
 			'smw-patternedit' => true,
 			'smw-schemaedit' => true,
@@ -71,13 +71,13 @@ class GroupPermissions {
 		];
 	}
 
-	private function forEditorRole() {
+	private function forEditorRole(): array {
 		return [
 			self::VIEW_EDITPAGE_INFO => true
 		];
 	}
 
-	private function forDefaultUserRole() {
+	private function forDefaultUserRole(): array {
 		return [
 			self::VIEW_EDITPAGE_INFO => true
 		];

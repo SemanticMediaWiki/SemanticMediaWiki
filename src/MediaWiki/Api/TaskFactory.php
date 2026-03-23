@@ -32,9 +32,9 @@ class TaskFactory {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public function getAllowedTypes() {
+	public function getAllowedTypes(): array {
 		if ( self::$services === null ) {
 			MediaWikiServices::getInstance()
 				->getHookContainer()
@@ -78,7 +78,7 @@ class TaskFactory {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function newByType( $type, ?User $user = null ) {
+	public function newByType( $type, ?User $user = null ): Task {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$service = null;
 
@@ -115,7 +115,7 @@ class TaskFactory {
 	 *
 	 * @return DuplicateLookupTask
 	 */
-	public function newDuplicateLookupTask() {
+	public function newDuplicateLookupTask(): DuplicateLookupTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$duplicateLookupTask = new DuplicateLookupTask(
@@ -135,7 +135,7 @@ class TaskFactory {
 	 *
 	 * @return TableStatisticsTask
 	 */
-	public function newTableStatisticsTask() {
+	public function newTableStatisticsTask(): TableStatisticsTask {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$tableStatisticsTask = new TableStatisticsTask(

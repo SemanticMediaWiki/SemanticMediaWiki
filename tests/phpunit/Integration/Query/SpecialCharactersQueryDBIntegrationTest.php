@@ -2,19 +2,19 @@
 
 namespace SMW\Tests\Integration\Query;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\Number;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\DataValues\PropertyValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\PrintRequest;
-use SMW\Subobject;
+use SMW\Query\Query;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDIBlob as DIBlob;
-use SMWDINumber as DINumber;
-use SMWQuery as Query;
 
 /**
  * @group SMW
@@ -124,36 +124,36 @@ class SpecialCharactersQueryDBIntegrationTest extends SMWIntegrationTestCase {
 		$provider[] = [
 			'特殊文字',
 			'Nuñez',
-			DIProperty::newFromUserLabel( '特殊文字' )->setPropertyTypeId( '_txt' ),
-			new DIBlob( 'Nuñez' )
+			Property::newFromUserLabel( '特殊文字' )->setPropertyTypeId( '_txt' ),
+			new Blob( 'Nuñez' )
 		];
 
 		$provider[] = [
 			'特殊字符',
 			'^[0-9]*$',
-			DIProperty::newFromUserLabel( '特殊字符' )->setPropertyTypeId( '_txt' ),
-			new DIBlob( '^[0-9]*$' )
+			Property::newFromUserLabel( '特殊字符' )->setPropertyTypeId( '_txt' ),
+			new Blob( '^[0-9]*$' )
 		];
 
 		$provider[] = [
 			'Caractères spéciaux',
 			'Caractères_spéciaux',
-			DIProperty::newFromUserLabel( 'Caractères spéciaux' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( 'âêîôûëïçé', NS_MAIN )
+			Property::newFromUserLabel( 'Caractères spéciaux' )->setPropertyTypeId( '_wpg' ),
+			new WikiPage( 'âêîôûëïçé', NS_MAIN )
 		];
 
 		$provider[] = [
 			'áéíóúñÑü¡¿',
 			'áéíóúñÑü¡¿',
-			DIProperty::newFromUserLabel( 'áéíóúñÑü¡¿' )->setPropertyTypeId( '_num' ),
-			new DINumber( 8888 )
+			Property::newFromUserLabel( 'áéíóúñÑü¡¿' )->setPropertyTypeId( '_num' ),
+			new Number( 8888 )
 		];
 
 		$provider[] = [
 			'Foo',
 			'{({[[&,,;-]]})}',
-			DIProperty::newFromUserLabel( '{({[[&,,;-]]})}' )->setPropertyTypeId( '_wpg' ),
-			new DIWikiPage( '{({[[&,,;-]]})}', NS_MAIN )
+			Property::newFromUserLabel( '{({[[&,,;-]]})}' )->setPropertyTypeId( '_wpg' ),
+			new WikiPage( '{({[[&,,;-]]})}', NS_MAIN )
 		];
 
 		return $provider;

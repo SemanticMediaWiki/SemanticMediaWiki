@@ -32,7 +32,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 	 *
 	 * @param array $namespacesWithSemanticLinks
 	 */
-	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ) {
+	public function setNamespacesWithSemanticLinks( array $namespacesWithSemanticLinks ): void {
 		$this->namespacesWithSemanticLinks = $namespacesWithSemanticLinks;
 	}
 
@@ -51,7 +51,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 		return $this->buildHTML( $count );
 	}
 
-	private function fetchCount() {
+	private function fetchCount(): int {
 		$connection = $this->store->getConnection( 'mw.db' );
 
 		$row = $connection->selectRow(
@@ -66,7 +66,7 @@ class ByNamespaceInvalidEntitiesMaintenanceAlertTaskHandler extends TaskHandler 
 		return $row !== false ? (int)$row->count : 0;
 	}
 
-	private function buildHTML( $count ) {
+	private function buildHTML( int $count ) {
 		$html = Html::rawElement(
 			'fieldset',
 			[

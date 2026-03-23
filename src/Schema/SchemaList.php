@@ -40,7 +40,7 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function getList() {
 		return $this->list;
@@ -51,7 +51,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @param Schema|SchemaList $schema
 	 */
-	public function add( $schema ) {
+	public function add( $schema ): void {
 		if ( $schema instanceof SchemaDefinition ) {
 			$this->list[] = $schema;
 		}
@@ -66,9 +66,9 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public function merge( SchemaList $schemaList ) {
+	public function merge( SchemaList $schemaList ): array {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
@@ -130,9 +130,9 @@ class SchemaList implements JsonSerializable {
 	/**
 	 * @since 3.1
 	 *
-	 * @return
+	 * @return mixed[]
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$list = [];
 
 		foreach ( $this->getList() as $schemaDefinition ) {
@@ -162,7 +162,7 @@ class SchemaList implements JsonSerializable {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		return sha1( $this->jsonSerialize() );
 	}
 

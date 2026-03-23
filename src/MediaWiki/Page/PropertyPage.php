@@ -6,9 +6,11 @@ use MediaWiki\Html\Html;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
-use SMW\DIProperty;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Page\ListBuilder\ItemListBuilder;
@@ -17,13 +19,11 @@ use SMW\ParserData;
 use SMW\Property\DeclarationExaminerFactory;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 use SMW\StringCondition;
 use SMW\Utils\HtmlTabs;
 use SMW\Utils\JsonView;
-use SMWDataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,12 +34,12 @@ use SMWDataValue;
 class PropertyPage extends Page {
 
 	/**
-	 * @var DIProperty
+	 * @var Property
 	 */
 	private $property;
 
 	/**
-	 * @var SMWDataValue
+	 * @var DataValue
 	 */
 	private $propertyValue;
 
@@ -75,7 +75,7 @@ class PropertyPage extends Page {
 	protected function initParameters() {
 		// We use a smaller limit here; property pages might become large
 		$this->limit = $this->getOption( 'pagingLimit' );
-		$this->property = DIProperty::newFromUserLabel( $this->getTitle()->getText() );
+		$this->property = Property::newFromUserLabel( $this->getTitle()->getText() );
 		$this->propertyValue = DataValueFactory::getInstance()->newDataValueByItem( $this->property );
 	}
 
@@ -86,7 +86,7 @@ class PropertyPage extends Page {
 	 *
 	 * @return string
 	 */
-	protected function initHtml() {
+	protected function initHtml(): string {
 		$redirectTarget = $this->store->getRedirectTarget( $this->property );
 
 		if ( !$redirectTarget->equals( $this->property ) ) {
@@ -153,7 +153,7 @@ class PropertyPage extends Page {
 			return false;
 		}
 
-		$property = new DIProperty(
+		$property = new Property(
 			$key
 		);
 
@@ -283,7 +283,7 @@ class PropertyPage extends Page {
 
 		$schemaList = $schemaFinder->newSchemaList(
 			$this->property,
-			new DIProperty( '_PROFILE_SCHEMA' )
+			new Property( '_PROFILE_SCHEMA' )
 		);
 
 		$data = [];
@@ -327,7 +327,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function makeItemList( $key, $propertyKey, $checkProperty = true ) {
+	private function makeItemList( string $key, string $propertyKey, bool $checkProperty = true ): array {
 		// Ignore the list when a filter is present
 		if ( $this->getContext()->getRequest()->getVal( 'filter', '' ) !== '' ) {
 			return [ '', '' ];
@@ -358,7 +358,7 @@ class PropertyPage extends Page {
 		);
 
 		$html = $this->itemListBuilder->buildHTML(
-			new DIProperty( $propertyKey ),
+			new Property( $propertyKey ),
 			$this->getDataItem(),
 			$requestOptions
 		);
@@ -374,7 +374,7 @@ class PropertyPage extends Page {
 		return [ $html, $itemCount ];
 	}
 
-	private function makeValueList() {
+	private function makeValueList(): string {
 		$request = $this->getContext()->getRequest();
 		$language = $this->getContext()->getLanguage();
 		$user = $this->getContext()->getUser();
@@ -421,7 +421,7 @@ class PropertyPage extends Page {
 		return $html;
 	}
 
-	private function msg( $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ) {
+	private function msg( string $params, $type = Message::TEXT, $lang = Message::USER_LANGUAGE ): string {
 		return Message::get( $params, $type, $lang );
 	}
 

@@ -1,0 +1,438 @@
+<?php
+
+namespace SMW\Tests\Integration\DataModel;
+
+use MediaWiki\MediaWikiServices;
+use MediaWiki\Title\Title;
+use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Blob;
+use SMW\DataItems\Container;
+use SMW\DataItems\Property;
+use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\Subobject;
+use SMW\DataValueFactory;
+use SMW\DataValues\DataValue;
+use SMW\Exception\SubSemanticDataException;
+use SMW\Property\SpecificationLookup;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\DataModel\Subobject
+ *
+ * @group SMW
+ * @group SMWExtension
+ *
+ * @license GPL-2.0-or-later
+ * @since 1.9
+ *
+ * @author mwjames
+ */
+class SubobjectTest extends TestCase {
+
+	private $testEnvironment;
+
+	private $semanticDataValidator;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+
+		$propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->semanticDataValidator = $this->testEnvironment->getUtilityFactory()->newValidatorFactory()->newSemanticDataValidator();
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $propertySpecificationLookup );
+	}
+
+	public function testCanConstruct() {
+		$title = $this->getMockBuilder( Title::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->assertInstanceOf(
+			Subobject::class,
+			new Subobject( $title )
+		);
+	}
+
+	public function testSetSemanticWithInvalidIdThrowsException() {
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+
+		$this->expectException( 'InvalidArgumentException' );
+		$instance->setSemanticData( '' );
+	}
+
+	public function testSetEmptySemanticData() {
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+		$instance->setEmptyContainerForId( 'Foo' );
+
+		$this->assertInstanceOf(
+			Title::class,
+			$instance->getTitle()
+		);
+
+		$this->assertInstanceOf(
+			ContainerSemanticData::class,
+			$instance->getSemanticData()
+		);
+
+		$this->assertEquals(
+			$instance->getSubobjectId(),
+			$instance->getSemanticData()->getSubject()->getSubobjectName()
+		);
+	}
+
+	/**
+	 * @dataProvider getDataProvider
+	 */
+	public function testgetSubobjectId( array $parameters, array $expected ) {
+		$instance = $this->acquireInstanceForId(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parameters['identifier']
+		);
+
+		if ( $expected['identifier'] !== '_' ) {
+			return $this->assertEquals( $expected['identifier'], $instance->getSubobjectId() );
+		}
+
+		$this->assertEquals(
+			$expected['identifier'],
+			substr( $instance->getSubobjectId(), 0, 1 )
+		);
+	}
+
+	/**
+	 * @dataProvider getDataProvider
+	 */
+	public function testGetProperty( array $parameters ) {
+		$instance = $this->acquireInstanceForId(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parameters['identifier']
+		);
+
+		$this->assertInstanceOf(
+			Property::class,
+			$instance->getProperty()
+		);
+	}
+
+	/**
+	 * @dataProvider getDataProvider
+	 */
+	public function testAddDataValue( array $parameters, array $expected ) {
+		$instance = $this->acquireInstanceForId(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parameters['identifier']
+		);
+
+		foreach ( $parameters['properties'] as $property => $value ) {
+
+			$dataValue = DataValueFactory::getInstance()->newDataValueByText(
+				$property,
+				$value
+			);
+
+			$instance->addDataValue( $dataValue );
+		}
+
+		$this->assertCount(
+			$expected['errors'],
+			$instance->getErrors()
+		);
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
+	}
+
+	/**
+	 * @dataProvider newDataValueProvider
+	 */
+	public function testDataValueExaminer( array $parameters, array $expected ) {
+		$property = $this->getMockBuilder( Property::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$property->expects( $this->atLeastOnce() )
+			->method( 'findPropertyTypeID' )
+			->willReturn( $parameters['property']['typeId'] );
+
+		$property->expects( $this->atLeastOnce() )
+			->method( 'getKey' )
+			->willReturn( $parameters['property']['key'] );
+
+		$property->expects( $this->atLeastOnce() )
+			->method( 'getLabel' )
+			->willReturn( $parameters['property']['label'] );
+
+		$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
+			$parameters['dataItem'],
+			$property
+		);
+
+		$instance = $this->acquireInstanceForId(
+			Title::newFromText( __METHOD__ ),
+			'Foo'
+		);
+
+		$instance->addDataValue( $dataValue );
+
+		$this->assertCount( $expected['errors'], $instance->getErrors() );
+
+		$this->semanticDataValidator->assertThatPropertiesAreSet(
+			$expected,
+			$instance->getSemanticData()
+		);
+	}
+
+	public function testAddDataValueWithInvalidSemanticDataThrowsException() {
+		$dataValue = $this->getMockBuilder( DataValue::class )
+			->disableOriginalConstructor()
+			->getMockForAbstractClass();
+
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+
+		$this->expectException( SubSemanticDataException::class );
+		$instance->addDataValue( $dataValue );
+	}
+
+	public function testGetSemanticDataInvalidSemanticDataThrowsException() {
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+
+		$this->expectException( SubSemanticDataException::class );
+		$instance->getSemanticData();
+	}
+
+	/**
+	 * @dataProvider errorProvider
+	 */
+	public function testErrorHandlingOnErrors( $errors, $expected ) {
+		$instance = new Subobject( MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ) );
+
+		foreach ( $errors as $error ) {
+			$instance->addError( $error );
+		}
+
+		$this->assertCount(
+			$expected,
+			$instance->getErrors()
+		);
+	}
+
+	/**
+	 * @dataProvider getDataProvider
+	 */
+	public function testGetContainer( array $parameters ) {
+		$instance = $this->acquireInstanceForId(
+			MediaWikiServices::getInstance()->getTitleFactory()->newFromText( __METHOD__ ),
+			$parameters['identifier']
+		);
+
+		$this->assertInstanceOf(
+			Container::class,
+			$instance->getContainer()
+		);
+	}
+
+	public function getDataProvider() {
+		$provider = [];
+
+		// #0 / asserting conditions for a named identifier
+		$provider[] = [
+			[
+				'identifier' => 'Bar',
+				'properties' => [ 'Foo' => 'bar' ]
+			],
+			[
+				'errors' => 0,
+				'identifier' => 'Bar',
+				'propertyCount'  => 1,
+				'propertyLabels' => 'Foo',
+				'propertyValues' => 'Bar',
+			]
+		];
+
+		// #1 / asserting conditions for an anon identifier
+		$provider[] = [
+			[
+				'identifier' => '',
+				'properties' => [ 'FooBar' => 'bar Foo' ]
+			],
+			[
+				'errors' => 0,
+				'identifier' => '_',
+				'propertyCount'  => 1,
+				'propertyLabels' => 'FooBar',
+				'propertyValues' => 'Bar Foo',
+			]
+		];
+
+		// #2 / asserting conditions
+		$provider[] = [
+			[
+				'identifier' => 'foo',
+				'properties' => [ 9001 => 1001 ]
+			],
+			[
+				'errors' => 0,
+				'identifier' => 'foo',
+				'propertyCount'  => 1,
+				'propertyLabels' => [ 9001 ],
+				'propertyValues' => [ 1001 ],
+			]
+		];
+
+		// #3
+		$provider[] = [
+			[
+				'identifier' => 'foo bar',
+				'properties' => [ 1001 => 9001, 'Foo' => 'Bar' ]
+			],
+			[
+				'errors' => 0,
+				'identifier' => 'foo bar',
+				'propertyCount'  => 2,
+				'propertyLabels' => [ 1001, 'Foo' ],
+				'propertyValues' => [ 9001, 'Bar' ],
+			]
+		];
+
+		// #4 / asserting that a property with a leading underscore would produce an error
+		$provider[] = [
+			[
+				'identifier' => 'bar',
+				'properties' => [ '_FooBar' => 'bar Foo' ]
+			],
+			[
+				'errors' => 1,
+				'identifier' => 'bar',
+				'propertyCount'  => 1,
+				'strictPropertyValueMatch' => false,
+				'propertyKeys' => [ '_ERRC' ]
+			]
+		];
+
+		// #5 / asserting that an inverse property would produce an error
+		$provider[] = [
+			[
+				'identifier' => 'bar',
+				'properties' => [ '-FooBar' => 'bar Foo' ]
+			],
+			[
+				'errors' => 1,
+				'identifier' => 'bar',
+				'propertyCount'  => 1,
+				'strictPropertyValueMatch' => false,
+				'propertyKeys' => [ '_ERRC' ]
+			]
+		];
+
+		// #6 / asserting that an improper value for a _wpg property would add "Has improper value for"
+		$provider[] = [
+			[
+				'identifier' => 'bar',
+				'properties' => [ 'Foo' => '' ]
+			],
+			[
+				'identifier' => 'bar',
+				'errors' => 1,
+				'strictPropertyValueMatch' => false,
+				'propertyCount'  => 1,
+				'propertyKeys' => [ '_ERRC' ]
+			]
+		];
+
+		return $provider;
+	}
+
+	/**
+	 * Provides sample data for various dataItem/datValues
+	 *
+	 * @return array
+	 */
+	public function newDataValueProvider() {
+		$provider = [];
+
+		// #0 Bug 49530
+		$provider[] = [
+			[
+				'property' => [
+					'typeId' => '_txt',
+					'label'  => 'Blob.example',
+					'key'    => 'Blob.example'
+				],
+				'dataItem' => new Blob( '<a href="http://username@example.org/path">Example</a>' )
+			],
+			[
+				'errors' => 0,
+				'propertyCount'  => 1,
+				'propertyLabels' => 'Blob.example',
+				'propertyValues' => '<a href="http://username@example.org/path">Example</a>',
+			]
+		];
+
+		return $provider;
+	}
+
+	/**
+	 * @return Subobject
+	 */
+	private function acquireInstanceForId( Title $title, $id = '' ) {
+		$instance = new Subobject( $title );
+
+		if ( $id === '' && $id !== null ) {
+			$id = '_abcdef';
+		}
+
+		$instance->setEmptyContainerForId( $id );
+
+		return $instance;
+	}
+
+	public function errorProvider() {
+		$provider = [];
+
+		# 0
+		$provider[] = [
+			[
+				'Foo',
+				'Foo'
+			],
+			1
+		];
+
+		# 1
+		$provider[] = [
+			[
+				'Foo',
+				'Bar'
+			],
+			2
+		];
+
+		# 2
+		$provider[] = [
+			[
+				[ 'Foo' => 'Bar' ],
+				[ 'Foo' => 'Bar' ],
+			],
+			1
+		];
+
+		# 3
+		$provider[] = [
+			[
+				[ 'Foo' => 'Bar' ],
+				[ 'Bar' => 'Foo' ],
+			],
+			2
+		];
+
+		return $provider;
+	}
+
+}

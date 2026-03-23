@@ -3,11 +3,11 @@
 namespace SMW\Exporter;
 
 use MediaWiki\MediaWikiServices;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Site;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later

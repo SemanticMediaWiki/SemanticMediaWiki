@@ -5,8 +5,8 @@ namespace SMW\DataValues;
 use SMW\DataItems\Blob;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
-use SMWInfolink as Infolink;
 
 /**
  * @private
@@ -223,7 +223,7 @@ class KeywordValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function getFormatLink( $dataItem, $value ) {
+	private function getFormatLink( $dataItem, $value ): string|Infolink {
 		$infolink = '';
 
 		$data = json_decode(

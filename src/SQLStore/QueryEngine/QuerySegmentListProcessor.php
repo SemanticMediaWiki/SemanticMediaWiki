@@ -4,8 +4,8 @@ namespace SMW\SQLStore\QueryEngine;
 
 use RuntimeException;
 use SMW\MediaWiki\Connection\Database;
+use SMW\Query\Query;
 use SMW\SQLStore\TableBuilder\TemporaryTableBuilder;
-use SMWQuery as Query;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -32,7 +32,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @var int
 	 */
-	private $queryMode;
+	private $queryMode = 0;
 
 	/**
 	 * @var array
@@ -60,16 +60,18 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param &$querySegmentList
 	 */
-	public function setQuerySegmentList( &$querySegmentList ) {
+	public function setQuerySegmentList( &$querySegmentList ): void {
 		$this->querySegmentList =& $querySegmentList;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer
+	 * @param int $queryMode
+	 *
+	 * @return void
 	 */
-	public function setQueryMode( $queryMode ) {
+	public function setQueryMode( $queryMode ): void {
 		$this->queryMode = $queryMode;
 	}
 
@@ -82,7 +84,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function process( $id ) {
+	public function process( $id ): void {
 		$this->hierarchyTempTableBuilder->emptyHierarchyCache();
 		$this->executedQueries = [];
 
@@ -94,7 +96,7 @@ class QuerySegmentListProcessor {
 		$this->segment( $this->querySegmentList[$id] );
 	}
 
-	private function segment( QuerySegment &$query ) {
+	private function segment( QuerySegment &$query ): void {
 		switch ( $query->type ) {
 			case QuerySegment::Q_TABLE: // .
 				$this->table( $query );
@@ -117,7 +119,7 @@ class QuerySegmentListProcessor {
 	/**
 	 * Resolves normal queries with possible conjunctive subconditions
 	 */
-	private function table( QuerySegment &$query ) {
+	private function table( QuerySegment &$query ): void {
 		foreach ( $query->components as $qid => $joinField ) {
 			$subQuery = $this->querySegmentList[$qid];
 			$this->segment( $subQuery );
@@ -126,7 +128,7 @@ class QuerySegmentListProcessor {
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
 
-				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
+				$joinType = $subQuery->joinType ?: 'INNER';
 				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
 				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
 				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
@@ -191,7 +193,7 @@ class QuerySegmentListProcessor {
 		$query->components = [];
 	}
 
-	private function conjunction( QuerySegment &$query ) {
+	private function conjunction( QuerySegment &$query ): void {
 		reset( $query->components );
 		$key = false;
 
@@ -221,7 +223,7 @@ class QuerySegmentListProcessor {
 		$query = $result;
 	}
 
-	private function disjunction( QuerySegment &$query ) {
+	private function disjunction( QuerySegment &$query ): void {
 		if ( $this->queryMode !== Query::MODE_NONE ) {
 			$this->temporaryTableBuilder->create( $this->connection->tableName( $query->alias ) );
 		}
@@ -257,6 +259,7 @@ class QuerySegmentListProcessor {
 			if ( $sql ) {
 				$this->executedQueries[$query->alias][] = $sql;
 
+				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
 				if ( $this->queryMode !== Query::MODE_NONE ) {
 					$this->connection->query(
 						$sql,
@@ -285,7 +288,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @param QuerySegment &$query
 	 */
-	private function hierarchy( QuerySegment &$query ) {
+	private function hierarchy( QuerySegment &$query ): void {
 		switch ( $query->type ) {
 			case QuerySegment::Q_PROP_HIERARCHY:
 				$type = 'property';
@@ -350,7 +353,7 @@ class QuerySegmentListProcessor {
 	 * @todo I might be better to keep the tables and possibly reuse them later
 	 * on. Being temporary, the tables will vanish with the session anyway.
 	 */
-	public function cleanUp() {
+	public function cleanUp(): void {
 		foreach ( $this->executedQueries as $table => $log ) {
 			$this->temporaryTableBuilder->drop( $this->connection->tableName( $table ) );
 		}

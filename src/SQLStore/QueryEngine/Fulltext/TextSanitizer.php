@@ -48,7 +48,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	public function getVersions() {
+	public function getVersions(): array {
 		$languageDetector = '(Disabled)';
 
 		if ( isset( $this->languageDetection['TextCatLanguageDetector'] ) ) {
@@ -66,7 +66,7 @@ class TextSanitizer {
 	 *
 	 * @param array $languageDetection
 	 */
-	public function setLanguageDetection( array $languageDetection ) {
+	public function setLanguageDetection( array $languageDetection ): void {
 		$this->languageDetection = $languageDetection;
 	}
 
@@ -75,7 +75,7 @@ class TextSanitizer {
 	 *
 	 * @param int $minTokenSize
 	 */
-	public function setMinTokenSize( $minTokenSize ) {
+	public function setMinTokenSize( $minTokenSize ): void {
 		$this->minTokenSize = $minTokenSize;
 	}
 
@@ -87,7 +87,7 @@ class TextSanitizer {
 	 *
 	 * @return string
 	 */
-	public function sanitize( $text, $isSearchTerm = false ) {
+	public function sanitize( $text, $isSearchTerm = false ): string {
 		$text = rawurldecode( trim( $text ) );
 
 		// Language detection must run on the original text before
@@ -157,13 +157,12 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenize( $text, $language, $exemptionList ) {
+	private function tokenize( string|array $text, int|string|null $language, array|string $exemptionList ) {
 		$hasCjk = (bool)preg_match( '/[\x{4e00}-\x{9fa5}]/u', $text );
 		$hasIcu = class_exists( IntlRuleBasedBreakIterator::class );
 
 		if ( $hasIcu ) {
-			$isWordTokenizer = !$hasCjk;
-			$tokens = $this->tokenizeWithIcu( $text, $language, $isWordTokenizer );
+			$tokens = $this->tokenizeWithIcu( $text, $language );
 			$joined = implode( ' ', $tokens );
 
 			return $this->tokenizeWithGenericRegex( $joined, $exemptionList );
@@ -194,11 +193,10 @@ class TextSanitizer {
 	 *
 	 * @param string $text
 	 * @param string|null $language
-	 * @param bool $useWordBoundary
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithIcu( $text, $language, $useWordBoundary ) {
+	private function tokenizeWithIcu( string|array $text, int|string|null $language ): array {
 		$tokens = [];
 
 		$tokenizer = IntlRuleBasedBreakIterator::createWordInstance( $language ?? 'en' );
@@ -235,7 +233,8 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithGenericRegex( $text, $exemptionList ) {
+	private function tokenizeWithGenericRegex( string|array $text, string|array $exemptionList ) {
+		// @phan-suppress-next-line PhanParamSuspiciousOrder false positive
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -259,7 +258,8 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithCjkRegex( $text, $exemptionList ) {
+	private function tokenizeWithCjkRegex( string $text, string|array $exemptionList ): array {
+		// @phan-suppress-next-line PhanParamSuspiciousOrder false positive
 		$pattern = str_replace(
 			$exemptionList,
 			'',
@@ -283,7 +283,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function tokenizeWithNgram( $text, $ngramSize = 2 ) {
+	private function tokenizeWithNgram( string|array $text, $ngramSize = 2 ): array {
 		$ngramList = [];
 
 		// Text is already lowercased by sanitize() before reaching here
@@ -307,7 +307,7 @@ class TextSanitizer {
 	 *
 	 * @return array
 	 */
-	private function filterTokens( $tokens, $language, $exemptionList ) {
+	private function filterTokens( $tokens, int|string|null $language, array|string $exemptionList ): array {
 		if ( !$tokens || !is_array( $tokens ) ) {
 			return [];
 		}
@@ -362,7 +362,7 @@ class TextSanitizer {
 	 *
 	 * @return Reader|null
 	 */
-	private function openStopwordReader( $language ) {
+	private function openStopwordReader( string|int|null $language ): ?Reader {
 		if ( $language === null ) {
 			return null;
 		}
@@ -377,7 +377,7 @@ class TextSanitizer {
 
 		try {
 			$this->stopwordReaders[$key] = Reader::open( $file );
-		} catch ( Exception $e ) {
+		} catch ( Exception ) {
 			$this->stopwordReaders[$key] = null;
 		}
 
@@ -390,7 +390,7 @@ class TextSanitizer {
 	 *
 	 * @return bool
 	 */
-	private function isStopWord( $reader, $word ) {
+	private function isStopWord( Reader $reader, $word ): bool {
 		return $reader->get( $word ) !== false;
 	}
 
@@ -399,7 +399,7 @@ class TextSanitizer {
 	 *
 	 * @return string|null
 	 */
-	private function predictLanguage( $text ) {
+	private function predictLanguage( string $text ): null|int|string {
 		if ( $this->languageDetection === [] ) {
 			return null;
 		}

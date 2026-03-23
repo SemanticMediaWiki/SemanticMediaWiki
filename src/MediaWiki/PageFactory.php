@@ -32,7 +32,7 @@ class PageFactory {
 	 * @return PageView
 	 * @throws RuntimeException
 	 */
-	public function newPageFromTitle( Title $title ) {
+	public function newPageFromTitle( Title $title ): PropertyPage|ConceptPage {
 		if ( $title->getNamespace() === SMW_NS_PROPERTY ) {
 			return $this->newPropertyPage( $title );
 		} elseif ( $title->getNamespace() === SMW_NS_CONCEPT ) {
@@ -49,7 +49,7 @@ class PageFactory {
 	 *
 	 * @return PropertyPage
 	 */
-	public function newPropertyPage( Title $title ) {
+	public function newPropertyPage( Title $title ): PropertyPage {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -89,7 +89,7 @@ class PageFactory {
 	 *
 	 * @return ConceptPage
 	 */
-	public function newConceptPage( Title $title ) {
+	public function newConceptPage( Title $title ): ConceptPage {
 		$conceptPage = new ConceptPage( $title );
 		$settings = ApplicationFactory::getInstance()->getSettings();
 

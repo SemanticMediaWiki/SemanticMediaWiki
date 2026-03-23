@@ -53,7 +53,7 @@ class ExternalFormatterUriValue extends URIValue {
 	 *
 	 * @return bool
 	 */
-	public function hasMultiSubstitute() {
+	public function hasMultiSubstitute(): bool {
 		$dataItem = $this->getDataItem();
 		$uri = str_replace( [ '%24' ], [ '$' ], $dataItem->getUri() );
 
@@ -68,7 +68,7 @@ class ExternalFormatterUriValue extends URIValue {
 	 *
 	 * @return string
 	 */
-	public function substituteAndFormatUri( $value, $parameters = [] ) {
+	public function substituteAndFormatUri( $value, $parameters = [] ): string|array {
 		if ( !$this->isValid() ) {
 			return '';
 		}
@@ -97,7 +97,7 @@ class ExternalFormatterUriValue extends URIValue {
 	}
 
 	// http://php.net/manual/en/function.urlencode.php#97969
-	private function encode( $string ) {
+	private function encode( string $string ): string {
 		return str_replace(
 			[ '%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%2B', '%24', '%2C', '%2F', '%3F', '%25', '%23', '%5B', '%5D' ],
 			[ '!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "+", "$", ",", "/", "?", "%", "#", "[", "]" ],

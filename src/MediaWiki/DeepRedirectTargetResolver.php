@@ -39,11 +39,11 @@ class DeepRedirectTargetResolver {
 		return $this->doResolveRedirectTarget( $title );
 	}
 
-	protected function isValidRedirectTarget( $title ) {
+	protected function isValidRedirectTarget( $title ): bool {
 		return $title instanceof Title && $title->isValidRedirectTarget();
 	}
 
-	protected function isRedirect( $title ) {
+	protected function isRedirect( $title ): bool {
 		return $title instanceof Title && $title->isRedirect();
 	}
 
@@ -69,7 +69,7 @@ class DeepRedirectTargetResolver {
 		throw new RuntimeException( "Redirect target is unresolvable" );
 	}
 
-	private function addToResolverTracker( $title ) {
+	private function addToResolverTracker( Title $title ) {
 		if ( !isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) ) {
 			$this->recursiveResolverTracker[$title->getPrefixedDBkey()] = 0;
 		}
@@ -77,7 +77,7 @@ class DeepRedirectTargetResolver {
 		return $this->recursiveResolverTracker[$title->getPrefixedDBkey()]++;
 	}
 
-	private function isCircularByKnownRedirectTarget( $title ) {
+	private function isCircularByKnownRedirectTarget( Title $title ): bool {
 		return isset( $this->recursiveResolverTracker[$title->getPrefixedDBkey()] ) && $this->recursiveResolverTracker[$title->getPrefixedDBkey()] > 1;
 	}
 

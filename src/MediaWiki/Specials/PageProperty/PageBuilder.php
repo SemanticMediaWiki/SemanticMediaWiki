@@ -5,10 +5,10 @@ namespace SMW\MediaWiki\Specials\PageProperty;
 use MediaWiki\Html\Html;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Options;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -40,7 +40,7 @@ class PageBuilder {
 	 *
 	 * @return string
 	 */
-	public function buildForm( $count = 0 ) {
+	public function buildForm( $count = 0 ): string {
 		$html = Html::rawElement(
 			'p',
 			[

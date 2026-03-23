@@ -3,15 +3,15 @@
 namespace SMW\Tests\Integration\SPARQLStore;
 
 use PHPUnit\Framework\TestCase;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpNsResource;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SPARQLStore\RepositoryRedirectLookup;
 use SMW\SPARQLStore\SPARQLStore;
-use SMWExporter as Exporter;
 
 /**
  * @group semantic-mediawiki
@@ -59,9 +59,9 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends TestCase {
 	}
 
 	public function testRedirectTargetLookupForExistingEntry() {
-		$property = new DIProperty( 'TestRepositoryRedirectLookup' );
+		$property = new Property( 'TestRepositoryRedirectLookup' );
 
-		$semanticData = new SemanticData( new DIWikiPage( __METHOD__, NS_MAIN ) );
+		$semanticData = new SemanticData( new WikiPage( __METHOD__, NS_MAIN ) );
 
 		$semanticData->addDataValue(
 			DataValueFactory::getInstance()->newDataValueByProperty( $property, 'Bar' )
@@ -100,7 +100,7 @@ class RepositoryRepositoryRedirectLookupActiveConnectionTest extends TestCase {
 				'FooRepositoryRedirectLookup',
 				$exporter->getNamespaceUri( 'property' ),
 				'property',
-				new DIWikiPage( 'FooRepositoryRedirectLookup', SMW_NS_PROPERTY, '' )
+				new WikiPage( 'FooRepositoryRedirectLookup', SMW_NS_PROPERTY, '' )
 			)
 		];
 

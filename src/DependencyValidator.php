@@ -4,6 +4,7 @@ namespace SMW;
 
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
+use SMW\DataItems\WikiPage;
 use SMW\SQLStore\QueryDependency\DependencyLinksValidator;
 
 /**
@@ -16,20 +17,11 @@ class DependencyValidator {
 
 	use EventDispatcherAwareTrait;
 
-	/**
-	 * @var NamespaceExaminer
-	 */
-	private $namespaceExaminer;
+	private NamespaceExaminer $namespaceExaminer;
 
-	/**
-	 * @var DependencyLinksValidator
-	 */
-	private $dependencyLinksValidator;
+	private DependencyLinksValidator $dependencyLinksValidator;
 
-	/**
-	 * @var EntityCache
-	 */
-	private $entityCache;
+	private EntityCache $entityCache;
 
 	/**
 	 * @var int
@@ -64,7 +56,7 @@ class DependencyValidator {
 	 *
 	 * @param int $cacheTTL
 	 */
-	public function setCacheTTL( $cacheTTL ) {
+	public function setCacheTTL( $cacheTTL ): void {
 		$this->cacheTTL = $cacheTTL;
 	}
 
@@ -73,7 +65,7 @@ class DependencyValidator {
 	 *
 	 * @param string eTag
 	 */
-	public function setETag( $eTag ) {
+	public function setETag( $eTag ): void {
 		$this->eTag = $eTag;
 	}
 
@@ -82,7 +74,7 @@ class DependencyValidator {
 	 *
 	 * @return int
 	 */
-	public static function makeCacheKey( Title $title ) {
+	public static function makeCacheKey( Title $title ): string {
 		return EntityCache::makeCacheKey( 'parsercacheinvalidator', $title->getPrefixedDBKey() );
 	}
 
@@ -94,7 +86,7 @@ class DependencyValidator {
 	 *
 	 * @param Title $title
 	 */
-	public function markTitle( Title $title ) {
+	public function markTitle( Title $title ): void {
 		self::$titles[$title->getPrefixedText()] = true;
 	}
 
@@ -112,11 +104,11 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function hasArchaicDependencies( DIWikiPage $subject ) {
+	public function hasArchaicDependencies( WikiPage $subject ): bool {
 		$title = $subject->getTitle();
 
 		if ( $this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) === false ) {
@@ -154,11 +146,11 @@ class DependencyValidator {
 	/**
 	 * @since 3.1
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return bool
 	 */
-	public function canKeepParserCache( DIWikiPage $subject ) {
+	public function canKeepParserCache( WikiPage $subject ): bool {
 		$key = $this->makeCacheKey( $subject->getTitle() );
 
 		// Test for a recent rejection, being unrelated etc.

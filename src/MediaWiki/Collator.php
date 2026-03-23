@@ -116,7 +116,7 @@ class Collator {
 	 *
 	 * @return bool
 	 */
-	public function isIdentical( $old, $new ) {
+	public function isIdentical( $old, $new ): bool {
 		return $this->collation->getSortKey( $old ) === $this->collation->getSortKey( $new );
 	}
 

@@ -2,7 +2,8 @@
 
 namespace SMW\Query;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Query\Result\FieldItemFinder;
 use SMW\Query\Result\FilterMap;
 use SMW\Query\Result\ItemFetcher;
@@ -10,8 +11,6 @@ use SMW\Query\Result\ItemJournal;
 use SMW\Query\Result\ResultArray;
 use SMW\SerializerFactory;
 use SMW\Store;
-use SMWInfolink;
-use SMWQuery as Query;
 
 /**
  * Objects of this class encapsulate the result of a query in SMW. They
@@ -39,33 +38,29 @@ class QueryResult {
 	const QUICK_HASH = 'quick';
 
 	/**
-	 * Array of DIWikiPage objects that are the basis for this result
+	 * Array of WikiPage objects that are the basis for this result
 	 *
-	 * @var DIWikiPage[]
+	 * @var WikiPage[]
 	 */
-	protected $mResults;
+	protected array $mResults;
 
 	/**
 	 * Array of \SMW\Query\PrintRequest objects, indexed by their natural hash keys
 	 *
 	 * @var PrintRequest[]
 	 */
-	protected $mPrintRequests;
+	protected array $mPrintRequests;
 
 	/**
 	 * The query object for which this is a result, must be set on create and is the source of
 	 * data needed to create further result links.
-	 *
-	 * @var Query
 	 */
-	protected $mQuery;
+	protected Query $mQuery;
 
 	/**
 	 * The Store object used to retrieve further data on demand.
-	 *
-	 * @var Store
 	 */
-	protected $mStore;
+	protected Store $mStore;
 
 	/**
 	 * Holds a value that belongs to a count query result
@@ -81,15 +76,9 @@ class QueryResult {
 	 */
 	private $isFromCache = false;
 
-	/**
-	 * @var ItemJournal
-	 */
-	private $itemJournal;
+	private ItemJournal $itemJournal;
 
-	/**
-	 * @var FieldItemFinder
-	 */
-	private $fieldItemFinder;
+	private FieldItemFinder $fieldItemFinder;
 
 	/**
 	 * @var int
@@ -106,10 +95,7 @@ class QueryResult {
 	 */
 	private $excerpts;
 
-	/**
-	 * @var FilterMap
-	 */
-	private $filterMap;
+	private FilterMap $filterMap;
 
 	public function __construct(
 		array $printRequests,
@@ -145,7 +131,7 @@ class QueryResult {
 	 *
 	 * @return FilterMap
 	 */
-	public function getFilterMap() {
+	public function getFilterMap(): FilterMap {
 		return $this->filterMap;
 	}
 
@@ -154,7 +140,7 @@ class QueryResult {
 	 *
 	 * @return FieldItemFinder
 	 */
-	public function getFieldItemFinder() {
+	public function getFieldItemFinder(): FieldItemFinder {
 		return $this->fieldItemFinder;
 	}
 
@@ -163,7 +149,7 @@ class QueryResult {
 	 *
 	 * @param ItemJournal $itemJournal
 	 */
-	public function setItemJournal( ItemJournal $itemJournal ) {
+	public function setItemJournal( ItemJournal $itemJournal ): void {
 		$this->itemJournal = $itemJournal;
 	}
 
@@ -172,7 +158,7 @@ class QueryResult {
 	 *
 	 * @return ItemJournal
 	 */
-	public function getItemJournal() {
+	public function getItemJournal(): ItemJournal {
 		return $this->itemJournal;
 	}
 
@@ -181,7 +167,7 @@ class QueryResult {
 	 *
 	 * @param bool $isFromCache
 	 */
-	public function setFromCache( $isFromCache ) {
+	public function setFromCache( $isFromCache ): void {
 		$this->isFromCache = (bool)$isFromCache;
 	}
 
@@ -192,7 +178,7 @@ class QueryResult {
 	 *
 	 * @param ScoreSet $scoreSet
 	 */
-	public function setScoreSet( ScoreSet $scoreSet ) {
+	public function setScoreSet( ScoreSet $scoreSet ): void {
 		$this->scoreSet = $scoreSet;
 	}
 
@@ -212,7 +198,7 @@ class QueryResult {
 	 *
 	 * @param Excerpts $excerpts
 	 */
-	public function setExcerpts( Excerpts $excerpts ) {
+	public function setExcerpts( Excerpts $excerpts ): void {
 		$this->excerpts = $excerpts;
 	}
 
@@ -239,7 +225,7 @@ class QueryResult {
 	 *
 	 * @return Store
 	 */
-	public function getStore() {
+	public function getStore(): Store {
 		return $this->mStore;
 	}
 
@@ -249,7 +235,7 @@ class QueryResult {
 	 *
 	 * @return ResultArray[]|false
 	 */
-	public function getNext() {
+	public function getNext(): false|array {
 		$page = current( $this->mResults );
 		next( $this->mResults );
 
@@ -266,7 +252,7 @@ class QueryResult {
 		return $row;
 	}
 
-	private function newResultArray( DIWikiPage $page, PrintRequest $pr ) {
+	private function newResultArray( WikiPage $page, PrintRequest $pr ) {
 		$resultArray = ResultArray::factory( $page, $pr, $this );
 		$resultArray->setItemJournal( $this->itemJournal );
 		return $resultArray;
@@ -277,24 +263,24 @@ class QueryResult {
 	 *
 	 * @return int
 	 */
-	public function getCount() {
+	public function getCount(): int {
 		return count( $this->mResults );
 	}
 
 	/**
-	 * Return an array of SMWDIWikiPage objects that make up the
+	 * Return an array of WikiPage objects that make up the
 	 * results stored in this object.
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
-	public function getResults() {
+	public function getResults(): array {
 		return $this->mResults;
 	}
 
 	/**
 	 * @since 2.3
 	 */
-	public function reset() {
+	public function reset(): WikiPage|false {
 		return reset( $this->mResults );
 	}
 
@@ -305,7 +291,7 @@ class QueryResult {
 	 *
 	 * @return Query
 	 */
-	public function getQuery() {
+	public function getQuery(): Query {
 		return $this->mQuery;
 	}
 
@@ -315,7 +301,7 @@ class QueryResult {
 	 *
 	 * @return int
 	 */
-	public function getColumnCount() {
+	public function getColumnCount(): int {
 		return count( $this->mPrintRequests );
 	}
 
@@ -325,7 +311,7 @@ class QueryResult {
 	 *
 	 * @return PrintRequest[]
 	 */
-	public function getPrintRequests() {
+	public function getPrintRequests(): array {
 		return $this->mPrintRequests;
 	}
 
@@ -353,7 +339,7 @@ class QueryResult {
 	 *
 	 * @param int $countValue
 	 */
-	public function setCountValue( $countValue ) {
+	public function setCountValue( $countValue ): void {
 		$this->countValue = (int)$countValue;
 	}
 
@@ -381,7 +367,7 @@ class QueryResult {
 	 *
 	 * @param array $errors
 	 */
-	public function addErrors( array $errors ) {
+	public function addErrors( array $errors ): void {
 		$this->mQuery->addErrors( $errors );
 	}
 
@@ -394,7 +380,7 @@ class QueryResult {
 	 *
 	 * @param string|false $caption
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
 	public function getQueryLink( $caption = false ) {
 		$link = QueryLinker::get( $this->mQuery );
@@ -412,7 +398,7 @@ class QueryResult {
 	 *
 	 * @since 1.8
 	 *
-	 * @return SMWInfolink
+	 * @return Infolink
 	 */
 	public function getLink() {
 		return $this->getQueryLink();
@@ -423,7 +409,7 @@ class QueryResult {
 	 *
 	 * @since 3.0
 	 */
-	public function setSerializerVersion( $version ) {
+	public function setSerializerVersion( $version ): void {
 		$this->serializer_version = $version;
 	}
 
@@ -456,7 +442,7 @@ class QueryResult {
 	 *
 	 * @return array
 	 */
-	public function toArray() {
+	public function toArray(): array {
 		$time = microtime( true );
 
 		// @note micro optimization: We call getSerializedQueryResult()
@@ -484,7 +470,7 @@ class QueryResult {
 	 *
 	 * @return string
 	 */
-	public function getHash( $type = null ) {
+	public function getHash( $type = null ): string {
 		// Just iterate over available subjects to create a "quick" hash given
 		// that resolving the entire object tree is costly due to recursive
 		// processing of all data items including its printouts

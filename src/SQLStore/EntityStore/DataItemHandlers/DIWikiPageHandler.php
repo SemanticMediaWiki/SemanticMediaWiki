@@ -2,13 +2,13 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
 
 /**
  * DataItemHandler for dataitems of type DIWikiPage.
@@ -33,7 +33,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
@@ -42,7 +42,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [ 'o_id' => FieldType::FIELD_ID ];
 	}
 
@@ -51,7 +51,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 			'o_id',
 
@@ -99,7 +99,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
+	public function getIndexHint( $key ): string {
 		// Store::getPropertySubjects has seen to choose the wrong index
 
 		// ELECT smw_id, smw_title, smw_namespace, smw_iw, smw_subobject, smw_sortkey, smw_sort
@@ -130,7 +130,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		$oid = $this->store->getObjectIds()->getSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -146,7 +146,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		$oid = $this->store->getObjectIds()->makeSMWPageID(
 			$dataItem->getDBkey(),
 			$dataItem->getNamespace(),
@@ -162,7 +162,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_id';
 	}
 
@@ -171,7 +171,7 @@ class DIWikiPageHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_id';
 	}
 
@@ -192,8 +192,8 @@ class DIWikiPageHandler extends DataItemHandler {
 			$dbkeys[0][0] == '_' && $dbkeys[2] == '' ) {
 
 			try {
-				$property = new DIProperty( $dbkeys[0] );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+				$property = new Property( $dbkeys[0] );
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				// Most likely an outdated, no longer existing predefined
 				// property, mark it as outdate
 				$dbkeys[2] = SMW_SQL3_SMWIW_OUTDATED;
@@ -211,8 +211,8 @@ class DIWikiPageHandler extends DataItemHandler {
 		return $this->newDiWikiPage( $dbkeys );
 	}
 
-	private function newDiWikiPage( $dbkeys ) {
-		$diWikiPage = new DIWikiPage(
+	private function newDiWikiPage( array $dbkeys ): WikiPage {
+		$diWikiPage = new WikiPage(
 			$dbkeys[0],
 			intval( $dbkeys[1] ),
 			$dbkeys[2],

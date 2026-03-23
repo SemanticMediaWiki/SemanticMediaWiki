@@ -43,7 +43,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( $term ) {
+	public function process( $term ): bool {
 		if ( !$this->specialSearch->getSearchEngine() instanceof ExtendedSearchEngine ) {
 			return true;
 		}
@@ -86,7 +86,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return true;
 	}
 
-	private function search_sheet() {
+	private function search_sheet(): string {
 		$text = $this->element( 'smw-search-help-intro' );
 		$text .= $this->section( 'smw-search-input' );
 
@@ -104,7 +104,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		return $text;
 	}
 
-	private function section( $msg, $attributes = [] ) {
+	private function section( string $msg, $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[
@@ -121,7 +121,7 @@ class SpecialSearchResultsPrepend implements HookListener {
 		);
 	}
 
-	private function element( $msg, $html = '', $attributes = [] ) {
+	private function element( string $msg, $html = '', $attributes = [] ) {
 		return Html::rawElement(
 			'div',
 			[

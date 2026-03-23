@@ -6,8 +6,8 @@ use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Revision\SlotRecord;
 use MediaWiki\User\User;
+use SMW\DataModel\SemanticData;
 use SMW\ParserData;
-use SMW\SemanticData;
 use WikiPage;
 
 /**

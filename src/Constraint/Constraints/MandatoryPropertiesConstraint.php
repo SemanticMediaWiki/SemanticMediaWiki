@@ -5,9 +5,9 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
+use SMW\DataModel\SemanticData;
+use SMW\DataValues\DataValue;
 use SMW\Localizer\Message;
-use SMW\SemanticData;
-use SMWDataValue as DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -41,7 +41,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -64,7 +64,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		}
 	}
 
-	private function check( $properties, $dataValue ) {
+	private function check( $properties, DataValue $dataValue ): void {
 		$dataItem = $dataValue->getDataItem();
 		$properties = array_flip( $properties );
 
@@ -83,7 +83,7 @@ class MandatoryPropertiesConstraint implements Constraint {
 		$this->reportError( $dataValue, $properties );
 	}
 
-	private function reportError( $dataValue, $properties ) {
+	private function reportError( DataValue $dataValue, array $properties ): void {
 		$this->hasViolation = true;
 
 		$error = [

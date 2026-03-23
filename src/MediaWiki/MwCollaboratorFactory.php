@@ -40,7 +40,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return MessageBuilder
 	 */
-	public function newMessageBuilder( ?Language $language = null ) {
+	public function newMessageBuilder( ?Language $language = null ): MessageBuilder {
 		return new MessageBuilder( $language );
 	}
 
@@ -58,7 +58,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return RedirectTargetFinder
 	 */
-	public function newRedirectTargetFinder() {
+	public function newRedirectTargetFinder(): RedirectTargetFinder {
 		return new RedirectTargetFinder();
 	}
 
@@ -67,7 +67,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return DeepRedirectTargetResolver
 	 */
-	public function newDeepRedirectTargetResolver() {
+	public function newDeepRedirectTargetResolver(): DeepRedirectTargetResolver {
 		return new DeepRedirectTargetResolver( $this->applicationFactory->newPageCreator() );
 	}
 
@@ -79,7 +79,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return HtmlFormRenderer
 	 */
-	public function newHtmlFormRenderer( Title $title, ?Language $language = null ) {
+	public function newHtmlFormRenderer( Title $title, ?Language $language = null ): HtmlFormRenderer {
 		if ( $language === null ) {
 			$language = $title->getPageLanguage();
 		}
@@ -94,7 +94,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return HtmlTableRenderer
 	 */
-	public function newHtmlTableRenderer() {
+	public function newHtmlTableRenderer(): HtmlTableRenderer {
 		return new HtmlTableRenderer();
 	}
 
@@ -103,7 +103,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return HtmlColumnListRenderer
 	 */
-	public function newHtmlColumnListRenderer() {
+	public function newHtmlColumnListRenderer(): HtmlColumnListRenderer {
 		return new HtmlColumnListRenderer();
 	}
 
@@ -117,7 +117,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return LoadBalancerConnectionProvider
 	 */
-	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ) {
+	public function newLoadBalancerConnectionProvider( $connectionType, $asConnectionRef = true ): LoadBalancerConnectionProvider {
 		$loadBalancerConnectionProvider = new LoadBalancerConnectionProvider(
 			$connectionType
 		);
@@ -132,7 +132,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return ConnectionProvider
 	 */
-	public function newConnectionProvider( $provider = null ) {
+	public function newConnectionProvider( $provider = null ): ConnectionProvider {
 		$connectionProvider = new ConnectionProvider(
 			$provider
 		);
@@ -163,7 +163,7 @@ class MwCollaboratorFactory {
 		?RevisionRecord $revision = null,
 		?User $user = null,
 		?bool $isReUpload = null
-	) {
+	): PageInfoProvider {
 		$pageInfoProvider = new PageInfoProvider( $wikiPage, $revision, $user, $isReUpload );
 
 		$pageInfoProvider->setRevisionGuard(
@@ -191,7 +191,7 @@ class MwCollaboratorFactory {
 		WikiPage $wikiPage,
 		RevisionRecord $revision,
 		?User $user = null
-	) {
+	): EditInfo {
 		return $this->newEditInfo( $wikiPage, $revision, $user );
 	}
 
@@ -208,7 +208,7 @@ class MwCollaboratorFactory {
 		WikiPage $wikiPage,
 		?RevisionRecord $revision = null,
 		?User $user = null
-	) {
+	): EditInfo {
 		if ( $user === null ) {
 			$user = RequestContext::getMain()->getUser();
 		}
@@ -227,7 +227,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return WikitextTemplateRenderer
 	 */
-	public function newWikitextTemplateRenderer() {
+	public function newWikitextTemplateRenderer(): WikitextTemplateRenderer {
 		return new WikitextTemplateRenderer();
 	}
 
@@ -238,7 +238,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return HtmlTemplateRenderer
 	 */
-	public function newHtmlTemplateRenderer( Parser $parser ) {
+	public function newHtmlTemplateRenderer( Parser $parser ): HtmlTemplateRenderer {
 		return new HtmlTemplateRenderer(
 			$this->newWikitextTemplateRenderer(),
 			$parser
@@ -261,7 +261,7 @@ class MwCollaboratorFactory {
 	 *
 	 * @return StripMarkerDecoder
 	 */
-	public function newStripMarkerDecoder( StripState $stripState ) {
+	public function newStripMarkerDecoder( StripState $stripState ): StripMarkerDecoder {
 		$stripMarkerDecoder = new StripMarkerDecoder(
 			$stripState
 		);

@@ -27,7 +27,7 @@ class HtmlBuilder {
 		return $this->{$key}( $params );
 	}
 
-	private function schema_head( $params ) {
+	private function schema_head( $params ): string {
 		$list = [];
 		$text = '';
 		$type_description = '';
@@ -279,7 +279,7 @@ class HtmlBuilder {
 		);
 	}
 
-	private function schema_error( $params ) {
+	private function schema_error( $params ): string {
 		$html = Html::rawElement(
 			'span',
 			[

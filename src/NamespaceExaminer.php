@@ -4,6 +4,7 @@ namespace SMW;
 
 use InvalidArgumentException;
 use MediaWiki\Title\Title;
+use SMW\DataItems\WikiPage;
 
 /**
  * Examines if a specific namespace is enabled for the usage of the
@@ -16,10 +17,7 @@ use MediaWiki\Title\Title;
  */
 class NamespaceExaminer {
 
-	/**
-	 * @var array
-	 */
-	private $registeredNamespaces = [];
+	private array $registeredNamespaces;
 
 	/**
 	 * @var array
@@ -40,14 +38,14 @@ class NamespaceExaminer {
 	 *
 	 * @param array $validNamespaces
 	 */
-	public function setValidNamespaces( array $validNamespaces ) {
+	public function setValidNamespaces( array $validNamespaces ): void {
 		$this->validNamespaces = $validNamespaces;
 	}
 
 	/**
 	 * @since 3.1
 	 *
-	 * @param Title|DIWikiPage $object
+	 * @param Title|WikiPage $object
 	 *
 	 * @return bool
 	 */
@@ -58,7 +56,7 @@ class NamespaceExaminer {
 			$namespace = $object->getNamespace();
 		}
 
-		if ( $object instanceof DIWikiPage ) {
+		if ( $object instanceof WikiPage ) {
 			$namespace = $object->getNamespace();
 		}
 
@@ -88,7 +86,7 @@ class NamespaceExaminer {
 		return $this->isEnabled( $namespace );
 	}
 
-	private function isEnabled( $namespace ) {
+	private function isEnabled( int $namespace ): bool {
 		return !empty( $this->registeredNamespaces[$namespace] );
 	}
 

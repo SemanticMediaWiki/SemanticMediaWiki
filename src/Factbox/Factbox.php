@@ -6,17 +6,17 @@ use MediaWiki\Html\Html;
 use MediaWiki\Html\TemplateParser;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Title\Title;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Localizer;
 use SMW\Localizer\Message;
 use SMW\ParserData;
-use SMW\SemanticData;
 use SMW\Store;
 use SMW\Utils\HtmlTabs;
-use SMWInfolink;
 
 /**
  * Class handling the "Factbox" content rendering
@@ -150,7 +150,7 @@ class Factbox {
 
 		$templateParser = new TemplateParser( __DIR__ . '/../../templates' );
 		$data = [
-			'data-header' => $this->getHeaderData( DIWikiPage::newFromTitle( $this->getTitle() ) ),
+			'data-header' => $this->getHeaderData( WikiPage::newFromTitle( $this->getTitle() ) ),
 			'array-sections' => [
 				'html-section' => $this->attachmentFormatter->buildHTML(
 					$this->attachments
@@ -332,7 +332,7 @@ class Factbox {
 		// MW's internal Parser does iterate the ParserOutput object several times
 		// which can leave a '_SKEY' property while in fact the container is empty.
 		$semanticData->removeProperty(
-			new DIProperty( '_SKEY' )
+			new Property( '_SKEY' )
 		);
 
 		return (bool)$semanticData->isEmpty();
@@ -342,10 +342,10 @@ class Factbox {
 		return ( (int)$this->featureSet & $feature ) != 0;
 	}
 
-	private function getHeaderData( DIWikiPage $subject ): array {
+	private function getHeaderData( WikiPage $subject ): array {
 		$dataValue = $this->dataValueFactory->newDataValueByItem( $subject, null );
 
-		$browselink = SMWInfolink::newBrowsingLink(
+		$browselink = Infolink::newBrowsingLink(
 			$dataValue->getPreferredCaption(),
 			$dataValue->getWikiValue(),
 			''
@@ -353,7 +353,7 @@ class Factbox {
 
 		return [
 			'html-title' => Message::get( [ 'smw-factbox-head', $browselink->getWikiText() ], Message::TEXT, Message::USER_LANGUAGE ),
-			'html-actions' => SMWInfolink::newInternalLink(
+			'html-actions' => Infolink::newInternalLink(
 				Message::get( 'smw_viewasrdf', Message::TEXT, Message::USER_LANGUAGE ),
 				Localizer::getInstance()->getNsText( NS_SPECIAL ) . ':ExportRDF/' . $dataValue->getWikiValue(),
 				'rdflink'

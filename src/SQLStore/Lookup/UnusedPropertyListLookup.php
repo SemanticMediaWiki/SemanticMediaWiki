@@ -4,13 +4,14 @@ namespace SMW\SQLStore\Lookup;
 
 use MediaWiki\Message\Message;
 use RuntimeException;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Error;
+use SMW\DataItems\Property;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyStatisticsStore;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDIError as DIError;
 
 /**
  * @license GPL-2.0-or-later
@@ -34,10 +35,10 @@ class UnusedPropertyListLookup implements ListLookup {
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty[]
+	 * @return Property[]
 	 * @throws RuntimeException
 	 */
-	public function fetchList() {
+	public function fetchList(): array {
 		if ( $this->requestOptions === null ) {
 			throw new RuntimeException( "Missing requestOptions" );
 		}
@@ -50,14 +51,14 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @return bool
 	 */
-	public function isFromCache() {
+	public function isFromCache(): bool {
 		return false;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return int
+	 * @return false|string
 	 */
 	public function getTimestamp() {
 		return wfTimestamp( TS_UNIX );
@@ -68,7 +69,7 @@ class UnusedPropertyListLookup implements ListLookup {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		return __METHOD__ . '#' . ( $this->requestOptions !== null ? $this->requestOptions->getHash() : '' );
 	}
 
@@ -108,7 +109,10 @@ class UnusedPropertyListLookup implements ListLookup {
 		return $res;
 	}
 
-	private function buildPropertyList( $res ) {
+	/**
+	 * @return mixed[]
+	 */
+	private function buildPropertyList( $res ): array {
 		$result = [];
 
 		foreach ( $res as $row ) {
@@ -118,11 +122,11 @@ class UnusedPropertyListLookup implements ListLookup {
 		return $result;
 	}
 
-	private function addPropertyFor( $title ) {
+	private function addPropertyFor( $title ): DataItem {
 		try {
-			$property = new DIProperty( $title );
-		} catch ( PropertyLabelNotResolvedException $e ) {
-			$property = new DIError( new Message( 'smw_noproperty', [ $title ] ) );
+			$property = new Property( $title );
+		} catch ( PropertyLabelNotResolvedException ) {
+			$property = new Error( new Message( 'smw_noproperty', [ $title ] ) );
 		}
 
 		return $property;

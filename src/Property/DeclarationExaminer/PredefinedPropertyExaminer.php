@@ -3,10 +3,10 @@
 namespace SMW\Property\DeclarationExaminer;
 
 use MediaWiki\Registration\ExtensionRegistry;
+use SMW\DataItems\Property;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
 use SMW\DataValues\TypesValue;
-use SMW\DIProperty;
 use SMW\Localizer\Message;
 use SMW\Property\DeclarationExaminer as IDeclarationExaminer;
 use SMW\PropertyRegistry;
@@ -33,7 +33,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function validate( DIProperty $property ) {
+	protected function validate( Property $property ) {
 		if ( $property->isUserDefined() ) {
 			return;
 		}
@@ -43,7 +43,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$this->checkGeoProperty( $property );
 	}
 
-	private function checkMessages( DIProperty $property ) {
+	private function checkMessages( Property $property ): void {
 		if ( Message::exists( 'smw-property-introductory-message-special' ) ) {
 			$this->messages[] = [ 'info', 'smw-property-introductory-message-special', $property->getLabel() ];
 		}
@@ -88,15 +88,15 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		$this->messages[] = [ 'plain', '_merge' => $messages ];
 	}
 
-	private function checkTypeDeclaration( DIProperty $property ) {
+	private function checkTypeDeclaration( Property $property ): void {
 		$semanticData = $this->getSemanticData();
 
-		if ( !$semanticData->hasProperty( new DIProperty( '_TYPE' ) ) ) {
+		if ( !$semanticData->hasProperty( new Property( '_TYPE' ) ) ) {
 			return;
 		}
 
 		$typeValues = $semanticData->getPropertyValues(
-			new DIProperty( '_TYPE' )
+			new Property( '_TYPE' )
 		);
 
 		if ( $typeValues !== [] ) {
@@ -107,7 +107,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 			return;
 		}
 
-		$prop = new DIProperty( $type );
+		$prop = new Property( $type );
 
 		// A violation occurs when a predefined property contains a `Has type`
 		// annotation that is incompatible with the default type.
@@ -119,7 +119,7 @@ class PredefinedPropertyExaminer extends DeclarationExaminer {
 		];
 	}
 
-	private function checkGeoProperty( DIProperty $property ) {
+	private function checkGeoProperty( Property $property ): void {
 		if ( $property->getKey() !== '_geo' || ExtensionRegistry::getInstance()->isLoaded( 'Maps' ) ) {
 			return;
 		}

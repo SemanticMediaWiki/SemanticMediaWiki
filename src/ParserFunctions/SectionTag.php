@@ -33,7 +33,7 @@ class SectionTag {
 	 *
 	 * @return bool
 	 */
-	public static function register( Parser $parser, $supportSectionTag = true ) {
+	public static function register( Parser $parser, $supportSectionTag = true ): bool {
 		if ( $supportSectionTag === false ) {
 			return false;
 		}

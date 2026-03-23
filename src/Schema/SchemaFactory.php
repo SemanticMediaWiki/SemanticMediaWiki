@@ -3,7 +3,7 @@
 namespace SMW\Schema;
 
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
 use SMW\Schema\Exception\SchemaConstructionFailedException;
 use SMW\Schema\Exception\SchemaTypeNotFoundException;
@@ -47,9 +47,9 @@ class SchemaFactory {
 	 *
 	 * @param string $type
 	 *
-	 * @return
+	 * @return array
 	 */
-	public function getType( $type ) {
+	public function getType( string $type ): array {
 		return $this->getSchemaTypes()->getType( $type );
 	}
 
@@ -58,12 +58,17 @@ class SchemaFactory {
 	 *
 	 * @param Schema|null $schema
 	 */
-	public function pushChangePropagationDispatchJob( ?Schema $schema = null ) {
+	public function pushChangePropagationDispatchJob( ?Schema $schema = null ): void {
 		if ( $schema === null ) {
 			return;
 		}
 
-		$type = $this->getType( $schema->get( 'type' ) );
+		$typeName = $schema->get( 'type' );
+		if ( !is_string( $typeName ) || $typeName === '' ) {
+			return;
+		}
+
+		$type = $this->getType( $typeName );
 
 		if ( !isset( $type['change_propagation'] ) || $type['change_propagation'] === false ) {
 			return;
@@ -73,7 +78,7 @@ class SchemaFactory {
 			$type['change_propagation'] = (array)$type['change_propagation'];
 		}
 
-		$subject = DIWikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
+		$subject = WikiPage::newFromText( $schema->getName(), SMW_NS_SCHEMA );
 
 		foreach ( $type['change_propagation'] as $property ) {
 			$params = [
@@ -156,7 +161,7 @@ class SchemaFactory {
 	 *
 	 * @return SchemaValidator
 	 */
-	public function newSchemaValidator() {
+	public function newSchemaValidator(): SchemaValidator {
 		return new SchemaValidator(
 			ApplicationFactory::getInstance()->create( 'JsonSchemaValidator' )
 		);
@@ -171,7 +176,7 @@ class SchemaFactory {
 		return new SchemaFilterFactory();
 	}
 
-	private function newSchemaTypes( array $types ) {
+	private function newSchemaTypes( array $types ): SchemaTypes {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

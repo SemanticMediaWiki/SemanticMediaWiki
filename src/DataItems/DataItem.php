@@ -5,8 +5,8 @@ namespace SMW\DataItems;
 use InvalidArgumentException;
 use MediaWiki\Json\JsonUnserializable;
 use MediaWiki\Json\JsonUnserializer;
+use SMW\DataModel\SemanticData;
 use SMW\Options;
-use SMW\SemanticData;
 
 /**
  * This group contains all parts of SMW that relate to the processing of dataitems
@@ -220,7 +220,7 @@ abstract class DataItem implements JsonUnserializable {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setOption( $key, $value ) {
+	public function setOption( $key, $value ): void {
 		if ( !$this->options instanceof Options ) {
 			$this->options = new Options();
 		}

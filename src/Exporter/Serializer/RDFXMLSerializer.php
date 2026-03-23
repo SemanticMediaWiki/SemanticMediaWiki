@@ -2,11 +2,11 @@
 
 namespace SMW\Exporter\Serializer;
 
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * Class for serializing exported data (encoded as ExpData object) in
@@ -23,6 +23,8 @@ class RDFXMLSerializer extends Serializer {
 	 * True if the $pre_ns_buffer contains the beginning of a namespace
 	 * declaration block to which further declarations for the current
 	 * context can be appended.
+	 *
+	 * @var bool|null
 	 */
 	protected $namespace_block_started;
 
@@ -33,13 +35,15 @@ class RDFXMLSerializer extends Serializer {
 	 * client (reflected herein by calling flushContent()). Later, namespaces
 	 * can only be added locally to individual elements, thus requiring them to
 	 * be re-added multiple times if used in many elements.
+	 *
+	 * @var bool|null
 	 */
 	protected $namespaces_are_global;
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function clear() {
+	public function clear(): void {
 		parent::clear();
 		$this->namespaces_are_global = false;
 		$this->namespace_block_started = false;
@@ -103,14 +107,14 @@ class RDFXMLSerializer extends Serializer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeDeclaration( $uri, $typename ) {
+	public function serializeDeclaration( $uri, $typename ): void {
 		$this->post_ns_buffer .= "\t<$typename rdf:about=\"$uri\" />\n";
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function serializeExpData( ExpData $expData ) {
+	public function serializeExpData( ExpData $expData ): void {
 		$this->serializeNestedExpData( $expData, '' );
 		$this->serializeNamespaces();
 
@@ -318,7 +322,7 @@ class RDFXMLSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	protected function makeValueEntityString( $string ) {
+	protected function makeValueEntityString( $string ): string {
 		return "'" . str_replace( '%', '&#37;', $string ) . "'";
 	}
 
@@ -329,7 +333,7 @@ class RDFXMLSerializer extends Serializer {
 	 *
 	 * @return string
 	 */
-	protected function makeAttributeValueString( $string ) {
+	protected function makeAttributeValueString( $string ): string|array {
 		return str_replace( [ '&', '>', '<' ], [ '&amp;', '&gt;', '&lt;' ], $string );
 	}
 

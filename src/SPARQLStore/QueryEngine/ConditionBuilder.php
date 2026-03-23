@@ -3,10 +3,12 @@
 namespace SMW\SPARQLStore\QueryEngine;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValues\PropertyChainValue;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Serializer\TurtleSerializer;
@@ -18,8 +20,6 @@ use SMW\SPARQLStore\QueryEngine\Condition\Condition;
 use SMW\SPARQLStore\QueryEngine\Condition\SingletonCondition;
 use SMW\SPARQLStore\QueryEngine\Condition\TrueCondition;
 use SMW\Utils\CircularReferenceGuard;
-use SMWDataItem as DataItem;
-use SMWExporter as Exporter;
 
 /**
  * Build an internal representation for a SPARQL condition from individual query
@@ -48,10 +48,7 @@ class ConditionBuilder {
 	 */
 	private $hierarchyLookup;
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * @var array
@@ -85,7 +82,7 @@ class ConditionBuilder {
 	private $joinVariable;
 
 	/**
-	 * @var DIProperty|null
+	 * @var Property|null
 	 */
 	private $orderByProperty;
 
@@ -125,7 +122,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getNextVariable( $prefix = 'v' ) {
+	public function getNextVariable( $prefix = 'v' ): string {
 		return $prefix . ( ++$this->variableCounter );
 	}
 
@@ -162,7 +159,7 @@ class ConditionBuilder {
 	 *
 	 * @param string $error
 	 */
-	public function addError( $error, $type = Message::TEXT ) {
+	public function addError( $error, $type = Message::TEXT ): void {
 		$this->errors[Message::getHash( $error, $type )] = Message::encode( $error, $type );
 	}
 
@@ -171,7 +168,7 @@ class ConditionBuilder {
 	 *
 	 * @param CircularReferenceGuard $circularReferenceGuard
 	 */
-	public function setCircularReferenceGuard( CircularReferenceGuard $circularReferenceGuard ) {
+	public function setCircularReferenceGuard( CircularReferenceGuard $circularReferenceGuard ): void {
 		$this->circularReferenceGuard = $circularReferenceGuard;
 	}
 
@@ -189,7 +186,7 @@ class ConditionBuilder {
 	 *
 	 * @param HierarchyLookup $hierarchyLookup
 	 */
-	public function setHierarchyLookup( HierarchyLookup $hierarchyLookup ) {
+	public function setHierarchyLookup( HierarchyLookup $hierarchyLookup ): void {
 		$this->hierarchyLookup = $hierarchyLookup;
 	}
 
@@ -208,7 +205,7 @@ class ConditionBuilder {
 	 * @param string $joinVariable name of the variable that conditions
 	 * will refer to
 	 */
-	public function setJoinVariable( $joinVariable ) {
+	public function setJoinVariable( $joinVariable ): void {
 		$this->joinVariable = $joinVariable;
 	}
 
@@ -224,18 +221,18 @@ class ConditionBuilder {
 	/**
 	 * @since 2.2
 	 *
-	 * @param DIProperty|null $orderByProperty if given then
+	 * @param Property|null $orderByProperty if given then
 	 * this is the property the values of which this condition will refer
 	 * to, and the condition should also enable ordering by this value
 	 */
-	public function setOrderByProperty( $orderByProperty ) {
+	public function setOrderByProperty( $orderByProperty ): void {
 		$this->orderByProperty = $orderByProperty;
 	}
 
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIProperty|null
+	 * @return Property|null
 	 */
 	public function getOrderByProperty() {
 		return $this->orderByProperty;
@@ -300,7 +297,7 @@ class ConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function convertConditionToString( Condition &$condition ) {
+	public function convertConditionToString( Condition &$condition ): string|array {
 		$conditionAsString = $condition->getWeakConditionString();
 
 		if ( ( $conditionAsString === '' ) && !$condition->isSafe() ) {
@@ -354,7 +351,7 @@ class ConditionBuilder {
 	 * @return string|null
 	 */
 	public function tryToFindRedirectVariableForDataItem( ?DataItem $dataItem = null ) {
-		if ( !$dataItem instanceof DIWikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
+		if ( !$dataItem instanceof WikiPage || !$this->isSetFlag( SMW_SPARQL_QF_REDI ) ) {
 			return null;
 		}
 
@@ -399,7 +396,7 @@ class ConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function isSetFlag( $featureFlag ) {
+	public function isSetFlag( $featureFlag ): bool {
 		$canUse = true;
 
 		// Adhere additional condition
@@ -423,7 +420,7 @@ class ConditionBuilder {
 	 * @param mixed $orderByProperty DIProperty or null
 	 * @param int $diType DataItem type id if known, or DataItem::TYPE_NOTYPE to determine it from the property
 	 */
-	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ) {
+	public function addOrderByDataForProperty( Condition &$sparqlCondition, $mainVariable, $orderByProperty, $diType = DataItem::TYPE_NOTYPE ): void {
 		if ( $orderByProperty === null ) {
 			return;
 		}
@@ -443,7 +440,7 @@ class ConditionBuilder {
 	 * @param string $mainVariable the variable that represents the value to be ordered
 	 * @param int $diType DataItem type id
 	 */
-	public function addOrderByData( Condition &$condition, $mainVariable, $diType ) {
+	public function addOrderByData( Condition &$condition, $mainVariable, $diType ): void {
 		if ( $diType !== DataItem::TYPE_WIKIPAGE ) {
 			$condition->orderByVariable = $mainVariable;
 			return;
@@ -489,7 +486,7 @@ class ConditionBuilder {
 		}
 	}
 
-	private function addOrderForUnknownPropertyKey( Condition &$condition, $propertyKey, $order ) {
+	private function addOrderForUnknownPropertyKey( Condition &$condition, string $propertyKey, $order ) {
 		if ( $propertyKey === '' || $propertyKey === '#' ) { // order by result page sortkey
 
 			$this->addOrderByData(
@@ -531,7 +528,7 @@ class ConditionBuilder {
 			$auxDescription = $description;
 		} else {
 			$auxDescription = $this->descriptionFactory->newSomeProperty(
-				new DIProperty( $propertyKey ),
+				new Property( $propertyKey ),
 				$this->descriptionFactory->newThingDescription()
 			);
 		}
@@ -579,7 +576,7 @@ class ConditionBuilder {
 	 *	}
 	 * }
 	 */
-	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ) {
+	private function addPropertyPathToMatchRedirectTargets( Condition &$condition ): void {
 		if ( $this->redirectByVariableReplacementMap === [] ) {
 			return;
 		}
@@ -605,7 +602,7 @@ class ConditionBuilder {
 	 *
 	 * Remove entities that contain a "swivt:redirectsTo" predicate
 	 */
-	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ) {
+	private function addFilterToRemoveEntitiesThatContainRedirectPredicate( Condition &$condition ): void {
 		$rediExpElement = Exporter::getInstance()->getSpecialPropertyResource( '_REDI' );
 		$namespaces[$rediExpElement->getNamespaceId()] = $rediExpElement->getNamespace();
 

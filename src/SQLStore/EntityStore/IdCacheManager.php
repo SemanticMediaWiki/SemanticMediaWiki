@@ -2,8 +2,9 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use Onoi\Cache\Cache;
 use RuntimeException;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 
 /**
  * @license GPL-2.0-or-later
@@ -49,7 +50,7 @@ class IdCacheManager {
 	 *
 	 * @return string
 	 */
-	public static function computeSha1( $args = '' ) {
+	public static function computeSha1( $args = '' ): string {
 		return sha1( json_encode( $args ) );
 	}
 
@@ -58,7 +59,7 @@ class IdCacheManager {
 	 *
 	 * @param string $key
 	 *
-	 * @return bool
+	 * @return Cache
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->caches[$key] ) ) {
@@ -93,7 +94,7 @@ class IdCacheManager {
 	 * @param int $id
 	 * @param string $sortkey
 	 */
-	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ) {
+	public function setCache( $title, $namespace, $interwiki, $subobject, $id, $sortkey ): void {
 		if ( is_array( $title ) ) {
 			throw new RuntimeException( "Expected a string instead an array was detected!" );
 		}
@@ -109,7 +110,7 @@ class IdCacheManager {
 		$this->caches['entity.id']->save( $hash, $id );
 		$this->caches['entity.sort']->save( $hash, $sortkey );
 
-		$dataItem = new DIWikiPage( $title, $namespace, $interwiki, $subobject );
+		$dataItem = new WikiPage( $title, $namespace, $interwiki, $subobject );
 		$dataItem->setId( $id );
 		$dataItem->setSortKey( $sortkey );
 
@@ -129,7 +130,7 @@ class IdCacheManager {
 	 * @param string $interwiki
 	 * @param string $subobject
 	 */
-	public function deleteCache( $title, $namespace, $interwiki, $subobject ) {
+	public function deleteCache( $title, $namespace, $interwiki, $subobject ): void {
 		$hash = $this->computeSha1(
 			[ $title, (int)$namespace, $interwiki, $subobject ]
 		);
@@ -147,17 +148,17 @@ class IdCacheManager {
 	 *
 	 * @param string $id
 	 */
-	public function deleteCacheById( $id ) {
+	public function deleteCacheById( $id ): void {
 		$dataItem = $this->caches['entity.lookup']->fetch( $id );
 
-		if ( !$dataItem instanceof DIWikiPage ) {
+		if ( !$dataItem instanceof WikiPage ) {
 			return;
 		}
 
 		$hash = $this->computeSha1(
 			[
 				$dataItem->getDBKey(),
-				(int)$dataItem->getNamespace(),
+				$dataItem->getNamespace(),
 				$dataItem->getInterwiki(),
 				$dataItem->getSubobjectName()
 			]
@@ -173,15 +174,15 @@ class IdCacheManager {
 	 *
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|array $args
+	 * @param WikiPage|array $args
 	 *
-	 * @return int|bool
+	 * @return int|false
 	 */
-	public function getId( $args ) {
-		if ( $args instanceof DIWikiPage ) {
+	public function getId( $args ): int|false {
+		if ( $args instanceof WikiPage ) {
 			$args = [
 				$args->getDBKey(),
-				(int)$args->getNamespace(),
+				$args->getNamespace(),
 				$args->getInterwiki(),
 				$args->getSubobjectName()
 			];

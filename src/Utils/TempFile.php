@@ -18,7 +18,7 @@ class TempFile extends File {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function generate() {
+	public function generate(): string {
 		$args = func_get_args();
 		$key = array_shift( $args );
 
@@ -39,7 +39,7 @@ class TempFile extends File {
 	 * @return string
 	 * @throws RuntimeException
 	 */
-	public function get( $file ) {
+	public function get( $file ): string {
 		$tmpDir = [];
 		$path = '';
 

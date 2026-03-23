@@ -2,14 +2,15 @@
 
 namespace SMW\SQLStore\Lookup;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Time;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
+use SMW\MediaWiki\Connection\Query;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
 use Wikimedia\Rdbms\Platform\ISQLPlatform;
 
 /**
@@ -29,26 +30,26 @@ class ProximityPropertyValueLookup {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
-	 * @param $search
+	 * @param Property $property
+	 * @param string $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function lookup( DIProperty $property, $search, RequestOptions $opts ) {
+	public function lookup( Property $property, string $search, RequestOptions $opts ): array {
 		return $this->fetchFromTable( $property, $search, $opts );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param $search
 	 * @param RequestOptions $opts
 	 *
 	 * @return array
 	 */
-	public function fetchFromTable( DIProperty $property, $search, RequestOptions $opts ) {
+	public function fetchFromTable( Property $property, string $search, RequestOptions $opts ): array {
 		$options = [];
 		$list = [];
 
@@ -78,7 +79,7 @@ class ProximityPropertyValueLookup {
 		];
 
 		if ( $diType === DataItem::TYPE_WIKIPAGE ) {
-			return $this->fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset );
+			return $this->fetchFromIDTable( $query, $pid, $table, $options, $search, $sort );
 		}
 
 		$query->field( $field );
@@ -122,7 +123,7 @@ class ProximityPropertyValueLookup {
 			// transformed it!
 			if ( $diType === DataItem::TYPE_TIME ) {
 				$value = DataValueFactory::getInstance()->newDataValueByItem(
-					DITime::doUnserialize( $value ), $property )->getWikiValue();
+					Time::doUnserialize( $value ), $property )->getWikiValue();
 			}
 
 			$list[] = $value;
@@ -131,7 +132,17 @@ class ProximityPropertyValueLookup {
 		return $list;
 	}
 
-	private function fetchFromIDTable( $query, $pid, $table, $field, $options, $search, $sort, $limit, $offset ) {
+	/**
+	 * @param Query $query
+	 * @param int $pid
+	 * @param ?string $table
+	 * @param array $options
+	 * @param string $search
+	 * @param string $sort
+	 *
+	 * @return mixed[][]|string[]
+	 */
+	private function fetchFromIDTable( Query $query, int $pid, ?string $table, array $options, string $search, string|false $sort ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$continueOffset = 0;
 		$res = [];
@@ -140,7 +151,7 @@ class ProximityPropertyValueLookup {
 			$this->build_like( $query, 'smw_sortkey', $search );
 		}
 
-		if ( $sort ) {
+		if ( is_string( $sort ) && $sort !== '' ) {
 			$options['ORDER BY'] = "smw_title $sort";
 		}
 
@@ -227,7 +238,7 @@ class ProximityPropertyValueLookup {
 		return false;
 	}
 
-	private function getField( $property ) {
+	private function getField( Property $property ): array {
 		$typeId = $property->findPropertyTypeID();
 		$diType = DataTypeRegistry::getInstance()->getDataItemId( $typeId );
 
@@ -238,8 +249,9 @@ class ProximityPropertyValueLookup {
 		return [ $diHandler->getLabelField(), $diType ];
 	}
 
-	private function build_like( $query, $field, $search ) {
+	private function build_like( $query, $field, $search ): void {
 		$conds = [
+			// @phan-suppress-next-line PhanUselessBinaryAddRight
 			'%' . $search . '%',
 			'%' . ucfirst( $search ) . '%',
 			'%' . strtoupper( $search ) . '%'

@@ -5,7 +5,7 @@ namespace SMW\DataValues\ValueFormatters;
 use RuntimeException;
 use SMW\DataValues\DataValue;
 use SMW\DataValues\NumberValue;
-use SMW\Highlighter;
+use SMW\Formatters\Highlighter;
 
 /**
  * @license GPL-2.0-or-later
@@ -20,7 +20,7 @@ class NumberValueFormatter extends DataValueFormatter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isFormatterFor( DataValue $dataValue ) {
+	public function isFormatterFor( DataValue $dataValue ): bool {
 		return $dataValue instanceof NumberValue;
 	}
 

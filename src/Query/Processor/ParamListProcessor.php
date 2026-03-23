@@ -57,7 +57,7 @@ class ParamListProcessor {
 	 *
 	 * @return array
 	 */
-	public function preprocess( array $parameters, $showMode = false ) {
+	public function preprocess( array $parameters, $showMode = false ): array {
 		$previousPrintout = null;
 
 		$serialization = [
@@ -124,7 +124,7 @@ class ParamListProcessor {
 		return $serialization;
 	}
 
-	private function legacy_format( array $paramList ) {
+	private function legacy_format( array $paramList ): array {
 		$printouts = [];
 
 		foreach ( $paramList['printouts'] as $k => $request ) {
@@ -169,7 +169,7 @@ class ParamListProcessor {
 		];
 	}
 
-	private function encodeEq( $param ) {
+	private function encodeEq( $param ): string|array|null {
 		// Bug 32955 / #640
 		// Modify (e.g. replace `=`) a condition string only if enclosed by
 		// [[ ... ]]
@@ -187,7 +187,7 @@ class ParamListProcessor {
 		);
 	}
 
-	private function addPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
+	private function addPrintRequest( int|string $name, $param, &$previousPrintout, array &$serialization ): void {
 		$param = substr( $param, 1 );
 
 		// Currently we don't filter any duplicates hence the additional
@@ -201,7 +201,7 @@ class ParamListProcessor {
 		];
 	}
 
-	private function addThisPrintRequest( $name, $param, &$previousPrintout, array &$serialization ) {
+	private function addThisPrintRequest( int|string $name, $param, &$previousPrintout, array &$serialization ): void {
 		$param = substr( $param, 1 );
 
 		$parts = explode( '=', $param, 2 );
@@ -209,7 +209,7 @@ class ParamListProcessor {
 		$previousPrintout = self::PRINT_THIS;
 	}
 
-	private function addPrintRequestParameter( $name, $param, $previousPrintout, array &$serialization ) {
+	private function addPrintRequestParameter( int|string $name, $param, $previousPrintout, array &$serialization ): void {
 		if ( $previousPrintout === null ) {
 			return;
 		}
@@ -232,7 +232,7 @@ class ParamListProcessor {
 		}
 	}
 
-	private function addOtherParameters( $name, $param, array &$serialization, $showMode ) {
+	private function addOtherParameters( int|string $name, $param, array &$serialization, $showMode ): void {
 		// #1645
 		$parts = $showMode && $name == 0 ? $param : explode( '=', $param, 2 );
 

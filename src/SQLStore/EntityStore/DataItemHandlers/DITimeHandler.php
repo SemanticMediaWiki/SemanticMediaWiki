@@ -2,11 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore\DataItemHandlers;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Time;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\Exception\DataItemHandlerException;
 use SMW\SQLStore\TableBuilder\FieldType;
-use SMWDataItem as DataItem;
-use SMWDITime as DITime;
 
 /**
  * This class implements Store access to Time data items.
@@ -23,7 +23,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableFields() {
+	public function getTableFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE,
 			'o_sortkey' => FieldType::TYPE_DOUBLE
@@ -35,7 +35,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFetchFields() {
+	public function getFetchFields(): array {
 		return [
 			'o_serialized' => FieldType::FIELD_TITLE
 		];
@@ -46,7 +46,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getTableIndexes() {
+	public function getTableIndexes(): array {
 		return [
 
 			// API module pvalue lookup
@@ -68,8 +68,8 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexHint( $key ) {
-		if ( 'property.subjects' && $this->isDbType( 'mysql' ) ) {
+	public function getIndexHint( $key ): string {
+		if ( $key === 'property.subjects' && $this->isDbType( 'mysql' ) ) {
 			return 's_id';
 		}
 
@@ -81,7 +81,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getWhereConds( DataItem $dataItem ) {
+	public function getWhereConds( DataItem $dataItem ): array {
 		return [ 'o_sortkey' => $dataItem->getSortKey() ];
 	}
 
@@ -90,7 +90,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getInsertValues( DataItem $dataItem ) {
+	public function getInsertValues( DataItem $dataItem ): array {
 		return [
 			'o_serialized' => $dataItem->getSerialization(),
 			'o_sortkey' => $dataItem->getSortKey()
@@ -105,7 +105,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getIndexField() {
+	public function getIndexField(): string {
 		return 'o_sortkey';
 	}
 
@@ -114,7 +114,7 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getLabelField() {
+	public function getLabelField(): string {
 		return 'o_serialized';
 	}
 
@@ -123,9 +123,9 @@ class DITimeHandler extends DataItemHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function dataItemFromDBKeys( $dbkeys ) {
+	public function dataItemFromDBKeys( $dbkeys ): Time {
 		if ( is_string( $dbkeys ) ) {
-			return DITime::doUnserialize( $dbkeys );
+			return Time::doUnserialize( $dbkeys );
 		}
 
 		throw new DataItemHandlerException( 'Failed to create data item from DB keys.' );

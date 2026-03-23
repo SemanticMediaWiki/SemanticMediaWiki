@@ -5,7 +5,6 @@ namespace SMW\Formatters;
 use MediaWiki\Html\Html;
 use MediaWiki\Language\Language;
 use MediaWiki\Message\Message;
-use SMW\Highlighter;
 use SMW\ProcessingErrorMsgHandler;
 
 /**
@@ -171,7 +170,7 @@ class MessageFormatter {
 	 *
 	 * @return bool
 	 */
-	public function exists() {
+	public function exists(): bool {
 		return $this->messages !== [];
 	}
 
@@ -203,7 +202,7 @@ class MessageFormatter {
 	 *
 	 * @return array
 	 */
-	protected function doFormat( array $messages ) {
+	protected function doFormat( array $messages ): array {
 		$newArray = [];
 
 		foreach ( $messages as $msg ) {

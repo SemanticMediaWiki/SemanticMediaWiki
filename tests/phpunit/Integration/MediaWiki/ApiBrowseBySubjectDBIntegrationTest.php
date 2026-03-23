@@ -2,11 +2,11 @@
 
 namespace SMW\Tests\Integration\MediaWiki;
 
+use SMW\DataModel\SemanticData;
+use SMW\DataModel\Subobject;
 use SMW\DataValueFactory;
 use SMW\MediaWiki\Api\BrowseBySubject;
-use SMW\SemanticData;
 use SMW\SerializerFactory;
-use SMW\Subobject;
 use SMW\Tests\SMWIntegrationTestCase;
 use SMW\Tests\Utils\MwApiFactory;
 use SMW\Tests\Utils\SemanticDataFactory;

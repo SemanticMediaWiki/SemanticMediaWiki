@@ -39,7 +39,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * @see ContentHandler::isParserCacheSupported
 	 */
-	public function isParserCacheSupported() {
+	public function isParserCacheSupported(): bool {
 		return true;
 	}
 
@@ -48,7 +48,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getContentClass() {
+	protected function getContentClass(): string {
 		return SchemaContent::class;
 	}
 
@@ -57,7 +57,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsSections() {
+	public function supportsSections(): bool {
 		return false;
 	}
 
@@ -66,7 +66,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsCategories() {
+	public function supportsCategories(): bool {
 		return false;
 	}
 
@@ -75,7 +75,7 @@ class SchemaContentHandler extends JsonContentHandler {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function supportsRedirects() {
+	public function supportsRedirects(): bool {
 		return false;
 	}
 
@@ -269,8 +269,9 @@ class SchemaContentHandler extends JsonContentHandler {
 			}
 		}
 
+		$schemaType = $schema->get( 'type' );
 		$contentFormatter->setType(
-			$schemaFactory->getType( $schema->get( 'type' ) )
+			is_string( $schemaType ) ? $schemaFactory->getType( $schemaType ) : []
 		);
 
 		$output->setContentHolderText(

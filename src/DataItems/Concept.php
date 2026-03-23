@@ -48,7 +48,7 @@ class Concept extends DataItem {
 	) {
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_CONCEPT;
 	}
 
@@ -76,7 +76,7 @@ class Concept extends DataItem {
 		return $this->m_docu;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return serialize( $this );
 	}
 
@@ -87,7 +87,7 @@ class Concept extends DataItem {
 	 *
 	 * @param string
 	 */
-	public function setCacheStatus( $status ) {
+	public function setCacheStatus( $status ): void {
 		$this->cacheStatus = $status;
 	}
 
@@ -98,7 +98,7 @@ class Concept extends DataItem {
 	 *
 	 * @param string
 	 */
-	public function setCacheDate( $date ) {
+	public function setCacheDate( $date ): void {
 		$this->cacheDate = $date;
 	}
 
@@ -109,7 +109,7 @@ class Concept extends DataItem {
 	 *
 	 * @param int
 	 */
-	public function setCacheCount( $count ) {
+	public function setCacheCount( $count ): void {
 		$this->cacheCount = $count;
 	}
 

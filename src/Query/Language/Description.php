@@ -48,7 +48,7 @@ abstract class Description {
 	 *
 	 * @param PrintRequest[] $printRequests
 	 */
-	public function setPrintRequests( array $printRequests ) {
+	public function setPrintRequests( array $printRequests ): void {
 		$this->m_printreqs = $printRequests;
 	}
 
@@ -57,7 +57,7 @@ abstract class Description {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function addPrintRequest( PrintRequest $printRequest ) {
+	public function addPrintRequest( PrintRequest $printRequest ): void {
 		$this->m_printreqs[] = $printRequest;
 	}
 
@@ -67,7 +67,7 @@ abstract class Description {
 	 *
 	 * @param PrintRequest $printRequest
 	 */
-	public function prependPrintRequest( PrintRequest $printRequest ) {
+	public function prependPrintRequest( PrintRequest $printRequest ): void {
 		array_unshift( $this->m_printreqs, $printRequest );
 	}
 
@@ -110,7 +110,7 @@ abstract class Description {
 	 *
 	 * @param string $membership
 	 */
-	public function setMembership( $membership ) {
+	public function setMembership( $membership ): void {
 		$this->membership = $membership;
 	}
 

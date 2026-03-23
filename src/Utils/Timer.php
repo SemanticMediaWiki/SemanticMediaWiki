@@ -40,14 +40,14 @@ class Timer {
 	/**
 	 * @since 2.5
 	 */
-	public static function start( $name ) {
+	public static function start( $name ): void {
 		self::$start[$name] = microtime( true );
 	}
 
 	/**
 	 * @since 3.2
 	 */
-	public function new( $name ) {
+	public function new( $name ): void {
 		$this->times[$name] = microtime( true );
 	}
 
@@ -99,7 +99,7 @@ class Timer {
 	 *
 	 * @return string
 	 */
-	public static function getElapsedTimeAsLoggableMessage( $name, $round = null ) {
+	public static function getElapsedTimeAsLoggableMessage( $name, $round = null ): string {
 		return $name . ' (procTime in sec: ' . self::getElapsedTime( $name, $round ) . ')';
 	}
 

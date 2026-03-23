@@ -45,7 +45,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @return bool
 	 */
-	public function canInterpretDescription( Description $description ) {
+	public function canInterpretDescription( Description $description ): bool {
 		return $description instanceof ConceptDescription;
 	}
 
@@ -54,7 +54,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 	 *
 	 * @param QueryParser $queryParser
 	 */
-	public function setQueryParser( QueryParser $queryParser ) {
+	public function setQueryParser( QueryParser $queryParser ): void {
 		$this->queryParser = $queryParser;
 	}
 
@@ -174,7 +174,7 @@ class ConceptDescriptionInterpreter implements DescriptionInterpreter {
 		);
 	}
 
-	private function findCircularDescription( $concept, &$description ) {
+	private function findCircularDescription( $concept, &$description ): void {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError(

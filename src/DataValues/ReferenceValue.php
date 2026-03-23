@@ -8,10 +8,10 @@ use SMW\DataItems\Property;
 use SMW\DataItems\Time;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\DataValues\ValueFormatters\DataValueFormatter;
 use SMW\Localizer\Message;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -66,7 +66,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 			if ( $property instanceof Property ) {
 				$this->properties[] = $property;
@@ -88,7 +88,7 @@ class ReferenceValue extends AbstractMultiValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getValuesFromString( $value ) {
+	public function getValuesFromString( $value ): array {
 		// #664 / T17732
 		$value = str_replace( "\;", "-3B", $value );
 
@@ -254,7 +254,7 @@ class ReferenceValue extends AbstractMultiValue {
 	/**
 	 * @see DataValue::loadDataItem
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() === DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
 			return true;

@@ -70,7 +70,7 @@ class AllowsPatternValue extends StringValue {
 	 *
 	 * @return string
 	 */
-	public function getShortWikiText( $linker = null ) {
+	public function getShortWikiText( $linker = null ): string {
 		if ( !$this->isValid() ) {
 			return '';
 		}

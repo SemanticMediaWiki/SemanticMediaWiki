@@ -24,7 +24,7 @@ class CharExaminer {
 	 *
 	 * @return bool
 	 */
-	public static function isCJK( $text ) {
+	public static function isCJK( $text ): bool {
 		if ( self::contains( self::HAN, $text ) ) {
 			return true;
 		}

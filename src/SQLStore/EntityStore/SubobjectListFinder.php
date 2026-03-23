@@ -2,9 +2,11 @@
 
 namespace SMW\SQLStore\EntityStore;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\IteratorFactory;
+use SMW\Iterators\MappingIterator;
+use SMW\Iterators\ResultIterator;
 use SMW\SQLStore\SQLStore;
 
 /**
@@ -18,17 +20,17 @@ use SMW\SQLStore\SQLStore;
 class SubobjectListFinder {
 
 	/**
-	 * @var DIWikiPage
+	 * @var WikiPage
 	 */
 	private $subject;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $mappingIterator = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $skipConditions = [];
 
@@ -44,11 +46,11 @@ class SubobjectListFinder {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return MappingIterator
 	 */
-	public function find( DIWikiPage $subject ) {
+	public function find( WikiPage $subject ) {
 		$key = $subject->getHash() . ':' . $subject->getId();
 
 		if ( !isset( $this->mappingIterator[$key] ) ) {
@@ -64,18 +66,18 @@ class SubobjectListFinder {
 	 *
 	 * @since 2.5
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 *
 	 * @return MappingIterator
 	 */
-	private function newMappingIterator( DIWikiPage $subject ) {
+	private function newMappingIterator( WikiPage $subject ): MappingIterator {
 		$callback = static function ( $row ) use ( $subject ) {
 			// #1955
 			if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-				$property = new DIProperty( $subject->getDBkey() );
+				$property = new Property( $subject->getDBkey() );
 				$subobject = $property->getCanonicalDiWikiPage( $row->smw_subobject );
 			} else {
-				$subobject = new DIWikiPage(
+				$subobject = new WikiPage(
 					$subject->getDBkey(),
 					$subject->getNamespace(),
 					$subject->getInterwiki(),
@@ -95,14 +97,14 @@ class SubobjectListFinder {
 		);
 	}
 
-	private function newResultIterator( DIWikiPage $subject ) {
+	private function newResultIterator( WikiPage $subject ): ResultIterator {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$key = $subject->getDBkey();
 
 		// #1955 Ensure to match a possible predefined property
 		// (Modification date -> _MDAT)
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY ) {
-			$key = DIProperty::newFromUserLabel( $key )->getKey();
+			$key = Property::newFromUserLabel( $key )->getKey();
 		}
 
 		$conditions = [

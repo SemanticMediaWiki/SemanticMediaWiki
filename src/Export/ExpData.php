@@ -30,9 +30,8 @@ class ExpData implements Element {
 
 	/**
 	 * The subject of the data that we store.
-	 * @var ExpResource
 	 */
-	protected $m_subject;
+	protected ExpResource $m_subject;
 
 	/**
 	 * Array mapping property URIs to arrays their values, given as
@@ -137,7 +136,7 @@ class ExpData implements Element {
 	 *
 	 * @return ExpResource
 	 */
-	public function getSubject() {
+	public function getSubject(): ExpResource {
 		return $this->m_subject;
 	}
 
@@ -149,7 +148,7 @@ class ExpData implements Element {
 	 * @param ExpNsResource $property
 	 * @param Element $child
 	 */
-	public function addPropertyObjectValue( ExpNsResource $property, Element $child ) {
+	public function addPropertyObjectValue( ExpNsResource $property, Element $child ): void {
 		$this->hash = null;
 
 		if ( !array_key_exists( $property->getUri(), $this->m_edges ) ) {
@@ -288,7 +287,7 @@ class ExpData implements Element {
 	 *
 	 * @return array<array{Element, Element, Element}> array of ExpElement
 	 */
-	public function getTripleList( ?Element $subject = null ) {
+	public function getTripleList( ?Element $subject = null ): array {
 		global $smwgBnodeCount;
 		if ( !isset( $smwgBnodeCount ) ) {
 			$smwgBnodeCount = 0;

@@ -15,7 +15,6 @@ use Onoi\CallbackContainer\ContainerBuilder;
 use SMW\CacheFactory;
 use SMW\Connection\ConnectionManager;
 use SMW\ConstraintFactory;
-use SMW\ContentParser;
 use SMW\DataItemFactory;
 use SMW\DependencyValidator;
 use SMW\DisplayTitleFinder;
@@ -23,6 +22,7 @@ use SMW\Elastic\ElasticFactory;
 use SMW\EntityCache;
 use SMW\Factbox\FactboxFactory;
 use SMW\Factbox\FactboxText;
+use SMW\Formatters\MessageFormatter;
 use SMW\HierarchyLookup;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\InMemoryPoolCache;
@@ -45,8 +45,8 @@ use SMW\MediaWiki\Permission\TitlePermissions;
 use SMW\MediaWiki\Preference\PreferenceExaminer;
 use SMW\MediaWiki\RevisionGuard;
 use SMW\MediaWiki\TitleFactory;
-use SMW\MessageFormatter;
 use SMW\NamespaceExaminer;
+use SMW\Parser\ContentParser;
 use SMW\Parser\LinksProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
@@ -86,7 +86,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @since 2.3
 	 */
-	public function register( ContainerBuilder $containerBuilder ) {
+	public function register( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'Store', [ $this, 'newStore' ] );
 		$containerBuilder->registerCallback( 'IndicatorRegistry', [ $this, 'newIndicatorRegistry' ] );
 
@@ -134,7 +134,7 @@ class SharedServicesContainer implements CallbackContainer {
 	 *
 	 * @return IndicatorRegistry
 	 */
-	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ) {
+	public function newIndicatorRegistry( ContainerBuilder $containerBuilder, bool $addEntityExaminer ): IndicatorRegistry {
 		$indicatorRegistry = new IndicatorRegistry();
 
 		if ( !$addEntityExaminer ) {
@@ -154,7 +154,7 @@ class SharedServicesContainer implements CallbackContainer {
 		return $indicatorRegistry;
 	}
 
-	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ) {
+	private function registerCallbackHandlers( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'Settings', static function ( $containerBuilder ) {
 			$containerBuilder->registerExpectedReturnType( 'Settings', Settings::class );
 
@@ -453,7 +453,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 	}
 
-	private function registerCallableFactories( ContainerBuilder $containerBuilder ) {
+	private function registerCallableFactories( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'CacheFactory', static function ( $containerBuilder, $mainCacheType = null ) {
 			$containerBuilder->registerExpectedReturnType( 'CacheFactory', CacheFactory::class );
 			return new CacheFactory( $mainCacheType );
@@ -513,7 +513,7 @@ class SharedServicesContainer implements CallbackContainer {
 		} );
 	}
 
-	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ) {
+	private function registerCallbackHandlersByConstructedInstance( ContainerBuilder $containerBuilder ): void {
 		$containerBuilder->registerCallback( 'BlobStore', static function ( $containerBuilder, $namespace, $cacheType = null, $ttl = 0 ) {
 			$containerBuilder->registerExpectedReturnType( 'BlobStore', BlobStore::class );
 

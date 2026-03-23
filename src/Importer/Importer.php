@@ -50,7 +50,7 @@ class Importer implements MessageReporterAware {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
@@ -59,7 +59,7 @@ class Importer implements MessageReporterAware {
 	 *
 	 * @param bool $isEnabled
 	 */
-	public function isEnabled( $isEnabled ) {
+	public function isEnabled( $isEnabled ): void {
 		$this->isEnabled = $isEnabled;
 	}
 
@@ -68,14 +68,14 @@ class Importer implements MessageReporterAware {
 	 *
 	 * @param int|bool $reqVersion
 	 */
-	public function setReqVersion( $reqVersion ) {
+	public function setReqVersion( $reqVersion ): void {
 		$this->reqVersion = $reqVersion;
 	}
 
 	/**
 	 * @since 4.0
 	 */
-	public function setImporter( string $importer ) {
+	public function setImporter( string $importer ): void {
 		$this->importer = $importer;
 	}
 
@@ -120,7 +120,7 @@ class Importer implements MessageReporterAware {
 		}
 	}
 
-	private function doImport( ImportContents $importContents ) {
+	private function doImport( ImportContents $importContents ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		if ( $importContents->getErrors() === [] ) {

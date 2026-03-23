@@ -3,11 +3,11 @@
 namespace SMW\Query\DescriptionBuilders;
 
 use SMW\DataItemFactory;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataValues\DataValue;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\QueryComparator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataValue as DataValue;
 
 /**
  * @private
@@ -19,7 +19,7 @@ use SMWDataValue as DataValue;
  * the normal parsing function can be used. However, there can be datatypes
  * where processing is more complicated, e.g. if the input string contains
  * more than one value, each of which may have comparators, as in
- * SMWRecordValue. In this case, it makes sense to overwrite this method.
+ * \SMW\DataValues\RecordValue. In this case, it makes sense to overwrite this method.
  * Another reason to do this is to add new forms of comparators or new ways
  * of entering query conditions.
  *
@@ -36,15 +36,9 @@ use SMWDataValue as DataValue;
  */
 abstract class DescriptionBuilder {
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	protected $descriptionFactory;
+	protected ?DescriptionFactory $descriptionFactory;
 
-	/**
-	 * @var DataItemFactory
-	 */
-	protected $dataItemFactory;
+	protected ?DataItemFactory $dataItemFactory;
 
 	/**
 	 * @var array
@@ -57,7 +51,7 @@ abstract class DescriptionBuilder {
 	 * @param DescriptionFactory|null $descriptionFactory
 	 * @param DataItemFactory|null $dataItemFactory
 	 */
-	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DescriptionFactory $dataItemFactory = null ) {
+	public function __construct( ?DescriptionFactory $descriptionFactory = null, ?DataItemFactory $dataItemFactory = null ) {
 		$this->descriptionFactory = $descriptionFactory;
 		$this->dataItemFactory = $dataItemFactory;
 
@@ -103,7 +97,7 @@ abstract class DescriptionBuilder {
 	/**
 	 * @since 3.1
 	 */
-	public function clearErrors() {
+	public function clearErrors(): void {
 		$this->errors = [];
 	}
 
@@ -113,11 +107,11 @@ abstract class DescriptionBuilder {
 	 * to consist only of the remaining effective value string (without the
 	 * comparator).
 	 *
-	 * @param DIProperty|null $property
+	 * @param Property|null $property
 	 * @param string|null &$value
 	 * @param string|int &$comparator
 	 */
-	protected function prepareValue( ?DIProperty $property, &$value, &$comparator ) {
+	protected function prepareValue( ?Property $property, &$value, &$comparator ) {
 		$comparator = QueryComparator::getInstance()->extractComparatorFromString( $value );
 
 		// [[in:lorem ipsum]] / [[Has text::in:lorem ipsum]] to be turned into a

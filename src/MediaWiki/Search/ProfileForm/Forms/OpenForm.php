@@ -15,10 +15,7 @@ use MediaWiki\Request\WebRequest;
  */
 class OpenForm {
 
-	/**
-	 * @var Field
-	 */
-	private $field;
+	private Field $field;
 
 	/**
 	 * @var bool
@@ -51,7 +48,7 @@ class OpenForm {
 	 *
 	 * @param bool $isActiveForm
 	 */
-	public function isActiveForm( $isActiveForm ) {
+	public function isActiveForm( $isActiveForm ): void {
 		$this->isActiveForm = (bool)$isActiveForm;
 	}
 
@@ -60,7 +57,7 @@ class OpenForm {
 	 *
 	 * @param array $definition
 	 */
-	public function makeFields( $definition = [] ) {
+	public function makeFields( $definition = [] ): string {
 		$this->parameters = [];
 
 		$group = '';

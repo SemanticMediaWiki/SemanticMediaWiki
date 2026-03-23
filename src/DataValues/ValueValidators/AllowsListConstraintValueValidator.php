@@ -21,15 +21,9 @@ use SMW\Services\ServicesFactory as ApplicationFactory;
  */
 class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 
-	/**
-	 * @var AllowsListValueParser
-	 */
-	private $allowsListValueParser;
+	private AllowsListValueParser $allowsListValueParser;
 
-	/**
-	 * @var SpecificationLookup
-	 */
-	private $propertySpecificationLookup;
+	private SpecificationLookup $propertySpecificationLookup;
 
 	/**
 	 * @var bool
@@ -146,7 +140,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		$this->hasConstraintViolation = true;
 	}
 
-	private function checkConstraintViolation( $dataValue, $allowedValues, &$allowedValueList ) {
+	private function checkConstraintViolation( DataValue $dataValue, array $allowedValues, &$allowedValueList ) {
 		if ( !is_array( $allowedValues ) ) {
 			return true;
 		}
@@ -221,7 +215,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return $isAllowed;
 	}
 
-	private function check_range( $exp, $value, $allowedValue, &$range, &$isAllowed, &$allowedValueList ) {
+	private function check_range( string $exp, $value, Blob $allowedValue, &$range, &$isAllowed, &$allowedValueList ): bool {
 		$v = $allowedValue->getString();
 
 		// If a previous range comparison failed then bail-out!
@@ -249,7 +243,7 @@ class AllowsListConstraintValueValidator implements ConstraintValueValidator {
 		return false;
 	}
 
-	private function check_bounds( $value, $allowedValue, &$isAllowed, &$allowedValueList ) {
+	private function check_bounds( $value, Blob $allowedValue, &$isAllowed, &$allowedValueList ): bool {
 		$v = $allowedValue->getString();
 
 		if ( strpos( $v, '...' ) === false ) {

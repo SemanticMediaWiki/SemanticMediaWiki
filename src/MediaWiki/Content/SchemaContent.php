@@ -157,7 +157,7 @@ class SchemaContent extends JsonContent {
 	 * @param SchemaFactory $schemaFactory
 	 * @param SchemaContentFormatter|null $contentFormatter
 	 */
-	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ) {
+	public function setServices( SchemaFactory $schemaFactory, ?SchemaContentFormatter $contentFormatter = null ): void {
 		$this->schemaFactory = $schemaFactory;
 		$this->contentFormatter = $contentFormatter;
 	}
@@ -169,11 +169,11 @@ class SchemaContent extends JsonContent {
 	 *
 	 * @return string
 	 */
-	public static function normalizeLineEndings( $text ) {
+	public static function normalizeLineEndings( $text ): string {
 		return str_replace( [ "\r\n", "\r" ], "\n", rtrim( $text ) );
 	}
 
-	public function initServices() {
+	public function initServices(): void {
 		if ( $this->schemaFactory === null ) {
 			$this->schemaFactory = new SchemaFactory();
 		}
@@ -243,7 +243,7 @@ class SchemaContent extends JsonContent {
 		}
 	}
 
-	public function setTitlePrefix( Title $title ) {
+	public function setTitlePrefix( Title $title ): void {
 		if ( $this->parse === null ) {
 			$this->decodeJSONContent();
 		}

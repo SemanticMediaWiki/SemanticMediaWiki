@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\FacetedSearch\Filters;
 
 use MediaWiki\Html\TemplateParser;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\MessageLocalizerTrait;
 use SMW\MediaWiki\Specials\FacetedSearch\TreeBuilder;
 use SMW\Utils\UrlArgs;
@@ -54,7 +54,7 @@ class PropertyFilter {
 		];
 
 		foreach ( $propertyFilters as $key => $count ) {
-			$key = DIProperty::newFromUserLabel( $key )->getLabel();
+			$key = Property::newFromUserLabel( $key )->getLabel();
 			$filters[$key] = $count;
 		}
 
@@ -109,8 +109,8 @@ class PropertyFilter {
 		);
 	}
 
-	private function matchFilter( $key, $count, &$list ) {
-		$property = DIWikiPage::newFromText( $key, SMW_NS_PROPERTY );
+	private function matchFilter( int|string $key, $count, &$list ) {
+		$property = WikiPage::newFromText( $key, SMW_NS_PROPERTY );
 		$propertyFilters = $this->urlArgs->getArray( 'pv' );
 
 		$clear = $this->urlArgs->find( 'clear.p' );

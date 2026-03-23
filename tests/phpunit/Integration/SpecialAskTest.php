@@ -1,6 +1,6 @@
 <?php
 
-namespace SMW\Tests\Integration;
+namespace SMW\Tests\Unit;
 
 use DOMDocument;
 use PHPUnit\Framework\TestCase;

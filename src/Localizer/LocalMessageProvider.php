@@ -32,7 +32,7 @@ class LocalMessageProvider implements MessageLocalizer {
 	/**
 	 * @since 3.2
 	 */
-	public function loadMessages() {
+	public function loadMessages(): void {
 		$this->contents = $this->readJSONFile( $this->file );
 	}
 
@@ -41,7 +41,7 @@ class LocalMessageProvider implements MessageLocalizer {
 	 *
 	 * @param string $languageFileDir
 	 */
-	public function setLanguageFileDir( string $languageFileDir ) {
+	public function setLanguageFileDir( string $languageFileDir ): void {
 		$this->languageFileDir = $languageFileDir;
 	}
 
@@ -50,7 +50,7 @@ class LocalMessageProvider implements MessageLocalizer {
 	 *
 	 * @param string $languageCode
 	 */
-	public function setLanguageCode( string $languageCode ) {
+	public function setLanguageCode( string $languageCode ): void {
 		$this->languageCode = $languageCode;
 	}
 
@@ -110,7 +110,7 @@ class LocalMessageProvider implements MessageLocalizer {
 		return $message;
 	}
 
-	private function readJSONFile( $file ) {
+	private function readJSONFile( string $file ) {
 		$file = str_replace( [ '\\', '/', '//', '\\\\' ], DIRECTORY_SEPARATOR, $this->languageFileDir . '/' . $file );
 
 		if ( !is_readable( $file ) ) {

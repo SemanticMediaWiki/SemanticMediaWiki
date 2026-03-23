@@ -61,7 +61,7 @@ class Conjunction extends Description {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 
 		if ( !( $description instanceof ThingDescription ) ) {
@@ -86,7 +86,7 @@ class Conjunction extends Description {
 		}
 	}
 
-	public function getQueryString( $asvalue = false ) {
+	public function getQueryString( $asvalue = false ): string {
 		$result = '';
 
 		foreach ( $this->descriptions as $desc ) {
@@ -101,7 +101,7 @@ class Conjunction extends Description {
 		return $asvalue ? " <q>{$result}</q> " : $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		foreach ( $this->descriptions as $d ) {
 			if ( $d->isSingleton() ) {
 				return true;
@@ -110,7 +110,7 @@ class Conjunction extends Description {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int|float {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {

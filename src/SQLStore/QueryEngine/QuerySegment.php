@@ -116,7 +116,7 @@ class QuerySegment {
 	public $from = '';
 
 	/**
-	 * @var string[] Array of tables compatible with MediaWiki’s IReadableDatabase::select()
+	 * @var array Array of tables compatible with MediaWiki’s IReadableDatabase::select()
 	 *
 	 * The values are always the table names, and if the index is a string then it is its alias.
 	 * It is not necessary to use $db->tableName() for the table names, this is handled by MediaWiki.
@@ -151,7 +151,7 @@ class QuerySegment {
 	public $sortIndexField;
 
 	/**
-	 * @var string[]
+	 * @var array
 	 */
 	public $components = [];
 
@@ -191,7 +191,7 @@ class QuerySegment {
 	/**
 	 * @since 2.2
 	 */
-	public function reset() {
+	public function reset(): void {
 		self::$qnum = 0;
 
 		$this->queryNumber = self::$qnum;

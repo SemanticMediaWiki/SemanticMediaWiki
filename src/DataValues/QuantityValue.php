@@ -43,7 +43,7 @@ class QuantityValue extends NumberValue {
 	 */
 	protected $m_mainunit = false;
 
-	protected function convertToMainUnit( $number, $unit ) {
+	protected function convertToMainUnit( $number, $unit ): bool {
 		$this->initConversionData();
 
 		if ( array_key_exists( $unit, $this->m_unitids ) ) {
@@ -145,12 +145,12 @@ class QuantityValue extends NumberValue {
 		}
 	}
 
-	public function getUnitList() {
+	public function getUnitList(): array {
 		$this->initConversionData();
 		return array_keys( $this->m_unitfactors );
 	}
 
-	public function getUnit() {
+	public function getUnit(): string {
 		$this->initConversionData();
 		return $this->m_mainunit;
 	}

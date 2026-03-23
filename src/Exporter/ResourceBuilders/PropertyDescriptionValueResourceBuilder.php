@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
-use SMW\DIProperty;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpLiteral;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
 
 /**
  * @private
@@ -24,7 +24,7 @@ class PropertyDescriptionValueResourceBuilder extends PropertyValueResourceBuild
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return $property->getKey() === '_PDESC';
 	}
 
@@ -33,7 +33,7 @@ class PropertyDescriptionValueResourceBuilder extends PropertyValueResourceBuild
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
 		parent::addResourceValue( $expData, $property, $dataItem );
 
 		/** @var MonolingualTextValue $dataValue */

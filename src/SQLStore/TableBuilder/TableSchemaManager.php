@@ -3,8 +3,9 @@
 namespace SMW\SQLStore\TableBuilder;
 
 use Exception;
+use Onoi\MessageReporter\MessageReporter;
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * @private
@@ -29,12 +30,12 @@ class TableSchemaManager {
 	private $tables = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $options = [];
 
 	/**
-	 * @var int
+	 * @var int|false
 	 */
 	private $featureFlags = false;
 
@@ -49,7 +50,7 @@ class TableSchemaManager {
 	 *
 	 * @return string
 	 */
-	public function getHash() {
+	public function getHash(): string {
 		$hash = [];
 
 		foreach ( $this->getTables() as $table ) {
@@ -67,7 +68,7 @@ class TableSchemaManager {
 	 *
 	 * @param array $options
 	 */
-	public function setOptions( array $options ) {
+	public function setOptions( array $options ): void {
 		$this->options = $options;
 	}
 
@@ -90,9 +91,9 @@ class TableSchemaManager {
 	/**
 	 * @since 3.0
 	 *
-	 * @param int $featureFlags
+	 * @param int|false $featureFlags
 	 */
-	public function setFeatureFlags( $featureFlags ) {
+	public function setFeatureFlags( $featureFlags ): void {
 		$this->featureFlags = $featureFlags;
 	}
 
@@ -103,7 +104,7 @@ class TableSchemaManager {
 	 *
 	 * @return bool
 	 */
-	public function hasFeatureFlag( $feature ) {
+	public function hasFeatureFlag( $feature ): bool {
 		return ( (int)$this->featureFlags & $feature ) != 0;
 	}
 
@@ -150,7 +151,7 @@ class TableSchemaManager {
 			// are correctly initialized otherwise SMW can't recover
 			try {
 				$diHandler = $this->store->getDataItemHandlerForDIType( $propertyTable->getDiType() );
-			} catch ( Exception $e ) {
+			} catch ( Exception ) {
 				continue;
 			}
 
@@ -160,7 +161,7 @@ class TableSchemaManager {
 		return $this->tables;
 	}
 
-	private function newEntityIdTable() {
+	private function newEntityIdTable(): Table {
 		$connection = $this->store->getConnection( DB_PRIMARY );
 
 		// ID_TABLE
@@ -220,7 +221,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newEntityAuxiliaryTable() {
+	private function newEntityAuxiliaryTable(): Table {
 		// ID_AUXILIARY_TABLE
 		$table = new Table( SQLStore::ID_AUXILIARY_TABLE );
 
@@ -235,7 +236,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newConceptCacheTable() {
+	private function newConceptCacheTable(): Table {
 		// CONCEPT_CACHE_TABLE (member elements (s)->concepts (o) )
 		$table = new Table( SQLStore::CONCEPT_CACHE_TABLE );
 
@@ -247,7 +248,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newQueryLinksTable() {
+	private function newQueryLinksTable(): Table {
 		// QUERY_LINKS_TABLE
 		$table = new Table( SQLStore::QUERY_LINKS_TABLE );
 
@@ -261,7 +262,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newFulltextSearchTable() {
+	private function newFulltextSearchTable(): ?Table {
 		// Avoid the creation unless it is enabled hereby avoids issues in
 		// regards to the default `MyISAM` storage engine (especially when mixed with
 		// InnoDB, transactional mode).Those who enable the full-text need to
@@ -293,7 +294,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newPropertyStatisticsTable() {
+	private function newPropertyStatisticsTable(): Table {
 		// PROPERTY_STATISTICS_TABLE
 		$table = new Table( SQLStore::PROPERTY_STATISTICS_TABLE );
 
@@ -311,7 +312,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function newPropertyTable( $propertyTable, $diHandler ) {
+	private function newPropertyTable( $propertyTable, $diHandler ): Table {
 		// Prepare indexes. By default, property-value tables
 		// have the following indexes:
 		//
@@ -339,7 +340,7 @@ class TableSchemaManager {
 
 		if ( !$propertyTable->isFixedPropertyTable() ) {
 			$fieldarray['p_id'] = [ FieldType::FIELD_ID, 'NOT NULL' ];
-			$indexes['sp'] = $indexes['sp'] . ',p_id';
+			$indexes['sp'] .= ',p_id';
 		}
 
 		// TODO Special handling; concepts should be handled differently
@@ -396,7 +397,7 @@ class TableSchemaManager {
 		return $table;
 	}
 
-	private function addTable( ?Table $table = null ) {
+	private function addTable( ?Table $table = null ): void {
 		if ( $table === null ) {
 			return;
 		}

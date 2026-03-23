@@ -2,11 +2,11 @@
 
 namespace SMW\ParserFunctions;
 
-use SMW\MessageFormatter;
+use SMW\DataModel\Subobject;
+use SMW\Formatters\MessageFormatter;
 use SMW\ParserData;
 use SMW\ParserParameterProcessor;
-use SMW\RecurringEvents;
-use SMW\Subobject;
+use SMW\Utils\RecurringEvents;
 
 /**
  * @private This class should not be instantiated directly, please use

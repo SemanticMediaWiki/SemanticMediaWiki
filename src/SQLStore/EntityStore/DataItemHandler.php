@@ -2,8 +2,8 @@
 
 namespace SMW\SQLStore\EntityStore;
 
+use SMW\DataItems\DataItem;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 
 /**
  * Classes extending this represent all store layout that is known about a certain dataitem
@@ -20,15 +20,12 @@ abstract class DataItemHandler {
 	 */
 	const IHINT_PSUBJECTS = 'ihint.psubjects';
 
-	/**
-	 * @var SQLStore
-	 */
-	protected $store;
+	protected SQLStore $store;
 
 	/**
 	 * @var int
 	 */
-	protected $fieldTypeFeatures = false;
+	protected $fieldTypeFeatures = 0;
 
 	/**
 	 * @var null|string
@@ -49,7 +46,7 @@ abstract class DataItemHandler {
 	 *
 	 * @param int $fieldTypeFeatures
 	 */
-	public function setFieldTypeFeatures( $fieldTypeFeatures ) {
+	public function setFieldTypeFeatures( $fieldTypeFeatures ): void {
 		$this->fieldTypeFeatures = $fieldTypeFeatures;
 	}
 
@@ -67,7 +64,9 @@ abstract class DataItemHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean
+	 * @param string $dbType
+	 *
+	 * @return bool
 	 */
 	public function isDbType( $dbType ) {
 		if ( $this->dbType === null ) {

@@ -32,7 +32,7 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 		return 'namespace';
 	}
 
-	private function match( Compartment $compartment ) {
+	private function match( Compartment $compartment ): void {
 		$namespaces = $compartment->get( 'if.namespace' );
 
 		// In case the filter was marked as elective allows sets to remain in
@@ -51,16 +51,16 @@ class NamespaceFilter implements SchemaFilter, ChainableFilter {
 
 		$matchedCondition = $this->matchOneOf( (array)$namespaces );
 
-		if ( $matchedCondition === true && $compartment instanceof Rule ) {
+		if ( $matchedCondition && $compartment instanceof Rule ) {
 			$compartment->incrFilterScore();
 		}
 
-		if ( $matchedCondition === true ) {
+		if ( $matchedCondition ) {
 			$this->matches[] = $compartment;
 		}
 	}
 
-	private function matchOneOf( array $namespaces ) {
+	private function matchOneOf( array $namespaces ): bool {
 		if ( $this->namespace === null ) {
 			return false;
 		}

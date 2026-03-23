@@ -2,12 +2,12 @@
 
 namespace SMW\SQLStore\Lookup;
 
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\RequestOptions;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
-use SMWDataItem as DataItem;
 use Traversable;
 
 /**
@@ -31,7 +31,7 @@ class ErrorLookup {
 	 *
 	 * @return array
 	 */
-	public function buildArray( /* iterable */ $res ) {
+	public function buildArray( /* iterable */ $res ): array {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$messages = [];
 
@@ -53,11 +53,12 @@ class ErrorLookup {
 	 * @since 3.1
 	 *
 	 * @param string $errorType
-	 * @param DIWikiPage|null $subject = null
+	 * @param WikiPage|null $subject = null
+	 * @param ?RequestOptions $requestOptions
 	 *
-	 * @return Iterator/array
+	 * @return iterable
 	 */
-	public function findErrorsByType( $errorType, ?DIWikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
+	public function findErrorsByType( $errorType, ?WikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
 		if ( $requestOptions === null ) {
 			$requestOptions = new RequestOptions();
 		}
@@ -65,7 +66,14 @@ class ErrorLookup {
 		return $this->fetchFromTable( $errorType, $subject, $requestOptions );
 	}
 
-	private function fetchFromTable( $errorType, $subject, $requestOptions ) {
+	/**
+	 * @param string $errorType
+	 * @param WikiPage|null $subject
+	 * @param RequestOptions $requestOptions
+	 *
+	 * @return iterable
+	 */
+	private function fetchFromTable( $errorType, ?WikiPage $subject, RequestOptions $requestOptions ) {
 		$checkConstraintErrors = $requestOptions->getOption( 'checkConstraintErrors' );
 
 		/**
@@ -89,15 +97,15 @@ class ErrorLookup {
 		$idTable->warmUpCache(
 			[
 				$subject,
-				new DIProperty( '_ERR_TYPE' ),
-				new DIProperty( '_ERRT' ),
-				new DIProperty( '_ERRC' ),
-				new DIProperty( '_SOBJ' )
+				new Property( '_ERR_TYPE' ),
+				new Property( '_ERRT' ),
+				new Property( '_ERRC' ),
+				new Property( '_SOBJ' )
 			]
 		);
 
 		$pid = $idTable->getSMWPropertyID(
-			new DIProperty( '_ERRC' )
+			new Property( '_ERRC' )
 		);
 
 		$connection = $this->store->getConnection( 'mw.db' );
@@ -108,7 +116,7 @@ class ErrorLookup {
 		);
 
 		$sobj_type_table = $this->store->findPropertyTableID(
-			new DIProperty( '_SOBJ' )
+			new Property( '_SOBJ' )
 		);
 
 		$query->type( 'SELECT' );
@@ -142,7 +150,7 @@ class ErrorLookup {
 
 		$query->condition( $query->eq( "t1.p_id", $pid ) );
 
-		$property = new DIProperty( '_ERR_TYPE' );
+		$property = new Property( '_ERR_TYPE' );
 
 		$pid = $idTable->getSMWPropertyID(
 			$property
@@ -163,7 +171,7 @@ class ErrorLookup {
 			$query->condition( $query->eq( "t2.o_hash", $errorType ) );
 		}
 
-		$property = new DIProperty( '_ERRT' );
+		$property = new Property( '_ERRT' );
 
 		$pid = $idTable->getSMWPropertyID(
 			$property

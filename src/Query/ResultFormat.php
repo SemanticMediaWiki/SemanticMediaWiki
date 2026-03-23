@@ -6,7 +6,6 @@ use MediaWiki\MediaWikiServices;
 use ParamProcessor\Definition\StringParam;
 use ParamProcessor\IParam;
 use ParamProcessor\IParamDefinition;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Definition for the format parameter.
@@ -42,7 +41,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @return string
 	 */
-	protected function getValidFormatName( $value ) {
+	protected function getValidFormatName( $value ): string {
 		global $smwgResultFormats;
 
 		$value = strtolower( trim( $value ) );
@@ -131,7 +130,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @param PrintRequest[] $printRequests
 	 */
-	public function setPrintRequests( array $printRequests ) {
+	public function setPrintRequests( array $printRequests ): void {
 		$this->printRequests = $printRequests;
 	}
 
@@ -140,7 +139,7 @@ class ResultFormat extends StringParam {
 	 *
 	 * @param bool $showMode
 	 */
-	public function setShowMode( $showMode ) {
+	public function setShowMode( $showMode ): void {
 		$this->showMode = $showMode;
 	}
 

@@ -2,11 +2,16 @@
 
 namespace SMW;
 
+use Exception;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Revision\RevisionRecord;
 use MediaWiki\Title\Title;
+use MediaWiki\User\User;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage as DIWikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\Deferred\TransactionalCallableUpdate as DeferredUpdate;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\Property\ChangePropagationNotifier;
@@ -36,20 +41,11 @@ class DataUpdater {
 	use LoggerAwareTrait;
 	use EventDispatcherAwareTrait;
 
-	/**
-	 * @var Store
-	 */
-	private $store;
+	private Store $store;
 
-	/**
-	 * @var SemanticData
-	 */
-	private $semanticData;
+	private SemanticData $semanticData;
 
-	/**
-	 * @var ChangePropagationNotifier
-	 */
-	private $changePropagationNotifier;
+	private ChangePropagationNotifier $changePropagationNotifier;
 
 	/**
 	 * @var bool|null
@@ -102,7 +98,7 @@ class DataUpdater {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = $isCommandLineMode;
 	}
 
@@ -111,7 +107,7 @@ class DataUpdater {
 	 *
 	 * @param bool $isChangeProp
 	 */
-	public function isChangeProp( $isChangeProp ) {
+	public function isChangeProp( $isChangeProp ): void {
 		$this->isChangeProp = (bool)$isChangeProp;
 	}
 
@@ -120,7 +116,7 @@ class DataUpdater {
 	 *
 	 * @param bool $isDeferrableUpdate
 	 */
-	public function isDeferrableUpdate( $isDeferrableUpdate ) {
+	public function isDeferrableUpdate( $isDeferrableUpdate ): void {
 		$this->isDeferrableUpdate = (bool)$isDeferrableUpdate;
 	}
 
@@ -129,16 +125,16 @@ class DataUpdater {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( $origin ) {
+	public function setOrigin( $origin ): void {
 		$this->origin = $origin;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @return DIWikiPage
+	 * @return \SMW\DataItems\WikiPage
 	 */
-	public function getSubject() {
+	public function getSubject(): DIWikiPage {
 		return $this->semanticData->getSubject();
 	}
 
@@ -147,7 +143,7 @@ class DataUpdater {
 	 *
 	 * @param bool $canCreateUpdateJob
 	 */
-	public function canCreateUpdateJob( $canCreateUpdateJob ) {
+	public function canCreateUpdateJob( $canCreateUpdateJob ): void {
 		$this->canCreateUpdateJob = (bool)$canCreateUpdateJob;
 	}
 
@@ -234,7 +230,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function canUpdate() {
+	private function canUpdate(): bool {
 		$title = $this->getSubject()->getTitle();
 
 		// Protect against null and namespace -1 see Bug 50153
@@ -250,7 +246,7 @@ class DataUpdater {
 	 * check if semantic data should be processed and displayed for a page in
 	 * the given namespace
 	 */
-	public function runUpdate() {
+	public function runUpdate(): bool {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $this->canCreateUpdateJob === null ) {
@@ -303,7 +299,7 @@ class DataUpdater {
 		return true;
 	}
 
-	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, $user ) {
+	private function addAnnotations( Title $title, WikiPage $wikiPage, $revision, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		if ( $revision !== null ) {
@@ -345,7 +341,7 @@ class DataUpdater {
 					$title->getDBKey(),
 					$pageInfoProvider->getNativeData()
 				);
-			} catch ( \Exception $e ) {
+			} catch ( Exception $e ) {
 				$schema = null;
 			}
 
@@ -370,7 +366,7 @@ class DataUpdater {
 			);
 	}
 
-	private function checkUpdateEditProtection( $wikiPage, $user ) {
+	private function checkUpdateEditProtection( $wikiPage, ?User $user ) {
 		$applicationFactory = ApplicationFactory::getInstance();
 
 		$editProtectionUpdater = $applicationFactory->create( 'EditProtectionUpdater',
@@ -387,7 +383,7 @@ class DataUpdater {
 	 * @note Comparison must happen *before* the storage update;
 	 * even finding uses of a property fails after its type changed.
 	 */
-	private function checkChangePropagation() {
+	private function checkChangePropagation(): void {
 		// canCreateUpdateJob: if it is not enabled there's not much to do here
 		// isChangeProp: means the update is part of the ChangePropagationDispatchJob
 		// therefore skip
@@ -398,7 +394,7 @@ class DataUpdater {
 		$this->changePropagationNotifier->checkAndNotify( $this->semanticData );
 	}
 
-	private function updateData() {
+	private function updateData(): bool {
 		$this->store->setOption(
 			Store::OPT_CREATE_UPDATE_JOB,
 			$this->canCreateUpdateJob
@@ -431,7 +427,7 @@ class DataUpdater {
 		}
 
 		$redirects = $semanticData->getPropertyValues(
-			new DIProperty( '_REDI' )
+			new Property( '_REDI' )
 		);
 
 		$target = end( $redirects );
@@ -443,7 +439,7 @@ class DataUpdater {
 		return $this->updateRedirectTarget( $semanticData, $target );
 	}
 
-	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ) {
+	private function updateRedirectTarget( SemanticData $semanticData, DIWikiPage $target ): SemanticData {
 		$subject = $semanticData->getSubject();
 
 		// The general rule is that a redirect page is not expected to contain
@@ -458,7 +454,7 @@ class DataUpdater {
 		// safeguard so that even when text contains annotations there are removed
 		// from the `Store`.
 		$semanticData = new SemanticData( $subject );
-		$semanticData->addPropertyObjectValue( new DIProperty( '_REDI' ), $target );
+		$semanticData->addPropertyObjectValue( new Property( '_REDI' ), $target );
 
 		// #895
 		// Force a manual changeTitle before the general update otherwise

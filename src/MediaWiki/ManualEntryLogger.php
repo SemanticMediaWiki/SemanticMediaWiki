@@ -31,7 +31,7 @@ class ManualEntryLogger {
 	 *
 	 * @param string $eventType
 	 */
-	public function registerLoggableEventType( $eventType ) {
+	public function registerLoggableEventType( $eventType ): void {
 		$this->eventTypes[$eventType] = true;
 	}
 
@@ -64,7 +64,7 @@ class ManualEntryLogger {
 		return $logEntry->insert();
 	}
 
-	protected function newManualLogEntryForType( $type ) {
+	protected function newManualLogEntryForType( $type ): LogEntry {
 		if ( $this->logEntry !== null ) {
 			return $this->logEntry;
 		}

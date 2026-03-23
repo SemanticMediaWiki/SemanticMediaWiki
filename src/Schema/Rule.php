@@ -40,7 +40,7 @@ class Rule extends Compartment {
 	 * ```
 	 * @since 3.2
 	 */
-	public function incrFilterScore() {
+	public function incrFilterScore(): void {
 		$this->filterScore++;
 	}
 

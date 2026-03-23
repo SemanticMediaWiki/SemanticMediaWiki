@@ -5,7 +5,7 @@ namespace SMW\Tests\Utils;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Title\Title;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Tests\Utils\Mock\MockSuperUser;
 use User;
 
@@ -23,7 +23,7 @@ class ParserFactory {
 			$title = MediaWikiServices::getInstance()->getTitleFactory()->newFromText( $title );
 		}
 
-		if ( $title instanceof DIWikiPage ) {
+		if ( $title instanceof WikiPage ) {
 			$title = $title->getTitle();
 		}
 

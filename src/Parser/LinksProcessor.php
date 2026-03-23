@@ -32,7 +32,7 @@ class LinksProcessor {
 	 *
 	 * @param bool $isStrictMode
 	 */
-	public function isStrictMode( $isStrictMode ) {
+	public function isStrictMode( $isStrictMode ): void {
 		$this->isStrictMode = (bool)$isStrictMode;
 	}
 
@@ -62,7 +62,7 @@ class LinksProcessor {
 	 *
 	 * @return string
 	 */
-	public static function getRegexpPattern( $linksInValues = false ) {
+	public static function getRegexpPattern( $linksInValues = false ): string {
 		if ( $linksInValues ) {
 			return '/\[\[             # Beginning of the link
 				(?:([^:][^]]*):[=:])+ # Property name (or a list of those)
@@ -132,7 +132,7 @@ class LinksProcessor {
 	 *
 	 * @return string
 	 */
-	public function process( array $semanticLink ) {
+	public function process( array $semanticLink ): string|array {
 		$valueCaption = false;
 		$property = '';
 		$value = '';
@@ -186,7 +186,7 @@ class LinksProcessor {
 		return [ $properties, $value, $valueCaption ];
 	}
 
-	private function setAnnotation( $value ) {
+	private function setAnnotation( string $value ): string {
 		switch ( $value ) {
 			case 'on':
 				$this->isAnnotation = true;

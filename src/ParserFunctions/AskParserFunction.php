@@ -4,17 +4,17 @@ namespace SMW\ParserFunctions;
 
 use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessedParam;
-use SMW\DIProperty;
-use SMW\MessageFormatter;
+use SMW\DataItems\Property;
+use SMW\Formatters\MessageFormatter;
 use SMW\Parser\RecursiveTextProcessor;
 use SMW\ParserData;
 use SMW\PostProcHandler;
 use SMW\ProcessingErrorMsgHandler;
 use SMW\Query\Deferred;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\CircularReferenceGuard;
-use SMWQuery as Query;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * Provides the {{#ask}} parser function
@@ -92,7 +92,7 @@ class AskParserFunction {
 	 *
 	 * @param PostProcHandler $postProcHandler
 	 */
-	public function setPostProcHandler( PostProcHandler $postProcHandler ) {
+	public function setPostProcHandler( PostProcHandler $postProcHandler ): void {
 		$this->postProcHandler = $postProcHandler;
 	}
 
@@ -101,7 +101,7 @@ class AskParserFunction {
 	 *
 	 * @param RecursiveTextProcessor $recursiveTextProcessor
 	 */
-	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ) {
+	public function setRecursiveTextProcessor( RecursiveTextProcessor $recursiveTextProcessor ): void {
 		$this->recursiveTextProcessor = $recursiveTextProcessor;
 	}
 
@@ -122,7 +122,7 @@ class AskParserFunction {
 	 *
 	 * @param bool $curtailmentMode
 	 */
-	public function setCurtailmentMode( $curtailmentMode ) {
+	public function setCurtailmentMode( $curtailmentMode ): void {
 		$this->curtailmentMode = (bool)$curtailmentMode;
 	}
 
@@ -193,7 +193,7 @@ class AskParserFunction {
 		return $result;
 	}
 
-	private function prepareFunctionParameters( array $functionParams ) {
+	private function prepareFunctionParameters( array $functionParams ): array {
 		// Remove parser object from parameters array
 		if ( isset( $functionParams[0] ) && $functionParams[0] instanceof Parser ) {
 			array_shift( $functionParams );
@@ -383,7 +383,7 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format, $extraKeys ) {
+	private function addQueryProfile( $query, $format, array $extraKeys ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 
@@ -416,7 +416,7 @@ class AskParserFunction {
 		);
 	}
 
-	private function addProcessingError( $errors ) {
+	private function addProcessingError( $errors ): void {
 		if ( $errors === [] ) {
 			return;
 		}
@@ -428,7 +428,7 @@ class AskParserFunction {
 		foreach ( $errors as $error ) {
 
 			if ( ( $property = $processingErrorMsgHandler->grepPropertyFromRestrictionErrorMsg( $error ) ) === null ) {
-				$property = new DIProperty( '_ASK' );
+				$property = new Property( '_ASK' );
 			}
 
 			$container = $processingErrorMsgHandler->newErrorContainerFromMsg(

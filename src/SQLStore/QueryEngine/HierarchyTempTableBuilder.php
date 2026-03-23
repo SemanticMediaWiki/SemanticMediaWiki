@@ -41,7 +41,7 @@ class HierarchyTempTableBuilder {
 	/**
 	 * @since 2.3
 	 */
-	public function emptyHierarchyCache() {
+	public function emptyHierarchyCache(): void {
 		$this->hierarchyCache = [];
 	}
 
@@ -59,10 +59,10 @@ class HierarchyTempTableBuilder {
 	 *
 	 * @param array $tableDefinitions
 	 */
-	public function setTableDefinitions( array $tableDefinitions ) {
+	public function setTableDefinitions( array $tableDefinitions ): void {
 		foreach ( $tableDefinitions as $key => $tableDefinition ) {
 			$this->tableDefinitions[$key] = [
-				$this->connection->tableName( $tableDefinition['table'], 'raw' ),
+				$this->connection->tableName( $tableDefinition['table'] ),
 				$tableDefinition['depth']
 			];
 		}
@@ -94,7 +94,7 @@ class HierarchyTempTableBuilder {
 	 *
 	 * @throws RuntimeException
 	 */
-	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ) {
+	public function fillTempTable( $type, $tablename, $valueComposite, $depth = null ): void {
 		$this->temporaryTableBuilder->create( $tablename );
 
 		[ $smwtable, $d ] = $this->getTableDefinitionByType( $type );
@@ -123,7 +123,7 @@ class HierarchyTempTableBuilder {
 	 * but then every iteration would use all elements of this table, while only the new ones
 	 * obtained in the previous step are relevant. So this is a performance measure.
 	 */
-	private function buildTempTable( $tablename, $values, $smwtable, $depth ) {
+	private function buildTempTable( $tablename, $values, $smwtable, $depth ): void {
 		$db = $this->connection;
 
 		$tmpnew = 'smw_new';

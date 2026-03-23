@@ -29,7 +29,7 @@ class MaintenanceHelper {
 	/**
 	 * @since 2.2
 	 */
-	public function initRuntimeValues() {
+	public function initRuntimeValues(): void {
 		$this->runtime['start'] = microtime( true );
 		$this->runtime['memory'] = memory_get_peak_usage( false );
 	}
@@ -39,7 +39,7 @@ class MaintenanceHelper {
 	 *
 	 * @return array
 	 */
-	public function getRuntimeValues() {
+	public function getRuntimeValues(): array {
 		$memory = memory_get_peak_usage( false );
 		$time = microtime( true ) - $this->runtime['start'];
 
@@ -60,7 +60,7 @@ class MaintenanceHelper {
 	 *
 	 * @return string
 	 */
-	public function getFormattedRuntimeValues( $indent = '' ) {
+	public function getFormattedRuntimeValues( $indent = '' ): string {
 		$cliMsgFormatter = new CliMsgFormatter();
 		$output = '';
 
@@ -90,7 +90,7 @@ class MaintenanceHelper {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setGlobalToValue( $key, $value ) {
+	public function setGlobalToValue( $key, $value ): void {
 		if ( !isset( $GLOBALS[$key] ) ) {
 			return;
 		}
@@ -103,7 +103,7 @@ class MaintenanceHelper {
 	/**
 	 * @since 2.2
 	 */
-	public function reset() {
+	public function reset(): void {
 		foreach ( $this->globals as $key => $value ) {
 			$GLOBALS[$key] = $value;
 			ApplicationFactory::getInstance()->getSettings()->set( $key, $value );

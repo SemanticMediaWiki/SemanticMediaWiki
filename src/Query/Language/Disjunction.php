@@ -70,7 +70,7 @@ class Disjunction extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		$this->fingerprint = null;
 
 		if ( $this->classDescription !== null ) {
@@ -88,7 +88,7 @@ class Disjunction extends Description {
 		return $this->descriptions;
 	}
 
-	public function addDescription( Description $description ) {
+	public function addDescription( Description $description ): void {
 		$this->fingerprint = null;
 		$fingerprint = $description->getFingerprint();
 
@@ -126,7 +126,7 @@ class Disjunction extends Description {
 		$description->setPrintRequests( [] );
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		if ( $this->isTrue ) {
 			return '+';
 		}
@@ -164,7 +164,7 @@ class Disjunction extends Description {
 		return $this->descriptions[0]->isSingleton();
 	}
 
-	public function getSize() {
+	public function getSize(): int|float {
 		$size = 0;
 
 		foreach ( $this->descriptions as $desc ) {

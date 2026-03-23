@@ -69,7 +69,10 @@ class JaTinySegmenterTokenizer {
 		return $this;
 	}
 
-	protected function segment( $input, $encoding = null ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function segment( $input, $encoding = null ): array {
 		if ( !$input ) {
 			return [];
 		}
@@ -97,7 +100,9 @@ class JaTinySegmenterTokenizer {
 		$seg[] = "E2";
 		$seg[] = "E3";
 		$ctype[] = "O";
+		// @phan-suppress-next-line PhanPluginDuplicateAdjacentStatement Not sure if duplicates are expected
 		$ctype[] = "O";
+		// @phan-suppress-next-line PhanPluginDuplicateAdjacentStatement Not sure if duplicates are expected
 		$ctype[] = "O";
 		$word = $seg[3];
 		$p1 = "U";
@@ -194,7 +199,7 @@ class JaTinySegmenterTokenizer {
 		return $result;
 	}
 
-	private function ctype_( $str ) {
+	private function ctype_( string $str ) {
 		foreach ( $this->patterns_ as $pattern => $type ) {
 			if ( preg_match( '/' . $pattern . '/u', $str ) ) {
 				return $type;
@@ -204,7 +209,10 @@ class JaTinySegmenterTokenizer {
 		return "O";
 	}
 
-	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ) {
+	/**
+	 * @return string[]
+	 */
+	private function mb_string_to_array_( $str, $encoding = 'UTF-8' ): array {
 		$result = [];
 		$length = mb_strlen( $str, $encoding );
 

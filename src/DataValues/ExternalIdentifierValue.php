@@ -198,7 +198,10 @@ class ExternalIdentifierValue extends StringValue {
 		return $this->uri;
 	}
 
-	private function filterParameters( &$value ) {
+	/**
+	 * @return string[]
+	 */
+	private function filterParameters( &$value ): array {
 		$parameters = [];
 		$matches = [];
 
@@ -224,7 +227,7 @@ class ExternalIdentifierValue extends StringValue {
 		return $parameters;
 	}
 
-	private function makeNonlinkedWikiText( $url ) {
+	private function makeNonlinkedWikiText( $url ): string|array {
 		return str_replace( ':', '&#58;', $url );
 	}
 

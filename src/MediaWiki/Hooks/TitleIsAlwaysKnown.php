@@ -3,7 +3,7 @@
 namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\MediaWiki\HookListener;
 
 /**
@@ -38,7 +38,7 @@ class TitleIsAlwaysKnown implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process() {
+	public function process(): bool {
 		// Two possible ways of going forward:
 		//
 		// The FIRST seen here is to use the hook to override the known status
@@ -53,7 +53,7 @@ class TitleIsAlwaysKnown implements HookListener {
 		// @see also HooksTest::testOnTitleIsAlwaysKnown
 
 		if ( $this->title->getNamespace() === SMW_NS_PROPERTY ) {
-			if ( !DIProperty::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
+			if ( !Property::newFromUserLabel( $this->title->getText() )->isUserDefined() ) {
 				$this->result = true;
 			}
 		}

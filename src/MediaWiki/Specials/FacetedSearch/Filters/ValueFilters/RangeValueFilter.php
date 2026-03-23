@@ -125,7 +125,10 @@ class RangeValueFilter {
 		);
 	}
 
-	private function findDefaults() {
+	/**
+	 * @return mixed[]
+	 */
+	private function findDefaults(): array {
 		$defaults = [
 			'step_size' => 1,
 			'min_interval' => 5,

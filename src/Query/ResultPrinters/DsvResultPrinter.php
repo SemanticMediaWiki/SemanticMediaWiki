@@ -33,7 +33,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getMimeType( QueryResult $queryResult ) {
+	public function getMimeType( QueryResult $queryResult ): string {
 		return 'text/dsv';
 	}
 
@@ -44,7 +44,7 @@ class DsvResultPrinter extends FileExportPrinter {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getFileName( QueryResult $queryResult ) {
+	public function getFileName( QueryResult $queryResult ): string|array {
 		if ( $this->params['filename'] === '' ) {
 			return 'result.dsv';
 		}
@@ -111,7 +111,7 @@ class DsvResultPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function buildContents( QueryResult $queryResult ) {
+	private function buildContents( QueryResult $queryResult ): string {
 		$lines = [];
 
 		// Do not allow backspaces as delimiter, as they'll break stuff.
@@ -164,11 +164,11 @@ class DsvResultPrinter extends FileExportPrinter {
 		return implode( "\n", $lines );
 	}
 
-	private function getDSVLine( array $fields ) {
+	private function getDSVLine( array $fields ): string {
 		return implode( $this->params['separator'], array_map( [ $this, 'encodeDSV' ], $fields ) );
 	}
 
-	private function encodeDSV( $value ) {
+	private function encodeDSV( $value ): string|array {
 		$sep = $this->params['separator'];
 		// TODO
 		// \nnn or \onnn or \0nnn for the character with octal value nnn

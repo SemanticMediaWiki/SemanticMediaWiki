@@ -49,7 +49,7 @@ class TitleFactory {
 	 *
 	 * @return Title[]
 	 */
-	public function newFromIDs( $ids ) {
+	public function newFromIDs( $ids ): array {
 		if ( !count( $ids ) ) {
 			return [];
 		}
@@ -99,7 +99,7 @@ class TitleFactory {
 	 *
 	 * @return WikiPage
 	 */
-	public function createPage( Title $title ) {
+	public function createPage( Title $title ): WikiPage {
 		return ServicesFactory::getInstance()->newPageCreator()->createPage( $title );
 	}
 
@@ -110,7 +110,7 @@ class TitleFactory {
 	 *
 	 * @return WikiFilePage
 	 */
-	public function createFilePage( Title $title ) {
+	public function createFilePage( Title $title ): WikiFilePage {
 		return new WikiFilePage( $title );
 	}
 

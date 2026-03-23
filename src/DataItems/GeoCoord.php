@@ -67,7 +67,7 @@ class GeoCoord extends DataItem {
 		}
 	}
 
-	private function setLatitude( $latitude ) {
+	private function setLatitude( $latitude ): void {
 		if ( is_int( $latitude ) ) {
 			$latitude = (float)$latitude;
 		}
@@ -79,7 +79,7 @@ class GeoCoord extends DataItem {
 		$this->latitude = $latitude;
 	}
 
-	private function setLongitude( $longitude ) {
+	private function setLongitude( $longitude ): void {
 		if ( is_int( $longitude ) ) {
 			$longitude = (float)$longitude;
 		}
@@ -95,7 +95,7 @@ class GeoCoord extends DataItem {
 	 * (non-PHPdoc)
 	 * @see DataItem::getDIType()
 	 */
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_GEO;
 	}
 
@@ -105,7 +105,7 @@ class GeoCoord extends DataItem {
 	 *
 	 * @return array
 	 */
-	public function getCoordinateSet() {
+	public function getCoordinateSet(): array {
 		$coords = [ 'lat' => $this->latitude, 'lon' => $this->longitude ];
 
 		if ( $this->altitude !== null ) {
@@ -119,7 +119,7 @@ class GeoCoord extends DataItem {
 	 * (non-PHPdoc)
 	 * @see DataItem::getSortKey()
 	 */
-	public function getSortKey() {
+	public function getSortKey(): string {
 		return $this->latitude . ',' . $this->longitude . ( $this->altitude !== null ? ',' . $this->altitude : '' );
 	}
 
@@ -127,7 +127,7 @@ class GeoCoord extends DataItem {
 	 * (non-PHPdoc)
 	 * @see DataItem::getSerialization()
 	 */
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return implode( ',', $this->getCoordinateSet() );
 	}
 
@@ -141,7 +141,7 @@ class GeoCoord extends DataItem {
 	 *
 	 * @return self
 	 */
-	public static function doUnserialize( $serialization ) {
+	public static function doUnserialize( $serialization ): self {
 		$parts = explode( ',', $serialization );
 		$count = count( $parts );
 

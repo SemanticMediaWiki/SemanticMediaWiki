@@ -45,12 +45,9 @@ Note if you have Git installed on your system add the `--prefer-source` flag to 
 
 #### Step 3
 
-Add the following two lines to the end of your "LocalSettings.php" file:
+Add the following line to the end of your "LocalSettings.php" file:
 
     wfLoadExtension( 'SemanticMediaWiki' );
-    enableSemantics( 'example.org' );
-
-Note that "example.org" should be replaced by your wiki's domain.
 
 #### Step 4
 
@@ -83,11 +80,9 @@ Transfer the code thus compiled to the appropriate folders on your webspace.
 
 #### Step 3
 
-Add the following lines to the end of your "LocalSettings.php" file:
+Add the following line to the end of your "LocalSettings.php" file:
 
-    enableSemantics( 'example.org' );
-
-Note that "example.org" should be replaced by your wiki's domain.
+    wfLoadExtension( 'SemanticMediaWiki' );
 
 #### Step 4
 

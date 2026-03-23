@@ -40,14 +40,14 @@ class PropertyStatisticsRebuilder {
 	 *
 	 * @param MessageReporter $messageReporter
 	 */
-	public function setMessageReporter( MessageReporter $messageReporter ) {
+	public function setMessageReporter( MessageReporter $messageReporter ): void {
 		$this->messageReporter = $messageReporter;
 	}
 
 	/**
 	 * @since 1.9
 	 */
-	public function rebuild() {
+	public function rebuild(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->reportMessage(
@@ -128,7 +128,7 @@ class PropertyStatisticsRebuilder {
 		$this->reportMessage( "\n   ... done.\n" );
 	}
 
-	private function getCountFormRow( $row ) {
+	private function getCountFormRow( $row ): array {
 		$usageCount = 0;
 		$nullCount = 0;
 
@@ -151,7 +151,7 @@ class PropertyStatisticsRebuilder {
 		return [ $usageCount, $nullCount ];
 	}
 
-	private function getPropertyTableRowCount( $propertyTable, $pid ) {
+	private function getPropertyTableRowCount( $propertyTable, $pid ): array {
 		$condition = [];
 		$connection = $this->store->getConnection( 'mw.db' );
 

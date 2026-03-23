@@ -99,7 +99,7 @@ class PageInfoProvider implements PageInfo {
 	 *
 	 * @return bool
 	 */
-	public function isFilePage() {
+	public function isFilePage(): bool {
 		return $this->wikiPage instanceof WikiFilePage;
 	}
 
@@ -146,11 +146,11 @@ class PageInfoProvider implements PageInfo {
 	/**
 	 * @since 4.0
 	 */
-	public function setRevisionLookup( RevisionLookup $revisionLookup ) {
+	public function setRevisionLookup( RevisionLookup $revisionLookup ): void {
 		$this->revisionLookup = $revisionLookup;
 	}
 
-	public static function isProtected( Title $title, string $action = '' ) {
+	public static function isProtected( Title $title, string $action = '' ): bool {
 		return MediaWikiServices::getInstance()->getRestrictionStore()->isProtected(
 			$title, $action
 		);

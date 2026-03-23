@@ -20,7 +20,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return bool
 	 */
-	public function canHaveMatchCondition( ValueDescription $description ) {
+	public function canHaveMatchCondition( ValueDescription $description ): bool {
 		if ( !$this->isEnabled() ) {
 			return false;
 		}
@@ -62,7 +62,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ) {
+	public function getWhereCondition( ValueDescription $description, $temporaryTable = '' ): string {
 		$affix = '';
 		$matchableText = $this->getMatchableTextFromDescription(
 			$description
@@ -118,7 +118,7 @@ class MySQLValueMatchConditionBuilder extends ValueMatchConditionBuilder {
 	 *
 	 * @return string
 	 */
-	public function getQuerySearchModifier( &$value ) {
+	public function getQuerySearchModifier( &$value ): string {
 		// @see http://dev.mysql.com/doc/refman/5.7/en/fulltext-boolean.html
 		// "MySQL can perform boolean full-text searches using the IN BOOLEAN
 		// MODE modifier. With this modifier, certain characters have special

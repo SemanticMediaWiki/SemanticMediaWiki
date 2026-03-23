@@ -31,7 +31,7 @@ class PropertyStatisticsRebuildJob extends Job {
 	 *
 	 * @since  2.5
 	 */
-	public function run() {
+	public function run(): bool {
 		if ( $this->waitOnCommandLineMode() ) {
 			return true;
 		}
@@ -47,7 +47,7 @@ class PropertyStatisticsRebuildJob extends Job {
 		return true;
 	}
 
-	public function rebuild() {
+	public function rebuild(): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$maintenanceFactory = $applicationFactory->newMaintenanceFactory();
 

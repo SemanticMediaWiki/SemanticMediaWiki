@@ -154,7 +154,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $link->getText( $outputMode, $this->mLinker );
 	}
 
-	private function newTemplateSet( $queryResult ) {
+	private function newTemplateSet( QueryResult $queryResult ): TemplateSet {
 		$templateSet = new TemplateSet();
 
 		$link = $this->getLink(
@@ -199,7 +199,7 @@ class TemplateFileExportPrinter extends FileExportPrinter {
 		return $templateSet;
 	}
 
-	private function addFields( $template, array $row ) {
+	private function addFields( Template $template, array $row ): void {
 		$this->numRows + 1;
 
 		foreach ( $row as $i => $field ) {

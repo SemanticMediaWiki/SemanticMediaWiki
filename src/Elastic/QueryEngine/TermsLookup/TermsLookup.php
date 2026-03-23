@@ -22,10 +22,7 @@ class TermsLookup implements ITermsLookup {
 
 	use LoggerAwareTrait;
 
-	/**
-	 * @var FieldMapper
-	 */
-	private $fieldMapper;
+	private FieldMapper $fieldMapper;
 
 	/**
 	 * @since 3.0
@@ -54,7 +51,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return Parameters
 	 */
-	public function newParameters( array $parameters = [] ) {
+	public function newParameters( array $parameters = [] ): Parameters {
 		return new Parameters( $parameters );
 	}
 
@@ -147,7 +144,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function chain_index_lookup( Parameters $parameters ) {
+	public function chain_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 
 		$query = $this->fieldMapper->bool( 'must', $parameters->get( 'params' ) );
@@ -178,7 +175,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function predef_index_lookup( Parameters $parameters ) {
+	public function predef_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 
@@ -211,7 +208,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function inverse_index_lookup( Parameters $parameters ) {
+	public function inverse_index_lookup( Parameters $parameters ): array {
 		$id = $parameters->get( 'id' );
 		$params = $parameters->get( 'params' );
 
@@ -257,7 +254,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function terms_filter( $field, $params ) {
+	public function terms_filter( $field, $params ): array {
 		if ( $params === [] ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."
@@ -283,7 +280,7 @@ class TermsLookup implements ITermsLookup {
 	 *
 	 * @return array
 	 */
-	public function ids_filter( $params ) {
+	public function ids_filter( $params ): array {
 		if ( $params === [] ) {
 			// Fail with a non existing condition to avoid a " ...
 			// query malformed, must start with start_object ..."

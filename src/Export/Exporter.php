@@ -10,8 +10,10 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\Uri;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Exporter\DataItemMatchFinder;
+use SMW\Exporter\Element;
 use SMW\Exporter\Element\ExpElement;
 use SMW\Exporter\Element\ExpLiteral;
 use SMW\Exporter\Element\ExpNsResource;
@@ -22,7 +24,6 @@ use SMW\Exporter\ExpResourceMapper;
 use SMW\Exporter\ResourceBuilders\DispatchingResourceBuilder;
 use SMW\Localizer\Localizer;
 use SMW\NamespaceUriFinder;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Site;
 use SMW\TypesRegistry;
@@ -142,7 +143,7 @@ class Exporter {
 	 *
 	 * @return void
 	 */
-	public static function clear() {
+	public static function clear(): void {
 		self::$instance = null;
 		self::$m_exporturl = false;
 	}
@@ -154,7 +155,7 @@ class Exporter {
 	 *
 	 * @return void
 	 */
-	public function resetCacheBy( WikiPage $diWikiPage ) {
+	public function resetCacheBy( WikiPage $diWikiPage ): void {
 		self::$expResourceMapper->invalidateCache( $diWikiPage );
 	}
 
@@ -163,7 +164,7 @@ class Exporter {
 	 *
 	 * @return void
 	 */
-	public static function initBaseURIs() {
+	public static function initBaseURIs(): void {
 		if ( self::$m_exporturl !== false ) {
 			return;
 		}
@@ -291,7 +292,7 @@ class Exporter {
 	 *
 	 * @return ExpData
 	 */
-	public function makeExportDataForSubject( WikiPage $subject, $addStubData = false ) {
+	public function makeExportDataForSubject( WikiPage $subject, $addStubData = false ): ExpData {
 		$wikiPageExpElement = $this->newExpElement( $subject );
 		$expData = new ExpData( $wikiPageExpElement );
 
@@ -406,7 +407,7 @@ class Exporter {
 	 * @param DataItem[] $dataItems of DataItem objects for the given property
 	 * @param ExpData &$expData to add the data to
 	 */
-	public static function addPropertyValues( Property $property, array $dataItems, ExpData &$expData ) {
+	public static function addPropertyValues( Property $property, array $dataItems, ExpData &$expData ): void {
 		$resourceBuilder = self::$dispatchingResourceBuilder->findResourceBuilder( $property );
 
 		if ( $property->isUserDefined() ) {
@@ -464,7 +465,7 @@ class Exporter {
 	 * @param ExpElement $expElement
 	 * @return DataItem or null
 	 */
-	public function findDataItemForExpElement( ExpElement $expElement ) {
+	public function findDataItemForExpElement( ExpElement $expElement ): ?WikiPage {
 		return self::$dataItemMatchFinder->matchExpElement( $expElement );
 	}
 
@@ -474,7 +475,7 @@ class Exporter {
 	 *
 	 * @todo An improved mechanism for selecting property types here is needed.
 	 */
-	public function getOWLPropertyType( Property $property ) {
+	public function getOWLPropertyType( Property $property ): string {
 		return TypesRegistry::getOWLPropertyByType( $property->findPropertyTypeID() );
 	}
 
@@ -489,7 +490,7 @@ class Exporter {
 	 * @param int $forNamespace integer the namespace of the page which has a value for this property
 	 * @return ExpNsResource|null
 	 */
-	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ) {
+	public static function getSpecialPropertyResource( $propertyKey, $forNamespace = NS_MAIN ): ?ExpNsResource {
 		switch ( $propertyKey ) {
 			case '_INST':
 				return self::getSpecialNsResource( 'rdf', 'type' );
@@ -542,7 +543,7 @@ class Exporter {
 	 *
 	 * @return ExpNsResource
 	 */
-	public function newExpNsResourceById( $namespaceId, $localName ) {
+	public function newExpNsResourceById( $namespaceId, $localName ): ExpNsResource {
 		$namespace = self::getNamespaceUri( $namespaceId );
 
 		if ( $namespace !== '' ) {
@@ -563,7 +564,7 @@ class Exporter {
 	 * @param string $localName string (e.g. "type")
 	 * @return ExpNsResource
 	 */
-	public static function getSpecialNsResource( $namespaceId, $localName ) {
+	public static function getSpecialNsResource( $namespaceId, $localName ): ExpNsResource {
 		$namespace = self::getNamespaceUri( $namespaceId );
 		if ( $namespace !== '' ) {
 			return new ExpNsResource( $localName, $namespace, $namespaceId );
@@ -583,7 +584,7 @@ class Exporter {
 	 * @param string $uri string of the URI to be expanded
 	 * @return string of the expanded URI
 	 */
-	public function expandURI( $uri ) {
+	public function expandURI( $uri ): string|array {
 		self::initBaseURIs();
 		$uri = str_replace(
 			[
@@ -616,7 +617,7 @@ class Exporter {
 	/**
 	 * @return string
 	 */
-	public function decodeURI( $uri ) {
+	public function decodeURI( $uri ): string|array {
 		return Escaper::decodeUri( $uri );
 	}
 
@@ -667,7 +668,7 @@ class Exporter {
 	 *
 	 * @return ExpElement
 	 */
-	public function newExpElement( DataItem $dataItem ) {
+	public function newExpElement( DataItem $dataItem ): ?Element {
 		return self::$elementFactory->newFromDataItem( $dataItem );
 	}
 
@@ -716,13 +717,13 @@ class Exporter {
 	 *
 	 * @return bool
 	 */
-	public static function hasHelperExpElement( Property $property ) {
+	public static function hasHelperExpElement( Property $property ): bool {
 		return ( $property->findPropertyTypeID() === '_dat' ||
 			$property->findPropertyTypeID() === '_geo' ) ||
 			( !$property->isUserDefined() && !self::hasSpecialPropertyResource( $property ) );
 	}
 
-	protected static function hasSpecialPropertyResource( Property $property ) {
+	protected static function hasSpecialPropertyResource( Property $property ): bool {
 		return $property->getKey() === '_SKEY' ||
 			$property->getKey() === '_INST' ||
 			$property->getKey() === '_MDAT' ||

@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Specials\Ask;
 
 use MediaWiki\Html\Html;
 use MediaWiki\Title\Title;
+use SMW\Formatters\Infolink;
 use SMW\Localizer\Message;
 use SMW\Utils\UrlArgs;
-use SMWInfolink as Infolink;
 
 /**
  * @license GPL-2.0-or-later
@@ -19,7 +19,7 @@ class LinksWidget {
 	/**
 	 * @return array
 	 */
-	public static function getModules() {
+	public static function getModules(): array {
 		return [ 'onoi.clipboard' ];
 	}
 
@@ -198,7 +198,7 @@ class LinksWidget {
 	 *
 	 * @return string
 	 */
-	public static function resultSubmitLink( $isEmpty = false ) {
+	public static function resultSubmitLink( $isEmpty = false ): string {
 		if ( !$isEmpty ) {
 			return '';
 		}

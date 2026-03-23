@@ -3,9 +3,9 @@
 namespace SMW\Query\ResultPrinters;
 
 use SMW\Query\ExportPrinter;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
-use SMWQuery;
-use SMWQueryProcessor;
 
 /**
  * Base class for file export result printers
@@ -36,7 +36,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	/**
 	 * @see 3.0
 	 */
-	public function disableHttpHeader() {
+	public function disableHttpHeader(): void {
 		$this->httpHeader = false;
 	}
 
@@ -48,7 +48,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @param QueryResult $queryResult
 	 * @param array $params
 	 */
-	public function outputAsFile( QueryResult $queryResult, array $params ) {
+	public function outputAsFile( QueryResult $queryResult, array $params ): void {
 		$result = $this->getFileResult( $queryResult, $params );
 
 		$this->httpHeader(
@@ -93,7 +93,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 	 * @return int
 	 */
 	public function getQueryMode( $mode ) {
-		return $mode == SMWQueryProcessor::SPECIAL_PAGE ? SMWQuery::MODE_INSTANCES : SMWQuery::MODE_NONE;
+		return $mode == QueryProcessor::SPECIAL_PAGE ? Query::MODE_INSTANCES : Query::MODE_NONE;
 	}
 
 	/**
@@ -105,7 +105,7 @@ abstract class FileExportPrinter extends ResultPrinter implements ExportPrinter 
 		return $this->getResult( $queryResult, $params, SMW_OUTPUT_FILE );
 	}
 
-	private function httpHeader( $string ) {
+	private function httpHeader( string $string ): void {
 		$this->httpHeader ? header( $string ) : '';
 	}
 

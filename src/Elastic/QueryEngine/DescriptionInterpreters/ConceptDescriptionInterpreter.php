@@ -2,7 +2,9 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\Language\Conjunction;
@@ -33,12 +35,12 @@ class ConceptDescriptionInterpreter {
 	 *
 	 * @return Condition|[]
 	 */
-	public function interpretDescription( ConceptDescription $description, $isConjunction = false ) {
+	public function interpretDescription( ConceptDescription $description, $isConjunction = false ): array|Condition {
 		$concept = $description->getConcept();
 
 		$value = $this->conditionBuilder->getStore()->getPropertyValues(
 			$concept,
-			new DIProperty( '_CONC' )
+			new Property( '_CONC' )
 		);
 
 		if ( $value === null || $value === [] ) {
@@ -70,7 +72,7 @@ class ConceptDescriptionInterpreter {
 		return $condition;
 	}
 
-	private function terms_lookup( $description, $concept, $params ) {
+	private function terms_lookup( $description, WikiPage $concept, $params ) {
 		$concept->setId(
 			$this->conditionBuilder->getID( $concept )
 		);
@@ -99,7 +101,7 @@ class ConceptDescriptionInterpreter {
 		return $params;
 	}
 
-	private function hasCircularConceptDescription( $description, $concept ) {
+	private function hasCircularConceptDescription( $description, $concept ): bool {
 		if ( $description instanceof ConceptDescription ) {
 			if ( $description->getConcept()->equals( $concept ) ) {
 				$this->conditionBuilder->addError( [ 'smw-query-condition-circular', $description->getQueryString() ] );

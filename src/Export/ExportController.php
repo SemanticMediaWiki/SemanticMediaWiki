@@ -7,6 +7,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Exception\DataItemException;
 use SMW\Exporter\Controller\Queue;
 use SMW\Exporter\Element\ExpResource;
@@ -17,11 +18,10 @@ use SMW\MediaWiki\DeepRedirectTargetResolver;
 use SMW\NamespaceExaminer;
 use SMW\Query\Language\ConceptDescription;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\RequestOptions;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\StoreFactory;
-use SMWQuery;
 use Wikimedia\Rdbms\IDatabase;
 use Wikimedia\Rdbms\IReadableDatabase;
 
@@ -35,10 +35,7 @@ use Wikimedia\Rdbms\IReadableDatabase;
  */
 class ExportController {
 
-	/**
-	 * @var Serializer
-	 */
-	protected $serializer;
+	protected Serializer $serializer;
 
 	/**
 	 * Boolean to indicate whether all objects that are exported in full (with
@@ -48,6 +45,8 @@ class ExportController {
 	 * Adding such dependencies counts as "recursive serialisation" and whether
 	 * or not inlinking objects are included in full depends on the setting for
 	 * recursion depth. Setting this to true enables "browsable RDF".
+	 *
+	 * @var bool
 	 */
 	protected $add_backlinks = false;
 
@@ -57,12 +56,16 @@ class ExportController {
 	 * Flushing later has some advantages for export formats like RDF/XML where
 	 * global namespace declarations are only possible by modifying the header,
 	 * so that only local declarations are possible after the first flush.
+	 *
+	 * @var int
 	 */
 	protected $delay_flush;
 
 	/**
 	 * File handle for a potential output file to write to, or null if printing
 	 * to standard output.
+	 *
+	 * @var resource|null|false
 	 */
 	protected $outputfile;
 
@@ -89,9 +92,11 @@ class ExportController {
 
 	/**
 	 * Enable or disable inclusion of backlinks into the output.
+	 *
 	 * @param bool $enable
+	 * @return void
 	 */
-	public function enableBacklinks( $enable ) {
+	public function enableBacklinks( $enable ): void {
 		$this->add_backlinks = $enable;
 	}
 
@@ -99,12 +104,13 @@ class ExportController {
 	 * Initialize all internal structures to begin with some serialization.
 	 * Returns true if initialization was successful (this means that the
 	 * optional output file is writable).
+	 *
 	 * @param string $outfilename URL of the file that output should be written
 	 * to, or empty string for writing to the standard output.
 	 *
 	 * @return bool
 	 */
-	protected function prepareSerialization( $outfilename = '' ) {
+	protected function prepareSerialization( $outfilename = '' ): bool {
 		$this->serializer->clear();
 		$this->queue->clear();
 
@@ -133,6 +139,7 @@ class ExportController {
 	 *
 	 * @param WikiPage $diWikiPage specifying the page to be exported
 	 * @param int $recursiondepth specifying the depth of recursion
+	 * @return void|null
 	 */
 	protected function serializePage( WikiPage $diWikiPage, $recursiondepth = 1 ) {
 		if ( $this->queue->isDone( $diWikiPage, $recursiondepth ) ) {
@@ -268,7 +275,7 @@ class ExportController {
 				} elseif ( SMW_NS_CONCEPT === $diWikiPage->getNamespace() ) { // print concept members (slightly different code)
 					$desc = new ConceptDescription( $diWikiPage );
 					$desc->addPrintRequest( new PrintRequest( PrintRequest::PRINT_THIS, '' ) );
-					$query = new SMWQuery( $desc );
+					$query = new Query( $desc );
 					$query->setLimit( 100 );
 
 					$res = StoreFactory::getStore()->getQueryResult( $query );
@@ -393,7 +400,7 @@ class ExportController {
 	 * @todo Consider dropping the $revisiondate filtering and all associated
 	 * functionality. Is anybody using this?
 	 */
-	public function printPages( $pages, $recursion = 1, $revisiondate = false ) {
+	public function printPages( $pages, $recursion = 1, $revisiondate = false ): void {
 		$mwServices = MediaWikiServices::getInstance();
 		$titleFactory = $mwServices->getTitleFactory();
 		$linkCache = $mwServices->getLinkCache();
@@ -450,7 +457,7 @@ class ExportController {
 	 * export to reduce server load in long-running operations
 	 * @param int $delayeach number of pages to process between two sleeps
 	 */
-	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ) {
+	public function printAllToFile( $outfile, $ns_restriction, $delay, $delayeach ): void {
 		if ( !$this->prepareSerialization( $outfile ) ) {
 			return;
 		}
@@ -469,7 +476,7 @@ class ExportController {
 	 * export to reduce server load in long-running operations
 	 * @param int $delayeach number of pages to process between two sleeps
 	 */
-	public function printAllToOutput( $ns_restriction, $delay, $delayeach ) {
+	public function printAllToOutput( $ns_restriction, $delay, $delayeach ): void {
 		$this->prepareSerialization();
 		$this->printAll( $ns_restriction, $delay, $delayeach );
 	}
@@ -484,7 +491,7 @@ class ExportController {
 	 *
 	 * @return IDatabase|IReadableDatabase
 	 */
-	public static function getDBHandle() {
+	public static function getDBHandle(): IReadableDatabase {
 		return MediaWikiServices::getInstance()->getConnectionProvider()->getReplicaDatabase();
 	}
 
@@ -559,7 +566,7 @@ class ExportController {
 	 * serialize a declaration for
 	 * @param int $limit the number of pages to serialize
 	 */
-	public function printPageList( $offset = 0, $limit = 30 ) {
+	public function printPageList( $offset = 0, $limit = 30 ): void {
 		global $smwgNamespacesWithSemanticLinks;
 
 		$dbr = self::getDBHandle();
@@ -623,7 +630,7 @@ class ExportController {
 	/**
 	 * Print basic information about this site.
 	 */
-	public function printWikiInfo() {
+	public function printWikiInfo(): void {
 		$this->prepareSerialization();
 		$this->delay_flush = 35; // don't do intermediate flushes with default parameters
 

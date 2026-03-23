@@ -7,8 +7,8 @@ use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\ContainerSemanticData;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -62,7 +62,7 @@ class RecordValue extends AbstractMultiValue {
 	 *
 	 * @return array
 	 */
-	public function getValuesFromString( $value ) {
+	public function getValuesFromString( $value ): array {
 		// #664 / T17732
 		$value = str_replace( "\;", "-3B", $value );
 
@@ -146,7 +146,7 @@ class RecordValue extends AbstractMultiValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
 			$this->m_dataitem = $dataItem;
 			return true;
@@ -213,7 +213,7 @@ class RecordValue extends AbstractMultiValue {
 	 * @todo This is not a full reset yet (the case that property is changed after a value
 	 * was set does not occur in the normal flow of things, hence this has low priority).
 	 */
-	public function setProperty( Property $property ) {
+	public function setProperty( Property $property ): void {
 		parent::setProperty( $property );
 		$this->m_diProperties = null;
 	}
@@ -223,7 +223,7 @@ class RecordValue extends AbstractMultiValue {
 	 *
 	 * @param Property[] $properties
 	 */
-	public function setFieldProperties( array $properties ) {
+	public function setFieldProperties( array $properties ): void {
 		foreach ( $properties as $property ) {
 			if ( $property instanceof Property ) {
 				$this->m_diProperties[] = $property;

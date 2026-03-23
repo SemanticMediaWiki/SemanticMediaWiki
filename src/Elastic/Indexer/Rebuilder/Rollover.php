@@ -78,7 +78,7 @@ class Rollover {
 	 *
 	 * @throws NoConnectionException
 	 */
-	public function update( $type ) {
+	public function update( $type ): string {
 		// Fail hard since we expect to create an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();
@@ -127,7 +127,7 @@ class Rollover {
 	 *
 	 * @throws NoConnectionException
 	 */
-	public function delete( $type ) {
+	public function delete( $type ): string {
 		// Fail hard since we expect to delete an index but are unable to do so!
 		if ( !$this->connection->ping() ) {
 			throw new NoConnectionException();

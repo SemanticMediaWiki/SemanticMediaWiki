@@ -2,7 +2,7 @@
 
 namespace SMW\Query\Language;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 
 /**
  * Description of a set of instances that have an attribute with some value
@@ -19,15 +19,9 @@ use SMW\DIProperty;
  */
 class SomeProperty extends Description {
 
-	/**
-	 * @var Description
-	 */
-	protected $description;
+	protected Description $description;
 
-	/**
-	 * @var DIProperty
-	 */
-	protected $property;
+	protected Property $property;
 
 	/**
 	 * @var int|null
@@ -40,10 +34,10 @@ class SomeProperty extends Description {
 	/**
 	 * @since 1.6
 	 *
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param Description $description
 	 */
-	public function __construct( DIProperty $property, Description $description ) {
+	public function __construct( Property $property, Description $description ) {
 		$this->property = $property;
 		$this->description = $description;
 	}
@@ -53,7 +47,7 @@ class SomeProperty extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubpropertyDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubpropertyDepth'];
 		}
@@ -100,9 +94,9 @@ class SomeProperty extends Description {
 	}
 
 	/**
-	 * @return DIProperty
+	 * @return Property
 	 */
-	public function getProperty() {
+	public function getProperty(): Property {
 		return $this->property;
 	}
 
@@ -111,7 +105,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return Description
 	 */
-	public function getDescription() {
+	public function getDescription(): Description {
 		return $this->description;
 	}
 
@@ -120,7 +114,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return string
 	 */
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$subDescription = $this->description;
 
 		// Use the canonical label to ensure that conditions contain
@@ -154,7 +148,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return bool
 	 */
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 
@@ -163,7 +157,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return int
 	 */
-	public function getSize() {
+	public function getSize(): int|float {
 		return 1 + $this->getDescription()->getSize();
 	}
 
@@ -172,7 +166,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return int
 	 */
-	public function getDepth() {
+	public function getDepth(): int|float {
 		return 1 + $this->getDescription()->getDepth();
 	}
 
@@ -181,7 +175,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return int
 	 */
-	public function getQueryFeatures() {
+	public function getQueryFeatures(): int|string {
 		return SMW_PROPERTY_QUERY | $this->description->getQueryFeatures();
 	}
 
@@ -190,7 +184,7 @@ class SomeProperty extends Description {
 	 *
 	 * @return SomeProperty
 	 */
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( ( $maxsize <= 0 ) || ( $maxdepth <= 0 ) ) {
 			$log[] = $this->getQueryString();
 			return new ThingDescription();

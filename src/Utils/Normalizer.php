@@ -17,7 +17,7 @@ class Normalizer {
 	 *
 	 * @return string
 	 */
-	public static function toLowercase( $text ) {
+	public static function toLowercase( $text ): string {
 		return mb_strtolower( $text, mb_detect_encoding( $text ) );
 	}
 

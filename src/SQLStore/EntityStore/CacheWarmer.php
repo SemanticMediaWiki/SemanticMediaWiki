@@ -3,9 +3,9 @@
 namespace SMW\SQLStore\EntityStore;
 
 use Iterator;
-use SMW\DIProperty;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DisplayTitleFinder;
-use SMW\DIWikiPage;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
 use SMW\Exception\PropertyLabelNotResolvedException;
 use SMW\MediaWiki\LinkBatch;
@@ -44,7 +44,7 @@ class CacheWarmer {
 	 *
 	 * @param DisplayTitleFinder $displayTitleFinder
 	 */
-	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ) {
+	public function setDisplayTitleFinder( DisplayTitleFinder $displayTitleFinder ): void {
 		$this->displayTitleFinder = $displayTitleFinder;
 	}
 
@@ -53,7 +53,7 @@ class CacheWarmer {
 	 *
 	 * @param int $thresholdLimit
 	 */
-	public function setThresholdLimit( $thresholdLimit ) {
+	public function setThresholdLimit( $thresholdLimit ): void {
 		$this->thresholdLimit = $thresholdLimit;
 	}
 
@@ -62,7 +62,7 @@ class CacheWarmer {
 	 *
 	 * @param array $list
 	 */
-	public function prepareCache( $list = [] ) {
+	public function prepareCache( $list = [] ): void {
 		$hashList = [];
 		$linkBatch = LinkBatch::singleton();
 		$linkBatch->setCaller( __METHOD__ );
@@ -79,22 +79,20 @@ class CacheWarmer {
 
 			$hash = null;
 
-			if ( $item instanceof DIWikiPage ) {
+			if ( $item instanceof WikiPage ) {
 				$linkBatch->add( $item );
 
 				if ( $item->getNamespace() === SMW_NS_PROPERTY ) {
 					try {
-						$property = DIProperty::newFromUserLabel( $item->getDBKey() );
-					} catch ( PredefinedPropertyLabelMismatchException $e ) {
-						continue;
-					} catch ( PropertyLabelNotResolvedException $e ) {
+						$property = Property::newFromUserLabel( $item->getDBKey() );
+					} catch ( PredefinedPropertyLabelMismatchException | PropertyLabelNotResolvedException ) {
 						continue;
 					}
 					$hash = $item->getSha1();
 				} else {
 					$hash = $item->getSha1();
 				}
-			} elseif ( $item instanceof DIProperty ) {
+			} elseif ( $item instanceof Property ) {
 				$linkBatch->add( $item->getDIWikiPage() );
 
 				// Avoid _SKEY as it is not used during an entity lookup to
@@ -126,7 +124,7 @@ class CacheWarmer {
 	 *
 	 * @param array $hashList
 	 */
-	public function prefetchFromList( $hashList = [] ) {
+	public function prefetchFromList( $hashList = [] ): void {
 		if ( $hashList === [] ) {
 			return;
 		}
@@ -178,7 +176,7 @@ class CacheWarmer {
 	 *
 	 * @param array $idList
 	 */
-	public function loadByIds( $idList = [] ) {
+	public function loadByIds( $idList = [] ): void {
 		if ( $idList === [] ) {
 			return;
 		}

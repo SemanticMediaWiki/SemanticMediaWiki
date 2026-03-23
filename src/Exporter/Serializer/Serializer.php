@@ -2,9 +2,9 @@
 
 namespace SMW\Exporter\Serializer;
 
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpNsResource;
 use SMW\Exporter\Element\ExpResource;
-use SMWExpData as ExpData;
 
 /**
  * Abstract class for serializing exported data (encoded as ExpData object)
@@ -100,7 +100,7 @@ abstract class Serializer {
 	/**
 	 * Clear internal states to start a new serialization.
 	 */
-	public function clear() {
+	public function clear(): void {
 		$this->pre_ns_buffer = '';
 		$this->post_ns_buffer = '';
 		$this->decl_todo = [];
@@ -113,7 +113,7 @@ abstract class Serializer {
 	 * Start a new serialization, resetting all internal data and serializing
 	 * necessary header elements.
 	 */
-	public function startSerialization() {
+	public function startSerialization(): void {
 		$this->clear();
 		$this->serializeHeader();
 	}
@@ -124,7 +124,7 @@ abstract class Serializer {
 	 * all necessary declarations. No further serialization functions must be
 	 * called after this.
 	 */
-	public function finishSerialization() {
+	public function finishSerialization(): void {
 		$this->serializeDeclarations();
 		$this->serializeFooter();
 	}
@@ -145,7 +145,7 @@ abstract class Serializer {
 	 * Serialize any declarations that have been found to be missing while
 	 * serializing other elements.
 	 */
-	public function serializeDeclarations() {
+	public function serializeDeclarations(): void {
 		foreach ( $this->decl_todo as $name => $flag ) {
 			$types = [];
 

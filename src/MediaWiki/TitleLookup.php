@@ -49,7 +49,7 @@ class TitleLookup {
 	 * @return Title[]
 	 * @throws RuntimeException
 	 */
-	public function selectAll() {
+	public function selectAll(): array {
 		if ( $this->namespace === null ) {
 			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
@@ -82,7 +82,7 @@ class TitleLookup {
 	 *
 	 * @return Title[]
 	 */
-	public function getRedirectPages() {
+	public function getRedirectPages(): array {
 		$conditions = [];
 		$options = [];
 
@@ -107,7 +107,7 @@ class TitleLookup {
 	 * @return Title[]
 	 * @throws RuntimeException
 	 */
-	public function selectByIdRange( $startId = 0, $endId = 0 ) {
+	public function selectByIdRange( $startId = 0, $endId = 0 ): array {
 		if ( $this->namespace === null ) {
 			throw new RuntimeException( 'Unrestricted selection without a namespace is not supported' );
 		}
@@ -140,7 +140,7 @@ class TitleLookup {
 	 *
 	 * @return int
 	 */
-	public function getMaxId() {
+	public function getMaxId(): int {
 		if ( $this->namespace === NS_CATEGORY ) {
 			$tableName = 'category';
 			$var = 'MAX(cat_id)';
@@ -157,7 +157,10 @@ class TitleLookup {
 		);
 	}
 
-	protected function makeTitlesFromSelection( $res ) {
+	/**
+	 * @return mixed[]
+	 */
+	protected function makeTitlesFromSelection( $res ): array {
 		$pages = [];
 
 		if ( $res === false ) {

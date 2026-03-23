@@ -5,6 +5,8 @@ namespace SMW\MediaWiki\Specials;
 use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\SpecialPage;
 use ParamProcessor\Param;
+use SMW\Formatters\Infolink;
+use SMW\MediaWiki\Outputs;
 use SMW\MediaWiki\Specials\Ask\ErrorWidget;
 use SMW\MediaWiki\Specials\Ask\FormatListWidget;
 use SMW\MediaWiki\Specials\Ask\HelpWidget;
@@ -15,19 +17,16 @@ use SMW\MediaWiki\Specials\Ask\ParametersProcessor;
 use SMW\MediaWiki\Specials\Ask\ParametersWidget;
 use SMW\MediaWiki\Specials\Ask\SortWidget;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
+use SMW\Query\QueryProcessor;
 use SMW\Query\QueryResult;
 use SMW\Query\QuerySourceFactory;
 use SMW\Query\RemoteRequest;
 use SMW\Query\Result\StringResult;
 use SMW\Query\ResultPrinterDependency;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMW\Services\ServicesFactory;
 use SMW\Utils\HtmlModal;
 use SMW\Utils\UrlArgs;
-use SMWInfolink as Infolink;
-use SMWOutputs;
-use SMWQuery;
-use SMWQueryProcessor as QueryProcessor;
 
 /**
  * This special page for MediaWiki implements a customisable form for executing
@@ -89,7 +88,7 @@ class SpecialAsk extends SpecialPage {
 	 *
 	 * @return bool
 	 */
-	public function doesWrites() {
+	public function doesWrites(): bool {
 		return true;
 	}
 
@@ -178,13 +177,13 @@ class SpecialAsk extends SpecialPage {
 		$this->addHelpLink( $helpLink, true );
 
 		// make sure locally collected output data is pushed to the output!
-		SMWOutputs::commitToOutputPage( $out );
+		Outputs::commitToOutputPage( $out );
 	}
 
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/search';
 	}
 
@@ -232,7 +231,7 @@ class SpecialAsk extends SpecialPage {
 			$GLOBALS['smwgResultFormats']
 		);
 
-		$userOptionsLookup = ServicesFactory::getInstance()->singleton( 'UserOptionsLookup' );
+		$userOptionsLookup = ApplicationFactory::getInstance()->singleton( 'UserOptionsLookup' );
 		ParametersWidget::setTooltipDisplay(
 			$userOptionsLookup->getOption( $this->getUser(), 'smw-prefs-ask-options-tooltip-display' )
 		);
@@ -416,7 +415,7 @@ class SpecialAsk extends SpecialPage {
 		);
 	}
 
-	private function fetchResults( &$printer, &$queryobj, &$urlArgs ) {
+	private function fetchResults( &$printer, &$queryobj, UrlArgs &$urlArgs ): array|int {
 		// Copy the printout to retain the original state while in case of no
 		// specific subject (THIS) request extend the query with a
 		// `PrintRequest::PRINT_THIS` column
@@ -547,7 +546,7 @@ class SpecialAsk extends SpecialPage {
 	 * The return value is not HTML-safe; the caller must take care of escaping it.
 	 * @return string
 	 */
-	private function print_code() {
+	private function print_code(): string {
 		$code = $this->queryString ? $this->queryString . "\n" : "\n";
 
 		foreach ( $this->printouts as $printout ) {
@@ -571,7 +570,7 @@ class SpecialAsk extends SpecialPage {
 		return '{{#ask: ' . $code . '}}';
 	}
 
-	private function print_borrowed_msg( &$html, &$searchInfoText ) {
+	private function print_borrowed_msg( string &$html, string &$searchInfoText ): void {
 		if ( !$this->isBorrowedMode ) {
 			return;
 		}
@@ -605,7 +604,7 @@ class SpecialAsk extends SpecialPage {
 		}
 	}
 
-	private function newUrlArgs() {
+	private function newUrlArgs(): UrlArgs {
 		$urlArgs = new UrlArgs();
 
 		// build parameter strings for URLs, based on current settings
@@ -654,7 +653,7 @@ class SpecialAsk extends SpecialPage {
 		return $urlArgs;
 	}
 
-	private function fetchQueryResult( $params ) {
+	private function fetchQueryResult( array $params ): array {
 		$res = null;
 		$debug = '';
 		$duration = 0;
@@ -670,14 +669,14 @@ class SpecialAsk extends SpecialPage {
 		);
 
 		if ( $this->getRequest()->getVal( 'cache' ) === 'no' ) {
-			$queryobj->setOption( SMWQuery::NO_CACHE, true );
+			$queryobj->setOption( Query::NO_CACHE, true );
 		}
 
 		if ( $this->getRequest()->getVal( 'native_result', false ) ) {
 			$queryobj->setOption( 'native_result', true );
 		}
 
-		$queryobj->setOption( SMWQuery::PROC_CONTEXT, 'SpecialAsk' );
+		$queryobj->setOption( Query::PROC_CONTEXT, 'SpecialAsk' );
 		$source = $params['source']->getValue();
 		$noSource = $source === '';
 

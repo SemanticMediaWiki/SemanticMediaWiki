@@ -4,12 +4,13 @@ namespace SMW\Elastic\Indexer\Rebuilder;
 
 use Exception;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\Elastic\Connection\Client as ElasticClient;
 use SMW\Elastic\Indexer\DocumentCreator;
 use SMW\Elastic\Indexer\FileIndexer;
 use SMW\Elastic\Indexer\Indexer;
 use SMW\Elastic\Installer;
-use SMW\SemanticData;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
 use SMW\Utils\CliMsgFormatter;
@@ -68,7 +69,7 @@ class Rebuilder {
 	 * @param string $key
 	 * @param mixed $value
 	 */
-	public function set( $key, $value ) {
+	public function set( $key, $value ): void {
 		$this->options[$key] = $value;
 	}
 
@@ -80,7 +81,7 @@ class Rebuilder {
 	 *
 	 * @return array
 	 */
-	public function select( Store $store, array $conditions ) {
+	public function select( Store $store, array $conditions ): array {
 		$connection = $store->getConnection( 'mw.db' );
 
 		$res = $connection->select(
@@ -129,7 +130,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function prepare() {
+	public function prepare(): void {
 		$this->client->setMaintenanceLock();
 
 		$this->prepareIndexByType( ElasticClient::TYPE_DATA );
@@ -139,7 +140,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function deleteAndSetupIndices() {
+	public function deleteAndSetupIndices(): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage( "\n" );
@@ -170,7 +171,7 @@ class Rebuilder {
 	 *
 	 * @return bool
 	 */
-	public function hasIndices() {
+	public function hasIndices(): bool {
 		return $this->client->hasIndex( ElasticClient::TYPE_DATA ) &&
 			$this->client->hasIndex( ElasticClient::TYPE_LOOKUP );
 	}
@@ -178,7 +179,7 @@ class Rebuilder {
 	/**
 	 * @since 3.0
 	 */
-	public function createIndices() {
+	public function createIndices(): void {
 		$this->createIndexByType( ElasticClient::TYPE_DATA );
 		$this->createIndexByType( ElasticClient::TYPE_LOOKUP );
 	}
@@ -217,7 +218,7 @@ class Rebuilder {
 	 *
 	 * @param int $id
 	 */
-	public function delete( $id ) {
+	public function delete( $id ): void {
 		$index = $this->client->getIndexName( ElasticClient::TYPE_DATA );
 
 		if ( isset( $this->versions[ElasticClient::TYPE_DATA] ) ) {
@@ -242,7 +243,7 @@ class Rebuilder {
 	 * @param int $id
 	 * @param SemanticData $semanticData
 	 */
-	public function rebuild( $id, SemanticData $semanticData ) {
+	public function rebuild( $id, SemanticData $semanticData ): void {
 		$dataItem = $semanticData->getSubject();
 		$dataItem->setId( $id );
 
@@ -305,7 +306,7 @@ class Rebuilder {
 		);
 	}
 
-	private function fetchRawText( $dataItem ) {
+	private function fetchRawText( WikiPage $dataItem ) {
 		$config = $this->client->getConfig();
 
 		if (
@@ -321,7 +322,7 @@ class Rebuilder {
 		return '';
 	}
 
-	private function prepareIndexByType( $type ) {
+	private function prepareIndexByType( string $type ): void {
 		$index = $this->client->getIndexName( $type );
 
 		if ( isset( $this->versions[$type] ) ) {
@@ -342,11 +343,11 @@ class Rebuilder {
 		$this->client->putSettings( $params );
 	}
 
-	private function refreshIndexByType( $type ) {
+	private function refreshIndexByType( string $type ): void {
 		$this->client->refresh( [ 'index' => $this->client->getIndexName( $type ) ] );
 	}
 
-	private function setDefaultByType( $type ) {
+	private function setDefaultByType( string $type ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(
@@ -413,7 +414,7 @@ class Rebuilder {
 		);
 	}
 
-	private function createIndexByType( $type ) {
+	private function createIndexByType( string $type ): void {
 		// If for some reason a recent rebuild didn't finish, use
 		// the locked version as master
 		if ( ( $version = $this->client->getLock( $type ) ) === false ) {
@@ -441,7 +442,7 @@ class Rebuilder {
 		$this->client->setLock( $type, $version );
 	}
 
-	private function rolloverByTypeAndVersion( $type, $version ) {
+	private function rolloverByTypeAndVersion( string $type, $version ): void {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$old = $this->installer->rollover(

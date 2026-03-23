@@ -4,7 +4,7 @@ namespace SMW\MediaWiki\Api;
 
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiFormatXml;
-use SMWQueryProcessor;
+use SMW\Query\QueryProcessor;
 use Wikimedia\ParamValidator\ParamValidator;
 
 /**
@@ -23,13 +23,13 @@ class Ask extends Query {
 	/**
 	 * @see ApiBase::execute
 	 */
-	public function execute() {
+	public function execute(): void {
 		$params = $this->extractRequestParams();
 
 		$parameterFormatter = new ApiRequestParameterFormatter( $this->extractRequestParams() );
 		$outputFormat = 'json';
 
-		[ $queryString, $parameters, $printouts ] = SMWQueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
+		[ $queryString, $parameters, $printouts ] = QueryProcessor::getComponentsFromFunctionParams( $parameterFormatter->getAskApiParameters(), false );
 
 		$queryResult = $this->getQueryResult( $this->getQuery(
 			$queryString,
@@ -49,12 +49,11 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getAllowedParams
 	 *
 	 * @return array
 	 */
-	public function getAllowedParams() {
+	public function getAllowedParams(): array {
 		return [
 			'query' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -69,36 +68,33 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getParamDescription
 	 *
 	 * @return array
 	 */
-	public function getParamDescription() {
+	public function getParamDescription(): array {
 		return [
 			'query' => 'The query string in ask-language'
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getDescription
 	 *
 	 * @return array
 	 */
-	public function getDescription() {
+	public function getDescription(): array {
 		return [
 			'API module to query SMW by providing a query in the ask language.'
 		];
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getExamples
 	 *
 	 * @return array
 	 */
-	protected function getExamples() {
+	protected function getExamples(): array {
 		return [
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|%3FModification%20date|sort%3DModification%20date|order%3Ddesc',
 			'api.php?action=ask&query=[[Modification%20date::%2B]]|limit%3D5|offset%3D1'
@@ -106,12 +102,11 @@ class Ask extends Query {
 	}
 
 	/**
-	 * @codeCoverageIgnore
 	 * @see ApiBase::getVersion
 	 *
 	 * @return string
 	 */
-	public function getVersion() {
+	public function getVersion(): string {
 		return __CLASS__ . '-' . SMW_VERSION;
 	}
 

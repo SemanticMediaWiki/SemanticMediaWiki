@@ -3,17 +3,17 @@
 namespace SMW\SQLStore\EntityStore;
 
 use RuntimeException;
+use SMW\DataItems\DataItem;
 use SMW\DIContainer;
 use SMW\MediaWiki\Connection\OptionsBuilder;
 use SMW\RequestOptions;
 use SMW\SQLStore\PropertyTableDefinition as PropertyTableDef;
 use SMW\SQLStore\SQLStore;
-use SMWDataItem as DataItem;
 use stdClass;
 use Wikimedia\Rdbms\Subquery;
 
 /**
- * @license GNU GPL v2
+ * @license GPL-2.0-or-later
  * @since 3.0
  *
  * @author mwjames
@@ -117,7 +117,7 @@ class TraversalPropertyLookup {
 		return $result;
 	}
 
-	private function getWhereConds( $dataItem ) {
+	private function getWhereConds( DataItem $dataItem ): string {
 		$where = '';
 		$connection = $this->store->getConnection( 'mw.db' );
 

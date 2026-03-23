@@ -2,12 +2,13 @@
 
 namespace SMW\MediaWiki\Hooks;
 
+use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Parser\ParserOutputLinkTypes;
 use Psr\Log\LoggerAwareTrait;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\RevisionGuardAwareTrait;
 use SMW\NamespaceExaminer;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -46,21 +47,21 @@ class LinksUpdateComplete implements HookListener {
 	 *
 	 * @param bool $isReady
 	 */
-	public function isReady( $isReady ) {
+	public function isReady( $isReady ): void {
 		$this->isReady = (bool)$isReady;
 	}
 
 	/**
 	 * @since 2.4
 	 */
-	public function disableDeferredUpdate() {
+	public function disableDeferredUpdate(): void {
 		$this->enabledDeferredUpdate = false;
 	}
 
 	/**
 	 * @since 1.9
 	 *
-	 * @param LinksUpdate|MediaWiki\Deferred\LinksUpdate\LinksUpdate $linksUpdate
+	 * @param LinksUpdate $linksUpdate
 	 *
 	 * @return true
 	 */
@@ -121,7 +122,7 @@ class LinksUpdateComplete implements HookListener {
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateSemanticData( &$parserData, $title, $reason = '' ) {
+	private function updateSemanticData( &$parserData, $title, string $reason = '' ): void {
 		$this->logger->info(
 			[
 				'LinksUpdateConstructed',
@@ -148,7 +149,7 @@ class LinksUpdateComplete implements HookListener {
 		return $parserOutput->getExtensionData( 'smwdata' );
 	}
 
-	private function doAbort() {
+	private function doAbort(): bool {
 		$this->logger->info(
 			"LinksUpdateConstructed was invoked but the site isn't ready yet, aborting the processing."
 		);

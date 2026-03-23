@@ -3,14 +3,14 @@
 namespace SMW\SQLStore;
 
 use InvalidArgumentException;
-use SMW\DIProperty;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\Enum;
 use SMW\Exception\DataItemException;
 use SMW\Exception\PredefinedPropertyLabelMismatchException;
-use SMW\SemanticData;
 use SMW\SQLStore\ChangeOp\ChangeOp;
 use SMW\Store;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -46,7 +46,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param ChangeOp|null $changeOp
 	 */
-	public function setChangeOp( ?ChangeOp $changeOp = null ) {
+	public function setChangeOp( ?ChangeOp $changeOp = null ): void {
 		$this->changeOp = $changeOp;
 	}
 
@@ -55,7 +55,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @param bool $checkRemnantEntities
 	 */
-	public function checkRemnantEntities( $checkRemnantEntities ) {
+	public function checkRemnantEntities( $checkRemnantEntities ): void {
 		$this->checkRemnantEntities = (bool)$checkRemnantEntities;
 	}
 
@@ -92,7 +92,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	public function computeTableRowDiff( $sid, SemanticData $semanticData ) {
+	public function computeTableRowDiff( $sid, SemanticData $semanticData ): array {
 		$tablesDeleteRows = [];
 		$tablesInsertRows = [];
 
@@ -128,8 +128,8 @@ class PropertyTableRowDiffer {
 			}
 
 			try {
-				$fixedProperties[] = new DIProperty( $propertyTable->getFixedProperty() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
+				$fixedProperties[] = new Property( $propertyTable->getFixedProperty() );
+			} catch ( PredefinedPropertyLabelMismatchException ) {
 				// Do nothing!
 			}
 		}
@@ -155,11 +155,11 @@ class PropertyTableRowDiffer {
 
 				// Isn't registered therefore leave it alone (property was removed etc.)
 				try {
-					$property = new DIProperty( $fixedProperty['key'] );
+					$property = new Property( $fixedProperty['key'] );
 					$fixedProperty['p_id'] = $this->store->getObjectIds()->getSMWPropertyID(
 						$property
 					);
-				} catch ( DataItemException $e ) {
+				} catch ( DataItemException ) {
 					$fixedProperty = [];
 				}
 			}
@@ -251,7 +251,7 @@ class PropertyTableRowDiffer {
 	 * The phenomenon has been observed in connection with a page turned from
 	 * a redirect to a normal page or for undeleted pages.
 	 */
-	private function createHash( $tableName, $newData, $hashMutator = '' ) {
+	private function createHash( $tableName, array $newData, string $hashMutator = '' ): string {
 		return md5( serialize( array_values( $newData[$tableName] ) ) . $hashMutator );
 	}
 
@@ -270,7 +270,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function fetchCurrentContentsForPropertyTable( $sid, PropertyTableDefinition $propertyTable ) {
+	private function fetchCurrentContentsForPropertyTable( $sid, PropertyTableDefinition $propertyTable ): array {
 		if ( !$propertyTable->usesIdSubject() ) { // does not occur, but let's be strict
 			throw new InvalidArgumentException( 'Operation not supported for tables without subject IDs.' );
 		}
@@ -323,7 +323,7 @@ class PropertyTableRowDiffer {
 	 *
 	 * @return array
 	 */
-	private function arrayDeleteMatchingValues( $oldValues, $newValues, $propertyTable ) {
+	private function arrayDeleteMatchingValues( array $oldValues, $newValues, $propertyTable ): array {
 		$isString = $propertyTable->getDIType() === DataItem::TYPE_BLOB;
 
 		// Cycle through old values

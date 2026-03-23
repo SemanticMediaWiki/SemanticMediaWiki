@@ -3,11 +3,12 @@
 namespace SMW\MediaWiki\Specials\Browse;
 
 use MediaWiki\Html\Html;
-use SMW\DIWikiPage;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\WikiPage;
 use SMW\Localizer\Message;
 use SMW\Property\SpecificationLookup;
 use SMW\Schema\SchemaFinder;
-use SMWDataItem as DataItem;
+use SMW\Schema\SchemaList;
 
 /**
  * @private
@@ -58,7 +59,7 @@ class GroupFormatter {
 	 *
 	 * @param bool $showGroup
 	 */
-	public function showGroup( $showGroup ) {
+	public function showGroup( $showGroup ): void {
 		$this->showGroup = $showGroup;
 	}
 
@@ -67,7 +68,7 @@ class GroupFormatter {
 	 *
 	 * @return bool
 	 */
-	public function isLastGroup( $group ) {
+	public function isLastGroup( $group ): bool {
 		return $this->lastGroup === $group;
 	}
 
@@ -76,7 +77,7 @@ class GroupFormatter {
 	 *
 	 * @return bool
 	 */
-	public function hasGroups() {
+	public function hasGroups(): bool {
 		return $this->groupLinks !== [];
 	}
 
@@ -85,7 +86,7 @@ class GroupFormatter {
 	 *
 	 * @param array &$properties
 	 */
-	public function findGroupMembership( array &$properties ) {
+	public function findGroupMembership( array &$properties ): void {
 		$list = $this->prepareListFromSchema(
 			$this->schemaFinder->getSchemaListByType( 'PROPERTY_GROUP_SCHEMA' )
 		);
@@ -136,25 +137,25 @@ class GroupFormatter {
 	 * @since 3.0
 	 *
 	 * @param string $id
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return string
 	 */
-	public function getMessageClassLink( $id, DIWikiPage $dataItem ) {
+	public function getMessageClassLink( $id, WikiPage $dataItem ) {
 		$gr = str_replace( '_', ' ', $dataItem->getDBKey() );
 		$key = mb_strtolower( str_replace( ' ', '-', $gr ) );
 
 		return Html::rawElement(
 			'a',
 			[
-				'href' => DIWikiPage::newFromText( $id . $key, NS_MEDIAWIKI )->getTitle()->getFullURL(),
+				'href' => WikiPage::newFromText( $id . $key, NS_MEDIAWIKI )->getTitle()->getFullURL(),
 				'class' => !Message::exists( $id . $key ) ? 'new' : ''
 			],
 			$id . $key
 		);
 	}
 
-	private function findGroup( $property, $list ) {
+	private function findGroup( $property, array $list ) {
 		if ( $this->showGroup === false ) {
 			return '';
 		}
@@ -236,7 +237,10 @@ class GroupFormatter {
 		return $group;
 	}
 
-	private function prepareListFromSchema( $schemaList ) {
+	/**
+	 * @return array{properties: array, msg_key: mixed, item: mixed}[]
+	 */
+	private function prepareListFromSchema( SchemaList $schemaList ): array {
 		$list = [];
 
 		foreach ( $schemaList->getList() as $schemaDefinition ) {
@@ -271,7 +275,7 @@ class GroupFormatter {
 				$list[$group] = [
 					'properties' => array_flip( $property_keys ),
 					'msg_key' => $message_key,
-					'item' => DIWikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
+					'item' => WikiPage::newFromText( $schemaDefinition->getName(), SMW_NS_SCHEMA )
 				];
 			}
 		}
@@ -279,7 +283,7 @@ class GroupFormatter {
 		return $list;
 	}
 
-	private function findGroupFromList( $list, $property, &$dataItem, &$label ) {
+	private function findGroupFromList( array $list, $property, &$dataItem, string &$label ) {
 		foreach ( $list as $group => $data ) {
 
 			$properties = $data['properties'];

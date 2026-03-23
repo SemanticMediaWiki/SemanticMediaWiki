@@ -20,64 +20,38 @@ Information about PHPUnit in connection with MediaWiki can be found at [smw.org]
 
 ## Running tests
 
-Verify that PHPUnit is installed
-<pre>
-> cd myMediawikiFolder
-> composer show phpunit/phpunit | grep versions
-versions : * 6.5.14
-</pre>
-
-In case PHPUnit is not installed, run `composer install --dev`
-
-Verify that your MediaWiki installation comes with its test files and folders (e.g. `/myMediawikiFolder/tests` ) in order for Semantic MediaWiki to have access to registered MW-core classes. If the `tests` folder is missing then you may follow the [release source](https://github.com/wikimedia/mediawiki/releases) to download the missing files.
+See [docs/DEVELOPMENT.md](../docs/DEVELOPMENT.md) for full setup instructions. All test commands run inside Docker.
 
 ### Running all tests
-Run `composer phpunit` from the Semantic MediaWiki base directory (e.g. `myMediawikiFolder/extensions/SemanticMediaWiki`) using a standard command line tool which should output something like:
 
-<pre>
-$ composer phpunit
+```sh
+make composer-test
+```
 
-Using PHP 7.2.30
-
-Semantic MediaWiki: 3.2.0-alpha, git: abc234b
-                    SMWSQLStore (postgres:9.5.10)
-
-MediaWiki:          1.31.7, git: 42e0b35 (refs/heads/REL1_31)
-                    Extension vendor autoloader
-
-Site language:      en
-Execution time:     2020-04-25 06:53
-
-Debug logs:         Disabled
-Xdebug:             Disabled (or not installed)
-
-Intl/ICU:           1.1.0 / 52.1
-PCRE:               8.41 2017-07-05
-
-PHPUnit 6.5.14 by Sebastian Bergmann and contributors.
-
-Runtime:       PHP 7.2.30
-Configuration: /home/travis/build/SemanticMediaWiki/mw/extensions/SemanticMediaWiki/phpunit.xml.dist
-
-.............................................................   61 / 8526 (  0%)
-.............................................................  122 / 8526 (  1%)
-</pre>
-
-Note that running all tests may take a while.
+This runs lint, PHPCS, and all PHPUnit test suites.
 
 ### Running a single testsuite
-Test suites provide a way of grouping tests. Semantic MediaWiki defines a couple of testsuites in <code>phpunit.xml.dist</code>:
-* semantic-mediawiki-check
-* semantic-mediawiki-unit
-* semantic-mediawiki-integration
-* semantic-mediawiki-import
-* semantic-mediawiki-structure
-* semantic-mediawiki-benchmark
 
-To run a single testsuite, use `--testsuite`, e.g `composer phpunit -- --testsuite semantic-mediawiki-unit`
+Test suites are defined in `phpunit.xml.dist`:
+
+* `semantic-mediawiki-check`
+* `semantic-mediawiki-unit`
+* `semantic-mediawiki-integration`
+* `semantic-mediawiki-import`
+* `semantic-mediawiki-structure`
+* `semantic-mediawiki-benchmark`
+
+To run a single testsuite:
+
+```sh
+make composer-test COMPOSER_PARAMS="-- --testsuite=semantic-mediawiki-unit"
+```
 
 ### Running a single test
-To run a single testsuite, use `--filter`, e.g `composer phpunit -- --filter ParserAfterTidyTest`
+
+```sh
+make composer-test COMPOSER_PARAMS="-- --filter ParserAfterTidyTest"
+```
 
 ## Writing tests
 
@@ -85,34 +59,39 @@ Writing meaningful tests isn't difficult but requires some diligence on how to s
 
 For a short introduction on "How to write a test for Semantic MediaWiki", have a look at [this](https://www.youtube.com/watch?v=v6JRfk5ZmsI) video.
 
-<pre>
+```
 /tests
 ├─ /phpunit
-│	├─ Benchmark
-│	├─ Fixtures
-│	├─ Integration
-│	│	├─ ...
-│	│	└─ JSONScript
-│	├─ Structure
-│	└─ Unit
+│	├─ Benchmark         # Performance benchmarks
+│	├─ Fixtures          # Fixed data, schemata, and test helpers
+│	├─ Integration       # Integration tests (require MW, DB, or external services)
+│	│	├─ JSONScript    # JSON-based declarative integration tests
+│	│	├─ MediaWiki     # MW hook and API integration tests
+│	│	└─ ...
+│	├─ Structure         # Structural/sanity checks
+│	├─ Unit              # Unit tests (no MW or DB dependency)
+│	│	├─ DataValues    # Mirrors src/DataValues/
+│	│	├─ MediaWiki     # Mirrors src/MediaWiki/
+│	│	├─ SQLStore      # Mirrors src/SQLStore/
+│	│	└─ ...           # Subdirectories mirror the source tree
+│	└─ Utils             # Shared test utilities and validators
 │
-└─ /qunit
-</pre>
-
-- `Benchmark` contains collections of tests running benchmarks
-- `Fixtures` contains fixed data and schemata
-- `Integration` contains tests classified as testing the integration with MediaWiki, rely on an active DB connection, or connect to any other external service
-- `Structure` contains tests that verify some structural components, or not directly test a specific integration with Semantic MediaWiki or MediaWiki
-- `Unit` contains unit tests (those tests should not rely on an enabled MediaWiki or DB connection)
+└─ /qunit                # JavaScript (QUnit) tests
+```
 
 ### Unit tests
 
-The use of `MediaWikiTestCase` is discouraged (as its binds tests and the test environment to MediaWiki) and it is best to rely on `PHPUnit_Framework_TestCase` and where a MW database connection is required, use the `MwDBaseUnitTestCase` instead.
+Unit tests live in `tests/phpunit/Unit/` and extend `PHPUnit\Framework\TestCase`. They should not rely on MediaWiki services, database connections, or external services. All dependencies should be mocked.
 
-* `QueryPrinterTestCase` base class for all query and result printers
-* `SpecialPageTestCase` derives from `SemanticMediaWikiTestCase`
+The directory structure inside `Unit/` mirrors the source tree (`src/`). For example, unit tests for `src/SQLStore/RedirectStore.php` go in `Unit/SQLStore/RedirectStoreTest.php`.
+
+Base classes available:
+* `QueryPrinterTestCase` — base class for all query and result printers
+* `SpecialPageTestCase` — derives from `SemanticMediaWikiTestCase`
 
 ### Integration tests
+
+Integration tests live in `tests/phpunit/Integration/` and typically extend `SMWIntegrationTestCase` (which extends MediaWiki's `MediaWikiIntegrationTestCase`). They test interaction with MediaWiki, database, or external services.
 
 Integration tests are vital to confirm the behaviour of a component from an integrative perspective that occurs through an interplay with its surroundings.
 
@@ -131,8 +110,6 @@ The `Integration` directory is expected to host tests that target the validation
 - Triple-stores (necessary for the `SPARQLStore`)
 - Extensions (`SESP`, `SBL` etc.)
 
-Some details about the integration test environment can be found [here](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/tests/travis/README.md).
-
 #### JSONScript
 
 One best practice in Semantic MediaWiki is to write integration tests as pseudo [`JSONScript`][JSONScript] to allow non-developers to review and understand the setup and requirements of its test scenarios.
@@ -146,19 +123,16 @@ For details, please have a look at the [benchmark guide](https://github.com/Sema
 # JavaScript (QUnit)
 
 Running qunit tests in connection with MediaWiki requires to execute
-[Special:JavaScriptTest][mw-qunit-testing]. QUnit tests are currently not
-executed on Travis (see [#136][issue-136]).
+[Special:JavaScriptTest][mw-qunit-testing].
 
 # Miscellaneous
 * [Writing testable code](https://semantic-mediawiki.org/wiki/Help:Writing_testable_code)
 * [Code coverage in a nutshell](https://semantic-mediawiki.org/wiki/Help:Code_coverage_in_a_nutshell)
-* [Test Doubles](http://www.martinfowler.com/bliki/TestDouble.html) (mocks, stubs etc.) and [how to write them](http://phpunit.de/manual/4.1/en/test-doubles.html)
+* [Test Doubles](http://www.martinfowler.com/bliki/TestDouble.html) (mocks, stubs etc.) and [how to write them](https://docs.phpunit.de/en/9.6/test-doubles.html)
 
-[phpunit]: http://phpunit.de/manual/4.1/en/index.html
+[phpunit]: https://docs.phpunit.de/en/9.6/
 [smw]: https://www.semantic-mediawiki.org/wiki/PHPUnit_tests
 [mw-phpunit-testing]: https://www.mediawiki.org/wiki/Manual:PHP_unit_testing
 [mw-qunit-testing]: https://www.mediawiki.org/wiki/Manual:JavaScript_unit_testing
-[issue-136]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/pull/136
-[phpunit-fixtures]: http://phpunit.de/manual/current/en/fixtures.html
 [aaa]: http://c2.com/cgi/wiki?ArrangeActAssert
 [JSONScript]: https://github.com/SemanticMediaWiki/SemanticMediaWiki/tree/master/tests/phpunit/Integration/JSONScript/README.md

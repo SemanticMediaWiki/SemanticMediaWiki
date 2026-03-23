@@ -2,7 +2,7 @@
 
 namespace SMW\Property\Annotators;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Property\Annotator;
 
 /**
@@ -27,7 +27,7 @@ class SortKeyPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$sortkey = $this->defaultSort ? $this->defaultSort : $this->getSemanticData()->getSubject()->getSortKey();
 
 		$property = $this->dataItemFactory->newDIProperty(
-			DIProperty::TYPE_SORTKEY
+			Property::TYPE_SORTKEY
 		);
 
 		if ( !$this->getSemanticData()->hasProperty( $property ) ) {

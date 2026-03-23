@@ -2,7 +2,8 @@
 
 namespace SMW\Tests\Integration;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\Export\Exporter;
 use SMW\Exporter\ExporterFactory;
 use SMW\Localizer\Localizer;
 use SMW\Tests\SMWIntegrationTestCase;
@@ -53,7 +54,7 @@ class RdfFileResourceTest extends SMWIntegrationTestCase {
 			'wgVerifyMimeType' => true
 		] );
 
-		\SMWExporter::clear();
+		Exporter::clear();
 	}
 
 	protected function tearDown(): void {
@@ -64,7 +65,7 @@ class RdfFileResourceTest extends SMWIntegrationTestCase {
 	public function testFileUploadForDummyTextFile() {
 		Localizer::getInstance()->clear();
 
-		$subject = new DIWikiPage( 'RdfLinkedFile.txt', NS_FILE );
+		$subject = new WikiPage( 'RdfLinkedFile.txt', NS_FILE );
 		$fileNS = Localizer::getInstance()->getNsText( NS_FILE );
 
 		$dummyTextFile = $this->fixturesFileProvider->newUploadForDummyTextFile(

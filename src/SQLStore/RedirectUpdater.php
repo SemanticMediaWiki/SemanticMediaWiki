@@ -3,8 +3,8 @@
 namespace SMW\SQLStore;
 
 use MediaWiki\Title\Title;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\Listener\ChangeListener\ChangeRecord;
 use SMW\MediaWiki\Deferred\ChangeTitleUpdate;
 use SMW\SQLStore\EntityStore\CachingSemanticDataLookup;
@@ -22,14 +22,14 @@ use Wikimedia\Rdbms\Platform\ISQLPlatform;
 class RedirectUpdater {
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $lookupCache = [];
 
 	/**
-	 * @var bool
+	 * @var Flag
 	 */
-	private $equalitySupport = 0;
+	private $equalitySupport;
 
 	/**
 	 * @since 3.1
@@ -40,6 +40,7 @@ class RedirectUpdater {
 		private readonly TableFieldUpdater $tableFieldUpdater,
 		private readonly PropertyStatisticsStore $propertyStatisticsStore,
 	) {
+		$this->equalitySupport = new Flag( 0 );
 	}
 
 	/**
@@ -47,7 +48,7 @@ class RedirectUpdater {
 	 *
 	 * @param int $equalitySupport
 	 */
-	public function setEqualitySupport( int $equalitySupport ) {
+	public function setEqualitySupport( int $equalitySupport ): void {
 		$this->equalitySupport = new Flag( $equalitySupport );
 	}
 
@@ -60,7 +61,7 @@ class RedirectUpdater {
 	 * @param string $key
 	 * @param ChangeRecord $changeRecord
 	 */
-	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ) {
+	public function applyChangesFromListener( string $key, ChangeRecord $changeRecord ): void {
 		if ( $key === 'smwgQEqualitySupport' ) {
 			$this->setEqualitySupport( $changeRecord->get( $key ) );
 		}
@@ -79,7 +80,7 @@ class RedirectUpdater {
 	 * @param string $target
 	 * @param int $newnamespace
 	 */
-	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ) {
+	public function moveSubobjects( $source, $oldnamespace, $target, $newnamespace ): void {
 		$idTable = $this->store->getObjectIds();
 
 		// Currently we have no way to change title and namespace across all entries.
@@ -115,11 +116,11 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIWikiPage $source
-	 * @param DIWikiPage $target
+	 * @param WikiPage $source
+	 * @param WikiPage $target
 	 * @param array $options
 	 */
-	public function doUpdate( DIWikiPage $source, DIWikiPage $target, array $options ) {
+	public function doUpdate( WikiPage $source, WikiPage $target, array $options ): void {
 		$idTable = $this->store->getObjectIds();
 		$this->lookupCache = [];
 
@@ -153,7 +154,7 @@ class RedirectUpdater {
 	 *
 	 * @param CachingSemanticDataLookup $semanticDataLookup
 	 */
-	public function invalidateLookupCache( CachingSemanticDataLookup $semanticDataLookup ) {
+	public function invalidateLookupCache( CachingSemanticDataLookup $semanticDataLookup ): void {
 		foreach ( $this->lookupCache as $id ) {
 			$semanticDataLookup->invalidateCache( $id );
 		}
@@ -166,7 +167,7 @@ class RedirectUpdater {
 	 * @param Title $target
 	 * @param array $options
 	 */
-	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ) {
+	public function triggerChangeTitleUpdate( Title $source, Title $target, array $options ): void {
 		if ( $options['redirect_id'] == 0 ) {
 			$source = null;
 		}
@@ -192,19 +193,19 @@ class RedirectUpdater {
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param array $redirects
 	 */
-	public function cleanUpAnnotationsAndRedirects( DIWikiPage $subject, array $redirects ) {
+	public function cleanUpAnnotationsAndRedirects( WikiPage $subject, array $redirects ): void {
 		$this->updateRedirects( $subject, end( $redirects ) );
 	}
 
 	/**
 	 * @since 3.2
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 */
-	public function discardRemnantRedirects( DIWikiPage $subject ) {
+	public function discardRemnantRedirects( WikiPage $subject ): void {
 		$entityIdManager = $this->store->getObjectIds();
 		$target_id = 0;
 
@@ -247,12 +248,12 @@ class RedirectUpdater {
 	 *
 	 * @since 1.8
 	 *
-	 * @param DIWikiPage $source
-	 * @param DIWikiPage|null $target
+	 * @param WikiPage $source
+	 * @param WikiPage|null $target
 	 *
 	 * @return int the new canonical ID of the subject
 	 */
-	public function updateRedirects( DIWikiPage $source, ?DIWikiPage $target = null ) {
+	public function updateRedirects( WikiPage $source, ?WikiPage $target = null ) {
 		// Track count changes for redi property
 		$count = 0;
 
@@ -427,14 +428,14 @@ class RedirectUpdater {
 		$this->lookupCache = [ $sid, $new_tid, $old_tid ];
 
 		$this->propertyStatisticsStore->addToUsageCount(
-			$idTable->getSMWPropertyID( new DIProperty( '_REDI' ) ),
+			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			$count
 		);
 
 		return ( $new_tid == 0 ) ? $sid : $new_tid;
 	}
 
-	private function updateTarget( $source, $target, &$sid ) {
+	private function updateTarget( WikiPage $source, WikiPage $target, &$sid ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 
@@ -508,7 +509,7 @@ class RedirectUpdater {
 		);
 
 		$this->propertyStatisticsStore->addToUsageCount(
-			$idTable->getSMWPropertyID( new DIProperty( '_REDI' ) ),
+			$idTable->getSMWPropertyID( new Property( '_REDI' ) ),
 			1
 		);
 
@@ -520,7 +521,7 @@ class RedirectUpdater {
 		// which will hopefully be done to fix the double redirect.
 	}
 
-	private function moveAsRedirect( $source, $target, $sid, $tid, $options ) {
+	private function moveAsRedirect( WikiPage $source, WikiPage $target, $sid, $tid, array $options ): void {
 		$connection = $this->store->getConnection( 'mw.db' );
 		$idTable = $this->store->getObjectIds();
 

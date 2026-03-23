@@ -78,7 +78,7 @@ class GetPreferences implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( User $user, array &$preferences ) {
+	public function process( User $user, array &$preferences ): bool {
 		$otherPreferences = [];
 		$this->hookDispatcher->onGetPreferences( $user, $otherPreferences );
 		$this->permissionExaminer->setUser( $user );
@@ -161,7 +161,7 @@ class GetPreferences implements HookListener {
 		return true;
 	}
 
-	private function makeImage( $logo ) {
+	private function makeImage( ?string $logo ): string {
 		return "<img style='float:right;margin-top:10px;margin-left:20px;height:auto;width:70px;' src='{$logo}'>";
 	}
 

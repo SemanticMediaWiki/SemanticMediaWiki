@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Tasks;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Indicator\EntityExaminerIndicatorsFactory;
 use SMW\MediaWiki\Permission\PermissionExaminer;
 use SMW\MediaWiki\Permission\PermissionExaminerAware;
@@ -36,7 +36,7 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 	 *
 	 * @param PermissionExaminer $permissionExaminer
 	 */
-	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ) {
+	public function setPermissionExaminer( PermissionExaminer $permissionExaminer ): void {
 		$this->permissionExaminer = $permissionExaminer;
 	}
 
@@ -52,7 +52,7 @@ class EntityExaminerTask extends Task implements PermissionExaminerAware {
 			return [ 'done' => false ];
 		}
 
-		$subject = DIWikiPage::doUnserialize(
+		$subject = WikiPage::doUnserialize(
 			$parameters['subject']
 		);
 

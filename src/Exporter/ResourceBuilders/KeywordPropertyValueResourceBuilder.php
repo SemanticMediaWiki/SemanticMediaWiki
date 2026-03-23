@@ -2,12 +2,12 @@
 
 namespace SMW\Exporter\ResourceBuilders;
 
+use SMW\DataItems\Blob;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\Uri;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMWDataItem as DataItem;
-use SMWDIBlob as DIBlob;
-use SMWDIUri as DIUri;
-use SMWExpData as ExpData;
+use SMW\Export\ExpData;
 
 /**
  * @private
@@ -24,7 +24,7 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isResourceBuilderFor( DIProperty $property ) {
+	public function isResourceBuilderFor( Property $property ): bool {
 		return $property->findPropertyTypeID() === '_keyw';
 	}
 
@@ -33,9 +33,9 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function addResourceValue( ExpData $expData, DIProperty $property, DataItem $dataItem ) {
-		$dataItem = new DIBlob(
-			DIBlob::normalize( $dataItem->getString() )
+	public function addResourceValue( ExpData $expData, Property $property, DataItem $dataItem ): void {
+		$dataItem = new Blob(
+			Blob::normalize( $dataItem->getString() )
 		);
 
 		parent::addResourceValue( $expData, $property, $dataItem );
@@ -54,7 +54,7 @@ class KeywordPropertyValueResourceBuilder extends PropertyValueResourceBuilder {
 		 * mapping link between two conceptual resources in different concept
 		 * schemes ..."
 		 */
-		if ( $uri instanceof DIUri ) {
+		if ( $uri instanceof Uri ) {
 			$expData->addPropertyObjectValue(
 				$this->exporter->newExpNsResourceById( 'skos', 'relatedMatch' ),
 				$this->exporter->newExpElement( $uri )

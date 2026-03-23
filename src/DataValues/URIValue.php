@@ -46,10 +46,7 @@ class URIValue extends DataValue {
 	 */
 	private $showUrlContextInRawFormat = true;
 
-	/**
-	 * @var array
-	 */
-	private $schemeList = [];
+	private array $schemeList;
 
 	public function __construct( $typeid ) {
 		parent::__construct( $typeid );
@@ -201,7 +198,7 @@ class URIValue extends DataValue {
 	 * Only global phone numbers are supported, and no full validation
 	 * of parameters (appended via ;param=value) is performed.
 	 */
-	protected static function isValidTelURI( $s ) {
+	protected static function isValidTelURI( $s ): bool {
 		$tel_uri_regex = '<^tel:\+[0-9./-]*[0-9][0-9./-]*(;[0-9a-zA-Z-]+=(%[0-9a-zA-Z][0-9a-zA-Z]|[0-9a-zA-Z._~:/?#[\]@!$&\'()*+,;=-])*)*$>';
 		return (bool)preg_match( $tel_uri_regex, $s );
 	}
@@ -211,7 +208,7 @@ class URIValue extends DataValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_URI ) {
 			return false;
 		}
@@ -297,11 +294,11 @@ class URIValue extends DataValue {
 		return $this->m_wikitext;
 	}
 
-	public function getURI() {
+	public function getURI(): string {
 		return $this->getUriDataitem()->getURI();
 	}
 
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array {
 		// Create links to mapping services based on a wiki-editable message. The parameters
 		// available to the message are:
 		// $1: urlencoded version of URI/URL value (includes mailto: for emails)
@@ -313,7 +310,7 @@ class URIValue extends DataValue {
 	 * is not hyperlinked in MediaWiki.
 	 * @return string
 	 */
-	public function getURL() {
+	public function getURL(): string {
 		global $wgUrlProtocols;
 
 		foreach ( $wgUrlProtocols as $prot ) {
@@ -349,11 +346,11 @@ class URIValue extends DataValue {
 	 *
 	 * @since 1.8
 	 */
-	protected function makeNonlinkedWikiText( $url ) {
+	protected function makeNonlinkedWikiText( $url ): string|array {
 		return str_replace( ':', '&#58;', $url );
 	}
 
-	private function decodeUriContext( $context, $linker ) {
+	private function decodeUriContext( $context, $linker ): array {
 		// Prior to decoding turn any `-` into an internal representation to avoid
 		// potential breakage
 		if ( !$this->showUrlContextInRawFormat ) {

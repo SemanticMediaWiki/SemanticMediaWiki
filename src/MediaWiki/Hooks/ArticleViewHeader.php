@@ -4,9 +4,9 @@ namespace SMW\MediaWiki\Hooks;
 
 use Article;
 use MediaWiki\Html\Html;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DependencyValidator;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\ChangePropagationDispatchJob;
@@ -48,14 +48,14 @@ class ArticleViewHeader implements HookListener {
 	 *
 	 * @return bool
 	 */
-	public function process( Article $page, &$outputDone, &$useParserCache ) {
+	public function process( Article $page, &$outputDone, &$useParserCache ): bool {
 		$title = $page->getTitle();
 
 		if ( !$this->namespaceExaminer->isSemanticEnabled( $title->getNamespace() ) ) {
 			return true;
 		}
 
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$changePropagationWatchlist = array_flip(
 			$this->getOption( 'smwgChangePropagationWatchlist', [] )
@@ -75,10 +75,10 @@ class ArticleViewHeader implements HookListener {
 		return true;
 	}
 
-	private function updateCategoryTop( $title, $output ) {
+	private function updateCategoryTop( $title, $output ): bool {
 		$message = '';
 
-		$subject = DIWikiPage::newFromTitle(
+		$subject = WikiPage::newFromTitle(
 			$title
 		);
 
@@ -86,7 +86,7 @@ class ArticleViewHeader implements HookListener {
 			$subject
 		);
 
-		if ( $semanticData->hasProperty( new DIProperty( DIProperty::TYPE_CHANGE_PROP ) ) ) {
+		if ( $semanticData->hasProperty( new Property( Property::TYPE_CHANGE_PROP ) ) ) {
 			$severity = $this->getOption( 'smwgChangePropagationProtection', true ) ? 'error' : 'warning';
 
 			$message .= $this->message(
@@ -116,7 +116,7 @@ class ArticleViewHeader implements HookListener {
 		return $message === '';
 	}
 
-	private function message( $type, array $message ) {
+	private function message( string $type, array $message ) {
 		$content = Message::get( $message, Message::PARSE, Message::USER_LANGUAGE );
 		switch ( $type ) {
 			case 'error':

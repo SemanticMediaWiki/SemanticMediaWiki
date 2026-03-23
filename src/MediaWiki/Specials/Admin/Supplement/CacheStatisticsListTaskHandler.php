@@ -31,7 +31,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getSection() {
+	public function getSection(): string {
 		return self::SECTION_SUPPLEMENT;
 	}
 
@@ -81,7 +81,7 @@ class CacheStatisticsListTaskHandler extends TaskHandler implements ActionableTa
 	 *
 	 * {@inheritDoc}
 	 */
-	public function handleRequest( WebRequest $webRequest ) {
+	public function handleRequest( WebRequest $webRequest ): void {
 		$this->outputFormatter->setPageTitle(
 			$this->msg( [ 'smw-admin-main-title', $this->msg( 'smw-admin-supplementary-operational-statistics-cache-title' ) ] )
 		);

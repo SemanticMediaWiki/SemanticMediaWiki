@@ -23,8 +23,7 @@ class AdminLinks implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( ALTree $admin_links_tree ) {
-		// @codeCoverageIgnoreStart
+	public function process( ALTree $admin_links_tree ): bool {
 		$data_structure_section = new ALSection( wfMessage( 'smw_adminlinks_datastructure' )->text() );
 
 		$smw_row = new ALRow( 'smw' );
@@ -62,7 +61,6 @@ class AdminLinks implements HookListener {
 		$browse_search_section->addRow( $smw_row );
 
 		return true;
-		// @codeCoverageIgnoreEnd
 	}
 
 }

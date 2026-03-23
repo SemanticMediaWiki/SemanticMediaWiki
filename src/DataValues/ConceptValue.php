@@ -26,7 +26,7 @@ class ConceptValue extends DataValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_CONCEPT ) {
 			return false;
 		}
@@ -65,7 +65,7 @@ class ConceptValue extends DataValue {
 		}
 	}
 
-	public function getWikiValue() {
+	public function getWikiValue(): string|array {
 		/// This should not be used for anything. This class does not support wiki values.
 		return str_replace( [ '&lt;', '&gt;', '&amp;' ], [ '<', '>', '&' ], $this->m_dataitem->getConceptQuery() );
 	}

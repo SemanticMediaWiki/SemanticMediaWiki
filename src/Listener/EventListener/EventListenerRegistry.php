@@ -4,12 +4,12 @@ namespace SMW\Listener\EventListener;
 
 use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventListenerCollection;
+use SMW\Export\Exporter;
 use SMW\Listener\EventListener\EventListeners\InvalidateEntityCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidatePropertySpecificationLookupCacheEventListener;
 use SMW\Listener\EventListener\EventListeners\InvalidateResultCacheEventListener;
 use SMW\Query\QueryComparator;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -87,17 +87,17 @@ class EventListenerRegistry implements EventListenerCollection {
 		return $this->eventListenerCollection->getCollection();
 	}
 
-	private function addListenersToCollection() {
+	private function addListenersToCollection(): EventListenerCollection {
 		$this->logger = ApplicationFactory::getInstance()->getMediaWikiLogger();
 
 		$this->eventListenerCollection->registerCallback(
-			'exporter.reset', static function () {
+			'exporter.reset', static function (): void {
 				Exporter::getInstance()->clear();
 			}
 		);
 
 		$this->eventListenerCollection->registerCallback(
-			'query.comparator.reset', static function () {
+			'query.comparator.reset', static function (): void {
 				QueryComparator::getInstance()->clear();
 			}
 		);

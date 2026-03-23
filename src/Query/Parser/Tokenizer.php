@@ -20,7 +20,7 @@ class Tokenizer {
 	 *
 	 * @param array $prefixes
 	 */
-	public function setDefaultPattern( array $prefixes ) {
+	public function setDefaultPattern( array $prefixes ): void {
 		$pattern = '';
 
 		foreach ( $prefixes as $pref ) {
@@ -54,7 +54,7 @@ class Tokenizer {
 	 *
 	 * @return string
 	 */
-	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ) {
+	public function getToken( &$currentString, $stoppattern = '', $consume = true, $trim = true ): string|array|false {
 		if ( $stoppattern === '' ) {
 			$stoppattern = $this->defaultPattern;
 		}

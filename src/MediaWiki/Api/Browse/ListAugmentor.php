@@ -2,7 +2,7 @@
 
 namespace SMW\MediaWiki\Api\Browse;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
@@ -69,7 +69,7 @@ class ListAugmentor {
 		return $res;
 	}
 
-	private function addUsageCount( &$res ) {
+	private function addUsageCount( array &$res ): void {
 		$list = $res['query'];
 
 		$db = $this->store->getConnection( 'mw.db' );
@@ -93,11 +93,11 @@ class ListAugmentor {
 		$res['query'] = $list;
 	}
 
-	private function addPreferredPropertyLabel( &$res, array $languageCodes ) {
+	private function addPreferredPropertyLabel( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 
 		foreach ( $list as $key => $value ) {
-			$property = new DIProperty( $key );
+			$property = new Property( $key );
 			$prefLabel = [];
 
 			foreach ( $languageCodes as $code ) {
@@ -112,13 +112,13 @@ class ListAugmentor {
 		$res['query'] = $list;
 	}
 
-	private function addPropertyDescription( &$res, array $languageCodes ) {
+	private function addPropertyDescription( array &$res, array $languageCodes ): void {
 		$list = $res['query'];
 		$propertySpecificationLookup = ApplicationFactory::getInstance()->getPropertySpecificationLookup();
 		$linker = \smwfGetLinker();
 
 		foreach ( $list as $key => $value ) {
-			$property = new DIProperty( $key );
+			$property = new Property( $key );
 			$description = [];
 
 			foreach ( $languageCodes as $code ) {

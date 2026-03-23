@@ -82,7 +82,7 @@ abstract class Condition {
 	 */
 	abstract public function isSafe();
 
-	public function addNamespaces( array $namespaces ) {
+	public function addNamespaces( array $namespaces ): void {
 		$this->namespaces = array_merge( $this->namespaces, $namespaces );
 	}
 

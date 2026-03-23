@@ -46,7 +46,7 @@ class TaskHandlerRegistry {
 	 * @param array $taskHandlers
 	 * @param User $user
 	 */
-	public function registerTaskHandlers( array $taskHandlers, User $user ) {
+	public function registerTaskHandlers( array $taskHandlers, User $user ): void {
 		if ( $this->onRegisterTaskHandlers ) {
 			return;
 		}
@@ -62,7 +62,7 @@ class TaskHandlerRegistry {
 	 *
 	 * @param TaskHandler $taskHandler
 	 */
-	public function registerTaskHandler( TaskHandler $taskHandler ) {
+	public function registerTaskHandler( TaskHandler $taskHandler ): void {
 		$this->taskHandlers[] = $taskHandler;
 	}
 
@@ -71,7 +71,7 @@ class TaskHandlerRegistry {
 	 *
 	 * @param int $featureSet
 	 */
-	public function setFeatureSet( $featureSet ) {
+	public function setFeatureSet( $featureSet ): void {
 		$this->featureSet = $featureSet;
 	}
 

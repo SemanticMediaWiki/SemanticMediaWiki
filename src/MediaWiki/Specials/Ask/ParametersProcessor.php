@@ -3,8 +3,8 @@
 namespace SMW\MediaWiki\Specials\Ask;
 
 use MediaWiki\Request\WebRequest;
-use SMWInfolink as Infolink;
-use SMWQueryProcessor as QueryProcessor;
+use SMW\Formatters\Infolink;
+use SMW\Query\QueryProcessor;
 
 /**
  * @license GPL-2.0-or-later
@@ -29,7 +29,7 @@ class ParametersProcessor {
 	 *
 	 * @param int $defaultLimit
 	 */
-	public static function setDefaultLimit( $defaultLimit ) {
+	public static function setDefaultLimit( $defaultLimit ): void {
 		self::$defaultLimit = $defaultLimit;
 	}
 
@@ -38,7 +38,7 @@ class ParametersProcessor {
 	 *
 	 * @param int $maxInlineLimit
 	 */
-	public static function setMaxInlineLimit( $maxInlineLimit ) {
+	public static function setMaxInlineLimit( $maxInlineLimit ): void {
 		self::$maxInlineLimit = $maxInlineLimit;
 	}
 
@@ -50,7 +50,7 @@ class ParametersProcessor {
 	 *
 	 * @return string
 	 */
-	public static function process( WebRequest $request, $params ) {
+	public static function process( WebRequest $request, $params ): array {
 		// First make all inputs into a simple parameter list that can again be
 		// parsed into components later.
 		$parameterList = self::getParameterList( $request, $params );
@@ -162,7 +162,7 @@ class ParametersProcessor {
 	 *
 	 * @return array
 	 */
-	private static function getParameterList( $request, $params ) {
+	private static function getParameterList( WebRequest $request, $params ) {
 		// Called from wiki, get all parameters
 		if ( !$request->getCheck( 'q' ) ) {
 			return Infolink::decodeParameters( $params ?? '', true );
@@ -199,7 +199,10 @@ class ParametersProcessor {
 		return $parameterList;
 	}
 
-	private static function checkParameterList( $request, $parameterList, $printouts ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function checkParameterList( WebRequest $request, $parameterList, array $printouts ): array {
 		// Add initial ? if omitted (all params considered as printouts)
 		foreach ( $printouts as $param ) {
 			$param = trim( $param );
@@ -250,7 +253,7 @@ class ParametersProcessor {
 		return $parameters;
 	}
 
-	private static function hasPipe( $key, $value ) {
+	private static function hasPipe( $key, $value ): bool {
 		if ( is_string( $key ) && $key !== '' && $key[0] == '?' && strpos( $value, '|' ) !== false ) {
 			return true;
 		}
@@ -262,11 +265,11 @@ class ParametersProcessor {
 		return false;
 	}
 
-	private static function hasLink( $value ) {
+	private static function hasLink( $value ): bool {
 		return strpos( $value, '[[' ) !== false && strpos( $value, ']]' ) !== false;
 	}
 
-	private static function replace( $source, $target, $value ) {
+	private static function replace( string $source, string $target, $value ): string|array|null {
 		return preg_replace_callback(
 			'/\[\[([^\[\]]*)\]\]/xu',
 			static function ( array $matches ) use ( $source, $target ) {

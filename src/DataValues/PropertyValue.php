@@ -214,7 +214,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() !== DataItem::TYPE_PROPERTY ) {
 			return false;
 		}
@@ -248,7 +248,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 
 		if ( $this->getWikiPageValue() instanceof DataValue ) {
@@ -256,14 +256,14 @@ class PropertyValue extends DataValue {
 		}
 	}
 
-	public function setCaption( $caption ) {
+	public function setCaption( $caption ): void {
 		parent::setCaption( $caption );
 		if ( $this->getWikiPageValue() instanceof DataValue ) { // pass caption to embedded datavalue (used for printout)
 			$this->m_wikipage->setCaption( $caption );
 		}
 	}
 
-	public function setOutputFormat( $formatstring ) {
+	public function setOutputFormat( $formatstring ): void {
 		if ( $formatstring === false || $formatstring === '' ) {
 			return;
 		}
@@ -313,7 +313,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @note Every user defined property is necessarily visible.
 	 */
-	public function isVisible() {
+	public function isVisible(): bool {
 		return $this->isValid() && ( $this->m_dataitem->isUserDefined() || $this->m_dataitem->getCanonicalLabel() !== '' );
 	}
 
@@ -322,7 +322,7 @@ class PropertyValue extends DataValue {
 	 *
 	 * @return bool
 	 */
-	public function isRestricted() {
+	public function isRestricted(): bool {
 		if ( !$this->isValid() ) {
 			return true;
 		}
@@ -467,7 +467,7 @@ class PropertyValue extends DataValue {
 		return $this->m_dataitem->findPropertyTypeId();
 	}
 
-	private function createDataItemFrom( $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ) {
+	private function createDataItemFrom( bool $reqCapitalizedFirstChar, $propertyName, $capitalizedName, $inverse ): Property {
 		$contentLanguage = $this->getOption( self::OPT_CONTENT_LANGUAGE );
 
 		// Probe on capitalizedFirstChar because we only want predefined

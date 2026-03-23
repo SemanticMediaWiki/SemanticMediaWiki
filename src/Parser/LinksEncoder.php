@@ -18,7 +18,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ) {
+	public static function findAndEncodeLinks( $text, InTextAnnotationParser $parser ): string|array {
 		// #2193
 		// Use &#x005B; instead of &#91; to distinguish it from the MW's Sanitizer
 		// who uses the same decode sequence and avoid issues when removing links
@@ -47,7 +47,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function removeLinkObfuscation( $text ) {
+	public static function removeLinkObfuscation( $text ): string {
 		$from = [ '&#x005B;', '&#x005D;', '&#124;' ];
 		$to = [ '[', ']', '|' ];
 
@@ -61,7 +61,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function encodeLinks( $text ) {
+	public static function encodeLinks( $text ): string {
 		return str_replace(
 			[ '[', ']', '|' ],
 			[ '&#x005B;', '&#x005D;', '&#124;' ],
@@ -76,7 +76,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function decodeSquareBracket( $text ) {
+	public static function decodeSquareBracket( $text ): string {
 		return str_replace( [ '%5B', '%5D' ], [ '[', ']' ], $text );
 	}
 
@@ -87,7 +87,7 @@ class LinksEncoder {
 	 *
 	 * @return text
 	 */
-	public static function obfuscateAnnotation( $text ) {
+	public static function obfuscateAnnotation( $text ): ?string {
 		return preg_replace_callback(
 			LinksProcessor::getRegexpPattern( false ),
 			static function ( array $matches ) {
@@ -152,7 +152,7 @@ class LinksEncoder {
 		return $caption !== false ? $caption : $value;
 	}
 
-	private static function matchAndReplace( $text, $parser ) {
+	private static function matchAndReplace( array|string $text, InTextAnnotationParser $parser ): string|array {
 		/**
 		 * @see http://blog.angeloff.name/post/2012/08/05/php-recursive-patterns/
 		 *
@@ -200,7 +200,7 @@ class LinksEncoder {
 		return $text;
 	}
 
-	private static function replace( $match, $parser, $isOffAnnotation = false ) {
+	private static function replace( string $match, InTextAnnotationParser $parser, bool $isOffAnnotation = false ): string {
 		// Remove the Leading and last square bracket to avoid distortion
 		// during the annotation parsing
 		$match = substr( substr( $match, 2 ), 0, -2 );

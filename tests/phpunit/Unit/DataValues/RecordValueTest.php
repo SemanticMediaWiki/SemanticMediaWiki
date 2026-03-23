@@ -1,0 +1,274 @@
+<?php
+
+namespace SMW\Tests\Unit\DataValues;
+
+use PHPUnit\Framework\TestCase;
+use SMW\DataItemFactory;
+use SMW\DataItems\Container;
+use SMW\DataItems\Error;
+use SMW\DataValues\RecordValue;
+use SMW\Property\SpecificationLookup;
+use SMW\Query\DescriptionBuilderRegistry;
+use SMW\Store;
+use SMW\Tests\TestEnvironment;
+
+/**
+ * @covers \SMW\DataValues\RecordValue
+ * @group semantic-mediawiki
+ *
+ * @license GPL-2.0-or-later
+ * @since 2.1
+ *
+ * @author mwjames
+ */
+class RecordValueTest extends TestCase {
+
+	private $testEnvironment;
+	private $dataItemFactory;
+
+	private $propertySpecificationLookup;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$this->testEnvironment = new TestEnvironment();
+		$this->dataItemFactory = new DataItemFactory();
+
+		$this->propertySpecificationLookup = $this->getMockBuilder( SpecificationLookup::class )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->testEnvironment->registerObject( 'PropertySpecificationLookup', $this->propertySpecificationLookup );
+	}
+
+	protected function tearDown(): void {
+		$this->testEnvironment->tearDown();
+		parent::tearDown();
+	}
+
+	public function testCanConstruct() {
+		$this->assertInstanceOf(
+			RecordValue::class,
+			new RecordValue()
+		);
+	}
+
+	public function testGetPropertyDataItems() {
+		$expected = [
+			$this->dataItemFactory->newDIProperty( 'Bar' ),
+			$this->dataItemFactory->newDIProperty( 'Foobar' )
+		];
+
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getRedirectTarget' ] )
+			->getMockForAbstractClass();
+
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
+
+		$store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->willReturnArgument( 0 );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new RecordValue();
+		$instance->setProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$this->assertEquals(
+			$expected,
+			$instance->getPropertyDataItems()
+		);
+
+		$this->assertEquals(
+			$this->dataItemFactory->newDIProperty( 'Foobar' ),
+			$instance->getPropertyDataItemByIndex( 'Foobar' )
+		);
+	}
+
+	public function testParseValue() {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getRedirectTarget' ] )
+			->getMockForAbstractClass();
+
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
+
+		$store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->willReturnArgument( 0 );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new RecordValue();
+		$instance->setProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$instance->setUserValue( '123;abc' );
+		$container = $instance->getDataItem();
+
+		$this->assertInstanceOf(
+			Container::class,
+			$container
+		);
+
+		$semanticData = $container->getSemanticData();
+
+		$this->assertTrue(
+			$semanticData->hasProperty( $this->dataItemFactory->newDIProperty( 'Foobar' ) )
+		);
+	}
+
+	public function testParseValueOnMissingValues() {
+		$instance = new RecordValue();
+		$instance->setProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$instance->setUserValue( '' );
+
+		$this->assertInstanceOf(
+			Error::class,
+			$instance->getDataItem()
+		);
+	}
+
+	public function testParseValueWithErroredDv() {
+		$store = $this->getMockBuilder( Store::class )
+			->disableOriginalConstructor()
+			->setMethods( [ 'getRedirectTarget' ] )
+			->getMockForAbstractClass();
+
+		$this->propertySpecificationLookup->expects( $this->atLeastOnce() )
+			->method( 'getFieldListBy' )
+			->willReturn( $this->dataItemFactory->newDIBlob( 'Bar;Foobar' ) );
+
+		$store->expects( $this->any() )
+			->method( 'getRedirectTarget' )
+			->willReturnArgument( 0 );
+
+		$this->testEnvironment->registerObject( 'Store', $store );
+
+		$instance = new RecordValue();
+		$instance->setProperty(
+			$this->dataItemFactory->newDIProperty( 'Foo' )
+		);
+
+		$instance->setUserValue( 'Foo;<>Foo' );
+
+		$this->assertInstanceOf(
+			Error::class,
+			$instance->getDataItem()
+		);
+
+		$this->assertStringContainsString(
+			"smw-datavalue-wikipage-property-invalid-title",
+			implode( ' ', $instance->getErrors() )
+		);
+	}
+
+	public function testGetValuesFromStringWithEncodedSemicolon() {
+		$instance = new RecordValue();
+
+		$this->assertEquals(
+			[ 'abc', '1;2', 3 ],
+			$instance->getValuesFromString( 'abc;1\;2;3' )
+		);
+	}
+
+	/**
+	 * @dataProvider valueProvider
+	 */
+	public function testGetQueryDescription( $properties, $value, $expected ) {
+		$dataValueServiceFactory = $this->getMockBuilder( '\SMW\Services\dataValueServiceFactory' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$dataValueServiceFactory->expects( $this->atLeastOnce() )
+			->method( 'getDescriptionBuilderRegistry' )
+			->willReturn( new DescriptionBuilderRegistry() );
+
+		$instance = new RecordValue( '_rec' );
+		$instance->setFieldProperties( $properties );
+		$instance->setDataValueServiceFactory( $dataValueServiceFactory );
+
+		$description = $instance->getQueryDescription( htmlspecialchars( $value ) );
+
+		$this->assertEquals(
+			$expected['description'],
+			$description->getQueryString()
+		);
+	}
+
+	/**
+	 * @dataProvider valueProvider
+	 */
+	public function testGetWikiValue( $properties, $value, $expected ) {
+		$instance = new RecordValue( '_rec' );
+		$instance->setFieldProperties( $properties );
+
+		$instance->setUserValue( $value );
+
+		$this->assertEquals(
+			$expected['wikivalue'],
+			$instance->getWikiValue()
+		);
+	}
+
+	public function valueProvider() {
+		$dataItemFactory = new DataItemFactory();
+
+		$properties = [
+			$dataItemFactory->newDIProperty( 'Foo' ),
+			$dataItemFactory->newDIProperty( 'Bar' ),
+			'InvalidFieldPropertyNotSet'
+		];
+
+		$provider[] = [
+			$properties,
+			"Title without special characters;2001",
+			[
+				'description' => "[[Foo::Title without special characters]] [[Bar::2001]]",
+				'wikivalue'   => "Title without special characters; 2001"
+			]
+
+		];
+
+		$provider[] = [
+			$properties,
+			"Title with $&%'* special characters;(..&^%..)",
+			[
+				'description' => "[[Foo::Title with $&%'* special characters]] [[Bar::(..&^%..)]]",
+				'wikivalue'   => "Title with $&%'* special characters; (..&^%..)"
+			]
+		];
+
+		$provider[] = [
+			$properties,
+			" Title with space before ; After the divider ",
+			[
+				'description' => "[[Foo::Title with space before]] [[Bar::After the divider]]",
+				'wikivalue'   => "Title with space before; After the divider"
+			]
+		];
+
+		$provider[] = [
+			$properties,
+			" Title with backslash\; escape ; After the divider ",
+			[
+				'description' => "[[Foo::Title with backslash; escape]] [[Bar::After the divider]]",
+				'wikivalue'   => "Title with backslash\; escape; After the divider"
+			]
+		];
+
+		return $provider;
+	}
+
+}

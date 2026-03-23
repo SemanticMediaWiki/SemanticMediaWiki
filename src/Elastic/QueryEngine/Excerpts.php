@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine;
 
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\Query\Excerpts as BaseExcerpts;
 
 /**
@@ -16,12 +16,12 @@ class Excerpts extends BaseExcerpts {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|string $hash
+	 * @param WikiPage|string $hash
 	 *
 	 * @return string|int|false
 	 */
 	public function getExcerpt( $hash ) {
-		if ( $hash instanceof DIWikiPage ) {
+		if ( $hash instanceof WikiPage ) {
 			$hash = $hash->getHash();
 		}
 
@@ -39,7 +39,7 @@ class Excerpts extends BaseExcerpts {
 	 *
 	 * @return bool
 	 */
-	public function hasHighlight() {
+	public function hasHighlight(): bool {
 		return $this->noHighlight ? false : true;
 	}
 

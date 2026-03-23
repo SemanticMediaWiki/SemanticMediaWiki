@@ -15,7 +15,7 @@ class CacheStats extends Stats {
 	/**
 	 * @since 3.0
 	 */
-	public function initRecord() {
+	public function initRecord(): void {
 		parent::initRecord();
 
 		$date = date( 'Y-m-d H:i:s' );
@@ -37,7 +37,7 @@ class CacheStats extends Stats {
 	 *
 	 * @return array
 	 */
-	public function getStats() {
+	public function getStats(): array {
 		$stats = array_filter( parent::getStats(), static function ( $key ) {
 			return $key !== false;
 		} );
@@ -62,7 +62,7 @@ class CacheStats extends Stats {
 	}
 
 	// http://stackoverflow.com/questions/3777995/php-array-recursive-sum
-	private static function sum( $value, $container ) {
+	private static function sum( ?int $value, $container ): int|float {
 		return $value + ( is_array( $container ) ? array_reduce( $container, self::class . '::sum' ) : $container );
 	}
 

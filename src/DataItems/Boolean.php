@@ -16,9 +16,8 @@ class Boolean extends DataItem {
 
 	/**
 	 * Internal value.
-	 * @var bool
 	 */
-	protected $m_boolean;
+	protected bool $m_boolean;
 
 	public function __construct( $boolean ) {
 		if ( !is_bool( $boolean ) ) {
@@ -28,19 +27,19 @@ class Boolean extends DataItem {
 		$this->m_boolean = ( $boolean == true );
 	}
 
-	public function getDIType() {
+	public function getDIType(): int {
 		return DataItem::TYPE_BOOLEAN;
 	}
 
-	public function getBoolean() {
+	public function getBoolean(): bool {
 		return $this->m_boolean;
 	}
 
-	public function getSerialization() {
+	public function getSerialization(): string {
 		return $this->m_boolean ? 't' : 'f';
 	}
 
-	public function getSortKey() {
+	public function getSortKey(): int {
 		return $this->m_boolean ? 1 : 0;
 	}
 

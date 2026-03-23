@@ -5,11 +5,11 @@ namespace SMW\Serializers;
 use MediaWiki\Title\Title;
 use OutOfBoundsException;
 use Serializers\DispatchableSerializer;
+use SMW\DataItems\DataItem;
 use SMW\DataValueFactory;
 use SMW\Query\PrintRequest;
 use SMW\Query\QueryResult;
 use SMW\Query\Result\ResultArray;
-use SMWDataItem as DataItem;
 
 /**
  * Class for serializing SMWDataItem and QueryResult objects to a context
@@ -38,7 +38,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @param int $version
 	 */
-	public function version( $version ) {
+	public function version( $version ): void {
 		self::$version = (int)$version;
 	}
 
@@ -179,7 +179,7 @@ class QueryResultSerializer implements DispatchableSerializer {
 	 *
 	 * @return array
 	 */
-	public static function getSerializedQueryResult( QueryResult $queryResult ) {
+	public static function getSerializedQueryResult( QueryResult $queryResult ): array {
 		$results = [];
 		$printRequests = [];
 
@@ -249,7 +249,10 @@ class QueryResultSerializer implements DispatchableSerializer {
 		return $serialization;
 	}
 
-	private static function serialize_printrequest( $printRequest ) {
+	/**
+	 * @return mixed[]
+	 */
+	private static function serialize_printrequest( $printRequest ): array {
 		$serialized = [
 			'label'  => $printRequest->getLabel(),
 			'key'    => '',

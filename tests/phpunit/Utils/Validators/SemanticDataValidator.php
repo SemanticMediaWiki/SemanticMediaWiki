@@ -4,10 +4,10 @@ namespace SMW\Tests\Utils\Validators;
 
 use PHPUnit\Framework\Assert;
 use RuntimeException;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\SemanticData;
-use SMWDataItem as DataItem;
 
 /**
  * @group SMW
@@ -67,7 +67,7 @@ class SemanticDataValidator extends Assert {
 
 		foreach ( $semanticData->getProperties() as $property ) {
 
-			if ( $property->getKey() === DIProperty::TYPE_CATEGORY ) {
+			if ( $property->getKey() === Property::TYPE_CATEGORY ) {
 				$runCategoryInstanceAssert = true;
 
 				$this->assertThatPropertyValuesAreSet(
@@ -77,7 +77,7 @@ class SemanticDataValidator extends Assert {
 				);
 			}
 
-			if ( $property->getKey() === DIProperty::TYPE_SUBCATEGORY ) {
+			if ( $property->getKey() === Property::TYPE_SUBCATEGORY ) {
 				$runCategoryInstanceAssert = true;
 
 				$this->assertThatPropertyValuesAreSet(
@@ -141,9 +141,9 @@ class SemanticDataValidator extends Assert {
 	 * @since 1.9.1
 	 *
 	 * @param array $expected
-	 * @param DIProperty $property
+	 * @param Property $property
 	 */
-	public function assertThatPropertyHasCharacteristicsAs( array $expected, DIProperty $property ) {
+	public function assertThatPropertyHasCharacteristicsAs( array $expected, Property $property ) {
 		$runAssertThatPropertyHasCharacteristicsAs = false;
 
 		if ( isset( $expected['property'] ) ) {
@@ -219,7 +219,7 @@ class SemanticDataValidator extends Assert {
 
 		foreach ( $properties as $property ) {
 
-			$this->assertInstanceOf( DIProperty::class, $property );
+			$this->assertInstanceOf( Property::class, $property );
 
 			if ( isset( $expected['properties'] ) ) {
 				$this->assertContainsProperty( $expected['properties'], $property );
@@ -275,10 +275,10 @@ class SemanticDataValidator extends Assert {
 	 * @since 1.9.1
 	 *
 	 * @param array &$expected
-	 * @param DIProperty $property
+	 * @param Property $property
 	 * @param array $dataItems
 	 */
-	public function assertThatPropertyValuesAreSet( array &$expected, DIProperty $property, array $dataItems ) {
+	public function assertThatPropertyValuesAreSet( array &$expected, Property $property, array $dataItems ) {
 		$runPropertyValueAssert = false;
 
 		if ( !isset( $expected['@valueHint'] ) ) {
@@ -312,7 +312,7 @@ class SemanticDataValidator extends Assert {
 	}
 
 	private function assertThatSemanticDataIsIndeedEmpty( SemanticData $semanticData ) {
-		$property = new DIProperty( '_SKEY' );
+		$property = new Property( '_SKEY' );
 
 		foreach ( $semanticData->getPropertyValues( $property ) as $dataItem ) {
 			$semanticData->removePropertyObjectValue( $property, $dataItem );
@@ -321,7 +321,7 @@ class SemanticDataValidator extends Assert {
 		return $semanticData->isEmpty();
 	}
 
-	private function assertContainsPropertyKeys( $keys, DIProperty $property, $message = null ) {
+	private function assertContainsPropertyKeys( $keys, Property $property, $message = null ) {
 		$keys = str_replace( " ", "_", $keys );
 		$message = ( $message === null ? 'Failed asserting' : "Failed asserting \"$message\"" );
 		$assertMessage = "{$message} property key: '{$property->getLabel()}' in ({$this->formatAsString( $keys )})";
@@ -333,7 +333,7 @@ class SemanticDataValidator extends Assert {
 		$this->assertStringContainsString( $property->getKey(), (string)$keys, $assertMessage );
 	}
 
-	private function assertContainsPropertyLabels( $labels, DIProperty $property ) {
+	private function assertContainsPropertyLabels( $labels, Property $property ) {
 		$assertMessage = __METHOD__ . " asserts property label for '{$property->getKey()}' with ({$this->formatAsString( $labels )})";
 
 		if ( is_array( $labels ) ) {
@@ -343,7 +343,7 @@ class SemanticDataValidator extends Assert {
 		$this->assertStringContainsString( $property->getLabel(), (string)$labels, $assertMessage );
 	}
 
-	private function assertContainsProperty( array $properties, DIProperty $property ) {
+	private function assertContainsProperty( array $properties, Property $property ) {
 		$runContainsPropertyAssert = false;
 
 		foreach ( $properties as $expectedproperty ) {
@@ -358,7 +358,7 @@ class SemanticDataValidator extends Assert {
 		// $this->assertTrue( $runContainsPropertyAssert, __METHOD__ );
 	}
 
-	private function assertPropertyIsSameAs( DIProperty $expectedproperty, DIProperty $property ) {
+	private function assertPropertyIsSameAs( Property $expectedproperty, Property $property ) {
 		$this->assertTrue(
 			$property->equals( $expectedproperty ),
 			__METHOD__ . ' asserts that two properties are equal'

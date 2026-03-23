@@ -5,8 +5,8 @@ namespace SMW\MediaWiki\Specials;
 use MediaWiki\Html\Html;
 use MediaWiki\Skin\SkinComponentUtils;
 use MediaWiki\SpecialPage\SpecialPage;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Localizer\Message;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\HtmlColumns;
@@ -29,7 +29,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	/**
 	 * @see SpecialPage::execute
 	 */
-	public function execute( $query ) {
+	public function execute( $query ): bool {
 		$this->setHeaders();
 		$output = $this->getOutput();
 
@@ -56,7 +56,7 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 		$contents = [];
 
 		foreach ( $rows as $row ) {
-			$dataItem = new DIWikiPage( $row->page_title, $row->page_namespace );
+			$dataItem = new WikiPage( $row->page_title, $row->page_namespace );
 			$startChar = $sortLetter->getFirstLetter( $dataItem );
 
 			if ( !isset( $contents[$startChar] ) ) {
@@ -85,11 +85,11 @@ class SpecialMissingRedirectAnnotations extends SpecialPage {
 	/**
 	 * @see SpecialPage::getGroupName
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'smw_group/maintenance';
 	}
 
-	private function buildHTML( $count, $contents ) {
+	private function buildHTML( $count, array $contents ): string {
 		$htmlColumns = new HtmlColumns();
 		$htmlColumns->setContents( $contents, HtmlColumns::INDEXED_LIST );
 

@@ -38,7 +38,7 @@ class DescriptionInterpreterFactory {
 	 *
 	 * @return DispatchingDescriptionInterpreter
 	 */
-	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ) {
+	public function newDispatchingDescriptionInterpreter( ConditionBuilder $conditionBuilder ): DispatchingDescriptionInterpreter {
 		$pplicationFactory = ApplicationFactory::getInstance();
 		$dispatchingDescriptionInterpreter = new DispatchingDescriptionInterpreter();
 

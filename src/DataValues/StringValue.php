@@ -121,7 +121,7 @@ class StringValue extends DataValue {
 	 *
 	 * @return int
 	 */
-	public function getLength() {
+	public function getLength(): int {
 		if ( !$this->isValid() ) {
 			return 0;
 		}
@@ -147,7 +147,7 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( !$dataItem instanceof Blob ) {
 			return false;
 		}
@@ -163,7 +163,7 @@ class StringValue extends DataValue {
 	 *
 	 * {@inheritDoc}
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): false|array {
 		if ( !$this->isValid() ) {
 			return false;
 		}

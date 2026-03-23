@@ -4,7 +4,7 @@ namespace SMW\SQLStore\QueryEngine\Fulltext;
 
 use Onoi\Cache\Cache;
 use Psr\Log\LoggerAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
 use SMW\MediaWiki\Connection\Database;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\ChangeOp\ChangeDiff;
@@ -48,13 +48,13 @@ class TextChangeUpdater {
 	}
 
 	/**
-	 * @note See comments in the includes/DefaultSettings.php on the smwgFulltextDeferredUpdate setting
+	 * @note See comments in src/DefaultSettings.php on the smwgFulltextDeferredUpdate setting
 	 *
 	 * @since 2.5
 	 *
 	 * @param bool $asDeferredUpdate
 	 */
-	public function asDeferredUpdate( $asDeferredUpdate ) {
+	public function asDeferredUpdate( $asDeferredUpdate ): void {
 		$this->asDeferredUpdate = (bool)$asDeferredUpdate;
 	}
 
@@ -67,7 +67,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $isCommandLineMode
 	 */
-	public function isCommandLineMode( $isCommandLineMode ) {
+	public function isCommandLineMode( $isCommandLineMode ): void {
 		$this->isCommandLineMode = (bool)$isCommandLineMode;
 	}
 
@@ -76,7 +76,7 @@ class TextChangeUpdater {
 	 *
 	 * @param bool $isPrimary
 	 */
-	public function isPrimary( $isPrimary ) {
+	public function isPrimary( $isPrimary ): void {
 		$this->isPrimary = $isPrimary;
 	}
 
@@ -132,14 +132,14 @@ class TextChangeUpdater {
 	 *
 	 * @since 2.5
 	 *
-	 * @param array|boolan $parameters
+	 * @param array|bool $parameters
 	 */
 	public function pushUpdatesFromJobParameters( $parameters ) {
 		if ( !$this->searchTableUpdater->isEnabled() || !isset( $parameters['slot:id'] ) || $parameters['slot:id'] === false ) {
 			return;
 		}
 
-		$subject = DIWikiPage::doUnserialize( $parameters['slot:id'] );
+		$subject = WikiPage::doUnserialize( $parameters['slot:id'] );
 		$changeDiff = ChangeDiff::fetch( $this->cache, $subject );
 
 		if ( $changeDiff !== false ) {
@@ -165,7 +165,7 @@ class TextChangeUpdater {
 	 *
 	 * @param ChangeDiff|null $changeDiff
 	 */
-	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ) {
+	public function doUpdateFromChangeDiff( ?ChangeDiff $changeDiff = null ): void {
 		if ( !$this->searchTableUpdater->isEnabled() || $changeDiff === null ) {
 			return;
 		}
@@ -192,13 +192,13 @@ class TextChangeUpdater {
 				continue;
 			}
 
-			$this->collectUpdates( $sid, $textItem, $changeList, $updates );
+			$this->collectUpdates( $sid, $textItem, $updates );
 		}
 
 		foreach ( $updates as $key => $value ) {
 			[ $sid, $pid ] = explode( ':', $key, 2 );
 
-			if ( $this->searchTableUpdater->exists( $sid, $pid ) === false ) {
+			if ( !$this->searchTableUpdater->exists( $sid, $pid ) ) {
 				$this->searchTableUpdater->insert( $sid, $pid );
 			}
 
@@ -224,7 +224,7 @@ class TextChangeUpdater {
 		);
 	}
 
-	private function collectUpdates( $sid, array $textItem, $changeList, &$updates ) {
+	private function collectUpdates( int|string $sid, array $textItem, &$updates ): void {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 
 		foreach ( $textItem as $pid => $text ) {
@@ -241,13 +241,13 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function doDeleteFromTableChangeOps( array $tableChangeOps ) {
+	private function doDeleteFromTableChangeOps( array $tableChangeOps ): void {
 		foreach ( $tableChangeOps as $tableChangeOp ) {
 			$this->doDeleteFromTableChangeOp( $tableChangeOp );
 		}
 	}
 
-	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ) {
+	private function doDeleteFromTableChangeOp( TableChangeOp $tableChangeOp ): void {
 		foreach ( $tableChangeOp->getFieldChangeOps( 'delete' ) as $fieldChangeOp ) {
 
 			// Replace s_id for subobjects etc. with the o_id
@@ -267,13 +267,13 @@ class TextChangeUpdater {
 		}
 	}
 
-	private function canPostUpdate( $changeOp ) {
+	private function canPostUpdate( ChangeOp $changeOp ) {
 		$searchTable = $this->searchTableUpdater->getSearchTable();
 		$canPostUpdate = false;
 
 		// Find out whether we should actual initiate an update
 		foreach ( $changeOp->getChangedEntityIdSummaryList() as $id ) {
-			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof DIWikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
+			if ( ( $dataItem = $searchTable->getDataItemById( $id ) ) instanceof WikiPage && $dataItem->getNamespace() === SMW_NS_PROPERTY ) {
 				if ( !$searchTable->isExemptedPropertyById( $id ) ) {
 					$canPostUpdate = true;
 					break;

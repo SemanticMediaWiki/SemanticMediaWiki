@@ -4,8 +4,8 @@ namespace SMW\Deserializers;
 
 use Deserializers\Deserializer;
 use OutOfBoundsException;
+use SMW\Export\ExpData;
 use SMW\Exporter\Element\ExpElement;
-use SMWExpData as ExpData;
 
 /**
  * @license GPL-2.0-or-later
@@ -43,11 +43,11 @@ class ExpDataDeserializer implements Deserializer {
 		return $expData;
 	}
 
-	private function newExpData( $subject ) {
+	private function newExpData( $subject ): ExpData {
 		return new ExpData( ExpElement::newFromSerialization( $subject ) );
 	}
 
-	private function doDeserialize( $serialization, $expData ) {
+	private function doDeserialize( $serialization, ExpData $expData ): void {
 		foreach ( $serialization['data'] as $data ) {
 
 			$property = ExpElement::newFromSerialization( $data['property'] );

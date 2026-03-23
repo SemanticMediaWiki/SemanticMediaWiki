@@ -28,7 +28,7 @@ class LanguageCodeValue extends StringValue {
 	const TYPE_ID = '__lcode';
 
 	/**
-	 * nonstandardLanguageCodeMapping
+	 * @var array|null
 	 */
 	private $nonstandardLanguageCodeMapping;
 

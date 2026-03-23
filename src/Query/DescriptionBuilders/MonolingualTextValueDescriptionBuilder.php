@@ -3,13 +3,13 @@
 namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
+use SMW\DataItems\Blob;
 use SMW\DataValueFactory;
 use SMW\DataValues\MonolingualTextValue;
 use SMW\Query\Language\Conjunction;
 use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
-use SMWDIBlob as DIBlob;
 
 /**
  * @private
@@ -31,7 +31,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function isBuilderFor( $serialization ) {
+	public function isBuilderFor( $serialization ): bool {
 		return $serialization instanceof MonolingualTextValue;
 	}
 
@@ -80,7 +80,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 			// If one of the values is empty use, ? so queries can be arbitrary
 			// in respect of the query condition
 			$dataValue = DataValueFactory::getInstance()->newDataValueByItem(
-				new DIBlob( $value === '' ? '?' : $value ),
+				new Blob( $value === '' ? '?' : $value ),
 				$property,
 				false,
 				$this->dataValue->getContextPage()
@@ -97,7 +97,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		return $this->newConjunction( $subdescriptions );
 	}
 
-	private function newConjunction( $subdescriptions ) {
+	private function newConjunction( array $subdescriptions ) {
 		$count = count( $subdescriptions );
 
 		if ( $count == 0 ) {
@@ -111,7 +111,7 @@ class MonolingualTextValueDescriptionBuilder extends DescriptionBuilder {
 		return new Conjunction( $subdescriptions );
 	}
 
-	private function newSubdescription( $dataValue, $comparator ) {
+	private function newSubdescription( $dataValue, int|string $comparator ): SomeProperty {
 		$description = new ValueDescription(
 			$dataValue->getDataItem(),
 			$dataValue->getProperty(),

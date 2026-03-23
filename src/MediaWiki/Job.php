@@ -46,7 +46,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param Store $store
 	 */
-	public function setStore( Store $store ) {
+	public function setStore( Store $store ): void {
 		$this->store = $store;
 	}
 
@@ -71,7 +71,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @since 1.9
 	 */
-	public function pushToJobQueue() {
+	public function pushToJobQueue(): void {
 		$this->isEnabledJobQueue ? self::batchInsert( $this->jobs ) : null;
 	}
 
@@ -125,7 +125,7 @@ abstract class Job extends MediaWikiJob {
 	 * @param mixed $key
 	 * @param mixed $value
 	 */
-	public function setParameter( $key, $value ) {
+	public function setParameter( $key, $value ): void {
 		$this->params[$key] = $value;
 	}
 
@@ -169,7 +169,7 @@ abstract class Job extends MediaWikiJob {
 	 *
 	 * @param int $delay
 	 */
-	public function setDelay( $delay ) {
+	public function setDelay( $delay ): void {
 		$isDelayedJobsEnabled = $this->getJobQueue()->isDelayedJobsEnabled(
 			$this->getType()
 		);

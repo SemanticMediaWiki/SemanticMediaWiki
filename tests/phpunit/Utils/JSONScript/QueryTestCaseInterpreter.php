@@ -4,13 +4,14 @@ namespace SMW\Tests\Utils\JSONScript;
 
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Parser\ParserOptions;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Query\PrintRequest;
+use SMW\Query\Query;
 use SMW\Tests\Utils\UtilityFactory;
-use SMWDataItem as DataItem;
 
 /**
  * @license GPL-2.0-or-later
@@ -59,7 +60,7 @@ class QueryTestCaseInterpreter {
 	 * @return int
 	 */
 	public function getQueryMode() {
-		return isset( $this->contents['parameters']['querymode'] ) ? constant( $this->contents['parameters']['querymode'] ) : \SMWQuery::MODE_INSTANCES;
+		return isset( $this->contents['parameters']['querymode'] ) ? constant( $this->contents['parameters']['querymode'] ) : Query::MODE_INSTANCES;
 	}
 
 	/**
@@ -83,10 +84,10 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.5
 	 *
-	 * @return DIWikiPage|null
+	 * @return WikiPage|null
 	 */
 	public function getSubject() {
-		return isset( $this->contents['subject'] ) ? DIWikiPage::newFromText( $this->contents['subject'] ) : null;
+		return isset( $this->contents['subject'] ) ? WikiPage::newFromText( $this->contents['subject'] ) : null;
 	}
 
 	/**
@@ -190,7 +191,7 @@ class QueryTestCaseInterpreter {
 	/**
 	 * @since 2.2
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
 	public function getExpectedSubjects() {
 		$subjects = [];
@@ -200,7 +201,7 @@ class QueryTestCaseInterpreter {
 		}
 
 		foreach ( $this->contents['assert-queryresult']['results'] as $hashName ) {
-			$subjects[] = DIWikiPage::doUnserialize( str_replace( ' ', '_', $hashName ) );
+			$subjects[] = WikiPage::doUnserialize( str_replace( ' ', '_', $hashName ) );
 		}
 
 		return $subjects;
@@ -242,7 +243,7 @@ class QueryTestCaseInterpreter {
 
 		foreach ( $this->contents['assert-queryresult']['datavalues'] as $datavalue ) {
 			$dataValues[] = DataValueFactory::getInstance()->newDataValueByProperty(
-				DIProperty::newFromUserLabel( $datavalue['property'] ),
+				Property::newFromUserLabel( $datavalue['property'] ),
 				$datavalue['value']
 			);
 		}

@@ -3,8 +3,8 @@
 namespace SMW\Query\Language;
 
 use Exception;
+use SMW\DataItems\WikiPage;
 use SMW\DataValueFactory;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 
 /**
@@ -20,7 +20,7 @@ use SMW\Localizer\Localizer;
 class ClassDescription extends Description {
 
 	/**
-	 * @var array of DIWikiPage
+	 * @var array of WikiPage
 	 */
 	protected $m_diWikiPages;
 
@@ -32,17 +32,17 @@ class ClassDescription extends Description {
 	/**
 	 * Constructor.
 	 *
-	 * @param mixed $content DIWikiPage or array of DIWikiPage
+	 * @param mixed $content WikiPage or array of WikiPage
 	 *
 	 * @throws Exception
 	 */
 	public function __construct( $content ) {
-		if ( $content instanceof DIWikiPage ) {
+		if ( $content instanceof WikiPage ) {
 			$this->m_diWikiPages = [ $content ];
 		} elseif ( is_array( $content ) ) {
 			$this->m_diWikiPages = $content;
 		} else {
-			throw new Exception( "ClassDescription::__construct(): parameter must be an DIWikiPage object or an array of such objects." );
+			throw new Exception( "ClassDescription::__construct(): parameter must be a WikiPage Object or an array of such objects." );
 		}
 	}
 
@@ -51,7 +51,7 @@ class ClassDescription extends Description {
 	 *
 	 * @param int $hierarchyDepth
 	 */
-	public function setHierarchyDepth( $hierarchyDepth ) {
+	public function setHierarchyDepth( $hierarchyDepth ): void {
 		if ( $hierarchyDepth > $GLOBALS['smwgQSubcategoryDepth'] ) {
 			$hierarchyDepth = $GLOBALS['smwgQSubcategoryDepth'];
 		}
@@ -75,7 +75,7 @@ class ClassDescription extends Description {
 	 *
 	 * @return bool
 	 */
-	public function isMergableDescription( ClassDescription $description ) {
+	public function isMergableDescription( ClassDescription $description ): bool {
 		if ( isset( $this->isNegation ) && isset( $description->isNegation ) ) {
 			return true;
 		}
@@ -90,16 +90,16 @@ class ClassDescription extends Description {
 	/**
 	 * @since  3.0
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 */
-	public function addClass( DIWikiPage $dataItem ) {
+	public function addClass( WikiPage $dataItem ): void {
 		$this->m_diWikiPages[] = $dataItem;
 	}
 
 	/**
 	 * @param ClassDescription $description
 	 */
-	public function addDescription( ClassDescription $description ) {
+	public function addDescription( ClassDescription $description ): void {
 		$this->m_diWikiPages = array_merge( $this->m_diWikiPages, $description->getCategories() );
 	}
 
@@ -109,7 +109,7 @@ class ClassDescription extends Description {
 	 *
 	 * @return string
 	 */
-	public function getFingerprint() {
+	public function getFingerprint(): string {
 		$hash = [];
 
 		foreach ( $this->m_diWikiPages as $subject ) {
@@ -123,13 +123,13 @@ class ClassDescription extends Description {
 	}
 
 	/**
-	 * @return array of DIWikiPage
+	 * @return array of WikiPage
 	 */
 	public function getCategories() {
 		return $this->m_diWikiPages;
 	}
 
-	public function getQueryString( $asValue = false ) {
+	public function getQueryString( $asValue = false ): string {
 		$first = true;
 		$namespaceText = Localizer::getInstance()->getNsText( NS_CATEGORY );
 
@@ -156,11 +156,11 @@ class ClassDescription extends Description {
 		return $result;
 	}
 
-	public function isSingleton() {
+	public function isSingleton(): bool {
 		return false;
 	}
 
-	public function getSize() {
+	public function getSize(): int {
 		if ( $GLOBALS['smwgQSubcategoryDepth'] > 0 ) {
 			return 1; // disj. of cats should not cause much effort if we compute cat-hierarchies anyway!
 		}
@@ -176,7 +176,7 @@ class ClassDescription extends Description {
 		return SMW_CATEGORY_QUERY;
 	}
 
-	public function prune( &$maxsize, &$maxdepth, &$log ) {
+	public function prune( &$maxsize, &$maxdepth, &$log ): Description {
 		if ( $maxsize >= $this->getSize() ) {
 			$maxsize = $maxsize - $this->getSize();
 			return $this;

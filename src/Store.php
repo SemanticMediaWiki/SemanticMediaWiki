@@ -8,14 +8,17 @@ use MediaWiki\Title\Title;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
 use Psr\Log\LoggerAwareTrait;
 use SMW\Connection\ConnectionManager;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
+use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\Services\Exception\ServiceNotFoundException;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\SQLStore\Lookup\ListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
 use SMW\Utils\Timer;
-use SMWDataItem as DataItem;
-use SMWQuery;
 
 /**
  * This group contains all parts of SMW that relate to storing and retrieving
@@ -62,10 +65,10 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @see EntityLookup::getSemanticData
 	 *
-	 * @param DIWikiPage $subject
+	 * @param WikiPage $subject
 	 * @param string[]|bool $filter
 	 */
-	abstract public function getSemanticData( DIWikiPage $subject, $filter = false );
+	abstract public function getSemanticData( WikiPage $subject, $filter = false );
 
 	/**
 	 * @see EntityLookup::getPropertyValues
@@ -76,32 +79,32 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @return array of DataItem
 	 */
-	abstract public function getPropertyValues( $subject, DIProperty $property, $requestoptions = null );
+	abstract public function getPropertyValues( $subject, Property $property, $requestoptions = null );
 
 	/**
 	 * @see EntityLookup::getPropertySubjects
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
-	abstract public function getPropertySubjects( DIProperty $property, $value, $requestoptions = null );
+	abstract public function getPropertySubjects( Property $property, $value, $requestoptions = null );
 
 	/**
 	 * Get an array of all subjects that have some value for the given
 	 * property. The result is an array of DIWikiPage objects.
 	 *
-	 * @return DIWikiPage[]
+	 * @return WikiPage[]
 	 */
-	abstract public function getAllPropertySubjects( DIProperty $property, $requestoptions = null );
+	abstract public function getAllPropertySubjects( Property $property, $requestoptions = null );
 
 	/**
 	 * @see EntityLookup::getProperties
 	 *
-	 * @param DIWikiPage $subject denoting the subject
+	 * @param WikiPage $subject denoting the subject
 	 * @param RequestOptions|null $requestOptions optionally defining further options
 	 *
-	 * @return DataItem
+	 * @return DataItem[]|array
 	 */
-	abstract public function getProperties( DIWikiPage $subject, $requestOptions = null );
+	abstract public function getProperties( WikiPage $subject, $requestOptions = null );
 
 	/**
 	 * @see EntityLookup::getInProperties
@@ -119,12 +122,12 @@ abstract class Store implements QueryEngine {
 	 * the MediaWiki database entry about a Title objects sortkey. If no
 	 * sortkey is stored, the default sortkey (title string) is returned.
 	 *
-	 * @param DIWikiPage $dataItem
+	 * @param WikiPage $dataItem
 	 *
 	 * @return string sortkey
 	 */
-	public function getWikiPageSortKey( DIWikiPage $dataItem ) {
-		$dataItems = $this->getPropertyValues( $dataItem, new DIProperty( '_SKEY' ) );
+	public function getWikiPageSortKey( WikiPage $dataItem ) {
+		$dataItems = $this->getPropertyValues( $dataItem, new Property( '_SKEY' ) );
 
 		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
 			return end( $dataItems )->getString();
@@ -167,14 +170,14 @@ abstract class Store implements QueryEngine {
 			return DataItem::newFromSerialization( $type, $serialization );
 		}
 
-		$dataItems = $this->getPropertyValues( $wikipage, new DIProperty( '_REDI' ) );
+		$dataItems = $this->getPropertyValues( $wikipage, new Property( '_REDI' ) );
 
 		if ( is_array( $dataItems ) && count( $dataItems ) > 0 ) {
 
 			$redirectDataItem = end( $dataItems );
 
-			if ( $type == DataItem::TYPE_PROPERTY && $redirectDataItem instanceof DIWikiPage ) {
-				$dataItem = DIProperty::newFromUserLabel( $redirectDataItem->getDBkey() );
+			if ( $type == DataItem::TYPE_PROPERTY && $redirectDataItem instanceof WikiPage ) {
+				$dataItem = Property::newFromUserLabel( $redirectDataItem->getDBkey() );
 			} else {
 				$dataItem = $redirectDataItem;
 			}
@@ -182,7 +185,7 @@ abstract class Store implements QueryEngine {
 
 		if ( $type === DataItem::TYPE_PROPERTY ) {
 			$entityCache->save( $key, $dataItem->getSerialization(), $entityCache::TTL_DAY );
-			if ( $wikipage instanceof DIWikiPage || $wikipage instanceof Title ) {
+			if ( $wikipage instanceof WikiPage || $wikipage instanceof Title ) {
 				$entityCache->associate( $wikipage, $key );
 			}
 		}
@@ -266,9 +269,9 @@ abstract class Store implements QueryEngine {
 	/**
 	 * Clear all semantic data specified for some page.
 	 *
-	 * @param DIWikiPage $di
+	 * @param WikiPage $di
 	 */
-	public function clearData( DIWikiPage $di ) {
+	public function clearData( WikiPage $di ): void {
 		$this->updateData( new SemanticData( $di ) );
 	}
 
@@ -296,22 +299,22 @@ abstract class Store implements QueryEngine {
 	 * MODE_COUNT or MODE_DEBUG) a plain wiki and HTML-compatible string is
 	 * returned.
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 *
 	 * @return QueryResult
 	 */
-	abstract public function getQueryResult( SMWQuery $query );
+	abstract public function getQueryResult( Query $query );
 
 	/**
 	 * @note Change the signature to abstract for the 3.* branch
 	 *
 	 * @since  2.1
 	 *
-	 * @param SMWQuery $query
+	 * @param Query $query
 	 *
 	 * @return QueryResult
 	 */
-	protected function fetchQueryResult( SMWQuery $query ) {
+	protected function fetchQueryResult( Query $query ) {
 	}
 
 ///// Special page functions /////
@@ -528,7 +531,7 @@ abstract class Store implements QueryEngine {
 	/**
 	 * @since 2.0
 	 */
-	public function clear() {
+	public function clear(): void {
 		if ( $this->connectionManager !== null ) {
 			$this->connectionManager->releaseConnections();
 		}
@@ -550,7 +553,7 @@ abstract class Store implements QueryEngine {
 	 *
 	 * @param ConnectionManager $connectionManager
 	 */
-	public function setConnectionManager( ConnectionManager $connectionManager ) {
+	public function setConnectionManager( ConnectionManager $connectionManager ): void {
 		$this->connectionManager = $connectionManager;
 	}
 

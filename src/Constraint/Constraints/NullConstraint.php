@@ -17,7 +17,7 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function hasViolation() {
+	public function hasViolation(): bool {
 		return false;
 	}
 
@@ -26,7 +26,7 @@ class NullConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 

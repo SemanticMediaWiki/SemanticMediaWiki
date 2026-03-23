@@ -50,7 +50,7 @@ class ExceptionFileLogger {
 	 *
 	 * @param Options $options
 	 */
-	public function setOptions( Options $options ) {
+	public function setOptions( Options $options ): void {
 		$dateTimeUtc = new ExtendedDateTime( 'now', new DateTimeZone( 'UTC' ) );
 		$this->exceptionFile = __DIR__ . "/../../../";
 
@@ -88,7 +88,7 @@ class ExceptionFileLogger {
 	 * @param string $id
 	 * @param Exception $exception
 	 */
-	public function recordException( $id, Exception $exception ) {
+	public function recordException( $id, Exception $exception ): void {
 		$this->exceptionCount++;
 
 		$this->exceptionLogMessages[$id] = [
@@ -100,7 +100,7 @@ class ExceptionFileLogger {
 	/**
 	 * @since 3.0
 	 */
-	public function doWrite() {
+	public function doWrite(): void {
 		foreach ( $this->exceptionLogMessages as $id => $exception ) {
 			$this->put( $id, $exception );
 		}
@@ -109,7 +109,7 @@ class ExceptionFileLogger {
 		$this->exceptionCount = 0;
 	}
 
-	private function put( $id, $exception ) {
+	private function put( $id, $exception ): void {
 		$text = "\n======== EXCEPTION ======\n" .
 			"$id | " . $exception['msg'] . "\n\n" .
 			$exception['trace'] . "\n" .

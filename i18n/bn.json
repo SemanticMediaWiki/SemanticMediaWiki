@@ -19,8 +19,6 @@
 	"smw-error": "ত্রুটি",
 	"smw-upgrade-progress-supplement-jobs": "পরিপূরক কাজ যোগ করা হচ্ছে...",
 	"smw-upgrade-error-title": "ত্রুটি » Semantic মিডিয়াউইকি",
-	"smw-extensionload-error-why-title": "কেন আমি এই পৃষ্ঠাটি দেখছি?",
-	"smw-extensionload-error-how-title": "এই সমস্যাটি আমি কিভাবে সমাধান করবো?",
 	"smw-semantics-not-enabled": "এই উইকির জন্য মিডিয়াউইকির শব্দার্থিক কার্যকারিতা সক্ষম করা হয়নি।",
 	"smw_viewasrdf": "আরডিএফ ফিড",
 	"smw_finallistconjunct": ", এবং",

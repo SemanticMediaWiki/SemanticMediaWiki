@@ -49,7 +49,7 @@ class SearchResult {
 	 *
 	 * @param array $errors
 	 */
-	public function setErrors( array $errors ) {
+	public function setErrors( array $errors ): void {
 		$this->errors = $errors;
 	}
 
@@ -58,7 +58,7 @@ class SearchResult {
 	 *
 	 * @param string $filterField
 	 */
-	public function setFilterField( $filterField ) {
+	public function setFilterField( $filterField ): void {
 		$this->filterField = $filterField;
 	}
 
@@ -105,9 +105,9 @@ class SearchResult {
 	 * @param array $results
 	 * @param int|null $cutoff
 	 *
-	 * @return
+	 * @return int[]|string[]
 	 */
-	public function doFilterResults( array $results, $cutoff = null ) {
+	public function doFilterResults( array $results, $cutoff = null ): array {
 		$this->results = [];
 
 		$this->container = [
@@ -140,8 +140,9 @@ class SearchResult {
 
 	/**
 	 * @see https://www.elastic.co/guide/en/elasticsearch/client/php-api/6.0/_search_operations.html
+	 * @return true[]
 	 */
-	private function filterByField( $results, $cutoff, $field ) {
+	private function filterByField( array $results, $cutoff, $field ): array {
 		$res = [];
 		$continue = false;
 

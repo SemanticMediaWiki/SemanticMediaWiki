@@ -60,7 +60,7 @@ class HookDispatcher {
 	 * @param OutputFormatter $outputFormatter
 	 * @param User $user
 	 */
-	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, OutputFormatter $outputFormatter, User $user ) {
+	public function onRegisterTaskHandlers( TaskHandlerRegistry $taskHandlerRegistry, Store $store, OutputFormatter $outputFormatter, User $user ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Admin::RegisterTaskHandlers', [ $taskHandlerRegistry, $store, $outputFormatter, $user ] );
 	}
@@ -71,7 +71,7 @@ class HookDispatcher {
 	 *
 	 * @param PropertyChangeListener $propertyChangeListener
 	 */
-	public function onRegisterPropertyChangeListeners( PropertyChangeListener $propertyChangeListener ) {
+	public function onRegisterPropertyChangeListeners( PropertyChangeListener $propertyChangeListener ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Listener::ChangeListener::RegisterPropertyChangeListeners', [ $propertyChangeListener ] );
 	}
@@ -82,7 +82,7 @@ class HookDispatcher {
 	 *
 	 * @param ConstraintRegistry $constraintRegistry
 	 */
-	public function onInitConstraints( ConstraintRegistry $constraintRegistry ) {
+	public function onInitConstraints( ConstraintRegistry $constraintRegistry ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Constraint::initConstraints', [ $constraintRegistry ] );
 	}
@@ -93,7 +93,7 @@ class HookDispatcher {
 	 *
 	 * @param SchemaTypes $schemaTypes
 	 */
-	public function onRegisterSchemaTypes( SchemaTypes $schemaTypes ) {
+	public function onRegisterSchemaTypes( SchemaTypes $schemaTypes ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Schema::RegisterSchemaTypes', [ $schemaTypes ] );
 	}
@@ -104,7 +104,7 @@ class HookDispatcher {
 	 *
 	 * @param array &$configuration
 	 */
-	public function onSettingsBeforeInitializationComplete( array &$configuration ) {
+	public function onSettingsBeforeInitializationComplete( array &$configuration ): void {
 		// Deprecated since 3.1
 		$this->getHookContiner()
 			->run( 'SMW::Config::BeforeCompletion', [ &$configuration ] );
@@ -119,7 +119,7 @@ class HookDispatcher {
 	 *
 	 * @param array &$vars
 	 */
-	public function onSetupAfterInitializationComplete( array &$vars ) {
+	public function onSetupAfterInitializationComplete( array &$vars ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Setup::AfterInitializationComplete', [ &$vars ] );
 	}
@@ -130,7 +130,7 @@ class HookDispatcher {
 	 *
 	 * @param array &$grouppermissions
 	 */
-	public function onGroupPermissionsBeforeInitializationComplete( array &$grouppermissions ) {
+	public function onGroupPermissionsBeforeInitializationComplete( array &$grouppermissions ): void {
 		$this->getHookContiner()
 			->run( 'SMW::GroupPermissions::BeforeInitializationComplete', [ &$grouppermissions ] );
 	}
@@ -142,7 +142,7 @@ class HookDispatcher {
 	 * @param User $user
 	 * @param array &$preferences
 	 */
-	public function onGetPreferences( User $user, array &$preferences ) {
+	public function onGetPreferences( User $user, array &$preferences ): void {
 		$this->getHookContiner()
 			->run( 'SMW::GetPreferences', [ $user, &$preferences ] );
 	}
@@ -153,7 +153,7 @@ class HookDispatcher {
 	 *
 	 * @param array &$magicWords
 	 */
-	public function onBeforeMagicWordsFinder( array &$magicWords ) {
+	public function onBeforeMagicWordsFinder( array &$magicWords ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Parser::BeforeMagicWordsFinder', [ &$magicWords ] );
 	}
@@ -165,7 +165,7 @@ class HookDispatcher {
 	 * @param string &$text
 	 * @param AnnotationProcessor $annotationProcessor
 	 */
-	public function onAfterLinksProcessingComplete( string &$text, AnnotationProcessor $annotationProcessor ) {
+	public function onAfterLinksProcessingComplete( string &$text, AnnotationProcessor $annotationProcessor ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Parser::AfterLinksProcessingComplete', [ &$text, $annotationProcessor ] );
 	}
@@ -177,7 +177,7 @@ class HookDispatcher {
 	 * @param PropertyAnnotator $propertyAnnotator
 	 * @param ParserOutput $parserOutput
 	 */
-	public function onParserAfterTidyPropertyAnnotationComplete( PropertyAnnotator $propertyAnnotator, ParserOutput $parserOutput ) {
+	public function onParserAfterTidyPropertyAnnotationComplete( PropertyAnnotator $propertyAnnotator, ParserOutput $parserOutput ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Parser::ParserAfterTidyPropertyAnnotationComplete', [ $propertyAnnotator, $parserOutput ] );
 	}
@@ -189,7 +189,7 @@ class HookDispatcher {
 	 * @param Store $store
 	 * @param MessageReporter $messageReporter
 	 */
-	public function onAfterUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ) {
+	public function onAfterUpdateEntityCollationComplete( Store $store, MessageReporter $messageReporter ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Maintenance::AfterUpdateEntityCollationComplete', [ $store, $messageReporter ] );
 	}
@@ -201,7 +201,7 @@ class HookDispatcher {
 	 * @param Store $store
 	 * @param array &$indicatorProviders
 	 */
-	public function onRegisterEntityExaminerIndicatorProviders( Store $store, array &$indicatorProviders ) {
+	public function onRegisterEntityExaminerIndicatorProviders( Store $store, array &$indicatorProviders ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Indicator::EntityExaminer::RegisterIndicatorProviders', [ $store, &$indicatorProviders ] );
 	}
@@ -213,7 +213,7 @@ class HookDispatcher {
 	 * @param Store $store
 	 * @param array &$indicatorProviders
 	 */
-	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, array &$indicatorProviders ) {
+	public function onRegisterEntityExaminerDeferrableIndicatorProviders( Store $store, array &$indicatorProviders ): void {
 		$this->getHookContiner()
 			->run( 'SMW::Indicator::EntityExaminer::RegisterDeferrableIndicatorProviders', [ $store, &$indicatorProviders ] );
 	}
@@ -248,7 +248,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param int &$latestRevID
 	 */
-	public function onChangeRevisionID( Title $title, int &$latestRevID ) {
+	public function onChangeRevisionID( Title $title, int &$latestRevID ): void {
 		$this->getHookContiner()
 			->run( 'SMW::RevisionGuard::ChangeRevisionID', [ $title, &$latestRevID ] );
 	}
@@ -263,7 +263,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param File|null &$file
 	 */
-	public function onChangeFile( Title $title, &$file ) {
+	public function onChangeFile( Title $title, &$file ): void {
 		$this->getHookContiner()
 			->run( 'SMW::RevisionGuard::ChangeFile', [ $title, &$file ] );
 	}
@@ -278,7 +278,7 @@ class HookDispatcher {
 	 * @param Title $title
 	 * @param RevisionRecord|null &$revision
 	 */
-	public function onChangeRevision( Title $title, ?RevisionRecord &$revision ) {
+	public function onChangeRevision( Title $title, ?RevisionRecord &$revision ): void {
 		$this->getHookContiner()
 			->run( 'SMW::RevisionGuard::ChangeRevision', [ $title, &$revision ] );
 	}
@@ -290,7 +290,7 @@ class HookDispatcher {
 	 * @param array $tables
 	 * @param MessageReporter $messageReporter
 	 */
-	public function onInstallerBeforeCreateTablesComplete( array $tables, MessageReporter $messageReporter ) {
+	public function onInstallerBeforeCreateTablesComplete( array $tables, MessageReporter $messageReporter ): void {
 		$this->getHookContiner()
 			->run( 'SMW::SQLStore::Installer::BeforeCreateTablesComplete', [ $tables, $messageReporter ] );
 	}
@@ -303,7 +303,7 @@ class HookDispatcher {
 	 * @param MessageReporter $messageReporter
 	 * @param Options $options
 	 */
-	public function onInstallerAfterCreateTablesComplete( TableBuilder $tableBuilder, MessageReporter $messageReporter, Options $options ) {
+	public function onInstallerAfterCreateTablesComplete( TableBuilder $tableBuilder, MessageReporter $messageReporter, Options $options ): void {
 		$this->getHookContiner()
 			->run( 'SMW::SQLStore::Installer::AfterCreateTablesComplete', [ $tableBuilder, $messageReporter, $options ] );
 	}
@@ -316,7 +316,7 @@ class HookDispatcher {
 	 * @param MessageReporter $messageReporter
 	 * @param Options $options
 	 */
-	public function onInstallerAfterDropTablesComplete( TableBuilder $tableBuilder, MessageReporter $messageReporter, Options $options ) {
+	public function onInstallerAfterDropTablesComplete( TableBuilder $tableBuilder, MessageReporter $messageReporter, Options $options ): void {
 		$this->getHookContiner()
 			->run( 'SMW::SQLStore::Installer::AfterDropTablesComplete', [ $tableBuilder, $messageReporter, $options ] );
 	}

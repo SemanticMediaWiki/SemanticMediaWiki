@@ -64,7 +64,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return ObjectDictionary
 	 */
-	protected function formatAskArgs() {
+	protected function formatAskArgs(): Options {
 		$result = new Options();
 
 		// Set defaults
@@ -94,7 +94,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatParameters() {
+	protected function formatParameters(): array {
 		$parameters = [];
 
 		foreach ( $this->requestParameters['parameters'] as $param ) {
@@ -117,7 +117,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return string
 	 */
-	protected function formatConditions( $condition ) {
+	protected function formatConditions( $condition ): string {
 		return "[[$condition]]";
 	}
 
@@ -130,7 +130,7 @@ final class ApiRequestParameterFormatter {
 	 *
 	 * @return PrintRequest
 	 */
-	protected function formatPrintouts( $printout ) {
+	protected function formatPrintouts( $printout ): PrintRequest {
 		return new PrintRequest(
 			PrintRequest::PRINT_PROP,
 			$printout,

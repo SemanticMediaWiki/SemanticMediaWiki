@@ -2,9 +2,12 @@
 
 namespace SMW\Exporter;
 
+use SMW\DataItems\Concept;
+use SMW\DataItems\DataItem;
+use SMW\DataItems\Property;
 use SMW\DataValueFactory;
-use SMW\DIConcept;
-use SMW\DIProperty;
+use SMW\Export\ExpData;
+use SMW\Export\Exporter;
 use SMW\Exporter\Element\ExpResource;
 use SMW\Query\Language\ClassDescription;
 use SMW\Query\Language\ConceptDescription;
@@ -15,9 +18,6 @@ use SMW\Query\Language\SomeProperty;
 use SMW\Query\Language\ThingDescription;
 use SMW\Query\Language\ValueDescription;
 use SMW\Services\ServicesFactory as ApplicationFactory;
-use SMWDataItem as DataItem;
-use SMWExpData as ExpData;
-use SMWExporter as Exporter;
 
 /**
  * @license GPL-2.0-or-later
@@ -44,14 +44,14 @@ class ConceptMapper implements DataItemMapper {
 	 *
 	 * @return bool
 	 */
-	public function isMapperFor( DataItem $dataItem ) {
-		return $dataItem instanceof DIConcept;
+	public function isMapperFor( DataItem $dataItem ): bool {
+		return $dataItem instanceof Concept;
 	}
 
 	/**
 	 * @since 2.4
 	 *
-	 * @param DIConcept $concept
+	 * @param Concept $concept
 	 *
 	 * @return ExpData|null
 	 */
@@ -134,7 +134,7 @@ class ConceptMapper implements DataItemMapper {
 		return $expData;
 	}
 
-	private function mapValueDescription( ValueDescription $description, &$exact ) {
+	private function mapValueDescription( ValueDescription $description, &$exact ): Element|false|null {
 		if ( $description->getComparator() === SMW_CMP_EQ ) {
 			$result = $this->exporter->newExpElement( $description->getDataItem() );
 		} else {
@@ -146,7 +146,7 @@ class ConceptMapper implements DataItemMapper {
 		return $result;
 	}
 
-	private function mapConceptDescription( ConceptDescription $description, &$exact ) {
+	private function mapConceptDescription( ConceptDescription $description, &$exact ): ExpData {
 		$result = new ExpData(
 			$this->exporter->getResourceElementForWikiPage( $description->getConcept() )
 		);
@@ -167,7 +167,7 @@ class ConceptMapper implements DataItemMapper {
 		$property = $description->getProperty();
 
 		if ( $property->isInverse() ) {
-			$property = new DIProperty( $property->getKey() );
+			$property = new Property( $property->getKey() );
 		}
 
 		$result->addPropertyObjectValue(
@@ -255,7 +255,7 @@ class ConceptMapper implements DataItemMapper {
 		return $result;
 	}
 
-	private function mapConjunctionDisjunction( Description $description, &$exact ) {
+	private function mapConjunctionDisjunction( Description $description, &$exact ): ExpData {
 		$result = new ExpData(
 			new ExpResource( '' )
 		);

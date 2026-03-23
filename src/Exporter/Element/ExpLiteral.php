@@ -4,7 +4,7 @@ namespace SMW\Exporter\Element;
 
 use InvalidArgumentException;
 use RuntimeException;
-use SMWDataItem as DataItem;
+use SMW\DataItems\DataItem;
 
 /**
  * A single datatype literal for export. Defined by a literal value and a
@@ -128,7 +128,7 @@ class ExpLiteral extends ExpElement {
 	/**
 	 * @see ExpElement::newFromSerialization
 	 */
-	protected static function deserialize( $serialization ) {
+	protected static function deserialize( $serialization ): self {
 		if ( !isset( $serialization['lexical'] ) || !isset( $serialization['datatype'] ) || !isset( $serialization['lang'] ) ) {
 			throw new RuntimeException( "Invalid format caused by a missing lexical/datatype element" );
 		}

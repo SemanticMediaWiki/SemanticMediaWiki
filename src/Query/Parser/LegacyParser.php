@@ -4,10 +4,10 @@ namespace SMW\Query\Parser;
 
 use MediaWiki\Title\Title;
 use RuntimeException;
+use SMW\DataItems\Property;
+use SMW\DataItems\WikiPage;
 use SMW\DataTypeRegistry;
 use SMW\DataValueFactory;
-use SMW\DIProperty;
-use SMW\DIWikiPage;
 use SMW\Localizer\Localizer;
 use SMW\Query\DescriptionFactory;
 use SMW\Query\Language\ClassDescription;
@@ -25,10 +25,7 @@ use SMW\Query\QueryToken;
  */
 class LegacyParser implements Parser {
 
-	/**
-	 * @var DescriptionFactory
-	 */
-	private $descriptionFactory;
+	private DescriptionFactory $descriptionFactory;
 
 	/**
 	 * @var DataTypeRegistry
@@ -85,7 +82,7 @@ class LegacyParser implements Parser {
 	private $conceptPrefixCannonical;
 
 	/**
-	 * @var DIWikiPage|null
+	 * @var WikiPage|null
 	 */
 	private $contextPage;
 
@@ -110,9 +107,9 @@ class LegacyParser implements Parser {
 	/**
 	 * @since 3.0
 	 *
-	 * @param DIWikiPage|null $contextPage
+	 * @param WikiPage|null $contextPage
 	 */
-	public function setContextPage( ?DIWikiPage $contextPage = null ) {
+	public function setContextPage( ?WikiPage $contextPage = null ): void {
 		$this->contextPage = $contextPage;
 	}
 
@@ -122,7 +119,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @since 1.6
 	 */
-	public function setDefaultNamespaces( $namespaces ) {
+	public function setDefaultNamespaces( $namespaces ): void {
 		$this->defaultNamespace = null;
 
 		if ( !is_array( $namespaces ) ) {
@@ -142,7 +139,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @param string|null $languageCode
 	 */
-	public function setDefaultPrefix( $languageCode = null ) {
+	public function setDefaultPrefix( $languageCode = null ): void {
 		$localizer = Localizer::getInstance();
 
 		if ( $languageCode === null ) {
@@ -203,7 +200,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return QueryToken
 	 */
-	public function getQueryToken() {
+	public function getQueryToken(): QueryToken {
 		return $this->queryToken;
 	}
 
@@ -212,8 +209,8 @@ class LegacyParser implements Parser {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function createCondition( $property, $value ) {
-		if ( $property instanceof DIProperty ) {
+	public function createCondition( $property, $value ): string {
+		if ( $property instanceof Property ) {
 			$property = $property->getLabel();
 		}
 
@@ -288,7 +285,7 @@ class LegacyParser implements Parser {
 	 *
 	 * @return Description|null
 	 */
-	private function getSubqueryDescription( &$setNS ) {
+	private function getSubqueryDescription( bool &$setNS ) {
 		$conjunction = null;      // used for the current inner conjunction
 		$disjuncts = [];     // (disjunctive) array of subquery conjunctions
 
@@ -397,7 +394,7 @@ class LegacyParser implements Parser {
 	 *
 	 * Parameters $setNS has the same use as in getSubqueryDescription().
 	 */
-	private function getLinkDescription( &$setNS ) {
+	private function getLinkDescription( bool &$setNS ) {
 		// This method is called when we encountered an opening '[['. The following
 		// block could be a Category-statement, fixed object, or property statement.
 
@@ -431,7 +428,7 @@ class LegacyParser implements Parser {
 	 * is in between "[[Category:" and the closing "]]" and create a
 	 * suitable description.
 	 */
-	private function getClassDescription( &$setNS, $category = true ) {
+	private function getClassDescription( bool &$setNS, bool $category = true ) {
 		// No subqueries allowed here, inline disjunction allowed, wildcards allowed
 		$description = null;
 		$continue = true;
@@ -466,7 +463,7 @@ class LegacyParser implements Parser {
 				}
 
 				if ( $title !== null ) {
-					$diWikiPage = new DIWikiPage( $title->getDBkey(), $title->getNamespace(), '' );
+					$diWikiPage = new WikiPage( $title->getDBkey(), $title->getNamespace(), '' );
 
 					if ( !$this->selfReference && $this->contextPage !== null ) {
 						$this->selfReference = $diWikiPage->equals( $this->contextPage );
@@ -501,7 +498,7 @@ class LegacyParser implements Parser {
 	 * suitable description. The "::" is the first chunk on the current
 	 * string.
 	 */
-	private function getPropertyDescription( $propertyName, &$setNS ) {
+	private function getPropertyDescription( $propertyName, bool &$setNS ) {
 		// Consume separator ":=" or "::"
 		$this->readChunk();
 		$dataValueFactory = DataValueFactory::getInstance();
@@ -662,7 +659,7 @@ class LegacyParser implements Parser {
 	 * The first chunk behind the "[[" has already been read and is
 	 * passed as a parameter.
 	 */
-	private function getArticleDescription( $firstChunk, &$setNS ) {
+	private function getArticleDescription( string $firstChunk, bool &$setNS ) {
 		$chunk = $firstChunk;
 		$description = null;
 
@@ -721,7 +718,7 @@ class LegacyParser implements Parser {
 		return $this->finishLinkDescription( $chunk, true, $description, $setNS );
 	}
 
-	private function finishLinkDescription( $chunk, $hasNamespaces, $description, &$setNS ) {
+	private function finishLinkDescription( $chunk, bool $hasNamespaces, $description, bool &$setNS ) {
 		if ( $description === null ) { // no useful information or concrete error found
 			$this->descriptionProcessor->addErrorWithMsgKey( 'smw_unexpectedpart', $chunk ); // was smw_badqueryatom
 		} elseif ( !$hasNamespaces && $setNS && $this->defaultNamespace !== null ) {
@@ -784,7 +781,7 @@ class LegacyParser implements Parser {
 	/**
 	 * @see Tokenizer::read
 	 */
-	private function readChunk( $stoppattern = '', $consume = true, $trim = true ) {
+	private function readChunk( string $stoppattern = '', bool $consume = true, bool $trim = true ) {
 		return $this->tokenizer->getToken( $this->currentString, $stoppattern, $consume, $trim );
 	}
 
@@ -792,7 +789,7 @@ class LegacyParser implements Parser {
 	 * Enter a new subblock in the query, which must at some time be terminated by the
 	 * given $endstring delimiter calling popDelimiter();
 	 */
-	private function pushDelimiter( $endstring ) {
+	private function pushDelimiter( string $endstring ): void {
 		array_push( $this->separatorStack, $endstring );
 	}
 
@@ -801,16 +798,16 @@ class LegacyParser implements Parser {
 	 * If the delimiter does not match the top-most open block, false
 	 * will be returned. Otherwise return true.
 	 */
-	private function popDelimiter( $endstring ) {
+	private function popDelimiter( string $endstring ): bool {
 		$topdelim = array_pop( $this->separatorStack );
 		return ( $topdelim == $endstring );
 	}
 
-	private function isPagePropertyType( $typeid ) {
+	private function isPagePropertyType( $typeid ): bool {
 		return $typeid == '_wpg' || $this->dataTypeRegistry->isSubDataType( $typeid );
 	}
 
-	private function hasClassPrefix( $chunk ) {
+	private function hasClassPrefix( $chunk ): bool {
 		$prefix = [
 			$this->categoryPrefix,
 			$this->conceptPrefix,
@@ -821,7 +818,7 @@ class LegacyParser implements Parser {
 		return in_array( $this->normalizeTitleText( $chunk ), $prefix );
 	}
 
-	private function isClass( $chunk ) {
+	private function isClass( $chunk ): bool {
 		$chunk = $this->normalizeTitleText( $chunk );
 
 		if (

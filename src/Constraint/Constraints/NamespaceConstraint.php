@@ -5,8 +5,8 @@ namespace SMW\Constraint\Constraints;
 use RuntimeException;
 use SMW\Constraint\Constraint;
 use SMW\Constraint\ConstraintError;
-use SMWDataItem as DataItem;
-use SMWDataValue as DataValue;
+use SMW\DataItems\DataItem;
+use SMW\DataValues\DataValue;
 
 /**
  * @license GPL-2.0-or-later
@@ -40,7 +40,7 @@ class NamespaceConstraint implements Constraint {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function getType() {
+	public function getType(): string {
 		return Constraint::TYPE_INSTANT;
 	}
 
@@ -63,7 +63,7 @@ class NamespaceConstraint implements Constraint {
 		}
 	}
 
-	private function check( $namespaces, $dataValue ) {
+	private function check( $namespaces, DataValue $dataValue ) {
 		$dataItem = $dataValue->getDataItem();
 		$property = $dataValue->getProperty();
 
@@ -92,7 +92,7 @@ class NamespaceConstraint implements Constraint {
 		$this->reportError( $dataValue, $error );
 	}
 
-	private function reportError( $dataValue, $error ) {
+	private function reportError( DataValue $dataValue, array $error ): void {
 		$this->hasViolation = true;
 
 		$dataValue->addError(

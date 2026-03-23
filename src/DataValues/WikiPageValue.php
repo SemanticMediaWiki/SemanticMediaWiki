@@ -218,7 +218,7 @@ class WikiPageValue extends DataValue {
 	 * @param $dataItem DataItem
 	 * @return bool
 	 */
-	protected function loadDataItem( DataItem $dataItem ) {
+	protected function loadDataItem( DataItem $dataItem ): bool {
 		if ( $dataItem->getDIType() == DataItem::TYPE_CONTAINER ) {
 			// might throw an exception, we just pass it through
 			$dataItem = $dataItem->getSemanticData()->getSubject();
@@ -254,7 +254,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @param array $linkAttributes
 	 */
-	public function setLinkAttributes( array $linkAttributes ) {
+	public function setLinkAttributes( array $linkAttributes ): void {
 		$this->linkAttributes = $linkAttributes;
 	}
 
@@ -263,7 +263,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @param array $queryParameters
 	 */
-	public function setQueryParameters( array $queryParameters ) {
+	public function setQueryParameters( array $queryParameters ): void {
 		$this->queryParameters = $queryParameters;
 	}
 
@@ -484,7 +484,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @return string
 	 */
-	public function getWikiValue() {
+	public function getWikiValue(): string {
 		if ( $this->getOption( self::SHORT_FORM, false ) ) {
 			$text = $this->getText();
 		} elseif ( $this->getOption( self::PREFIXED_FORM, false ) ) {
@@ -512,7 +512,7 @@ class WikiPageValue extends DataValue {
 	 *
 	 * @return array
 	 */
-	protected function getServiceLinkParams() {
+	protected function getServiceLinkParams(): array {
 		if ( $this->isValid() ) {
 			return [ rawurlencode( str_replace( '_', ' ', $this->m_dataitem->getDBkey() ) ) ];
 		} else {

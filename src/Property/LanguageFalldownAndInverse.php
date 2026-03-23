@@ -1,6 +1,6 @@
 <?php
 /**
- * @license GNU GPL v2+
+ * @license GPL-2.0-or-later
  *
  * @author thomas-topway-it for KM-A
  * @see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/5342
@@ -341,7 +341,7 @@ class LanguageFalldownAndInverse {
 	/**
 	 * @return array
 	 */
-	public function tryout() {
+	public function tryout(): array {
 		$dataValue = $this->falldownInverse();
 		if ( $dataValue ) {
 			return [ $dataValue, $this->languageCode ];

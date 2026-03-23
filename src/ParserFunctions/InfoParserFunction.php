@@ -5,8 +5,8 @@ namespace SMW\ParserFunctions;
 use MediaWiki\Parser\Parser;
 use ParamProcessor\ProcessingError;
 use ParamProcessor\ProcessingResult;
-use SMW\Highlighter;
-use SMWOutputs;
+use SMW\Formatters\Highlighter;
+use SMW\MediaWiki\Outputs;
 
 /**
  * Class that provides the {{#info}} parser function
@@ -77,9 +77,9 @@ class InfoParserFunction {
 
 		if ( $parser->getTitle() !== null && $parser->getTitle()->isSpecialPage() ) {
 			global $wgOut;
-			SMWOutputs::commitToOutputPage( $wgOut );
+			Outputs::commitToOutputPage( $wgOut );
 		} else {
-			SMWOutputs::commitToParser( $parser );
+			Outputs::commitToParser( $parser );
 		}
 
 		return $result;
@@ -90,7 +90,7 @@ class InfoParserFunction {
 	 *
 	 * @return string
 	 */
-	private function getOutputForErrors( $errors ) {
+	private function getOutputForErrors( array $errors ): string {
 		// TODO: see https://github.com/SemanticMediaWiki/SemanticMediaWiki/issues/1485
 		return 'A fatal error occurred in the #info parser function';
 	}

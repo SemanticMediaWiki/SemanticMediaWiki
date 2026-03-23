@@ -48,7 +48,7 @@ class VersionExaminer {
 	 *
 	 * @param SetupFile $setupFile
 	 */
-	public function setSetupFile( SetupFile $setupFile ) {
+	public function setSetupFile( SetupFile $setupFile ): void {
 		$this->setupFile = $setupFile;
 	}
 
@@ -102,7 +102,7 @@ class VersionExaminer {
 		return true;
 	}
 
-	private function throwFalseAndNotice( $requirements = [] ) {
+	private function throwFalseAndNotice( string|array $requirements = [] ): bool {
 		$cliMsgFormatter = new CliMsgFormatter();
 
 		$this->messageReporter->reportMessage(

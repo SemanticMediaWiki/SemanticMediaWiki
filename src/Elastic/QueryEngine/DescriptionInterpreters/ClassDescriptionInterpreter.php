@@ -2,7 +2,7 @@
 
 namespace SMW\Elastic\QueryEngine\DescriptionInterpreters;
 
-use SMW\DIProperty;
+use SMW\DataItems\Property;
 use SMW\Elastic\QueryEngine\Condition;
 use SMW\Elastic\QueryEngine\ConditionBuilder;
 use SMW\Query\Language\ClassDescription;
@@ -29,7 +29,7 @@ class ClassDescriptionInterpreter {
 	 * @return Condition
 	 */
 	public function interpretDescription( ClassDescription $description, $isConjunction = false ) {
-		$pid = 'P:' . $this->conditionBuilder->getID( new DIProperty( '_INST' ) );
+		$pid = 'P:' . $this->conditionBuilder->getID( new Property( '_INST' ) );
 		$field = 'wpgID';
 
 		$dataItems = $description->getCategories();

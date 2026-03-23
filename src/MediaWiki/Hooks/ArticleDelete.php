@@ -4,10 +4,10 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Title\Title;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
-use SMW\DIWikiPage;
+use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookListener;
 use SMW\MediaWiki\Jobs\UpdateDispatcherJob;
-use SMW\SemanticData;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Store;
 
@@ -39,7 +39,7 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @param string $origin
 	 */
-	public function setOrigin( string $origin ) {
+	public function setOrigin( string $origin ): void {
 		$this->origin = $origin;
 	}
 
@@ -50,8 +50,8 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @return true
 	 */
-	public function process( Title $title ) {
-		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ) {
+	public function process( Title $title ): bool {
+		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredCallableUpdate( function () use( $title ): void {
 			$this->doDelete( $title );
 		} );
 
@@ -66,9 +66,9 @@ class ArticleDelete implements HookListener {
 	 *
 	 * @param Title $title
 	 */
-	public function doDelete( Title $title ) {
+	public function doDelete( Title $title ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
-		$subject = DIWikiPage::newFromTitle( $title );
+		$subject = WikiPage::newFromTitle( $title );
 
 		$semanticDataSerializer = $applicationFactory->newSerializerFactory()->newSemanticDataSerializer();
 		$jobFactory = $applicationFactory->newJobFactory();
