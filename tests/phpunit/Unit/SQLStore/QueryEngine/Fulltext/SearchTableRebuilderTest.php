@@ -129,6 +129,10 @@ class SearchTableRebuilderTest extends TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$tableDefinition->expects( $this->any() )
+			->method( 'getName' )
+			->willReturn( 'smw_di_blob' );
+
 		$tableDefinition->expects( $this->atLeastOnce() )
 			->method( 'getDiType' )
 			->willReturn( DataItem::TYPE_BLOB );
