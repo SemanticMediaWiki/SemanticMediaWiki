@@ -3,6 +3,7 @@
 namespace SMW\Query\Cache;
 
 use Onoi\BlobStore\BlobStore;
+use Onoi\BlobStore\Container;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -389,7 +390,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$deferredTransactionalUpdate->pushUpdate();
 	}
 
-	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, $container, Query $query ): QueryResult {
+	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, Container $container, Query $query ): QueryResult {
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft
@@ -456,7 +457,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		return md5( $subject . self::VERSION . $this->cacheKeyExtension );
 	}
 
-	private function log( string $message, $context = [] ): void {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

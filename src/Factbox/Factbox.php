@@ -176,7 +176,7 @@ class Factbox {
 	 * @param string $attachment
 	 * @param string $derived
 	 */
-	public static function tabs( $list, $attachment = '', $derived = '' ): string {
+	public static function tabs( $list, string $attachment = '', string $derived = '' ): string {
 		$htmlTabs = new HtmlTabs();
 		$htmlTabs->setActiveTab(
 			$list !== '' ? 'facts-list' : 'facts-attachment'

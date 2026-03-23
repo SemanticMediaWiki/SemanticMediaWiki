@@ -373,7 +373,7 @@ class InTextAnnotationParser {
 	 *
 	 * @return string
 	 */
-	protected function addPropertyValue( $subject, array $properties, $value, $valueCaption ) {
+	protected function addPropertyValue( ?WikiPage $subject, array $properties, $value, $valueCaption ) {
 		$origValue = $value;
 
 		if ( $this->stripMarkerDecoder !== null ) {

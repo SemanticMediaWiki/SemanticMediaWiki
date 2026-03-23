@@ -185,7 +185,7 @@ class EditProtectionUpdater implements LoggerAwareInterface {
 		);
 	}
 
-	private function log( string $message, $context = [] ): void {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

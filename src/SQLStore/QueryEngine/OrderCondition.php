@@ -205,7 +205,7 @@ class OrderCondition {
 		return $description;
 	}
 
-	private function extendConditions( ConditionBuilder $conditionBuilder, $querySegment, array $extraDescriptions ): void {
+	private function extendConditions( ConditionBuilder $conditionBuilder, ?QuerySegment $querySegment, array $extraDescriptions ): void {
 		if ( $extraDescriptions === [] ) {
 			return;
 		}

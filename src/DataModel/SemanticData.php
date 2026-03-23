@@ -935,7 +935,7 @@ class SemanticData implements JsonUnserializable {
 			$json['mNoDuplicates']
 		);
 		$obj->stubObject = $json['stubObject'];
-		$obj->mPropVals = array_map( static function ( $x ) use( $unserializer ): array {
+		$obj->mPropVals = array_map( static function ( array $x ) use( $unserializer ): array {
 			return self::maybeUnserializeArray( $unserializer, $x );
 		}, $json['mPropVals'] );
 		$obj->mProperties = self::maybeUnserializeArray( $unserializer, $json['mProperties'] );

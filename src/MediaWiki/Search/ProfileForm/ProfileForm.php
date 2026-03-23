@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Search\ProfileForm;
 
 use MediaWiki\Html\Html;
+use MediaWiki\Request\WebRequest;
 use MediaWiki\Specials\SpecialSearch;
 use MediaWiki\Title\Title;
 use SMW\Formatters\Infolink;
@@ -229,7 +230,7 @@ class ProfileForm {
 		$form .= $namespaceForm;
 	}
 
-	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, $hiddenNamespaces, string &$hidden ): string {
+	private function buildNamespaceForm( $request, $searchEngine, $preselectNamespaces, array $hiddenNamespaces, string &$hidden ): string {
 		$activeNamespaces = array_merge( $this->specialSearch->getNamespaces(), $preselectNamespaces );
 		$default = false;
 
@@ -332,7 +333,7 @@ class ProfileForm {
 		) . $divider;
 	}
 
-	private function buildSortForm( $request ) {
+	private function buildSortForm( WebRequest $request ) {
 		$sortForm = $this->formsFactory->newSortForm( $request );
 
 		// TODO this information should come from the store and not being

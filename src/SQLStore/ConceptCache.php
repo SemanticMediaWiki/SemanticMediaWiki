@@ -67,7 +67,7 @@ class ConceptCache {
 	 *
 	 * @param $concept Title
 	 */
-	public function deleteConceptCache( $concept ): void {
+	public function deleteConceptCache( Title $concept ): void {
 		$this->delete( $concept );
 	}
 

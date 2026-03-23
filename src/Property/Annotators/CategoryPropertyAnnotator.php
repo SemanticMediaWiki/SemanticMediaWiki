@@ -4,6 +4,7 @@ namespace SMW\Property\Annotators;
 
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\DataModel\SemanticData;
 use SMW\DataValueFactory;
 use SMW\Parser\AnnotationProcessor;
 use SMW\ProcessingErrorMsgHandler;
@@ -134,7 +135,7 @@ class CategoryPropertyAnnotator extends PropertyAnnotatorDecorator {
 		$annotationProcessor->release();
 	}
 
-	private function modifySemanticData( $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ) {
+	private function modifySemanticData( SemanticData $semanticData, AnnotationProcessor $annotationProcessor, $subject, Property $property, $catname ) {
 		$cat = new WikiPage( $catname, NS_CATEGORY );
 
 		if ( ( $cat = $this->getRedirectTarget( $cat ) ) && $cat->getNamespace() === NS_CATEGORY ) {

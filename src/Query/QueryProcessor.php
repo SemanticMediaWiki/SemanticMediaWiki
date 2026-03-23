@@ -53,7 +53,7 @@ class QueryProcessor implements QueryContext {
 	public static function getProcessedParams(
 		array $params,
 		array $printRequests = [],
-		$unknownInvalid = true,
+		bool $unknownInvalid = true,
 		$context = null,
 		$showMode = false
 	): array {
@@ -431,7 +431,7 @@ class QueryProcessor implements QueryContext {
 	 *
 	 * @return ParamDefinition[]
 	 */
-	public static function getParameters( $context = null, $resultPrinter = null ): array {
+	public static function getParameters( $context = null, ?ResultPrinter $resultPrinter = null ): array {
 		return DefaultParamDefinition::getParamDefinitions( $context, $resultPrinter );
 	}
 
@@ -476,7 +476,7 @@ class QueryProcessor implements QueryContext {
 	private static function getProcessorForParams(
 		array $params,
 		array $printRequests = [],
-		$unknownInvalid = true,
+		bool $unknownInvalid = true,
 		$context = null,
 		$showMode = false
 	) {

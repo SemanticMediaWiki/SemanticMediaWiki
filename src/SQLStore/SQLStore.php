@@ -486,7 +486,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Title $concept
 	 */
-	public function deleteConceptCache( $concept ): void {
+	public function deleteConceptCache( Title $concept ): void {
 		$this->factory->newMasterConceptCache()->deleteConceptCache( $concept );
 	}
 

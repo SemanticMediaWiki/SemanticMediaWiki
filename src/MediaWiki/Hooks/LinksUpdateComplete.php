@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use MediaWiki\Deferred\LinksUpdate\LinksUpdate;
 use MediaWiki\Parser\ParserOutputLinkTypes;
+use MediaWiki\Title\Title;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataModel\SemanticData;
 use SMW\MediaWiki\HookListener;
@@ -122,7 +123,7 @@ class LinksUpdateComplete implements HookListener {
 	 * @note Parsing is expensive but it is more expensive to loose data or to
 	 * expect that an external process adheres the object contract
 	 */
-	private function updateSemanticData( &$parserData, $title, string $reason = '' ): void {
+	private function updateSemanticData( &$parserData, Title $title, string $reason = '' ): void {
 		$this->logger->info(
 			[
 				'LinksUpdateConstructed',
@@ -138,7 +139,7 @@ class LinksUpdateComplete implements HookListener {
 		}
 	}
 
-	private function reparseAndFetchSemanticData( $title ) {
+	private function reparseAndFetchSemanticData( Title $title ) {
 		$contentParser = ApplicationFactory::getInstance()->newContentParser( $title );
 		$parserOutput = $contentParser->parse()->getOutput();
 

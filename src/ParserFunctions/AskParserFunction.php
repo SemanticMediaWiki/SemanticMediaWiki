@@ -383,7 +383,7 @@ class AskParserFunction {
 		return $this->messageFormatter->addFromKey( 'smw-parser-function-expensive-execution-limit' )->getHtml();
 	}
 
-	private function addQueryProfile( $query, $format, array $extraKeys ): void {
+	private function addQueryProfile( Query $query, $format, array $extraKeys ): void {
 		$applicationFactory = ApplicationFactory::getInstance();
 		$settings = $applicationFactory->getSettings();
 

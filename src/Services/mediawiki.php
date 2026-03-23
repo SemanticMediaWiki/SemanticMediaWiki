@@ -137,7 +137,7 @@ return [
 	 *
 	 * @return string
 	 */
-	'DefaultSearchEngineTypeForDB' => static function ( $containerBuilder, $dbProvider ) {
+	'DefaultSearchEngineTypeForDB' => static function ( $containerBuilder, IConnectionProvider $dbProvider ) {
 		return MediaWikiServices::getInstance()->getSearchEngineFactory()->getSearchEngineClass( $dbProvider );
 	},
 

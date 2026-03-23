@@ -282,7 +282,7 @@ class Client {
 	 *
 	 * @param string $type
 	 */
-	public function createIndex( $type ): string {
+	public function createIndex( string $type ): string {
 		$index = $this->getIndexName( $type );
 		$version = 'v1';
 

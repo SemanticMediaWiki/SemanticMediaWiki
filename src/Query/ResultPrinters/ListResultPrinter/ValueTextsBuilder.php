@@ -66,7 +66,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	private function getValueText( DataValue $value, $column = 0 ) {
+	private function getValueText( DataValue $value, $column = 0 ): string {
 		$isSubject = ( $column === 0 );
 		$dataValueMethod = $this->prefixParameterProcessor->useLongText( $isSubject ) ? 'getLongText' : 'getShortText';
 
@@ -111,7 +111,7 @@ class ValueTextsBuilder {
 	 *
 	 * @return string
 	 */
-	private function sanitizeValueText( $text ) {
+	private function sanitizeValueText( string $text ): string {
 		if ( $this->isSimpleList() ) {
 			return $text;
 		}

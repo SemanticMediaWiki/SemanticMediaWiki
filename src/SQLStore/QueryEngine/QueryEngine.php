@@ -554,7 +554,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		return $result;
 	}
 
-	private function log( string $message, $context = [] ): void {
+	private function log( string $message, array $context = [] ): void {
 		if ( $this->logger === null ) {
 			return;
 		}

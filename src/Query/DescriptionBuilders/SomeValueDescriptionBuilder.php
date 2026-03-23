@@ -3,6 +3,7 @@
 namespace SMW\Query\DescriptionBuilders;
 
 use InvalidArgumentException;
+use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataValues\DataValue;
 use SMW\Query\Language\Description;
@@ -85,7 +86,7 @@ class SomeValueDescriptionBuilder extends DescriptionBuilder {
 		return $description;
 	}
 
-	private function makeDescription( int|string $comparator, $property, WikiPage $dataItem, ValueDescription $description ): Description {
+	private function makeDescription( int|string $comparator, ?Property $property, WikiPage $dataItem, ValueDescription $description ): Description {
 		$value = $dataItem->getDBKey();
 
 		// Normalize a possible earlier encoded string part in order for the

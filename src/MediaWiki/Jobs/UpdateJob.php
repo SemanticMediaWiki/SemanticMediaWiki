@@ -101,7 +101,7 @@ class UpdateJob extends Job {
 		return true;
 	}
 
-	private function matchesLastModified( $title ): bool {
+	private function matchesLastModified( ?Title $title ): bool {
 		if ( !$this->getParameter( 'shallowUpdate' ) ) {
 			return false;
 		}
