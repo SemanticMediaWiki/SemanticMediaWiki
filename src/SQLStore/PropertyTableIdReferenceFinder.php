@@ -4,6 +4,8 @@ namespace SMW\SQLStore;
 
 use SMW\DataItems\DataItem;
 use SMW\DataItems\Property;
+use SMW\MediaWiki\Connection\Database;
+use SMW\NamespaceExaminer;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 
 /**
@@ -44,7 +46,7 @@ class PropertyTableIdReferenceFinder {
 	 *
 	 * @since 2.4
 	 *
-	 * @param booelan $isCapitalLinks
+	 * @param bool $isCapitalLinks
 	 */
 	public function isCapitalLinks( $isCapitalLinks ): void {
 		$this->isCapitalLinks = $isCapitalLinks;
@@ -169,11 +171,11 @@ class PropertyTableIdReferenceFinder {
 			}
 		}
 
-		if ( $secondary_ref && !isset( $reference->s_id ) ) {
+		if ( $secondary_ref && is_object( $reference ) && !isset( $reference->s_id ) ) {
 			$reference = $this->findQueryLinksTableReferenceById( $id );
 		}
 
-		if ( isset( $reference->s_id ) ) {
+		if ( is_object( $reference ) && isset( $reference->s_id ) ) {
 			$reference = $this->store->getObjectIds()->getDataItemById( $reference->s_id );
 		}
 

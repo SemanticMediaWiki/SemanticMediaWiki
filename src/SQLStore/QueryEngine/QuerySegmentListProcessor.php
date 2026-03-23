@@ -32,7 +32,7 @@ class QuerySegmentListProcessor {
 	 *
 	 * @var int
 	 */
-	private $queryMode;
+	private $queryMode = 0;
 
 	/**
 	 * @var array
@@ -67,7 +67,9 @@ class QuerySegmentListProcessor {
 	/**
 	 * @since 2.2
 	 *
-	 * @param integer
+	 * @param int $queryMode
+	 *
+	 * @return void
 	 */
 	public function setQueryMode( $queryMode ): void {
 		$this->queryMode = $queryMode;
@@ -126,7 +128,7 @@ class QuerySegmentListProcessor {
 			if ( $subQuery->joinTable !== '' ) { // Join with jointable.joinfield
 				$op = $subQuery->not ? '!' : '';
 
-				$joinType = $subQuery->joinType ? $subQuery->joinType : 'INNER';
+				$joinType = $subQuery->joinType ?: 'INNER';
 				$t = $this->connection->tableName( $subQuery->joinTable ) . " AS $subQuery->alias";
 				// If the alias is the same as the table name and if there is a prefix, MediaWiki does not declare the unprefixed alias
 				$joinTable = $subQuery->joinTable === $subQuery->alias ? $this->connection->tableName( $subQuery->joinTable ) : $subQuery->joinTable;
@@ -257,6 +259,7 @@ class QuerySegmentListProcessor {
 			if ( $sql ) {
 				$this->executedQueries[$query->alias][] = $sql;
 
+				// @phan-suppress-next-line PhanImpossibleValueComparisonInLoop
 				if ( $this->queryMode !== Query::MODE_NONE ) {
 					$this->connection->query(
 						$sql,

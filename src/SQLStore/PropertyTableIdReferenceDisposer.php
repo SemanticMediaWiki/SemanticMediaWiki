@@ -6,8 +6,10 @@ use MediaWiki\MediaWikiServices;
 use Onoi\EventDispatcher\EventDispatcherAwareTrait;
 use SMW\DataItems\WikiPage;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\RequestOptions;
 use SMW\Services\ServicesFactory as ApplicationFactory;
+use stdClass;
 use Wikimedia\Rdbms\DBError;
 
 /**
@@ -276,7 +278,7 @@ class PropertyTableIdReferenceDisposer {
 
 	private function cleanUpSecondaryReferencesById( $id, bool $isRedirect ): void {
 		// When marked as redirect, don't remove the reference
-		if ( $isRedirect === false || ( $isRedirect && $this->redirectRemoval ) ) {
+		if ( !$isRedirect || $this->redirectRemoval ) {
 			$this->connection->delete(
 				SQLStore::ID_TABLE,
 				[ 'smw_id' => $id ],

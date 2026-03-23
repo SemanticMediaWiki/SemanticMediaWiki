@@ -65,7 +65,7 @@ class QueryResultDependencyListResolver {
 	 *
 	 * @param QueryResult|string $queryResult
 	 *
-	 * @return DIWikiPage[]|[]
+	 * @return WikiPage[]|array
 	 */
 	public function getDependencyListByLateRetrievalFrom( $queryResult ) {
 		if ( !$this->canResolve( $queryResult ) ) {
@@ -137,7 +137,8 @@ class QueryResultDependencyListResolver {
 			$subjects[] = $description->getDataItem();
 		}
 
-		if ( $description instanceof ConceptDescription && $concept = $description->getConcept() ) {
+		if ( $description instanceof ConceptDescription ) {
+			$concept = $description->getConcept();
 			if ( $concept === null || !isset( $subjects[$concept->getHash()] ) ) {
 				$subjects[$concept->getHash()] = $concept;
 				$this->doResolveDependenciesFromDescription(

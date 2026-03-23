@@ -25,7 +25,7 @@ abstract class DataItemHandler {
 	/**
 	 * @var int
 	 */
-	protected $fieldTypeFeatures = false;
+	protected $fieldTypeFeatures = 0;
 
 	/**
 	 * @var null|string
@@ -64,7 +64,9 @@ abstract class DataItemHandler {
 	/**
 	 * @since 3.0
 	 *
-	 * @param boolean
+	 * @param string $dbType
+	 *
+	 * @return bool
 	 */
 	public function isDbType( $dbType ) {
 		if ( $this->dbType === null ) {

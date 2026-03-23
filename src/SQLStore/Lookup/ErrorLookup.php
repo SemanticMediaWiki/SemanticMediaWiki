@@ -54,8 +54,9 @@ class ErrorLookup {
 	 *
 	 * @param string $errorType
 	 * @param WikiPage|null $subject = null
+	 * @param ?RequestOptions $requestOptions
 	 *
-	 * @return Iterator/array
+	 * @return iterable
 	 */
 	public function findErrorsByType( $errorType, ?WikiPage $subject = null, ?RequestOptions $requestOptions = null ) {
 		if ( $requestOptions === null ) {
@@ -65,6 +66,13 @@ class ErrorLookup {
 		return $this->fetchFromTable( $errorType, $subject, $requestOptions );
 	}
 
+	/**
+	 * @param string $errorType
+	 * @param WikiPage|null $subject
+	 * @param RequestOptions $requestOptions
+	 *
+	 * @return iterable
+	 */
 	private function fetchFromTable( $errorType, ?WikiPage $subject, RequestOptions $requestOptions ) {
 		$checkConstraintErrors = $requestOptions->getOption( 'checkConstraintErrors' );
 

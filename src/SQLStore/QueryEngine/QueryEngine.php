@@ -183,7 +183,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 		if ( $connection->isType( 'postgres' ) ) {
 			$this->engineOptions->set(
 				'smwgQSortFeatures',
-				$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
+				(int)$this->engineOptions->get( 'smwgQSortFeatures' ) & ~SMW_QSORT_RANDOM
 			);
 		}
 
@@ -250,7 +250,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	}
 
 	private function doExecuteDebugQueryResult( DebugFormatter $debugFormatter, $qobj, array $sqlOptions, array &$entries ) {
-		if ( !isset( $qobj->joinfield ) || $qobj->joinfield === '' ) {
+		if ( !is_object( $qobj ) || !$qobj->joinfield ) {
 			$entries['SQL Query'] = 'Empty result, no SQL query created.';
 			return $entries['SQL Query'];
 		}
@@ -297,7 +297,7 @@ class QueryEngine implements QueryEngineInterface, LoggerAwareInterface {
 	 * @param Query $query
 	 * @param int $rootid
 	 *
-	 * @return int
+	 * @return QueryResult
 	 */
 	private function getCountQueryResult( Query $query, $rootid ) {
 		$queryResult = $this->queryFactory->newQueryResult(

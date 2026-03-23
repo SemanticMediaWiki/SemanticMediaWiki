@@ -330,7 +330,7 @@ class StubSemanticData extends SemanticData {
 		foreach ( $this->mStubPropVals as $pkey => $values ) { // unstub property values only, the value lists are still kept as stubs
 			try {
 				$this->unstubProperty( $pkey );
-			} catch ( DataItemException $e ) {
+			} catch ( DataItemException ) {
 				// Likely cause: a property name from the DB is no longer valid.
 				// Do nothing; we could unset the data, but it will never be
 				// unstubbed anyway if there is no valid property DI for it.
@@ -387,7 +387,7 @@ class StubSemanticData extends SemanticData {
 
 			try {
 				$dataItem = $diHandler->dataItemFromDBKeys( $dbkeys );
-			} catch ( DataItemHandlerException $e ) {
+			} catch ( DataItemHandlerException ) {
 				continue;
 			}
 

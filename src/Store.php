@@ -102,7 +102,7 @@ abstract class Store implements QueryEngine {
 	 * @param WikiPage $subject denoting the subject
 	 * @param RequestOptions|null $requestOptions optionally defining further options
 	 *
-	 * @return DataItem
+	 * @return DataItem[]|array
 	 */
 	abstract public function getProperties( WikiPage $subject, $requestOptions = null );
 

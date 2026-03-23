@@ -97,7 +97,7 @@ class SearchTableRebuilder {
 	 *
 	 * @since 2.5
 	 *
-	 * @return bool
+	 * @return void|bool
 	 */
 	public function rebuild() {
 		if ( !$this->canRebuild() ) {

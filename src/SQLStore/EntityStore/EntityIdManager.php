@@ -14,8 +14,8 @@ use SMW\MediaWiki\Collator;
 use SMW\MediaWiki\Connection\Sequence;
 use SMW\PropertyRegistry;
 use SMW\RequestOptions;
-use SMW\SQLStore\IdToDataItemMatchFinder;
 use SMW\SQLStore\Lookup\RedirectTargetLookup;
+use SMW\SQLStore\PropertyTable\PropertyTableHashes;
 use SMW\SQLStore\PropertyTableInfoFetcher;
 use SMW\SQLStore\RedirectStore;
 use SMW\SQLStore\SQLStore;
@@ -73,11 +73,6 @@ class EntityIdManager {
 	public $store;
 
 	/**
-	 * @var IdToDataItemMatchFinder
-	 */
-	private $idMatchFinder;
-
-	/**
 	 * @var RedirectStore
 	 */
 	private $redirectStore;
@@ -126,9 +121,9 @@ class EntityIdManager {
 	private $propertyTableHashes;
 
 	/**
-	 * @var int
+	 * @var Flag
 	 */
-	private $equalitySupport = 0;
+	private $equalitySupport;
 
 	/**
 	 * @since 1.8
@@ -153,6 +148,8 @@ class EntityIdManager {
 		);
 
 		$this->tableFieldUpdater = $this->factory->newTableFieldUpdater();
+
+		$this->equalitySupport = new Flag( 0 );
 
 		self::$special_ids = TypesRegistry::getFixedProperties( 'id' );
 	}
@@ -306,7 +303,7 @@ class EntityIdManager {
 	public function getSMWPageIDandSort( $title, $namespace, $iw, $subobjectName, &$sortkey, $canonical, $fetchHashes = false ): int {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
 		if ( $id != 0 ) {
-			return (int)$id;
+			return $id;
 		} else {
 			return (int)$this->getDatabaseIdAndSort( $title, $namespace, $iw, $subobjectName, $sortkey, $canonical, $fetchHashes );
 		}
@@ -414,13 +411,13 @@ class EntityIdManager {
 			$this->duplicateFinder = $this->factory->newDuplicateFinder();
 		}
 
-		return $this->duplicateFinder->hasDuplicate( $dataItem ) === false;
+		return !$this->duplicateFinder->hasDuplicate( $dataItem );
 	}
 
 	/**
 	 * @since 3.0
 	 *
-	 * @return
+	 * @return array
 	 */
 	public function findDuplicates(): array {
 		if ( $this->duplicateFinder === null ) {
@@ -470,7 +467,7 @@ class EntityIdManager {
 	 * @param string|null $iw interwiki prefix
 	 * @param string $subobjectName name of subobject
 	 *
-	 * @param array
+	 * @return array
 	 */
 	public function findIdsByTitle( $title, $namespace, $iw = null, $subobjectName = '' ): array {
 		return $this->entityIdFinder->findIdsByTitle( $title, $namespace, $iw, $subobjectName );
@@ -481,7 +478,7 @@ class EntityIdManager {
 	 *
 	 * @param WikiPage $subject
 	 *
-	 * @param boolean
+	 * @return bool
 	 */
 	public function exists( WikiPage $subject ): bool {
 		return $this->getId( $subject ) > 0;
@@ -505,9 +502,7 @@ class EntityIdManager {
 		if ( $subject->getNamespace() === SMW_NS_PROPERTY && $subject->getInterWiki() === '' ) {
 			try {
 				$property = Property::newFromUserLabel( $subject->getDBKey() );
-			} catch ( PredefinedPropertyLabelMismatchException $e ) {
-				return 0;
-			} catch ( PropertyLabelNotResolvedException $e ) {
+			} catch ( PredefinedPropertyLabelMismatchException | PropertyLabelNotResolvedException ) {
 				return 0;
 			}
 
@@ -579,7 +574,7 @@ class EntityIdManager {
 	public function makeSMWPageID( $title, $namespace, $iw, $subobjectName, $canonical = true, $sortkey = '', $fetchHashes = false ): int {
 		$id = $this->getPredefinedData( $title, $namespace, $iw, $subobjectName, $sortkey );
 		if ( $id != 0 ) {
-			return (int)$id;
+			return $id;
 		} else {
 			return (int)$this->makeDatabaseId( $title, $namespace, $iw, $subobjectName, $canonical, $sortkey, $fetchHashes );
 		}
@@ -620,7 +615,7 @@ class EntityIdManager {
 		$db->beginAtomicTransaction( __METHOD__ );
 
 		if ( $id == 0 ) {
-			$sortkey = $sortkey ? $sortkey : ( str_replace( '_', ' ', $title ) );
+			$sortkey = $sortkey ?: ( str_replace( '_', ' ', $title ) );
 
 			// Bug 42659
 			$sequenceValue = $db->nextSequenceValue(
@@ -651,9 +646,7 @@ class EntityIdManager {
 			// Properties also need to be in the property statistics table
 			if ( $namespace === SMW_NS_PROPERTY ) {
 
-				$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore(
-					$db
-				);
+				$propertyStatisticsStore = $this->factory->newPropertyStatisticsStore();
 
 				$propertyStatisticsStore->insertUsageCount( $id, 0 );
 			}
@@ -661,7 +654,7 @@ class EntityIdManager {
 			$this->setCache( $title, $namespace, $iw, $subobjectName, $id, $sortkey );
 
 			if ( $fetchHashes ) {
-				$this->propertyTableHashes->clearPropertyTableHashCacheById( $id, null );
+				$this->propertyTableHashes->clearPropertyTableHashCacheById( $id );
 			}
 
 		} elseif ( $sortkey !== '' && ( $sortkey != $oldsort || !$collator->isIdentical( $oldsort, $sortkey ) ) ) {
@@ -711,7 +704,7 @@ class EntityIdManager {
 
 		$hash = [
 			$subject->getDBKey(),
-			(int)$subject->getNamespace(),
+			$subject->getNamespace(),
 			$interwiki,
 			$subject->getSubobjectName()
 		];
@@ -736,7 +729,7 @@ class EntityIdManager {
 	 * @since 3.0
 	 *
 	 * @param WikiPage|string $title
-	 * @param int $namespace
+	 * @param int|string $namespace
 	 * @param string $iw
 	 */
 	public function findAssociatedRev( $title, $namespace = '', $iw = '' ) {
@@ -1074,7 +1067,9 @@ class EntityIdManager {
 	 * @since 1.8
 	 *
 	 * @param int $sid ID of the page as stored in SMW IDs table
-	 * @param string[] of hash values with table names as keys
+	 * @param string[]|null $hash of hash values with table names as keys
+	 *
+	 * @return void
 	 */
 	public function setPropertyTableHashes( $sid, $hash = null ): void {
 		$this->propertyTableHashes->setPropertyTableHashes( $sid, $hash );

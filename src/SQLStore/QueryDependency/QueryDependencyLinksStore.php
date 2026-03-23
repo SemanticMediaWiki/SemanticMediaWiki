@@ -5,6 +5,7 @@ namespace SMW\SQLStore\QueryDependency;
 use Psr\Log\LoggerAwareTrait;
 use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
+use SMW\NamespaceExaminer;
 use SMW\Query\Query;
 use SMW\Query\QueryResult;
 use SMW\RequestOptions;

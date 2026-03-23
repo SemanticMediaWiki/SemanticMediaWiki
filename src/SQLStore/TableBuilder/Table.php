@@ -35,7 +35,7 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string
+	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
@@ -53,7 +53,7 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param string
+	 * @return string
 	 */
 	public function getHash() {
 		return json_encode( $this->attributes );
@@ -62,7 +62,7 @@ class Table {
 	/**
 	 * @since 2.5
 	 *
-	 * @param array
+	 * @return array
 	 */
 	public function getAttributes() {
 		return $this->attributes;
@@ -73,7 +73,8 @@ class Table {
 	 *
 	 * @param string $key
 	 *
-	 * @param mixed
+	 * @return array
+	 * @throws RuntimeException
 	 */
 	public function get( $key ) {
 		if ( !isset( $this->attributes[$key] ) ) {

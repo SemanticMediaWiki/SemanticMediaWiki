@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use SMW\SQLStore\TableBuilder\FieldType;
 use SMW\SQLStore\TableBuilder\Table;
 
 /**
@@ -118,7 +119,7 @@ interface TableBuilder {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array
+	 * @return array
 	 */
 	public function getLog();
 

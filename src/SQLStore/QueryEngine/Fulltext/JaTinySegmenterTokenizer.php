@@ -100,7 +100,9 @@ class JaTinySegmenterTokenizer {
 		$seg[] = "E2";
 		$seg[] = "E3";
 		$ctype[] = "O";
+		// @phan-suppress-next-line PhanPluginDuplicateAdjacentStatement Not sure if duplicates are expected
 		$ctype[] = "O";
+		// @phan-suppress-next-line PhanPluginDuplicateAdjacentStatement Not sure if duplicates are expected
 		$ctype[] = "O";
 		$word = $seg[3];
 		$p1 = "U";

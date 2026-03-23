@@ -18,7 +18,7 @@ class ResultLimiter {
 	private $size = -1;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $counter = [];
 

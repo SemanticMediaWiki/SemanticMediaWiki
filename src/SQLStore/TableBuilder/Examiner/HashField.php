@@ -18,7 +18,7 @@ class HashField {
 	use MessageReporterAwareTrait;
 
 	/**
-	 * @var PopulateHashField
+	 * @var ?PopulateHashField
 	 */
 	private $populateHashField;
 

@@ -25,12 +25,12 @@ class SubobjectListFinder {
 	private $subject;
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $mappingIterator = [];
 
 	/**
-	 * @var
+	 * @var array
 	 */
 	private $skipConditions = [];
 

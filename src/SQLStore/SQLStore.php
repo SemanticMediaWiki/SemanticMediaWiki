@@ -11,12 +11,13 @@ use SMW\DataItems\Property;
 use SMW\DataItems\WikiPage;
 use SMW\DataModel\SemanticData;
 use SMW\DataValues\WikiPageValue;
+use SMW\MediaWiki\Connection\Database;
 use SMW\Query\Query;
-use SMW\Query\QueryResult;
 use SMW\RequestOptions;
 use SMW\Services\ServicesContainer;
 use SMW\SQLStore\EntityStore\DataItemHandler;
 use SMW\SQLStore\EntityStore\DataItemHandlerFactory;
+use SMW\SQLStore\EntityStore\EntityIdManager;
 use SMW\SQLStore\EntityStore\EntityLookup;
 use SMW\SQLStore\Lookup\CachedListLookup;
 use SMW\SQLStore\Rebuilder\Rebuilder;
@@ -146,7 +147,7 @@ class SQLStore extends Store {
 	private $entityLookup;
 
 	/**
-	 * @var ServicesContainer
+	 * @var ?ServicesContainer
 	 */
 	protected $servicesContainer;
 
@@ -353,7 +354,7 @@ class SQLStore extends Store {
 	 *
 	 * @param Query $query
 	 *
-	 * @return QueryResult|string|int depends on $query->querymode
+	 * @return mixed depends on $query->querymode
 	 */
 	public function getQueryResult( Query $query ) {
 		$result = null;
@@ -624,7 +625,7 @@ class SQLStore extends Store {
 	 *
 	 * @param string|null $type
 	 *
-	 * @return array
+	 * @return array|string
 	 */
 	public function getInfo( $type = null ) {
 		if ( $type === 'store' ) {

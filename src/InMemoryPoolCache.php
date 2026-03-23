@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Onoi\Cache\Cache;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Utils\StatsFormatter;
 

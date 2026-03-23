@@ -4,8 +4,10 @@ namespace SMW\SQLStore\QueryDependency;
 
 use SMW\IteratorFactory;
 use SMW\Iterators\ResultIterator;
+use SMW\MediaWiki\Connection\Database;
 use SMW\SQLStore\SQLStore;
 use SMW\Store;
+use stdClass;
 
 /**
  * @private

@@ -195,7 +195,7 @@ class SomePropertyInterpreter implements DescriptionInterpreter {
 			$query->joinfield = "{$query->alias}.s_id";
 			$this->compilePropertyValueDescription( $query, $description->getDescription(), $proptable, $diHandler, 'AND' );
 			if ( array_key_exists( $sortkey, $this->conditionBuilder->getSortKeys() ) ) {
-				$query->sortfields[$sortkey] = isset( $query->sortIndexField ) ? $query->sortIndexField : "{$query->alias}.{$indexField}";
+				$query->sortfields[$sortkey] = $query->sortIndexField ?? "{$query->alias}.{$indexField}";
 			}
 		}
 	}

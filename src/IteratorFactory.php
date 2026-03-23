@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Iterator;
 use SMW\Iterators\AppendIterator;
 use SMW\Iterators\ChunkedIterator;
 use SMW\Iterators\CsvFileIterator;
