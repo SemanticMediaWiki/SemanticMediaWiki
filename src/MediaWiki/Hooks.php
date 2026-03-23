@@ -371,7 +371,7 @@ class Hooks {
 	 *
 	 * @see https://www.mediawiki.org/wiki/Manual:Hooks/SkinAfterContent
 	 */
-	public function onSkinAfterContent( &$data, $skin = null ): bool {
+	public function onSkinAfterContent( string &$data, $skin = null ): bool {
 		$skinAfterContent = new SkinAfterContent(
 			$skin
 		);
