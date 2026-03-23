@@ -31,7 +31,7 @@ class ImportContents {
 	/**
 	 * @var string
 	 */
-	private $importPerformer = '';
+	private string $importPerformer = '';
 
 	/**
 	 * @var int

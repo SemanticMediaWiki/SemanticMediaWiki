@@ -21,7 +21,7 @@ class CliMsgFormatter {
 	/**
 	 * @var int|null
 	 */
-	private $firstColLen = null;
+	private ?int $firstColLen = null;
 
 	/**
 	 * @var float|int
