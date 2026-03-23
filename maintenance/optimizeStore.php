@@ -8,6 +8,9 @@ use Onoi\MessageReporter\MessageReporter;
 use SMW\Services\ServicesFactory as ApplicationFactory;
 use SMW\Setup;
 use SMW\SQLStore\Installer\TableOptimizer;
+use SMW\SQLStore\SQLStore;
+use SMW\SQLStore\TableBuilder\TableBuilder;
+use SMW\SQLStore\TableBuilder\TableSchemaManager;
 use SMW\StoreFactory;
 use SMW\Utils\CliMsgFormatter;
 
@@ -145,20 +148,31 @@ class optimizeStore extends Maintenance {
 			exit( 1 );
 		}
 
-		$connectionManager = $applicationFactory->getConnectionManager();
-		$store->setConnectionManager( $connectionManager );
+				$connectionManager = $applicationFactory->getConnectionManager();
+				$store->setConnectionManager( $connectionManager );
 
-		$this->messageReporter->reportMessage(
-			$cliMsgFormatter->section( 'Table optimization' ) . "\n"
-		);
+		if ( !$store instanceof SQLStore ) {
+				$this->messageReporter->reportMessage(
+						"Table optimization is currently only supported for the SQLStore backend.\n"
+				);
+				return true;
+		}
 
-		$tableSchemaManager = $store->getInstaller()->getTableSchemaManager();
-		$tableBuilder = $store->getInstaller()->getTableBuilder();
+				$this->messageReporter->reportMessage(
+						$cliMsgFormatter->section( 'Table optimization' ) . "\n"
+				);
 
-		$tableOptimizer = new TableOptimizer( $tableBuilder );
-		$tableOptimizer->setMessageReporter( $this->messageReporter );
+				$tableBuilder = TableBuilder::factory(
+						$store->getConnection( DB_PRIMARY )
+				);
+				$tableBuilder->setMessageReporter( $this->messageReporter );
 
-		$tableOptimizer->runForTables(
+				$tableSchemaManager = new TableSchemaManager( $store );
+
+				$setupFile = $applicationFactory->singleton( 'SetupFile' );
+				$tableOptimizer = new TableOptimizer( $tableBuilder );
+				$tableOptimizer->setSetupFile( $setupFile );
+				$tableOptimizer->setMessageReporter( $this->messageReporter );		$tableOptimizer->runForTables(
 			$tableSchemaManager->getTables()
 		);
 
