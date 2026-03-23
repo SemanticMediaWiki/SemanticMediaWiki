@@ -140,15 +140,13 @@ class optimizeStore extends Maintenance {
 		$storeClass = $this->getOption( 'backend', $smwgDefaultStore );
 
 		try {
-			$store = StoreFactory::getStore( $storeClass );
+				$store = StoreFactory::getStore( $storeClass );
 		} catch ( \Throwable $e ) {
-			$this->messageReporter->reportMessage(
-				"\nError: Invalid backend class \"$storeClass\". Aborting.\n"
-			);
-			exit( 1 );
-		}
-
-				$connectionManager = $applicationFactory->getConnectionManager();
+				$this->messageReporter->reportMessage(
+						"\nError: Invalid backend class \"$storeClass\". Aborting.\n" . $e->getMessage() . "\n"
+				);
+				exit( 1 );
+		}				$connectionManager = $applicationFactory->getConnectionManager();
 				$store->setConnectionManager( $connectionManager );
 
 		if ( !$store instanceof SQLStore ) {
