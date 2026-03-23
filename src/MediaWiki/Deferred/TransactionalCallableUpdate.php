@@ -38,7 +38,7 @@ class TransactionalCallableUpdate extends CallableUpdate {
 	 * @param callable $callback
 	 * @param Database $connection
 	 */
-	public static function newUpdate( callable $callback, Database $connection ) {
+	public static function newUpdate( callable $callback, Database $connection ): self {
 		$transactionalCallableUpdate = new self( $callback, $connection );
 
 		$transactionalCallableUpdate->isCommandLineMode(

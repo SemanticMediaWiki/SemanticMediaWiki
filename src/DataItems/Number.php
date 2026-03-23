@@ -43,7 +43,7 @@ class Number extends DataItem {
 	 * @see DataItem::getSortKeyDataItem()
 	 * @return DataItem
 	 */
-	public function getSortKeyDataItem() {
+	public function getSortKeyDataItem(): static {
 		return $this;
 	}
 

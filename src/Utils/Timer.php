@@ -48,7 +48,7 @@ class Timer {
 	/**
 	 * @since 3.2
 	 */
-	public function stop( $name ) {
+	public function stop( $name ): static {
 		if ( isset( $this->times[$name] ) ) {
 			$this->times[$name] = microtime( true ) - $this->times[$name];
 		}

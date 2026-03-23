@@ -98,7 +98,7 @@ class ConditionBuilder {
 	 *
 	 * @param string $resultVariable
 	 */
-	public function setResultVariable( $resultVariable ) {
+	public function setResultVariable( $resultVariable ): static {
 		$this->resultVariable = $resultVariable;
 		return $this;
 	}
@@ -117,7 +117,7 @@ class ConditionBuilder {
 	 *
 	 * @param array $sortKeys
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): static {
 		$this->sortKeys = $sortKeys;
 		return $this;
 	}

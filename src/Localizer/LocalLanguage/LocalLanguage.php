@@ -21,10 +21,7 @@ class LocalLanguage {
 	 */
 	private $languageCode = 'en';
 
-	/**
-	 * @var string
-	 */
-	private $canonicalFallbackLanguageCode = 'en';
+	private string $canonicalFallbackLanguageCode = 'en';
 
 	private array $propertyIdByLabelMap = [];
 
@@ -86,7 +83,7 @@ class LocalLanguage {
 	 *
 	 * @return string
 	 */
-	public function fetchByLanguageCode( $languageCode ) {
+	public function fetchByLanguageCode( $languageCode ): static {
 		return $this->fetch( $languageCode );
 	}
 
@@ -95,7 +92,7 @@ class LocalLanguage {
 	 *
 	 * @return self
 	 */
-	public function fetch( $languageCode ) {
+	public function fetch( $languageCode ): static {
 		$this->languageCode = strtolower( trim( $languageCode ) );
 
 		if ( !$this->languageContents->isLoaded( $this->languageCode ) ) {

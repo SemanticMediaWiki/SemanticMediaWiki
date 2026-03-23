@@ -84,7 +84,7 @@ class ConditionBuilder {
 	 *
 	 * @return $this
 	 */
-	public function setSortKeys( $sortKeys ) {
+	public function setSortKeys( $sortKeys ): static {
 		$this->sortKeys = $sortKeys;
 		return $this;
 	}

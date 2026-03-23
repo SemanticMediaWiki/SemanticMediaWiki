@@ -100,7 +100,7 @@ class AskParserFunction {
 	 *
 	 * @return AskParserFunction
 	 */
-	public function setShowMode( $mode ) {
+	public function setShowMode( $mode ): static {
 		$this->showMode = $mode;
 		return $this;
 	}

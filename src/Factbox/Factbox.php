@@ -92,7 +92,7 @@ class Factbox {
 	 *
 	 * @return Factbox
 	 */
-	public function doBuild() {
+	public function doBuild(): static {
 		$this->content = $this->fetchContent(
 			$this->getMagicWords()
 		);

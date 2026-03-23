@@ -46,7 +46,7 @@ class ResultArray {
 	 *
 	 * @return self
 	 */
-	public static function factory( WikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ) {
+	public static function factory( WikiPage $resultPage, PrintRequest $printRequest, QueryResult $queryResult ): self {
 		$resultArray = new self(
 			$resultPage,
 			$printRequest,

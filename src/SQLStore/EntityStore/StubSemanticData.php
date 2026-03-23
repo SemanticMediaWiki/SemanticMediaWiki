@@ -105,7 +105,7 @@ class StubSemanticData extends SemanticData {
 	 *
 	 * @return StubSemanticData
 	 */
-	public static function newFromSemanticData( SemanticData $semanticData, SQLStore $store ) {
+	public static function newFromSemanticData( SemanticData $semanticData, SQLStore $store ): self {
 		$result = new self( $semanticData->getSubject(), $store );
 		$result->mPropVals = $semanticData->mPropVals;
 		$result->mProperties = $semanticData->mProperties;

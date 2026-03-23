@@ -270,7 +270,7 @@ class SubSemanticData implements JsonUnserializable {
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
 		$obj = new self( SemanticData::maybeUnserialize( $unserializer, $json['subject'] ), $json['noDuplicates'] );
 		$obj->subSemanticData = SemanticData::maybeUnserializeArray( $unserializer, $json['subSemanticData'] );
 		$obj->subContainerMaxDepth = $json['subContainerMaxDepth'];

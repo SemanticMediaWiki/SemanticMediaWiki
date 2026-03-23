@@ -56,7 +56,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public static function newFromArray( Language $language, array $messages = [] ) {
+	public static function newFromArray( Language $language, array $messages = [] ): static {
 		$instance = new self( $language );
 		return $instance->addFromArray( $messages );
 	}
@@ -70,7 +70,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function addFromKey( $key ) {
+	public function addFromKey( $key ): static {
 		$params = func_get_args();
 		array_shift( $params );
 		$this->addFromArray( [ new Message( $key, $params ) ] );
@@ -93,7 +93,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function addFromArray( array $messages ) {
+	public function addFromArray( array $messages ): static {
 		$messages = ProcessingErrorMsgHandler::normalizeAndDecodeMessages( $messages );
 
 		foreach ( $messages as $message ) {
@@ -128,7 +128,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function setType( $type ) {
+	public function setType( $type ): static {
 		$this->type = $type;
 		return $this;
 	}
@@ -146,7 +146,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function escape( $escape ) {
+	public function escape( $escape ): static {
 		$this->escape = (bool)$escape;
 		return $this;
 	}
@@ -158,7 +158,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function clear() {
+	public function clear(): static {
 		$this->messages = [];
 		return $this;
 	}
@@ -183,7 +183,7 @@ class MessageFormatter {
 	 *
 	 * @return MessageFormatter
 	 */
-	public function setLanguage( Language $language ) {
+	public function setLanguage( Language $language ): static {
 		$this->language = $language;
 		return $this;
 	}

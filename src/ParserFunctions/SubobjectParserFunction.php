@@ -118,7 +118,7 @@ class SubobjectParserFunction {
 	 *
 	 * @return SubobjectParserFunction
 	 */
-	public function useFirstElementAsPropertyLabel( $useFirstElementAsPropertyLabel = true ) {
+	public function useFirstElementAsPropertyLabel( $useFirstElementAsPropertyLabel = true ): static {
 		$this->useFirstElementAsPropertyLabel = (bool)$useFirstElementAsPropertyLabel;
 		return $this;
 	}

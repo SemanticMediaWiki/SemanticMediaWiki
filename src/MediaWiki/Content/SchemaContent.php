@@ -118,7 +118,7 @@ class SchemaContent extends JsonContent {
 	 *
 	 * {@inheritDoc}
 	 */
-	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ) {
+	public function preSaveTransform( Title $title, User $user, ParserOptions $popts ): static {
 		// FIXME: WikiPage::doUserEditContent invokes PST before validation. As such, native data
 		// may be invalid (though PST result is discarded later in that case).
 		if ( !$this->isValid() ) {

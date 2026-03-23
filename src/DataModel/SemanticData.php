@@ -927,7 +927,7 @@ class SemanticData implements JsonUnserializable {
 	 *
 	 * @return self
 	 */
-	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ) {
+	public static function newFromJsonArray( JsonUnserializer $unserializer, array $json ): self {
 		# T312589: In the future JsonCodec will take care of unserializing
 		# the values in the $json array itself.
 		$obj = new self(

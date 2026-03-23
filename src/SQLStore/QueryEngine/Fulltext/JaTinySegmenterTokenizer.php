@@ -46,11 +46,11 @@ class JaTinySegmenterTokenizer {
 	 *
 	 * @return string[]
 	 */
-	public function tokenize( $string ) {
+	public function tokenize( $string ): array {
 		return $this->loadModel()->segment( $string );
 	}
 
-	private function loadModel() {
+	private function loadModel(): static {
 		if ( self::$model !== null ) {
 			return $this;
 		}
