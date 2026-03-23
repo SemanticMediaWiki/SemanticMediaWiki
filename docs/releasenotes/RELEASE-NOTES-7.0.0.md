@@ -35,6 +35,23 @@ For more detailed information, see the [compatibility matrix](../COMPATIBILITY.m
 * Removed the `$smwgSparqlRepositoryConnectorForcedHttpVersion` setting. HTTP version negotiation is now handled by MediaWiki's HTTP layer. The `mediawiki/http-request` (`Onoi\HttpRequest`) dependency has been dropped — SPARQL store connectors and `RemoteRequest` now use MediaWiki core's `HttpRequestFactory`.
 * Removed the deprecated root `DefaultSettings.php` shim (deprecated since 4.0.0). Code that loaded settings directly via `require .../DefaultSettings.php` should use `SemanticMediaWiki::getDefaultSettings()` instead.
 
+- Removed legacy job name aliases. All job types must now be referenced by their `smw.*` names. The following aliases no longer work:
+
+  | Removed alias | Use instead |
+  |---|---|
+  | `SMW\UpdateJob` | `smw.update` |
+  | `SMW\RefreshJob` | `smw.refresh` |
+  | `SMW\UpdateDispatcherJob` | `smw.updateDispatcher` |
+  | `SMW\FulltextSearchTableUpdateJob` | `smw.fulltextSearchTableUpdate` |
+  | `SMW\EntityIdDisposerJob` | `smw.entityIdDisposer` |
+  | `SMW\PropertyStatisticsRebuildJob` | `smw.propertyStatisticsRebuild` |
+  | `SMW\FulltextSearchTableRebuildJob` | `smw.fulltextSearchTableRebuild` |
+  | `SMW\ChangePropagationDispatchJob` | `smw.changePropagationDispatch` |
+  | `SMW\ChangePropagationUpdateJob` | `smw.changePropagationUpdate` |
+  | `SMW\ChangePropagationClassUpdateJob` | `smw.changePropagationClassUpdate` |
+  | `SMWUpdateJob` | `smw.update` |
+  | `SMWRefreshJob` | `smw.refresh` |
+
 - The following class aliases are deprecated. They will be removed in a future update. Update any code referencing these to use the new namespaced class names.
 
  | Deprecated alias | New class name |

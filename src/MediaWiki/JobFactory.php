@@ -50,37 +50,26 @@ class JobFactory {
 		}
 
 		switch ( $type ) {
-			case 'SMW\RefreshJob':
 			case 'smw.refresh':
 				return $this->newRefreshJob( $title, $parameters );
-			case 'SMW\UpdateJob':
 			case 'smw.update':
 				return $this->newUpdateJob( $title, $parameters );
-			case 'SMW\UpdateDispatcherJob':
 			case 'smw.updateDispatcher':
 				return $this->newUpdateDispatcherJob( $title, $parameters );
-			case 'SMW\ParserCachePurgeJob':
 			case 'smw.parserCachePurge':
 				return $this->newParserCachePurgeJob( $title, $parameters );
-			case 'SMW\EntityIdDisposerJob':
 			case 'smw.entityIdDisposer':
 				return $this->newEntityIdDisposerJob( $title, $parameters );
-			case 'SMW\PropertyStatisticsRebuildJob':
 			case 'smw.propertyStatisticsRebuild':
 				return $this->newPropertyStatisticsRebuildJob( $title, $parameters );
-			case 'SMW\FulltextSearchTableUpdateJob':
 			case 'smw.fulltextSearchTableUpdate':
 				return $this->newFulltextSearchTableUpdateJob( $title, $parameters );
-			case 'SMW\FulltextSearchTableRebuildJob':
 			case 'smw.fulltextSearchTableRebuild':
 				return $this->newFulltextSearchTableRebuildJob( $title, $parameters );
-			case 'SMW\ChangePropagationDispatchJob':
 			case 'smw.changePropagationDispatch':
 				return $this->newChangePropagationDispatchJob( $title, $parameters );
-			case 'SMW\ChangePropagationUpdateJob':
 			case 'smw.changePropagationUpdate':
 				return $this->newChangePropagationUpdateJob( $title, $parameters );
-			case 'SMW\ChangePropagationClassUpdateJob':
 			case 'smw.changePropagationClassUpdate':
 				return $this->newChangePropagationClassUpdateJob( $title, $parameters );
 		}
