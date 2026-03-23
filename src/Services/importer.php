@@ -29,7 +29,7 @@ return [
 	/**
 	 * @return ImporterServiceFactory
 	 */
-	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ) {
+	'ImporterServiceFactory' => static function ( $callbackContainerBuilder ): ImporterServiceFactory {
 		$callbackContainerBuilder->registerExpectedReturnType( 'ImporterServiceFactory', ImporterServiceFactory::class );
 		return new ImporterServiceFactory( $callbackContainerBuilder );
 	},
@@ -37,7 +37,7 @@ return [
 	/**
 	 * @return XmlContentCreator
 	 */
-	'XmlContentCreator' => static function ( $containerBuilder ) {
+	'XmlContentCreator' => static function ( $containerBuilder ): XmlContentCreator {
 		$containerBuilder->registerExpectedReturnType( 'XmlContentCreator', XmlContentCreator::class );
 		return new XmlContentCreator( $containerBuilder->create( 'ImporterServiceFactory' ) );
 	},
@@ -45,7 +45,7 @@ return [
 	/**
 	 * @return TextContentCreator
 	 */
-	'TextContentCreator' => static function ( $containerBuilder ) {
+	'TextContentCreator' => static function ( $containerBuilder ): TextContentCreator {
 		$containerBuilder->registerExpectedReturnType( 'TextContentCreator', TextContentCreator::class );
 
 		$connectionManager = $containerBuilder->singleton( 'ConnectionManager' );
@@ -61,7 +61,7 @@ return [
 	/**
 	 * @return Importer
 	 */
-	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ) {
+	'Importer' => static function ( $containerBuilder, ContentIterator $contentIterator ): Importer {
 		$containerBuilder->registerExpectedReturnType( 'Importer', Importer::class );
 
 		$dispatchingContentCreator = new DispatchingContentCreator(
@@ -86,7 +86,7 @@ return [
 	/**
 	 * @return JsonContentIterator
 	 */
-	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ) {
+	'JsonContentIterator' => static function ( $containerBuilder, $importFileDirs ): JsonContentIterator {
 		$containerBuilder->registerExpectedReturnType( 'JsonContentIterator', JsonContentIterator::class );
 
 		$jsonImportContentsFileDirReader = new JsonImportContentsFileDirReader(

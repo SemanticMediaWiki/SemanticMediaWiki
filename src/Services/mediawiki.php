@@ -48,7 +48,7 @@ return [
 	 *
 	 * @return ImportStringSource
 	 */
-	'ImportStringSource' => static function ( $containerBuilder, $source ) {
+	'ImportStringSource' => static function ( $containerBuilder, $source ): ImportStringSource {
 		$containerBuilder->registerExpectedReturnType( 'ImportStringSource', '\ImportStringSource' );
 		return new ImportStringSource( $source );
 	},
@@ -59,7 +59,7 @@ return [
 	 *
 	 * @return ImportStreamSource
 	 */
-	'ImportStreamSource' => static function ( $containerBuilder, $source ) {
+	'ImportStreamSource' => static function ( $containerBuilder, $source ): ImportStreamSource {
 		$containerBuilder->registerExpectedReturnType( 'ImportStreamSource', '\ImportStreamSource' );
 		return new ImportStreamSource( $source );
 	},
@@ -70,7 +70,7 @@ return [
 	 *
 	 * @return WikiImporter
 	 */
-	'WikiImporter' => static function ( $containerBuilder, ImportSource $importSource ) {
+	'WikiImporter' => static function ( $containerBuilder, ImportSource $importSource ): WikiImporter {
 		$services = MediaWikiServices::getInstance();
 		return $services->getWikiImporterFactory()->getWikiImporter(
 			$importSource,
@@ -92,42 +92,42 @@ return [
 	/**
 	 * @return Config
 	 */
-	'MainConfig' => static function () {
+	'MainConfig' => static function (): Config {
 		return MediaWikiServices::getInstance()->getMainConfig();
 	},
 
 	/**
 	 * @return SearchEngineConfig
 	 */
-	'SearchEngineConfig' => static function () {
+	'SearchEngineConfig' => static function (): SearchEngineConfig {
 		return MediaWikiServices::getInstance()->getSearchEngineConfig();
 	},
 
 	/**
 	 * @return MagicWordFactory
 	 */
-	'MagicWordFactory' => static function () {
+	'MagicWordFactory' => static function (): MagicWordFactory {
 		return MediaWikiServices::getInstance()->getMagicWordFactory();
 	},
 
 	/**
 	 * @return PermissionManager
 	 */
-	'PermissionManager' => static function () {
+	'PermissionManager' => static function (): PermissionManager {
 		return new PermissionManager( MediaWikiServices::getInstance()->getPermissionManager() );
 	},
 
 	/**
 	 * @return LBFactory
 	 */
-	'DBLoadBalancerFactory' => static function () {
+	'DBLoadBalancerFactory' => static function (): LBFactory {
 		return MediaWikiServices::getInstance()->getDBLoadBalancerFactory();
 	},
 
 	/**
 	 * @return ILoadBalancer
 	 */
-	'DBLoadBalancer' => static function () {
+	'DBLoadBalancer' => static function (): ILoadBalancer {
 		return MediaWikiServices::getInstance()->getDBLoadBalancer();
 	},
 
@@ -148,7 +148,7 @@ return [
 	 *
 	 * @return Logger
 	 */
-	'MediaWikiLogger' => static function ( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ) {
+	'MediaWikiLogger' => static function ( $containerBuilder, $channel = 'smw', $role = Logger::ROLE_DEVELOPER ): Logger {
 		$containerBuilder->registerExpectedReturnType( 'MediaWikiLogger', LoggerInterface::class );
 
 		$logger = LoggerFactory::getInstance( $channel );
@@ -159,7 +159,7 @@ return [
 	/**
 	 * @return FileRepoFinder
 	 */
-	'FileRepoFinder' => static function () {
+	'FileRepoFinder' => static function (): FileRepoFinder {
 		$repoGroup = MediaWikiServices::getInstance()->getRepoGroup();
 
 		return new FileRepoFinder( $repoGroup );
@@ -170,7 +170,7 @@ return [
 	 *
 	 * @return JobQueueGroup
 	 */
-	'JobQueueGroup' => static function ( $containerBuilder ) {
+	'JobQueueGroup' => static function ( $containerBuilder ): JobQueueGroup {
 		$containerBuilder->registerExpectedReturnType( 'JobQueueGroup', '\JobQueueGroup' );
 
 		return MediaWikiServices::getInstance()->getJobQueueGroup();
@@ -179,28 +179,28 @@ return [
 	/**
 	 * @return Parser
 	 */
-	'Parser' => static function () {
+	'Parser' => static function (): Parser {
 		return MediaWikiServices::getInstance()->getParser();
 	},
 
 	/**
 	 * @return Language
 	 */
-	'ContentLanguage' => static function () {
+	'ContentLanguage' => static function (): Language {
 		return MediaWikiServices::getInstance()->getContentLanguage();
 	},
 
 	/**
 	 * @return RevisionLookup
 	 */
-	'RevisionLookup' => static function () {
+	'RevisionLookup' => static function (): RevisionLookup {
 		return MediaWikiServices::getInstance()->getRevisionLookup();
 	},
 
 	/**
 	 * @return ParserCache
 	 */
-	'ParserCache' => static function () {
+	'ParserCache' => static function (): ParserCache {
 		return MediaWikiServices::getInstance()->getParserCache();
 	},
 

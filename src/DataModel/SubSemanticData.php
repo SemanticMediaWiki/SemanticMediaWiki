@@ -252,7 +252,7 @@ class SubSemanticData implements JsonUnserializable {
 		return [
 			'noDuplicates' => $this->noDuplicates,
 			'subject' => $this->subject->jsonSerialize(),
-			'subSemanticData' => array_map( static function ( SemanticData $x ) {
+			'subSemanticData' => array_map( static function ( SemanticData $x ): array {
 					return $x->jsonSerialize();
 			}, $this->subSemanticData ),
 			'subContainerMaxDepth' => $this->subContainerMaxDepth,

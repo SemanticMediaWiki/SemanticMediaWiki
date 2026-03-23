@@ -153,7 +153,7 @@ class Hooks {
 	 * @param array &$vars
 	 */
 	public static function registerExtensionCheck( array &$vars ): void {
-		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( $outputPage ) {
+		$vars['wgHooks']['BeforePageDisplay']['smw-extension-check'] = static function ( $outputPage ): bool {
 			$beforePageDisplay = new BeforePageDisplay();
 
 			$beforePageDisplay->setOptions(

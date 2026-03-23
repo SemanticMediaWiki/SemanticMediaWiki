@@ -464,7 +464,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getSetParserFunctionDefinition(): array {
-		$setParserFunctionDefinition = function ( $parser ) {
+		$setParserFunctionDefinition = function ( $parser ): array {
 			$setParserFunction = $this->newSetParserFunction(
 				$parser
 			);
@@ -500,7 +500,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getDeclareParserFunctionDefinition(): array {
-		$declareParserFunctionDefinition = function ( $parser, $frame, $args ) {
+		$declareParserFunctionDefinition = function ( $parser, $frame, $args ): string {
 			$declareParserFunction = $this->newDeclareParserFunction(
 				$parser
 			);
@@ -517,7 +517,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getDocumentationParserFunctionDefinition(): array {
-		$smwdocDefinition = static function ( Parser $parser, PPFrame $frame, array $args ) {
+		$smwdocDefinition = static function ( Parser $parser, PPFrame $frame, array $args ): array {
 			$expandedArgs = [];
 			foreach ( $args as $arg ) {
 				$expandedArgs[] = $frame->expand( $arg );
@@ -545,7 +545,7 @@ class ParserFunctionFactory {
 	 * @return array
 	 */
 	public function getInfoParserFunctionDefinition(): array {
-		$infoDefinition = static function ( Parser $parser, PPFrame $frame, array $args ) {
+		$infoDefinition = static function ( Parser $parser, PPFrame $frame, array $args ): array {
 			$expandedArgs = [];
 			foreach ( $args as $arg ) {
 				$expandedArgs[] = $frame->expand( $arg );
