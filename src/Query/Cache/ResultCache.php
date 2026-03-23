@@ -389,7 +389,7 @@ class ResultCache implements QueryEngine, LoggerAwareInterface {
 		$deferredTransactionalUpdate->pushUpdate();
 	}
 
-	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, $container, Query $query ) {
+	private function doCacheQueryResult( QueryResult $queryResult, string $queryId, $container, Query $query ): QueryResult {
 		$results = [];
 
 		// Keep the simple string representation to avoid unnecessary data cruft

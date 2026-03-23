@@ -152,7 +152,7 @@ class ConfigurationListTaskHandler extends TaskHandler implements ActionableTask
 		);
 	}
 
-	private function cleanPath( array &$options ) {
+	private function cleanPath( array &$options ): array {
 		foreach ( $options as $key => &$value ) {
 			if ( is_array( $value ) ) {
 				$this->cleanPath( $value );

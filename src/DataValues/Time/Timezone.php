@@ -347,7 +347,7 @@ class Timezone {
 	 *
 	 * @return DateTime
 	 */
-	public static function getModifiedTime( DateTime $dateTime, &$tz = 0 ) {
+	public static function getModifiedTime( DateTime $dateTime, &$tz = 0 ): DateTime {
 		if ( ( $timezoneLiteral = self::getTimezoneLiteralById( $tz ) ) === false ) {
 			$tz = $timezoneLiteral;
 			return $dateTime;
