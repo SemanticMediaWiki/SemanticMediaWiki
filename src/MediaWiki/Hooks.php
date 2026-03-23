@@ -24,7 +24,6 @@ use SMW\DataModel\SemanticData;
 use SMW\DataTypeRegistry;
 use SMW\MediaWiki\Content\SchemaContentHandler;
 use SMW\MediaWiki\Hooks\AdminLinks;
-use SMW\MediaWiki\Hooks\ApiModuleManager;
 use SMW\MediaWiki\Hooks\ArticleDelete;
 use SMW\MediaWiki\Hooks\ArticleFromTitle;
 use SMW\MediaWiki\Hooks\ArticleProtectComplete;
@@ -198,25 +197,6 @@ class Hooks {
 		NamespaceManager::initCanonicalNamespaces(
 			$namespaces
 		);
-
-		return true;
-	}
-
-	/**
-	 * Called when ApiMain has finished initializing its module manager. Can
-	 * be used to conditionally register API modules.
-	 *
-	 * #2813
-	 */
-	public static function onApiModuleManager( \MediaWiki\Api\ApiModuleManager $moduleManager ): bool {
-		$apiModuleManager = new ApiModuleManager();
-		$apiModuleManager->setOptions(
-			[
-				'SMW_EXTENSION_LOADED' => defined( 'SMW_EXTENSION_LOADED' )
-			]
-		);
-
-		$apiModuleManager->process( $moduleManager );
 
 		return true;
 	}

@@ -208,12 +208,6 @@ final class Setup {
 
 		$vars['smwgMasterStore'] = null;
 		$vars['smwgIQRunningNumber'] = 0;
-
-		foreach ( $vars['smwgResourceLoaderDefFiles'] as $key => $file ) {
-			if ( is_readable( $file ) ) {
-				$vars['wgResourceModules'] = array_merge( $vars['wgResourceModules'], include $file );
-			}
-		}
 	}
 
 	/**
@@ -301,28 +295,14 @@ final class Setup {
 	}
 
 	/**
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgAvailableRights
-	 * @see https://www.mediawiki.org/wiki/Manual:$wgGroupPermissions
-	 *
-	 * @param array &$vars
-	 *
-	 * @return void
+	 * @see https://www.mediawiki.org/wiki/Manual:$wgRestrictionLevels
 	 */
 	private function registerPermissions( array &$vars ): void {
-		$applicationFactory = ApplicationFactory::getInstance();
-		$settings = $applicationFactory->getSettings();
-
 		if ( !defined( 'SMW_EXTENSION_LOADED' ) ) {
 			return;
 		}
 
-		$groupPermissions = new GroupPermissions();
-
-		$groupPermissions->setHookDispatcher(
-			$this->hookDispatcher
-		);
-
-		$groupPermissions->initPermissions( $vars );
+		$settings = ApplicationFactory::getInstance()->getSettings();
 
 		// Add an additional protection level restricting edit/move/etc
 		if ( ( $editProtectionRight = $settings->get( 'smwgEditProtectionRight' ) ) !== false ) {

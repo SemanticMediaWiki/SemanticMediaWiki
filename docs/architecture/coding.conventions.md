@@ -50,7 +50,7 @@ In general, code layout is guided by the [MediaWiki coding conventions](https://
 In general, all names are written CamelCase, although methodNames and variableNames typically start with lower case letters.
 
 - '''Variables''' mostly don't adhere to any naming conventions, but global variables should have the prefix "smw".
-- JavaScript modules are registered with the [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader) using [`Resources.php`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/res/Resources.php)
+- JavaScript modules are registered with the [ResourceLoader](https://www.mediawiki.org/wiki/ResourceLoader) using the `ResourceModules` key in [`extension.json`](https://github.com/SemanticMediaWiki/SemanticMediaWiki/blob/master/extension.json)
 
 ### Code layout and indenting
 

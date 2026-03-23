@@ -29,8 +29,16 @@
 		"SMW\\Tests\\": "tests/phpunit/"
 	},
 	"Hooks": {
-		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces",
-		"ApiMain::moduleManager": "SMW\\MediaWiki\\Hooks::onApiModuleManager"
+		"CanonicalNamespaces": "SMW\\MediaWiki\\Hooks::onCanonicalNamespaces"
+	},
+	"APIModules": {
+		"smwinfo": "SMW\\MediaWiki\\Api\\Info",
+		"smwtask": "SMW\\MediaWiki\\Api\\Task",
+		"smwbrowse": "SMW\\MediaWiki\\Api\\Browse",
+		"ask": "SMW\\MediaWiki\\Api\\Ask",
+		"askargs": "SMW\\MediaWiki\\Api\\AskArgs",
+		"browsebysubject": "SMW\\MediaWiki\\Api\\BrowseBySubject",
+		"browsebyproperty": "SMW\\MediaWiki\\Api\\BrowseByProperty"
 	},
 	"AutoloadClasses": {
 		"SMWElasticStore": "src/Elastic/ElasticStore.php",
@@ -93,6 +101,34 @@
 	"ExtensionMessagesFiles": {
 		"SemanticMediaWikiAlias": "i18n/extra/SemanticMediaWiki.alias.php",
 		"SemanticMediaWikiMagic": "i18n/extra/SemanticMediaWiki.magic.php"
+	},
+	"AvailableRights": [
+		"smw-admin",
+		"smw-patternedit",
+		"smw-schemaedit",
+		"smw-pageedit",
+		"smw-viewjobqueuewatchlist",
+		"smw-viewentityassociatedrevisionmismatch",
+		"smw-vieweditpageinfo"
+	],
+	"GroupPermissions": {
+		"smwadministrator": {
+			"smw-admin": true
+		},
+		"smwcurator": {
+			"smw-patternedit": true,
+			"smw-schemaedit": true,
+			"smw-pageedit": true,
+			"smw-viewjobqueuewatchlist": true,
+			"smw-viewentityassociatedrevisionmismatch": true,
+			"smw-vieweditpageinfo": true
+		},
+		"smweditor": {
+			"smw-vieweditpageinfo": true
+		},
+		"user": {
+			"smw-vieweditpageinfo": true
+		}
 	},
 	"LogTypes": [
 		"smw"
@@ -166,6 +202,512 @@
 		"smw.elasticIndexerRecovery": "SMW\\Elastic\\Jobs\\IndexerRecoveryJob",
 		"smw.elasticFileIngest": "SMW\\Elastic\\Jobs\\FileIngestJob",
 		"smw.parserCachePurgeJob": "SMW\\MediaWiki\\Jobs\\ParserCachePurgeJob"
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "res",
+		"remoteExtPath": "SemanticMediaWiki/res"
+	},
+	"ResourceModules": {
+		"ext.smw": {
+			"scripts": "smw/ext.smw.js",
+			"dependencies": "ext.jquery.async"
+		},
+		"ext.smw.styles": {
+			"styles": [
+				"smw/ext.smw.css",
+				"smw/ext.smw.dropdown.css",
+				"smw/ext.smw.table.css",
+				"smw/ext.smw.tabs.less",
+				"smw/smw.indicators.css",
+				"smw/smw.jsonview.css"
+			],
+			"skinStyles": {
+				"chameleon": [
+					"smw/ext.smw.skin-chameleon.css"
+				],
+				"foreground": [
+					"smw/ext.smw.skin-foreground.css"
+				],
+				"vector": [
+					"smw/ext.smw.skin-vector.css"
+				]
+			}
+		},
+		"smw.ui": {
+			"scripts": [
+				"jquery/jquery.selectmenu.js",
+				"smw/smw.ui.js"
+			],
+			"dependencies": [
+				"ext.smw",
+				"smw.ui.styles"
+			]
+		},
+		"smw.ui.styles": {
+			"styles": [
+				"jquery/jquery.selectmenu.css",
+				"smw/smw.selectmenu.css"
+			]
+		},
+		"smw.summarytable": {
+			"styles": [
+				"smw/smw.summarytable.css"
+			]
+		},
+		"ext.smw.special.styles": {
+			"styles": [
+				"smw/special/ext.smw.special.less",
+				"smw/special/ext.smw.special.preferences.css"
+			]
+		},
+		"ext.jquery.async": {
+			"scripts": "jquery/jquery.async.js"
+		},
+		"ext.smw.query": {
+			"scripts": "smw/query/ext.smw.query.js",
+			"dependencies": [
+				"ext.smw",
+				"mediawiki.util"
+			]
+		},
+		"ext.smw.api": {
+			"scripts": [
+				"smw/data/ext.smw.dataItem.wikiPage.js",
+				"smw/data/ext.smw.dataItem.uri.js",
+				"smw/data/ext.smw.dataItem.time.js",
+				"smw/data/ext.smw.dataItem.property.js",
+				"smw/data/ext.smw.dataItem.unknown.js",
+				"smw/data/ext.smw.dataItem.number.js",
+				"smw/data/ext.smw.dataItem.text.js",
+				"smw/data/ext.smw.dataItem.geo.js",
+				"smw/data/ext.smw.dataValue.quantity.js",
+				"smw/data/ext.smw.data.js",
+				"smw/api/ext.smw.api.js"
+			],
+			"dependencies": [
+				"mediawiki.Title",
+				"mediawiki.storage",
+				"mediawiki.util",
+				"ext.smw",
+				"ext.smw.query"
+			]
+		},
+		"ext.jquery.autocomplete": {
+			"scripts": "jquery/jquery.autocomplete.js"
+		},
+		"ext.smw.tooltip.styles": {
+			"styles": [
+				"smw/util/ext.smw.tooltip.less"
+			],
+			"position": "top"
+		},
+		"ext.smw.tooltip": {
+			"position": "top",
+			"styles": [
+				"libs/tippy/light-border.css",
+				"libs/tippy/scale.css",
+				"smw/util/ext.smw.tooltip.tippy.less"
+			],
+			"scripts": [
+				"libs/tippy/popper.min.js",
+				"libs/tippy/tippy.min.js",
+				"smw/util/ext.smw.tooltip.tippy.js"
+			],
+			"dependencies": [
+				"ext.smw",
+				"ext.smw.tooltip.styles",
+				"mediawiki.api"
+			],
+			"messages": [
+				"smw-ui-tooltip-title-property",
+				"smw-ui-tooltip-title-quantity",
+				"smw-ui-tooltip-title-info",
+				"smw-ui-tooltip-title-service",
+				"smw-ui-tooltip-title-warning",
+				"smw-ui-tooltip-title-parameter",
+				"smw-ui-tooltip-title-event",
+				"smw-ui-tooltip-title-error",
+				"smw-ui-tooltip-title-note",
+				"smw-ui-tooltip-title-legend",
+				"smw-ui-tooltip-title-reference"
+			]
+		},
+		"ext.smw.autocomplete": {
+			"scripts": "smw/util/ext.smw.util.autocomplete.js",
+			"dependencies": "jquery.ui.autocomplete"
+		},
+		"ext.smw.purge": {
+			"scripts": "smw/util/ext.smw.util.purge.js",
+			"messages": [
+				"smw-purge-failed",
+				"smw-purge-update-dependencies"
+			],
+			"dependencies": [
+				"mediawiki.api"
+			]
+		},
+		"ext.smw.vtabs.styles": {
+			"styles": [
+				"smw/util/ext.smw.vertical.tabs.css"
+			]
+		},
+		"ext.smw.vtabs": {
+			"styles": [
+				"smw/util/ext.smw.vertical.tabs.css"
+			],
+			"scripts": [
+				"smw/util/ext.smw.vertical.tabs.js"
+			]
+		},
+		"ext.smw.modal.styles": {
+			"styles": [
+				"smw/util/ext.smw.modal.css"
+			]
+		},
+		"ext.smw.modal": {
+			"styles": [
+				"smw/util/ext.smw.modal.css"
+			],
+			"scripts": [
+				"smw/util/ext.smw.modal.js"
+			]
+		},
+		"smw.special.search.styles": {
+			"styles": "smw/special.search/search.css"
+		},
+		"smw.special.search": {
+			"scripts": [
+				"smw/special.search/search.namespace.js",
+				"smw/special.search/search.input.js",
+				"smw/special.search/search.form.js"
+			],
+			"styles": "smw/special.search/search.css",
+			"dependencies": [
+				"ext.smw.styles",
+				"ext.smw",
+				"smw.ui"
+			],
+			"messages": [
+				"smw-search-hide",
+				"smw-search-show"
+			]
+		},
+		"ext.smw.postproc": {
+			"scripts": "smw/util/ext.smw.util.postproc.js",
+			"messages": [
+				"smw-postproc-queryref"
+			],
+			"dependencies": [
+				"mediawiki.api"
+			]
+		},
+		"ext.smw.suggester": {
+			"scripts": [
+				"jquery/jquery.caret.js",
+				"jquery/jquery.atwho.js",
+				"smw/suggester/ext.smw.suggester.js"
+			],
+			"styles": [
+				"jquery/jquery.atwho.css"
+			],
+			"dependencies": [
+				"ext.smw"
+			]
+		},
+		"ext.smw.suggester.textInput": {
+			"scripts": "smw/suggester/ext.smw.suggester.textInput.js",
+			"dependencies": [
+				"ext.smw",
+				"ext.smw.suggester"
+			]
+		},
+		"ext.smw.autocomplete.page": {
+			"scripts": "smw/util/ext.smw.util.autocomplete.page.js",
+			"dependencies": [
+				"mediawiki.util",
+				"ext.jquery.autocomplete"
+			]
+		},
+		"ext.smw.autocomplete.property": {
+			"scripts": [
+				"smw/util/ext.smw.util.autocomplete.property.js",
+				"smw/util/ext.smw.util.autocomplete.propertyvalue.js",
+				"smw/util/ext.smw.util.autocomplete.propertysubject.js"
+			],
+			"dependencies": [
+				"mediawiki.util",
+				"ext.jquery.autocomplete"
+			]
+		},
+		"ext.smw.ask.styles": {
+			"styles": "smw/special/ext.smw.special.ask.less"
+		},
+		"ext.smw.ask": {
+			"scripts": "smw/special/ext.smw.special.ask.js",
+			"dependencies": [
+				"ext.smw.tooltip",
+				"ext.smw.styles",
+				"ext.smw.ask.styles",
+				"ext.smw.suggester"
+			],
+			"messages": [
+				"smw-ask-delete",
+				"smw-ask-format-selection-help",
+				"smw-ask-condition-change-info",
+				"smw-ask-format-change-info",
+				"smw-ask-format-export-info",
+				"smw-ask-format-help-link",
+				"smw-section-expand",
+				"smw-section-collapse"
+			]
+		},
+		"ext.smw.table.styles": {
+			"styles": [
+				"smw/ext.smw.table.css"
+			]
+		},
+		"ext.smw.factbox.styles": {
+			"styles": [
+				"smw/factbox.less"
+			],
+			"skinStyles": {
+				"vector-2022": [
+					"smw/factbox-vector-2022.less"
+				]
+			}
+		},
+		"ext.smw.factbox": {
+			"packagedFiles": [
+				"smw/ext.smw.factbox.js"
+			]
+		},
+		"ext.smw.browse.styles": {
+			"styles": [
+				"smw/special/ext.smw.special.browse.less"
+			]
+		},
+		"ext.smw.browse": {
+			"scripts": "smw/special/ext.smw.special.browse.js",
+			"dependencies": [
+				"mediawiki.api",
+				"ext.smw.styles"
+			],
+			"messages": [
+				"smw-browse-api-subject-serialization-invalid"
+			]
+		},
+		"ext.smw.browse.autocomplete": {
+			"dependencies": [
+				"ext.smw.browse",
+				"ext.smw.autocomplete.page"
+			]
+		},
+		"ext.smw.admin": {
+			"scripts": "smw/special/ext.smw.special.admin.js",
+			"dependencies": [
+				"mediawiki.api",
+				"smw.jsonview"
+			],
+			"messages": [
+				"smw-no-data-available",
+				"smw-list-count"
+			]
+		},
+		"smw.special.facetedsearch.styles": {
+			"styles": "smw/special/smw.special.facetedsearch.css"
+		},
+		"smw.special.facetedsearch": {
+			"scripts": "smw/special/smw.special.facetedsearch.js",
+			"dependencies": [
+				"smw.special.facetedsearch.styles",
+				"onoi.rangeslider"
+			]
+		},
+		"ext.smw.personal": {
+			"scripts": "smw/util/ext.smw.personal.js",
+			"dependencies": [
+				"ext.smw.tooltip",
+				"mediawiki.api"
+			],
+			"messages": [
+				"smw-personal-jobqueue-watchlist",
+				"smw-personal-jobqueue-watchlist-explain",
+				"brackets"
+			]
+		},
+		"smw.tableprinter.datatable": {
+			"scripts": [
+				"smw/printer/ext.smw.tableprinter.js"
+			],
+			"styles": [
+				"smw/printer/ext.smw.tableprinter.css"
+			],
+			"skinStyles": {
+				"chameleon": [
+					"smw/printer/ext.smw.tableprinter.skin-chameleon.css"
+				]
+			},
+			"dependencies": [
+				"onoi.dataTables",
+				"ext.smw.query"
+			],
+			"messages": [
+				"smw-format-datatable-emptytable",
+				"smw-format-datatable-info",
+				"smw-format-datatable-infoempty",
+				"smw-format-datatable-infofiltered",
+				"smw-format-datatable-infothousands",
+				"smw-format-datatable-lengthmenu",
+				"smw-format-datatable-loadingrecords",
+				"smw-format-datatable-processing",
+				"smw-format-datatable-search",
+				"smw-format-datatable-zerorecords",
+				"smw-format-datatable-first",
+				"smw-format-datatable-last",
+				"smw-format-datatable-next",
+				"smw-format-datatable-previous",
+				"smw-format-datatable-sortascending",
+				"smw-format-datatable-sortdescending",
+				"smw-format-datatable-toolbar-export"
+			]
+		},
+		"smw.tableprinter.datatable.styles": {
+			"styles": [
+				"smw/printer/ext.smw.tableprinter.css"
+			],
+			"skinStyles": {
+				"chameleon": [
+					"smw/printer/ext.smw.tableprinter.skin-chameleon.css"
+				]
+			}
+		},
+		"ext.smw.deferred.styles": {
+			"styles": [
+				"smw/deferred/ext.smw.deferred.css"
+			]
+		},
+		"ext.smw.deferred": {
+			"styles": [
+				"smw/deferred/ext.smw.deferred.css"
+			],
+			"scripts": [
+				"smw/deferred/ext.smw.deferred.js"
+			],
+			"dependencies": [
+				"mediawiki.api",
+				"onoi.rangeslider"
+			],
+			"messages": [
+				"smw_result_noresults"
+			]
+		},
+		"ext.smw.page.styles": {
+			"styles": [
+				"smw/ext.smw.page.css",
+				"smw/ext.smw.table.css",
+				"smw/smw.jsonview.css"
+			]
+		},
+		"smw.property.page": {
+			"scripts": [
+				"smw/util/smw.property.page.js"
+			],
+			"dependencies": [
+				"mediawiki.api",
+				"ext.smw.tooltip",
+				"smw.jsonview"
+			],
+			"messages": [
+				"smw_result_noresults"
+			]
+		},
+		"smw.content.schema": {
+			"styles": [
+				"smw/content/smw.schema.less",
+				"smw/ext.smw.table.css"
+			]
+		},
+		"smw.content.schemaview": {
+			"scripts": [
+				"smw/content/smw.schemaview.js"
+			],
+			"dependencies": [
+				"smw.jsonview"
+			]
+		},
+		"smw.jsonview.styles": {
+			"styles": [
+				"smw/smw.jsonview.css"
+			]
+		},
+		"smw.jsonview": {
+			"scripts": [
+				"jquery/jquery.jsonview.js",
+				"jquery/jquery.mark.js",
+				"smw/smw.jsonview.js"
+			],
+			"styles": [
+				"jquery/jquery.jsonview.css",
+				"smw/smw.jsonview.css"
+			],
+			"messages": [
+				"smw-expand",
+				"smw-collapse",
+				"smw-copy",
+				"smw-copy-clipboard-title",
+				"smw-jsonview-expand-title",
+				"smw-jsonview-collapse-title",
+				"smw-jsonview-search-label"
+			],
+			"dependencies": [
+				"ext.smw"
+			]
+		},
+		"smw.entityexaminer": {
+			"styles": [
+				"smw/util/smw.entityexaminer.css"
+			],
+			"scripts": [
+				"smw/util/smw.entityexaminer.js"
+			],
+			"dependencies": [
+				"ext.smw",
+				"mediawiki.api"
+			]
+		},
+		"onoi.rangeslider": {
+			"styles": [
+				"onoi/jquery.rangeSlider/ion.rangeSlider.css",
+				"onoi/jquery.rangeSlider/ion.rangeSlider.skinFlat.css"
+			],
+			"scripts": [
+				"onoi/jquery.rangeSlider/ion.rangeSlider.js"
+			]
+		},
+		"onoi.blobstore": {
+			"scripts": [
+				"onoi/localForage/localforage.min.js",
+				"onoi/onoi.blobstore.js"
+			]
+		},
+		"onoi.clipboard": {
+			"scripts": [
+				"onoi/clipboard/clipboard.js",
+				"onoi/onoi.clipboard.js"
+			]
+		},
+		"onoi.dataTables": {
+			"styles": [
+				"onoi/jquery.dataTables/dataTables.searchHighlight.css",
+				"onoi/jquery.dataTables/datatables.min.css"
+			],
+			"scripts": [
+				"onoi/jquery.highlight/jquery.highlight.js",
+				"onoi/jquery.dataTables/dataTables.searchHighlight.js",
+				"onoi/jquery.dataTables/datatables.min.js",
+				"onoi/jquery.dataTables/dataTables.search.js"
+			]
+		}
 	},
 	"DefaultUserOptions": {
 		"smw-prefs-general-options-show-entity-issue-panel": true
